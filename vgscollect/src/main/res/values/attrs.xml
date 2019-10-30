@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="hint" format="string"/>
+
+    <declare-styleable name="VGSEditText">
+        <attr name="text" format="string"/>
+        <attr name="textColor" format="color"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="hint" />
+
+        <attr name="inputType" format="enum">
+            <enum name="cardNumber" value="0"/>
+            <enum name="cardCVVNumber" value="1"/>
+            <enum name="cardDate" value="2"/>
+            <enum name="cardOwner" value="3"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="VGSTextInputLauout">
+        <attr name="hint" />
+    </declare-styleable>
+</resources>
