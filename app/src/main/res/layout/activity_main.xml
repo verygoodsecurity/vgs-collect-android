@@ -1,9 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parentPanel"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:progressTint="@color/colorAccent"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:text="InputField with our TextInputLauout and EditText:"/>
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
+        android:id="@+id/il2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        app:hint="@string/app_name">
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:textColor="@color/colorAccent"
+            app:text="text"/>
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:text="base EditText with our TextInputLauout:"/>
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
+        android:id="@+id/il3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        app:hint="@string/app_name">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:text="just our EditText:"/>
+
+
+    <com.verygoodsecurity.vgscollect.widget.VGSEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin"
+        app:textSize="12sp"
+        app:textColor="@color/colorAccent"
+        app:hint="@string/app_name"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:text="InputField with our TextInputLauout and EditText added programmatically:"/>
 
 </LinearLayout>
