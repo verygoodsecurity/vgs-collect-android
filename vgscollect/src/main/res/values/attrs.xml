@@ -13,6 +13,7 @@
             <enum name="cardCVVNumber" value="1"/>
             <enum name="cardDate" value="2"/>
             <enum name="cardOwner" value="3"/>
+            <enum name="info" value="4"/>
         </attr>
     </declare-styleable>
 

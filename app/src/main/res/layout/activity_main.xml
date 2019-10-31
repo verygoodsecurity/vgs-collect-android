@@ -20,24 +20,69 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/default_margin"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         android:text="InputField with our TextInputLauout and EditText:"/>
 
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
         android:id="@+id/il2"
-        android:layout_width="match_parent"
+        android:layout_width="66dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
-        app:hint="@string/app_name">
+        app:hint="CVV">
         <com.verygoodsecurity.vgscollect.widget.VGSEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:textColor="@color/colorAccent"
-            app:text="text"/>
+            app:inputType="cardCVVNumber"
+            app:text="1text1"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
 
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
+        android:id="@+id/il33"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        app:hint="card number">
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:textColor="@color/colorAccent"
+            app:inputType="cardNumber"
+            app:text="tewe21xt"/>
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
+        android:id="@+id/expDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        app:hint="exp date">
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:textColor="@color/colorAccent"
+            app:inputType="cardDate"
+            app:text="1111tewe21xt"/>
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
+        android:id="@+id/cardHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        app:hint="owner name">
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:textColor="@color/colorAccent"
+            app:inputType="cardOwner"
+            app:text="11as11te we21xt"/>
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
+<!--
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,5 +127,6 @@
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         android:text="InputField with our TextInputLauout and EditText added programmatically:"/>
+-->
 
 </LinearLayout>

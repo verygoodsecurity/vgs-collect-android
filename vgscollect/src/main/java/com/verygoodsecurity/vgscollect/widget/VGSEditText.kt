@@ -8,14 +8,13 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.EditTextWrapper
+import com.verygoodsecurity.vgscollect.view.VGSTextInputType
 
 class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     internal val inputField: EditTextWrapper
-
-    private var inputType:Int
 
     init {
         inputField = inflateInputField(context)
@@ -27,10 +26,15 @@ class VGSEditText @JvmOverloads constructor(
         ).apply {
 
             try {
-                val text = getString(R.styleable.VGSEditText_text)
-                if(!text.isNullOrBlank()) {
-                    inputField.setText(text)
+                val inputType =  when(getInteger(R.styleable.VGSEditText_inputType, -1)) {
+                    0 -> VGSTextInputType.CardNumber
+                    1 -> VGSTextInputType.CVVCardCode
+                    2 -> VGSTextInputType.CardExpDate
+                    3 -> VGSTextInputType.CardOwnerName
+                    else -> VGSTextInputType.InfoField
                 }
+                inputField.setInputFormatType(inputType)
+
                 val hint = getString(R.styleable.VGSEditText_hint)
                 if(!hint.isNullOrBlank() ) {
                     inputField.hint = hint
@@ -43,7 +47,11 @@ class VGSEditText @JvmOverloads constructor(
                 if(textColor > 0) {
                     inputField.setTextColor(textColor)
                 }
-                inputType = getInteger(R.styleable.VGSEditText_inputType, -1)
+
+                val text = getString(R.styleable.VGSEditText_text)
+                if(!text.isNullOrBlank()) {
+                    inputField.setText(text)
+                }
             } finally {
                 recycle()
             }
