@@ -17,70 +17,88 @@
         android:progressTint="@color/colorAccent"
         android:visibility="invisible"/>
 
-    <TextView
-        android:layout_width="match_parent"
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
+        android:id="@+id/cardCVVFieldLay"
+        android:layout_width="66dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
-        android:text="InputField with our TextInputLauout and EditText:"/>
-
-    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
-        android:id="@+id/il2"
-        android:layout_width="66dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_margin"
         app:hint="CVV">
         <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:id="@+id/cardCVVField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:textColor="@color/colorAccent"
-            app:inputType="cardCVVNumber"
-            app:text="1text1"/>
+            app:inputType="cardCVVNumber"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
 
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
-        android:id="@+id/il33"
+        android:id="@+id/cardNumberFieldLay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         app:hint="card number">
         <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:id="@+id/cardNumberField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:textColor="@color/colorAccent"
-            app:inputType="cardNumber"
-            app:text="tewe21xt"/>
+            app:inputType="cardNumber"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
 
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
-        android:id="@+id/expDate"
+        android:id="@+id/expDateFieldLay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         app:hint="exp date">
         <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:id="@+id/expDateField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:textColor="@color/colorAccent"
-            app:inputType="cardDate"
-            app:text="1111tewe21xt"/>
+            app:inputType="cardDate"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
 
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
-        android:id="@+id/cardHolder"
+        android:id="@+id/cardHolderFieldLay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         app:hint="owner name">
         <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:id="@+id/cardHolderField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:textColor="@color/colorAccent"
             app:inputType="cardOwner"
-            app:text="11as11te we21xt"/>
+            app:text="Ivan Drago"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
+
+    <Button
+        android:id="@+id/sendBtn"
+        android:text="send"
+        android:layout_margin="@dimen/default_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin">
+            <TextView
+                android:id="@+id/responseView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="no data"/>
+        </FrameLayout>
+    </ScrollView>
 
 </LinearLayout>

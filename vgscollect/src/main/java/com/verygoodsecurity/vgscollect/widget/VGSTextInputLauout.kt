@@ -73,6 +73,8 @@ class VGSTextInputLauout @JvmOverloads constructor(
                 is TextInputLayoutWrapper -> this
                 is VGSEditText -> {
                     editText = child as VGSEditText
+                    attachViewToParent(editText, childCount, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
+
                     textInputLauout.addView(child)
                     null
                 }

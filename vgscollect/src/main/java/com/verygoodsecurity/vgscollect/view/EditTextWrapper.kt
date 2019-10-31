@@ -11,7 +11,10 @@ import com.verygoodsecurity.vgscollect.view.text.validation.card.ExpirationDatee
 internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     private var activeTextWatcher: TextWatcher? = null
 
+    private var vgsInputType: VGSTextInputType = VGSTextInputType.InfoField
+
     fun setInputFormatType(inputType: VGSTextInputType) {
+        vgsInputType = inputType
         when(inputType) {
             is VGSTextInputType.CardNumber -> {
                 applyNewTextWatcher(CardNumberTextWatcher)
@@ -42,6 +45,18 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
                 filters = arrayOf()
                 setInputType(InputType.TYPE_CLASS_TEXT)
             }
+        }
+    }
+
+    fun getVGSInputType(): VGSTextInputType {
+        return vgsInputType
+    }
+
+    fun getTextString():String {
+        return if(vgsInputType is VGSTextInputType.CardNumber) {
+            text?.replace(" ".toRegex(), "")?:""
+        } else {
+            text.toString()
         }
     }
 
