@@ -30,14 +30,11 @@ class VGSCollect(id:String, environment: Environment) {
 
         baseURL = builder.toString()
         isURLValid = URLUtil.isValidUrl(baseURL)
-
     }
 
     fun bindView(view: VGSEditText?) {
-        Log.e("test", "$view")
-        view?.let {
-            storage.putView(view)
-        }
+        val observer = storage.performSubscription()
+        view?.inputField?.addDataViewStateChangeListener(observer)
     }
 
     fun onDestroy() {

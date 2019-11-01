@@ -20,7 +20,7 @@
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
         android:id="@+id/cardCVVFieldLay"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         app:hint="test Field">
@@ -28,6 +28,7 @@
             android:id="@+id/cardCVVField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:aliasName="cardNumber"
             app:textColor="#33ffaa"
             app:textStyle="italic|bold"
             app:singleLine="true"
