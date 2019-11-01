@@ -12,7 +12,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
-import com.verygoodsecurity.vgscollect.core.data.SimpleResponse
+import com.verygoodsecurity.vgscollect.core.model.SimpleResponse
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
         }
 
         vgsForm.onResponceListener = this
+        vgsForm.bindView(cardNumberField)
         vgsForm.bindView(cardCVVField)
         setTruncateAt(cardCVVField)
     }
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
         response?.let {
             responseView.text = "CODE: ${response.code} \n\n ${response.responce}"
 
-            Log.e("------->", "${response.code} \n ${response.responce}")
+            Log.d("------->", "${response.code} \n ${response.responce}")
         }
     }
 

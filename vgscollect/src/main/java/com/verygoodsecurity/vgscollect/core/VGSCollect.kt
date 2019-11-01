@@ -6,7 +6,8 @@ import android.os.AsyncTask
 import android.util.Log
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
-import com.verygoodsecurity.vgscollect.core.data.SimpleResponse
+import com.verygoodsecurity.vgscollect.core.model.SimpleResponse
+import com.verygoodsecurity.vgscollect.core.model.mapToEncodedQuery
 import com.verygoodsecurity.vgscollect.core.storage.DefaultStorage
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import java.lang.StringBuilder
@@ -18,7 +19,7 @@ class VGSCollect(id:String, environment: Environment) {
 
     private val storage = DefaultStorage()
     private val client = ApiClient()
-    private val tasks = mutableListOf<AsyncTask<Map<String, String>, Void, SimpleResponse>>()
+    private val tasks = mutableListOf<AsyncTask<String?, Void, SimpleResponse>>()
 
     var onResponceListener:VgsCollectResponseListener? = null
 
@@ -51,16 +52,18 @@ class VGSCollect(id:String, environment: Environment) {
                     == PackageManager.PERMISSION_DENIED -> Log.e("VGSCollect", "Permission denied (missing INTERNET permission?)")
             !isURLValid -> Log.e("VGSCollect", "URL is not valid")
             else -> {
-                val data = storage.getConfigurations()
+                val states = storage.getStates()
+
                 val operation = NetworkOperation()
                 tasks.add(operation)
+                val data = states.mapToEncodedQuery()
                 operation.execute(data)
             }
         }
     }
 
-    private inner class NetworkOperation : AsyncTask<Map<String, String>, Void, SimpleResponse>() {
-        override fun doInBackground(vararg arg: Map<String, String>?): SimpleResponse? {
+    private inner class NetworkOperation : AsyncTask<String?, Void, SimpleResponse>() {
+        override fun doInBackground(vararg arg: String?): SimpleResponse? {
 //            if(arg.isNotEmpty()) {
 //                val response = arg[0]?.run {
 //                    client.callPost(baseURL, this)
@@ -69,6 +72,7 @@ class VGSCollect(id:String, environment: Environment) {
 //                    return response
 //                }
 //            }
+            Log.e("test ", arg[0])
             return null
         }
 

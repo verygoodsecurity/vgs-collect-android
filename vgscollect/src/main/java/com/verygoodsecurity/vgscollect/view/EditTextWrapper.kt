@@ -5,8 +5,10 @@ import android.text.InputFilter
 import android.text.InputType
 import android.text.TextWatcher
 import androidx.core.view.ViewCompat
+import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
+import com.verygoodsecurity.vgscollect.core.model.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.text.validation.card.CardNumberTextWatcher
 import com.verygoodsecurity.vgscollect.view.text.validation.card.ExpirationDateeTextwatcher
 
@@ -21,6 +23,10 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     init {
         onFocusChangeListener = OnFocusChangeListener { v, f ->
             state.isFocusable = f
+            stateListener?.emit(id, state)
+        }
+        addTextChangedListener {
+            state.content = it.toString()
             stateListener?.emit(id, state)
         }
         id = ViewCompat.generateViewId()
