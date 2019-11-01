@@ -4,14 +4,27 @@ import android.content.Context
 import android.text.InputFilter
 import android.text.InputType
 import android.text.TextWatcher
+import androidx.core.view.ViewCompat
 import com.google.android.material.textfield.TextInputEditText
+import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.view.text.validation.card.CardNumberTextWatcher
 import com.verygoodsecurity.vgscollect.view.text.validation.card.ExpirationDateeTextwatcher
 
 internal class EditTextWrapper(context: Context): TextInputEditText(context) {
-    private var activeTextWatcher: TextWatcher? = null
 
     private var vgsInputType: VGSTextInputType = VGSTextInputType.InfoField
+    private val state = VGSFieldState()
+
+    private var activeTextWatcher: TextWatcher? = null
+    private var stateListener: OnVgsViewStateChangeListener? = null
+
+    init {
+        onFocusChangeListener = OnFocusChangeListener { v, f ->
+            state.isFocusable = f
+            stateListener?.emit(id, state)
+        }
+        id = ViewCompat.generateViewId()
+    }
 
     fun setInputFormatType(inputType: VGSTextInputType) {
         vgsInputType = inputType
@@ -60,9 +73,28 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         }
     }
 
+    override fun setTag(tag: Any?) {
+        tag?.run {
+            super.setTag(tag)
+            state.alias = this as String
+        }
+    }
+
     private fun applyNewTextWatcher(cardNumberTextWatcher: TextWatcher?) {
         activeTextWatcher?.let { removeTextChangedListener(activeTextWatcher) }
         cardNumberTextWatcher?.let { addTextChangedListener(cardNumberTextWatcher) }
         activeTextWatcher = cardNumberTextWatcher
+    }
+
+    internal fun setVGSPlaceHolderText(text:String?) {
+        hint = text
+        state.placeholder = text
+        stateListener?.emit(id, state)
+    }
+
+    internal fun addDataViewStateChangeListener(listener: OnVgsViewStateChangeListener) {
+        stateListener = listener
+
+        stateListener!!.emit(id, state)
     }
 }

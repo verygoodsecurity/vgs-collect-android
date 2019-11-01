@@ -23,6 +23,7 @@ class VGSEditText @JvmOverloads constructor(
 
     init {
         inputField = inflateInputField(context)
+        inputField.isFocusable = false //todo REMOVE THIS LINE
 
         context.theme.obtainStyledAttributes(
             attrs,
@@ -38,8 +39,8 @@ class VGSEditText @JvmOverloads constructor(
                     3 -> VGSTextInputType.CardOwnerName
                     else -> VGSTextInputType.InfoField
                 }
-                inputField.isFocusable = false
                 inputField.setInputFormatType(inputType)
+                inputField.tag = getString(R.styleable.VGSEditText_aliasName)
                 val hint = getString(R.styleable.VGSEditText_hint)
                 val textSize:Float = getDimension(R.styleable.VGSEditText_textSize, 0f)
                 val textColor = getColor(R.styleable.VGSEditText_textColor, 0)
@@ -66,7 +67,7 @@ class VGSEditText @JvmOverloads constructor(
                 }
 
                 inputField.apply {
-                    setHint(hint)
+                    setVGSPlaceHolderText(hint)
                     setTextColor(textColor)
                     setTextSize(textSize)
                     setText(text)
@@ -79,7 +80,7 @@ class VGSEditText @JvmOverloads constructor(
                     setSingleLine(singleLine)
 
                     inputField.setTypeface(typeface, textStyle)
-                    setTypeface(typeFace)
+                    typeface = typeFace
                 }
 
             } finally {
@@ -87,6 +88,10 @@ class VGSEditText @JvmOverloads constructor(
             }
         }
 
+    }
+
+    fun setAliasName(alias:String) {
+        inputField.tag = alias
     }
 
     override fun onAttachedToWindow() {
