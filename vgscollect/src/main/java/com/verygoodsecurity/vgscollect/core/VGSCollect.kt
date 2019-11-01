@@ -64,14 +64,14 @@ class VGSCollect(id:String, environment: Environment) {
 
     private inner class NetworkOperation : AsyncTask<Map<String, String>, Void, SimpleResponse>() {
         override fun doInBackground(vararg arg: Map<String, String>?): SimpleResponse? {
-            if(arg.isNotEmpty()) {
-                val response = arg[0]?.run {
-                    client.callPost(baseURL, this)
-                }
-                if(response != null) {
-                    return response
-                }
-            }
+//            if(arg.isNotEmpty()) {
+//                val response = arg[0]?.run {
+//                    client.callPost(baseURL, this)
+//                }
+//                if(response != null) {
+//                    return response
+//                }
+//            }
             return null
         }
 
