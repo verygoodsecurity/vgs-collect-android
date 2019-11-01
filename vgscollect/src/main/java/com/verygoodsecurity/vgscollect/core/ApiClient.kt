@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.core
 
 import android.net.Uri
-import com.verygoodsecurity.vgscollect.core.data.SimpleResponse
+import com.verygoodsecurity.vgscollect.core.model.SimpleResponse
 import java.net.HttpURLConnection.HTTP_OK
 import java.io.*
 import java.net.HttpURLConnection
@@ -11,9 +11,19 @@ import java.nio.charset.Charset
 internal class ApiClient {
     companion object {
         private const val CHARSET = "ISO-8859-1"
+        private const val POST = "POST"
+
+        private const val CONTENT_LENGHT = "Content-Length"
+        private const val CONTENT_TYPE = "Content-type"
+        private const val APPLICATION_JSON = "application/json"
+
+        private const val AGENT = "vgs-client"
+        private const val TEMPORARY_STR_AGENT = "source=androidSDK&medium=vgs-collect&content=1.0"
+
+
     }
 
-    fun callPost(urlTo: String, params: Map<String, String>): SimpleResponse {
+    fun callPost(urlTo: String, content: String?): SimpleResponse {
         //    System.setProperty("http.keepAlive", "false");
 
         var conn: HttpURLConnection? = null
@@ -26,15 +36,14 @@ internal class ApiClient {
 //            conn.connectTimeout = CONNECTION_TIME_OUT
 //            conn.readTimeout = CONNECTION_TIME_OUT
             conn.instanceFollowRedirects = false
-            conn.requestMethod = "POST"
+            conn.requestMethod = POST
             // ... and get rid of this
             //        conn.setRequestProperty("Connection", "close");
-            conn.setRequestProperty("Content-type", "application/json")
-            conn.setRequestProperty("vgs-client", "source=androidSDK&medium=vgs-collect&content=1.0")
+            conn.setRequestProperty(CONTENT_TYPE, APPLICATION_JSON)
+            conn.setRequestProperty(AGENT, TEMPORARY_STR_AGENT)
 
-            val content = encodedQuery(params)
             val length = content?.byteInputStream(Charset.forName(CHARSET))
-            conn.setRequestProperty("Content-Length", length.toString())
+            conn.setRequestProperty(CONTENT_LENGHT, length.toString())
             conn.doOutput = true
 
             val os = conn.outputStream
@@ -51,7 +60,8 @@ internal class ApiClient {
 
             }
 
-            response = SimpleResponse(responseStr, responseCode)
+            response =
+                SimpleResponse(responseStr, responseCode)
 
 //        } catch (e: Exception) {
 //            e.printStackTrace()
@@ -60,13 +70,5 @@ internal class ApiClient {
         conn.disconnect()
 
         return response
-    }
-
-    private fun encodedQuery(params: Map<String, String>): String? {
-        val builder = Uri.Builder()
-        for (entry in params.entries) {
-            builder.appendQueryParameter(entry.key, entry.value)
-        }
-        return builder.build().encodedQuery
     }
 }
