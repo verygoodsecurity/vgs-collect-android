@@ -48,6 +48,7 @@
 
         <attr name="cursorVisible" format="boolean" />
         <attr name="singleLine" format="boolean" />
+        <attr name="isRequired" format="boolean" />
 
         <attr name="gravity" />
         <attr name="scrollHorizontally" format="boolean" />
