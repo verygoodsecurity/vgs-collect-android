@@ -18,42 +18,80 @@
         android:visibility="invisible"/>
 
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
-        android:id="@+id/cardCVVFieldLay"
+        android:id="@+id/cardNumberFieldLay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
-        app:hint="test Field">
+        app:hint="Credit card number">
         <com.verygoodsecurity.vgscollect.widget.VGSEditText
             android:id="@+id/cardNumberField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:aliasName="cardNumber"
-            app:textColor="#33ffaa"
-            app:textStyle="italic|bold"
+            app:textColor="#777777"
             app:singleLine="true"
-            app:gravity="top|right"
-            app:fontFamily="font/barethos2"
-            app:textSize="9dp"
-            app:inputType="info"
-            app:text="some verysome verysome verysome verysome verysome verysome verysome verysome very"/>
+            app:textSize="11dp"
+            app:inputType="cardNumber"
+            app:text="123"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
 
-    <com.verygoodsecurity.vgscollect.widget.VGSEditText
-        android:id="@+id/cardCVVField"
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
+        android:id="@+id/cardCVVFieldLay"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        app:aliasName="cvv"
-        app:textColor="#33ffaa"
-        app:cursorVisible="false"
-        app:fontFamily="@font/barethos2"
-        app:maxLines="1"
-        app:ellipsize="start"
-        app:gravity="center_horizontal|top"
-        app:textStyle="italic|bold"
-        app:textSize="12dp"
-        app:inputType="info"
-        app:text="some vsome verysome verysome verysome verysome verysome verysome veryery"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        app:hint="@string/cvv">
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:id="@+id/cardCVVField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:aliasName="cvvNum"
+            app:textColor="#33ffaa"
+            app:singleLine="true"
+            app:textSize="9dp"
+            app:inputType="cardCVVNumber"
+            app:text=""/>
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
+        android:id="@+id/cardHolderFieldLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        app:hint="@string/card_holder">
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:id="@+id/cardHolderField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:aliasName="holder"
+            app:textColor="@color/black"
+            app:singleLine="true"
+            app:isRequired="true"
+            app:textSize="9dp"
+            app:inputType="cardOwner"
+            app:text=""/>
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
+        android:id="@+id/cardExpDateFieldLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        app:hint="@string/exp_date">
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:id="@+id/cardExpDateField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:aliasName="expDate"
+            app:textColor="@color/black"
+            app:textSize="9dp"
+            app:singleLine="true"
+            app:gravity="right"
+            app:inputType="cardDate"
+            app:text=""/>
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
 
     <Button
         android:id="@+id/sendBtn"

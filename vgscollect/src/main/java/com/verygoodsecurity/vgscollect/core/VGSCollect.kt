@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscollect.core.storage.DefaultStorage
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import java.lang.StringBuilder
 
-class VGSCollect(id:String, environment: Environment) {
+class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
 
     private val baseURL:String
     private val isURLValid:Boolean
@@ -34,8 +34,8 @@ class VGSCollect(id:String, environment: Environment) {
     }
 
     fun bindView(view: VGSEditText?) {
-        val observer = storage.performSubscription()
-        view?.inputField?.addDataViewStateChangeListener(observer)
+        val listener = storage.performSubscription()
+        view?.inputField?.addDataViewStateChangeListener(listener)
     }
 
     fun onDestroy() {
@@ -51,6 +51,7 @@ class VGSCollect(id:String, environment: Environment) {
             ContextCompat.checkSelfPermission(mainActivity,android.Manifest.permission.INTERNET)
                     == PackageManager.PERMISSION_DENIED -> Log.e("VGSCollect", "Permission denied (missing INTERNET permission?)")
             !isURLValid -> Log.e("VGSCollect", "URL is not valid")
+
             else -> {
                 val states = storage.getStates()
 
@@ -64,15 +65,14 @@ class VGSCollect(id:String, environment: Environment) {
 
     private inner class NetworkOperation : AsyncTask<String?, Void, SimpleResponse>() {
         override fun doInBackground(vararg arg: String?): SimpleResponse? {
-//            if(arg.isNotEmpty()) {
-//                val response = arg[0]?.run {
-//                    client.callPost(baseURL, this)
-//                }
-//                if(response != null) {
-//                    return response
-//                }
-//            }
-            Log.e("test ", arg[0])
+            if(arg.isNotEmpty()) {
+                val response = arg[0]?.run {
+                    client.callPost(baseURL, this)
+                }
+                if(response != null) {
+                    return response
+                }
+            }
             return null
         }
 

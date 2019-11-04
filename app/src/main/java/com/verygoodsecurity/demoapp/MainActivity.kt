@@ -29,15 +29,45 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
             vgsForm.submit(this@MainActivity)
         }
 
-        vgsForm.onResponceListener = this
+        vgsForm.onResponceListener = object : VgsCollectResponseListener {
+            override fun onResponse(response: SimpleResponse?) {
+                progressBar?.visibility = View.INVISIBLE
+                response?.let {
+                    responseView.text = "CODE: ${response.code} \n\n ${response.responce}"
+                    Log.d("------->", "${response.code} \n ${response.responce}")
+                }
+            }
+        }
+//        cardNumberFieldLay.editText.add
         vgsForm.bindView(cardNumberField)
         vgsForm.bindView(cardCVVField)
-        setTruncateAt(cardCVVField)
+        vgsForm.bindView(cardHolderField)
+        vgsForm.bindView(cardExpDateField)
+
+        setFonts(cardNumberField)
     }
     override fun onDestroy() {
         vgsForm.onDestroy()
         super.onDestroy()
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     override fun onResponse(response: SimpleResponse?) {
         progressBar?.visibility = View.INVISIBLE
         response?.let {
@@ -46,8 +76,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
             Log.d("------->", "${response.code} \n ${response.responce}")
         }
     }
-
-
 
     private fun setTruncateAt(textView:VGSEditText) {
         textView.setEllipsize(TextUtils.TruncateAt.START)
@@ -70,10 +98,10 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
     private fun setFonts(textView:VGSEditText) {
         textView.setTypeface(Typeface.DEFAULT_BOLD)
 
-        val mtypeFace = Typeface.createFromAsset(assets, "barethos1.ttf")
-        textView.setTypeface(mtypeFace)
-
-        val typeface = ResourcesCompat.getFont(this, R.font.barethos2)!!
-        textView.setTypeface(typeface)
+//        val mtypeFace = Typeface.createFromAsset(assets, "barethos1.ttf")
+//        textView.setTypeface(mtypeFace)
+//
+//        val typeface = ResourcesCompat.getFont(this, R.font.barethos2)!!
+//        textView.setTypeface(typeface)
     }
 }

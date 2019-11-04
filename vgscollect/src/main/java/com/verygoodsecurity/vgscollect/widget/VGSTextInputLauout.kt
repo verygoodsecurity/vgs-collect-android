@@ -83,16 +83,11 @@ class VGSTextInputLauout @JvmOverloads constructor(
         }
     }
 
-
-
-
+    fun setError(errorText:CharSequence?) {
+        textInputLauout.error = errorText
+    }
 
     fun setHint(text:String) {
         textInputLauout.hint = text
     }
-
-//    override fun onAttachedToWindow() {
-//        super.onAttachedToWindow()
-//        addView(textInputLauout)
-//    }
 }
