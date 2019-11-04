@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Build
+import android.os.Parcel
+import android.os.Parcelable
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.View
@@ -23,7 +25,6 @@ class VGSEditText @JvmOverloads constructor(
 
     init {
         inputField = inflateInputField(context)
-        inputField.isFocusable = false //todo REMOVE THIS LINE
 
         context.theme.obtainStyledAttributes(
             attrs,
@@ -47,6 +48,7 @@ class VGSEditText @JvmOverloads constructor(
                 val text = getString(R.styleable.VGSEditText_text)
                 val textStyle = getInt(R.styleable.VGSEditText_textStyle, -1)
                 val cursorVisible = getBoolean(R.styleable.VGSEditText_cursorVisible, true)
+                val isRequired = getBoolean(R.styleable.VGSEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.VGSEditText_singleLine, true)
                 val scrollHorizontally = getBoolean(R.styleable.VGSEditText_scrollHorizontally, true)
                 val gravity = getInt(R.styleable.VGSEditText_gravity, 0)
@@ -67,6 +69,8 @@ class VGSEditText @JvmOverloads constructor(
                 }
 
                 inputField.apply {
+//                    this.tag = tag
+//                    setInputFormatType(inputType)
                     setVGSPlaceHolderText(hint)
                     setTextColor(textColor)
                     setTextSize(textSize)
@@ -78,6 +82,7 @@ class VGSEditText @JvmOverloads constructor(
                     setMaxLines(maxLines)
                     setMinLines(minLines)
                     setSingleLine(singleLine)
+                    this.isRequired = isRequired
 
                     inputField.setTypeface(typeface, textStyle)
                     typeface = typeFace
@@ -219,5 +224,54 @@ class VGSEditText @JvmOverloads constructor(
 
     fun setTextColor(color:Int) {
         inputField.setTextColor(color)
+    }
+
+    fun setIsRequared(state:Boolean) {
+        inputField.isRequired = state
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        val savedState = SavedState(super.onSaveInstanceState())
+        savedState.uniqId = inputField.id
+        return savedState
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        if (state is SavedState) {
+            super.onRestoreInstanceState(state.superState)
+            if(state.uniqId > 0) {
+                inputField.id = state.uniqId
+            }
+        } else {
+            super.onRestoreInstanceState(state)
+        }
+    }
+
+    internal class SavedState : BaseSavedState {
+        var uniqId: Int = -1
+
+        companion object {
+            @JvmField
+            val CREATOR = object : Parcelable.Creator<SavedState> {
+                override fun createFromParcel(source: Parcel): SavedState {
+                    return SavedState(source)
+                }
+
+                override fun newArray(size: Int): Array<SavedState?> {
+                    return arrayOfNulls(size)
+                }
+            }
+        }
+
+        constructor(superState: Parcelable) : super(superState)
+
+        constructor(`in`: Parcel) : super(`in`) {
+            uniqId = `in`.readInt()
+        }
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            out.writeInt(uniqId)
+        }
     }
 }

@@ -40,9 +40,6 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
             when(this) {
                 is EditTextWrapper -> this
                 is VGSEditText -> {
-//                    val editText = EditTextWrapper(context)
-//                    (this as? VGSEditText)?.inputField = editText
-//                    editText
                     (this as? VGSEditText)?.inputField
                 }
                 is FrameLayout -> this
