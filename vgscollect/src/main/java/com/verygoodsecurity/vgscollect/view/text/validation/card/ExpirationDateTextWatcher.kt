@@ -2,12 +2,17 @@ package com.verygoodsecurity.vgscollect.view.text.validation.card
 
 import android.text.Editable
 import android.text.TextWatcher
+import java.util.regex.Pattern
 
-object ExpirationDateeTextwatcher: TextWatcher {
-    private const val TOTAL_SYMBOLS = 5 // size of pattern 0000-0000-0000-0000
-    private const val TOTAL_DIGITS = 4 // max numbers of digits in pattern: 0000 x 4
-    private const val DIVIDER_MODULO = 3 // means divider position is every 5th symbol beginning with 1
-    private const val DIVIDER_POSITION = DIVIDER_MODULO - 1 // means divider position is every 4th symbol beginning with 0
+object ExpirationDateTextWatcher: TextWatcher {
+    private const val MOUNTS_PATTERN = "^([10]|0[1-9]|1[012])\$"
+
+    private val patternMounts = Pattern.compile(MOUNTS_PATTERN)
+
+    private const val TOTAL_SYMBOLS = 7
+    private const val TOTAL_DIGITS = 6
+    private const val DIVIDER_MODULO = 3
+    private const val DIVIDER_POSITION = DIVIDER_MODULO - 1
     private const val DIVIDER = '/'
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -22,16 +27,19 @@ object ExpirationDateeTextwatcher: TextWatcher {
     private fun isInputCorrect(s: Editable, totalSymbols:Int, dividerModulo:Int, divider:Char):Boolean {
         var isCorrect = s.length <= totalSymbols // check size of entered string
         for (i in s.indices) { // check that every element is right
-            isCorrect = if (i > 0 && (i + 1) % dividerModulo == 0) {
+            isCorrect = if (i > 0 && (i + 1) % dividerModulo == 0 && i <= DIVIDER_MODULO) {
                 isCorrect and (divider == s[i])
             } else if (i == 0) {
-                isCorrect and Character.isDigit(s[i])
-            } else if (i == 1) {
-                isCorrect and Character.isDigit(s[i]) and (i in 1..2)
+                isCorrect and Character.isDigit(s[i]) and (s[i].toInt() == 48 || s[i].toInt() == 49)
             } else {
                 isCorrect and Character.isDigit(s[i])
             }
         }
+
+        if(s.length == 2) {
+            isCorrect = isCorrect && patternMounts.matcher(s).matches()
+        }
+
         return isCorrect
     }
 
@@ -40,13 +48,23 @@ object ExpirationDateeTextwatcher: TextWatcher {
 
         for (i in digits.indices) {
             if (digits[i].toInt() != 0) {
+                if(i == 0 && digits[i].toInt() !in 48..49) {
+                    formatted.append("0")
+                }
                 formatted.append(digits[i])
-                if (i > 0 && i < digits.size - 1 && (i + 1) % dividerPosition == 0) {
+                if (i in 1 until DIVIDER_MODULO && (i + 1) % dividerPosition == 0) {
                     formatted.append(divider)
                 }
             }
         }
 
+        if(formatted.length <= 3) {
+            val s = formatted.split(divider)
+            val iss = patternMounts.matcher(s[0]).matches()
+            if (!iss) {
+                return digits.first().toString()
+            }
+        }
         return formatted.toString()
     }
 
@@ -64,6 +82,4 @@ object ExpirationDateeTextwatcher: TextWatcher {
         }
         return digits
     }
-
-
 }
