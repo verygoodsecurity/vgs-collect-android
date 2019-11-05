@@ -29,11 +29,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:aliasName="cardNumber"
-            app:textColor="#777777"
+            app:textColor="#ff7777"
             app:singleLine="true"
-            app:textSize="11dp"
+            app:textSize="14dp"
             app:inputType="cardNumber"
-            app:text="123"/>
+            app:text="1231123123123111"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
 
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
@@ -50,9 +50,8 @@
             app:aliasName="cvvNum"
             app:textColor="#33ffaa"
             app:singleLine="true"
-            app:textSize="9dp"
-            app:inputType="cardCVVNumber"
-            app:text=""/>
+            app:textSize="14dp"
+            app:inputType="cardCVVNumber"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
         android:id="@+id/cardHolderFieldLay"
@@ -69,9 +68,9 @@
             app:textColor="@color/black"
             app:singleLine="true"
             app:isRequired="true"
-            app:textSize="9dp"
+            app:textSize="14dp"
             app:inputType="cardOwner"
-            app:text=""/>
+            app:text="ads ddd"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
         android:id="@+id/cardExpDateFieldLay"
@@ -86,11 +85,11 @@
             android:layout_height="match_parent"
             app:aliasName="expDate"
             app:textColor="@color/black"
-            app:textSize="9dp"
+            app:textSize="14dp"
             app:singleLine="true"
             app:gravity="right"
             app:inputType="cardDate"
-            app:text=""/>
+            app:text="1122"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
 
     <Button

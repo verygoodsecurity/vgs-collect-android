@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="textSize" format="dimension"/>
-    <attr name="fontFamily" format="string"  />
     <attr name="hint" format="string"/>
     <attr name="textColor" format="color"/>
 
@@ -56,8 +55,6 @@
 <!--        <attr name="password" format="boolean" />-->
 
         <attr name="hint" />
-
-        <attr name="fontFamily" />
 
         <attr name="inputType" format="enum">
             <enum name="cardNumber" value="0"/>

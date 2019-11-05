@@ -27,7 +27,7 @@
       public void set*(...);
 }
 
--keep public class com.verygoodsecurity.vgscollect.view.VGSTextInputType
+-keep public class com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
 
 -keep public class com.verygoodsecurity.vgscollect.core.VGSCollect
 -keep public class com.verygoodsecurity.vgscollect.core.Environment
