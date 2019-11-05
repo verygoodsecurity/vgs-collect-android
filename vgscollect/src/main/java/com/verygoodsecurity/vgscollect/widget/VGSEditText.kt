@@ -8,14 +8,14 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.content.res.ResourcesCompat
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.EditTextWrapper
-import com.verygoodsecurity.vgscollect.view.VGSTextInputType
+import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
 
 class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -38,12 +38,11 @@ class VGSEditText @JvmOverloads constructor(
                     1 -> VGSTextInputType.CVVCardCode
                     2 -> VGSTextInputType.CardExpDate
                     3 -> VGSTextInputType.CardOwnerName
-                    else -> VGSTextInputType.InfoField
+                    else -> VGSTextInputType.CardOwnerName
                 }
-                inputField.setInputFormatType(inputType)
-                inputField.tag = getString(R.styleable.VGSEditText_aliasName)
+                val tag = getString(R.styleable.VGSEditText_aliasName)
                 val hint = getString(R.styleable.VGSEditText_hint)
-                val textSize:Float = getDimension(R.styleable.VGSEditText_textSize, 0f)
+                val textSize = getDimension(R.styleable.VGSEditText_textSize, 0f)
                 val textColor = getColor(R.styleable.VGSEditText_textColor, 0)
                 val text = getString(R.styleable.VGSEditText_text)
                 val textStyle = getInt(R.styleable.VGSEditText_textStyle, -1)
@@ -62,18 +61,12 @@ class VGSEditText @JvmOverloads constructor(
                 val minLines = getInt(R.styleable.VGSEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.VGSEditText_maxLines, 0)
 
-                val fontFamily = getResourceId(R.styleable.VGSEditText_fontFamily, 0)
-                val typeFace = if(fontFamily > 0) { ResourcesCompat.getFont(context, fontFamily)
-                } else {
-                    null
-                }
-
                 inputField.apply {
-//                    this.tag = tag
-//                    setInputFormatType(inputType)
+                    this.tag = tag
+                    setInputFormatType(inputType)
                     setVGSPlaceHolderText(hint)
                     setTextColor(textColor)
-                    setTextSize(textSize)
+                    setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                     setText(text)
                     isCursorVisible = cursorVisible
                     setGravity(gravity)
@@ -85,7 +78,6 @@ class VGSEditText @JvmOverloads constructor(
                     this.isRequired = isRequired
 
                     inputField.setTypeface(typeface, textStyle)
-                    typeface = typeFace
                 }
 
             } finally {
@@ -196,8 +188,6 @@ class VGSEditText @JvmOverloads constructor(
         inputField.setTypeface(tf, style)
     }
 
-    fun getText() = inputField.text
-
     fun setText( resId:Int) {
         inputField.setText(resId)
     }
@@ -232,23 +222,21 @@ class VGSEditText @JvmOverloads constructor(
 
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())
-        savedState.uniqId = inputField.id
+        savedState.text = inputField.text.toString()
         return savedState
     }
 
     override fun onRestoreInstanceState(state: Parcelable?) {
         if (state is SavedState) {
+            setText(state.text)
             super.onRestoreInstanceState(state.superState)
-            if(state.uniqId > 0) {
-                inputField.id = state.uniqId
-            }
         } else {
             super.onRestoreInstanceState(state)
         }
     }
 
     internal class SavedState : BaseSavedState {
-        var uniqId: Int = -1
+        var text: CharSequence = ""
 
         companion object {
             @JvmField
@@ -266,12 +254,12 @@ class VGSEditText @JvmOverloads constructor(
         constructor(superState: Parcelable) : super(superState)
 
         constructor(`in`: Parcel) : super(`in`) {
-            uniqId = `in`.readInt()
+            text = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(`in`)
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
-            out.writeInt(uniqId)
+            TextUtils.writeToParcel(text, out, flags)
         }
     }
 }

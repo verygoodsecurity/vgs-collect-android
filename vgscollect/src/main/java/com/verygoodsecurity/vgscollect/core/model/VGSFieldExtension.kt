@@ -1,11 +1,11 @@
 package com.verygoodsecurity.vgscollect.core.model
 
-import android.net.Uri
+import org.json.JSONObject
 
 fun MutableCollection<VGSFieldState>.mapToEncodedQuery(): String? {
-    val builder = Uri.Builder()
+    val jObjectData = JSONObject()
     for (entry in this) {
-        builder.appendQueryParameter(entry.alias, entry.content)
+        jObjectData.put(entry.alias, entry.content)
     }
-    return builder.build().encodedQuery
+    return jObjectData.toString()
 }
