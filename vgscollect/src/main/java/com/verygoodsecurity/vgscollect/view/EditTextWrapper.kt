@@ -34,11 +34,13 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         }
 
     private val inputStateRunnable = Runnable {
+        vgsInputType.validate(state.content)
+        state.type = vgsInputType
         stateListener?.emit(id, state)
     }
 
     init {
-        onFocusChangeListener = OnFocusChangeListener { v, f ->
+        onFocusChangeListener = OnFocusChangeListener { _, f ->
             state.isFocusable = f
             stateListener?.emit(id, state)
         }
@@ -102,9 +104,9 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         activeTextWatcher = textWatcher
     }
 
-    internal fun setVGSPlaceHolderText(text:String?) {
-        hint = text
-        state.placeholder = text
-        stateListener?.emit(id, state)
-    }
+//    internal fun setVGSPlaceHolderText(text:String?) {
+//        hint = text
+//        state.placeholder = text
+//        stateListener?.emit(id, state)
+//    }
 }
