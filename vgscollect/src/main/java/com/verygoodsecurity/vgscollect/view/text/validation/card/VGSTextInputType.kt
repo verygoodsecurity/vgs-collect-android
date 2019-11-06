@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.text.validation.card
 
+import java.util.regex.Pattern
+
 sealed class VGSTextInputType {
 
     val name:String
@@ -18,16 +20,39 @@ sealed class VGSTextInputType {
             is CardExpDate -> 7
         }
 
-    val validation:String
-        get() = when(this) {
-            is CardNumber -> "^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}\$"
-            is CardOwnerName -> "^[\\p{L}\\s'.-]+\$"
-            is CVVCardCode -> "^[0-9]{3,4}\$"
-            is CardExpDate -> "^([01]|0[1-9]|1[012])[\\/]((19|20)\\d\\d|(2)\\d|(19))\$"
-        }
+    open fun validate(str:String?):Boolean {
+        val p = Pattern.compile(validation)
+        return p.matcher(str).matches()
+    }
 
-    object CardNumber : VGSTextInputType()
-    object CVVCardCode : VGSTextInputType()
-    object CardExpDate: VGSTextInputType()
-    object CardOwnerName: VGSTextInputType()
+    protected abstract var validation:String
+
+    class CardNumber : VGSTextInputType() {
+        var card:CreditCardType = CreditCardType.Unknown
+        override var validation: String
+            get() = card.validationPatterrn
+            set(_) {}
+
+        override fun validate(str: String?): Boolean {
+            card = getTypeCredit(str)
+            validation = card.validationPatterrn
+            return card.isValid(str)
+        }
+    }
+
+    object CVVCardCode : VGSTextInputType() {
+        override var validation: String
+            get() = "^[0-9]{3,4}\$"
+            set(_) {}
+    }
+    object CardExpDate: VGSTextInputType() {
+        override var validation: String
+            get() = "^([01]|0[1-9]|1[012])[\\/]((19|20)\\d\\d|(2)\\d|(19))\$"
+            set(_) {}
+    }
+    object CardOwnerName: VGSTextInputType() {
+        override var validation: String
+            get() = "^[\\p{L}\\s'.-]+\$"
+            set(_) {}
+    }
 }
