@@ -33,7 +33,7 @@
             app:singleLine="true"
             app:textSize="14dp"
             app:inputType="cardNumber"
-            app:text="1231123123123111"/>
+            app:text="4111111111111111"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
 
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
@@ -51,6 +51,7 @@
             app:textColor="#33ffaa"
             app:singleLine="true"
             app:textSize="14dp"
+            app:text="123"
             app:inputType="cardCVVNumber"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout

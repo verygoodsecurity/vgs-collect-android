@@ -8,8 +8,6 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import androidx.core.content.res.ResourcesCompat
-import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.SimpleResponse
@@ -18,7 +16,6 @@ import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.StringBuilder
-
 
 class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
 
@@ -49,12 +46,13 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
                 val builder = StringBuilder()
                 states.forEach {
                     builder.append(it.alias).append("\n")
-                        .append("isValid: ").append(it.isValid).append("\n")
-                        .append("isEmpty: ").append(it.isEmpty).append("\n")
-                        .append("isRequired: ").append(it.isRequired).append("\n")
+                        .append("   isValid: ").append(it.isValid).append("\n")
+                        .append("   isEmpty: ").append(it.isEmpty).append("\n")
+                        .append("   isRequired: ").append(it.isRequired).append("\n")
                     if(it is FieldState.CardNumberState) {
-                        builder.append("last4: ").append(it.last4).append("\n")
-                            .append("bin: ").append(it.bin).append("\n")
+                        builder.append("    type: ").append(it.cardType).append("\n")
+                            .append("       last4: ").append(it.last4).append("\n")
+                            .append("       bin: ").append(it.bin).append("\n")
                     }
 
                     builder.append("\n")
@@ -62,7 +60,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
                 responseView?.text = builder.toString()
             }
         }
-//        cardNumberFieldLay.editText.add
+
         vgsForm.bindView(cardNumberField)
         vgsForm.bindView(cardCVVField)
         vgsForm.bindView(cardHolderField)

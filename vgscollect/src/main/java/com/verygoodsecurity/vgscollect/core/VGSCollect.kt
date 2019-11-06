@@ -7,7 +7,6 @@ import android.util.Log
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.core.model.SimpleResponse
-import com.verygoodsecurity.vgscollect.core.model.isValid
 import com.verygoodsecurity.vgscollect.core.model.mapToEncodedQuery
 import com.verygoodsecurity.vgscollect.core.storage.DefaultStorage
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
@@ -53,6 +52,9 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     }
 
     fun onDestroy() {
+        storage.onFieldStateChangeListener = null
+        onFieldStateChangeListener = null
+        onResponceListener = null
         tasks.forEach {
             it.cancel(true)
         }
@@ -75,7 +77,7 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         var isValid = true
         storage.getStates().forEach {
             if(!it.isValid()) {
-                val r = SimpleResponse("is not a valid ${it.placeholder}", -1)
+                val r = SimpleResponse("is not a valid ${it.alias}", -1)
                 onResponceListener?.onResponse(r)
                 isValid = false
                 return@forEach
@@ -94,7 +96,6 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         operation.execute(data)
     }
 
-    @SuppressLint("StaticFieldLeak")
     private inner class NetworkOperation(listener: VgsCollectResponseListener?) : AsyncTask<String?, Void, SimpleResponse>() {
 
         var onResponceListener: WeakReference<VgsCollectResponseListener>? = WeakReference<VgsCollectResponseListener>(listener)

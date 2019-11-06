@@ -34,7 +34,7 @@ class VGSEditText @JvmOverloads constructor(
 
             try {
                 val inputType =  when(getInteger(R.styleable.VGSEditText_inputType, -1)) {
-                    0 -> VGSTextInputType.CardNumber
+                    0 -> VGSTextInputType.CardNumber()
                     1 -> VGSTextInputType.CVVCardCode
                     2 -> VGSTextInputType.CardExpDate
                     3 -> VGSTextInputType.CardOwnerName
@@ -64,7 +64,7 @@ class VGSEditText @JvmOverloads constructor(
                 inputField.apply {
                     this.tag = tag
                     setInputFormatType(inputType)
-                    setVGSPlaceHolderText(hint)
+                    setHint(hint)
                     setTextColor(textColor)
                     setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                     setText(text)
@@ -146,6 +146,10 @@ class VGSEditText @JvmOverloads constructor(
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
         inputField.isEnabled = enabled
+    }
+
+    fun setHint(text:String?) {
+        inputField.hint = text
     }
 
     fun setHintTextColor(colors: ColorStateList) {
