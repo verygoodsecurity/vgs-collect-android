@@ -11,14 +11,14 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.Charset
 
-internal class URLConnectionClient(val baseURL:String):ApiClient {
+internal class URLConnectionClient(private val baseURL:String):ApiClient {
 
     companion object {
         private const val CHARSET = "ISO-8859-1"
 
         private const val CONNECTION_TIME_OUT = 30000
 
-        private const val CONTENT_LENGHT = "Content-Length"
+        private const val CONTENT_LENGTH = "Content-Length"
         private const val CONTENT_TYPE = "Content-type"
         private const val APPLICATION_JSON = "application/json"
 
@@ -93,7 +93,7 @@ internal class URLConnectionClient(val baseURL:String):ApiClient {
 
             val content = data?.mapToJson()
             val length = content?.byteInputStream(Charset.forName(CHARSET))
-            conn.setRequestProperty(CONTENT_LENGHT, length.toString())
+            conn.setRequestProperty(CONTENT_LENGTH, length.toString())
             conn.doOutput = true
 
             val os = conn.outputStream

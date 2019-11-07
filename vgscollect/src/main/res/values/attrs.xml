@@ -65,7 +65,7 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="VGSTextInputLauout">
+    <declare-styleable name="VGSTextInputLayout">
         <attr name="hint" />
     </declare-styleable>
 </resources>

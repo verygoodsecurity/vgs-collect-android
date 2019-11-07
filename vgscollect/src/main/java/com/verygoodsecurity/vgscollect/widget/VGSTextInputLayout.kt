@@ -9,11 +9,11 @@ import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.TextInputLayoutWrapper
 
-class VGSTextInputLauout @JvmOverloads constructor(
+class VGSTextInputLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private val textInputLauout: TextInputLayout
+    private val textInputLayout: TextInputLayout
     var editText:VGSEditText? = null
         private set
 
@@ -21,20 +21,20 @@ class VGSTextInputLauout @JvmOverloads constructor(
         val hint:String?
         context.theme.obtainStyledAttributes(
             attrs,
-            R.styleable.VGSTextInputLauout,
+            R.styleable.VGSTextInputLayout,
             0, 0).apply {
 
             try {
-                hint = getString(R.styleable.VGSTextInputLauout_hint)
+                hint = getString(R.styleable.VGSTextInputLayout_hint)
             } finally {
                 recycle()
             }
         }
 
-        textInputLauout = TextInputLayoutWrapper(context)
-        textInputLauout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-        textInputLauout.hint = hint
-        addView(textInputLauout)
+        textInputLayout = TextInputLayoutWrapper(context)
+        textInputLayout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        textInputLayout.hint = hint
+        addView(textInputLayout)
     }
 
     override fun addView(child: View?) {
@@ -75,7 +75,7 @@ class VGSTextInputLauout @JvmOverloads constructor(
                     editText = child as VGSEditText
                     attachViewToParent(editText, childCount, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
 
-                    textInputLauout.addView(child)
+                    textInputLayout.addView(child)
                     null
                 }
                 else -> null
@@ -84,10 +84,10 @@ class VGSTextInputLauout @JvmOverloads constructor(
     }
 
     fun setError(errorText:CharSequence?) {
-        textInputLauout.error = errorText
+        textInputLayout.error = errorText
     }
 
     fun setHint(text:String) {
-        textInputLauout.hint = text
+        textInputLayout.hint = text
     }
 }

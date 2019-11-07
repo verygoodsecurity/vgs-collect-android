@@ -7,7 +7,7 @@ data class VGSFieldState(var isFocusable:Boolean = false,
                          var isRequired:Boolean = true,
                          var type: VGSTextInputType = VGSTextInputType.CardOwnerName,
                          var content:String? = null,
-                         var alias:String? = null) {  /// Field name - actualy this is key for you JSON wich contains data
+                         var alias:String? = null) {  /// Field name - actually this is key for you JSON which contains data
 
     fun isValid():Boolean {
         val str = content?.replace(" ", "")

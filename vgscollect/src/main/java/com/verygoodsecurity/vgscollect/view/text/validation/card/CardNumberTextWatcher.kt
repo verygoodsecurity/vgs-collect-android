@@ -4,7 +4,7 @@ import android.text.Editable
 import android.text.TextWatcher
 
 object CardNumberTextWatcher: TextWatcher {
-    private const val TOTAL_SYMBOLS = 19 // size of pattern 0000-0000-0000-0000
+    private const val TOTAL_SYMBOLS = 19 // size of pattern 0000 0000 0000 0000
     private const val TOTAL_DIGITS = 16 // max numbers of digits in pattern: 0000 x 4
     private const val DIVIDER_MODULO = 5 // means divider position is every 5th symbol beginning with 1
     private const val DIVIDER_POSITION = DIVIDER_MODULO - 1 // means divider position is every 4th symbol beginning with 0
@@ -15,7 +15,7 @@ object CardNumberTextWatcher: TextWatcher {
 
     override fun afterTextChanged(s: Editable) {
         if (!isInputCorrect(s, TOTAL_SYMBOLS, DIVIDER_MODULO, DIVIDER)) {
-            s.replace(0, s.length, buildCorrectString(getDigitArray(s, TOTAL_DIGITS), DIVIDER_POSITION, DIVIDER));
+            s.replace(0, s.length, buildCorrectString(getDigitArray(s, TOTAL_DIGITS), DIVIDER_POSITION, DIVIDER))
         }
     }
 
