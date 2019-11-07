@@ -94,7 +94,7 @@ class VGSEditText @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        if(parent !is VGSTextInputLauout) {
+        if(parent !is VGSTextInputLayout) {
             setAddStatesFromChildren(true)
             addView(inputField)
         }
@@ -200,7 +200,7 @@ class VGSEditText @JvmOverloads constructor(
         inputField.setText(resId, type)
     }
 
-    fun setText( text:CharSequence?) {
+    fun setText(text:CharSequence?) {
         inputField.setText(text)
     }
 
@@ -220,7 +220,7 @@ class VGSEditText @JvmOverloads constructor(
         inputField.setTextColor(color)
     }
 
-    fun setIsRequared(state:Boolean) {
+    fun setIsRequired(state:Boolean) {
         inputField.isRequired = state
     }
 

@@ -30,12 +30,12 @@ sealed class VGSTextInputType {
     class CardNumber : VGSTextInputType() {
         var card:CreditCardType = CreditCardType.Unknown
         override var validation: String
-            get() = card.validationPatterrn
+            get() = card.validationPattern
             set(_) {}
 
         override fun validate(str: String?): Boolean {
             card = getTypeCredit(str)
-            validation = card.validationPatterrn
+            validation = card.validationPattern
             return card !is CreditCardType.Unknown
         }
     }

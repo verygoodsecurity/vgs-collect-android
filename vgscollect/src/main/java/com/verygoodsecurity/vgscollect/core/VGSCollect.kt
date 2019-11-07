@@ -9,6 +9,7 @@ import com.verygoodsecurity.vgscollect.core.api.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.Payload
 import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
 import com.verygoodsecurity.vgscollect.core.model.SimpleResponse
+import com.verygoodsecurity.vgscollect.core.model.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.core.storage.DefaultStorage
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
@@ -33,7 +34,7 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         private const val SCHEME  = "https://"
     }
 
-    var onResponceListener:VgsCollectResponseListener? = null
+    var onResponseListener:VgsCollectResponseListener? = null
     var onFieldStateChangeListener: OnFieldStateChangeListener? = null
         set(value) {
             field = value
@@ -59,7 +60,7 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
 
     fun onDestroy() {
         onFieldStateChangeListener = null
-        onResponceListener = null
+        onResponseListener = null
         tasks.forEach {
             it.cancel(true)
         }
@@ -72,13 +73,29 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
                , method:HTTPMethod = HTTPMethod.POST
                , headers:Map<String,String>? = null
     ) {
+        appValidationCheck(mainActivity) { data ->
+            doInCurrentThread(path, method, headers, data)
+        }
+    }
+
+    private fun appValidationCheck(mainActivity: Activity, func: ( data: MutableCollection<VGSFieldState>) -> Unit) {
         when {
             ContextCompat.checkSelfPermission(mainActivity,android.Manifest.permission.INTERNET)
                     == PackageManager.PERMISSION_DENIED ->
                 Logger.e("VGSCollect", "Permission denied (missing INTERNET permission?)")
             !isURLValid -> Logger.e("VGSCollect", "URL is not valid")
             !isValidData() -> return
-            else -> performRequest(path, method, headers)
+            else -> func(storage.getStates())
+        }
+    }
+
+    fun asyncSubmit(mainActivity:Activity
+               , path:String
+               , method:HTTPMethod = HTTPMethod.POST
+               , headers:Map<String,String>? = null
+    ) {
+        appValidationCheck(mainActivity) { data ->
+            doAsyncRequest(path, method, headers, data)
         }
     }
 
@@ -87,7 +104,7 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         storage.getStates().forEach {
             if(!it.isValid()) {
                 val r = SimpleResponse("is not a valid ${it.alias}", -1)
-                onResponceListener?.onResponse(r)
+                onResponseListener?.onResponse(r)
                 isValid = false
                 return@forEach
             }
@@ -95,42 +112,51 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         return isValid
     }
 
-    private fun performRequest( path: String,
-                                method: HTTPMethod,
-                                headers: Map<String, String>?) {
-        val operation = NetworkOperation(client, onResponceListener)
-        tasks.add(operation)
 
-        val p = Payload(path, method, headers, storage.getStates().mapUsefulPayloads())
-        operation.execute(p)
+    private fun doInCurrentThread(
+        path: String,
+        method: HTTPMethod,
+        headers: Map<String, String>?,
+        data: MutableCollection<VGSFieldState>
+    ) {
+        client.call(path, method, headers, data.mapUsefulPayloads())
     }
 
-    private inner class NetworkOperation(client:ApiClient, listener: VgsCollectResponseListener?) : AsyncTask<Payload?, Void, SimpleResponse>() {
+    private fun doAsyncRequest(path: String,
+                               method: HTTPMethod,
+                               headers: Map<String, String>?,
+                               data: MutableCollection<VGSFieldState>
+    ) {
+        val p = Payload(path, method, headers, data.mapUsefulPayloads())
 
-        var onResponceListener: WeakReference<VgsCollectResponseListener>? = WeakReference<VgsCollectResponseListener>(listener)
-        var client: WeakReference<ApiClient>? = WeakReference(client)
+        val task = DoAsync(onResponseListener) {
+            it?.run {
+                client.call(this.path, this.method, this.headers, this.data)
+            }?:SimpleResponse()
+        }.execute(p)
 
+        tasks.add(task)
+    }
+
+    class DoAsync(listener: VgsCollectResponseListener?, val handler: (arg: Payload?) -> SimpleResponse) : AsyncTask<Payload, Void, SimpleResponse>() {
+        var onResponseListener: WeakReference<VgsCollectResponseListener>? = WeakReference<VgsCollectResponseListener>(listener)
         override fun doInBackground(vararg arg: Payload?): SimpleResponse? {
-            if(arg.isNotEmpty()) {
-                val response = arg[0]?.run {
-                    client?.get()?.call(path, method, headers, data)
-                }
-                if(response != null) {
-                    return response
-                }
+            val param = if(!arg.isNullOrEmpty()) {
+                arg[0]
+            } else {
+                null
             }
-            return null
+
+            return handler(param)
         }
 
         override fun onPostExecute(result: SimpleResponse?) {
             super.onPostExecute(result)
-            if(onResponceListener == null) {
+            if(onResponseListener == null) {
                 Logger.i("VGSCollect", "VgsCollectResponseListener not set")
             } else {
-                onResponceListener?.get()?.onResponse(result)
+                onResponseListener?.get()?.onResponse(result)
             }
-
-            tasks.remove(this@NetworkOperation)
         }
     }
 }

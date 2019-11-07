@@ -23,7 +23,7 @@
             android:visibility="invisible"/>
 
 
-        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardNumberFieldLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,9 +41,9 @@
                 app:textSize="14dp"
                 app:inputType="cardNumber"
                 app:text="4111111111111111"/>
-        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
-        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardCVVFieldLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,8 +61,8 @@
                 app:textSize="14dp"
                 app:text="123"
                 app:inputType="cardCVVNumber"/>
-        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
-        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardHolderFieldLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,8 +80,8 @@
                 app:textSize="14dp"
                 app:inputType="cardOwner"
                 app:text="Lisa Gold"/>
-        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
-        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardExpDateFieldLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                 app:isRequired="true"
                 app:inputType="cardDate"
                 app:text="1122"/>
-        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLauout>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <Button
             android:id="@+id/sendBtn"

@@ -27,14 +27,14 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
 
         sendBtn.setOnClickListener {
             progressBar?.visibility = View.VISIBLE
-            vgsForm.submit(this@MainActivity, "/post", HTTPMethod.POST)
+            vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST)
         }
 
-        vgsForm.onResponceListener = object : VgsCollectResponseListener {
+        vgsForm.onResponseListener = object : VgsCollectResponseListener {
             override fun onResponse(response: SimpleResponse?) {
                 progressBar?.visibility = View.INVISIBLE
                 response?.let {
-                    responseView.text = "CODE: ${response.code} \n\n ${response.responce}"
+                    responseView.text = "CODE: ${response.code} \n\n ${response.response}"
                 }
             }
         }
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
     override fun onResponse(response: SimpleResponse?) {
         progressBar?.visibility = View.INVISIBLE
         response?.let {
-            responseView.text = "CODE: ${response.code} \n\n ${response.responce}"
+            responseView.text = "CODE: ${response.code} \n\n ${response.response}"
         }
     }
 

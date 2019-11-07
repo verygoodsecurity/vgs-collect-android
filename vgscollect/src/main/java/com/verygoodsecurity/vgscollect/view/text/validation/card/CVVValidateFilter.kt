@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscollect.view.text.validation.card
 
 import android.text.InputFilter
 import android.text.Spanned
-import android.util.Log
 import java.util.regex.Pattern
 
 class CVVValidateFilter: InputFilter {

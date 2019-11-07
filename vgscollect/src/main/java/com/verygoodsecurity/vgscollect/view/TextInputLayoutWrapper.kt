@@ -44,7 +44,7 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
                 }
                 is FrameLayout -> this
                 else -> {
-                    Logger.i("VGSTextInputLauout", "${this::class.java.name} is not VGSEditText")
+                    Logger.i("VGSTextInputLayout", "${this::class.java.name} is not VGSEditText")
                     null
                 }
             }
