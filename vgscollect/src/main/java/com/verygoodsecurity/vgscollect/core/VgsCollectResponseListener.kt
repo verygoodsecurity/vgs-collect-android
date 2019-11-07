@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.core
 
-import com.verygoodsecurity.vgscollect.core.model.SimpleResponse
+import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 
 interface VgsCollectResponseListener {
-    fun onResponse(response: SimpleResponse?)
+    fun onResponse(response: VGSResponse?)
 }

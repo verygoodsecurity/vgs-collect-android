@@ -1,6 +1,5 @@
-package com.verygoodsecurity.vgscollect.core.model
+package com.verygoodsecurity.vgscollect.core.model.state
 
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
 
 data class VGSFieldState(var isFocusable:Boolean = false,

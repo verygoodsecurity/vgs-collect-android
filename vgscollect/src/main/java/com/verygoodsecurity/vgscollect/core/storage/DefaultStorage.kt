@@ -1,8 +1,9 @@
 package com.verygoodsecurity.vgscollect.core.storage
 
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscollect.core.model.VGSFieldState
-import com.verygoodsecurity.vgscollect.core.model.mapToFieldState
+import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.util.Logger
 
 internal class DefaultStorage {
@@ -22,6 +23,10 @@ internal class DefaultStorage {
             sendToUser(state)
             Logger.e("DefaultStorage ${store.size}", "$viewId ${state.alias} ${state.type.name} ${state.content} ${state.isFocusable} ${state.isRequired}")
         }
+    }
+
+    fun getFieldStateForUser(): List<FieldState> {
+        return store.values.map { it.mapToFieldState() }
     }
 
     private fun sendToUser(state: VGSFieldState) {

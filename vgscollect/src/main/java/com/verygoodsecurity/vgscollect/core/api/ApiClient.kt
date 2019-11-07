@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.api
 
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
-import com.verygoodsecurity.vgscollect.core.model.SimpleResponse
+import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 
 interface ApiClient {
     fun call(
@@ -9,5 +9,5 @@ interface ApiClient {
         method: HTTPMethod,
         data: Map<String, String>?,
         headers: Map<String, String>?
-    ):SimpleResponse
+    ):VGSResponse
 }

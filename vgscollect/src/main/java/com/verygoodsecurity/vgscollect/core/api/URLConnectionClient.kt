@@ -1,9 +1,10 @@
 package com.verygoodsecurity.vgscollect.core.api
 
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
-import com.verygoodsecurity.vgscollect.core.model.SimpleResponse
+import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.mapToEncodedQuery
 import com.verygoodsecurity.vgscollect.core.model.mapToJson
+import com.verygoodsecurity.vgscollect.core.model.parseVGSResponse
 import com.verygoodsecurity.vgscollect.util.Logger
 import java.net.HttpURLConnection.HTTP_OK
 import java.io.*
@@ -26,20 +27,19 @@ internal class URLConnectionClient(private val baseURL:String):ApiClient {
         private const val TEMPORARY_STR_AGENT = "source=androidSDK&medium=vgs-collect&content=1.0"
     }
 
-
-    override fun call(path: String, method: HTTPMethod, data: Map<String, String>?, headers: Map<String, String>?): SimpleResponse {
+    override fun call(path: String, method: HTTPMethod, data: Map<String, String>?, headers: Map<String, String>?): VGSResponse {
         return when(method.ordinal) {
             HTTPMethod.GET.ordinal -> getRequest(path, headers, data)
             HTTPMethod.POST.ordinal -> postRequest(path, headers, data)
-            else -> SimpleResponse()
+            else -> VGSResponse.ErrorResponse()
         }
     }
 
-    private fun getRequest(path: String, headers: Map<String, String>? = null, data: Map<String, String>?): SimpleResponse {
+    private fun getRequest(path: String, headers: Map<String, String>? = null, data: Map<String, String>?): VGSResponse {
         val url = buildURL(path, data?.mapToEncodedQuery())
 
         var conn: HttpURLConnection? = null
-        var response: SimpleResponse
+        var response: VGSResponse
         try {
             conn = url.openConnection() as HttpURLConnection
             conn.useCaches = false
@@ -58,12 +58,13 @@ internal class URLConnectionClient(private val baseURL:String):ApiClient {
             var responseStr: String? = null
             if (responseCode == HTTP_OK) {
                 responseStr = conn.inputStream?.bufferedReader()?.use { it.readText() }
+                response = VGSResponse.SuccessResponse(successCode = responseCode)
+            } else {
+                response = VGSResponse.ErrorResponse("error:")  //fixme
             }
 
-            response = SimpleResponse(responseStr, responseCode)
-
         } catch (e: Exception) {
-            response = SimpleResponse(e.localizedMessage)
+            response = VGSResponse.ErrorResponse("error:")  //fixme
             Logger.e("ApiClient", e.localizedMessage)
         }
         conn?.disconnect()
@@ -71,11 +72,11 @@ internal class URLConnectionClient(private val baseURL:String):ApiClient {
         return response
     }
 
-    private fun postRequest(path: String, headers: Map<String, String>? = null, data: Map<String, String>? = null): SimpleResponse {
+    private fun postRequest(path: String, headers: Map<String, String>? = null, data: Map<String, String>? = null): VGSResponse {
         val url = buildURL(path)
 
         var conn: HttpURLConnection? = null
-        var response: SimpleResponse
+        var response: VGSResponse
         try {
             conn = url.openConnection() as HttpURLConnection
             conn.useCaches = false
@@ -107,14 +108,16 @@ internal class URLConnectionClient(private val baseURL:String):ApiClient {
             os.close()
 
             val responseCode = conn.responseCode
-            var responseStr:String? = null
             if (responseCode == HTTP_OK) {
-                responseStr = conn.inputStream?.bufferedReader()?.use { it.readText() }
+                val responseStr = conn.inputStream?.bufferedReader()?.use { it.readText() }
+                val responsePayload:Map<String, String>? = responseStr?.parseVGSResponse()
+                response = VGSResponse.SuccessResponse(responsePayload, responseCode)
+            } else {
+                response = VGSResponse.ErrorResponse("error:")  //fixme
             }
 
-            response = SimpleResponse(responseStr, responseCode)
         } catch (e: Exception) {
-            response = SimpleResponse(e.localizedMessage)
+            response = VGSResponse.ErrorResponse("error:")  //fixme
             Logger.e("ApiClient", e.localizedMessage)
         }
         conn?.disconnect()
