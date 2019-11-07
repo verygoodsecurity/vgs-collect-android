@@ -10,12 +10,10 @@ data class VGSFieldState(var isFocusable:Boolean = false,
                          var alias:String? = null) {  /// Field name - actually this is key for you JSON which contains data
 
     fun isValid():Boolean {
-        val str = content?.replace(" ", "")
-
         return if(isRequired) {
-            type.validate(str)
+            type.validate(content)
         } else {
-            str.isNullOrEmpty() || type.validate(str)
+            content.isNullOrEmpty() || type.validate(content)
         }
     }
 }

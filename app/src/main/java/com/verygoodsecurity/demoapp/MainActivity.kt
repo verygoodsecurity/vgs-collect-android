@@ -17,7 +17,14 @@ import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.StringBuilder
 
-class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
+class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
+    override fun onClick(v: View?) {
+        progressBar?.visibility = View.VISIBLE
+        when(v?.id) {
+            R.id.sendPost -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST)
+            R.id.sendGet -> vgsForm.asyncSubmit(this@MainActivity, "/get", HTTPMethod.GET)
+        }
+    }
 
     val vgsForm = VGSCollect("tntxrsfgxcn")
 
@@ -25,41 +32,12 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        sendBtn.setOnClickListener {
-            progressBar?.visibility = View.VISIBLE
-            vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST)
-        }
+        sendPost?.setOnClickListener(this)
+        sendGet?.setOnClickListener(this)
 
-        vgsForm.onResponseListener = object : VgsCollectResponseListener {
-            override fun onResponse(response: SimpleResponse?) {
-                progressBar?.visibility = View.INVISIBLE
-                response?.let {
-                    responseView.text = "CODE: ${response.code} \n\n ${response.response}"
-                }
-            }
-        }
+        vgsForm.onResponseListener = this
 
-        vgsForm.onFieldStateChangeListener = object :OnFieldStateChangeListener {
-            override fun onStateChange(state: FieldState) {}
-
-            override fun onStateChange(states: Collection<FieldState>) {
-                val builder = StringBuilder()
-                states.forEach {
-                    builder.append(it.alias).append("\n")
-                        .append("   isValid: ").append(it.isValid).append("\n")
-                        .append("   isEmpty: ").append(it.isEmpty).append("\n")
-                        .append("   isRequired: ").append(it.isRequired).append("\n")
-                    if(it is FieldState.CardNumberState) {
-                        builder.append("    type: ").append(it.cardType).append("\n")
-                            .append("       last4: ").append(it.last4).append("\n")
-                            .append("       bin: ").append(it.bin).append("\n")
-                    }
-
-                    builder.append("\n")
-                }
-                responseView?.text = builder.toString()
-            }
-        }
+        vgsForm.onFieldStateChangeListener = getOnFieldStateChangeListener()
 
         vgsForm.bindView(cardNumberField)
         vgsForm.bindView(cardCVVField)
@@ -81,11 +59,30 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
 
 
 
+    fun getOnFieldStateChangeListener():OnFieldStateChangeListener {
+        return object :OnFieldStateChangeListener {
+            override fun onStateChange(state: FieldState) {}
 
+            override fun onStateChange(states: Collection<FieldState>) {
+                val builder = StringBuilder()
+                states.forEach {
+                    builder.append(it.alias).append("\n")
+                        .append("   hasFocus: ").append(it.hasFocus).append("\n")
+                        .append("   isValid: ").append(it.isValid).append("\n")
+                        .append("   isEmpty: ").append(it.isEmpty).append("\n")
+                        .append("   isRequired: ").append(it.isRequired).append("\n")
+                    if(it is FieldState.CardNumberState) {
+                        builder.append("    type: ").append(it.cardType).append("\n")
+                            .append("       last4: ").append(it.last4).append("\n")
+                            .append("       bin: ").append(it.bin).append("\n")
+                    }
 
-
-
-
+                    builder.append("\n")
+                }
+                responseView?.text = builder.toString()
+            }
+        }
+    }
 
 
     override fun onResponse(response: SimpleResponse?) {
@@ -94,6 +91,21 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
             responseView.text = "CODE: ${response.code} \n\n ${response.response}"
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private fun setTruncateAt(textView:VGSEditText) {
         textView.setEllipsize(TextUtils.TruncateAt.START)

@@ -47,10 +47,14 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
 
         val handler = Handler(Looper.getMainLooper())
         addTextChangedListener {
-            state.content = it.toString()
+            if(vgsInputType is VGSTextInputType.CardNumber) {
+                state.content = it.toString().replace(" ".toRegex(), "")
+            } else {
+                state.content = it.toString()
+            }
 
             handler.removeCallbacks(inputStateRunnable)
-            handler.postDelayed(inputStateRunnable, 1000)
+            handler.postDelayed(inputStateRunnable, 500)
         }
         id = ViewCompat.generateViewId()
     }
