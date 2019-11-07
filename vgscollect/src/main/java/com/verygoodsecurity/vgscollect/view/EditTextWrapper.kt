@@ -7,7 +7,7 @@ import android.text.InputType
 import android.text.TextWatcher
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscollect.core.model.VGSFieldState
+import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.text.validation.card.*
 import android.os.Looper
 import androidx.core.view.ViewCompat

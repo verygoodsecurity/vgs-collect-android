@@ -38,7 +38,7 @@
                 app:isRequired="false"
                 app:textColor="#ff7777"
                 app:singleLine="true"
-                app:textSize="14dp"
+                app:textSize="12dp"
                 app:inputType="cardNumber"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -57,7 +57,7 @@
                 app:isRequired="true"
                 app:textColor="#33ffaa"
                 app:singleLine="true"
-                app:textSize="14dp"
+                app:textSize="12dp"
                 app:inputType="cardCVVNumber"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -75,7 +75,7 @@
                 app:textColor="@color/black"
                 app:singleLine="true"
                 app:isRequired="true"
-                app:textSize="14dp"
+                app:textSize="12dp"
                 app:inputType="cardOwner"
                 app:text="Linda Hamilton"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
@@ -92,7 +92,7 @@
                 android:layout_height="match_parent"
                 app:aliasName="expDate"
                 app:textColor="@color/black"
-                app:textSize="14dp"
+                app:textSize="12dp"
                 app:singleLine="true"
                 app:isRequired="true"
                 app:inputType="cardDate"/>

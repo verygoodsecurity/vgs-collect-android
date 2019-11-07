@@ -18,13 +18,13 @@ sealed class FieldState {
     ):FieldState() {
         val bin:String? = when {
             content.isNullOrEmpty() -> ""
-            content.length > 7 -> content.substring(0, 7)
+            content.length > 7 -> content.substring(0, 6)
             else -> content.substring(0, content.length)
         }
 
         val last4:String? = when {
             content.isNullOrEmpty() -> ""
-            content.length > 14 -> content.substring(14, content.length)
+            content.length > 12 -> content.substring(12, content.length)
             else -> ""
         }
 

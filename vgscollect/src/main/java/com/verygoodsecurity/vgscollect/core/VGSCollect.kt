@@ -6,11 +6,12 @@ import android.os.AsyncTask
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.core.api.ApiClient
-import com.verygoodsecurity.vgscollect.core.api.Payload
+import com.verygoodsecurity.vgscollect.core.model.Payload
 import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
-import com.verygoodsecurity.vgscollect.core.model.SimpleResponse
-import com.verygoodsecurity.vgscollect.core.model.VGSFieldState
+import com.verygoodsecurity.vgscollect.core.model.VGSResponse
+import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.mapUsefulPayloads
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.DefaultStorage
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.util.Logger
@@ -26,7 +27,7 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     private val storage = DefaultStorage()
     private val client:ApiClient
 
-    private val tasks = mutableListOf<AsyncTask<Payload?, Void, SimpleResponse>>()
+    private val tasks = mutableListOf<AsyncTask<Payload?, Void, VGSResponse>>()
 
     private companion object {
         private const val DOMEN = "verygoodproxy.com"
@@ -54,8 +55,10 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     }
 
     fun bindView(view: VGSEditText?) {
-        val listener = storage.performSubscription()
-        view?.inputField?.stateListener = listener
+        if(view is VGSEditText) {
+            val listener = storage.performSubscription()
+            view.inputField.stateListener = listener
+        }
     }
 
     fun onDestroy() {
@@ -66,6 +69,10 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         }
         tasks.clear()
         storage.clear()
+    }
+
+    fun getAllStates(): List<FieldState> {
+        return storage.getFieldStateForUser()
     }
 
     fun submit(mainActivity:Activity
@@ -103,7 +110,7 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         var isValid = true
         storage.getStates().forEach {
             if(!it.isValid()) {
-                val r = SimpleResponse("is not a valid ${it.alias}", -1)
+                val r = VGSResponse.ErrorResponse("is not a valid ${it.alias}", -1)
                 onResponseListener?.onResponse(r)
                 isValid = false
                 return@forEach
@@ -127,20 +134,25 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
                                headers: Map<String, String>?,
                                data: MutableCollection<VGSFieldState>
     ) {
-        val p = Payload(path, method, headers, data.mapUsefulPayloads())
+        val p = Payload(
+            path,
+            method,
+            headers,
+            data.mapUsefulPayloads()
+        )
 
         val task = DoAsync(onResponseListener) {
             it?.run {
                 client.call(this.path, this.method, this.headers, this.data)
-            }?:SimpleResponse()
+            }?:VGSResponse.ErrorResponse("error:")  //fixme
         }.execute(p)
 
         tasks.add(task)
     }
 
-    class DoAsync(listener: VgsCollectResponseListener?, val handler: (arg: Payload?) -> SimpleResponse) : AsyncTask<Payload, Void, SimpleResponse>() {
+    class DoAsync(listener: VgsCollectResponseListener?, val handler: (arg: Payload?) -> VGSResponse) : AsyncTask<Payload, Void, VGSResponse>() {
         var onResponseListener: WeakReference<VgsCollectResponseListener>? = WeakReference<VgsCollectResponseListener>(listener)
-        override fun doInBackground(vararg arg: Payload?): SimpleResponse? {
+        override fun doInBackground(vararg arg: Payload?): VGSResponse? {
             val param = if(!arg.isNullOrEmpty()) {
                 arg[0]
             } else {
@@ -150,7 +162,7 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
             return handler(param)
         }
 
-        override fun onPostExecute(result: SimpleResponse?) {
+        override fun onPostExecute(result: VGSResponse?) {
             super.onPostExecute(result)
             if(onResponseListener == null) {
                 Logger.i("VGSCollect", "VgsCollectResponseListener not set")

@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.model
 
 import android.net.Uri
+import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import org.json.JSONObject
 
 internal fun MutableCollection<VGSFieldState>.mapUsefulPayloads(): Map<String,String>? {
