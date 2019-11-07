@@ -3,13 +3,16 @@ package com.verygoodsecurity.vgscollect.core
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.AsyncTask
-import android.util.Log
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
+import com.verygoodsecurity.vgscollect.core.api.ApiClient
+import com.verygoodsecurity.vgscollect.core.api.Payload
+import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
 import com.verygoodsecurity.vgscollect.core.model.SimpleResponse
-import com.verygoodsecurity.vgscollect.core.model.mapToEncodedQuery
+import com.verygoodsecurity.vgscollect.core.model.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.core.storage.DefaultStorage
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import java.lang.StringBuilder
 import java.lang.ref.WeakReference
@@ -20,8 +23,9 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     private val isURLValid:Boolean
 
     private val storage = DefaultStorage()
-    private val client = ApiClient()
-    private val tasks = mutableListOf<AsyncTask<String?, Void, SimpleResponse>>()
+    private val client:ApiClient
+
+    private val tasks = mutableListOf<AsyncTask<Payload?, Void, SimpleResponse>>()
 
     private companion object {
         private const val DOMEN = "verygoodproxy.com"
@@ -44,6 +48,8 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
 
         baseURL = builder.toString()
         isURLValid = URLUtil.isValidUrl(baseURL)
+
+        client = URLConnectionClient(baseURL)
     }
 
     fun bindView(view: VGSEditText?) {
@@ -52,7 +58,6 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     }
 
     fun onDestroy() {
-        storage.onFieldStateChangeListener = null
         onFieldStateChangeListener = null
         onResponceListener = null
         tasks.forEach {
@@ -62,14 +67,18 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         storage.clear()
     }
 
-    fun submit(mainActivity:Activity) {
+    fun submit(mainActivity:Activity
+               , path:String
+               , method:HTTPMethod = HTTPMethod.POST
+               , headers:Map<String,String>? = null
+    ) {
         when {
             ContextCompat.checkSelfPermission(mainActivity,android.Manifest.permission.INTERNET)
                     == PackageManager.PERMISSION_DENIED ->
-                Log.e("VGSCollect", "Permission denied (missing INTERNET permission?)")
-            !isURLValid -> Log.e("VGSCollect", "URL is not valid")
+                Logger.e("VGSCollect", "Permission denied (missing INTERNET permission?)")
+            !isURLValid -> Logger.e("VGSCollect", "URL is not valid")
             !isValidData() -> return
-            else -> performRequest()
+            else -> performRequest(path, method, headers)
         }
     }
 
@@ -86,24 +95,25 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         return isValid
     }
 
-    private fun performRequest() {
-        val states = storage.getStates()
-
-        val operation = NetworkOperation(onResponceListener)
+    private fun performRequest( path: String,
+                                method: HTTPMethod,
+                                headers: Map<String, String>?) {
+        val operation = NetworkOperation(client, onResponceListener)
         tasks.add(operation)
 
-        val data = states.mapToEncodedQuery()
-        operation.execute(data)
+        val p = Payload(path, method, headers, storage.getStates().mapUsefulPayloads())
+        operation.execute(p)
     }
 
-    private inner class NetworkOperation(listener: VgsCollectResponseListener?) : AsyncTask<String?, Void, SimpleResponse>() {
+    private inner class NetworkOperation(client:ApiClient, listener: VgsCollectResponseListener?) : AsyncTask<Payload?, Void, SimpleResponse>() {
 
         var onResponceListener: WeakReference<VgsCollectResponseListener>? = WeakReference<VgsCollectResponseListener>(listener)
+        var client: WeakReference<ApiClient>? = WeakReference(client)
 
-        override fun doInBackground(vararg arg: String?): SimpleResponse? {
+        override fun doInBackground(vararg arg: Payload?): SimpleResponse? {
             if(arg.isNotEmpty()) {
                 val response = arg[0]?.run {
-                    client.callPost(baseURL, this)
+                    client?.get()?.call(path, method, headers, data)
                 }
                 if(response != null) {
                     return response
@@ -115,7 +125,7 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         override fun onPostExecute(result: SimpleResponse?) {
             super.onPostExecute(result)
             if(onResponceListener == null) {
-                Log.i("VGSCollect", "VgsCollectResponseListener not set")
+                Logger.i("VGSCollect", "VgsCollectResponseListener not set")
             } else {
                 onResponceListener?.get()?.onResponse(result)
             }

@@ -1,17 +1,14 @@
 package com.verygoodsecurity.vgscollect.core.storage
 
-import android.util.Log
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.mapToFieldState
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.util.Logger
 
 internal class DefaultStorage {
 
     private val store = mutableMapOf<Int, VGSFieldState>()
     var onFieldStateChangeListener: OnFieldStateChangeListener? = null
-
-
 
     fun clear() {
         store.clear()
@@ -23,7 +20,7 @@ internal class DefaultStorage {
         override fun emit(viewId: Int, state: VGSFieldState) {
             store[viewId] = state
             sendToUser(state)
-            Log.e("DefaultStorage ${store.size}", "$viewId ${state.alias} ${state.type.name} ${state.content} ${state.isFocusable} ${state.isRequired}")
+            Logger.e("DefaultStorage ${store.size}", "$viewId ${state.alias} ${state.type.name} ${state.content} ${state.isFocusable} ${state.isRequired}")
         }
     }
 
