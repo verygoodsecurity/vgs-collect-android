@@ -55,15 +55,14 @@ fun getTypeCredit(str:String?):CreditCardType {
     if(str.isNullOrEmpty()) {
         return CreditCardType.Unknown
     }
-    val cardNum = str.replace(" ", "")
 
     return when {
-        CreditCardType.Visa.isValid(cardNum) -> CreditCardType.Visa
-        CreditCardType.Mastercard.isValid(cardNum) -> CreditCardType.Mastercard
-        CreditCardType.AmericanExpress.isValid(cardNum) -> CreditCardType.AmericanExpress
-        CreditCardType.DinClub.isValid(cardNum) -> CreditCardType.DinClub
-        CreditCardType.Discover.isValid(cardNum) -> CreditCardType.Discover
-        CreditCardType.Jcb.isValid(cardNum) -> CreditCardType.Jcb
+        CreditCardType.Visa.isValid(str) -> CreditCardType.Visa
+        CreditCardType.Mastercard.isValid(str) -> CreditCardType.Mastercard
+        CreditCardType.AmericanExpress.isValid(str) -> CreditCardType.AmericanExpress
+        CreditCardType.DinClub.isValid(str) -> CreditCardType.DinClub
+        CreditCardType.Discover.isValid(str) -> CreditCardType.Discover
+        CreditCardType.Jcb.isValid(str) -> CreditCardType.Jcb
         else -> CreditCardType.Unknown
     }
 }

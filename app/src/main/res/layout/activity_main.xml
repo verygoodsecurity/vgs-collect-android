@@ -39,8 +39,7 @@
                 app:textColor="#ff7777"
                 app:singleLine="true"
                 app:textSize="14dp"
-                app:inputType="cardNumber"
-                app:text="4111111111111111"/>
+                app:inputType="cardNumber"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -59,7 +58,6 @@
                 app:textColor="#33ffaa"
                 app:singleLine="true"
                 app:textSize="14dp"
-                app:text="123"
                 app:inputType="cardCVVNumber"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -79,7 +77,7 @@
                 app:isRequired="true"
                 app:textSize="14dp"
                 app:inputType="cardOwner"
-                app:text="Lisa Gold"/>
+                app:text="Linda Hamilton"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardExpDateFieldLay"
@@ -97,14 +95,23 @@
                 app:textSize="14dp"
                 app:singleLine="true"
                 app:isRequired="true"
-                app:inputType="cardDate"
-                app:text="1122"/>
+                app:inputType="cardDate"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <Button
-            android:id="@+id/sendBtn"
-            android:text="send"
-            android:layout_margin="@dimen/default_margin"
+            android:id="@+id/sendGet"
+            android:text="get"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/sendPost"
+            android:text="post"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
