@@ -11,7 +11,12 @@ data class VGSFieldState(var isFocusable:Boolean = false,
 
     fun isValid():Boolean {
         val str = content?.replace(" ", "")
-        return type.validate(str)
+
+        return if(isRequired) {
+            type.validate(str)
+        } else {
+            str.isNullOrEmpty() || type.validate(str)
+        }
     }
 }
 
