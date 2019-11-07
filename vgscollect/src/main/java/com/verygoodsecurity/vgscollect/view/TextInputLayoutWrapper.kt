@@ -1,11 +1,11 @@
 package com.verygoodsecurity.vgscollect.view
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.google.android.material.textfield.TextInputLayout
+import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 
 internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(context) {
@@ -44,7 +44,7 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
                 }
                 is FrameLayout -> this
                 else -> {
-                    Log.i("VGSTextInputLauout", "${this::class.java.name} is not VGSEditText")
+                    Logger.i("VGSTextInputLauout", "${this::class.java.name} is not VGSEditText")
                     null
                 }
             }
