@@ -5,9 +5,9 @@ import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.Gravity
 import android.view.View
+import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.SimpleResponse
@@ -24,9 +24,10 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         sendBtn.setOnClickListener {
             progressBar?.visibility = View.VISIBLE
-            vgsForm.submit(this@MainActivity)
+            vgsForm.submit(this@MainActivity, "/post", HTTPMethod.POST)
         }
 
         vgsForm.onResponceListener = object : VgsCollectResponseListener {
@@ -34,7 +35,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
                 progressBar?.visibility = View.INVISIBLE
                 response?.let {
                     responseView.text = "CODE: ${response.code} \n\n ${response.responce}"
-                    Log.d("------->", "${response.code} \n ${response.responce}")
                 }
             }
         }
@@ -92,8 +92,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener {
         progressBar?.visibility = View.INVISIBLE
         response?.let {
             responseView.text = "CODE: ${response.code} \n\n ${response.responce}"
-
-            Log.d("------->", "${response.code} \n ${response.responce}")
         }
     }
 
