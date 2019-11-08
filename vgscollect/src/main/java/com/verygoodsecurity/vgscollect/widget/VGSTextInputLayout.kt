@@ -1,10 +1,12 @@
 package com.verygoodsecurity.vgscollect.widget
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.annotation.RequiresApi
 import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.TextInputLayoutWrapper
@@ -23,7 +25,6 @@ class VGSTextInputLayout @JvmOverloads constructor(
             attrs,
             R.styleable.VGSTextInputLayout,
             0, 0).apply {
-
             try {
                 hint = getString(R.styleable.VGSTextInputLayout_hint)
             } finally {
@@ -35,6 +36,36 @@ class VGSTextInputLayout @JvmOverloads constructor(
         textInputLayout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         textInputLayout.hint = hint
         addView(textInputLayout)
+    }
+
+    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
+        textInputLayout.setPadding(left, top, right, bottom)
+    }
+
+    override fun getPaddingBottom(): Int {
+        return textInputLayout.paddingBottom
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    override fun getPaddingEnd(): Int {
+        return textInputLayout.paddingEnd
+    }
+
+    override fun getPaddingLeft(): Int {
+        return textInputLayout.paddingLeft
+    }
+
+    override fun getPaddingRight(): Int {
+        return textInputLayout.paddingRight
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    override fun getPaddingStart(): Int {
+        return textInputLayout.paddingStart
+    }
+
+    override fun getPaddingTop(): Int {
+        return textInputLayout.paddingTop
     }
 
     override fun addView(child: View?) {
