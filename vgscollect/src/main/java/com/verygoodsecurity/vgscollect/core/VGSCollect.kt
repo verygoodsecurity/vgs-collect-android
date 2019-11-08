@@ -11,7 +11,7 @@ import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.mapUsefulPayloads
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.DefaultStorage
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.util.Logger
@@ -36,11 +36,6 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     }
 
     var onResponseListener:VgsCollectResponseListener? = null
-    var onFieldStateChangeListener: OnFieldStateChangeListener? = null
-        set(value) {
-            field = value
-            storage.onFieldStateChangeListener = value
-        }
 
     init {
         val builder = StringBuilder(SCHEME)
@@ -62,7 +57,6 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     }
 
     fun onDestroy() {
-        onFieldStateChangeListener = null
         onResponseListener = null
         tasks.forEach {
             it.cancel(true)
@@ -71,9 +65,11 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         storage.clear()
     }
 
-    fun getAllStates(): List<FieldState> {
-        return storage.getFieldStateForUser()
+    fun addOnFieldStateChangeListener(listener: OnFieldStateChangeListener?) {
+        storage.onFieldStateChangeListener = listener
     }
+
+    fun getAllStates() = storage.getStates().map { it.mapToFieldState() }
 
     fun submit(mainActivity:Activity
                , path:String

@@ -22,7 +22,8 @@ sealed class VGSTextInputType {
 
     open fun validate(str:String?):Boolean {
         val p = Pattern.compile(validation)
-        return p.matcher(str).matches()
+
+        return p.matcher(str.orEmpty()).matches()
     }
 
     protected abstract var validation:String
