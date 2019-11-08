@@ -2,7 +2,12 @@ package com.verygoodsecurity.demoapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -25,14 +30,39 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
         vgsForm.onResponseListener = this
 
-        vgsForm.onFieldStateChangeListener = getOnFieldStateChangeListener()
+        vgsForm.addOnFieldStateChangeListener(getOnFieldStateChangeListener())
 
         vgsForm.bindView(cardNumberField)
         vgsForm.bindView(cardCVVField)
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
 
-//        val allStates = vgsForm.getAllStates()
+        test(cardNumberField)
+        test(cardNumberFieldLay)
+    }
+
+    fun test(v:View) {
+        if(v is ViewGroup) {
+            val count = v.childCount
+
+            for(i in 0..count) {
+                val v = v.getChildAt(i)
+                when(v) {
+                    is ViewGroup -> test(v)
+                    is EditText -> hackView(v)
+                }
+            }
+        }
+    }
+
+    private fun hackView(v: EditText) {
+        v.addTextChangedListener(object :TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                Log.e("test", "hackedView: $p0")
+            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        })
     }
 
     override fun onDestroy() {
@@ -59,10 +89,8 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
     private fun getOnFieldStateChangeListener():OnFieldStateChangeListener {
         return object :OnFieldStateChangeListener {
-            override fun onStateChange(state: FieldState) {}
-
-            //todo remove for release
-            override fun onStateChange(states: Collection<FieldState>) {
+            override fun onStateChange(state: FieldState) {
+                val states = vgsForm.getAllStates()
                 val builder = StringBuilder()
                 states.forEach {
                     builder.append(it.alias).append("\n")

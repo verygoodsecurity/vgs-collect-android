@@ -3,13 +3,13 @@ package com.verygoodsecurity.vgscollect.core.storage
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState
-import com.verygoodsecurity.vgscollect.util.Logger
 
 internal class DefaultStorage {
 
     private val store = mutableMapOf<Int, VGSFieldState>()
+
     var onFieldStateChangeListener: OnFieldStateChangeListener? = null
+        @JvmName("attachStateChangeListener") set
 
     fun clear() {
         store.clear()
@@ -19,20 +19,17 @@ internal class DefaultStorage {
 
     fun performSubscription() = object: OnVgsViewStateChangeListener {
         override fun emit(viewId: Int, state: VGSFieldState) {
-            store[viewId] = state
-            sendToUser(state)
-            Logger.e("DefaultStorage ${store.size}", "$viewId ${state.alias} ${state.type.name} ${state.content} ${state.isFocusable} ${state.isRequired}")
+            addItem(viewId, state)
         }
     }
 
-    fun getFieldStateForUser(): List<FieldState> {
-        return store.values.map { it.mapToFieldState() }
+    fun addItem(viewId: Int, newState: VGSFieldState) {
+        store[viewId] = newState
+        notifyUser(newState)
     }
 
-    private fun sendToUser(state: VGSFieldState) {
-        onFieldStateChangeListener?.onStateChange(state.mapToFieldState())
-
-        val c = store.values.map { it.mapToFieldState() }
-        onFieldStateChangeListener?.onStateChange(c)
+    private fun notifyUser(state: VGSFieldState) {
+        val fs = state.mapToFieldState()
+        onFieldStateChangeListener?.onStateChange(fs)
     }
 }
