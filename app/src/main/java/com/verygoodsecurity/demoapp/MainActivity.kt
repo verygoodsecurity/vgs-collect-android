@@ -86,8 +86,13 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     override fun onResponse(response: VGSResponse?) {
         progressBar?.visibility = View.INVISIBLE
         when(response) {
-            is VGSResponse.SuccessResponse -> response.response?.values?.forEach {
-                responseView.text = "CODE: ${response.successCode} \n\n $it"
+            is VGSResponse.SuccessResponse -> {
+                val builder = StringBuilder("CODE: ")
+                    .append(response.code.toString()).append("\n\n")
+                response.response?.forEach {
+                    builder.append(it.key).append(": ").append(it.value).append("\n")
+                }
+                responseView.text = builder.toString()
             }
             is VGSResponse.ErrorResponse -> responseView.text = "CODE: ${response.errorCode} \n\n ${response.localizeMessage}"
         }

@@ -39,6 +39,7 @@
                 app:textColor="#ff7777"
                 app:singleLine="true"
                 app:textSize="12dp"
+                app:text="4111111111111111"
                 app:inputType="cardNumber"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -58,6 +59,7 @@
                 app:textColor="#33ffaa"
                 app:singleLine="true"
                 app:textSize="12dp"
+                app:text="123"
                 app:inputType="cardCVVNumber"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -95,6 +97,7 @@
                 app:textSize="12dp"
                 app:singleLine="true"
                 app:isRequired="true"
+                app:text="05/25"
                 app:inputType="cardDate"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 

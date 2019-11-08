@@ -25,6 +25,8 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
 
     private VGSCollect vgsForm = new VGSCollect("tntxrsfgxcn", Environment.SANDBOX);
 
+    private TextView responseView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,8 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
         vgsForm.setOnResponseListener(this);
 
         vgsForm.setOnFieldStateChangeListener(this);
+
+        responseView = findViewById(R.id.responseView);
 
         View cardNumberField = findViewById(R.id.cardNumberField);
         vgsForm.bindView((VGSEditText) cardNumberField);
@@ -60,7 +64,12 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
         if(response.getCode() >= 200 && response.getCode() <=300 ) {
             Map<String, String> m = ((VGSResponse.SuccessResponse)response).getResponse();
             int c = ((VGSResponse.SuccessResponse)response).getSuccessCode();
-            ((TextView)findViewById(R.id.responseView)).setText("CODE: "+c+" \n\n "+m.toString()+"}");
+            StringBuilder builder = new StringBuilder("CODE: ")
+                    .append(response.getCode()).append("\n\n");
+            for (Map.Entry<String, String> entry : m.entrySet()) {
+                builder.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
+            }
+            responseView.setText(builder.toString());
         }
     }
 
