@@ -37,7 +37,7 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
 
         vgsForm.setOnResponseListener(this);
 
-        vgsForm.setOnFieldStateChangeListener(this);
+        vgsForm.addOnFieldStateChangeListener(this);
 
         responseView = findViewById(R.id.responseView);
 
@@ -75,24 +75,4 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
 
     @Override
     public void onStateChange(@NotNull FieldState state) { }
-
-    //todo remove for release
-    @Override
-    public void onStateChange(@NotNull Collection<? extends FieldState> states) {
-        StringBuilder builder = new StringBuilder();
-        for (FieldState state : states) {
-            builder.append(state.getAlias()).append("\n")
-                    .append("   hasFocus: ").append(state.getHasFocus()).append("\n")
-                    .append("   isValid: ").append(state.isValid()).append("\n")
-                    .append("   isEmpty: ").append(state.isEmpty()).append("\n")
-                    .append("   isRequired: ").append(state.isRequired()).append("\n");
-            if(state instanceof FieldState.CardNumberState) {
-                builder.append("    type: ").append(((FieldState.CardNumberState) state).getCardType()).append("\n")
-                        .append("       last4: ").append(((FieldState.CardNumberState) state).getLast4()).append("\n")
-                        .append("       bin: ").append(((FieldState.CardNumberState) state).getBin()).append("\n");
-            }
-        }
-
-        ((TextView)findViewById(R.id.responseView)).setText(builder.toString());
-    }
 }
