@@ -4,9 +4,9 @@
 
 .gradle
 .idea
-gradle
+#gradle
 app/app.iml
-gradlew
+#gradlew
 gradlew.bat
 
 *.iml
