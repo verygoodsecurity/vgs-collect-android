@@ -31,8 +31,12 @@ jobs:
       - store_artifacts:
           path: app/build/outputs/apk/debug/app-debug.apk
           destination: app-debug.apk
-#workflows:
-#  version: 2
-#  build_and_test:
-#    jobs:
-#      - build
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
