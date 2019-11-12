@@ -36,7 +36,7 @@ class StorageTest {
         }
 
         val store = DefaultStorage()
-        store.onFieldStateChangeListener = listener
+        store.attachStateChangeListener(listener)
 
         store.addItem(0, VGSFieldState(isFocusable = false, isRequired = true, alias = "alias"))
         Assert.assertNotNull("FieldState didn't update", userLastUpdatedState)

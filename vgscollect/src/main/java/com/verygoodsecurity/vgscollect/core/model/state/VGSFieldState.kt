@@ -17,15 +17,20 @@ data class VGSFieldState(var isFocusable:Boolean = false,
     }
 }
 
-fun VGSFieldState.mapToFieldState():FieldState {
-    val f = when(type) {
+fun VGSTextInputType.mapVGSTextInputTypeToFieldState(content: String? = null):FieldState {
+    return when(this) {
         is VGSTextInputType.CardNumber -> {
-            FieldState.CardNumberState(content, (type as VGSTextInputType.CardNumber).card.name)
+            FieldState.CardNumberState(content, this.card.name)
         }
         is VGSTextInputType.CardOwnerName -> FieldState.CardName
         is VGSTextInputType.CVVCardCode -> FieldState.CVVState
         is VGSTextInputType.CardExpDate -> FieldState.CardExpirationDate
     }
+}
+
+fun VGSFieldState.mapToFieldState():FieldState {
+    val f = type.mapVGSTextInputTypeToFieldState(content)
+
     f.isValid = type.validate(content)
 
     f.isEmpty = content.isNullOrEmpty()
