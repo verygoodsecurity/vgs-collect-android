@@ -37,33 +37,33 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
 
-        test(cardNumberField)
-        test(cardNumberFieldLay)
+//        test(cardNumberField)
+//        test(cardNumberFieldLay)
     }
 
-    fun test(v:View) {
-        if(v is ViewGroup) {
-            val count = v.childCount
+//    fun test(v:View) {
+//        if(v is ViewGroup) {
+//            val count = v.childCount
+//
+//            for(i in 0..count) {
+//                val v = v.getChildAt(i)
+//                when(v) {
+//                    is ViewGroup -> test(v)
+//                    is EditText -> hackView(v)
+//                }
+//            }
+//        }
+//    }
 
-            for(i in 0..count) {
-                val v = v.getChildAt(i)
-                when(v) {
-                    is ViewGroup -> test(v)
-                    is EditText -> hackView(v)
-                }
-            }
-        }
-    }
-
-    private fun hackView(v: EditText) {
-        v.addTextChangedListener(object :TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-                Log.e("test", "hackedView: $p0")
-            }
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-        })
-    }
+//    private fun hackView(v: EditText) {
+//        v.addTextChangedListener(object :TextWatcher {
+//            override fun afterTextChanged(p0: Editable?) {
+//                Log.e("test", "hackedView: $p0")
+//            }
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+//        })
+//    }
 
     override fun onDestroy() {
         vgsForm.onDestroy()

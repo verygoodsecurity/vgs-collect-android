@@ -69,7 +69,7 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX):Abst
     fun asyncSubmit(mainActivity:Activity
                , path:String
                , method:HTTPMethod
-               , headers:Map<String,String>?
+               , headers:Map<String,String>? = null
     ) {
 
         appValidationCheck(mainActivity) { data ->
