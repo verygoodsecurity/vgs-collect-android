@@ -37,7 +37,7 @@ sealed class VGSTextInputType {
         override fun validate(str: String?): Boolean {
             card = getTypeCredit(str)
             validation = card.validationPattern
-            return card !is CreditCardType.Unknown
+            return super.validate(str)
         }
     }
 

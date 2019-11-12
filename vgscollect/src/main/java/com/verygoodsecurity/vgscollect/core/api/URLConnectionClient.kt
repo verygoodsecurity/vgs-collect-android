@@ -108,12 +108,12 @@ internal class URLConnectionClient(private val baseURL:String):ApiClient {
             os.close()
 
             val responseCode = conn.responseCode
-            if (responseCode == HTTP_OK) {
+            response = if (responseCode == HTTP_OK) {
                 val responseStr = conn.inputStream?.bufferedReader()?.use { it.readText() }
                 val responsePayload:Map<String, String>? = responseStr?.parseVGSResponse()
-                response = VGSResponse.SuccessResponse(responsePayload, responseCode)
+                VGSResponse.SuccessResponse(responsePayload, responseCode)
             } else {
-                response = VGSResponse.ErrorResponse("error:")  //fixme
+                VGSResponse.ErrorResponse("error:")  //fixme
             }
 
         } catch (e: Exception) {
