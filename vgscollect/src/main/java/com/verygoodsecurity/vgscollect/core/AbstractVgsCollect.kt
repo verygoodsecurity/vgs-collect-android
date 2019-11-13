@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.core
 
 import android.os.AsyncTask
+import android.util.Log
 import com.verygoodsecurity.vgscollect.core.api.ApiClient
 import com.verygoodsecurity.vgscollect.core.model.Payload
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
@@ -10,6 +11,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
+import org.jetbrains.annotations.TestOnly
 import java.lang.StringBuilder
 import java.lang.ref.WeakReference
 
@@ -53,17 +55,16 @@ abstract class AbstractVgsCollect(
 
     fun getAllStates() = storage.getStates().map { it.mapToFieldState() }
 
-    fun doRequest(path: String,
+    protected fun doRequest(path: String,
                   method: HTTPMethod,
                   headers: Map<String, String>?,
                   data: MutableCollection<VGSFieldState>
     ) {
-        val d = data.mapUsefulPayloads()
-        val r = client.call(path, method, headers, d)
+        val r = client.call(path, method, headers, data.mapUsefulPayloads())
         onResponseListener?.onResponse(r)
     }
 
-    internal fun doAsyncRequest(path: String,
+    protected fun doAsyncRequest(path: String,
                                 method: HTTPMethod,
                                 headers: Map<String, String>?,
                                 data: MutableCollection<VGSFieldState>
@@ -84,6 +85,15 @@ abstract class AbstractVgsCollect(
         tasks.add(task)
 
         task.execute(p)
+    }
+
+    @TestOnly
+    internal fun doMainThreadRequest(path: String,
+                            method: HTTPMethod,
+                            headers: Map<String, String>?,
+                            data: MutableCollection<VGSFieldState>
+    ) {
+        doRequest(path, method, headers, data)
     }
 
     class DoAsync(listener: VgsCollectResponseListener?, val handler: (arg: Payload?) -> VGSResponse) : AsyncTask<Payload, Void, VGSResponse>() {
