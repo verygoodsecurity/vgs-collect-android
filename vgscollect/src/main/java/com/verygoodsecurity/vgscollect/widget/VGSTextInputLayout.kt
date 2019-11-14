@@ -5,120 +5,84 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
-import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.R
-import com.verygoodsecurity.vgscollect.view.TextInputLayoutWrapper
+import com.verygoodsecurity.vgscollect.view.TextInputFieldLayout
 
 class VGSTextInputLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
-
-    private val textInputLayout: TextInputLayout
-    var editText:VGSEditText? = null
-        private set
+) : TextInputFieldLayout(context, attrs, defStyleAttr) {
 
     init {
-        val hint:String?
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.VGSTextInputLayout,
             0, 0).apply {
             try {
-                hint = getString(R.styleable.VGSTextInputLayout_hint)
+                val hint = getString(R.styleable.VGSTextInputLayout_hint)
+
+                setHint(hint)
             } finally {
                 recycle()
             }
         }
-
-        textInputLayout = TextInputLayoutWrapper(context)
-        textInputLayout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-        textInputLayout.hint = hint
-        addView(textInputLayout)
     }
 
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        textInputLayout.setPadding(left, top, right, bottom)
+        super.setPadding(left, top, right, bottom)
     }
 
     override fun getPaddingBottom(): Int {
-        return textInputLayout.paddingBottom
+        return super.getPaddingBottom()
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingEnd(): Int {
-        return textInputLayout.paddingEnd
+        return super.getPaddingEnd()
     }
 
     override fun getPaddingLeft(): Int {
-        return textInputLayout.paddingLeft
+        return super.getPaddingLeft()
     }
 
     override fun getPaddingRight(): Int {
-        return textInputLayout.paddingRight
+        return super.getPaddingRight()
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingStart(): Int {
-        return textInputLayout.paddingStart
+        return super.getPaddingStart()
     }
 
     override fun getPaddingTop(): Int {
-        return textInputLayout.paddingTop
+        return super.getPaddingTop()
     }
 
     override fun addView(child: View?) {
-        val v = handleNewChild(child)
-        super.addView(v)
+        super.addView(child)
     }
 
-
     override fun addView(child: View?, index: Int) {
-        handleNewChild(child)?.let { v ->
-            super.addView(v, index)
-        }
+        super.addView(child, index)
     }
 
     override fun addView(child: View?, params: ViewGroup.LayoutParams?) {
-        handleNewChild(child)?.let { v ->
-            super.addView(v, params)
-        }
+        super.addView(child, params)
     }
 
     override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
-        handleNewChild(child)?.let { v ->
-            super.addView(v, index, params)
-        }
+        super.addView(child, index, params)
     }
 
     override fun addView(child: View?, width: Int, height: Int) {
-        handleNewChild(child)?.let { v ->
-            super.addView(v, width, height)
-        }
+        super.addView(child, width, height)
     }
 
-    private fun handleNewChild(child: View?): View? {
-        return child?.run {
-            when(this) {
-                is TextInputLayoutWrapper -> this
-                is VGSEditText -> {
-                    editText = child as VGSEditText
-                    attachViewToParent(editText, childCount, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
-
-                    textInputLayout.addView(child)
-                    null
-                }
-                else -> null
-            }
-        }
+    override fun setError(errorText:CharSequence?) {
+        super.setError(errorText)
     }
 
-    fun setError(errorText:CharSequence?) {
-        textInputLayout.error = errorText
-    }
-
-    fun setHint(text:String) {
-        textInputLayout.hint = text
+    override fun setHint(text:String) {
+        super.setHint(text)
     }
 }

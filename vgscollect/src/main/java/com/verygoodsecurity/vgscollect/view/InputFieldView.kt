@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
-import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -23,7 +22,6 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     private val inputField = EditTextWrapper(context)
     private var isAttachPermitted = true
-
 
     override fun onDetachedFromWindow() {
         if(childCount > 0) removeAllViews()
@@ -75,7 +73,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         if(isAttachPermitted) {
             super.onAttachedToWindow()
-            if (parent !is VGSTextInputLayout) {
+            if (parent !is TextInputFieldLayout) {
                 setAddStatesFromChildren(true)
                 addView(inputField)
             }
