@@ -8,14 +8,13 @@ import com.verygoodsecurity.vgscollect.core.api.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.core.model.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.core.storage.DefaultStorage
 import com.verygoodsecurity.vgscollect.core.storage.IStateEmitter
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
-
 
 class VGSCollect(id:String, environment: Environment = Environment.SANDBOX):AbstractVgsCollect(id, environment) {
     override lateinit var storage: VgsStore
@@ -34,9 +33,9 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX):Abst
         isURLValid = URLUtil.isValidUrl(baseURL)
     }
 
-    override fun bindView(view: VGSEditText?) {
+    override fun bindView(view: InputFieldView?) {
         if(view is VGSEditText) {
-            view.inputField.stateListener = emitter.performSubscription()
+            view.addStateListener(emitter.performSubscription())
         }
     }
 
@@ -51,7 +50,6 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX):Abst
     ) {
         appValidationCheck(mainActivity) { data ->
             doRequest(path, method, headers, data)
-//            client.call(path, method, headers, data.mapUsefulPayloads())
         }
     }
 

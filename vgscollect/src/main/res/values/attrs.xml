@@ -56,7 +56,7 @@
 
         <attr name="hint" />
 
-        <attr name="inputType" format="enum">
+        <attr name="fieldType" format="enum">
             <enum name="cardNumber" value="0"/>
             <enum name="cardCVVNumber" value="1"/>
             <enum name="cardDate" value="2"/>

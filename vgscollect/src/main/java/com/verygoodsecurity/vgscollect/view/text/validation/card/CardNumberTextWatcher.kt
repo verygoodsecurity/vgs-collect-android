@@ -60,5 +60,4 @@ object CardNumberTextWatcher: TextWatcher {
         }
         return digits
     }
-
 }

@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscollect.core
 
 import android.os.AsyncTask
-import android.util.Log
 import com.verygoodsecurity.vgscollect.core.api.ApiClient
 import com.verygoodsecurity.vgscollect.core.model.Payload
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
@@ -10,7 +9,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.util.Logger
-import com.verygoodsecurity.vgscollect.widget.VGSEditText
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import org.jetbrains.annotations.TestOnly
 import java.lang.StringBuilder
 import java.lang.ref.WeakReference
@@ -43,7 +42,7 @@ abstract class AbstractVgsCollect(
         baseURL = builder.toString()
     }
 
-    abstract fun bindView(view: VGSEditText?)
+    abstract fun bindView(view: InputFieldView?)
 
     fun onDestroy() {
         tasks.forEach {
