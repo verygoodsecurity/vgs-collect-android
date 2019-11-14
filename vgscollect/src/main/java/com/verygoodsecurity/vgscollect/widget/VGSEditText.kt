@@ -4,28 +4,22 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Build
-import android.os.Parcel
-import android.os.Parcelable
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
-import android.widget.FrameLayout
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgscollect.R
-import com.verygoodsecurity.vgscollect.view.EditTextWrapper
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
 
 class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
-
-    internal val inputField: EditTextWrapper
+) : InputFieldView(context, attrs, defStyleAttr) {
 
     init {
-        inputField = inflateInputField(context)
-
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.VGSEditText,
@@ -33,14 +27,8 @@ class VGSEditText @JvmOverloads constructor(
         ).apply {
 
             try {
-                val inputType =  when(getInteger(R.styleable.VGSEditText_inputType, -1)) {
-                    0 -> VGSTextInputType.CardNumber()
-                    1 -> VGSTextInputType.CVVCardCode
-                    2 -> VGSTextInputType.CardExpDate
-                    3 -> VGSTextInputType.CardOwnerName
-                    else -> VGSTextInputType.CardOwnerName
-                }
-                val tag = getString(R.styleable.VGSEditText_aliasName)
+                val type = getInteger(R.styleable.VGSEditText_fieldType, -1)
+                val aliasName = getString(R.styleable.VGSEditText_aliasName)
                 val hint = getString(R.styleable.VGSEditText_hint)
                 val textSize = getDimension(R.styleable.VGSEditText_textSize, 0f)
                 val textColor = getColor(R.styleable.VGSEditText_textColor, 0)
@@ -51,219 +39,170 @@ class VGSEditText @JvmOverloads constructor(
                 val singleLine = getBoolean(R.styleable.VGSEditText_singleLine, true)
                 val scrollHorizontally = getBoolean(R.styleable.VGSEditText_scrollHorizontally, true)
                 val gravity = getInt(R.styleable.VGSEditText_gravity, 0)
-                val ellipsize = when(getInt(R.styleable.VGSEditText_ellipsize, 0)) {
-                    1 -> TextUtils.TruncateAt.START
-                    2 -> TextUtils.TruncateAt.MIDDLE
-                    3 -> TextUtils.TruncateAt.END
-                    4 -> TextUtils.TruncateAt.MARQUEE
-                    else -> null
-                }
+                val ellipsize = getInt(R.styleable.VGSEditText_ellipsize, 0)
+
                 val minLines = getInt(R.styleable.VGSEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.VGSEditText_maxLines, 0)
 
-                inputField.apply {
-                    this.tag = tag
-                    setInputFormatType(inputType)
-                    setHint(hint)
-                    setTextColor(textColor)
-                    setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
-                    setText(text)
-                    isCursorVisible = cursorVisible
-                    setGravity(gravity)
-                    setHorizontallyScrolling(scrollHorizontally)
-                    setEllipsize(ellipsize)
-                    setMaxLines(maxLines)
-                    setMinLines(minLines)
-                    setSingleLine(singleLine)
-                    this.isRequired = isRequired
-
-                    inputField.setTypeface(typeface, textStyle)
-                }
-
+                setAliasName(aliasName)
+                setFieldType(type)
+                setHint(hint)
+                setTextColor(textColor)
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
+                setText(text)
+                setCursorVisible(cursorVisible)
+                setGravity(gravity)
+                canScrollHorizontally(scrollHorizontally)
+                setEllipsize(ellipsize)
+                setMaxLines(maxLines)
+                setMinLines(minLines)
+                setSingleLine(singleLine)
+                setIsRequired(isRequired)
+                setTypeface(getTypeface(), textStyle)
             } finally {
                 recycle()
             }
         }
-
     }
 
-    fun setAliasName(alias:String) {
-        inputField.tag = alias
+    override fun setAliasName(alias:String?) {
+        super.setAliasName(alias)
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        if(parent !is VGSTextInputLayout) {
-            setAddStatesFromChildren(true)
-            addView(inputField)
-        }
+    override fun addView(child: View?, index: Int) {
+        super.addView(child, index)
     }
 
-    private fun inflateInputField(context: Context): EditTextWrapper {
-        return EditTextWrapper(context)
+    override fun addView(child: View?, params: ViewGroup.LayoutParams?) {
+        super.addView(child, params)
     }
 
-    override fun onDetachedFromWindow() {
-        if(childCount > 0) removeAllViews()
-        super.onDetachedFromWindow()
+    override fun addView(child: View?, width: Int, height: Int) {
+        super.addView(child, width, height)
     }
 
-    override fun addView(child: View?) {
-        if(childCount == 0 && child is EditTextWrapper) {
-            super.addView(child)
-        }
+    override fun setEllipsize(type: Int) {
+        super.setEllipsize(type)
     }
 
-    fun setEllipsize(ellipsis: TextUtils.TruncateAt) {
-        inputField.ellipsize = ellipsis
+    override fun setEllipsize(ellipsis: TextUtils.TruncateAt) {
+        super.setEllipsize(ellipsis)
     }
 
-    fun setMinLines(lines:Int) {
-        inputField.minLines = lines
+    override fun setMinLines(lines:Int) {
+        super.setMinLines(lines)
     }
 
-    fun setMaxLines(lines:Int) {
-        inputField.maxLines = lines
+    override fun setMaxLines(lines:Int) {
+        super.setMaxLines(lines)
     }
 
-    fun setSingleLine(singleLine:Boolean) {
-        inputField.setSingleLine(singleLine)
+    override fun setSingleLine(singleLine:Boolean) {
+        super.setSingleLine(singleLine)
     }
 
     override fun setFocusable(focusable: Boolean) {
         super.setFocusable(focusable)
-        inputField.isFocusable = focusable
     }
 
     override fun setFocusableInTouchMode(focusableInTouchMode: Boolean) {
         super.setFocusableInTouchMode(focusableInTouchMode)
-        inputField.isFocusableInTouchMode = focusableInTouchMode
     }
 
-    override fun isEnabled() = inputField.isEnabled
+    override fun isEnabled():Boolean {
+        return super.isEnabled()
+    }
 
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
-        inputField.isEnabled = enabled
     }
 
-    fun setHint(text:String?) {
-        inputField.hint = text
+    override fun setHint(text:String?) {
+        super.setHint(text)
     }
 
-    fun setHintTextColor(colors: ColorStateList) {
-        inputField.setHintTextColor(colors)
+    override fun setHintTextColor(colors: ColorStateList) {
+        super.setHintTextColor(colors)
     }
 
-    fun setHintTextColor(color:Int) {
-        inputField.setHintTextColor(color)
+    override fun setHintTextColor(color:Int) {
+        super.setHintTextColor(color)
     }
 
-    fun canScrollHorizontally(canScroll:Boolean) {
-        inputField.setHorizontallyScrolling(canScroll)
+    override fun canScrollHorizontally(canScroll:Boolean) {
+        super.canScrollHorizontally(canScroll)
     }
 
-    fun setGravity(gravity:Int) {
-        inputField.gravity = gravity
+    override fun getGravity(): Int {
+        return super.getGravity()
     }
 
-    fun getGravity() = inputField.gravity
-
-    fun setCursorVisible(isVisible:Boolean) {
-        inputField.isCursorVisible = isVisible
+    override fun setGravity(gravity:Int) {
+        super.setGravity(gravity)
     }
 
-    fun setTextAppearance( context: Context, resId:Int) {
-        inputField.setTextAppearance(context, resId)
+    override fun setCursorVisible(isVisible:Boolean) {
+        super.setCursorVisible(isVisible)
+    }
+
+    override fun setTextAppearance( context: Context, resId:Int) {
+        super.setTextAppearance(context, resId)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun setTextAppearance(resId:Int) {
-        inputField.setTextAppearance(resId)
+    override fun setTextAppearance(resId:Int) {
+        super.setTextAppearance(resId)
     }
 
-    fun setTypeface(typeface: Typeface) {
-        inputField.typeface = typeface
-
+    override fun getTypeface():Typeface {
+        return super.getTypeface()
     }
 
-    fun setTypeface( tf:Typeface, style:Int) {
-        inputField.setTypeface(tf, style)
+    override fun setTypeface(typeface: Typeface) {
+        super.setTypeface(typeface)
     }
 
-    fun setText( resId:Int) {
-        inputField.setText(resId)
+    override fun setTypeface( tf:Typeface, style:Int) {
+        super.setTypeface(tf, style)
     }
 
-    fun setText( resId:Int, type: TextView.BufferType) {
-        inputField.setText(resId, type)
+    override fun setText( resId:Int) {
+        super.setText(resId)
     }
 
-    fun setText(text:CharSequence?) {
-        inputField.setText(text)
+    override fun setText( resId:Int, type: TextView.BufferType) {
+        super.setText(resId, type)
     }
 
-    fun setText( text:CharSequence?, type: TextView.BufferType) {
-        inputField.setText(text, type)
+    override fun setText(text:CharSequence?) {
+        super.setText(text)
     }
 
-    fun setTextSize( size:Float ) {
-        inputField.textSize = size
+    override fun setText( text:CharSequence?, type: TextView.BufferType) {
+        super.setText(text, type)
     }
 
-    fun setTextSize( unit:Int, size:Float) {
-        inputField.setTextSize(unit, size)
+    override fun setTextSize( size:Float ) {
+        super.setTextSize(size)
     }
 
-    fun setTextColor(color:Int) {
-        inputField.setTextColor(color)
+    override fun setTextSize( unit:Int, size:Float) {
+        super.setTextSize(unit, size)
     }
 
-    fun setIsRequired(state:Boolean) {
-        inputField.isRequired = state
+    override fun setTextColor(color:Int) {
+        super.setTextColor(color)
     }
 
-    override fun onSaveInstanceState(): Parcelable? {
-        val savedState = SavedState(super.onSaveInstanceState())
-        savedState.text = inputField.text.toString()
-        return savedState
+    override fun setIsRequired(state:Boolean) {
+        super.setIsRequired(state)
     }
 
-    override fun onRestoreInstanceState(state: Parcelable?) {
-        if (state is SavedState) {
-            setText(state.text)
-            super.onRestoreInstanceState(state.superState)
-        } else {
-            super.onRestoreInstanceState(state)
-        }
+    override fun setFieldType(type:VGSTextInputType) {
+        super.setFieldType(type)
     }
 
-    internal class SavedState : BaseSavedState {
-        var text: CharSequence = ""
-
-        companion object {
-            @JvmField
-            val CREATOR = object : Parcelable.Creator<SavedState> {
-                override fun createFromParcel(source: Parcel): SavedState {
-                    return SavedState(source)
-                }
-
-                override fun newArray(size: Int): Array<SavedState?> {
-                    return arrayOfNulls(size)
-                }
-            }
-        }
-
-        constructor(superState: Parcelable) : super(superState)
-
-        constructor(`in`: Parcel) : super(`in`) {
-            text = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(`in`)
-        }
-
-        override fun writeToParcel(out: Parcel, flags: Int) {
-            super.writeToParcel(out, flags)
-            TextUtils.writeToParcel(text, out, flags)
-        }
+    override fun setFieldType(type:Int) {
+        super.setFieldType(type)
     }
 }

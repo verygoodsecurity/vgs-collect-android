@@ -35,9 +35,11 @@ sealed class VGSTextInputType {
             set(_) {}
 
         override fun validate(str: String?): Boolean {
-            card = getTypeCredit(str)
+            val cardNumber = str?.replace(" ".toRegex(), "")
+            card = getTypeCredit(cardNumber)
+
             validation = card.validationPattern
-            return super.validate(str)
+            return super.validate(cardNumber)
         }
     }
 

@@ -16,17 +16,21 @@ sealed class FieldState {
         content: String?,
         type: String
     ):FieldState() {
-        val bin:String? = when {
-            content.isNullOrEmpty() -> ""
-            content.length > 7 -> content.substring(0, 6)
-            else -> content.substring(0, content.length)
-        }
+        val bin:String? = content?.replace(" ".toRegex(), "")?.run {
+                if(length > 7) {
+                    substring(0, 6)
+                } else {
+                    substring(0, length)
+                }
+            }
 
-        val last4:String? = when {
-            content.isNullOrEmpty() -> ""
-            content.length > 12 -> content.substring(12, content.length)
-            else -> ""
-        }
+        val last4:String? = content?.replace(" ".toRegex(), "")?.run {
+                if(length > 12) {
+                    substring(12, length)
+                } else {
+                    ""
+                }
+            }
 
         val cardType:String = type
     }

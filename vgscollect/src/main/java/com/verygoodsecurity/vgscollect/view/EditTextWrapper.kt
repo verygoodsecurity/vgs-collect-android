@@ -19,6 +19,8 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     private var vgsInputType: VGSTextInputType = VGSTextInputType.CardOwnerName
     private val state = VGSFieldState()
 
+//    private var isListeningPermitted = false
+
     private var activeTextWatcher: TextWatcher? = null
     internal var stateListener: OnVgsViewStateChangeListener? = null
         internal set(value) {
@@ -34,12 +36,14 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         }
 
     private val inputStateRunnable = Runnable {
-        vgsInputType.validate(state.content)
+        vgsInputType.validate(state.content)        //fixme change place to detect card type
+
         state.type = vgsInputType
         stateListener?.emit(id, state)
     }
 
     init {
+//        isListeningPermitted = true
         onFocusChangeListener = OnFocusChangeListener { _, f ->
             state.isFocusable = f
             stateListener?.emit(id, state)
@@ -47,15 +51,16 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
 
         val handler = Handler(Looper.getMainLooper())
         addTextChangedListener {
-            if(vgsInputType is VGSTextInputType.CardNumber) {
-                state.content = it.toString().replace(" ".toRegex(), "")
-            } else {
-                state.content = it.toString()
-            }
-
+//            if(vgsInputType is VGSTextInputType.CardNumber) {
+//                state.content = it.toString().replace(" ".toRegex(), "")
+//            } else {
+//                state.content = it.toString()
+//            }
+            state.content = it.toString()
             handler.removeCallbacks(inputStateRunnable)
             handler.postDelayed(inputStateRunnable, 500)
         }
+//        isListeningPermitted = false
         id = ViewCompat.generateViewId()
     }
 
@@ -64,7 +69,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         if(vgsInputType is VGSTextInputType.CardExpDate) setSelection(text?.length?:0)
     }
 
-    fun setInputFormatType(inputType: VGSTextInputType) {
+    fun setFieldType(inputType: VGSTextInputType) {
         vgsInputType = inputType
         when(inputType) {
             is VGSTextInputType.CardNumber -> {
@@ -101,6 +106,30 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
             state.alias = this as String
         }
     }
+
+//    override fun getText(): Editable? {
+//        val tLength = super.getText()?.length?:0
+//        val mask = "#".repeat(tLength)
+//        return super.getText()
+//        return Editable.Factory.getInstance().newEditable(super.getText())
+//    }
+//
+//    override fun getEditableText(): Editable {
+//        val tLength = super.getEditableText()?.length?:0
+//        val mask = "#".repeat(tLength)
+//        return Editable.Factory.getInstance().newEditable( super.getEditableText())
+//        return super.getEditableText()
+//    }
+//
+//    override fun addTextChangedListener(watcher: TextWatcher?) {
+//        if(isListeningPermitted) {
+//            super.addTextChangedListener(watcher)
+//        }
+//    }
+//
+//    override fun onAttachedToWindow() {
+//        super.onAttachedToWindow()
+//    }
 
     private fun applyNewTextWatcher(textWatcher: TextWatcher?) {
         activeTextWatcher?.let { removeTextChangedListener(activeTextWatcher) }

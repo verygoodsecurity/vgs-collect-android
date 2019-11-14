@@ -39,8 +39,8 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
         return child?.run {
             when(this) {
                 is EditTextWrapper -> this
-                is VGSEditText -> {
-                    (this as? VGSEditText)?.inputField
+                is InputFieldView -> {
+                    (this as? InputFieldView)?.getEditTextWrapper()
                 }
                 is FrameLayout -> this
                 else -> {
