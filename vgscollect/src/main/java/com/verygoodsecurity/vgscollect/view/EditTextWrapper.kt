@@ -66,7 +66,8 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
 
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
         super.onSelectionChanged(selStart, selEnd)
-        if(vgsInputType is VGSTextInputType.CardExpDate) setSelection(text?.length?:0)
+//        if(vgsInputType is VGSTextInputType.CardExpDate)  //todo add possibility to set default cursor position
+        setSelection(text?.length?:0)
     }
 
     fun setFieldType(inputType: VGSTextInputType) {

@@ -18,7 +18,6 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     init {
         textInputLayout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         addView(textInputLayout)
-        isAttachPermitted = false
     }
 
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
@@ -64,41 +63,38 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     }
 
     override fun addView(child: View?) {
-        if(isAttachPermitted) {
-            val v = handleNewChild(child)
-            super.addView(v)
-        }
+        val v = handleNewChild(child)
+        super.addView(v)
     }
 
     override fun addView(child: View?, index: Int) {
-        if(isAttachPermitted) {
-            handleNewChild(child)?.let { v ->
-                super.addView(v, index)
-            }
+        handleNewChild(child)?.let { v ->
+            super.addView(v, index)
         }
     }
 
     override fun addView(child: View?, params: ViewGroup.LayoutParams?) {
-        if(isAttachPermitted) {
-            handleNewChild(child)?.let { v ->
-                super.addView(v, params)
-            }
+        handleNewChild(child)?.let { v ->
+            super.addView(v, params)
         }
     }
 
     override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
-        if(isAttachPermitted) {
-            handleNewChild(child)?.let { v ->
-                super.addView(v, index, params)
-            }
+        handleNewChild(child)?.let { v ->
+            super.addView(v, index, params)
         }
     }
 
     override fun addView(child: View?, width: Int, height: Int) {
+        handleNewChild(child)?.let { v ->
+            super.addView(v, width, height)
+        }
+    }
+
+    override fun onAttachedToWindow() {
         if(isAttachPermitted) {
-            handleNewChild(child)?.let { v ->
-                super.addView(v, width, height)
-            }
+            super.onAttachedToWindow()
+//            isAttachPermitted = false
         }
     }
 
@@ -122,7 +118,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
         textInputLayout.error = errorText
     }
 
-    open fun setHint(text:String) {
+    open fun setHint(text:String?) {
         textInputLayout.hint = text
     }
 }

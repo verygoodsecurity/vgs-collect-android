@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.widget
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Build
 import android.text.TextUtils
@@ -30,8 +31,8 @@ class VGSEditText @JvmOverloads constructor(
                 val type = getInteger(R.styleable.VGSEditText_fieldType, -1)
                 val aliasName = getString(R.styleable.VGSEditText_aliasName)
                 val hint = getString(R.styleable.VGSEditText_hint)
-                val textSize = getDimension(R.styleable.VGSEditText_textSize, 0f)
-                val textColor = getColor(R.styleable.VGSEditText_textColor, 0)
+                val textSize = getDimension(R.styleable.VGSEditText_textSize, -1f)
+                val textColor = getColor(R.styleable.VGSEditText_textColor, Color.BLACK)
                 val text = getString(R.styleable.VGSEditText_text)
                 val textStyle = getInt(R.styleable.VGSEditText_textStyle, -1)
                 val cursorVisible = getBoolean(R.styleable.VGSEditText_cursorVisible, true)

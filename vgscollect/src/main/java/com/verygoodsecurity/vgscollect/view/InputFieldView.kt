@@ -77,7 +77,7 @@ abstract class InputFieldView @JvmOverloads constructor(
                 setAddStatesFromChildren(true)
                 addView(inputField)
             }
-            isAttachPermitted = false
+//            isAttachPermitted = false
         }
     }
 
