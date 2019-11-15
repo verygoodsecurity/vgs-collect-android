@@ -10,6 +10,7 @@
 
     <LinearLayout
         android:layout_width="0dp"
+        android:id="@+id/verticalPanel"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
@@ -22,7 +23,17 @@
             android:progressTint="@color/colorAccent"
             android:visibility="invisible"/>
 
-
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:id="@+id/cardCVVFieldtest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:aliasName="cvvNum"
+            app:hint="test cvv"
+            app:isRequired="true"
+            app:textColor="#33ffaa"
+            app:singleLine="true"
+            app:textSize="12dp"
+            app:fieldType="cardCVVNumber"/>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardNumberFieldLay"
             android:layout_width="match_parent"
@@ -40,7 +51,7 @@
                 app:singleLine="true"
                 app:textSize="12dp"
                 app:text="4111111111111111"
-                app:inputType="cardNumber"/>
+                app:fieldType="cardNumber"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -60,7 +71,7 @@
                 app:singleLine="true"
                 app:textSize="12dp"
                 app:text="123"
-                app:inputType="cardCVVNumber"/>
+                app:fieldType="cardCVVNumber"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardHolderFieldLay"
@@ -78,7 +89,7 @@
                 app:singleLine="true"
                 app:isRequired="true"
                 app:textSize="12dp"
-                app:inputType="cardOwner"
+                app:fieldType="cardOwner"
                 app:text="Linda Hamilton"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -98,7 +109,7 @@
                 app:singleLine="true"
                 app:isRequired="true"
                 app:text="05/25"
-                app:inputType="cardDate"/>
+                app:fieldType="cardDate"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <Button

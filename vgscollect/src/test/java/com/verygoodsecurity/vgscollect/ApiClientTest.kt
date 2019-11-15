@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.api.ApiClient
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
-import com.verygoodsecurity.vgscollect.widget.VGSEditText
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito
@@ -27,7 +27,7 @@ class ApiClientTest {
         val collect = object : AbstractVgsCollect("", Environment.SANDBOX) {
             override var storage: VgsStore = Mockito.mock(VgsStore::class.java)
             override var client: ApiClient = client
-            override fun bindView(view: VGSEditText?) {}
+            override fun bindView(view: InputFieldView?) {}
         }
 
         var res:VGSResponse? = null

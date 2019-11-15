@@ -82,7 +82,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
         super.setError(errorText)
     }
 
-    override fun setHint(text:String) {
+    override fun setHint(text:String?) {
         super.setHint(text)
     }
 }
