@@ -14,6 +14,7 @@ import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
+import com.verygoodsecurity.vgscollect.view.internal.EditTextWrapper
 import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
 
 abstract class InputFieldView @JvmOverloads constructor(
@@ -77,7 +78,7 @@ abstract class InputFieldView @JvmOverloads constructor(
                 setAddStatesFromChildren(true)
                 addView(inputField)
             }
-//            isAttachPermitted = false
+            isAttachPermitted = false
         }
     }
 
@@ -221,7 +222,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.stateListener = stateListener
     }
 
-    internal fun getEditTextWrapper():EditTextWrapper {
+    internal fun getEditTextWrapper(): EditTextWrapper {
         return inputField
     }
 

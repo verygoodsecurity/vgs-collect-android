@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view
+package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
 import android.os.Handler
@@ -10,6 +10,10 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.text.validation.card.*
 import android.os.Looper
+import android.text.Editable
+import android.util.Log
+import android.view.accessibility.AccessibilityEvent
+import android.view.inputmethod.ExtractedText
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
@@ -108,29 +112,113 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         }
     }
 
-//    override fun getText(): Editable? {
-//        val tLength = super.getText()?.length?:0
-//        val mask = "#".repeat(tLength)
-//        return super.getText()
-//        return Editable.Factory.getInstance().newEditable(super.getText())
-//    }
-//
-//    override fun getEditableText(): Editable {
-//        val tLength = super.getEditableText()?.length?:0
-//        val mask = "#".repeat(tLength)
-//        return Editable.Factory.getInstance().newEditable( super.getEditableText())
-//        return super.getEditableText()
-//    }
-//
-//    override fun addTextChangedListener(watcher: TextWatcher?) {
-//        if(isListeningPermitted) {
-//            super.addTextChangedListener(watcher)
-//        }
-//    }
-//
-//    override fun onAttachedToWindow() {
-//        super.onAttachedToWindow()
-//    }
+    override fun setSelection(index: Int) {
+        isPermited = true
+        Log.e("test", "setSelection-1----")
+        super.setSelection(index)
+    }
+
+    override fun setSelection(start: Int, stop: Int) {
+//        counter+=1
+        isPermited = true
+        Log.e("test", "setSelection-2---")
+        super.setSelection(start, stop)
+    }
+
+    override fun selectAll() {
+        Log.e("test", "selectAll")
+        super.selectAll()
+    }
+
+    override fun extendSelection(index: Int) {
+        Log.e("test", "extendSelection $index")
+        super.extendSelection(index)
+    }
+
+    override fun setExtractedText(text: ExtractedText?) {
+        Log.e("test", "setExtractedText $text")
+        super.setExtractedText(text)
+    }
+
+    override fun getSelectionStart(): Int {
+        isPermited = true
+        counter+=1
+        Log.e("test", "getSelectionStart $counter")
+        return super.getSelectionStart()
+    }
+
+
+
+    override fun getSelectionEnd(): Int {
+        val s = super.getSelectionEnd()
+        counter-=1
+        if(counter <= 0) {
+            counter = 0
+//            isPermited = false
+        }
+        Log.e("test", "getSelectionEnd $isPermited  $counter $s")
+        return s
+    }
+
+    override fun onPopulateAccessibilityEvent(event: AccessibilityEvent?) {
+        Log.e("test", "onPopulateAccessibilityEvent")
+        super.onPopulateAccessibilityEvent(event)
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        Log.e("test", "onMeasure desired")
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        counter = 0
+    }
+
+
+    override fun setText(text: CharSequence?, type: BufferType?) {
+        Log.e("test", "S setText $isPermited $text")
+        super.setText(text, type)
+    }
+
+private var isPermited = true
+    private var counter = 0
+    override fun getText(): Editable? {
+        counter-=1
+        if(counter <= 0) {
+            counter = 0
+            isPermited = false
+        }
+        if(isPermited) {
+            Log.e("test", "1getText $isPermited")
+
+            return super.getText()
+        } else {
+            val tLength = super.getText()?.length ?: 0
+            val mask = "#".repeat(tLength)
+            Log.e("test", "2getText $isPermited")
+            return Editable.Factory.getInstance().newEditable(mask)
+        }
+    }
+
+
+    override fun getEditableText(): Editable {
+        if(isPermited) {
+            return super.getEditableText()
+        } else {
+            val tLength = super.getEditableText()?.length?:0
+
+            val mask = "#".repeat(tLength)
+            return Editable.Factory.getInstance().newEditable( mask)
+        }
+    }
+
+    override fun addTextChangedListener(watcher: TextWatcher?) {
+        if(isPermited) {
+            super.addTextChangedListener(watcher)
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        isPermited = false
+    }
 
     private fun applyNewTextWatcher(textWatcher: TextWatcher?) {
         activeTextWatcher?.let { removeTextChangedListener(activeTextWatcher) }
