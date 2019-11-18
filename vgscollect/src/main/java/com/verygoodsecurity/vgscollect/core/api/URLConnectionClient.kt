@@ -65,7 +65,7 @@ internal class URLConnectionClient(private val baseURL:String):ApiClient {
 
         } catch (e: Exception) {
             response = VGSResponse.ErrorResponse("error:")  //fixme
-            Logger.e("ApiClient", e.localizedMessage)
+            Logger.e("VGSCollect", e.localizedMessage)
         }
         conn?.disconnect()
 
@@ -117,8 +117,8 @@ internal class URLConnectionClient(private val baseURL:String):ApiClient {
             }
 
         } catch (e: Exception) {
-            response = VGSResponse.ErrorResponse("error:")  //fixme
-            Logger.e("ApiClient", e.localizedMessage)
+            response = VGSResponse.ErrorResponse("couldn't connect to server")  //fixme
+            Logger.e("VGSCollect", e.localizedMessage)
         }
         conn?.disconnect()
 
