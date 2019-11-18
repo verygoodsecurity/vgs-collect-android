@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view
+package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.util.Logger
-import com.verygoodsecurity.vgscollect.widget.VGSEditText
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 
 internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(context) {
 

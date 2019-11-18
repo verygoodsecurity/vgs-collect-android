@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
+import com.verygoodsecurity.vgscollect.view.internal.TextInputLayoutWrapper
 
 abstract class TextInputFieldLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private val textInputLayout = TextInputLayoutWrapper(context)
+    private val textInputLayout =
+        TextInputLayoutWrapper(context)
     private var isAttachPermitted = true
 
     init {
@@ -117,6 +119,8 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     open fun setError(errorText:CharSequence?) {
         textInputLayout.error = errorText
     }
+
+    open fun getHint() = textInputLayout.hint
 
     open fun setHint(text:String?) {
         textInputLayout.hint = text
