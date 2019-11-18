@@ -40,7 +40,7 @@ class VGSCollectTest {
         val store = Mockito.mock(VgsStore::class.java)
 
         val collect = VGSCollect("s")
-        collect.storage = store
+        collect.setStorage(store)
 
         collect.onDestroy()
         Mockito.verify(store).clear()
@@ -52,7 +52,7 @@ class VGSCollectTest {
         val store = Mockito.mock(VgsStore::class.java)
 
         val collect = VGSCollect("s")
-        collect.storage = store
+        collect.setStorage(store)
 
         collect.getAllStates()
 
