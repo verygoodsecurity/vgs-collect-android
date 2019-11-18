@@ -1,13 +1,9 @@
 package com.verygoodsecurity.vgscollect
 
-import com.verygoodsecurity.vgscollect.core.AbstractVgsCollect
-import com.verygoodsecurity.vgscollect.core.Environment
-import com.verygoodsecurity.vgscollect.core.HTTPMethod
-import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscollect.core.*
 import com.verygoodsecurity.vgscollect.core.api.ApiClient
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
-import com.verygoodsecurity.vgscollect.view.InputFieldView
 import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito
@@ -24,11 +20,10 @@ class ApiClientTest {
     fun test() {
         val client = Mockito.mock(ApiClient::class.java)
 
-        val collect = object : AbstractVgsCollect("", Environment.SANDBOX) {
-            override var storage: VgsStore = Mockito.mock(VgsStore::class.java)
-            override var client: ApiClient = client
-            override fun bindView(view: InputFieldView?) {}
-        }
+        val collect = VGSCollect("", Environment.SANDBOX)
+
+        collect.setClient(client)
+        collect.setStorage(Mockito.mock(VgsStore::class.java))
 
         var res:VGSResponse? = null
         collect.onResponseListener = object : VgsCollectResponseListener {
