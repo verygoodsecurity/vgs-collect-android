@@ -35,7 +35,7 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
         findViewById(R.id.sendGet).setOnClickListener(this);
         findViewById(R.id.sendPost).setOnClickListener(this);
 
-        vgsForm.setOnResponseListener(this);
+        vgsForm.addOnResponseListeners(this);
 
         vgsForm.addOnFieldStateChangeListener(this);
 
