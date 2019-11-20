@@ -19,15 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep public class com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
--keep public class * com.verygoodsecurity.vgscollect.widget.VGSEditText {
-      public <init>(android.content.Context);
-      public <init>(android.content.Context, android.util.AttributeSet);
-      public <init>(android.content.Context, android.util.AttributeSet, int);
-      public void set*(...);
-}
-
--keep public class com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
-
--keep public class com.verygoodsecurity.vgscollect.core.VGSCollect
--keep public class com.verygoodsecurity.vgscollect.core.Environment

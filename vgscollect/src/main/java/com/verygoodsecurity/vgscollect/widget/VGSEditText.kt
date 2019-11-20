@@ -1,20 +1,11 @@
 package com.verygoodsecurity.vgscollect.widget
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.Typeface
-import android.os.Build
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
-import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
 
 class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -50,7 +41,6 @@ class VGSEditText @JvmOverloads constructor(
                 setHint(hint)
                 setTextColor(textColor)
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
-                setText(text)
                 setCursorVisible(cursorVisible)
                 setGravity(gravity)
                 canScrollHorizontally(scrollHorizontally)
@@ -60,6 +50,7 @@ class VGSEditText @JvmOverloads constructor(
                 setSingleLine(singleLine)
                 setIsRequired(isRequired)
                 setTypeface(getTypeface(), textStyle)
+                setText(text)
             } finally {
                 recycle()
             }

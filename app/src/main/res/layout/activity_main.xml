@@ -23,17 +23,6 @@
             android:progressTint="@color/colorAccent"
             android:visibility="invisible"/>
 
-        <com.verygoodsecurity.vgscollect.widget.VGSEditText
-            android:id="@+id/cardCVVFieldtest"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:aliasName="cvvNum"
-            app:hint="test cvv"
-            app:isRequired="true"
-            app:textColor="#33ffaa"
-            app:singleLine="true"
-            app:textSize="12dp"
-            app:fieldType="cardCVVNumber"/>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardNumberFieldLay"
             android:layout_width="match_parent"
