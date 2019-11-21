@@ -20,8 +20,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        sendPost?.setOnClickListener(this)
-        sendGet?.setOnClickListener(this)
+        submitBtn?.setOnClickListener(this)
 
         vgsForm.onResponseListener = this
 
@@ -41,8 +40,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     override fun onClick(v: View?) {
         progressBar?.visibility = View.VISIBLE
         when (v?.id) {
-            R.id.sendPost -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST, null)
-            R.id.sendGet -> vgsForm.asyncSubmit(this@MainActivity, "/get", HTTPMethod.GET, null)
+            R.id.submitBtn -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST, null)
         }
     }
 
@@ -77,7 +75,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                 val builder = StringBuilder("CODE: ")
                     .append(response.code.toString()).append("\n\n")
                 response.response?.forEach {
-                    builder.append(it.key).append(": ").append(it.value).append("\n")
+                    builder.append(it.key).append(": ").append(it.value).append("\n\n")
                 }
                 responseView.text = builder.toString()
             }

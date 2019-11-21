@@ -102,17 +102,8 @@
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <Button
-            android:id="@+id/sendGet"
-            android:text="get"
-            android:layout_marginTop="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/sendPost"
-            android:text="post"
+            android:id="@+id/submitBtn"
+            android:text="Submit"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_width="match_parent"
