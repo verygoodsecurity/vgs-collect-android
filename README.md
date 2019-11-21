@@ -1,8 +1,32 @@
+[![CircleCI](https://circleci.com/gh/verygoodsecurity/vgs-collect-ios/tree/dev.svg?style=svg&circle-token=ec7cddc71a1c2f6e99843ef56fdb6898a2ef8f52)](https://circleci.com/gh/verygoodsecurity/vgs-collect-ios/tree/dev)
+[![UT](https://img.shields.io/badge/Unit_Test-pass-green)]()
+[![license](https://img.shields.io/github/license/verygoodsecurity/vgs-ios-sdk.svg)]()
+
 # VGS Collect SDK 
 
 >VGS Collect - is a product suite that allows customers to collect information securely without possession of it. VGS Collect mobile SDKs - are native mobile forms modules that allow customers to collect information securely on mobile devices with iOS and Android. **Source:** [vgs-collect](https://www.verygoodsecurity.com/docs/vgs-collect/index)
 >
 >Customers can use the same VGS Vault and the same server-side for Mobile apps as for Web. Their experience should stay the same and be not dependent on the platform they use: Web or Mobile.
+
+
+Table of contents
+=================
+
+<!--ts-->
+   * [Dependencies](#dependencies)
+   * [Structure](#structure)
+   * [Integration](#integration)
+      * [Add the SDK to your project](#add-the-sdk-to-your-project)
+      * [Add permissions](#add-permissions)
+   * [Usage](#usage)
+      * [Session initialization](#session-initialization)
+      * [Submit information](#submit-information)
+      * [Fields state tracking](#fields-state-tracking)
+      * [Handle service response](#handle-service-response)
+      * [End session](#end-session)
+   * [License](#license)
+<!--te-->
+
 
 ## Dependencies
 
@@ -36,8 +60,10 @@ The **SDK** requires the following permissions. Please add them to your `Android
 <uses-permission android:name="android.permission.INTERNET"/>
 ```
 
-## Session tracking
-Add to your layout file VGSEditText:
+## Usage
+
+#### Session initialization
+Add VGSEditText to your layout file:
 ```
 <?xml version="1.0" encoding="utf-8"?>
 
@@ -47,7 +73,7 @@ Add to your layout file VGSEditText:
   	 android:layout_height="match_parent" />
 ```
 
-In your Activity or Fragment class add the following code to initialize the SDK:
+Add the following code to initialize the SDK to your Activity or Fragment class:
 ```
 public class ExampleActivity extends Activity {
    private VGSCollect vgsForm = new VGSCollect( user_key, Environment.SANDBOX);
@@ -63,16 +89,16 @@ public class ExampleActivity extends Activity {
 }
 ```
 
-## Submit information
-To execute and send data on VGS Server call `asyncSubmit` or `submit` if you want to handle multithreading by yourself:
+#### Submit information
+Call `asyncSubmit` or `submit` to execute and send data on VGS Server if you want to handle multithreading by yourself:
 ```
   vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST, customHeaders);
   //  or
   vgsForm.submit(this, "/path", HTTPMethod.POST, customHeaders);
 ```
 
-## Fields state tracking
-Whenever an EditText changes, **VGSCollect** could notify user about it. Implement `OnFieldStateChangeListener` to observe changes:
+#### Fields state tracking
+Whenever an EditText changes, **VGSCollect** can notify user about it. Implement `OnFieldStateChangeListener` to observe changes:
 ```
   vgsForm.addOnFieldStateChangeListener(new OnFieldStateChangeListener() {
             @Override
@@ -82,8 +108,8 @@ Whenever an EditText changes, **VGSCollect** could notify user about it. Impleme
         });
 ```
 
-## Handle service response
-To read response you need to implement `VgsCollectResponseListener` :
+#### Handle service response
+You need to implement `VgsCollectResponseListener` to read response:
 ```
   vgsForm.setOnResponseListener(new VgsCollectResponseListener() {
             @Override
@@ -93,8 +119,8 @@ To read response you need to implement `VgsCollectResponseListener` :
         });
 ```
 
-## End session
-Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy callback :
+#### End session
+Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy callback:
 ```
     @Override
     protected void onDestroy() {
@@ -103,3 +129,5 @@ Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy 
     }
  ```
 
+## License
+VGSCollect iOS SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE) for details.
