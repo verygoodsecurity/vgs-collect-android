@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 
-fun brokeViewMethodTest(v: View) {
+internal fun brokeViewMethodTest(v: View) {
     if(v is ViewGroup) {
         val count = v.childCount
 

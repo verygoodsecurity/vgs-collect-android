@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         vgsForm.bindView(cardCVVField)
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
+        brokeViewMethodTest(cardNumberFieldLay)
     }
 
     override fun onDestroy() {
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         progressBar?.visibility = View.VISIBLE
         when (v?.id) {
             R.id.sendPost -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST, null)
-            R.id.sendGet -> vgsForm.asyncSubmit(this@MainActivity, "/get", HTTPMethod.GET, null)
+            R.id.sendGet -> brokeViewMethodTest(cardNumberFieldLay)//vgsForm.asyncSubmit(this@MainActivity, "/get", HTTPMethod.GET, null)
         }
     }
 

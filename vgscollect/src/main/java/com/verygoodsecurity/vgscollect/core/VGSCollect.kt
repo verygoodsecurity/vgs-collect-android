@@ -20,6 +20,7 @@ import com.verygoodsecurity.vgscollect.core.storage.DefaultStorage
 import com.verygoodsecurity.vgscollect.core.storage.IStateEmitter
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
+import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import org.jetbrains.annotations.TestOnly
@@ -95,8 +96,8 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         when {
             ContextCompat.checkSelfPermission(mainActivity,android.Manifest.permission.INTERNET)
                     == PackageManager.PERMISSION_DENIED ->
-                Log.e("VGSCollect", "Permission denied (missing INTERNET permission?)")
-            !isURLValid -> Log.e("VGSCollect", "URL is not valid")
+                Logger.e("VGSCollect", "Permission denied (missing INTERNET permission?)")
+            !isURLValid -> Logger.e("VGSCollect", "URL is not valid")
             !isValidData() -> return
             else -> func(storage.getStates())
         }
