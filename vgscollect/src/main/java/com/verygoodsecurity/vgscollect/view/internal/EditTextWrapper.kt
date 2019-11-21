@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view
+package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
 import android.os.Handler
@@ -19,6 +19,8 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     private var vgsInputType: VGSTextInputType = VGSTextInputType.CardOwnerName
     private val state = VGSFieldState()
 
+    private var isListeningPermitted = false
+
     private var activeTextWatcher: TextWatcher? = null
     internal var stateListener: OnVgsViewStateChangeListener? = null
         internal set(value) {
@@ -34,12 +36,14 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         }
 
     private val inputStateRunnable = Runnable {
-        vgsInputType.validate(state.content)
+        vgsInputType.validate(state.content)        //fixme change place to detect card type
+
         state.type = vgsInputType
         stateListener?.emit(id, state)
     }
 
     init {
+        isListeningPermitted = true
         onFocusChangeListener = OnFocusChangeListener { _, f ->
             state.isFocusable = f
             stateListener?.emit(id, state)
@@ -47,24 +51,21 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
 
         val handler = Handler(Looper.getMainLooper())
         addTextChangedListener {
-            if(vgsInputType is VGSTextInputType.CardNumber) {
-                state.content = it.toString().replace(" ".toRegex(), "")
-            } else {
-                state.content = it.toString()
-            }
-
+            state.content = it.toString()
             handler.removeCallbacks(inputStateRunnable)
             handler.postDelayed(inputStateRunnable, 500)
         }
+        isListeningPermitted = false
         id = ViewCompat.generateViewId()
     }
 
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
         super.onSelectionChanged(selStart, selEnd)
-        if(vgsInputType is VGSTextInputType.CardExpDate) setSelection(text?.length?:0)
+        setSelection(text?.length?:0)
     }
 
-    fun setInputFormatType(inputType: VGSTextInputType) {
+    fun setFieldType(inputType: VGSTextInputType) {
+        isListeningPermitted = true
         vgsInputType = inputType
         when(inputType) {
             is VGSTextInputType.CardNumber -> {
@@ -73,10 +74,10 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
                 filters = arrayOf(filter)
                 setInputType(InputType.TYPE_CLASS_PHONE)
             }
-            is VGSTextInputType.CVVCardCode -> {
+            is VGSTextInputType.CVCCardCode -> {
                 applyNewTextWatcher(null)
                 val filterLength = InputFilter.LengthFilter(inputType.length)
-                filters = arrayOf(CVVValidateFilter(), filterLength)
+                filters = arrayOf(CVCValidateFilter(), filterLength)
                 setInputType(InputType.TYPE_CLASS_DATETIME)
             }
             is VGSTextInputType.CardOwnerName -> {
@@ -93,6 +94,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         }
         state.type = vgsInputType
         stateListener?.emit(id, state)
+        isListeningPermitted = false
     }
 
     override fun setTag(tag: Any?) {
@@ -102,15 +104,20 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         }
     }
 
+    override fun addTextChangedListener(watcher: TextWatcher?) {
+        if(isListeningPermitted) {
+            super.addTextChangedListener(watcher)
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        isListeningPermitted = false
+    }
+
     private fun applyNewTextWatcher(textWatcher: TextWatcher?) {
         activeTextWatcher?.let { removeTextChangedListener(activeTextWatcher) }
         textWatcher?.let { addTextChangedListener(textWatcher) }
         activeTextWatcher = textWatcher
     }
-
-//    internal fun setVGSPlaceHolderText(text:String?) {
-//        hint = text
-//        state.placeholder = text
-//        stateListener?.emit(id, state)
-//    }
 }

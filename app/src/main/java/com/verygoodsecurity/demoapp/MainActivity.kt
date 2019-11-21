@@ -2,12 +2,7 @@ package com.verygoodsecurity.demoapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -25,45 +20,17 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        sendPost?.setOnClickListener(this)
-        sendGet?.setOnClickListener(this)
+        submitBtn?.setOnClickListener(this)
 
         vgsForm.onResponseListener = this
 
         vgsForm.addOnFieldStateChangeListener(getOnFieldStateChangeListener())
 
         vgsForm.bindView(cardNumberField)
-        vgsForm.bindView(cardCVVField)
+        vgsForm.bindView(cardCVCField)
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
-
-//        test(cardNumberField)
-//        test(cardNumberFieldLay)
     }
-
-//    fun test(v:View) {
-//        if(v is ViewGroup) {
-//            val count = v.childCount
-//
-//            for(i in 0..count) {
-//                val v = v.getChildAt(i)
-//                when(v) {
-//                    is ViewGroup -> test(v)
-//                    is EditText -> hackView(v)
-//                }
-//            }
-//        }
-//    }
-
-//    private fun hackView(v: EditText) {
-//        v.addTextChangedListener(object :TextWatcher {
-//            override fun afterTextChanged(p0: Editable?) {
-//                Log.e("test", "hackedView: $p0")
-//            }
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-//        })
-//    }
 
     override fun onDestroy() {
         vgsForm.onDestroy()
@@ -72,23 +39,13 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
     override fun onClick(v: View?) {
         progressBar?.visibility = View.VISIBLE
-        when(v?.id) {
-            R.id.sendPost -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST)
-            R.id.sendGet -> vgsForm.asyncSubmit(this@MainActivity, "/get", HTTPMethod.GET)
+        when (v?.id) {
+            R.id.submitBtn -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST, null)
         }
     }
 
-
-
-
-
-
-
-
-
-
-    private fun getOnFieldStateChangeListener():OnFieldStateChangeListener {
-        return object :OnFieldStateChangeListener {
+    private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
+        return object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
                 val states = vgsForm.getAllStates()
                 val builder = StringBuilder()
@@ -98,7 +55,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                         .append("   isValid: ").append(it.isValid).append("\n")
                         .append("   isEmpty: ").append(it.isEmpty).append("\n")
                         .append("   isRequired: ").append(it.isRequired).append("\n")
-                    if(it is FieldState.CardNumberState) {
+                    if (it is FieldState.CardNumberState) {
                         builder.append("    type: ").append(it.cardType).append("\n")
                             .append("       last4: ").append(it.last4).append("\n")
                             .append("       bin: ").append(it.bin).append("\n")
@@ -113,18 +70,17 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
     override fun onResponse(response: VGSResponse?) {
         progressBar?.visibility = View.INVISIBLE
-        when(response) {
+        when (response) {
             is VGSResponse.SuccessResponse -> {
                 val builder = StringBuilder("CODE: ")
                     .append(response.code.toString()).append("\n\n")
                 response.response?.forEach {
-                    builder.append(it.key).append(": ").append(it.value).append("\n")
+                    builder.append(it.key).append(": ").append(it.value).append("\n\n")
                 }
                 responseView.text = builder.toString()
             }
-            is VGSResponse.ErrorResponse -> responseView.text = "CODE: ${response.errorCode} \n\n ${response.localizeMessage}"
+            is VGSResponse.ErrorResponse -> responseView.text =
+                "CODE: ${response.errorCode} \n\n ${response.localizeMessage}"
         }
     }
-
-
 }

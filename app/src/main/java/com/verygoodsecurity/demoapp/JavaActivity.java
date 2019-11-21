@@ -32,10 +32,9 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.sendGet).setOnClickListener(this);
-        findViewById(R.id.sendPost).setOnClickListener(this);
+        findViewById(R.id.submitBtn).setOnClickListener(this);
 
-        vgsForm.setOnResponseListener(this);
+        vgsForm.addOnResponseListeners(this);
 
         vgsForm.addOnFieldStateChangeListener(this);
 
@@ -43,8 +42,8 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
 
         View cardNumberField = findViewById(R.id.cardNumberField);
         vgsForm.bindView((VGSEditText) cardNumberField);
-        View cardCVVField = findViewById(R.id.cardCVVField);
-        vgsForm.bindView((VGSEditText) cardCVVField);
+        View cardCVCField = findViewById(R.id.cardCVCField);
+        vgsForm.bindView((VGSEditText) cardCVCField);
         View cardHolderField = findViewById(R.id.cardHolderField);
         vgsForm.bindView((VGSEditText) cardHolderField);
         View cardExpDateField = findViewById(R.id.cardExpDateField);
@@ -54,8 +53,7 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.sendGet: vgsForm.asyncSubmit(this, "/get", HTTPMethod.GET, null);
-            case R.id.sendPost: vgsForm.asyncSubmit(this, "/post", HTTPMethod.POST, null);
+            case R.id.submitBtn: vgsForm.asyncSubmit(this, "/post", HTTPMethod.POST, null);
         }
     }
 

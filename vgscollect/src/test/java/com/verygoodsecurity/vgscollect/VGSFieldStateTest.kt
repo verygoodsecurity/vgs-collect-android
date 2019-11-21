@@ -48,16 +48,16 @@ class VGSFieldStateTest {
     }
 
     @Test
-    fun map_VGSTextInputTypeTo_CVVCardCode() {
-        val cv = VGSTextInputType.CVVCardCode
+    fun map_VGSTextInputTypeTo_CVCCardCode() {
+        val cv = VGSTextInputType.CVCCardCode
 
         val cv1 = cv.mapVGSTextInputTypeToFieldState()
-        assertTrue(cv1 is FieldState.CVVState)
+        assertTrue(cv1 is FieldState.CVCState)
     }
 
     @Test
     fun mapToFieldState() {
-        val type = VGSTextInputType.CVVCardCode
+        val type = VGSTextInputType.CVCCardCode
         val oldState = VGSFieldState(isFocusable = true, isRequired = true, type = type, content = "123", alias = "a")
 
         val newState = oldState.mapToFieldState()

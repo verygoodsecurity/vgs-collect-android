@@ -15,8 +15,8 @@ class VGSTextInputTypeTest {
     }
 
     @Test
-    fun testCVVCardCode() {
-        val type = VGSTextInputType.CVVCardCode
+    fun testCVCCardCode() {
+        val type = VGSTextInputType.CVCCardCode
         assertTrue(type.validate("123"))
     }
 

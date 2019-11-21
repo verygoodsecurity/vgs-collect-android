@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.util
 import android.util.Log
 import com.verygoodsecurity.vgscollect.BuildConfig
 
-object Logger {
+internal object Logger {
     fun e(tag:String, message:String) {
         if(BuildConfig.DEBUG) {
             Log.e(tag, message)
