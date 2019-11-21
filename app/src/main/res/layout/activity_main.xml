@@ -36,7 +36,7 @@
                 android:layout_height="match_parent"
                 app:aliasName="cardNumber"
                 app:isRequired="false"
-                app:textColor="#ff7777"
+                app:textColor="@color/black"
                 app:singleLine="true"
                 app:textSize="12dp"
                 app:text="4111111111111111"
@@ -44,23 +44,23 @@
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-            android:id="@+id/cardCVVFieldLay"
+            android:id="@+id/cardCVCFieldLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
-            app:hint="@string/cvv">
+            app:hint="@string/cvc">
             <com.verygoodsecurity.vgscollect.widget.VGSEditText
-                android:id="@+id/cardCVVField"
+                android:id="@+id/cardCVCField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:aliasName="cvvNum"
+                app:aliasName="cvcNum"
+                app:textColor="@color/black"
                 app:isRequired="true"
-                app:textColor="#33ffaa"
                 app:singleLine="true"
                 app:textSize="12dp"
                 app:text="123"
-                app:fieldType="cardCVVNumber"/>
+                app:fieldType="cardCVCNumber"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardHolderFieldLay"

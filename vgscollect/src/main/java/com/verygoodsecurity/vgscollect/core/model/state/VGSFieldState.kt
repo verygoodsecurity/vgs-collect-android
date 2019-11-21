@@ -23,7 +23,7 @@ fun VGSTextInputType.mapVGSTextInputTypeToFieldState(content: String? = null):Fi
             FieldState.CardNumberState(content, this.card.name)
         }
         is VGSTextInputType.CardOwnerName -> FieldState.CardName
-        is VGSTextInputType.CVVCardCode -> FieldState.CVVState
+        is VGSTextInputType.CVCCardCode -> FieldState.CVCState
         is VGSTextInputType.CardExpDate -> FieldState.CardExpirationDate
     }
 }

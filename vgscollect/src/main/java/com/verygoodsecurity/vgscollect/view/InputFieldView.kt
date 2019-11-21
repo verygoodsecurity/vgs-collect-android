@@ -210,7 +210,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     open fun setFieldType(type:Int) {
         val fieldType =  when(type) {
             0 -> VGSTextInputType.CardNumber()
-            1 -> VGSTextInputType.CVVCardCode
+            1 -> VGSTextInputType.CVCCardCode
             2 -> VGSTextInputType.CardExpDate
             3 -> VGSTextInputType.CardOwnerName
             else -> VGSTextInputType.CardOwnerName
