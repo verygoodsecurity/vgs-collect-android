@@ -26,7 +26,9 @@ For integration you need to install the [Android Studio](http://developer.androi
 #### Add the SDK to your project
 If you are using Maven, add the following to your `build.gradle` file:
 ```
-This will be added later
+dependencies {
+   implementation 'URL_WILL_BE_ADDED_LATER’
+}
 ```
 #### Add permissions
 The **SDK** requires the following permissions. Please add them to your `AndroidManifest.xml` file if they are not already present:
@@ -35,6 +37,16 @@ The **SDK** requires the following permissions. Please add them to your `Android
 ```
 
 ## Session tracking
+Add to your layout file VGSEditText:
+```
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.verygoodsecurity.vgscollect.widget.VGSEditText
+  	 android:id="@+id/my_secure_view"
+   	 android:layout_width="match_parent"
+  	 android:layout_height="match_parent" />
+```
+
 In your Activity or Fragment class add the following code to initialize the SDK:
 ```
 public class ExampleActivity extends Activity {
@@ -52,14 +64,15 @@ public class ExampleActivity extends Activity {
 ```
 
 ## Submit information
- Description will be added later
+To execute and send data on VGS Server call `asyncSubmit` or `submit` if you want to handle multithreading by yourself:
 ```
   vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST, customHeaders);
+  //  or
   vgsForm.submit(this, "/path", HTTPMethod.POST, customHeaders);
 ```
 
 ## Fields state tracking
-You can register a `OnFieldStateChangeListener` to be notified of secure fields state changes.
+Whenever an EditText changes, **VGSCollect** could notify user about it. Implement `OnFieldStateChangeListener` to observe changes:
 ```
   vgsForm.addOnFieldStateChangeListener(new OnFieldStateChangeListener() {
             @Override
@@ -70,6 +83,7 @@ You can register a `OnFieldStateChangeListener` to be notified of secure fields 
 ```
 
 ## Handle service response
+To read response you need to implement `VgsCollectResponseListener` :
 ```
   vgsForm.setOnResponseListener(new VgsCollectResponseListener() {
             @Override
@@ -80,6 +94,7 @@ You can register a `OnFieldStateChangeListener` to be notified of secure fields 
 ```
 
 ## End session
+Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy callback :
 ```
     @Override
     protected void onDestroy() {
