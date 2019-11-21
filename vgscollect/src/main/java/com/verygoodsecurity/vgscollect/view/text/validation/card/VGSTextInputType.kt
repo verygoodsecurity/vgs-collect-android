@@ -55,7 +55,7 @@ sealed class VGSTextInputType {
     }
     object CardOwnerName: VGSTextInputType() {
         override var validation: String
-            get() = "^[\\p{L}\\s'.-]+\$"        //apply anything  -  "^[a-zA-Z0-9 ,]+\$"
+            get() = "^[a-zA-Z0-9 ,]+\$"      //only symbols  -  "^[\\p{L}\\s'.-]+\$"
             set(_) {}
     }
 }
