@@ -27,6 +27,9 @@ Table of contents
    * [License](#license)
 <!--te-->
 
+<p align="center">
+<img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/screenshot1.png" width="200" alt="VGS Collect Android SDK States" hspace="20"><img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/screenshots2.png" width="200" alt="VGS Collect Android SDK Response" hspace="20">
+</p>
 
 ## Dependencies
 
@@ -130,4 +133,4 @@ Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy 
  ```
 
 ## License
-VGSCollect iOS SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE) for details.
+VGSCollect iOS SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/LICENSE) for details.
