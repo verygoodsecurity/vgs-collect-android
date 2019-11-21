@@ -2,12 +2,7 @@ package com.verygoodsecurity.demoapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.widget.EditText
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -36,7 +31,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         vgsForm.bindView(cardCVVField)
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
-        brokeViewMethodTest(cardNumberFieldLay)
     }
 
     override fun onDestroy() {
@@ -48,10 +42,9 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         progressBar?.visibility = View.VISIBLE
         when (v?.id) {
             R.id.sendPost -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST, null)
-            R.id.sendGet -> brokeViewMethodTest(cardNumberFieldLay)//vgsForm.asyncSubmit(this@MainActivity, "/get", HTTPMethod.GET, null)
+            R.id.sendGet -> vgsForm.asyncSubmit(this@MainActivity, "/get", HTTPMethod.GET, null)
         }
     }
-
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
         return object : OnFieldStateChangeListener {
