@@ -1,8 +1,35 @@
+[![CircleCI](https://circleci.com/gh/verygoodsecurity/vgs-collect-ios/tree/dev.svg?style=svg&circle-token=ec7cddc71a1c2f6e99843ef56fdb6898a2ef8f52)](https://circleci.com/gh/verygoodsecurity/vgs-collect-ios/tree/dev)
+[![UT](https://img.shields.io/badge/Unit_Test-pass-green)]()
+[![license](https://img.shields.io/github/license/verygoodsecurity/vgs-ios-sdk.svg)]()
+
 # VGS Collect SDK 
 
 >VGS Collect - is a product suite that allows customers to collect information securely without possession of it. VGS Collect mobile SDKs - are native mobile forms modules that allow customers to collect information securely on mobile devices with iOS and Android. **Source:** [vgs-collect](https://www.verygoodsecurity.com/docs/vgs-collect/index)
 >
 >Customers can use the same VGS Vault and the same server-side for Mobile apps as for Web. Their experience should stay the same and be not dependent on the platform they use: Web or Mobile.
+
+
+Table of contents
+=================
+
+<!--ts-->
+   * [Dependencies](#dependencies)
+   * [Structure](#structure)
+   * [Integration](#integration)
+      * [Add the SDK to your project](#add-the-sdk-to-your-project)
+      * [Add permissions](#add-permissions)
+   * [Usage](#usage)
+      * [Session initialization](#session-initialization)
+      * [Submit information](#submit-information)
+      * [Fields state tracking](#fields-state-tracking)
+      * [Handle service response](#handle-service-response)
+      * [End session](#end-session)
+   * [License](#license)
+<!--te-->
+
+<p align="center">
+<img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/screenshot1.png" width="200" alt="VGS Collect Android SDK States" hspace="20"><img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/screenshots2.png" width="200" alt="VGS Collect Android SDK Response" hspace="20">
+</p>
 
 ## Dependencies
 
@@ -26,7 +53,9 @@ For integration you need to install the [Android Studio](http://developer.androi
 #### Add the SDK to your project
 If you are using Maven, add the following to your `build.gradle` file:
 ```
-This will be added later
+dependencies {
+   implementation 'URL_WILL_BE_ADDED_LATER’
+}
 ```
 #### Add permissions
 The **SDK** requires the following permissions. Please add them to your `AndroidManifest.xml` file if they are not already present:
@@ -34,8 +63,20 @@ The **SDK** requires the following permissions. Please add them to your `Android
 <uses-permission android:name="android.permission.INTERNET"/>
 ```
 
-## Session tracking
-In your Activity or Fragment class add the following code to initialize the SDK:
+## Usage
+
+#### Session initialization
+Add VGSEditText to your layout file:
+```
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.verygoodsecurity.vgscollect.widget.VGSEditText
+  	 android:id="@+id/my_secure_view"
+   	 android:layout_width="match_parent"
+  	 android:layout_height="match_parent" />
+```
+
+Add the following code to initialize the SDK to your Activity or Fragment class:
 ```
 public class ExampleActivity extends Activity {
    private VGSCollect vgsForm = new VGSCollect( user_key, Environment.SANDBOX);
@@ -51,15 +92,16 @@ public class ExampleActivity extends Activity {
 }
 ```
 
-## Submit information
- Description will be added later
+#### Submit information
+Call `asyncSubmit` or `submit` to execute and send data on VGS Server if you want to handle multithreading by yourself:
 ```
   vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST, customHeaders);
+  //  or
   vgsForm.submit(this, "/path", HTTPMethod.POST, customHeaders);
 ```
 
-## Fields state tracking
-You can register a `OnFieldStateChangeListener` to be notified of secure fields state changes.
+#### Fields state tracking
+Whenever an EditText changes, **VGSCollect** can notify user about it. Implement `OnFieldStateChangeListener` to observe changes:
 ```
   vgsForm.addOnFieldStateChangeListener(new OnFieldStateChangeListener() {
             @Override
@@ -69,7 +111,8 @@ You can register a `OnFieldStateChangeListener` to be notified of secure fields 
         });
 ```
 
-## Handle service response
+#### Handle service response
+You need to implement `VgsCollectResponseListener` to read response:
 ```
   vgsForm.setOnResponseListener(new VgsCollectResponseListener() {
             @Override
@@ -79,7 +122,8 @@ You can register a `OnFieldStateChangeListener` to be notified of secure fields 
         });
 ```
 
-## End session
+#### End session
+Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy callback:
 ```
     @Override
     protected void onDestroy() {
@@ -88,3 +132,5 @@ You can register a `OnFieldStateChangeListener` to be notified of secure fields 
     }
  ```
 
+## License
+VGSCollect iOS SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/LICENSE) for details.

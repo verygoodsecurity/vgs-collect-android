@@ -8,7 +8,7 @@ sealed class VGSTextInputType {
         get() = when(this) {
             is CardNumber -> "card_num_type"
             is CardOwnerName -> "card_owner_type"
-            is CVVCardCode -> "cvv_num_type"
+            is CVCCardCode -> "cvc_num_type"
             is CardExpDate -> "exp_date_type"
         }
 
@@ -16,7 +16,7 @@ sealed class VGSTextInputType {
         get() = when(this) {
             is CardNumber -> 19
             is CardOwnerName -> 256
-            is CVVCardCode -> 4
+            is CVCCardCode -> 4
             is CardExpDate -> 7
         }
 
@@ -35,13 +35,15 @@ sealed class VGSTextInputType {
             set(_) {}
 
         override fun validate(str: String?): Boolean {
-            card = getTypeCredit(str)
+            val cardNumber = str?.replace(" ".toRegex(), "")
+            card = getTypeCredit(cardNumber)
+
             validation = card.validationPattern
-            return super.validate(str)
+            return super.validate(cardNumber)
         }
     }
 
-    object CVVCardCode : VGSTextInputType() {
+    object CVCCardCode : VGSTextInputType() {
         override var validation: String
             get() = "^[0-9]{3,4}\$"
             set(_) {}
@@ -53,7 +55,7 @@ sealed class VGSTextInputType {
     }
     object CardOwnerName: VGSTextInputType() {
         override var validation: String
-            get() = "^[\\p{L}\\s'.-]+\$"        //apply anything  -  "^[a-zA-Z0-9 ,]+\$"
+            get() = "^[a-zA-Z0-9 ,]+\$"      //only symbols  -  "^[\\p{L}\\s'.-]+\$"
             set(_) {}
     }
 }
