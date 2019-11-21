@@ -58,7 +58,7 @@
 
         <attr name="fieldType" format="enum">
             <enum name="cardNumber" value="0"/>
-            <enum name="cardCVVNumber" value="1"/>
+            <enum name="cardCVCNumber" value="1"/>
             <enum name="cardDate" value="2"/>
             <enum name="cardOwner" value="3"/>
             <enum name="info" value="4"/>

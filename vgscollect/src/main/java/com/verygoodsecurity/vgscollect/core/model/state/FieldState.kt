@@ -35,7 +35,7 @@ sealed class FieldState {
         val cardType:String = type
     }
 
-    object CVVState:FieldState()
+    object CVCState:FieldState()
     object CardName:FieldState()
     object CardExpirationDate:FieldState()
 }

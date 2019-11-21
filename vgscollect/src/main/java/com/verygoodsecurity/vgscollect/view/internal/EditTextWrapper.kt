@@ -74,10 +74,10 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
                 filters = arrayOf(filter)
                 setInputType(InputType.TYPE_CLASS_PHONE)
             }
-            is VGSTextInputType.CVVCardCode -> {
+            is VGSTextInputType.CVCCardCode -> {
                 applyNewTextWatcher(null)
                 val filterLength = InputFilter.LengthFilter(inputType.length)
-                filters = arrayOf(CVVValidateFilter(), filterLength)
+                filters = arrayOf(CVCValidateFilter(), filterLength)
                 setInputType(InputType.TYPE_CLASS_DATETIME)
             }
             is VGSTextInputType.CardOwnerName -> {

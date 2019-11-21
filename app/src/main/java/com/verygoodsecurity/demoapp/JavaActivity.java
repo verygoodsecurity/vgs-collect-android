@@ -43,8 +43,8 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
 
         View cardNumberField = findViewById(R.id.cardNumberField);
         vgsForm.bindView((VGSEditText) cardNumberField);
-        View cardCVVField = findViewById(R.id.cardCVVField);
-        vgsForm.bindView((VGSEditText) cardCVVField);
+        View cardCVCField = findViewById(R.id.cardCVCField);
+        vgsForm.bindView((VGSEditText) cardCVCField);
         View cardHolderField = findViewById(R.id.cardHolderField);
         vgsForm.bindView((VGSEditText) cardHolderField);
         View cardExpDateField = findViewById(R.id.cardExpDateField);
