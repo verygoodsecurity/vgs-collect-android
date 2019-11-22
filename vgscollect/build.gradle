@@ -1,32 +1,11 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
 
 apply from: 'src/version.gradle'
-
-ext {
-    bintrayRepo = 'vgs-collect-android'
-    bintrayName = 'vgs-collect'
-
-    publishedGroupId = 'com.verygoodsecurity'
-    libraryName = 'VGS Collect'
-    artifact = 'vgs-collect'
-
-    libraryDescription = 'VGS Collect mobile SDKs - are native mobile forms modules that allow customers to collect information securely on mobile Android devices'
-
-    siteUrl = 'https://github.com/verygoodsecurity/vgs-collect-android'
-    gitUrl = 'https://github.com/verygoodsecurity/vgs-collect-android.git'
-
-    libraryVersion = project.globalVersionName
-
-    developerId = 'dmytro'
-    developerName = 'Dmytro'
-    developerEmail = 'dmitriy.kosolapenko@verygoodsecurity.com'
-
-    licenseName = 'MIT License'
-    licenseUrl = 'https://opensource.org/licenses/MIT'
-    allLicenses = ["MIT License"]
-}
+apply from: 'src/bintray.gradle'
 
 android {
     compileSdkVersion 28
@@ -74,6 +53,4 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
-
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+apply from: 'bintray.script'
