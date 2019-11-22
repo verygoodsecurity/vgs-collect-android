@@ -3,14 +3,13 @@
 
 -renamesourcefileattribute SourceFile
 
-
 -keep, allowobfuscation public class * extends android.view.View {
       public <init>(android.content.Context);
       public <init>(android.content.Context, android.util.AttributeSet);
       public <init>(android.content.Context, android.util.AttributeSet, int);
       public void set*(...);
 }
--keep public class com.soverypref.collectpref.view.* {
+-keep public class com.verygoodsecurity.vgscollect.view.* {
       public <init>(android.content.Context);
       public <init>(android.content.Context, android.util.AttributeSet);
       public <init>(android.content.Context, android.util.AttributeSet, int);
@@ -23,20 +22,20 @@
       public <init>(android.content.Context, android.util.AttributeSet, int);
       public void set*(...);
 }
--keep public class com.soverypref.collectpref.widget.** {
+-keep public class com.verygoodsecurity.vgscollect.widget.** {
     public private protected *;
 }
--keep, allowobfuscation public class com.soverypref.collectpref.core.** {
+-keep, allowobfuscation public class com.verygoodsecurity.vgscollect.core.** {
     public private protected *;
 }
 
--keep public class * extends com.soverypref.collectpref.view.text.validation.card.VGSTextInputType  { *; }
--keep public interface  com.soverypref.collectpref.core.storage.OnFieldStateChangeListener { *; }
--keep public interface com.soverypref.collectpref.core.storage.VgsStore { *; }
--keep public class * extends com.soverypref.collectpref.core.model.state.FieldState { *; }
--keep public class * extends com.soverypref.collectpref.core.model.VGSResponse { *; }
--keep class com.soverypref.collectpref.core.* {
-    public void addOnResponseListeners(com.soverypref.collectpref.core.VgsCollectResponseListener);
+-keep public class * extends com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType  { *; }
+-keep public interface  com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener { *; }
+-keep public interface com.verygoodsecurity.vgscollect.core.storage.VgsStore { *; }
+-keep public class * extends com.verygoodsecurity.vgscollect.core.model.state.FieldState { *; }
+-keep public class * extends com.verygoodsecurity.vgscollect.core.model.VGSResponse { *; }
+-keep class com.verygoodsecurity.vgscollect.core.* {
+    public void addOnResponseListeners(com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener);
     public void onDestroy();
     public List<FieldState> getAllStates();
     *;
