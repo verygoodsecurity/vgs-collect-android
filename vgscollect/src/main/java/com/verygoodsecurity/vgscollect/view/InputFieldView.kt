@@ -226,14 +226,6 @@ abstract class InputFieldView @JvmOverloads constructor(
         return inputField
     }
 
-
-
-
-
-
-
-
-
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())
         savedState.text = inputField.text.toString()

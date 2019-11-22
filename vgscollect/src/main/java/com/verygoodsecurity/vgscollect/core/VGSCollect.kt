@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgscollect.core
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.AsyncTask
-import android.util.Log
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.core.api.ApiClient
@@ -44,7 +43,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         storage = store
         emitter = store
 
-        client = URLConnectionClient(baseURL)
+        client = URLConnectionClient.newInstance(baseURL)
 
         isURLValid = URLUtil.isValidUrl(baseURL)
     }
