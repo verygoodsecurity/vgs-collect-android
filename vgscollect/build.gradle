@@ -4,29 +4,28 @@ apply plugin: 'kotlin-android-extensions'
 
 apply from: 'src/version.gradle'
 
-
 ext {
-    bintrayRepo = ''
-    bintrayName = ''
+    bintrayRepo = 'vgs-collect-android'
+    bintrayName = 'vgs-collect'
 
-    publishedGroupId = ''
-    libraryName = ''
-    artifact = ''
+    publishedGroupId = 'com.verygoodsecurity'
+    libraryName = 'VGS Collect'
+    artifact = 'vgs-collect'
 
-    libraryDescription = ''
+    libraryDescription = 'VGS Collect mobile SDKs - are native mobile forms modules that allow customers to collect information securely on mobile Android devices'
 
-    siteUrl = ''
-    gitUrl = ''
+    siteUrl = 'https://github.com/verygoodsecurity/vgs-collect-android'
+    gitUrl = 'https://github.com/verygoodsecurity/vgs-collect-android.git'
 
     libraryVersion = project.globalVersionName
 
-    developerId = ''
-    developerName = ''
-    developerEmail = ''
+    developerId = 'dmytro'
+    developerName = 'Dmytro'
+    developerEmail = 'dmitriy.kosolapenko@verygoodsecurity.com'
 
-    licenseName = ''
-    licenseUrl = ''
-    allLicenses = [""]
+    licenseName = 'MIT License'
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+    allLicenses = ["MIT License"]
 }
 
 android {
