@@ -4,6 +4,31 @@ apply plugin: 'kotlin-android-extensions'
 
 apply from: 'src/version.gradle'
 
+
+ext {
+    bintrayRepo = ''
+    bintrayName = ''
+
+    publishedGroupId = ''
+    libraryName = ''
+    artifact = ''
+
+    libraryDescription = ''
+
+    siteUrl = ''
+    gitUrl = ''
+
+    libraryVersion = project.globalVersionName
+
+    developerId = ''
+    developerName = ''
+    developerEmail = ''
+
+    licenseName = ''
+    licenseUrl = ''
+    allLicenses = [""]
+}
+
 android {
     compileSdkVersion 28
     buildToolsVersion "29.0.2"
@@ -31,7 +56,9 @@ android {
         unitTests.returnDefaultValues = true
     }
 }
-
+tasks.withType(Javadoc).all {
+    enabled = false
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -47,3 +74,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
