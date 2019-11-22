@@ -133,4 +133,4 @@ Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy 
  ```
 
 ## License
-VGSCollect iOS SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/LICENSE) for details.
+VGSCollect Android SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/LICENSE) for details.
