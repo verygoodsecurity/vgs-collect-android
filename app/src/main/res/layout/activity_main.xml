@@ -67,7 +67,7 @@
                 android:id="@+id/cardCVCField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:aliasName="cvcNum"
+                app:aliasName="cardCvc"
                 app:textColor="@color/black"
                 app:isRequired="true"
                 app:singleLine="true"
@@ -86,7 +86,7 @@
                 android:id="@+id/cardHolderField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:aliasName="holder"
+                app:aliasName="cardHolder"
                 app:textColor="@color/black"
                 app:singleLine="true"
                 app:isRequired="true"
@@ -140,6 +140,7 @@
                 android:id="@+id/titleHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:paddingBottom="@dimen/half_default_margin"
                 android:text="STATE:"/>
             <TextView
