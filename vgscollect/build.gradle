@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'maven-publish'
+//apply plugin: 'com.jfrog.bintray'
+//apply plugin: 'maven-publish'
 
 apply from: 'src/version.gradle'
 //apply from: 'src/bintray.gradle'
@@ -53,4 +53,4 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
-apply from: 'bintray.script'
+//apply from: 'bintray.script'
