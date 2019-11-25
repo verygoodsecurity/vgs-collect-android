@@ -43,7 +43,6 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     }
 
     init {
-        isFocusable = false
         isListeningPermitted = true
         onFocusChangeListener = OnFocusChangeListener { _, f ->
             state.isFocusable = f
