@@ -82,8 +82,12 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    open fun setAliasName(alias:String?) {
-        inputField.tag = alias
+    open fun setFieldName(fieldName:String?) {
+        inputField.tag = fieldName
+    }
+
+    open fun setFieldName(resId:Int) {
+        inputField.tag = resources.getString(resId, "")
     }
 
     open fun setEllipsize(type: Int) {

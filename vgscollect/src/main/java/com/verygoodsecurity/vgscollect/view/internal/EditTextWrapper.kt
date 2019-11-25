@@ -43,6 +43,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     }
 
     init {
+        isFocusable = false
         isListeningPermitted = true
         onFocusChangeListener = OnFocusChangeListener { _, f ->
             state.isFocusable = f
@@ -100,7 +101,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     override fun setTag(tag: Any?) {
         tag?.run {
             super.setTag(tag)
-            state.alias = this as String
+            state.fieldName = this as String
         }
     }
 
