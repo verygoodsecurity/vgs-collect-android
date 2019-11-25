@@ -54,7 +54,7 @@ For integration you need to install the [Android Studio](http://developer.androi
 If you are using Maven, add the following to your `build.gradle` file:
 ```
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:0.0.2’
+   implementation 'com.verygoodsecurity:vgscollect:0.0.3’
 }
 ```
 #### Add permissions
@@ -133,4 +133,4 @@ Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy 
  ```
 
 ## License
-VGSCollect Android SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/LICENSE) for details.
+VGSCollect Android SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE) for details.
