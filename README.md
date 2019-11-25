@@ -1,6 +1,6 @@
-[![CircleCI](https://circleci.com/gh/verygoodsecurity/vgs-collect-ios/tree/dev.svg?style=svg&circle-token=ec7cddc71a1c2f6e99843ef56fdb6898a2ef8f52)](https://circleci.com/gh/verygoodsecurity/vgs-collect-ios/tree/dev)
+[![CircleCI](https://circleci.com/gh/verygoodsecurity/vgs-collect-android/tree/dev.svg?style=svg&circle-token=ec7cddc71a1c2f6e99843ef56fdb6898a2ef8f52)](https://circleci.com/gh/verygoodsecurity/vgs-collect-android/tree/dev)
 [![UT](https://img.shields.io/badge/Unit_Test-pass-green)]()
-[![license](https://img.shields.io/github/license/verygoodsecurity/vgs-ios-sdk.svg)]()
+[![license](https://img.shields.io/github/license/verygoodsecurity/vgs-android-sdk.svg)]()
 
 # VGS Collect SDK 
 
@@ -28,7 +28,7 @@ Table of contents
 <!--te-->
 
 <p align="center">
-<img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/vgs-collect-android-state.png" width="200" alt="VGS Collect Android SDK States" hspace="20"><img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/vgs-collect-android-response.png" width="200" alt="VGS Collect Android SDK Response" hspace="20">
+<img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/master/vgs-collect-android-state.png" width="200" alt="VGS Collect Android SDK States" hspace="20"><img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/master/vgs-collect-android-response.png" width="200" alt="VGS Collect Android SDK Response" hspace="20">
 </p>
 
 ## Dependencies
