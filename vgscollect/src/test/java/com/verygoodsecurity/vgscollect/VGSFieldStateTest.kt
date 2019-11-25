@@ -16,7 +16,7 @@ class VGSFieldStateTest {
         val type = Mockito.mock(VGSTextInputType::class.java)
         Mockito.doReturn(true).`when`(type).validate(Mockito.anyString())
 
-        val state = VGSFieldState(isFocusable = true, isRequired = true, type = type, content = "c", alias = "a")
+        val state = VGSFieldState(isFocusable = true, isRequired = true, type = type, content = "c", fieldName = "a")
         assertTrue(state.isValid())
     }
 
@@ -58,7 +58,7 @@ class VGSFieldStateTest {
     @Test
     fun mapToFieldState() {
         val type = VGSTextInputType.CVCCardCode
-        val oldState = VGSFieldState(isFocusable = true, isRequired = true, type = type, content = "123", alias = "a")
+        val oldState = VGSFieldState(isFocusable = true, isRequired = true, type = type, content = "123", fieldName = "a")
 
         val newState = oldState.mapToFieldState()
 
@@ -66,6 +66,6 @@ class VGSFieldStateTest {
             newState.isRequired == oldState.isRequired &&
             newState.isEmpty == oldState.content.isNullOrEmpty() &&
             newState.isValid == oldState.isValid() &&
-            newState.alias == oldState.alias)
+            newState.fieldName == oldState.fieldName)
     }
 }

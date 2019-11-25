@@ -9,7 +9,7 @@ sealed class FieldState {
         internal set
     var isRequired:Boolean = false
         internal set
-    var alias:String = ""
+    var fieldName:String = ""
         internal set
 
     class CardNumberState(

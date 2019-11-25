@@ -20,7 +20,7 @@ class VGSEditText @JvmOverloads constructor(
 
             try {
                 val type = getInteger(R.styleable.VGSEditText_fieldType, -1)
-                val aliasName = getString(R.styleable.VGSEditText_aliasName)
+                val fieldName = getString(R.styleable.VGSEditText_fieldName)
                 val hint = getString(R.styleable.VGSEditText_hint)
                 val textSize = getDimension(R.styleable.VGSEditText_textSize, -1f)
                 val textColor = getColor(R.styleable.VGSEditText_textColor, Color.BLACK)
@@ -36,7 +36,7 @@ class VGSEditText @JvmOverloads constructor(
                 val minLines = getInt(R.styleable.VGSEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.VGSEditText_maxLines, 0)
 
-                setAliasName(aliasName)
+                setFieldName(fieldName)
                 setFieldType(type)
                 setHint(hint)
                 setTextColor(textColor)

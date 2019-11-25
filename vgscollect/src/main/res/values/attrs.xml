@@ -28,7 +28,7 @@
     </attr>
 
     <declare-styleable name="VGSEditText">
-        <attr name="aliasName" format="string"/>
+        <attr name="fieldName" format="string"/>
 
         <attr name="text" format="string"  localization="suggested"/>
         <attr name="textSize"/>

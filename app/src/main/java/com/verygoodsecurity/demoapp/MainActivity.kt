@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                 val states = vgsForm.getAllStates()
                 val builder = StringBuilder()
                 states.forEach {
-                    builder.append(it.alias).append("\n")
+                    builder.append(it.fieldName).append("\n")
                         .append("   hasFocus: ").append(it.hasFocus).append("\n")
                         .append("   isValid: ").append(it.isValid).append("\n")
                         .append("   isEmpty: ").append(it.isEmpty).append("\n")
