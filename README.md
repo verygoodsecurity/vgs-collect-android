@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/verygoodsecurity/vgs-collect-android.svg?style=svg)](https://circleci.com/gh/verygoodsecurity/vgs-collect-android)
+[![CircleCI](https://circleci.com/gh/verygoodsecurity/vgs-collect-android/tree/master.svg?style=svg&circle-token=24087545f8aff3cee11ebe55330d2df778a7bb1f)](https://circleci.com/gh/verygoodsecurity/vgs-collect-android/tree/master)
 [![UT](https://img.shields.io/badge/Unit_Test-pass-green)]()
 [![license](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE)
 
@@ -54,7 +54,7 @@ For integration you need to install the [Android Studio](http://developer.androi
 If you are using Maven, add the following to your `build.gradle` file:
 ```
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:0.0.2’
+   implementation 'com.verygoodsecurity:vgscollect:0.0.3’
 }
 ```
 #### Add permissions
