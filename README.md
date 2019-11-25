@@ -1,6 +1,6 @@
-[![CircleCI](https://circleci.com/gh/verygoodsecurity/vgs-collect-ios/tree/dev.svg?style=svg&circle-token=ec7cddc71a1c2f6e99843ef56fdb6898a2ef8f52)](https://circleci.com/gh/verygoodsecurity/vgs-collect-ios/tree/dev)
+[![CircleCI](https://circleci.com/gh/verygoodsecurity/vgs-collect-android.svg?style=svg)](https://circleci.com/gh/verygoodsecurity/vgs-collect-android)
 [![UT](https://img.shields.io/badge/Unit_Test-pass-green)]()
-[![license](https://img.shields.io/github/license/verygoodsecurity/vgs-ios-sdk.svg)]()
+[![license](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE)
 
 # VGS Collect SDK 
 
