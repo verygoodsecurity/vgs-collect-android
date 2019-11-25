@@ -138,9 +138,9 @@ internal class URLConnectionClient:ApiClient {
         val builder = StringBuilder(baseURL)
 
         if(path.length > 1 && path.first().toString() == "/") {
-            builder.append("/").append(path)
-        } else {
             builder.append(path)
+        } else {
+            builder.append("/").append(path)
         }
 
         if(!getQuery.isNullOrEmpty()) {
