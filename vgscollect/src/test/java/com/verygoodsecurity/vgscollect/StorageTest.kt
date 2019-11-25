@@ -38,15 +38,15 @@ class StorageTest {
         val store = DefaultStorage()
         store.attachStateChangeListener(listener)
 
-        store.addItem(0, VGSFieldState(isFocusable = false, isRequired = true, alias = "alias"))
+        store.addItem(0, VGSFieldState(isFocusable = false, isRequired = true, fieldName = "alias"))
         Assert.assertNotNull("FieldState didn't update", userLastUpdatedState)
 
-        val viewState = VGSFieldState(isFocusable = true, isRequired = false, alias = "alias1")
+        val viewState = VGSFieldState(isFocusable = true, isRequired = false, fieldName = "alias1")
         store.addItem(0, viewState)
 
         val isEqual = userLastUpdatedState?.hasFocus == viewState.isFocusable &&
                 userLastUpdatedState?.isRequired == viewState.isRequired &&
-                userLastUpdatedState?.alias == viewState.alias
+                userLastUpdatedState?.fieldName == viewState.fieldName
         Assert.assertTrue("FieldState didn't update. User get different state", isEqual)
     }
 

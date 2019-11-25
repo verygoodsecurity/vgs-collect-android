@@ -106,7 +106,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         var isValid = true
         storage.getStates().forEach {
             if(!it.isValid()) {
-                val r = VGSResponse.ErrorResponse("is not a valid ${it.alias}", -1)
+                val r = VGSResponse.ErrorResponse("is not a valid ${it.fieldName}", -1)
                 onResponseListener?.onResponse(r)
                 isValid = false
                 return@forEach

@@ -47,10 +47,11 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
         return object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
+                titleHeader?.text = "STATE:"
                 val states = vgsForm.getAllStates()
                 val builder = StringBuilder()
                 states.forEach {
-                    builder.append(it.alias).append("\n")
+                    builder.append(it.fieldName).append("\n")
                         .append("   hasFocus: ").append(it.hasFocus).append("\n")
                         .append("   isValid: ").append(it.isValid).append("\n")
                         .append("   isEmpty: ").append(it.isEmpty).append("\n")
@@ -70,6 +71,8 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
     override fun onResponse(response: VGSResponse?) {
         progressBar?.visibility = View.INVISIBLE
+
+        titleHeader?.text = "RESPONSE:"
         when (response) {
             is VGSResponse.SuccessResponse -> {
                 val builder = StringBuilder("CODE: ")

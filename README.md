@@ -28,7 +28,7 @@ Table of contents
 <!--te-->
 
 <p align="center">
-<img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/screenshot1.png" width="200" alt="VGS Collect Android SDK States" hspace="20"><img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/screenshots2.png" width="200" alt="VGS Collect Android SDK Response" hspace="20">
+<img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/vgs-collect-android-state.png" width="200" alt="VGS Collect Android SDK States" hspace="20"><img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/develop/vgs-collect-android-response.png" width="200" alt="VGS Collect Android SDK Response" hspace="20">
 </p>
 
 ## Dependencies
@@ -54,7 +54,7 @@ For integration you need to install the [Android Studio](http://developer.androi
 If you are using Maven, add the following to your `build.gradle` file:
 ```
 dependencies {
-   implementation 'URL_WILL_BE_ADDED_LATER’
+   implementation 'com.verygoodsecurity:vgscollect:0.0.2’
 }
 ```
 #### Add permissions
