@@ -2,8 +2,10 @@ package com.verygoodsecurity.vgscollect.widget
 
 import android.content.Context
 import android.graphics.Color
+import android.text.InputType
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 
@@ -19,7 +21,8 @@ class VGSEditText @JvmOverloads constructor(
         ).apply {
 
             try {
-                val type = getInteger(R.styleable.VGSEditText_fieldType, -1)
+                val fieldType = getInteger(R.styleable.VGSEditText_fieldType, -1)
+                val inputType = getInt(R.styleable.VGSEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.VGSEditText_fieldName)
                 val hint = getString(R.styleable.VGSEditText_hint)
                 val textSize = getDimension(R.styleable.VGSEditText_textSize, -1f)
@@ -37,7 +40,6 @@ class VGSEditText @JvmOverloads constructor(
                 val maxLines = getInt(R.styleable.VGSEditText_maxLines, 0)
 
                 setFieldName(fieldName)
-                setFieldType(type)
                 setHint(hint)
                 setTextColor(textColor)
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
@@ -49,8 +51,14 @@ class VGSEditText @JvmOverloads constructor(
                 setMinLines(minLines)
                 setSingleLine(singleLine)
                 setIsRequired(isRequired)
-                setTypeface(getTypeface(), textStyle)
+                getTypeface()?.let {
+                    setTypeface(it, textStyle)
+                }
+
                 setText(text)
+
+                setInputType(inputType)
+                setFieldType(fieldType)
             } finally {
                 recycle()
             }

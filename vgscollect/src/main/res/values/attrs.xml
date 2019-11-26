@@ -30,6 +30,15 @@
     <declare-styleable name="VGSEditText">
         <attr name="fieldName" format="string"/>
 
+        <attr name="inputType">
+            <enum name="none" value="0" />
+            <enum name="text" value="1" />
+            <enum name="textPassword" value="128" />
+            <enum name="number" value="2" />
+            <enum name="numberPassword" value="16" />
+            <enum name="date" value="4" />
+        </attr>
+
         <attr name="text" format="string"  localization="suggested"/>
         <attr name="textSize"/>
         <attr name="textColor" />
@@ -67,5 +76,8 @@
 
     <declare-styleable name="VGSTextInputLayout">
         <attr name="hint" />
+        <attr name="passwordToggleEnabled" format="boolean"/>
+        <attr name="passwordToggleTint" format="color"/>
+        <attr name="passwordToggleDrawable" format="reference"/>
     </declare-styleable>
 </resources>

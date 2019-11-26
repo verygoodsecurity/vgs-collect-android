@@ -82,6 +82,10 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    open fun setInputType(inputType: Int) {
+        inputField.inputType = inputType
+    }
+
     open fun setFieldName(fieldName:String?) {
         inputField.tag = fieldName
     }
@@ -158,7 +162,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.setTextAppearance(resId)
     }
 
-    open fun getTypeface():Typeface {
+    open fun getTypeface():Typeface? {
         return inputField.typeface
     }
 
