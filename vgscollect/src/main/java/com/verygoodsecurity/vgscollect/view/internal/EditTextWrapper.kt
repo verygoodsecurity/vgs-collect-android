@@ -16,7 +16,7 @@ import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputTyp
 
 internal class EditTextWrapper(context: Context): TextInputEditText(context) {
 
-    private var vgsInputType: VGSTextInputType = VGSTextInputType.CardOwnerName
+    private var vgsInputType: VGSTextInputType? = null
     private val state = VGSFieldState()
 
     private var isListeningPermitted = false
@@ -36,14 +36,14 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         }
 
     private val inputStateRunnable = Runnable {
-        vgsInputType.validate(state.content)        //fixme change place to detect card type
+        vgsInputType?.validate(state.content)        //fixme change place to detect card type
 
-        state.type = vgsInputType
+        vgsInputType?.let { state.type = it }
+
         stateListener?.emit(id, state)
     }
 
     init {
-        isFocusable = false
         isListeningPermitted = true
         onFocusChangeListener = OnFocusChangeListener { _, f ->
             state.isFocusable = f
@@ -65,37 +65,63 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         setSelection(text?.length?:0)
     }
 
-    fun setFieldType(inputType: VGSTextInputType) {
+    fun setFieldType(fieldType: VGSTextInputType) {
         isListeningPermitted = true
-        vgsInputType = inputType
-        when(inputType) {
-            is VGSTextInputType.CardNumber -> {
-                applyNewTextWatcher(CardNumberTextWatcher)
-                val filter = InputFilter.LengthFilter(inputType.length)
-                filters = arrayOf(filter)
-                setInputType(InputType.TYPE_CLASS_PHONE)
-            }
-            is VGSTextInputType.CVCCardCode -> {
-                applyNewTextWatcher(null)
-                val filterLength = InputFilter.LengthFilter(inputType.length)
-                filters = arrayOf(CVCValidateFilter(), filterLength)
-                setInputType(InputType.TYPE_CLASS_DATETIME)
-            }
-            is VGSTextInputType.CardOwnerName -> {
-                applyNewTextWatcher(null)
-                filters = arrayOf()
-                setInputType(InputType.TYPE_CLASS_TEXT)
-            }
-            is VGSTextInputType.CardExpDate -> {
-                applyNewTextWatcher(ExpirationDateTextWatcher)
-                val filterLength = InputFilter.LengthFilter(inputType.length)
-                filters = arrayOf(filterLength)
-                setInputType(InputType.TYPE_CLASS_DATETIME)
-            }
+        vgsInputType = fieldType
+        when(fieldType) {
+            is VGSTextInputType.CardNumber -> applyCardNumFieldType(fieldType.length)
+            is VGSTextInputType.CVCCardCode -> applyCardCVCFieldType(fieldType.length)
+            is VGSTextInputType.CardOwnerName -> applyCardOwnerFieldType(fieldType.length)
+            is VGSTextInputType.CardExpDate -> applyCardExpDateFieldType(fieldType.length)
         }
-        state.type = vgsInputType
+        state.type = vgsInputType!!
         stateListener?.emit(id, state)
         isListeningPermitted = false
+    }
+
+    private fun applyCardExpDateFieldType(length: Int) {
+        applyNewTextWatcher(ExpirationDateTextWatcher)
+        val filterLength = InputFilter.LengthFilter(length)
+        filters = arrayOf(filterLength)
+        applyTextInputType()
+    }
+
+    private fun applyCardOwnerFieldType(length: Int) {
+        applyNewTextWatcher(null)
+        filters = arrayOf()
+        applyTextInputType()
+    }
+
+    private fun applyCardCVCFieldType(length: Int) {
+        applyNewTextWatcher(null)
+        val filterLength = InputFilter.LengthFilter(length)
+        filters = arrayOf(CVCValidateFilter(), filterLength)
+        applyNumberInputType()
+    }
+
+    private fun applyCardNumFieldType(length: Int) {
+        applyNewTextWatcher(CardNumberTextWatcher)
+        val filter = InputFilter.LengthFilter(length)
+        filters = arrayOf(filter)
+        applyTextInputType()
+    }
+
+    private fun applyNumberInputType() {
+        val type = inputType
+        if(type == InputType.TYPE_TEXT_VARIATION_PASSWORD || type == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
+            setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+        } else {
+            setInputType(InputType.TYPE_CLASS_TEXT)
+        }
+    }
+
+    private fun applyTextInputType() {
+        val type = inputType
+        if(type == InputType.TYPE_TEXT_VARIATION_PASSWORD || type == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
+            setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+        } else {
+            setInputType(InputType.TYPE_CLASS_TEXT)
+        }
     }
 
     override fun setTag(tag: Any?) {

@@ -62,6 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/colorAccent"
             app:hint="@string/cvc">
             <com.verygoodsecurity.vgscollect.widget.VGSEditText
                 android:id="@+id/cardCVCField"
@@ -70,6 +72,7 @@
                 app:fieldName="cardCvc"
                 app:textColor="@color/black"
                 app:isRequired="true"
+                app:inputType="numberPassword"
                 app:singleLine="true"
                 app:textSize="12dp"
                 app:text="123"
@@ -89,6 +92,7 @@
                 app:fieldName="cardHolder"
                 app:textColor="@color/black"
                 app:singleLine="true"
+                app:inputType="text"
                 app:isRequired="true"
                 app:textSize="12dp"
                 app:fieldType="cardOwner"

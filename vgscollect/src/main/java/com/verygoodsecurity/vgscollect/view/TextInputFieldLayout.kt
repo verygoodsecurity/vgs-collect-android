@@ -1,11 +1,14 @@
 package com.verygoodsecurity.vgscollect.view
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.annotation.DrawableRes
+import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgscollect.view.internal.TextInputLayoutWrapper
 
@@ -124,5 +127,19 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
 
     open fun setHint(text:String?) {
         textInputLayout.hint = text
+    }
+
+    open fun setPasswordToggleEnabled(isEnabled:Boolean) {
+        textInputLayout.isPasswordVisibilityToggleEnabled = isEnabled
+    }
+
+    open fun setPasswordVisibilityToggleDrawable(@DrawableRes resId:Int) {
+        textInputLayout.setPasswordVisibilityToggleDrawable(resId)
+    }
+
+    open fun setPasswordVisibilityToggleTintList(tintList: ColorStateList?) {
+        tintList?.let {
+            textInputLayout.setPasswordVisibilityToggleTintList(tintList)
+        }
     }
 }
