@@ -71,6 +71,38 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
+        inputField.setPadding(left, top, right, bottom)
+//        super.setPadding(left, top, right, bottom)
+        super.setPadding(0, 0, 0, 0)
+    }
+
+    override fun getPaddingBottom(): Int {
+        return inputField.paddingBottom
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    override fun getPaddingEnd(): Int {
+        return inputField.paddingEnd
+    }
+
+    override fun getPaddingLeft(): Int {
+        return inputField.paddingLeft
+    }
+
+    override fun getPaddingRight(): Int {
+        return inputField.paddingRight
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    override fun getPaddingStart(): Int {
+        return inputField.paddingStart
+    }
+
+    override fun getPaddingTop(): Int {
+        return inputField.paddingTop
+    }
+
     override fun onAttachedToWindow() {
         if(isAttachPermitted) {
             super.onAttachedToWindow()
@@ -78,6 +110,8 @@ abstract class InputFieldView @JvmOverloads constructor(
                 setAddStatesFromChildren(true)
                 addView(inputField)
             }
+            inputField.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+
             isAttachPermitted = false
         }
     }
@@ -215,6 +249,10 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.setFieldType(type)
     }
 
+    open fun setCursorColor(color:Int) {
+        inputField.setCursorDrawableColor(color)
+    }
+
     open fun setFieldType(type:Int) {
         val fieldType =  when(type) {
             0 -> VGSTextInputType.CardNumber()
@@ -233,14 +271,6 @@ abstract class InputFieldView @JvmOverloads constructor(
     internal fun getEditTextWrapper(): EditTextWrapper {
         return inputField
     }
-
-
-
-
-
-
-
-
 
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())

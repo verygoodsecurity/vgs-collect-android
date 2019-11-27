@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
-import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgscollect.view.internal.TextInputLayoutWrapper
 
@@ -16,8 +15,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private val textInputLayout =
-        TextInputLayoutWrapper(context)
+    private val textInputLayout = TextInputLayoutWrapper(context)
     private var isAttachPermitted = true
 
     init {
@@ -26,7 +24,9 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     }
 
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        textInputLayout.setPadding(left, top, right, bottom)
+//        super.setPadding(0,0,0,0)
+        super.setPadding(left, top, right, bottom)
+//        textInputLayout.setPadding(left, top, right, bottom)
     }
 
     override fun getPaddingBottom(): Int {
@@ -142,4 +142,21 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
             textInputLayout.setPasswordVisibilityToggleTintList(tintList)
         }
     }
+
+    open fun setBoxCornerRadii(boxCornerRadiusTopStart:Float, boxCornerRadiusTopEnd:Float, boxCornerRadiusBottomStart:Float, boxCornerRadiusBottomEnd:Float) {
+        textInputLayout.setBoxCornerRadii(boxCornerRadiusTopStart, boxCornerRadiusTopEnd, boxCornerRadiusBottomStart, boxCornerRadiusBottomEnd)
+    }
+
+    open fun setBoxBackgroundMode(style:Int) {
+        textInputLayout.setBoxBackgroundMode(style)
+    }
+
+    open fun setBoxBackgroundColor(c:Int) {
+        textInputLayout.boxBackgroundColor = c
+    }
+
+    open fun setBoxStrokeColor(c:Int) {
+        textInputLayout.boxStrokeColor = c
+    }
+
 }

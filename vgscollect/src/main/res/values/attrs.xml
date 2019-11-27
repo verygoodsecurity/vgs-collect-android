@@ -29,6 +29,7 @@
 
     <declare-styleable name="VGSEditText">
         <attr name="fieldName" format="string"/>
+        <attr name="cursorColor" format="color"/>
 
         <attr name="inputType">
             <enum name="none" value="0" />
@@ -79,5 +80,28 @@
         <attr name="passwordToggleEnabled" format="boolean"/>
         <attr name="passwordToggleTint" format="color"/>
         <attr name="passwordToggleDrawable" format="reference"/>
+
+<!--        <attr name="boxStrokeWidth" format="dimension"/>-->
+        <attr name="boxBackgroundModes" >
+            <enum name="outline" value="0"/>
+            <enum name="filled" value="1"/>
+            <enum name="none" value="2"/>
+        </attr>
+
+        <attr name="boxBackgroundColor" format="color"/>
+        <attr name="boxStrokeColor" format="color"/>
+        <attr name="boxCornerRadiusBottomEnd" format="dimension"/>
+        <attr name="boxCornerRadiusTopStart" format="dimension"/>
+        <attr name="boxCornerRadiusBottomStart" format="dimension"/>
+        <attr name="boxCornerRadiusTopEnd" format="dimension"/>
+
+<!--        app:boxStrokeWidth="2dp"-->
+<!--        app:boxBackgroundMode="outline"-->
+<!--        android:paddingStart="12dp"-->
+<!--        app:boxCornerRadiusBottomEnd="@dimen/default_margin"-->
+<!--        app:boxCornerRadiusTopStart="@dimen/default_margin"-->
+<!--        app:boxCornerRadiusBottomStart="@dimen/default_margin"-->
+<!--        android:textColorHint="@color/black"-->
+<!--        app:boxStrokeColor="@color/design_default_color_primary"-->
     </declare-styleable>
 </resources>

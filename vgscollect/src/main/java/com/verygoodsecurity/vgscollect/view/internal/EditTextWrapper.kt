@@ -1,6 +1,9 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Handler
 import android.text.InputFilter
 import android.text.InputType
@@ -10,8 +13,10 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.text.validation.card.*
 import android.os.Looper
+import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
+import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
 
 internal class EditTextWrapper(context: Context): TextInputEditText(context) {
@@ -77,6 +82,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         state.type = vgsInputType!!
         stateListener?.emit(id, state)
         isListeningPermitted = false
+        setText(text)
     }
 
     private fun applyCardExpDateFieldType(length: Int) {
@@ -146,5 +152,37 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         activeTextWatcher?.let { removeTextChangedListener(activeTextWatcher) }
         textWatcher?.let { addTextChangedListener(textWatcher) }
         activeTextWatcher = textWatcher
+    }
+
+    internal fun setCursorDrawableColor(color: Int) {
+        try {
+            val cursorDrawableResField = TextView::class.java.getDeclaredField("mCursorDrawableRes")
+            cursorDrawableResField.isAccessible = true
+            val cursorDrawableRes = cursorDrawableResField.getInt(this)
+            val editorField = TextView::class.java.getDeclaredField("mEditor")
+            editorField.isAccessible = true
+            val editor = editorField.get(this)
+            val clazz = editor.javaClass
+            val res = context.resources
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val drawableForCursorField = clazz.getDeclaredField("mDrawableForCursor")
+                drawableForCursorField.isAccessible = true
+                val drawable = res.getDrawable(cursorDrawableRes)
+                drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+                drawableForCursorField.set(editor, drawable)
+            } else {
+                val cursorDrawableField = clazz.getDeclaredField("mCursorDrawable")
+                cursorDrawableField.isAccessible = true
+                val drawables = arrayOfNulls<Drawable>(2)
+                drawables[0] = res.getDrawable(cursorDrawableRes)
+                drawables[0]?.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+                drawables[1] = res.getDrawable(cursorDrawableRes)
+                drawables[1]?.setColorFilter(color, PorterDuff.Mode.SRC_IN)
+                cursorDrawableField.set(editor, drawables)
+            }
+        } catch (t: Throwable) {
+            Logger.i("VGSEditText", "can't apply color on cursor")
+        }
+
     }
 }
