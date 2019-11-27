@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscollect.widget
 
 import android.content.Context
 import android.graphics.Color
-import android.text.InputType
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.inputmethod.EditorInfo
@@ -21,6 +20,7 @@ class VGSEditText @JvmOverloads constructor(
         ).apply {
 
             try {
+                val cursorColor = getColor(R.styleable.VGSEditText_cursorColor, 0)
                 val fieldType = getInteger(R.styleable.VGSEditText_fieldType, -1)
                 val inputType = getInt(R.styleable.VGSEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.VGSEditText_fieldName)
@@ -59,6 +59,9 @@ class VGSEditText @JvmOverloads constructor(
 
                 setInputType(inputType)
                 setFieldType(fieldType)
+                if(cursorColor != 0) {
+                    setCursorColor(cursorColor)
+                }
             } finally {
                 recycle()
             }

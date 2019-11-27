@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -40,7 +41,13 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
             when(this) {
                 is EditTextWrapper -> this
                 is InputFieldView -> {
-                    (this as? InputFieldView)?.getEditTextWrapper()
+                    val v = (this as? InputFieldView)?.getEditTextWrapper()
+                    val LP = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+                    LP.setMargins(0,0,0,0)
+                    LP.gravity = Gravity.CENTER_VERTICAL
+                    v?.layoutParams = LP
+                    v?.gravity = Gravity.CENTER_VERTICAL
+                    v
                 }
                 is FrameLayout -> this
                 else -> {
