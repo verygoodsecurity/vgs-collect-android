@@ -41,7 +41,7 @@ class VGSFieldStateTest {
 
     @Test
     fun map_VGSTextInputTypeTo_CardName() {
-        val co = VGSTextInputType.CardOwnerName
+        val co = VGSTextInputType.CardHolderName
 
         val co1 = co.mapVGSTextInputTypeToFieldState()
         assertTrue(co1 is FieldState.CardName)

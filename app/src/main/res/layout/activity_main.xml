@@ -76,7 +76,7 @@
                 app:singleLine="true"
                 app:textSize="12dp"
                 app:text="123"
-                app:fieldType="cardCVCNumber"/>
+                app:fieldType="cvc"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardHolderFieldLay"
@@ -95,7 +95,7 @@
                 app:inputType="text"
                 app:isRequired="true"
                 app:textSize="12dp"
-                app:fieldType="cardOwner"
+                app:fieldType="cardHolderName"
                 app:text="Linda Hamilton"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -115,7 +115,7 @@
                 app:singleLine="true"
                 app:isRequired="true"
                 app:text="05/25"
-                app:fieldType="cardDate"/>
+                app:fieldType="expDate"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <Button
