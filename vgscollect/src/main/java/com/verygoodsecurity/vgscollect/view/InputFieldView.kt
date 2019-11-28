@@ -258,8 +258,8 @@ abstract class InputFieldView @JvmOverloads constructor(
             0 -> VGSTextInputType.CardNumber()
             1 -> VGSTextInputType.CVCCardCode
             2 -> VGSTextInputType.CardExpDate
-            3 -> VGSTextInputType.CardOwnerName
-            else -> VGSTextInputType.CardOwnerName
+            3 -> VGSTextInputType.CardHolderName
+            else -> VGSTextInputType.CardHolderName
         }
         inputField.setFieldType(fieldType)
     }

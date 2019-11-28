@@ -32,7 +32,7 @@ sealed class FieldState {
                 }
             }
 
-        val cardType:String = type
+        val cardBrand:String = type
     }
 
     object CVCState:FieldState()

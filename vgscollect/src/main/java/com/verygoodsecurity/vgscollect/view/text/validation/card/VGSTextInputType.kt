@@ -7,7 +7,7 @@ sealed class VGSTextInputType {
     val name:String
         get() = when(this) {
             is CardNumber -> "card_num_type"
-            is CardOwnerName -> "card_owner_type"
+            is CardHolderName -> "card_holder_type"
             is CVCCardCode -> "cvc_num_type"
             is CardExpDate -> "exp_date_type"
         }
@@ -15,7 +15,7 @@ sealed class VGSTextInputType {
     val length:Int
         get() = when(this) {
             is CardNumber -> 19
-            is CardOwnerName -> 256
+            is CardHolderName -> 256
             is CVCCardCode -> 4
             is CardExpDate -> 7
         }
@@ -53,7 +53,7 @@ sealed class VGSTextInputType {
             get() = "^([01]|0[1-9]|1[012])[\\/]((19|20)\\d\\d|(2)\\d|(19))\$"
             set(_) {}
     }
-    object CardOwnerName: VGSTextInputType() {
+    object CardHolderName: VGSTextInputType() {
         override var validation: String
             get() = "^[a-zA-Z0-9 ,]+\$"      //only symbols  -  "^[\\p{L}\\s'.-]+\$"
             set(_) {}

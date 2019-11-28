@@ -9,8 +9,8 @@ import org.mockito.Mockito
 class VGSTextInputTypeTest {
 
     @Test
-    fun testCardOwnerName() {
-        val type = VGSTextInputType.CardOwnerName
+    fun testCardHolderName() {
+        val type = VGSTextInputType.CardHolderName
         assertTrue(type.validate("abba"))
     }
 

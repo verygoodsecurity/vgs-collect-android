@@ -76,7 +76,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         when(fieldType) {
             is VGSTextInputType.CardNumber -> applyCardNumFieldType(fieldType.length)
             is VGSTextInputType.CVCCardCode -> applyCardCVCFieldType(fieldType.length)
-            is VGSTextInputType.CardOwnerName -> applyCardOwnerFieldType(fieldType.length)
+            is VGSTextInputType.CardHolderName -> applyCardHolderFieldType(fieldType.length)
             is VGSTextInputType.CardExpDate -> applyCardExpDateFieldType(fieldType.length)
         }
         state.type = vgsInputType!!
@@ -92,7 +92,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         applyTextInputType()
     }
 
-    private fun applyCardOwnerFieldType(length: Int) {
+    private fun applyCardHolderFieldType(length: Int) {
         applyNewTextWatcher(null)
         filters = arrayOf()
         applyTextInputType()

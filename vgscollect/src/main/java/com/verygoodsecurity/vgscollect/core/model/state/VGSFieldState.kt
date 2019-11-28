@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputTyp
 
 data class VGSFieldState(var isFocusable:Boolean = false,
                          var isRequired:Boolean = true,
-                         var type: VGSTextInputType = VGSTextInputType.CardOwnerName,
+                         var type: VGSTextInputType = VGSTextInputType.CardHolderName,
                          var content:String? = null,
                          var fieldName:String? = null) {  /// Field name - actually this is key for you JSON which contains data
 
@@ -22,7 +22,7 @@ fun VGSTextInputType.mapVGSTextInputTypeToFieldState(content: String? = null):Fi
         is VGSTextInputType.CardNumber -> {
             FieldState.CardNumberState(content, this.card.name)
         }
-        is VGSTextInputType.CardOwnerName -> FieldState.CardName
+        is VGSTextInputType.CardHolderName -> FieldState.CardName
         is VGSTextInputType.CVCCardCode -> FieldState.CVCState
         is VGSTextInputType.CardExpDate -> FieldState.CardExpirationDate
     }
