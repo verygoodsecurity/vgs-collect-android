@@ -16,6 +16,7 @@ import android.os.Looper
 import android.widget.TextView
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
+import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
 
@@ -183,6 +184,15 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         } catch (t: Throwable) {
             Logger.i("VGSEditText", "can't apply color on cursor")
         }
+    }
 
+    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
+        val minPaddingV = resources.getDimension(R.dimen.default_vertical_field).toInt()
+        val minPaddingH = resources.getDimension(R.dimen.default_horizontal_field).toInt()
+        val l = if(left < minPaddingH) minPaddingH else left
+        val t = if(top < minPaddingV) minPaddingV else top
+        val r = if(right < minPaddingH) minPaddingH else right
+        val b = if(bottom < minPaddingV) minPaddingV else bottom
+        super.setPadding(l, t, r, b)
     }
 }

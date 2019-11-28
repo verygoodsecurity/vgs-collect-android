@@ -78,29 +78,53 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     override fun getPaddingBottom(): Int {
-        return inputField.paddingBottom
+        return if(isAttachPermitted) {
+            super.getPaddingBottom()
+        } else {
+            inputField.paddingBottom
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingEnd(): Int {
-        return inputField.paddingEnd
+        return if(isAttachPermitted) {
+            super.getPaddingEnd()
+        } else {
+            inputField.paddingEnd
+        }
     }
 
     override fun getPaddingLeft(): Int {
-        return inputField.paddingLeft
+        return if(isAttachPermitted) {
+            super.getPaddingLeft()
+        } else {
+            inputField.paddingLeft
+        }
     }
 
     override fun getPaddingRight(): Int {
-        return inputField.paddingRight
+        return if(isAttachPermitted) {
+            super.getPaddingRight()
+        } else {
+            inputField.paddingRight
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingStart(): Int {
-        return inputField.paddingStart
+        return if(isAttachPermitted) {
+            super.getPaddingStart()
+        } else {
+            inputField.paddingStart
+        }
     }
 
     override fun getPaddingTop(): Int {
-        return inputField.paddingTop
+        return if(isAttachPermitted) {
+            super.getPaddingTop()
+        } else {
+            inputField.paddingTop
+        }
     }
 
     override fun onAttachedToWindow() {

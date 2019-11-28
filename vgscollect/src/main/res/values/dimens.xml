@@ -1,4 +1,5 @@
 <resources>
     <dimen name="default_padding">16dp</dimen>
-    <dimen name="default_side_field">8dp</dimen>
+    <dimen name="default_vertical_field">8dp</dimen>
+    <dimen name="default_horizontal_field">4dp</dimen>
 </resources>

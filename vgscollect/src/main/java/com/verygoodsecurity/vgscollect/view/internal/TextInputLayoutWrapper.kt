@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.google.android.material.textfield.TextInputLayout
+import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 
@@ -42,11 +43,15 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
                 is EditTextWrapper -> this
                 is InputFieldView -> {
                     val v = (this as? InputFieldView)?.getEditTextWrapper()
-                    val LP = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+                    val LP = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
                     LP.setMargins(0,0,0,0)
-                    LP.gravity = Gravity.CENTER_VERTICAL
+                    if(LP.gravity == -1) {
+                        LP.gravity = Gravity.CENTER_VERTICAL
+                    }
                     v?.layoutParams = LP
-                    v?.gravity = Gravity.CENTER_VERTICAL
+                    if(v?.gravity == Gravity.TOP or Gravity.START) {
+                        v.gravity = Gravity.CENTER_VERTICAL
+                    }
                     v
                 }
                 is FrameLayout -> this
