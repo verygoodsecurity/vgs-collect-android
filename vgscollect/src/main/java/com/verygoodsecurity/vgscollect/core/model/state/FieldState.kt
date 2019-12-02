@@ -38,4 +38,5 @@ sealed class FieldState {
     object CVCState:FieldState()
     object CardName:FieldState()
     object CardExpirationDate:FieldState()
+    object Info:FieldState()
 }

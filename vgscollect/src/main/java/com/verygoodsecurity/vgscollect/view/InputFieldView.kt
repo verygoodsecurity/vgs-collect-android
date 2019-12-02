@@ -15,7 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.view.internal.EditTextWrapper
-import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
+import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
 
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -269,23 +269,12 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.isRequired = state
     }
 
-    open fun setFieldType(type:VGSTextInputType) {
+    open fun setFieldType(type:FieldType) {
         inputField.setFieldType(type)
     }
 
     open fun setCursorColor(color:Int) {
         inputField.setCursorDrawableColor(color)
-    }
-
-    open fun setFieldType(type:Int) {
-        val fieldType =  when(type) {
-            0 -> VGSTextInputType.CardNumber()
-            1 -> VGSTextInputType.CVCCardCode
-            2 -> VGSTextInputType.CardExpDate
-            3 -> VGSTextInputType.CardHolderName
-            else -> VGSTextInputType.CardHolderName
-        }
-        inputField.setFieldType(fieldType)
     }
 
     internal fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
@@ -295,6 +284,17 @@ abstract class InputFieldView @JvmOverloads constructor(
     internal fun getEditTextWrapper(): EditTextWrapper {
         return inputField
     }
+
+
+
+
+
+
+
+
+
+
+
 
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())

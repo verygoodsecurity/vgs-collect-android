@@ -1,10 +1,10 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
-import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
+import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSEditTextFieldType
 
 data class VGSFieldState(var isFocusable:Boolean = false,
                          var isRequired:Boolean = true,
-                         var type: VGSTextInputType = VGSTextInputType.CardHolderName,
+                         var type: VGSEditTextFieldType = VGSEditTextFieldType.CardHolderName,
                          var content:String? = null,
                          var fieldName:String? = null) {  /// Field name - actually this is key for you JSON which contains data
 
@@ -17,14 +17,15 @@ data class VGSFieldState(var isFocusable:Boolean = false,
     }
 }
 
-fun VGSTextInputType.mapVGSTextInputTypeToFieldState(content: String? = null):FieldState {
+fun VGSEditTextFieldType.mapVGSTextInputTypeToFieldState(content: String? = null):FieldState {
     return when(this) {
-        is VGSTextInputType.CardNumber -> {
+        is VGSEditTextFieldType.CardNumber -> {
             FieldState.CardNumberState(content, this.card.name)
         }
-        is VGSTextInputType.CardHolderName -> FieldState.CardName
-        is VGSTextInputType.CVCCardCode -> FieldState.CVCState
-        is VGSTextInputType.CardExpDate -> FieldState.CardExpirationDate
+        is VGSEditTextFieldType.CardHolderName -> FieldState.CardName
+        is VGSEditTextFieldType.CVCCardCode -> FieldState.CVCState
+        is VGSEditTextFieldType.CardExpDate -> FieldState.CardExpirationDate
+        is VGSEditTextFieldType.Info -> FieldState.Info
     }
 }
 
