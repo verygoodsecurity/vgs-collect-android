@@ -13,6 +13,7 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.text.validation.card.*
 import android.os.Looper
+import android.view.Gravity
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -29,6 +30,8 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     private var isListeningPermitted = false
     private var isBackgroundVisible = true
 
+    private var iconGravity:Int = Gravity.NO_GRAVITY
+
     private var activeTextWatcher: TextWatcher? = null
     internal var stateListener: OnVgsViewStateChangeListener? = null
         internal set(value) {
@@ -44,6 +47,8 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         }
 
     private val inputStateRunnable = Runnable {
+        updateCompoundCardPreview()
+
         vgsFieldType?.validate(state.content)        //fixme change place to detect card type
 
         vgsFieldType?.let { state.type = it }
@@ -62,16 +67,12 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         addTextChangedListener {
             state.content = it.toString()
             handler.removeCallbacks(inputStateRunnable)
-            handler.postDelayed(inputStateRunnable, 500)
+            handler.postDelayed(inputStateRunnable, 300)
         }
         isListeningPermitted = false
         id = ViewCompat.generateViewId()
 
-        val l = ContextCompat.getDrawable(context, R.drawable.mastercard)
-        l?.setBounds( 0, 0, 60, 60 )
-        val r = ContextCompat.getDrawable(context, R.drawable.visa)
-        r?.setBounds( 0, 0, 60, 60 )
-        setCompoundDrawables(l,null,r,null)
+        compoundDrawablePadding = resources.getDimension(R.dimen.half_default_padding).toInt()
     }
 
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
@@ -222,5 +223,41 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         if(isBackgroundVisible) {
             setBackgroundResource(android.R.color.transparent)
         }
+    }
+
+    private fun updateCompoundCardPreview() {
+        var l: Drawable? = null
+        var r: Drawable? = null
+
+        if (vgsFieldType is VGSEditTextFieldType.CardNumber) {
+            val str = text.toString().replace(" ", "")
+            var privaryRes = 0
+            val v = CardType.values()
+            for(i in v.indices) {
+                val type = v[i]
+
+               if (type.isValid(str)) {
+                    privaryRes = type.resId
+                    break
+                }
+            }
+
+            when (iconGravity) {
+                Gravity.LEFT -> l = ContextCompat.getDrawable(context, privaryRes)
+                Gravity.START -> l = ContextCompat.getDrawable(context, privaryRes)
+                Gravity.RIGHT -> r = ContextCompat.getDrawable(context, privaryRes)
+                Gravity.END -> r = ContextCompat.getDrawable(context, privaryRes)
+            }
+
+            val cIconWidth = resources.getDimension(R.dimen.c_icon_width).toInt()
+            val cIconHeight = resources.getDimension(R.dimen.c_icon_height).toInt()
+            r?.setBounds(0, 0, cIconWidth, cIconHeight)
+            l?.setBounds(0, 0, cIconWidth, cIconHeight)
+        }
+        setCompoundDrawables(l,null,r,null)
+    }
+
+    fun setCardPreviewIconGravity(gravity:Int) {
+        iconGravity = gravity
     }
 }

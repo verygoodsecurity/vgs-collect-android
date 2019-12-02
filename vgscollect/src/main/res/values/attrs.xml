@@ -75,6 +75,14 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="VGSCardNumberEditText" parent="VGSEditText">
+        <attr name="cardPreview">
+            <enum name="none" value="0" />
+            <enum name="left" value="3" />
+            <enum name="right" value="5" />
+        </attr>
+    </declare-styleable>
+
     <declare-styleable name="VGSTextInputLayout">
         <attr name="hint" />
         <attr name="passwordToggleEnabled" format="boolean"/>

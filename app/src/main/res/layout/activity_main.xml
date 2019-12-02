@@ -41,9 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            app:hint="Credit card number">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_marginEnd="@dimen/default_margin">
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
                 android:id="@+id/cardNumberField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -52,6 +51,7 @@
                 app:textColor="@color/black"
                 app:singleLine="true"
                 app:textSize="12dp"
+                app:cardPreview="right"
                 app:text="4111111111111111"
                 app:fieldType="cardNumber"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
@@ -129,7 +129,7 @@
 
     <ScrollView
         android:id="@+id/state"
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description"
