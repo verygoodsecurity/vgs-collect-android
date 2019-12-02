@@ -135,7 +135,7 @@ abstract class InputFieldView @JvmOverloads constructor(
                 addView(inputField)
             }
             inputField.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
-
+            inputField.setHasBackground(background != null)
             isAttachPermitted = false
         }
     }
@@ -284,8 +284,6 @@ abstract class InputFieldView @JvmOverloads constructor(
     internal fun getEditTextWrapper(): EditTextWrapper {
         return inputField
     }
-
-
 
 
 

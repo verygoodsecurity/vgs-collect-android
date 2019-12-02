@@ -14,6 +14,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.text.validation.card.*
 import android.os.Looper
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.verygoodsecurity.vgscollect.R
@@ -26,6 +27,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     private val state = VGSFieldState()
 
     private var isListeningPermitted = false
+    private var isBackgroundVisible = true
 
     private var activeTextWatcher: TextWatcher? = null
     internal var stateListener: OnVgsViewStateChangeListener? = null
@@ -64,6 +66,12 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         }
         isListeningPermitted = false
         id = ViewCompat.generateViewId()
+
+        val l = ContextCompat.getDrawable(context, R.drawable.mastercard)
+        l?.setBounds( 0, 0, 60, 60 )
+        val r = ContextCompat.getDrawable(context, R.drawable.visa)
+        r?.setBounds( 0, 0, 60, 60 )
+        setCompoundDrawables(l,null,r,null)
     }
 
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
@@ -207,5 +215,12 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         val r = if(right < minPaddingH) minPaddingH else right
         val b = if(bottom < minPaddingV) minPaddingV else bottom
         super.setPadding(l, t, r, b)
+    }
+
+    fun setHasBackground(state:Boolean) {
+        isBackgroundVisible = state
+        if(isBackgroundVisible) {
+            setBackgroundResource(android.R.color.transparent)
+        }
     }
 }
