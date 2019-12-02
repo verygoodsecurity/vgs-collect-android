@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
 
-class VGSEditText @JvmOverloads constructor(
+open class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
 
@@ -22,7 +22,7 @@ class VGSEditText @JvmOverloads constructor(
 
             try {
                 val cursorColor = getColor(R.styleable.VGSEditText_cursorColor, 0)
-                val fieldType = getInteger(R.styleable.VGSEditText_fieldType, -1)
+                val fieldType = getInteger(R.styleable.VGSEditText_fieldType, 4)
                 val inputType = getInt(R.styleable.VGSEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.VGSEditText_fieldName)
                 val hint = getString(R.styleable.VGSEditText_hint)
