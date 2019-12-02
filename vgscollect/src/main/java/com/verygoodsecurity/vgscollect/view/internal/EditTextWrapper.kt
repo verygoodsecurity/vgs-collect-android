@@ -18,11 +18,11 @@ import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.util.Logger
-import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
+import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSEditTextFieldType
 
 internal class EditTextWrapper(context: Context): TextInputEditText(context) {
 
-    private var vgsInputType: VGSTextInputType? = null
+    private var vgsFieldType: VGSEditTextFieldType? = null
     private val state = VGSFieldState()
 
     private var isListeningPermitted = false
@@ -42,9 +42,9 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         }
 
     private val inputStateRunnable = Runnable {
-        vgsInputType?.validate(state.content)        //fixme change place to detect card type
+        vgsFieldType?.validate(state.content)        //fixme change place to detect card type
 
-        vgsInputType?.let { state.type = it }
+        vgsFieldType?.let { state.type = it }
 
         stateListener?.emit(id, state)
     }
@@ -71,44 +71,57 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         setSelection(text?.length?:0)
     }
 
-    fun setFieldType(fieldType: VGSTextInputType) {
+    fun setFieldType(fieldType: FieldType) {
         isListeningPermitted = true
-        vgsInputType = fieldType
         when(fieldType) {
-            is VGSTextInputType.CardNumber -> applyCardNumFieldType(fieldType.length)
-            is VGSTextInputType.CVCCardCode -> applyCardCVCFieldType(fieldType.length)
-            is VGSTextInputType.CardHolderName -> applyCardHolderFieldType(fieldType.length)
-            is VGSTextInputType.CardExpDate -> applyCardExpDateFieldType(fieldType.length)
+            FieldType.CARD_NUMBER -> applyCardNumFieldType()
+            FieldType.CARD_EXPIRATION_DATE -> applyCardExpDateFieldType()
+            FieldType.CARD_HOLDER_NAME -> applyCardHolderFieldType()
+            FieldType.CVC -> applyCardCVCFieldType()
+            FieldType.INFO -> applyInfoFieldType()
         }
-        state.type = vgsInputType!!
+
+        state.type = vgsFieldType!!
         stateListener?.emit(id, state)
         isListeningPermitted = false
         setText(text)
     }
 
-    private fun applyCardExpDateFieldType(length: Int) {
-        applyNewTextWatcher(ExpirationDateTextWatcher)
-        val filterLength = InputFilter.LengthFilter(length)
-        filters = arrayOf(filterLength)
-        applyTextInputType()
-    }
-
-    private fun applyCardHolderFieldType(length: Int) {
+    private fun applyInfoFieldType() {
+        vgsFieldType = VGSEditTextFieldType.Info
         applyNewTextWatcher(null)
         filters = arrayOf()
         applyTextInputType()
     }
 
-    private fun applyCardCVCFieldType(length: Int) {
+    private fun applyCardExpDateFieldType() {
+        vgsFieldType = VGSEditTextFieldType.CardExpDate
+        applyNewTextWatcher(ExpirationDateTextWatcher)
+        val filterLength = InputFilter.LengthFilter(vgsFieldType!!.length)
+        filters = arrayOf(filterLength)
+        applyTextInputType()
+    }
+
+    private fun applyCardHolderFieldType() {
+        vgsFieldType = VGSEditTextFieldType.CardHolderName
         applyNewTextWatcher(null)
-        val filterLength = InputFilter.LengthFilter(length)
+        val filterLength = InputFilter.LengthFilter(vgsFieldType!!.length)
+        filters = arrayOf(filterLength)
+        applyTextInputType()
+    }
+
+    private fun applyCardCVCFieldType() {
+        vgsFieldType = VGSEditTextFieldType.CVCCardCode
+        applyNewTextWatcher(null)
+        val filterLength = InputFilter.LengthFilter(vgsFieldType!!.length)
         filters = arrayOf(CVCValidateFilter(), filterLength)
         applyNumberInputType()
     }
 
-    private fun applyCardNumFieldType(length: Int) {
+    private fun applyCardNumFieldType() {
+        vgsFieldType = VGSEditTextFieldType.CardNumber()
         applyNewTextWatcher(CardNumberTextWatcher)
-        val filter = InputFilter.LengthFilter(length)
+        val filter = InputFilter.LengthFilter(vgsFieldType!!.length)
         filters = arrayOf(filter)
         applyTextInputType()
     }

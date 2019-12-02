@@ -7,6 +7,7 @@ import android.util.TypedValue
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
 
 class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -58,7 +59,7 @@ class VGSEditText @JvmOverloads constructor(
                 setText(text)
 
                 setInputType(inputType)
-                setFieldType(fieldType)
+                setFieldType(FieldType.values()[fieldType])
                 if(cursorColor != 0) {
                     setCursorColor(cursorColor)
                 }

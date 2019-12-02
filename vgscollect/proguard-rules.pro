@@ -30,7 +30,7 @@
     public private protected *;
 }
 
--keep public class * extends com.soverypref.collectpref.view.text.validation.card.VGSTextInputType  { *; }
+-keep public class * extends com.soverypref.collectpref.view.text.validation.card.FieldType  { *; }
 -keep public interface  com.soverypref.collectpref.core.storage.OnFieldStateChangeListener { *; }
 -keep public interface com.soverypref.collectpref.core.storage.VgsStore { *; }
 -keep public class * extends com.soverypref.collectpref.core.model.state.FieldState { *; }
