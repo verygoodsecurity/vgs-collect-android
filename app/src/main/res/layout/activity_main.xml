@@ -36,6 +36,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/state">
 
+<!--        app:boxBackgroundModes="outline"-->
+<!--        app:boxCornerRadius="@dimen/default_margin"-->
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardNumberFieldLay"
             android:layout_width="match_parent"
@@ -50,6 +52,7 @@
                 app:isRequired="false"
                 app:textColor="@color/black"
                 app:singleLine="true"
+                android:background="@drawable/bg_shape_rappi_field"
                 app:textSize="12dp"
                 app:cardPreview="right"
                 app:text="4111111111111111"

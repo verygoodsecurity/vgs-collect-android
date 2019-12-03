@@ -2,7 +2,9 @@ package com.verygoodsecurity.vgscollect.view
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Parcel
 import android.text.TextUtils
@@ -128,6 +130,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    private var bgDraw: Drawable? = null
     override fun onAttachedToWindow() {
         if(isAttachPermitted) {
             super.onAttachedToWindow()
@@ -136,7 +139,15 @@ abstract class InputFieldView @JvmOverloads constructor(
                 addView(inputField)
             }
             inputField.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
-            inputField.setHasBackground(background != null)
+            bgDraw = background
+            if(background != null) {
+                setBackgroundColor(Color.TRANSPARENT)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    inputField.background = bgDraw
+                } else {
+                    inputField.setBackgroundDrawable(bgDraw)
+                }
+            }
             isAttachPermitted = false
         }
     }

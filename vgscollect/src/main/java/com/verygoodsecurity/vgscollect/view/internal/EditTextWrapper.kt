@@ -226,10 +226,9 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     }
 
     private fun updateCompoundCardPreview() {
-        var l: Drawable? = null
-        var r: Drawable? = null
-
         if (vgsFieldType is VGSEditTextFieldType.CardNumber) {
+            var l: Drawable? = null
+            var r: Drawable? = null
             val str = text.toString().replace(" ", "")
             var privaryRes = 0
             val v = CardType.values()
@@ -253,8 +252,8 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
             val cIconHeight = resources.getDimension(R.dimen.c_icon_height).toInt()
             r?.setBounds(0, 0, cIconWidth, cIconHeight)
             l?.setBounds(0, 0, cIconWidth, cIconHeight)
+            setCompoundDrawables(l,null,r,null)
         }
-        setCompoundDrawables(l,null,r,null)
     }
 
     fun setCardPreviewIconGravity(gravity:Int) {

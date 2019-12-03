@@ -42,7 +42,7 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
                 is EditTextWrapper -> this
                 is InputFieldView -> {
                     val v = (this as? InputFieldView)?.getEditTextWrapper()
-                    val LP = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+                    val LP = LayoutParams(child.layoutParams.width, child.layoutParams.height)
                     LP.setMargins(0,0,0,0)
                     if(LP.gravity == -1) {
                         LP.gravity = Gravity.CENTER_VERTICAL
@@ -53,7 +53,7 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
                     }
                     v
                 }
-                is FrameLayout -> this
+                is ViewGroup -> this
                 else -> {
                     Logger.i("VGSTextInputLayout", "${this::class.java.name} is not VGSEditText")
                     null
