@@ -96,12 +96,15 @@
             <enum name="none" value="2"/>
         </attr>
 
+        <attr name="hintEnabled" format="boolean"/>
+        <attr name="hintAnimationEnabled" format="boolean"/>
         <attr name="boxBackgroundColor" format="color"/>
         <attr name="boxStrokeColor" format="color"/>
         <attr name="boxCornerRadiusBottomEnd" format="dimension"/>
         <attr name="boxCornerRadiusTopStart" format="dimension"/>
         <attr name="boxCornerRadiusBottomStart" format="dimension"/>
         <attr name="boxCornerRadiusTopEnd" format="dimension"/>
+        <attr name="boxCornerRadius" format="dimension"/>
 
 <!--        app:boxStrokeWidth="2dp"-->
 <!--        app:boxBackgroundMode="outline"-->

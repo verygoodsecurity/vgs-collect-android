@@ -159,4 +159,12 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
         textInputLayout.boxStrokeColor = c
     }
 
+    open fun setHintEnabled(state:Boolean) {
+        textInputLayout.isHintEnabled = state
+    }
+
+    open fun setHintAnimationEnabled(state:Boolean) {
+        textInputLayout.isHintAnimationEnabled = state
+    }
+
 }

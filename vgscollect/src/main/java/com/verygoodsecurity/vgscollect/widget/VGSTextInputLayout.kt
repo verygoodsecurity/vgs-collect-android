@@ -27,6 +27,9 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 val boxCornerRadiusTopStart = getDimension(R.styleable.VGSTextInputLayout_boxCornerRadiusTopStart, 0f)
                 val boxCornerRadiusBottomStart = getDimension(R.styleable.VGSTextInputLayout_boxCornerRadiusBottomStart, 0f)
                 val boxCornerRadiusTopEnd = getDimension(R.styleable.VGSTextInputLayout_boxCornerRadiusTopEnd, 0f)
+                val hintEnabled = getBoolean(R.styleable.VGSTextInputLayout_hintEnabled, true)
+                val hintAnimationEnabled = getBoolean(R.styleable.VGSTextInputLayout_hintAnimationEnabled, true)
+                val boxCornerRadius = getDimension(R.styleable.VGSTextInputLayout_boxCornerRadius, 0f)
 
                 setHint(hint)
                 setPasswordToggleEnabled(passwordToggleEnabled)
@@ -47,6 +50,15 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 }
 
                 setPasswordVisibilityToggleTintList(textColor)
+
+                val boxTS = if(boxCornerRadiusTopStart == 0f) boxCornerRadius else boxCornerRadiusTopStart
+                val boxTE = if(boxCornerRadiusTopEnd == 0f) boxCornerRadius else boxCornerRadiusTopEnd
+                val boxBS = if(boxCornerRadiusBottomStart == 0f) boxCornerRadius else boxCornerRadiusBottomStart
+                val boxBE = if(boxCornerRadiusBottomEnd == 0f) boxCornerRadius else boxCornerRadiusBottomEnd
+                setBoxCornerRadii(boxTS, boxTE, boxBS, boxBE)
+
+                setHintEnabled(hintEnabled)
+                setHintAnimationEnabled(hintAnimationEnabled)
             } finally {
                 recycle()
             }
