@@ -1,2 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.verygoodsecurity.vgscollect" />
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.verygoodsecurity.vgscollect" >
+    <application android:networkSecurityConfig="@xml/network_security_config"
+        tools:targetApi="n" />
+</manifest>

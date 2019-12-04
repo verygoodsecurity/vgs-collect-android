@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.api
 
+import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.mapToEncodedQuery
@@ -24,7 +25,7 @@ internal class URLConnectionClient(private val baseURL:String):ApiClient {
         private const val APPLICATION_JSON = "application/json"
 
         private const val AGENT = "vgs-client"
-        private const val TEMPORARY_STR_AGENT = "source=androidSDK&medium=vgs-collect&content=1.0"
+        private const val TEMPORARY_STR_AGENT = "source=androidSDK&medium=vgs-collect&content=${BuildConfig.VERSION_NAME}"
     }
 
     override fun call(path: String, method: HTTPMethod, data: Map<String, String>?, headers: Map<String, String>?): VGSResponse {
