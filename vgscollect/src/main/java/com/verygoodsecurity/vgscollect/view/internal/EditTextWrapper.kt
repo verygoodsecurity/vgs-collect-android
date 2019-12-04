@@ -5,12 +5,10 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
-import android.text.InputFilter
 import android.text.InputType
 import android.text.TextWatcher
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.text.validation.card.*
 import android.os.Looper
 import android.view.Gravity
@@ -18,14 +16,26 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
-import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.*
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.util.Logger
-import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSEditTextFieldType
+import com.verygoodsecurity.vgscollect.view.card.*
+import com.verygoodsecurity.vgscollect.view.card.discover.CardBrandDetector
+import com.verygoodsecurity.vgscollect.view.card.discover.VGSCardDetector
+import com.verygoodsecurity.vgscollect.view.card.validation.CardNumberValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 internal class EditTextWrapper(context: Context): TextInputEditText(context) {
 
-    private var vgsFieldType: VGSEditTextFieldType? = null
-    private val state = VGSFieldState()
+    private var fieldType: FieldType = FieldType.INFO
+    private var cardtype: CardType = CardType.NONE
+
+    private var userCustomCardBrands = emptyArray<CustomCardBrand>()
+
+    private var validator: VGSValidator? = null
+    private var detector: VGSCardDetector? = null
+    private var inputConnection: InputRunnable? = null
 
     private var isListeningPermitted = false
     private var isBackgroundVisible = true
@@ -36,38 +46,33 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     internal var stateListener: OnVgsViewStateChangeListener? = null
         internal set(value) {
             field = value
-            field?.emit(id, state)
+            inputConnection?.setOnVgsViewStateChangeListener(value)
         }
 
     internal var isRequired:Boolean = true
         set(value) {
             field = value
-            state.isRequired = value
-            stateListener?.emit(id, state)
+            inputConnection?.getOutput()?.isRequired = value
+            inputConnection?.run()
+//            stateListener?.emit(id, state)
         }
-
-    private val inputStateRunnable = Runnable {
-        updateCompoundCardPreview()
-
-        vgsFieldType?.validate(state.content)        //fixme change place to detect card type
-
-        vgsFieldType?.let { state.type = it }
-
-        stateListener?.emit(id, state)
-    }
 
     init {
         isListeningPermitted = true
         onFocusChangeListener = OnFocusChangeListener { _, f ->
-            state.isFocusable = f
-            stateListener?.emit(id, state)
+            inputConnection?.getOutput()?.isFocusable = f
+            inputConnection?.run()
+//            state.isFocusable = f
+//            stateListener?.emit(id, state)
         }
-
         val handler = Handler(Looper.getMainLooper())
         addTextChangedListener {
-            state.content = it.toString()
-            handler.removeCallbacks(inputStateRunnable)
-            handler.postDelayed(inputStateRunnable, 300)
+//            state.content?.data = it.toString()
+//            inputConnection?.setOutput(state)
+            inputConnection?.getOutput()?.content?.data =  it.toString()
+
+            handler.removeCallbacks(inputConnection)
+            handler.postDelayed(inputConnection, 300)
         }
         isListeningPermitted = false
         id = ViewCompat.generateViewId()
@@ -82,6 +87,8 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
 
     fun setFieldType(fieldType: FieldType) {
         isListeningPermitted = true
+        this.fieldType = fieldType
+
         when(fieldType) {
             FieldType.CARD_NUMBER -> applyCardNumFieldType()
             FieldType.CARD_EXPIRATION_DATE -> applyCardExpDateFieldType()
@@ -90,73 +97,128 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
             FieldType.INFO -> applyInfoFieldType()
         }
 
-        state.type = vgsFieldType!!
-        stateListener?.emit(id, state)
+//        state.type = fieldType
+
+//        stateListener?.emit(id, state)
         isListeningPermitted = false
-        setText(text)
+        text = text
     }
 
     private fun applyInfoFieldType() {
-        vgsFieldType = VGSEditTextFieldType.Info
-        applyNewTextWatcher(null)
-        filters = arrayOf()
-        applyTextInputType()
+//        validator = VGSValidator()
+////        vgsFieldType = VGSEditTextFieldType.Info
+//        applyNewTextWatcher(null)
+//        filters = arrayOf()
+//        applyTextInputType()
     }
 
     private fun applyCardExpDateFieldType() {
-        vgsFieldType = VGSEditTextFieldType.CardExpDate
-        applyNewTextWatcher(ExpirationDateTextWatcher)
-        val filterLength = InputFilter.LengthFilter(vgsFieldType!!.length)
-        filters = arrayOf(filterLength)
-        applyTextInputType()
+//        validator = VGSValidator()
+////        vgsFieldType = VGSEditTextFieldType.CardExpDate
+//        applyNewTextWatcher(ExpirationDateTextWatcher)
+//        val filterLength = InputFilter.LengthFilter(vgsFieldType!!.length)
+//        filters = arrayOf(filterLength)
+//        applyTextInputType()
     }
 
     private fun applyCardHolderFieldType() {
-        vgsFieldType = VGSEditTextFieldType.CardHolderName
-        applyNewTextWatcher(null)
-        val filterLength = InputFilter.LengthFilter(vgsFieldType!!.length)
-        filters = arrayOf(filterLength)
-        applyTextInputType()
+//        validator = VGSValidator()
+////        vgsFieldType = VGSEditTextFieldType.CardHolderName
+//        applyNewTextWatcher(null)
+//        val filterLength = InputFilter.LengthFilter(vgsFieldType!!.length)
+//        filters = arrayOf(filterLength)
+//        applyTextInputType()
     }
 
     private fun applyCardCVCFieldType() {
-        vgsFieldType = VGSEditTextFieldType.CVCCardCode
-        applyNewTextWatcher(null)
-        val filterLength = InputFilter.LengthFilter(vgsFieldType!!.length)
-        filters = arrayOf(CVCValidateFilter(), filterLength)
-        applyNumberInputType()
+//        validator = VGSValidator()
+////        vgsFieldType = VGSEditTextFieldType.CVCCardCode
+//        applyNewTextWatcher(null)
+//        val filterLength = InputFilter.LengthFilter(vgsFieldType!!.length)
+//        filters = arrayOf(CVCValidateFilter(), filterLength)
+//        applyNumberInputType()
     }
 
     private fun applyCardNumFieldType() {
-        vgsFieldType = VGSEditTextFieldType.CardNumber()
-        applyNewTextWatcher(CardNumberTextWatcher)
-        val filter = InputFilter.LengthFilter(vgsFieldType!!.length)
-        filters = arrayOf(filter)
+        detector = CardBrandDetector(userCustomCardBrands, this)
+        validator = CardNumberValidator()
+
+        inputConnection = InputCardNumberConnection(id, validator, detector,
+                object :
+                    InputCardNumberConnection.IdrawCardBrand {
+                    override fun drawCardBrandPreview() {
+                        this@EditTextWrapper.drawCardBrandPreview()
+                    }
+                }
+            )
+        val str = text.toString()
+
+        val stateContent = FieldContent.CardNumberContent.apply {
+            cardtype = this@EditTextWrapper.cardtype
+            this.data = str
+        }
+        val state = VGSFieldState().apply {
+            isRequired = this@EditTextWrapper.isRequired
+            isFocusable = this@EditTextWrapper.isFocusable
+            type = this@EditTextWrapper.fieldType
+            content = stateContent
+
+            fieldName = this@EditTextWrapper.tag as? String
+        }
+
+        inputConnection?.setOutput(state)
+        inputConnection?.setOnVgsViewStateChangeListener(stateListener)
+//        applyNewTextWatcher(CardNumberTextWatcher)    //fixme needTo apply TextWatcher
         applyTextInputType()
     }
+
+
+    private fun drawCardBrandPreview() {
+        val state = inputConnection?.getOutput()
+
+        var l: Drawable? = null
+        var r: Drawable? = null
+
+        val privaryRes = (state?.content as? FieldContent.CardNumberContent)?.
+            cardtype?.resId?:0
+
+        when (iconGravity) {
+            Gravity.LEFT -> l = ContextCompat.getDrawable(context, privaryRes)
+            Gravity.START -> l = ContextCompat.getDrawable(context, privaryRes)
+            Gravity.RIGHT -> r = ContextCompat.getDrawable(context, privaryRes)
+            Gravity.END -> r = ContextCompat.getDrawable(context, privaryRes)
+        }
+
+        val cIconWidth = resources.getDimension(R.dimen.c_icon_width).toInt()
+        val cIconHeight = resources.getDimension(R.dimen.c_icon_height).toInt()
+        r?.setBounds(0, 0, cIconWidth, cIconHeight)
+        l?.setBounds(0, 0, cIconWidth, cIconHeight)
+        setCompoundDrawables(l,null,r,null)
+    }
+
 
     private fun applyNumberInputType() {
         val type = inputType
         if(type == InputType.TYPE_TEXT_VARIATION_PASSWORD || type == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
-            setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         } else {
-            setInputType(InputType.TYPE_CLASS_TEXT)
+            inputType = InputType.TYPE_CLASS_TEXT
         }
     }
 
     private fun applyTextInputType() {
         val type = inputType
         if(type == InputType.TYPE_TEXT_VARIATION_PASSWORD || type == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
-            setInputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         } else {
-            setInputType(InputType.TYPE_CLASS_TEXT)
+            inputType = InputType.TYPE_CLASS_TEXT
         }
     }
 
     override fun setTag(tag: Any?) {
         tag?.run {
             super.setTag(tag)
-            state.fieldName = this as String
+            inputConnection?.getOutput()?.fieldName = this as String
         }
     }
 
@@ -222,37 +284,6 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         isBackgroundVisible = state
         if(isBackgroundVisible) {
             setBackgroundResource(android.R.color.transparent)
-        }
-    }
-
-    private fun updateCompoundCardPreview() {
-        if (vgsFieldType is VGSEditTextFieldType.CardNumber) {
-            var l: Drawable? = null
-            var r: Drawable? = null
-            val str = text.toString().replace(" ", "")
-            var privaryRes = 0
-            val v = CardType.values()
-            for(i in v.indices) {
-                val type = v[i]
-
-               if (type.isValid(str)) {
-                    privaryRes = type.resId
-                    break
-                }
-            }
-
-            when (iconGravity) {
-                Gravity.LEFT -> l = ContextCompat.getDrawable(context, privaryRes)
-                Gravity.START -> l = ContextCompat.getDrawable(context, privaryRes)
-                Gravity.RIGHT -> r = ContextCompat.getDrawable(context, privaryRes)
-                Gravity.END -> r = ContextCompat.getDrawable(context, privaryRes)
-            }
-
-            val cIconWidth = resources.getDimension(R.dimen.c_icon_width).toInt()
-            val cIconHeight = resources.getDimension(R.dimen.c_icon_height).toInt()
-            r?.setBounds(0, 0, cIconWidth, cIconHeight)
-            l?.setBounds(0, 0, cIconWidth, cIconHeight)
-            setCompoundDrawables(l,null,r,null)
         }
     }
 
