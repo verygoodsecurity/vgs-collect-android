@@ -4,15 +4,6 @@ import java.util.regex.Pattern
 
 sealed class VGSEditTextFieldType {
 
-    val name:String
-        get() = when(this) {
-            is CardNumber -> "card_num_type"
-            is CardHolderName -> "card_holder_type"
-            is CVCCardCode -> "cvc_num_type"
-            is CardExpDate -> "exp_date_type"
-            is Info -> "info"
-        }
-
     val length:Int
         get() = when(this) {
             is CardNumber -> 19

@@ -13,7 +13,6 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import android.os.Parcelable
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener

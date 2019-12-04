@@ -8,9 +8,9 @@ internal fun MutableCollection<VGSFieldState>.mapUsefulPayloads(): Map<String,St
     val map = mutableMapOf<String,String>()
     for (entry in this) {
         val key = entry.fieldName?:""
-        val value = entry.content?:""
+        val value = entry.content
 
-        map[key] = value
+        map[key] = value?.data?:""
     }
     return map
 }

@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         vgsForm.onResponseListener = this
 
         vgsForm.addOnFieldStateChangeListener(getOnFieldStateChangeListener())
-
         vgsForm.bindView(cardNumberField)
         vgsForm.bindView(cardCVCField)
         vgsForm.bindView(cardHolderField)
