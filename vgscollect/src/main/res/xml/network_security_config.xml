@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+
+    <domain-config>
+        <domain includeSubdomains="true">verygoodproxy.com</domain>
+    </domain-config>
+
+</network-security-config>
