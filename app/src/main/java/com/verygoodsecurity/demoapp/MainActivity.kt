@@ -31,9 +31,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         vgsForm.bindView(cardCVCField)
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
-
-        val c = CustomCardBrand("^4[0-9]{14}(?:[0-9]{3})?\$", "VG_Search", drawableResId = R.drawable.amazon)
-        cardNumberField.addCardBrand(c)
     }
 
     override fun onDestroy() {
@@ -67,6 +64,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                         builder.append("    type: ").append(it.cardBrand).append("\n")
                             .append("       last4: ").append(it.last4).append("\n")
                             .append("       bin: ").append(it.bin).append("\n")
+                            .append("        \n").append(it.number).append("\n")
                     }
 
                     builder.append("\n")
