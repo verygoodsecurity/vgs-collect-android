@@ -68,8 +68,8 @@ internal fun FieldContent.CardNumberContent.parseCardNumber():String? {
                 }
             }
             val last4 = data!!.run {
-                if(length > 12) {
-                    substring(12, length)
+                if(length > 14) {
+                    substring(14, length)
                 } else {
                     ""
                 }
