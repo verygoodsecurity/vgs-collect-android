@@ -29,9 +29,10 @@ internal fun FieldContent.CardNumberContent.parseCardBin():String? {
 }
 
 internal fun FieldContent.CardNumberContent.parseCardLast4():String? {
-    return data!!.run {
-        if(length > 12) {
-            substring(12, length)
+    return data!!.replace(" ", "").run {
+        val minCardCount = 12
+        if(length > minCardCount) {
+            substring(minCardCount, length)
         } else {
             ""
         }

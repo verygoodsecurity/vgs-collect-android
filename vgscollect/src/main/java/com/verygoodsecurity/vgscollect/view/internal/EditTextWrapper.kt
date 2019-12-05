@@ -171,8 +171,14 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
 
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
-//        applyNewTextWatcher(CardNumberTextWatcher)    //fixme needTo apply TextWatcher
-        applyTextInputType()
+        applyNewTextWatcher(CardNumberTextWatcher)    //fixme needTo apply TextWatcher
+        applyNumberInputType()
+    }
+
+    private fun applyNewTextWatcher(textWatcher: TextWatcher?) {
+        activeTextWatcher?.let { removeTextChangedListener(activeTextWatcher) }
+        textWatcher?.let { addTextChangedListener(textWatcher) }
+        activeTextWatcher = textWatcher
     }
 
 
@@ -234,12 +240,6 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         isListeningPermitted = false
-    }
-
-    private fun applyNewTextWatcher(textWatcher: TextWatcher?) {
-        activeTextWatcher?.let { removeTextChangedListener(activeTextWatcher) }
-        textWatcher?.let { addTextChangedListener(textWatcher) }
-        activeTextWatcher = textWatcher
     }
 
     internal fun setCursorDrawableColor(color: Int) {

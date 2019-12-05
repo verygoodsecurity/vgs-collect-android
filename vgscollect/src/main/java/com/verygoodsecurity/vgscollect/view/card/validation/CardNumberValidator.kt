@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscollect.view.card.validation
 
-import android.util.Log
 import java.util.regex.Pattern
 
 class CardNumberValidator :
@@ -18,7 +17,6 @@ class CardNumberValidator :
     override fun isValid(content: String?): Boolean {
 
         val preparedStr = content?.replace(" ", "")
-        Log.e("test", "${rules.size} $rules")
         for(i in rules.indices) {
             val rule = rules[i]
             val m = Pattern.compile(rule).matcher(preparedStr)
@@ -27,6 +25,5 @@ class CardNumberValidator :
             }
         }
         return false
-//        Pattern.compile(type.regex).matcher(str)
     }
 }

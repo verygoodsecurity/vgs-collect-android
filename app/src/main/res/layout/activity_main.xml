@@ -141,7 +141,7 @@
 
     <ScrollView
         android:id="@+id/state"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description"
@@ -167,6 +167,7 @@
                 android:id="@+id/responseView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:textSize="12dp"
                 android:text="no data"/>
         </LinearLayout>
     </ScrollView>

@@ -3,13 +3,11 @@ package com.verygoodsecurity.vgscollect.view.text.validation.card
 import com.verygoodsecurity.vgscollect.R
 
 enum class CardType(val regex:String,
-//                    val mask:String,
                     val resId:Int,
                     val rangeNumber:Array<Int>,
                     val rangeCVV:Array<Int>) {
     ELO(
         "^(4011(78|79)|43(1274|8935)|45(1416|7393|763(1|2))|50(4175|6699|67[0-7][0-9]|9000)|627780|63(6297|6368)|650(03([^4])|04([0-9])|05(0|1)|4(0[5-9]|3[0-9]|8[5-9]|9[0-9])|5([0-2][0-9]|3[0-8])|9([2-6][0-9]|7[0-8])|541|700|720|901)|651652|655000|655021)",
-//        "#### #### #### ####",
         android.R.color.transparent,
         arrayOf(16),
         arrayOf(3)

@@ -12,6 +12,7 @@ class DefaultCardBrandFilter(
 
     companion object {
         private const val MAX_LENGTH = 19
+        private const val MASK_COUNT = 3
     }
 
     override fun detect(str: String?): CardBrandWrapper? {
@@ -25,12 +26,12 @@ class DefaultCardBrandFilter(
             val m = Pattern.compile(value.regex).matcher(preparedStr)
             while (m.find()) {
                 val length = value.rangeNumber.last()
-                inputField?.filters = arrayOf(InputFilter.LengthFilter(length))
+                inputField?.filters = arrayOf(InputFilter.LengthFilter(length + MASK_COUNT))
                 return CardBrandWrapper(value, value.regex, value.name, value.resId)
             }
         }
 
-        inputField?.filters = arrayOf(InputFilter.LengthFilter(MAX_LENGTH))
+        inputField?.filters = arrayOf(InputFilter.LengthFilter(MAX_LENGTH + MASK_COUNT))
         return null
     }
 }
