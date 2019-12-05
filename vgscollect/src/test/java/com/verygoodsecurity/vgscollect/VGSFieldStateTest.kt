@@ -1,71 +1,94 @@
 package com.verygoodsecurity.vgscollect
 
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
-import com.verygoodsecurity.vgscollect.core.model.state.mapVGSTextInputTypeToFieldState
-import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
+import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.mockito.Mockito
 
 class VGSFieldStateTest {
 
     @Test
-    fun isValidRequiredTrueCall() {
-        val type = Mockito.mock(VGSTextInputType::class.java)
-        Mockito.doReturn(true).`when`(type).validate(Mockito.anyString())
+    fun map_VGSFieldStateTo_CardNumberState() {
+        val ce = VGSFieldState(type = FieldType.CARD_NUMBER)
 
-        val state = VGSFieldState(isFocusable = true, isRequired = true, type = type, content = "c", fieldName = "a")
-        assertTrue(state.isValid())
+        val ce1 = ce.mapToFieldState()
+        assertTrue(ce1 is FieldState.CardNumberState)
     }
 
     @Test
-    fun map_VGSTextInputTypeTo_CardNumberState() {
-        val cn = VGSTextInputType.CardNumber()
+    fun map_VGSFieldStateTo_CardExpirationDate() {
+        val ce = VGSFieldState(type = FieldType.CARD_EXPIRATION_DATE)
 
-        val cn1 = cn.mapVGSTextInputTypeToFieldState("4111111111111111")
-        assertTrue(cn1 is FieldState.CardNumberState)
-        if(cn1 is FieldState.CardNumberState) {
-            assertTrue(cn1.bin == "411111")
-            assertTrue(cn1.last4 == "1111")
-        }
-    }
-
-    @Test
-    fun map_VGSTextInputTypeTo_CardExpirationDate() {
-        val ce = VGSTextInputType.CardExpDate
-        val ce1 = ce.mapVGSTextInputTypeToFieldState()
+        val ce1 = ce.mapToFieldState()
         assertTrue(ce1 is FieldState.CardExpirationDate)
     }
 
     @Test
-    fun map_VGSTextInputTypeTo_CardName() {
-        val co = VGSTextInputType.CardOwnerName
+    fun map_VGSFieldStateTo_CardName() {
+        val ce = VGSFieldState(type = FieldType.CARD_HOLDER_NAME)
 
-        val co1 = co.mapVGSTextInputTypeToFieldState()
-        assertTrue(co1 is FieldState.CardName)
+        val ce1 = ce.mapToFieldState()
+        assertTrue(ce1 is FieldState.CardName)
     }
 
     @Test
-    fun map_VGSTextInputTypeTo_CVCCardCode() {
-        val cv = VGSTextInputType.CVCCardCode
+    fun map_VGSFieldStateTo_CVCState() {
+        val ce = VGSFieldState(type = FieldType.CVC)
 
-        val cv1 = cv.mapVGSTextInputTypeToFieldState()
-        assertTrue(cv1 is FieldState.CVCState)
+        val ce1 = ce.mapToFieldState()
+        assertTrue(ce1 is FieldState.CVCState)
     }
 
     @Test
-    fun mapToFieldState() {
-        val type = VGSTextInputType.CVCCardCode
-        val oldState = VGSFieldState(isFocusable = true, isRequired = true, type = type, content = "123", fieldName = "a")
+    fun map_VGSFieldStateTo_Info() {
+        val ce = VGSFieldState(type = FieldType.INFO)
+
+        val ce1 = ce.mapToFieldState()
+        assertTrue(ce1 is FieldState.Info)
+    }
+
+    @Test
+    fun mapToFieldStateCardNumber() {
+        val content = FieldContent.CardNumberContent
+        content.data = "5555 5555 1234 5678"
+        val oldState = VGSFieldState(isFocusable = true,
+            isRequired = true,
+            isValid = true,
+            type = FieldType.INFO,
+            content = content,
+            fieldName = "fn")
 
         val newState = oldState.mapToFieldState()
 
-        assertTrue(newState.hasFocus == oldState.isFocusable &&
-            newState.isRequired == oldState.isRequired &&
-            newState.isEmpty == oldState.content.isNullOrEmpty() &&
-            newState.isValid == oldState.isValid() &&
-            newState.fieldName == oldState.fieldName)
+        assertTrue(newState.hasFocus == oldState.isFocusable)
+        assertTrue(newState.isRequired == oldState.isRequired)
+        assertTrue(newState.isEmpty == oldState.content?.data.isNullOrEmpty())
+        assertTrue(newState.isValid == oldState.isValid)
+        assertTrue(newState.fieldName == oldState.fieldName)
+    }
+
+    @Test
+    fun mapToFieldStateCardNumberInfo() {
+        val content = FieldContent.CardNumberContent
+        content.data = "5555 5555 1234 5678"
+        val oldState = VGSFieldState(isFocusable = true,
+            isRequired = true,
+            isValid = true,
+            type = FieldType.CARD_NUMBER,
+            content = content,
+            fieldName = "fn")
+
+        val newState = oldState.mapToFieldState()
+
+        assertTrue(newState is FieldState.CardNumberState)
+
+        val c = (newState as FieldState.CardNumberState)
+
+        assertTrue(c.bin == "5555 55")
+        assertTrue(c.last4 == "5678")
+        assertTrue(c.number == "5555 55####### 5678")
     }
 }

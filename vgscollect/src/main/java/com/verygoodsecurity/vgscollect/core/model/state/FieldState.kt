@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
+import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
+
 sealed class FieldState {
     var hasFocus:Boolean = false
         internal set
@@ -11,31 +13,24 @@ sealed class FieldState {
         internal set
     var fieldName:String = ""
         internal set
+    var fieldType: FieldType = FieldType.INFO
+    internal set
 
-    class CardNumberState(
-        content: String?,
-        type: String
-    ):FieldState() {
-        val bin:String? = content?.replace(" ".toRegex(), "")?.run {
-                if(length > 7) {
-                    substring(0, 6)
-                } else {
-                    substring(0, length)
-                }
-            }
-
-        val last4:String? = content?.replace(" ".toRegex(), "")?.run {
-                if(length > 12) {
-                    substring(12, length)
-                } else {
-                    ""
-                }
-            }
-
-        val cardType:String = type
+    class CardNumberState:FieldState() {
+        var bin:String? = ""
+            internal set
+        var last4:String? = ""
+            internal set
+        var number:String? = ""
+            internal set
+        var cardBrand: String? = ""
+            internal set
+        var resId: Int = 0
+            internal set
     }
 
-    object CVCState:FieldState()
-    object CardName:FieldState()
-    object CardExpirationDate:FieldState()
+    class CVCState:FieldState()
+    class CardName:FieldState()
+    class CardExpirationDate:FieldState()
+    class Info:FieldState()
 }
