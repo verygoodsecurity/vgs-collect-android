@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.text.validation.card
 
 import java.util.regex.Pattern
 
+@Deprecated("")
 sealed class CreditCardType {
 
     val name:String

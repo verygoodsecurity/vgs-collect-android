@@ -15,7 +15,7 @@ class InputCardNumberConnection(
 ): InputRunnable {
     private var stateListener: OnVgsViewStateChangeListener? = null
 
-    private val cardFilters = ArrayList<VGSCardFilter>()    //todo rename to filter
+    private val cardFilters = ArrayList<VGSCardFilter>()
 
     private var output = VGSFieldState()
 
@@ -42,7 +42,6 @@ class InputCardNumberConnection(
 
     override fun run() {
         val card = runFilters()
-//        val cardtype = detector?.detect(output.content?.data)?: CardType.NONE
         mapValue(card)
 
         IcardBrand?.drawCardBrandPreview()
