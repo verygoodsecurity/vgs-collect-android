@@ -2,6 +2,7 @@
 <resources>
     <attr name="textSize" format="dimension"/>
     <attr name="hint" format="string"/>
+    <attr name="enabled" format="boolean"/>
     <attr name="textColor" format="color"/>
 
     <attr name="gravity">
@@ -29,8 +30,19 @@
 
     <declare-styleable name="VGSEditText">
         <attr name="fieldName" format="string"/>
+        <attr name="cursorColor" format="color"/>
+
+        <attr name="inputType">
+            <enum name="none" value="0" />
+            <enum name="text" value="1" />
+            <enum name="textPassword" value="128" />
+            <enum name="number" value="2" />
+            <enum name="numberPassword" value="16" />
+            <enum name="date" value="4" />
+        </attr>
 
         <attr name="text" format="string"  localization="suggested"/>
+        <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />
         <attr name="maxLines" format="integer"/>
@@ -58,14 +70,51 @@
 
         <attr name="fieldType" format="enum">
             <enum name="cardNumber" value="0"/>
-            <enum name="cardCVCNumber" value="1"/>
-            <enum name="cardDate" value="2"/>
-            <enum name="cardOwner" value="3"/>
+            <enum name="cvc" value="1"/>
+            <enum name="expDate" value="2"/>
+            <enum name="cardHolderName" value="3"/>
             <enum name="info" value="4"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="VGSCardNumberEditText" parent="VGSEditText">
+        <attr name="cardPreview">
+            <enum name="none" value="0" />
+            <enum name="left" value="3" />
+            <enum name="right" value="5" />
         </attr>
     </declare-styleable>
 
     <declare-styleable name="VGSTextInputLayout">
         <attr name="hint" />
+        <attr name="passwordToggleEnabled" format="boolean"/>
+        <attr name="passwordToggleTint" format="color"/>
+        <attr name="passwordToggleDrawable" format="reference"/>
+
+<!--        <attr name="boxStrokeWidth" format="dimension"/>-->
+        <attr name="boxBackgroundModes" >
+            <enum name="outline" value="0"/>
+            <enum name="filled" value="1"/>
+            <enum name="none" value="2"/>
+        </attr>
+
+        <attr name="hintEnabled" format="boolean"/>
+        <attr name="hintAnimationEnabled" format="boolean"/>
+        <attr name="boxBackgroundColor" format="color"/>
+        <attr name="boxStrokeColor" format="color"/>
+        <attr name="boxCornerRadiusBottomEnd" format="dimension"/>
+        <attr name="boxCornerRadiusTopStart" format="dimension"/>
+        <attr name="boxCornerRadiusBottomStart" format="dimension"/>
+        <attr name="boxCornerRadiusTopEnd" format="dimension"/>
+        <attr name="boxCornerRadius" format="dimension"/>
+
+<!--        app:boxStrokeWidth="2dp"-->
+<!--        app:boxBackgroundMode="outline"-->
+<!--        android:paddingStart="12dp"-->
+<!--        app:boxCornerRadiusBottomEnd="@dimen/default_margin"-->
+<!--        app:boxCornerRadiusTopStart="@dimen/default_margin"-->
+<!--        app:boxCornerRadiusBottomStart="@dimen/default_margin"-->
+<!--        android:textColorHint="@color/black"-->
+<!--        app:boxStrokeColor="@color/design_default_color_primary"-->
     </declare-styleable>
 </resources>

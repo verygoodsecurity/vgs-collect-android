@@ -2,7 +2,9 @@ package com.verygoodsecurity.vgscollect.view
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Parcel
 import android.text.TextUtils
@@ -14,8 +16,9 @@ import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
+import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.internal.EditTextWrapper
-import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
+import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
 
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -71,6 +74,63 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
+        inputField.setPadding(left, top, right, bottom)
+//        super.setPadding(left, top, right, bottom)
+        super.setPadding(0, 0, 0, 0)
+    }
+
+    override fun getPaddingBottom(): Int {
+        return if(isAttachPermitted) {
+            super.getPaddingBottom()
+        } else {
+            inputField.paddingBottom
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    override fun getPaddingEnd(): Int {
+        return if(isAttachPermitted) {
+            super.getPaddingEnd()
+        } else {
+            inputField.paddingEnd
+        }
+    }
+
+    override fun getPaddingLeft(): Int {
+        return if(isAttachPermitted) {
+            super.getPaddingLeft()
+        } else {
+            inputField.paddingLeft
+        }
+    }
+
+    override fun getPaddingRight(): Int {
+        return if(isAttachPermitted) {
+            super.getPaddingRight()
+        } else {
+            inputField.paddingRight
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    override fun getPaddingStart(): Int {
+        return if(isAttachPermitted) {
+            super.getPaddingStart()
+        } else {
+            inputField.paddingStart
+        }
+    }
+
+    override fun getPaddingTop(): Int {
+        return if(isAttachPermitted) {
+            super.getPaddingTop()
+        } else {
+            inputField.paddingTop
+        }
+    }
+
+    private var bgDraw: Drawable? = null
     override fun onAttachedToWindow() {
         if(isAttachPermitted) {
             super.onAttachedToWindow()
@@ -78,8 +138,22 @@ abstract class InputFieldView @JvmOverloads constructor(
                 setAddStatesFromChildren(true)
                 addView(inputField)
             }
+            inputField.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+            bgDraw = background
+            if(background != null) {
+                setBackgroundColor(Color.TRANSPARENT)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    inputField.background = bgDraw
+                } else {
+                    inputField.setBackgroundDrawable(bgDraw)
+                }
+            }
             isAttachPermitted = false
         }
+    }
+
+    open fun setInputType(inputType: Int) {
+        inputField.inputType = inputType
     }
 
     open fun setFieldName(fieldName:String?) {
@@ -158,7 +232,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.setTextAppearance(resId)
     }
 
-    open fun getTypeface():Typeface {
+    open fun getTypeface():Typeface? {
         return inputField.typeface
     }
 
@@ -207,19 +281,12 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.isRequired = state
     }
 
-    open fun setFieldType(type:VGSTextInputType) {
+    open fun setFieldType(type:FieldType) {
         inputField.setFieldType(type)
     }
 
-    open fun setFieldType(type:Int) {
-        val fieldType =  when(type) {
-            0 -> VGSTextInputType.CardNumber()
-            1 -> VGSTextInputType.CVCCardCode
-            2 -> VGSTextInputType.CardExpDate
-            3 -> VGSTextInputType.CardOwnerName
-            else -> VGSTextInputType.CardOwnerName
-        }
-        inputField.setFieldType(fieldType)
+    open fun setCursorColor(color:Int) {
+        inputField.setCursorDrawableColor(color)
     }
 
     internal fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
@@ -229,6 +296,21 @@ abstract class InputFieldView @JvmOverloads constructor(
     internal fun getEditTextWrapper(): EditTextWrapper {
         return inputField
     }
+
+    protected fun applyCardIconGravity(gravity:Int) {
+        inputField.setCardPreviewIconGravity(gravity)
+    }
+
+    protected fun applyCardBrand(c: CustomCardBrand) {
+        inputField.setCardBrand(c)
+    }
+
+
+
+
+
+
+
 
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())
@@ -273,4 +355,8 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        inputField.isEnabled = enabled
+    }
 }

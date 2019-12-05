@@ -1,3 +1,11 @@
 <resources>
+    <dimen name="default_padding">16dp</dimen>
+    <dimen name="half_default_padding">8dp</dimen>
+    <dimen name="default_vertical_field">8dp</dimen>
+    <dimen name="default_horizontal_field">4dp</dimen>
 
+
+
+    <dimen name="c_icon_width">32dp</dimen>
+    <dimen name="c_icon_height">21dp</dimen>
 </resources>

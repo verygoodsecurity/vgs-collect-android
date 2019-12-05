@@ -22,7 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="@dimen/half_default_margin"
+        android:paddingStart="@dimen/half_default_margin"
+        android:paddingEnd="@dimen/half_default_margin"
         android:text="@string/demo_description"
         app:layout_constraintTop_toBottomOf="@+id/progressBar"/>
 
@@ -41,9 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            app:hint="Credit card number">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_marginEnd="@dimen/default_margin">
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
                 android:id="@+id/cardNumberField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -53,6 +53,8 @@
                 app:singleLine="true"
                 app:textSize="12dp"
                 app:text="4111111111111111"
+                app:hint="Card number"
+                app:cardPreview="right"
                 app:fieldType="cardNumber"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -73,7 +75,7 @@
                 app:singleLine="true"
                 app:textSize="12dp"
                 app:text="123"
-                app:fieldType="cardCVCNumber"/>
+                app:fieldType="cvc"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardHolderFieldLay"
@@ -89,10 +91,11 @@
                 app:fieldName="cardHolder"
                 app:textColor="@color/black"
                 app:singleLine="true"
+                app:inputType="text"
                 app:isRequired="true"
                 app:textSize="12dp"
-                app:fieldType="cardOwner"
-                app:text="Linda Hamilton"/>
+                app:fieldType="cardHolderName"
+                app:text="John Galt"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardExpDateFieldLay"
@@ -111,7 +114,7 @@
                 app:singleLine="true"
                 app:isRequired="true"
                 app:text="05/25"
-                app:fieldType="cardDate"/>
+                app:fieldType="expDate"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <Button
@@ -125,7 +128,7 @@
 
     <ScrollView
         android:id="@+id/state"
-        android:layout_width="0dp"
+        android:layout_width="160dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description"
@@ -143,10 +146,16 @@
                 android:textStyle="bold"
                 android:paddingBottom="@dimen/half_default_margin"
                 android:text="STATE:"/>
+            <ImageView
+                android:id="@+id/cardIcon"
+                android:layout_width="30dp"
+                android:visibility="gone"
+                android:layout_height="30dp"/>
             <TextView
                 android:id="@+id/responseView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:textSize="12dp"
                 android:text="no data"/>
         </LinearLayout>
     </ScrollView>

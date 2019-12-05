@@ -1,39 +1,38 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
-import com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType
+import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
 
 data class VGSFieldState(var isFocusable:Boolean = false,
                          var isRequired:Boolean = true,
-                         var type: VGSTextInputType = VGSTextInputType.CardOwnerName,
-                         var content:String? = null,
+                         var isValid:Boolean = true,
+                         var type: FieldType = FieldType.INFO,
+                         var content:FieldContent? = null,
                          var fieldName:String? = null) {  /// Field name - actually this is key for you JSON which contains data
-
-    fun isValid():Boolean {
-        return if(isRequired) {
-            type.validate(content)
-        } else {
-            content.isNullOrEmpty() || type.validate(content)
-        }
-    }
-}
-
-fun VGSTextInputType.mapVGSTextInputTypeToFieldState(content: String? = null):FieldState {
-    return when(this) {
-        is VGSTextInputType.CardNumber -> {
-            FieldState.CardNumberState(content, this.card.name)
-        }
-        is VGSTextInputType.CardOwnerName -> FieldState.CardName
-        is VGSTextInputType.CVCCardCode -> FieldState.CVCState
-        is VGSTextInputType.CardExpDate -> FieldState.CardExpirationDate
-    }
 }
 
 fun VGSFieldState.mapToFieldState():FieldState {
-    val f = type.mapVGSTextInputTypeToFieldState(content)
+    val f = when(type) {
+        FieldType.INFO -> FieldState.Info()
+        FieldType.CVC -> FieldState.CVCState()
+        FieldType.CARD_HOLDER_NAME -> FieldState.CardName()
+        FieldType.CARD_EXPIRATION_DATE -> FieldState.CardExpirationDate()
+        FieldType.CARD_NUMBER -> {
+            val state = FieldState.CardNumberState()
+            
+            val content = (content as? FieldContent.CardNumberContent)
+            state.bin = content?.parseCardBin()
+            state.last4 = content?.parseCardLast4()
+            state.number = content?.parseCardNumber()
+            state.cardBrand = content?.cardBrandName
+            state.resId = content?.iconResId?:0
 
-    f.isValid = type.validate(content)
+            state
+        }
+    }
 
-    f.isEmpty = content.isNullOrEmpty()
+    f.fieldType = type
+    f.isValid = isValid
+    f.isEmpty = content?.data.isNullOrEmpty()
     f.isRequired = isRequired
     f.fieldName = fieldName?:""
     f.hasFocus = isFocusable

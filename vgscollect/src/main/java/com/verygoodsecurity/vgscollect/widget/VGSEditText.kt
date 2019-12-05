@@ -4,10 +4,12 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
 
-class VGSEditText @JvmOverloads constructor(
+open class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
 
@@ -19,7 +21,9 @@ class VGSEditText @JvmOverloads constructor(
         ).apply {
 
             try {
-                val type = getInteger(R.styleable.VGSEditText_fieldType, -1)
+                val cursorColor = getColor(R.styleable.VGSEditText_cursorColor, 0)
+                val fieldType = getInteger(R.styleable.VGSEditText_fieldType, 4)
+                val inputType = getInt(R.styleable.VGSEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.VGSEditText_fieldName)
                 val hint = getString(R.styleable.VGSEditText_hint)
                 val textSize = getDimension(R.styleable.VGSEditText_textSize, -1f)
@@ -27,6 +31,7 @@ class VGSEditText @JvmOverloads constructor(
                 val text = getString(R.styleable.VGSEditText_text)
                 val textStyle = getInt(R.styleable.VGSEditText_textStyle, -1)
                 val cursorVisible = getBoolean(R.styleable.VGSEditText_cursorVisible, true)
+                val enabled = getBoolean(R.styleable.VGSEditText_enabled, true)
                 val isRequired = getBoolean(R.styleable.VGSEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.VGSEditText_singleLine, true)
                 val scrollHorizontally = getBoolean(R.styleable.VGSEditText_scrollHorizontally, true)
@@ -37,7 +42,6 @@ class VGSEditText @JvmOverloads constructor(
                 val maxLines = getInt(R.styleable.VGSEditText_maxLines, 0)
 
                 setFieldName(fieldName)
-                setFieldType(type)
                 setHint(hint)
                 setTextColor(textColor)
                 setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
@@ -49,8 +53,18 @@ class VGSEditText @JvmOverloads constructor(
                 setMinLines(minLines)
                 setSingleLine(singleLine)
                 setIsRequired(isRequired)
-                setTypeface(getTypeface(), textStyle)
+                getTypeface()?.let {
+                    setTypeface(it, textStyle)
+                }
+
                 setText(text)
+                setEnabled(enabled)
+
+                setInputType(inputType)
+                setFieldType(FieldType.values()[fieldType])
+                if(cursorColor != 0) {
+                    setCursorColor(cursorColor)
+                }
             } finally {
                 recycle()
             }
