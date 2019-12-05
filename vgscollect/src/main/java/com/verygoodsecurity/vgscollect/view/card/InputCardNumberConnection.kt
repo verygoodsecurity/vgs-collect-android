@@ -46,7 +46,7 @@ class InputCardNumberConnection(
 
         IcardBrand?.drawCardBrandPreview()
 
-        applynewRule(card.regex)
+        applyNewRule(card.regex)
 
         val str = output.content?.data
         if(str.isNullOrEmpty() && !output.isRequired) {
@@ -63,13 +63,13 @@ class InputCardNumberConnection(
     }
 
     private fun mapValue(item: CardBrandWrapper) {
-        val card = (output.content as FieldContent.CardNumberContent)
-        card.cardtype = item.cardType
-        card.cardBrandName = item.name
-        card.iconResId = item.resId
+        val card = (output.content as? FieldContent.CardNumberContent)
+        card?.cardtype = item.cardType
+        card?.cardBrandName = item.name
+        card?.iconResId = item.resId
     }
 
-    private fun applynewRule(regex: String?) {
+    private fun applyNewRule(regex: String?) {
         regex?.let {
             validator?.clearRules()
             validator?.addRule(it)

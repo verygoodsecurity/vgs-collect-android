@@ -2,8 +2,7 @@ package com.verygoodsecurity.vgscollect.view.card.validation
 
 import java.util.regex.Pattern
 
-class CardNumberValidator :
-    VGSValidator {
+class CardNumberValidator : VGSValidator {
     private val rules = ArrayList<String>()
 
     override fun clearRules() {
