@@ -25,10 +25,7 @@ import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
-import com.verygoodsecurity.vgscollect.view.card.validation.CardCVCCodeValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.CardHolderValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.CardNumberValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.*
 
 internal class EditTextWrapper(context: Context): TextInputEditText(context) {
 
@@ -110,8 +107,18 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     }
 
     private fun applyCardExpDateFieldType() {
-//        validator = VGSValidator()
-////        vgsFieldType = VGSEditTextFieldType.CardExpDate
+        validator = CardExpDateValidator()
+        inputConnection = InputCardExpDateConnection(id, validator)
+
+        val str = text.toString()
+        val stateContent = FieldContent.InfoContent().apply {
+            this.data = str
+        }
+        val state = collectCurrentState(stateContent)
+
+        inputConnection?.setOutput(state)
+        inputConnection?.setOutputListener(stateListener)
+
         applyNewTextWatcher(ExpirationDateTextWatcher)
         val filterLength = InputFilter.LengthFilter(5)
         filters = arrayOf(filterLength)
@@ -123,7 +130,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         inputConnection = InputCardHolderConnection(id, validator)
 
         val str = text.toString()
-        val stateContent = FieldContent.InfoContent.apply {
+        val stateContent = FieldContent.InfoContent().apply {
             this.data = str
         }
         val state = collectCurrentState(stateContent)
@@ -142,7 +149,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         inputConnection = InputCardCVCConnection(id, validator)
 
         val str = text.toString()
-        val stateContent = FieldContent.InfoContent.apply {
+        val stateContent = FieldContent.InfoContent().apply {
             this.data = str
         }
         val state = collectCurrentState(stateContent)

@@ -15,7 +15,7 @@ sealed class FieldContent {
             internal set
     }
 
-    object InfoContent:FieldContent()
+    class InfoContent:FieldContent()
 }
 
 internal fun FieldContent.CardNumberContent.parseCardBin():String? {

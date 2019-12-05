@@ -16,7 +16,7 @@ sealed class FieldState {
     var fieldType: FieldType = FieldType.INFO
     internal set
 
-    object CardNumberState:FieldState() {
+    class CardNumberState:FieldState() {
         var bin:String? = ""
             internal set
         var last4:String? = ""
@@ -29,8 +29,8 @@ sealed class FieldState {
             internal set
     }
 
-    object CVCState:FieldState()
-    object CardName:FieldState()
-    object CardExpirationDate:FieldState()
-    object Info:FieldState()
+    class CVCState:FieldState()
+    class CardName:FieldState()
+    class CardExpirationDate:FieldState()
+    class Info:FieldState()
 }
