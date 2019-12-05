@@ -91,18 +91,4 @@ class VGSFieldStateTest {
         assertTrue(c.last4 == "5678")
         assertTrue(c.number == "5555 55####### 5678")
     }
-
-//    @Test
-//    fun mapToFieldStateInfo() {
-//        val type = VGSEditTextFieldType.CVCCardCode
-//        val oldState = VGSFieldState(isFocusable = true, isRequired = true, type = type, content = "123", fieldName = "a")
-//
-//        val newState = oldState.mapToFieldState()
-//
-//        assertTrue(newState.hasFocus == oldState.isFocusable &&
-//            newState.isRequired == oldState.isRequired &&
-//            newState.isEmpty == oldState.content.isNullOrEmpty() &&
-//            newState.isValid == oldState.isValid() &&
-//            newState.fieldName == oldState.fieldName)
-//    }
 }
