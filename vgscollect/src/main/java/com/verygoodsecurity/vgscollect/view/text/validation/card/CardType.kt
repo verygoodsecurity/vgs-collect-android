@@ -18,6 +18,12 @@ enum class CardType(val regex:String,
         arrayOf(16),
         arrayOf(3)
     ),
+    LASER(
+        "^(6706|6771|6709|6304)",
+        android.R.color.transparent,
+        (16..19).toList().toTypedArray(),
+        arrayOf(3)
+    ),
     MAESTRO(
         "^(5018|5020|5038|6304|6390[0-9]{2}|67[0-9]{4})",
         R.drawable.maestro,
@@ -84,12 +90,7 @@ enum class CardType(val regex:String,
         (16..19).toList().toTypedArray(),
         arrayOf(3)
     ),
-    LASER(
-        "^(6706|6771|6709|6304)",
-        android.R.color.transparent,
-        (16..19).toList().toTypedArray(),
-        arrayOf(3)
-    ),
+
     NONE(
         "^\$a",
         android.R.color.transparent,
