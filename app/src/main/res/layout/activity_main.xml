@@ -37,17 +37,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/state">
 
-<!--        app:boxBackgroundModes="outline"-->
-<!--        app:boxCornerRadius="@dimen/default_margin"-->
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardNumberFieldLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintAnimationEnabled="false"
-            app:hintEnabled="false"
-            app:boxStrokeColor="#969696"
-            app:boxCornerRadius="@dimen/half_default_margin"
-            android:background="@android:color/transparent"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin">
             <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
@@ -58,9 +51,6 @@
                 app:isRequired="false"
                 app:textColor="@color/black"
                 app:singleLine="true"
-                app:cursorColor="#969696"
-                android:paddingStart="@dimen/half_default_margin"
-                android:background="@drawable/bg_shape_rappi_field"
                 app:textSize="12dp"
                 app:hint="Card number"
                 app:cardPreview="right"
@@ -81,7 +71,6 @@
                 app:fieldName="cardCvc"
                 app:textColor="@color/black"
                 app:isRequired="true"
-                app:enabled="false"
                 app:inputType="numberPassword"
                 app:singleLine="true"
                 app:textSize="12dp"
@@ -101,7 +90,6 @@
                 android:layout_height="match_parent"
                 app:fieldName="cardHolder"
                 app:textColor="@color/black"
-                app:enabled="false"
                 app:singleLine="true"
                 app:inputType="text"
                 app:isRequired="true"
@@ -121,7 +109,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="expDate"
-                app:enabled="false"
                 app:textColor="@color/black"
                 app:textSize="12dp"
                 app:singleLine="true"
@@ -162,6 +149,7 @@
             <ImageView
                 android:id="@+id/cardIcon"
                 android:layout_width="30dp"
+                android:visibility="gone"
                 android:layout_height="30dp"/>
             <TextView
                 android:id="@+id/responseView"
