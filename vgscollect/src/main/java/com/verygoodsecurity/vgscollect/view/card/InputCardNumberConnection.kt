@@ -11,7 +11,7 @@ import com.verygoodsecurity.vgscollect.view.text.validation.card.CardType
 class InputCardNumberConnection(
     private val id:Int,
     private val validator: VGSValidator?,
-    private val IcardBrand: IdrawCardBrand?
+    private val IcardBrand: IdrawCardBrand? = null
 ): InputRunnable {
     private var stateListener: OnVgsViewStateChangeListener? = null
 

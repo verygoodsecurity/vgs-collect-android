@@ -9,8 +9,6 @@ import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
-import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
-import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.StringBuilder
 
@@ -52,9 +50,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                 val states = vgsForm.getAllStates()
                 val builder = StringBuilder()
                 states.forEach {
-                    if(it.fieldType == FieldType.CARD_NUMBER) {
-                        cardIcon?.setImageResource((it as FieldState.CardNumberState).resId)
-                    }
                     builder.append(it.fieldName).append("\n")
                         .append("   hasFocus: ").append(it.hasFocus).append("\n")
                         .append("   isValid: ").append(it.isValid).append("\n")
@@ -64,7 +59,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                         builder.append("    type: ").append(it.cardBrand).append("\n")
                             .append("       last4: ").append(it.last4).append("\n")
                             .append("       bin: ").append(it.bin).append("\n")
-                            .append("        \n").append(it.number).append("\n")
                     }
 
                     builder.append("\n")
