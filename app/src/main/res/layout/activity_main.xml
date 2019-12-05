@@ -22,7 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="@dimen/half_default_margin"
+        android:paddingStart="@dimen/half_default_margin"
+        android:paddingEnd="@dimen/half_default_margin"
         android:text="@string/demo_description"
         app:layout_constraintTop_toBottomOf="@+id/progressBar"/>
 
@@ -42,6 +43,11 @@
             android:id="@+id/cardNumberFieldLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false"
+            app:boxStrokeColor="#969696"
+            app:boxCornerRadius="@dimen/half_default_margin"
+            android:background="@android:color/transparent"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin">
             <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
@@ -52,10 +58,12 @@
                 app:isRequired="false"
                 app:textColor="@color/black"
                 app:singleLine="true"
+                app:cursorColor="#969696"
+                android:paddingStart="@dimen/half_default_margin"
                 android:background="@drawable/bg_shape_rappi_field"
                 app:textSize="12dp"
+                app:hint="Card number"
                 app:cardPreview="right"
-                app:text="4111111111111111"
                 app:fieldType="cardNumber"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -65,8 +73,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/colorAccent"
             app:hint="@string/cvc">
             <com.verygoodsecurity.vgscollect.widget.VGSEditText
                 android:id="@+id/cardCVCField"
@@ -75,6 +81,7 @@
                 app:fieldName="cardCvc"
                 app:textColor="@color/black"
                 app:isRequired="true"
+                app:enabled="false"
                 app:inputType="numberPassword"
                 app:singleLine="true"
                 app:textSize="12dp"
@@ -94,6 +101,7 @@
                 android:layout_height="match_parent"
                 app:fieldName="cardHolder"
                 app:textColor="@color/black"
+                app:enabled="false"
                 app:singleLine="true"
                 app:inputType="text"
                 app:isRequired="true"
@@ -113,6 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="expDate"
+                app:enabled="false"
                 app:textColor="@color/black"
                 app:textSize="12dp"
                 app:singleLine="true"
@@ -150,6 +159,10 @@
                 android:textStyle="bold"
                 android:paddingBottom="@dimen/half_default_margin"
                 android:text="STATE:"/>
+            <ImageView
+                android:id="@+id/cardIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
             <TextView
                 android:id="@+id/responseView"
                 android:layout_width="match_parent"

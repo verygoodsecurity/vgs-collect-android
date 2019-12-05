@@ -17,13 +17,16 @@ fun VGSFieldState.mapToFieldState():FieldState {
         FieldType.CARD_HOLDER_NAME -> FieldState.CardName
         FieldType.CARD_EXPIRATION_DATE -> FieldState.CardName
         FieldType.CARD_NUMBER -> {
-            val c = FieldState.CardNumberState
-            c.bin = (content as? FieldContent.CardNumberContent)?.parseCardBin()
-            c.last4 = (content as? FieldContent.CardNumberContent)?.parseCardLast4()
-            c.number = (content as? FieldContent.CardNumberContent)?.parseCardNumber()
-            c.cardBrand = (content as? FieldContent.CardNumberContent)?.cardtype?.name
-            c.resId = (content as? FieldContent.CardNumberContent)?.cardtype?.resId?:0
-            c
+            val state = FieldState.CardNumberState
+            
+            val content = (content as? FieldContent.CardNumberContent)
+            state.bin = content?.parseCardBin()
+            state.last4 = content?.parseCardLast4()
+            state.number = content?.parseCardNumber()
+            state.cardBrand = content?.cardBrandName
+            state.resId = content?.iconResId?:0
+
+            state
         }
     }
 

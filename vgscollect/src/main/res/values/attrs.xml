@@ -2,6 +2,7 @@
 <resources>
     <attr name="textSize" format="dimension"/>
     <attr name="hint" format="string"/>
+    <attr name="enabled" format="boolean"/>
     <attr name="textColor" format="color"/>
 
     <attr name="gravity">
@@ -41,6 +42,7 @@
         </attr>
 
         <attr name="text" format="string"  localization="suggested"/>
+        <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />
         <attr name="maxLines" format="integer"/>

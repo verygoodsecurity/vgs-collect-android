@@ -9,10 +9,10 @@ sealed class FieldContent {
 
     object CardNumberContent:FieldContent() {
         var cardtype: CardType = CardType.NONE
-//        var iconResId:Int? = 0
-//            internal set
-//        var cardBrandName:String? = null
-//            internal set
+        var iconResId:Int? = 0
+            internal set
+        var cardBrandName:String? = null
+            internal set
     }
 
     object InfoContent:FieldContent()

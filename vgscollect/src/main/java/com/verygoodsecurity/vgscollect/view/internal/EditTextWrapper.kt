@@ -21,8 +21,9 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.card.*
-import com.verygoodsecurity.vgscollect.view.card.discover.CardBrandDetector
-import com.verygoodsecurity.vgscollect.view.card.discover.VGSCardDetector
+import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
+import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
+import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.CardNumberValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
@@ -31,10 +32,9 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     private var fieldType: FieldType = FieldType.INFO
     private var cardtype: CardType = CardType.NONE
 
-    private var userCustomCardBrands = emptyArray<CustomCardBrand>()
+    private var userCustomCardBrands = ArrayList<CustomCardBrand>()
 
     private var validator: VGSValidator? = null
-    private var detector: VGSCardDetector? = null
     private var inputConnection: InputRunnable? = null
 
     private var isListeningPermitted = false
@@ -46,7 +46,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     internal var stateListener: OnVgsViewStateChangeListener? = null
         internal set(value) {
             field = value
-            inputConnection?.setOnVgsViewStateChangeListener(value)
+            inputConnection?.setOutputListener(value)
         }
 
     internal var isRequired:Boolean = true
@@ -140,10 +140,11 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     }
 
     private fun applyCardNumFieldType() {
-        detector = CardBrandDetector(userCustomCardBrands, this)
+        val defFilter = DefaultCardBrandFilter(CardType.values(), this)
+
         validator = CardNumberValidator()
 
-        inputConnection = InputCardNumberConnection(id, validator, detector,
+        inputConnection = InputCardNumberConnection(id, validator,
                 object :
                     InputCardNumberConnection.IdrawCardBrand {
                     override fun drawCardBrandPreview() {
@@ -151,6 +152,8 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
                     }
                 }
             )
+        inputConnection!!.addFilter(defFilter)
+
         val str = text.toString()
 
         val stateContent = FieldContent.CardNumberContent.apply {
@@ -167,7 +170,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         }
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOnVgsViewStateChangeListener(stateListener)
+        inputConnection?.setOutputListener(stateListener)
 //        applyNewTextWatcher(CardNumberTextWatcher)    //fixme needTo apply TextWatcher
         applyTextInputType()
     }
@@ -289,5 +292,13 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
 
     fun setCardPreviewIconGravity(gravity:Int) {
         iconGravity = gravity
+    }
+
+    fun setCardBrand(c:CustomCardBrand) {
+        userCustomCardBrands.add(c)
+
+        val userFilter: VGSCardFilter? = CardBrandFilter(userCustomCardBrands.toTypedArray(), this)
+        inputConnection?.addFilter(userFilter)
+        inputConnection?.run()
     }
 }

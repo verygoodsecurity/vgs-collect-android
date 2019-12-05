@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgscollect.core
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.AsyncTask
-import android.util.Log
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.core.api.ApiClient
