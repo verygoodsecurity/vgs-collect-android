@@ -52,6 +52,7 @@
                 app:textColor="@color/black"
                 app:singleLine="true"
                 app:textSize="12dp"
+                app:text="4111111111111111"
                 app:hint="Card number"
                 app:cardPreview="right"
                 app:fieldType="cardNumber"/>
@@ -71,7 +72,6 @@
                 app:fieldName="cardCvc"
                 app:textColor="@color/black"
                 app:isRequired="true"
-                app:inputType="numberPassword"
                 app:singleLine="true"
                 app:textSize="12dp"
                 app:text="123"
@@ -95,7 +95,7 @@
                 app:isRequired="true"
                 app:textSize="12dp"
                 app:fieldType="cardHolderName"
-                app:text="Linda Hamilton"/>
+                app:text="John Galt"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardExpDateFieldLay"
@@ -128,7 +128,7 @@
 
     <ScrollView
         android:id="@+id/state"
-        android:layout_width="120dp"
+        android:layout_width="160dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description"
