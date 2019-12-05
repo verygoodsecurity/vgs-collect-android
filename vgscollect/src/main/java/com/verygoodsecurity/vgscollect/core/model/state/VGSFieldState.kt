@@ -12,12 +12,12 @@ data class VGSFieldState(var isFocusable:Boolean = false,
 
 fun VGSFieldState.mapToFieldState():FieldState {
     val f = when(type) {
-        FieldType.INFO -> FieldState.Info
-        FieldType.CVC -> FieldState.CardName
-        FieldType.CARD_HOLDER_NAME -> FieldState.CardName
-        FieldType.CARD_EXPIRATION_DATE -> FieldState.CardName
+        FieldType.INFO -> FieldState.Info()
+        FieldType.CVC -> FieldState.CardName()
+        FieldType.CARD_HOLDER_NAME -> FieldState.CardName()
+        FieldType.CARD_EXPIRATION_DATE -> FieldState.CardName()
         FieldType.CARD_NUMBER -> {
-            val state = FieldState.CardNumberState
+            val state = FieldState.CardNumberState()
             
             val content = (content as? FieldContent.CardNumberContent)
             state.bin = content?.parseCardBin()
