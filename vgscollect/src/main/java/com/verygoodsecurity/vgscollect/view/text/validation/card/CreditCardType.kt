@@ -52,7 +52,7 @@ sealed class CreditCardType {
 
     object Visa : CreditCardType() {
         override val validationPattern: String
-            get() = "^4[0-9]{12}(?:[0-9]{3})?\$"
+            get() = "^4[0-9]{14}(?:[0-9]{3})?\$"
     }
     object Mastercard:CreditCardType() {
         override val validationPattern: String

@@ -16,6 +16,7 @@ import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
+import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.internal.EditTextWrapper
 import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
 
@@ -300,6 +301,10 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.setCardPreviewIconGravity(gravity)
     }
 
+    protected fun applyCardBrand(c: CustomCardBrand) {
+        inputField.setCardBrand(c)
+    }
+
 
 
 
@@ -350,4 +355,8 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        inputField.isEnabled = enabled
+    }
 }

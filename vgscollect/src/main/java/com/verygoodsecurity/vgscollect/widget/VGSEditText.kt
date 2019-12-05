@@ -31,6 +31,7 @@ open class VGSEditText @JvmOverloads constructor(
                 val text = getString(R.styleable.VGSEditText_text)
                 val textStyle = getInt(R.styleable.VGSEditText_textStyle, -1)
                 val cursorVisible = getBoolean(R.styleable.VGSEditText_cursorVisible, true)
+                val enabled = getBoolean(R.styleable.VGSEditText_enabled, true)
                 val isRequired = getBoolean(R.styleable.VGSEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.VGSEditText_singleLine, true)
                 val scrollHorizontally = getBoolean(R.styleable.VGSEditText_scrollHorizontally, true)
@@ -57,6 +58,7 @@ open class VGSEditText @JvmOverloads constructor(
                 }
 
                 setText(text)
+                setEnabled(enabled)
 
                 setInputType(inputType)
                 setFieldType(FieldType.values()[fieldType])

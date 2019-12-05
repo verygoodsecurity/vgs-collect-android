@@ -9,6 +9,8 @@ import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
+import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.StringBuilder
 
@@ -29,6 +31,9 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         vgsForm.bindView(cardCVCField)
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
+
+        val c = CustomCardBrand("^4[0-9]{14}(?:[0-9]{3})?\$", "VG_Search", drawableResId = R.drawable.amazon)
+        cardNumberField.addCardBrand(c)
     }
 
     override fun onDestroy() {
@@ -50,6 +55,9 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                 val states = vgsForm.getAllStates()
                 val builder = StringBuilder()
                 states.forEach {
+                    if(it.fieldType == FieldType.CARD_NUMBER) {
+                        cardIcon?.setImageResource((it as FieldState.CardNumberState).resId)
+                    }
                     builder.append(it.fieldName).append("\n")
                         .append("   hasFocus: ").append(it.hasFocus).append("\n")
                         .append("   isValid: ").append(it.isValid).append("\n")
