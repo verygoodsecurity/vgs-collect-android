@@ -18,7 +18,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
         ).apply {
 
             try {
-                val previewGravity = getInt(R.styleable.VGSCardNumberEditText_cardPreview, 0)
+                val previewGravity = getInt(R.styleable.VGSCardNumberEditText_cardBrandIconGravity, 0)
 
                 applyCardIconGravity(previewGravity)
             } finally {
@@ -27,7 +27,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
         }
     }
 
-    fun setCardPreviewIconGravity(gravity:Int) {
+    fun setCardBrandIconGravity(gravity:Int) {
         applyCardIconGravity(gravity)
     }
 

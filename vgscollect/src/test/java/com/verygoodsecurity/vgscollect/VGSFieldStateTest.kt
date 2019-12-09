@@ -88,7 +88,7 @@ class VGSFieldStateTest {
         val c = (newState as FieldState.CardNumberState)
 
         assertTrue(c.bin == "5555 55")
-        assertTrue(c.last4 == "5678")
+        assertTrue(c.last == "5678")
         assertTrue(c.number == "5555 55####### 5678")
     }
 }

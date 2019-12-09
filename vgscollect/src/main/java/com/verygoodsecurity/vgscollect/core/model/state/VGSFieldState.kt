@@ -21,7 +21,7 @@ fun VGSFieldState.mapToFieldState():FieldState {
             
             val content = (content as? FieldContent.CardNumberContent)
             state.bin = content?.parseCardBin()
-            state.last4 = content?.parseCardLast4()
+            state.last = content?.parseCardLastDigits()
             state.number = content?.parseCardNumber()
             state.cardBrand = content?.cardBrandName
             state.resId = content?.iconResId?:0
