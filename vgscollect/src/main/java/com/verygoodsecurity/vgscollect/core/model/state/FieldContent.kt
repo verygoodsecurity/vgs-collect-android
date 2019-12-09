@@ -28,7 +28,7 @@ internal fun FieldContent.CardNumberContent.parseCardBin():String? {
     }
 }
 
-internal fun FieldContent.CardNumberContent.parseCardLast4():String? {
+internal fun FieldContent.CardNumberContent.parseCardLastDigits():String? {
     return data!!.replace(" ", "").run {
         val minCardCount = 12
         if(length > minCardCount) {
@@ -67,7 +67,7 @@ internal fun FieldContent.CardNumberContent.parseCardNumber():String? {
                     substring(0, length)
                 }
             }
-            val last4 = data!!.run {
+            val last = data!!.run {
                 if(length > 14) {
                     substring(14, length)
                 } else {
@@ -78,7 +78,7 @@ internal fun FieldContent.CardNumberContent.parseCardNumber():String? {
 
             builder.append(bin)
                 .append(mask)
-                .append(last4)
+                .append(last)
                 .toString()
         }
         str
