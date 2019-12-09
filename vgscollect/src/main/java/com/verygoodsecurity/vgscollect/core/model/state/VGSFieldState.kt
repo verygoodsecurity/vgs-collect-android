@@ -1,13 +1,13 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
-import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 data class VGSFieldState(var isFocusable:Boolean = false,
                          var isRequired:Boolean = true,
                          var isValid:Boolean = true,
                          var type: FieldType = FieldType.INFO,
                          var content:FieldContent? = null,
-                         var fieldName:String? = null) {  /// Field name - actually this is key for you JSON which contains data
+                         var fieldName:String? = null) {
 }
 
 fun VGSFieldState.mapToFieldState():FieldState {

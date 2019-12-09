@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscollect.view.card.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandWrapper
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
-import com.verygoodsecurity.vgscollect.view.text.validation.card.CardType
+import com.verygoodsecurity.vgscollect.view.card.CardType
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

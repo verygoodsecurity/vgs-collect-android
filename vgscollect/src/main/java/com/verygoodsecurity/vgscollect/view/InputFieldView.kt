@@ -18,7 +18,7 @@ import android.view.ViewGroup
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.internal.EditTextWrapper
-import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -281,7 +281,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.isRequired = state
     }
 
-    open fun setFieldType(type:FieldType) {
+    open fun setFieldType(type: FieldType) {
         inputField.setFieldType(type)
     }
 

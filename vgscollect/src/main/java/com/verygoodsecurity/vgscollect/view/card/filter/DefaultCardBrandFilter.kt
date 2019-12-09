@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscollect.view.card.filter
 
 import android.text.InputFilter
 import android.widget.TextView
-import com.verygoodsecurity.vgscollect.view.text.validation.card.CardType
+import com.verygoodsecurity.vgscollect.view.card.CardType
 import java.util.regex.Pattern
 
 class DefaultCardBrandFilter(

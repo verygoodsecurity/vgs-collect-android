@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.text.validation.card
+package com.verygoodsecurity.vgscollect.view.card
 
 import com.verygoodsecurity.vgscollect.R
 

@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
-import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 import org.junit.Assert.assertTrue
 import org.junit.Test
 

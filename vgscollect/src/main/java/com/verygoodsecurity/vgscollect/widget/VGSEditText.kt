@@ -7,7 +7,7 @@ import android.util.TypedValue
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
-import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 open class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

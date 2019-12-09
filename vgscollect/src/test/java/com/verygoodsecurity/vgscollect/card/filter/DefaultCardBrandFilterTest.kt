@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.card.filter
 
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
-import com.verygoodsecurity.vgscollect.view.text.validation.card.CardType
+import com.verygoodsecurity.vgscollect.view.card.CardType
 import org.junit.Assert.assertTrue
 import org.junit.Test
 

@@ -9,7 +9,6 @@ import android.text.InputType
 import android.text.TextWatcher
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscollect.view.text.validation.card.*
 import android.os.Looper
 import android.text.InputFilter
 import android.view.Gravity
@@ -25,6 +24,9 @@ import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
+import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
+import com.verygoodsecurity.vgscollect.view.card.text.CardNumberTextWatcher
+import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 
 internal class EditTextWrapper(context: Context): TextInputEditText(context) {
