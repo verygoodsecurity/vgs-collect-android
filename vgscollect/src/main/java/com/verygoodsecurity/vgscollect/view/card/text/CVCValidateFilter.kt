@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.text.validation.card
+package com.verygoodsecurity.vgscollect.view.card.text
 
 import android.text.InputFilter
 import android.text.Spanned

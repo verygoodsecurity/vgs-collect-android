@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
-import com.verygoodsecurity.vgscollect.view.text.validation.card.CardType
+import com.verygoodsecurity.vgscollect.view.card.CardType
 import java.lang.StringBuilder
 
 sealed class FieldContent {

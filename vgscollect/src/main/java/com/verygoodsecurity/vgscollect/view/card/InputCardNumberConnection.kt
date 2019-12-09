@@ -6,7 +6,6 @@ import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandWrapper
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
-import com.verygoodsecurity.vgscollect.view.text.validation.card.CardType
 
 class InputCardNumberConnection(
     private val id:Int,

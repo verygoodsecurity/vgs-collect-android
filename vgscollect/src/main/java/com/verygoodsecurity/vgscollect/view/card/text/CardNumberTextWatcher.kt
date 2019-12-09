@@ -1,38 +1,47 @@
-package com.verygoodsecurity.vgscollect.view.text.validation.card
+package com.verygoodsecurity.vgscollect.view.card.text
 
 import android.text.Editable
 import android.text.TextWatcher
 
 object CardNumberTextWatcher: TextWatcher {
-    private const val TOTAL_SYMBOLS = 22 // size of pattern 0000 0000 0000 0000
-    private const val TOTAL_DIGITS = 19 // max numbers of digits in pattern: 0000 x 4
+    private const val TOTAL_SYMBOLS = 22 // 0000 0000 0000 0000
+    private const val TOTAL_DIGITS = 19 // 0000 x 4
     private const val DIVIDER_MODULO = 5 // means divider position is every 5th symbol beginning with 1
-    private const val DIVIDER_POSITION = DIVIDER_MODULO - 1 // means divider position is every 4th symbol beginning with 0
+    private const val DIVIDER_POSITION = DIVIDER_MODULO - 1
     private const val DIVIDER = ' '
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
     override fun afterTextChanged(s: Editable) {
-        if (!isInputCorrect(s, TOTAL_SYMBOLS, DIVIDER_MODULO, DIVIDER)) {
-            s.replace(0, s.length, buildCorrectString(getDigitArray(s, TOTAL_DIGITS), DIVIDER_POSITION, DIVIDER))
+        if (!isInputCorrect(
+                s,
+                TOTAL_SYMBOLS,
+                DIVIDER_MODULO,
+                DIVIDER
+            )
+        ) {
+            s.replace(0, s.length,
+                buildCorrectString(
+                    getDigitArray(
+                        s,
+                        TOTAL_DIGITS
+                    ),
+                    DIVIDER_POSITION,
+                    DIVIDER
+                )
+            )
         }
     }
 
     private fun isInputCorrect(s: Editable, totalSymbols:Int, dividerModulo:Int, divider:Char):Boolean {
-        var isCorrect = s.length <= totalSymbols // check size of entered string
-        for (i in s.indices) { // check
+        var isCorrect = s.length <= totalSymbols
+        for (i in s.indices) {
             isCorrect = when {
                 i >= 15 -> isCorrect and Character.isDigit(s[i])
                 i > 0 && (i + 1) % dividerModulo == 0 -> isCorrect and (divider == s[i])
                 else -> isCorrect and Character.isDigit(s[i])
             }
-            // that every element is right
-//            isCorrect = if (i > 0 && (i + 1) % dividerModulo == 0) {
-//                isCorrect and (divider == s[i])
-//            } else {
-//                isCorrect and Character.isDigit(s[i])
-//            }
         }
         return isCorrect
     }

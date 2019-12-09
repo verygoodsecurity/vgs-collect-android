@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.text.validation.card
+package com.verygoodsecurity.vgscollect.view.card.text
 
 import android.text.Editable
 import android.text.TextWatcher
@@ -19,8 +19,23 @@ object ExpirationDateTextWatcher: TextWatcher {
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
     override fun afterTextChanged(s: Editable) {
-        if (!isInputCorrect(s, TOTAL_SYMBOLS, DIVIDER_MODULO, DIVIDER)) {
-            s.replace(0, s.length, buildCorrectString(getDigitArray(s, TOTAL_DIGITS), DIVIDER_POSITION, DIVIDER))
+        if (!isInputCorrect(
+                s,
+                TOTAL_SYMBOLS,
+                DIVIDER_MODULO,
+                DIVIDER
+            )
+        ) {
+            s.replace(0, s.length,
+                buildCorrectString(
+                    getDigitArray(
+                        s,
+                        TOTAL_DIGITS
+                    ),
+                    DIVIDER_POSITION,
+                    DIVIDER
+                )
+            )
         }
     }
 

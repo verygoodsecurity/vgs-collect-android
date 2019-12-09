@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
-import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 sealed class FieldState {
     var hasFocus:Boolean = false
