@@ -10,7 +10,8 @@ import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 class InputCardNumberConnection(
     private val id:Int,
     private val validator: VGSValidator?,
-    private val IcardBrand: IdrawCardBrand? = null
+    private val IcardBrand: IdrawCardBrand? = null,
+    private val divider:String? = null
 ): InputRunnable {
     private var stateListener: OnVgsViewStateChangeListener? = null
 
@@ -51,7 +52,7 @@ class InputCardNumberConnection(
         if(str.isNullOrEmpty() && !output.isRequired) {
             output.isValid = true
         } else {
-            val updatedStr = str?.replace(" ", "")?:""
+            val updatedStr = str?.replace(divider?:" ", "")?:""
 
             val isStrValid = validator?.isValid(updatedStr)?:false
             val isLengthAppropriate = checkLength(card.cardType, updatedStr.length)

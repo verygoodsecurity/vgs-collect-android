@@ -19,7 +19,9 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
             try {
                 val previewGravity = getInt(R.styleable.VGSCardNumberEditText_cardBrandIconGravity, 0)
+                val divider = getString(R.styleable.VGSCardNumberEditText_numberDivider)
 
+                setNumberDivider(divider)
                 applyCardIconGravity(previewGravity)
             } finally {
                 recycle()

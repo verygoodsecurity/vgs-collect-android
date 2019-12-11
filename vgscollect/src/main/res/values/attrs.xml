@@ -76,6 +76,7 @@
     </declare-styleable>
 
     <declare-styleable name="VGSCardNumberEditText" parent="VGSEditText">
+        <attr name="numberDivider" format="string"/>
         <attr name="cardBrandIconGravity">
             <enum name="none" value="0" />
             <enum name="left" value="3" />

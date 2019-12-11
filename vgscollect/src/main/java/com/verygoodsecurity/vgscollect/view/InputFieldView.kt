@@ -305,12 +305,9 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.setCardBrand(c)
     }
 
-
-
-
-
-
-
+    protected fun setNumberDivider(divider:String?) {
+        inputField.setNumberDivider(divider)
+    }
 
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())

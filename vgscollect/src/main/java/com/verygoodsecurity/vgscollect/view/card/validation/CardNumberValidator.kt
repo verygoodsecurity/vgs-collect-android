@@ -2,7 +2,9 @@ package com.verygoodsecurity.vgscollect.view.card.validation
 
 import java.util.regex.Pattern
 
-class CardNumberValidator : VGSValidator {
+class CardNumberValidator(
+    private val divider:String? = " "
+) : VGSValidator {
     private val rules = ArrayList<String>()
 
     override fun clearRules() {
@@ -14,7 +16,7 @@ class CardNumberValidator : VGSValidator {
     }
 
     override fun isValid(content: String?): Boolean {
-        val preparedStr = content?.replace(" ", "")
+        val preparedStr = content?.replace(divider?:" ", "")
         for(i in rules.indices) {
             val rule = rules[i]
             val m = Pattern.compile(rule).matcher(preparedStr)

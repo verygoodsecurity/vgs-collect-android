@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                         builder.append("    type: ").append(it.cardBrand).append("\n")
                             .append("       end: ").append(it.last).append("\n")
                             .append("       bin: ").append(it.bin).append("\n")
+                            .append(it.number).append("\n")
                     }
 
                     builder.append("\n")

@@ -7,7 +7,8 @@ import java.util.regex.Pattern
 
 class CardBrandFilter(
     private val userCustomCardBrands: Array<CustomCardBrand>,
-    private val inputField: TextView?
+    private val inputField: TextView?,
+    private val divider:String? = ""
 ) : VGSCardFilter {
 
     companion object {
@@ -19,7 +20,7 @@ class CardBrandFilter(
         if(str.isNullOrEmpty()) {
             return CardBrandWrapper()
         }
-        val preparedStr = str.replace(" ", "")
+        val preparedStr = str.replace(divider?:" ", "")
 
         for(i in userCustomCardBrands.indices) {
             val value = userCustomCardBrands[i]
