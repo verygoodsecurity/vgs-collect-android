@@ -7,8 +7,7 @@ data class VGSFieldState(var isFocusable:Boolean = false,
                          var isValid:Boolean = true,
                          var type: FieldType = FieldType.INFO,
                          var content:FieldContent? = null,
-                         var fieldName:String? = null) {
-}
+                         var fieldName:String? = null)
 
 fun VGSFieldState.mapToFieldState():FieldState {
     val f = when(type) {

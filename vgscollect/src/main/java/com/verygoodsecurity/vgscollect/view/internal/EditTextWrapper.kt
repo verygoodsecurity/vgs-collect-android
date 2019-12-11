@@ -41,6 +41,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
 
     private var isListeningPermitted = false
     private var isBackgroundVisible = true
+    private var divider:String? = " "
 
     private var iconGravity:Int = Gravity.NO_GRAVITY
 
@@ -82,10 +83,18 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         setSelection(text?.length?:0)
     }
 
-    fun setFieldType(fieldType: FieldType) {
-        isListeningPermitted = true
+    internal fun setFieldType(fieldType: FieldType) {
         this.fieldType = fieldType
+    }
 
+    override fun onAttachedToWindow() {
+        isListeningPermitted = true
+        applyAttributes()
+        super.onAttachedToWindow()
+        isListeningPermitted = false
+    }
+
+    private fun applyAttributes() {
         when(fieldType) {
             FieldType.CARD_NUMBER -> applyCardNumFieldType()
             FieldType.CARD_EXPIRATION_DATE -> applyCardExpDateFieldType()
@@ -94,7 +103,6 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
             FieldType.INFO -> applyInfoFieldType()
         }
 
-        isListeningPermitted = false
         text = text
 
         inputConnection?.run()
@@ -166,7 +174,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     }
 
     private fun applyCardNumFieldType() {
-        validator = CardNumberValidator()
+        validator = CardNumberValidator(divider)
 
         inputConnection = InputCardNumberConnection(id, validator,
                 object :
@@ -177,7 +185,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
                 }
             )
 
-        val defFilter = DefaultCardBrandFilter(CardType.values(), this)
+        val defFilter = DefaultCardBrandFilter(CardType.values(), this, divider)
         inputConnection!!.addFilter(defFilter)
 
         val str = text.toString()
@@ -189,7 +197,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
 
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
-        applyNewTextWatcher(CardNumberTextWatcher)    //fixme needTo apply TextWatcher
+        applyNewTextWatcher(CardNumberTextWatcher(divider))    //fixme needTo apply TextWatcher
         applyNumberInputType()
     }
 
@@ -267,11 +275,6 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         }
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        isListeningPermitted = false
-    }
-
     internal fun setCursorDrawableColor(color: Int) {
         try {
             val cursorDrawableResField = TextView::class.java.getDeclaredField("mCursorDrawableRes")
@@ -313,22 +316,30 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
         super.setPadding(l, t, r, b)
     }
 
-    fun setHasBackground(state:Boolean) {
+    internal fun setHasBackground(state:Boolean) {
         isBackgroundVisible = state
         if(isBackgroundVisible) {
             setBackgroundResource(android.R.color.transparent)
         }
     }
 
-    fun setCardPreviewIconGravity(gravity:Int) {
+    internal fun setCardPreviewIconGravity(gravity:Int) {
         iconGravity = gravity
     }
 
-    fun setCardBrand(c:CustomCardBrand) {
+    internal fun setCardBrand(c:CustomCardBrand) {
         userCustomCardBrands.add(c)
 
         val userFilter: VGSCardFilter? = CardBrandFilter(userCustomCardBrands.toTypedArray(), this)
         inputConnection?.addFilter(userFilter)
         inputConnection?.run()
+    }
+
+    internal fun setNumberDivider(divider: String?) {
+        when {
+            divider.isNullOrEmpty() -> this@EditTextWrapper.divider = ""
+            divider.length == 1 -> this@EditTextWrapper.divider = divider
+            else -> Logger.i("VGSEditTextView", "divider for number cant be bigger than 1 symbol. (${divider})")
+        }
     }
 }

@@ -29,7 +29,7 @@ class InputCardHolderConnection(
         if(str.isNullOrEmpty() && !output.isRequired) {
             output.isValid = true
         } else {
-            val updatedStr = str?.replace(" ", "")?:""
+            val updatedStr = str?.trim()?:""
 
             val isStrValid = validator?.isValid(updatedStr)?:false
             output.isValid = isStrValid

@@ -19,7 +19,7 @@ sealed class FieldContent {
 }
 
 internal fun FieldContent.CardNumberContent.parseCardBin():String? {
-    return data!!.run {
+    return data?.run {
         if(length >= 7) {
             substring(0, 7)
         } else {
@@ -29,10 +29,9 @@ internal fun FieldContent.CardNumberContent.parseCardBin():String? {
 }
 
 internal fun FieldContent.CardNumberContent.parseCardLastDigits():String? {
-    return data!!.replace(" ", "").run {
-        val minCardCount = 12
-        if(length > minCardCount) {
-            substring(minCardCount, length)
+    return data?.run {
+        if(length > 15) {
+            substring(15, length)
         } else {
             ""
         }
@@ -44,14 +43,8 @@ internal fun FieldContent.CardNumberContent.parseCardNumber():String? {
         val str = if(data!!.length <= 7) {
             data
         } else if (data!!.length < 15) {
-            val bin = data!!.run {
-                if(length >= 7) {
-                    substring(0, 7)
-                } else {
-                    substring(0, length)
-                }
-            }
-            val dif = data!!.length - bin.length
+            val bin = parseCardBin()
+            val dif = data!!.length - bin!!.length
             if(dif > 0) {
                 val mask = "#".repeat(dif)
                 bin + mask
@@ -60,20 +53,8 @@ internal fun FieldContent.CardNumberContent.parseCardNumber():String? {
             }
         } else {
             val builder = StringBuilder()
-            val bin = data!!.run {
-                if(length >= 7) {
-                    substring(0, 7)
-                } else {
-                    substring(0, length)
-                }
-            }
-            val last = data!!.run {
-                if(length > 14) {
-                    substring(14, length)
-                } else {
-                    ""
-                }
-            }
+            val bin = parseCardBin()
+            val last = parseCardLastDigits()
             val mask = "#".repeat(7)
 
             builder.append(bin)
