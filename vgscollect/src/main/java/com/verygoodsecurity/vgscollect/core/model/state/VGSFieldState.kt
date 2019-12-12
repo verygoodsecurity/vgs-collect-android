@@ -37,3 +37,5 @@ fun VGSFieldState.mapToFieldState():FieldState {
     f.hasFocus = isFocusable
     return f
 }
+
+fun VGSFieldState.isCardNumberType() = type == FieldType.CARD_NUMBER

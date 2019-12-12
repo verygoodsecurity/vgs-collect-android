@@ -17,8 +17,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.verygoodsecurity.vgscollect.*
+import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
@@ -29,9 +31,12 @@ import com.verygoodsecurity.vgscollect.view.card.text.CardNumberTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 
-internal class EditTextWrapper(context: Context): TextInputEditText(context) {
+internal class EditTextWrapper(context: Context): TextInputEditText(context),
+    DependencyListener {
 
-    private var fieldType: FieldType = FieldType.INFO
+    var fieldType: FieldType = FieldType.INFO
+        internal set
+
     private var cardtype: CardType = CardType.NONE
 
     private var userCustomCardBrands = ArrayList<CustomCardBrand>()
@@ -81,10 +86,6 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
         super.onSelectionChanged(selStart, selEnd)
         setSelection(text?.length?:0)
-    }
-
-    internal fun setFieldType(fieldType: FieldType) {
-        this.fieldType = fieldType
     }
 
     override fun onAttachedToWindow() {
@@ -341,5 +342,11 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context) {
             divider.length == 1 -> this@EditTextWrapper.divider = divider
             else -> Logger.i("VGSEditTextView", "divider for number cant be bigger than 1 symbol. (${divider})")
         }
+    }
+
+    override fun dispatchDependencySetting(dependency: Dependency) {
+        val filterLength = InputFilter.LengthFilter(dependency.value)
+        filters = arrayOf(CVCValidateFilter(), filterLength)
+        setText(text)
     }
 }
