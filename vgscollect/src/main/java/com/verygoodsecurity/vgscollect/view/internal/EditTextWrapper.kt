@@ -25,7 +25,7 @@ import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
-import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
+import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
 import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
 import com.verygoodsecurity.vgscollect.view.card.text.CardNumberTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
@@ -39,7 +39,9 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
 
     private var cardtype: CardType = CardType.NONE
 
-    private var userCustomCardBrands = ArrayList<CustomCardBrand>()
+    private val userFilter: MutableCardFilter by lazy {
+        CardBrandFilter( this, divider)
+    }
 
     private var validator: VGSValidator? = null
     private var inputConnection: InputRunnable? = null
@@ -177,17 +179,19 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
     private fun applyCardNumFieldType() {
         validator = CardNumberValidator(divider)
 
-        inputConnection = InputCardNumberConnection(id, validator,
+        inputConnection = InputCardNumberConnection(id,
+                validator,
                 object :
                     InputCardNumberConnection.IdrawCardBrand {
                     override fun drawCardBrandPreview() {
                         this@EditTextWrapper.drawCardBrandPreview()
                     }
-                }
-            )
+                },
+                divider)
 
         val defFilter = DefaultCardBrandFilter(CardType.values(), this, divider)
         inputConnection!!.addFilter(defFilter)
+        inputConnection!!.addFilter(userFilter)
 
         val str = text.toString()
         val stateContent = FieldContent.CardNumberContent.apply {
@@ -227,8 +231,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
         var l: Drawable? = null
         var r: Drawable? = null
 
-        val privaryRes = (state?.content as? FieldContent.CardNumberContent)?.
-            cardtype?.resId?:0
+        val privaryRes = (state?.content as? FieldContent.CardNumberContent)?.iconResId?:0
 
         when (iconGravity) {
             Gravity.LEFT -> l = ContextCompat.getDrawable(context, privaryRes)
@@ -329,10 +332,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
     }
 
     internal fun setCardBrand(c:CustomCardBrand) {
-        userCustomCardBrands.add(c)
-
-        val userFilter: VGSCardFilter? = CardBrandFilter(userCustomCardBrands.toTypedArray(), this)
-        inputConnection?.addFilter(userFilter)
+        userFilter.add(c)
         inputConnection?.run()
     }
 
