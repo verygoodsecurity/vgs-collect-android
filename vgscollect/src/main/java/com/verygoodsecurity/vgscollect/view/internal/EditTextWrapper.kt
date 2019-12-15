@@ -194,7 +194,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
         inputConnection!!.addFilter(userFilter)
 
         val str = text.toString()
-        val stateContent = FieldContent.CardNumberContent.apply {
+        val stateContent = FieldContent.CardNumberContent().apply {
             cardtype = this@EditTextWrapper.cardtype
             this.data = str
         }

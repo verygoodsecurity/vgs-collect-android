@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import java.util.regex.Pattern
 
 class CardBrandFilter(
-    private val inputField: TextView?,
+    private val inputField: TextView? = null,
     private val divider:String? = ""
 ) : MutableCardFilter {
 
@@ -35,8 +35,7 @@ class CardBrandFilter(
             val m = Pattern.compile(value.regex).matcher(preparedStr)
             while (m.find()) {
                 inputField?.filters = arrayOf(InputFilter.LengthFilter(MAX_LENGTH + MASK_COUNT))
-                val s = R.drawable.cirrus
-                return CardBrandWrapper(regex = value.regex, name = value.cardBrandName, resId = s)
+                return CardBrandWrapper(regex = value.regex, name = value.cardBrandName, resId = value.drawableResId)
             }
         }
 

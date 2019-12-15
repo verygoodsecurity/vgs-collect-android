@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 internal class DefaultStorage(
-    private val notifier: DependencyDispatcher
+    private val notifier: DependencyDispatcher? = null
 ):VgsStore,IStateEmitter {
 
     private val store = mutableMapOf<Int, VGSFieldState>()
@@ -35,13 +35,13 @@ internal class DefaultStorage(
 
     private fun notifyRelatedFields(state: VGSFieldState) {
         if(state.isCardNumberType()) {
-            val maxCvcLength = (state.content as FieldContent.CardNumberContent).cardtype.rangeCVV.last()
+            val maxCvcLength = (state.content as? FieldContent.CardNumberContent)?.cardtype?.rangeCVV?.last()?:4
             val dependency =
                 Dependency(
                     DependencyType.LENGTH,
                     maxCvcLength
                 )
-            notifier.onDependencyDetected(FieldType.CVC, dependency)
+            notifier?.onDependencyDetected(FieldType.CVC, dependency)
         }
     }
 
