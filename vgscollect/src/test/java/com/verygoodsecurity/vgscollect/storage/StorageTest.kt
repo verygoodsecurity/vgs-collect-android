@@ -1,11 +1,18 @@
-package com.verygoodsecurity.vgscollect
+package com.verygoodsecurity.vgscollect.storage
 
+import com.verygoodsecurity.vgscollect.core.model.state.Dependency
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.DefaultStorage
+import com.verygoodsecurity.vgscollect.core.storage.DependencyDispatcher
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscollect.view.card.CardType
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 import org.junit.Assert
 import org.junit.Test
+import org.mockito.Mockito
+import org.mockito.Mockito.mock
 
 class StorageTest {
 
@@ -78,5 +85,53 @@ class StorageTest {
 
         store.clear()
         Assert.assertEquals(0, store.getStates().size)
+    }
+
+    @Test
+    fun testDefaultDependencyDetector() {
+        val notifier = mock(DependencyDispatcher::class.java)
+        val store = DefaultStorage(notifier)
+
+        val listener = store.performSubscription()
+        listener.emit(0, VGSFieldState(isFocusable = false, type = FieldType.CVC))
+        listener.emit(0, VGSFieldState(isFocusable = false, type = FieldType.CARD_NUMBER))
+
+        Mockito.verify(notifier).onDependencyDetected(FieldType.CVC, Dependency(value = 4))
+    }
+
+    @Test
+    fun testCVC_3_LengthDependencyDetector() {
+        val notifier = mock(DependencyDispatcher::class.java)
+        val store = DefaultStorage(notifier)
+
+        val listener = store.performSubscription()
+        listener.emit(0, VGSFieldState(isFocusable = false, type = FieldType.CVC))
+
+        val state = VGSFieldState(isFocusable = false, type = FieldType.CARD_NUMBER)
+        val content = FieldContent.CardNumberContent()
+        content.cardtype = CardType.MASTERCARD
+        state.content = content
+
+        listener.emit(1, state)
+
+        Mockito.verify(notifier).onDependencyDetected(FieldType.CVC, Dependency(value = 3))
+    }
+
+    @Test
+    fun testCVC_4_LengthDependencyDetector() {
+        val notifier = mock(DependencyDispatcher::class.java)
+        val store = DefaultStorage(notifier)
+
+        val listener = store.performSubscription()
+        listener.emit(0, VGSFieldState(isFocusable = false, type = FieldType.CVC))
+
+        val state = VGSFieldState(isFocusable = false, type = FieldType.CARD_NUMBER)
+        val content = FieldContent.CardNumberContent()
+        content.cardtype = CardType.AMERICAN_EXPRESS
+        state.content = content
+
+        listener.emit(1, state)
+
+        Mockito.verify(notifier).onDependencyDetected(FieldType.CVC, Dependency(value = 4))
     }
 }
