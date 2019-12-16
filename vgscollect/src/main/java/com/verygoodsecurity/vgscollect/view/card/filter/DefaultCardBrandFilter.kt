@@ -33,6 +33,6 @@ class DefaultCardBrandFilter(
         }
 
         inputField?.filters = arrayOf(InputFilter.LengthFilter(MAX_LENGTH + MASK_COUNT))
-        return null
+        return CardBrandWrapper()
     }
 }
