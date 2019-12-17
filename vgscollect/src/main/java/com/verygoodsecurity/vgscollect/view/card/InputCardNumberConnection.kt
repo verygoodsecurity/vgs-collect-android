@@ -5,7 +5,9 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandWrapper
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
+import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.card.brand.*
 
 class InputCardNumberConnection(
     private val id:Int,
@@ -16,6 +18,18 @@ class InputCardNumberConnection(
     private var stateListener: OnVgsViewStateChangeListener? = null
 
     private val cardFilters = ArrayList<VGSCardFilter>()
+    private val brandLuhnValidations by lazy {
+        val set = HashMap<CardType, VGSValidator>()
+        set[CardType.VISA] = VisaDelegate()
+        set[CardType.MASTERCARD] = MastercardDelegate()
+        set[CardType.AMERICAN_EXPRESS] = AmexDelegate()
+        set[CardType.DINCLUB] = DinersClubDelegate()
+        set[CardType.DISCOVER] = DiscoverDelegate()
+        set[CardType.JCB] = JcbDelegate()
+
+        set
+    }
+
 
     private var output = VGSFieldState()
 
@@ -55,8 +69,10 @@ class InputCardNumberConnection(
             val updatedStr = str?.replace(divider?:" ", "")?:""
 
             val isStrValid = validator?.isValid(updatedStr)?:false
+            val isLuhnValid:Boolean = brandLuhnValidations[card.cardType]?.isValid(updatedStr)?:true
+
             val isLengthAppropriate = checkLength(card.cardType, updatedStr.length)
-            output.isValid = isStrValid && isLengthAppropriate
+            output.isValid = isLuhnValid && isStrValid && isLengthAppropriate
         }
 
         stateListener?.emit(id, output)
@@ -70,9 +86,10 @@ class InputCardNumberConnection(
     }
 
     private fun applyNewRule(regex: String?) {
-        regex?.let {
-            validator?.clearRules()
-            validator?.addRule(it)
+        if(validator is MuttableValidator &&
+            !regex.isNullOrEmpty()) {
+                validator.clearRules()
+                validator.addRule(regex)
         }
     }
 
