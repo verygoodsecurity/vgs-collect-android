@@ -240,10 +240,9 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
             Gravity.END -> r = ContextCompat.getDrawable(context, privaryRes)
         }
 
-        val cIconWidth = resources.getDimension(R.dimen.c_icon_width).toInt()
-        val cIconHeight = resources.getDimension(R.dimen.c_icon_height).toInt()
-        r?.setBounds(0, 0, cIconWidth, cIconHeight)
-        l?.setBounds(0, 0, cIconWidth, cIconHeight)
+        val cIconSize = resources.getDimension(R.dimen.c_icon_size).toInt()
+        r?.setBounds(0, 0, cIconSize, cIconSize)
+        l?.setBounds(0, 0, cIconSize, cIconSize)
         setCompoundDrawables(l,null,r,null)
     }
 
