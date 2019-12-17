@@ -112,8 +112,22 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
     }
 
     private fun applyInfoFieldType() {
-//        validator = VGSValidator()
-////        vgsFieldType = VGSEditTextFieldType.Info
+        validator = InfoValidator()
+        inputConnection = InputInfoConnection(id, validator)
+
+        val str = text.toString()
+        val stateContent = FieldContent.InfoContent().apply {
+            this.data = str
+        }
+        val state = collectCurrentState(stateContent)
+
+        inputConnection?.setOutput(state)
+        inputConnection?.setOutputListener(stateListener)
+
+
+
+
+
         applyNewTextWatcher(null)
         filters = arrayOf()
         applyTextInputType()

@@ -6,7 +6,7 @@ class CardCVCCodeValidator:VGSValidator {
     override fun addRule(regex: String) {}
 
     override fun isValid(content: String?): Boolean {
-        val c =  content?.toIntOrNull()
-        return c != null && content.length >= 3
+        val data:Int? =  content?.trim()?.toIntOrNull()
+        return data != null && data >= 3
     }
 }

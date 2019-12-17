@@ -9,6 +9,8 @@ class CardHolderValidator:VGSValidator {
     override fun addRule(regex: String) {}
 
     override fun isValid(content: String?): Boolean {
-        return m.matcher(content).matches()
+        val str = content?.trim()
+        return !str.isNullOrEmpty() &&
+                m.matcher(str).matches()
     }
 }
