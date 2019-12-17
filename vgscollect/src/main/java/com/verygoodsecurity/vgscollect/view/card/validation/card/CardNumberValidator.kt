@@ -22,7 +22,7 @@ class CardNumberValidator(
             val rule = rules[i]
             val m = Pattern.compile(rule).matcher(preparedStr)
             while (m.find()) {
-                return true     //fixme
+                return true
             }
         }
         return false

@@ -125,10 +125,6 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
 
-
-
-
-
         applyNewTextWatcher(null)
         filters = arrayOf()
         applyTextInputType()
@@ -192,10 +188,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
     }
 
     private fun applyCardNumFieldType() {
-        validator =
-            CardNumberValidator(
-                divider
-            )
+        validator = CardNumberValidator(divider)
 
         inputConnection = InputCardNumberConnection(id,
                 validator,
