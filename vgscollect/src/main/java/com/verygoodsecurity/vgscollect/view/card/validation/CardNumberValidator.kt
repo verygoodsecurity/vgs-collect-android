@@ -16,7 +16,7 @@ class CardNumberValidator(
     }
 
     override fun isValid(content: String?): Boolean {
-        val preparedStr = content?.replace(divider?:" ", "")
+        val preparedStr = content?.trim()?.replace(divider?:" ", "")
         for(i in rules.indices) {
             val rule = rules[i]
             val m = Pattern.compile(rule).matcher(preparedStr)
