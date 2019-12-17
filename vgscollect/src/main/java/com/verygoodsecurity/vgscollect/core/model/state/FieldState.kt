@@ -19,7 +19,7 @@ sealed class FieldState {
     class CardNumberState:FieldState() {
         var bin:String? = ""
             internal set
-        var last4:String? = ""
+        var last:String? = ""
             internal set
         var number:String? = ""
             internal set
