@@ -30,6 +30,7 @@ import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
 import com.verygoodsecurity.vgscollect.view.card.text.CardNumberTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.*
+import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
 
 internal class EditTextWrapper(context: Context): TextInputEditText(context),
     DependencyListener {
@@ -191,7 +192,10 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
     }
 
     private fun applyCardNumFieldType() {
-        validator = CardNumberValidator(divider)
+        validator =
+            CardNumberValidator(
+                divider
+            )
 
         inputConnection = InputCardNumberConnection(id,
                 validator,

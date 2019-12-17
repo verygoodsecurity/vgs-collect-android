@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.card.validator
 
-import com.verygoodsecurity.vgscollect.view.card.validation.CardNumberValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before

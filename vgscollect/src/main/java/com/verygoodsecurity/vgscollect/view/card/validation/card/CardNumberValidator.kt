@@ -1,10 +1,11 @@
-package com.verygoodsecurity.vgscollect.view.card.validation
+package com.verygoodsecurity.vgscollect.view.card.validation.card
 
+import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
 import java.util.regex.Pattern
 
 class CardNumberValidator(
     private val divider:String? = " "
-) : VGSValidator {
+) : MuttableValidator {
     private val rules = ArrayList<String>()
 
     override fun clearRules() {
