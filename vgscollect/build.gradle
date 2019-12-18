@@ -8,12 +8,12 @@ apply from: 'src/version.gradle'
 //apply from: 'src/bintray.gradle'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
     buildToolsVersion "29.0.2"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 29
+        targetSdkVersion 28
         versionCode project.globalVersionCode
         versionName project.globalVersionName
 
