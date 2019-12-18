@@ -15,10 +15,11 @@ import androidx.annotation.RequiresApi
 import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
+import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.internal.EditTextWrapper
-import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -26,6 +27,9 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     private val inputField = EditTextWrapper(context)
     private var isAttachPermitted = true
+
+    internal val notifier = DependencyNotifier(inputField)
+    class DependencyNotifier(notifier: DependencyListener) : DependencyListener by notifier
 
     override fun onDetachedFromWindow() {
         if(childCount > 0) removeAllViews()
@@ -281,8 +285,12 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.isRequired = state
     }
 
-    open fun setFieldType(type:FieldType) {
-        inputField.setFieldType(type)
+    open fun getFieldType():FieldType {
+        return inputField.fieldType
+    }
+
+    open fun setFieldType(type: FieldType) {
+        inputField.fieldType = type
     }
 
     open fun setCursorColor(color:Int) {
@@ -305,12 +313,9 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.setCardBrand(c)
     }
 
-
-
-
-
-
-
+    protected fun setNumberDivider(divider:String?) {
+        inputField.setNumberDivider(divider)
+    }
 
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())

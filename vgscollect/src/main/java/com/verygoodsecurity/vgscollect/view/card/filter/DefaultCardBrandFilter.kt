@@ -2,12 +2,13 @@ package com.verygoodsecurity.vgscollect.view.card.filter
 
 import android.text.InputFilter
 import android.widget.TextView
-import com.verygoodsecurity.vgscollect.view.text.validation.card.CardType
+import com.verygoodsecurity.vgscollect.view.card.CardType
 import java.util.regex.Pattern
 
 class DefaultCardBrandFilter(
     private val cardBrands: Array<CardType>,
-    private val inputField: TextView?
+    private val inputField: TextView?,
+    private val divider:String? = " "
 ) : VGSCardFilter {
 
     companion object {
@@ -19,7 +20,7 @@ class DefaultCardBrandFilter(
         if(str.isNullOrEmpty()) {
             return CardBrandWrapper()
         }
-        val preparedStr = str.replace(" ", "")
+        val preparedStr = str.replace(divider?:" ", "")
 
         for(i in cardBrands.indices) {
             val value = cardBrands[i]
@@ -32,6 +33,6 @@ class DefaultCardBrandFilter(
         }
 
         inputField?.filters = arrayOf(InputFilter.LengthFilter(MAX_LENGTH + MASK_COUNT))
-        return null
+        return CardBrandWrapper()
     }
 }

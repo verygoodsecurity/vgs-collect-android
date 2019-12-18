@@ -47,6 +47,7 @@
                 android:id="@+id/cardNumberField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                app:numberDivider="-"
                 app:fieldName="cardNumber"
                 app:isRequired="false"
                 app:textColor="@color/black"
@@ -54,7 +55,7 @@
                 app:textSize="12dp"
                 app:text="4111111111111111"
                 app:hint="Card number"
-                app:cardPreview="right"
+                app:cardBrandIconGravity="right"
                 app:fieldType="cardNumber"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -145,7 +146,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:paddingBottom="@dimen/half_default_margin"
-                android:text="STATE:"/>
+                android:text="STATE: "/>
             <ImageView
                 android:id="@+id/cardIcon"
                 android:layout_width="30dp"

@@ -143,7 +143,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
         }
     }
 
-    open fun setBoxCornerRadii(boxCornerRadiusTopStart:Float, boxCornerRadiusTopEnd:Float, boxCornerRadiusBottomStart:Float, boxCornerRadiusBottomEnd:Float) {
+    open fun setBoxCornerRadius(boxCornerRadiusTopStart:Float, boxCornerRadiusTopEnd:Float, boxCornerRadiusBottomStart:Float, boxCornerRadiusBottomEnd:Float) {
         textInputLayout.setBoxCornerRadii(boxCornerRadiusTopStart, boxCornerRadiusTopEnd, boxCornerRadiusBottomStart, boxCornerRadiusBottomEnd)
     }
 

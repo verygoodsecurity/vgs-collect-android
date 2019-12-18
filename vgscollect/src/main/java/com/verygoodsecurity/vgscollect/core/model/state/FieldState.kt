@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
-import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 sealed class FieldState {
     var hasFocus:Boolean = false
@@ -19,7 +19,7 @@ sealed class FieldState {
     class CardNumberState:FieldState() {
         var bin:String? = ""
             internal set
-        var last4:String? = ""
+        var last:String? = ""
             internal set
         var number:String? = ""
             internal set
