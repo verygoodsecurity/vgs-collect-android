@@ -5,6 +5,8 @@ import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
+import com.verygoodsecurity.vgscollect.core.storage.DependencyDispatcher
+import com.verygoodsecurity.vgscollect.core.storage.Notifier
 import com.verygoodsecurity.vgscollect.core.api.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
 import com.verygoodsecurity.vgscollect.core.api.doAsync
@@ -27,6 +29,7 @@ import org.jetbrains.annotations.TestOnly
 open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     private var storage: VgsStore
     private val emitter: IStateEmitter
+    private val dependencyDispatcher: DependencyDispatcher
     private var client: ApiClient
 
     var onResponseListener:VgsCollectResponseListener? = null
@@ -39,7 +42,10 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
     private val isURLValid:Boolean
 
     init {
-        val store = DefaultStorage()
+        dependencyDispatcher =
+            Notifier()
+        val store = DefaultStorage(dependencyDispatcher)
+
         storage = store
         emitter = store
 
@@ -51,6 +57,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
     fun bindView(view: InputFieldView?) {
         if(view is VGSEditText) {
             view.addStateListener(emitter.performSubscription())
+            dependencyDispatcher.addDependencyListener(view.getFieldType(), view.notifier)
         }
     }
 

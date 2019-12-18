@@ -58,8 +58,9 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                         .append("   isRequired: ").append(it.isRequired).append("\n")
                     if (it is FieldState.CardNumberState) {
                         builder.append("    type: ").append(it.cardBrand).append("\n")
-                            .append("       last4: ").append(it.last4).append("\n")
+                            .append("       end: ").append(it.last).append("\n")
                             .append("       bin: ").append(it.bin).append("\n")
+                            .append(it.number).append("\n")
                     }
 
                     builder.append("\n")

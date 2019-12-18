@@ -64,8 +64,6 @@
         <attr name="gravity" />
         <attr name="scrollHorizontally" format="boolean" />
 
-<!--        <attr name="password" format="boolean" />-->
-
         <attr name="hint" />
 
         <attr name="fieldType" format="enum">
@@ -78,7 +76,8 @@
     </declare-styleable>
 
     <declare-styleable name="VGSCardNumberEditText" parent="VGSEditText">
-        <attr name="cardPreview">
+        <attr name="numberDivider" format="string"/>
+        <attr name="cardBrandIconGravity">
             <enum name="none" value="0" />
             <enum name="left" value="3" />
             <enum name="right" value="5" />
@@ -91,7 +90,6 @@
         <attr name="passwordToggleTint" format="color"/>
         <attr name="passwordToggleDrawable" format="reference"/>
 
-<!--        <attr name="boxStrokeWidth" format="dimension"/>-->
         <attr name="boxBackgroundModes" >
             <enum name="outline" value="0"/>
             <enum name="filled" value="1"/>
@@ -102,19 +100,11 @@
         <attr name="hintAnimationEnabled" format="boolean"/>
         <attr name="boxBackgroundColor" format="color"/>
         <attr name="boxStrokeColor" format="color"/>
-        <attr name="boxCornerRadiusBottomEnd" format="dimension"/>
+        <attr name="boxCornerRadiusTopEnd" format="dimension"/>
         <attr name="boxCornerRadiusTopStart" format="dimension"/>
         <attr name="boxCornerRadiusBottomStart" format="dimension"/>
-        <attr name="boxCornerRadiusTopEnd" format="dimension"/>
+        <attr name="boxCornerRadiusBottomEnd" format="dimension"/>
         <attr name="boxCornerRadius" format="dimension"/>
 
-<!--        app:boxStrokeWidth="2dp"-->
-<!--        app:boxBackgroundMode="outline"-->
-<!--        android:paddingStart="12dp"-->
-<!--        app:boxCornerRadiusBottomEnd="@dimen/default_margin"-->
-<!--        app:boxCornerRadiusTopStart="@dimen/default_margin"-->
-<!--        app:boxCornerRadiusBottomStart="@dimen/default_margin"-->
-<!--        android:textColorHint="@color/black"-->
-<!--        app:boxStrokeColor="@color/design_default_color_primary"-->
     </declare-styleable>
 </resources>

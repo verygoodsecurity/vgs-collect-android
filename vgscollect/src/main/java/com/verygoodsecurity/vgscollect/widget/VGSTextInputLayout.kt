@@ -43,8 +43,6 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 setBoxBackgroundColor(boxBackgroundColor)
                 setBoxStrokeColor(boxStrokeColor)
 
-                setBoxCornerRadii(boxCornerRadiusTopStart, boxCornerRadiusTopEnd, boxCornerRadiusBottomStart, boxCornerRadiusBottomEnd)
-
                 if(drawRef > 0) {
                     setPasswordVisibilityToggleDrawable(drawRef)
                 }
@@ -55,7 +53,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 val boxTE = if(boxCornerRadiusTopEnd == 0f) boxCornerRadius else boxCornerRadiusTopEnd
                 val boxBS = if(boxCornerRadiusBottomStart == 0f) boxCornerRadius else boxCornerRadiusBottomStart
                 val boxBE = if(boxCornerRadiusBottomEnd == 0f) boxCornerRadius else boxCornerRadiusBottomEnd
-                setBoxCornerRadii(boxTS, boxTE, boxBS, boxBE)
+                setBoxCornerRadius(boxTS, boxTE, boxBS, boxBE)
 
                 setHintEnabled(hintEnabled)
                 setHintAnimationEnabled(hintAnimationEnabled)

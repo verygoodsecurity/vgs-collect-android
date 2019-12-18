@@ -2,24 +2,33 @@ package com.verygoodsecurity.vgscollect.view.card.filter
 
 import android.text.InputFilter
 import android.widget.TextView
+import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import java.util.regex.Pattern
 
 class CardBrandFilter(
-    private val userCustomCardBrands: Array<CustomCardBrand>,
-    private val inputField: TextView?
-) : VGSCardFilter {
+    private val inputField: TextView? = null,
+    private val divider:String? = ""
+) : MutableCardFilter {
+
+    private val userCustomCardBrands = mutableListOf<CustomCardBrand>()
 
     companion object {
         private const val MAX_LENGTH = 19
         private const val MASK_COUNT = 3
     }
 
+    override fun add(item: CustomCardBrand?) {
+        item?.let {
+            userCustomCardBrands.add(item)
+        }
+    }
+
     override fun detect(str: String?): CardBrandWrapper? {
         if(str.isNullOrEmpty()) {
             return CardBrandWrapper()
         }
-        val preparedStr = str.replace(" ", "")
+        val preparedStr = str.replace(divider?:" ", "")
 
         for(i in userCustomCardBrands.indices) {
             val value = userCustomCardBrands[i]

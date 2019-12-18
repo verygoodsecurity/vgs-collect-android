@@ -29,7 +29,12 @@
     public private protected *;
 }
 
--keep public class * extends com.verygoodsecurity.vgscollect.view.text.validation.card.VGSTextInputType  { *; }
+
+-keep public class * extends com.verygoodsecurity.vgscollect.view.card.CustomCardBrand  { *; }
+
+-keep public class * extends com.verygoodsecurity.vgscollect.view.card.CardType  { *; }
+-keep public class * extends com.verygoodsecurity.vgscollect.view.card.FieldType  { *; }
+
 -keep public interface  com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener { *; }
 -keep public interface com.verygoodsecurity.vgscollect.core.storage.VgsStore { *; }
 -keep public class * extends com.verygoodsecurity.vgscollect.core.model.state.FieldState { *; }

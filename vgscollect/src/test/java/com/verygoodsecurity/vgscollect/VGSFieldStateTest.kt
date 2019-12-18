@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
-import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -52,7 +52,7 @@ class VGSFieldStateTest {
 
     @Test
     fun mapToFieldStateCardNumber() {
-        val content = FieldContent.CardNumberContent
+        val content = FieldContent.CardNumberContent()
         content.data = "5555 5555 1234 5678"
         val oldState = VGSFieldState(isFocusable = true,
             isRequired = true,
@@ -72,7 +72,7 @@ class VGSFieldStateTest {
 
     @Test
     fun mapToFieldStateCardNumberInfo() {
-        val content = FieldContent.CardNumberContent
+        val content = FieldContent.CardNumberContent()
         content.data = "5555 5555 1234 5678"
         val oldState = VGSFieldState(isFocusable = true,
             isRequired = true,
@@ -87,8 +87,46 @@ class VGSFieldStateTest {
 
         val c = (newState as FieldState.CardNumberState)
 
-        assertTrue(c.bin == "5555 55")
-        assertTrue(c.last4 == "5678")
-        assertTrue(c.number == "5555 55####### 5678")
+        assertTrue(c.number == "5555 55## #### 5678")
+    }
+
+    @Test
+    fun mapBin() {
+        val content = FieldContent.CardNumberContent()
+        content.data = "5512 3455 1234 5"
+        val oldState = VGSFieldState(isFocusable = true,
+            isRequired = true,
+            isValid = true,
+            type = FieldType.CARD_NUMBER,
+            content = content,
+            fieldName = "fn")
+
+        val newState = oldState.mapToFieldState()
+
+        assertTrue(newState is FieldState.CardNumberState)
+
+        val c = (newState as FieldState.CardNumberState)
+
+        assertTrue(c.bin == "551234")
+    }
+
+    @Test
+    fun mapLast4() {
+        val content = FieldContent.CardNumberContent()
+        content.data = "5512 3455 1234 5"
+        val oldState = VGSFieldState(isFocusable = true,
+            isRequired = true,
+            isValid = true,
+            type = FieldType.CARD_NUMBER,
+            content = content,
+            fieldName = "fn")
+
+        val newState = oldState.mapToFieldState()
+
+        assertTrue(newState is FieldState.CardNumberState)
+
+        val c = (newState as FieldState.CardNumberState)
+
+        assertTrue(c.last == "2345")
     }
 }

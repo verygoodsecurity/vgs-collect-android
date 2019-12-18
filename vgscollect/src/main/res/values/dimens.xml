@@ -6,6 +6,5 @@
 
 
 
-    <dimen name="c_icon_width">32dp</dimen>
-    <dimen name="c_icon_height">21dp</dimen>
+    <dimen name="c_icon_size">32dp</dimen>
 </resources>

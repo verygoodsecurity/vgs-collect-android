@@ -1,14 +1,13 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
-import com.verygoodsecurity.vgscollect.view.text.validation.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 data class VGSFieldState(var isFocusable:Boolean = false,
                          var isRequired:Boolean = true,
                          var isValid:Boolean = true,
                          var type: FieldType = FieldType.INFO,
                          var content:FieldContent? = null,
-                         var fieldName:String? = null) {  /// Field name - actually this is key for you JSON which contains data
-}
+                         var fieldName:String? = null)
 
 fun VGSFieldState.mapToFieldState():FieldState {
     val f = when(type) {
@@ -20,8 +19,11 @@ fun VGSFieldState.mapToFieldState():FieldState {
             val state = FieldState.CardNumberState()
             
             val content = (content as? FieldContent.CardNumberContent)
-            state.bin = content?.parseCardBin()
-            state.last4 = content?.parseCardLast4()
+            if(isValid) {
+                state.bin = content?.parseCardBin()
+//                state.last4 = content?.parseCardLast4Digits()
+                state.last = content?.parseRawCardLastDigits()
+            }
             state.number = content?.parseCardNumber()
             state.cardBrand = content?.cardBrandName
             state.resId = content?.iconResId?:0
@@ -38,3 +40,5 @@ fun VGSFieldState.mapToFieldState():FieldState {
     f.hasFocus = isFocusable
     return f
 }
+
+fun VGSFieldState.isCardNumberType() = type == FieldType.CARD_NUMBER
