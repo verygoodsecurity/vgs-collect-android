@@ -1,7 +1,7 @@
 project.ext {
-    def versionMajor = 0
+    def versionMajor = 1
     def versionMinor = 0
-    def versionBuild = 5
+    def versionBuild = 0
     globalVersionCode = versionMajor * 1000 + versionMinor * 100 + versionBuild
     globalVersionName = "${versionMajor}.${versionMinor}.${versionBuild}"
 }
