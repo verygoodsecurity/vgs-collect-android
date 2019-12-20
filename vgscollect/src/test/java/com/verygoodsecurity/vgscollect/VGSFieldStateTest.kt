@@ -113,7 +113,7 @@ class VGSFieldStateTest {
     @Test
     fun mapLast4() {
         val content = FieldContent.CardNumberContent()
-        content.data = "5512 3455 1234 5"
+        content.data = "5555 5555 1234 5"
         val oldState = VGSFieldState(isFocusable = true,
             isRequired = true,
             isValid = true,
@@ -127,6 +127,6 @@ class VGSFieldStateTest {
 
         val c = (newState as FieldState.CardNumberState)
 
-        assertTrue(c.last == "2345")
+        assertTrue(c.last == "5")
     }
 }

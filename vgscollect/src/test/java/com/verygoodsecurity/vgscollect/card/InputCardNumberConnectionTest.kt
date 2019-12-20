@@ -72,7 +72,7 @@ class InputCardNumberConnectionTest {
         val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
-        Mockito.verify(listener).emit(0, VGSFieldState())
+        Mockito.verify(listener).emit(0, VGSFieldState(isValid = false))
     }
 
     @Test
@@ -80,7 +80,7 @@ class InputCardNumberConnectionTest {
         val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
         connection.run()
-        Mockito.verify(listener, Mockito.times(2)).emit(0, VGSFieldState())
+        Mockito.verify(listener, Mockito.times(2)).emit(0, VGSFieldState(isValid = false))
     }
 
     @Test
@@ -92,7 +92,7 @@ class InputCardNumberConnectionTest {
         connection.setOutput(textItem)
 
         connection.run()
-        Mockito.verify(listener).emit(0, VGSFieldState(fieldName = "fieldName"))
+        Mockito.verify(listener).emit(0, VGSFieldState(isValid = false, fieldName = "fieldName"))
     }
 
     @Test
@@ -140,7 +140,7 @@ class InputCardNumberConnectionTest {
         connection.setOutputListener(listener)
 
         val content = FieldContent.CardNumberContent()
-        content.data = "5555 5555 5555 5555"
+        content.data = "4111 1111 5555 5555"
         val textItem = VGSFieldState(isValid = false,
             isRequired = true,
             fieldName = "fieldName",
