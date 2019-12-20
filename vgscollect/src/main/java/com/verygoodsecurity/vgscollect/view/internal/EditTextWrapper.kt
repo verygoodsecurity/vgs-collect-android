@@ -316,7 +316,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
                 cursorDrawableField.set(editor, drawables)
             }
         } catch (t: Throwable) {
-            Logger.i("VGSEditText", "can't apply color on cursor")
+            Logger.i("VGSEditText", "Can't apply color on cursor")
         }
     }
 
@@ -350,7 +350,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
         when {
             divider.isNullOrEmpty() -> this@EditTextWrapper.divider = ""
             divider.length == 1 -> this@EditTextWrapper.divider = divider
-            else -> Logger.i("VGSEditTextView", "divider for number cant be bigger than 1 symbol. (${divider})")
+            else -> Logger.i("VGSEditTextView", "Divider for number can't be greater than 1 symbol. (${divider})")
         }
     }
 
