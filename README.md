@@ -4,10 +4,7 @@
 
 # VGS Collect SDK 
 
->VGS Collect - is a product suite that allows customers to collect information securely without possession of it. VGS Collect mobile SDKs - are native mobile forms modules that allow customers to collect information securely on mobile devices with iOS and Android. **Source:** [vgs-collect](https://www.verygoodsecurity.com/docs/vgs-collect/index)
->
->Customers can use the same VGS Vault and the same server-side for Mobile apps as for Web. Their experience should stay the same and be not dependent on the platform they use: Web or Mobile.
-
+VGS Collect - is a product suite that allows customers to collect information securely without possession of it. VGS Collect Android SDK allows you to securely collect data from your users via forms without having to have that data pass through your systems. The form fields behave like traditional input fields while securing access to the unsecured data.
 
 Table of contents
 =================
@@ -54,7 +51,7 @@ For integration you need to install the [Android Studio](http://developer.androi
 If you are using Maven, add the following to your `build.gradle` file:
 ```
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:0.0.4’
+   implementation 'com.verygoodsecurity:vgscollect:1.0.0’
 }
 ```
 #### Add permissions
