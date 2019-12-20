@@ -122,11 +122,12 @@ internal class URLConnectionClient:ApiClient {
                 val responsePayload:Map<String, String>? = responseStr?.parseVGSResponse()
                 VGSResponse.SuccessResponse(responsePayload, responseCode)
             } else {
-                VGSResponse.ErrorResponse("error:")  //fixme
+                val responseStr = conn.errorStream?.bufferedReader()?.use { it.readText() }
+                VGSResponse.ErrorResponse(responseStr, responseCode)
             }
 
         } catch (e: Exception) {
-            response = VGSResponse.ErrorResponse("couldn't connect to server")  //fixme
+            response = VGSResponse.ErrorResponse("Can't connect to server")  //fixme
             Logger.e("VGSCollect", e.localizedMessage)
         }
         conn?.disconnect()

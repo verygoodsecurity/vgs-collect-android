@@ -29,11 +29,9 @@
     public private protected *;
 }
 
-
--keep public class * extends com.verygoodsecurity.vgscollect.view.card.CustomCardBrand  { *; }
-
--keep public class * extends com.verygoodsecurity.vgscollect.view.card.CardType  { *; }
--keep public class * extends com.verygoodsecurity.vgscollect.view.card.FieldType  { *; }
+-keep public class com.verygoodsecurity.vgscollect.view.card.CustomCardBrand  { *; }
+-keep public enum com.verygoodsecurity.vgscollect.view.card.CardType  { *; }
+-keep public enum com.verygoodsecurity.vgscollect.view.card.FieldType  { *; }
 
 -keep public interface  com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener { *; }
 -keep public interface com.verygoodsecurity.vgscollect.core.storage.VgsStore { *; }

@@ -113,7 +113,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         var isValid = true
         storage.getStates().forEach {
             if(!it.isValid) {
-                val r = VGSResponse.ErrorResponse("is not a valid ${it.fieldName}", -1)
+                val r = VGSResponse.ErrorResponse("FieldName is not a valid ${it.fieldName}", -1)
                 onResponseListener?.onResponse(r)
                 isValid = false
                 return@forEach
@@ -146,7 +146,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         val task = doAsync(onResponseListener) {
             it?.run {
                 client.call(this.path, this.method, this.headers, this.data)
-            } ?: VGSResponse.ErrorResponse("error:")  //fixme
+            } ?: VGSResponse.ErrorResponse("error")  //fixme
         }
 
         tasks.add(task)
