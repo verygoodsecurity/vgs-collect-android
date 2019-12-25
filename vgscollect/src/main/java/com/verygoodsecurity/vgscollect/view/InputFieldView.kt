@@ -18,14 +18,14 @@ import android.view.ViewGroup
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
-import com.verygoodsecurity.vgscollect.view.internal.EditTextWrapper
+import com.verygoodsecurity.vgscollect.view.internal.InputField
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private val inputField = EditTextWrapper(context)
+    private val inputField = InputField(context)
     private var isAttachPermitted = true
 
     internal val notifier = DependencyNotifier(inputField)
@@ -37,7 +37,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     override fun addView(child: View?) {
-        if(childCount == 0 && child is EditTextWrapper) {
+        if(childCount == 0 && child is InputField) {
             super.addView(child)
         }
     }
@@ -80,7 +80,6 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
         inputField.setPadding(left, top, right, bottom)
-//        super.setPadding(left, top, right, bottom)
         super.setPadding(0, 0, 0, 0)
     }
 
@@ -301,7 +300,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.stateListener = stateListener
     }
 
-    internal fun getEditTextWrapper(): EditTextWrapper {
+    internal fun getEditTextWrapper(): InputField {
         return inputField
     }
 

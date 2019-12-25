@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -39,7 +38,7 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
     private  fun handleNewChild(child: View?):View? {
         return child?.run {
             when(this) {
-                is EditTextWrapper -> this
+                is InputField -> this
                 is InputFieldView -> {
                     val v = (this as? InputFieldView)?.getEditTextWrapper()
                     val LP = LayoutParams(child.layoutParams.width, child.layoutParams.height)
