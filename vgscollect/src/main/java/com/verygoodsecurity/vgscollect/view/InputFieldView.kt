@@ -25,10 +25,10 @@ abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private val inputField = EditTextWrapper(context)
+    private var inputField:EditTextWrapper? = EditTextWrapper(context)
     private var isAttachPermitted = true
 
-    internal val notifier = DependencyNotifier(inputField)
+    internal val notifier = DependencyNotifier(inputField!!)
     class DependencyNotifier(notifier: DependencyListener) : DependencyListener by notifier
 
     override fun onDetachedFromWindow() {
@@ -79,7 +79,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        inputField.setPadding(left, top, right, bottom)
+        inputField?.setPadding(left, top, right, bottom)
 //        super.setPadding(left, top, right, bottom)
         super.setPadding(0, 0, 0, 0)
     }
@@ -88,7 +88,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         return if(isAttachPermitted) {
             super.getPaddingBottom()
         } else {
-            inputField.paddingBottom
+            inputField?.paddingBottom?:0
         }
     }
 
@@ -97,7 +97,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         return if(isAttachPermitted) {
             super.getPaddingEnd()
         } else {
-            inputField.paddingEnd
+            inputField?.paddingEnd?:0
         }
     }
 
@@ -105,7 +105,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         return if(isAttachPermitted) {
             super.getPaddingLeft()
         } else {
-            inputField.paddingLeft
+            inputField?.paddingLeft?:0
         }
     }
 
@@ -113,7 +113,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         return if(isAttachPermitted) {
             super.getPaddingRight()
         } else {
-            inputField.paddingRight
+            inputField?.paddingRight?:0
         }
     }
 
@@ -122,7 +122,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         return if(isAttachPermitted) {
             super.getPaddingStart()
         } else {
-            inputField.paddingStart
+            inputField?.paddingStart?:0
         }
     }
 
@@ -130,7 +130,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         return if(isAttachPermitted) {
             super.getPaddingTop()
         } else {
-            inputField.paddingTop
+            inputField?.paddingTop?:0
         }
     }
 
@@ -142,14 +142,14 @@ abstract class InputFieldView @JvmOverloads constructor(
                 setAddStatesFromChildren(true)
                 addView(inputField)
             }
-            inputField.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+            inputField?.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
             bgDraw = background
             if(background != null) {
                 setBackgroundColor(Color.TRANSPARENT)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    inputField.background = bgDraw
+                    inputField?.background = bgDraw
                 } else {
-                    inputField.setBackgroundDrawable(bgDraw)
+                    inputField?.setBackgroundDrawable(bgDraw)
                 }
             }
             isAttachPermitted = false
@@ -157,15 +157,15 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     open fun setInputType(inputType: Int) {
-        inputField.inputType = inputType
+        inputField?.inputType = inputType
     }
 
     open fun setFieldName(fieldName:String?) {
-        inputField.tag = fieldName
+        inputField?.tag = fieldName
     }
 
     open fun setFieldName(resId:Int) {
-        inputField.tag = resources.getString(resId, "")
+        inputField?.tag = resources.getString(resId, "")
     }
 
     open fun setEllipsize(type: Int) {
@@ -176,150 +176,150 @@ abstract class InputFieldView @JvmOverloads constructor(
             4 -> TextUtils.TruncateAt.MARQUEE
             else -> null
         }
-        inputField.ellipsize = ellipsize
+        inputField?.ellipsize = ellipsize
     }
 
     open fun setEllipsize(ellipsis: TextUtils.TruncateAt) {
-        inputField.ellipsize = ellipsis
+        inputField?.ellipsize = ellipsis
     }
 
     open fun setMinLines(lines:Int) {
-        inputField.minLines = lines
+        inputField?.minLines = lines
     }
 
     open fun setMaxLines(lines:Int) {
-        inputField.maxLines = lines
+        inputField?.maxLines = lines
     }
 
     open fun setSingleLine(singleLine:Boolean) {
-        inputField.setSingleLine(singleLine)
+        inputField?.setSingleLine(singleLine)
     }
 
     override fun setFocusableInTouchMode(focusableInTouchMode: Boolean) {
         super.setFocusableInTouchMode(focusableInTouchMode)
-        inputField.isFocusableInTouchMode = focusableInTouchMode
+        inputField?.isFocusableInTouchMode = focusableInTouchMode
     }
 
     open fun setHint(text:String?) {
-        inputField.hint = text
+        inputField?.hint = text
     }
 
     open fun setHintTextColor(colors: ColorStateList) {
-        inputField.setHintTextColor(colors)
+        inputField?.setHintTextColor(colors)
     }
 
     open fun setHintTextColor(color:Int) {
-        inputField.setHintTextColor(color)
+        inputField?.setHintTextColor(color)
     }
 
     open fun canScrollHorizontally(canScroll:Boolean) {
-        inputField.setHorizontallyScrolling(canScroll)
+        inputField?.setHorizontallyScrolling(canScroll)
     }
 
     open fun setGravity(gravity:Int) {
-        inputField.gravity = gravity
+        inputField?.gravity = gravity
     }
 
-    open fun getGravity() = inputField.gravity
+    open fun getGravity() = inputField?.gravity
 
     open fun setCursorVisible(isVisible:Boolean) {
-        inputField.isCursorVisible = isVisible
+        inputField?.isCursorVisible = isVisible
     }
 
     @Deprecated("deprecated")
     open fun setTextAppearance( context: Context, resId:Int) {
-        inputField.setTextAppearance(context, resId)
+        inputField?.setTextAppearance(context, resId)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     open fun setTextAppearance(resId:Int) {
-        inputField.setTextAppearance(resId)
+        inputField?.setTextAppearance(resId)
     }
 
     open fun getTypeface():Typeface? {
-        return inputField.typeface
+        return inputField?.typeface
     }
 
     open fun setTypeface(typeface: Typeface) {
-        inputField.typeface = typeface
+        inputField?.typeface = typeface
 
     }
 
     open fun setTypeface(tf: Typeface, style:Int) {
         when(style) {
-            0 -> inputField.typeface = Typeface.DEFAULT_BOLD
-            1 -> inputField.setTypeface(tf, Typeface.BOLD)
-            2 -> inputField.setTypeface(tf, Typeface.ITALIC)
+            0 -> inputField?.typeface = Typeface.DEFAULT_BOLD
+            1 -> inputField?.setTypeface(tf, Typeface.BOLD)
+            2 -> inputField?.setTypeface(tf, Typeface.ITALIC)
         }
     }
 
     open fun setText( resId:Int) {
-        inputField.setText(resId)
+        inputField?.setText(resId)
     }
 
     open fun setText( resId:Int, type: TextView.BufferType) {
-        inputField.setText(resId, type)
+        inputField?.setText(resId, type)
     }
 
     open fun setText(text:CharSequence?) {
-        inputField.setText(text)
+        inputField?.setText(text)
     }
 
     open fun setText( text:CharSequence?, type: TextView.BufferType) {
-        inputField.setText(text, type)
+        inputField?.setText(text, type)
     }
 
     open fun setTextSize( size:Float ) {
-        inputField.textSize = size
+        inputField?.textSize = size
     }
 
     open fun setTextSize( unit:Int, size:Float) {
-        inputField.setTextSize(unit, size)
+        inputField?.setTextSize(unit, size)
     }
 
     open fun setTextColor(color:Int) {
-        inputField.setTextColor(color)
+        inputField?.setTextColor(color)
     }
 
     open fun setIsRequired(state:Boolean) {
-        inputField.isRequired = state
+        inputField?.isRequired = state
     }
 
     open fun getFieldType():FieldType {
-        return inputField.fieldType
+        return inputField?.fieldType?:FieldType.INFO
     }
 
     open fun setFieldType(type: FieldType) {
-        inputField.fieldType = type
+        inputField?.fieldType = type
     }
 
     open fun setCursorColor(color:Int) {
-        inputField.setCursorDrawableColor(color)
+        inputField?.setCursorDrawableColor(color)
     }
 
     internal fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
-        inputField.stateListener = stateListener
+        inputField?.stateListener = stateListener
     }
 
-    internal fun getEditTextWrapper(): EditTextWrapper {
+    internal fun getEditTextWrapper(): EditTextWrapper? {
         return inputField
     }
 
     protected fun applyCardIconGravity(gravity:Int) {
-        inputField.setCardPreviewIconGravity(gravity)
+        inputField?.setCardPreviewIconGravity(gravity)
     }
 
     protected fun applyCardBrand(c: CustomCardBrand) {
-        inputField.setCardBrand(c)
+        inputField?.setCardBrand(c)
     }
 
     protected fun setNumberDivider(divider:String?) {
-        inputField.setNumberDivider(divider)
+        inputField?.setNumberDivider(divider)
     }
 
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())
-        savedState.text = inputField.text.toString()
+        savedState.text = inputField?.text.toString()
         return savedState
     }
 
@@ -362,6 +362,6 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
-        inputField.isEnabled = enabled
+        inputField?.isEnabled = enabled
     }
 }
