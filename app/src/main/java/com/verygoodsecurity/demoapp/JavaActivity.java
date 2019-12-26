@@ -53,7 +53,7 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.submitBtn: vgsForm.asyncSubmit(this, "/post", HTTPMethod.POST, null);
+            case R.id.submitBtn: vgsForm.asyncSubmit(this, "/post", HTTPMethod.POST, null, null);
         }
     }
 

@@ -2,6 +2,7 @@ package com.verygoodsecurity.demoapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     override fun onClick(v: View?) {
         progressBar?.visibility = View.VISIBLE
         when (v?.id) {
-            R.id.submitBtn -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST, null)
+            R.id.submitBtn -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST)
         }
     }
 
@@ -80,7 +81,9 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                 response.response?.forEach {
                     builder.append(it.key).append(": ").append(it.value).append("\n\n")
                 }
-                responseView.text = builder.toString()
+                val str = builder.toString()
+                Log.e("response", str)
+                responseView.text = str
             }
             is VGSResponse.ErrorResponse -> responseView.text =
                 "CODE: ${response.errorCode} \n\n ${response.localizeMessage}"
