@@ -79,8 +79,8 @@
         <attr name="numberDivider" format="string"/>
         <attr name="cardBrandIconGravity">
             <enum name="none" value="0" />
-            <enum name="left" value="3" />
-            <enum name="right" value="5" />
+            <enum name="start" value="8388611" />
+            <enum name="end" value="8388613" />
         </attr>
     </declare-styleable>
 
