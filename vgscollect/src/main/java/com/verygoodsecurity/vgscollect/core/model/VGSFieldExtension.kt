@@ -4,8 +4,13 @@ import android.net.Uri
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import org.json.JSONObject
 
-internal fun MutableCollection<VGSFieldState>.mapUsefulPayloads(): Map<String,String>? {
+internal fun MutableCollection<VGSFieldState>.mapUsefulPayloads(
+    userData: Map<String, String>? = null
+): Map<String,String>? {
+
     val map = mutableMapOf<String,String>()
+    userData?.let { map.putAll(userData) }
+
     for (entry in this) {
         val key = entry.fieldName?:""
         val value = entry.content
