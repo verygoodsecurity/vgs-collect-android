@@ -13,7 +13,9 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.nio.charset.Charset
 
-internal class URLConnectionClient(private val baseURL:String):ApiClient {
+internal class URLConnectionClient:ApiClient {
+
+    private var baseURL:String = ""
 
     companion object {
         private const val CHARSET = "ISO-8859-1"
@@ -26,6 +28,12 @@ internal class URLConnectionClient(private val baseURL:String):ApiClient {
 
         private const val AGENT = "vgs-client"
         private const val TEMPORARY_STR_AGENT = "source=androidSDK&medium=vgs-collect&content=${BuildConfig.VERSION_NAME}"
+
+        fun newInstance(baseURL:String):ApiClient {
+            val client = URLConnectionClient()
+            client.baseURL = baseURL
+            return client
+        }
     }
 
     override fun call(path: String, method: HTTPMethod, data: Map<String, String>?, headers: Map<String, String>?): VGSResponse {
@@ -131,9 +139,9 @@ internal class URLConnectionClient(private val baseURL:String):ApiClient {
         val builder = StringBuilder(baseURL)
 
         if(path.length > 1 && path.first().toString() == "/") {
-            builder.append("/").append(path)
-        } else {
             builder.append(path)
+        } else {
+            builder.append("/").append(path)
         }
 
         if(!getQuery.isNullOrEmpty()) {

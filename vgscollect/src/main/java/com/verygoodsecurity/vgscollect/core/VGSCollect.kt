@@ -49,7 +49,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         storage = store
         emitter = store
 
-        client = URLConnectionClient(baseURL)
+        client = URLConnectionClient.newInstance(baseURL)
 
         isURLValid = URLUtil.isValidUrl(baseURL)
     }
