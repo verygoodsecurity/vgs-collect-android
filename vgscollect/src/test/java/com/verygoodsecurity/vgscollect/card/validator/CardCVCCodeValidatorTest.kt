@@ -27,5 +27,4 @@ class CardCVCCodeValidatorTest {
     fun valid4CVC() {
         assertTrue(cvcValidator.isValid("1275"))
     }
-
 }
