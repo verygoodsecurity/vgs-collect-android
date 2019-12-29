@@ -119,13 +119,7 @@ workflows:
   version: 2.1
   main:
     jobs:
-      - "Prepared Sources":
-          filters:
-            branches:
-              only:
-                - master
-                - stage
-                - develop
+      - "Prepared Sources"
       - "Run Lint":
           requires:
             *prepare_sources
@@ -138,12 +132,6 @@ workflows:
       - "Run Unit Tests":
           requires:
             *prepare_sources
-          filters:
-            branches:
-              only:
-                - master
-                - stage
-                - develop
       - "Assemble Debug Build":
           requires:
             *all_test
