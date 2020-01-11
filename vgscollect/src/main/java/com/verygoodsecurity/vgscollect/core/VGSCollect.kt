@@ -1,26 +1,27 @@
 package com.verygoodsecurity.vgscollect.core
 
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
-import com.verygoodsecurity.vgscollect.core.storage.DependencyDispatcher
-import com.verygoodsecurity.vgscollect.core.storage.Notifier
+import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
 import com.verygoodsecurity.vgscollect.core.api.doAsync
 import com.verygoodsecurity.vgscollect.core.api.setupURL
 import com.verygoodsecurity.vgscollect.core.model.Payload
+import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
+import com.verygoodsecurity.vgscollect.core.storage.*
 import com.verygoodsecurity.vgscollect.core.storage.DefaultStorage
-import com.verygoodsecurity.vgscollect.core.storage.IStateEmitter
-import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
-import com.verygoodsecurity.vgscollect.core.storage.VgsStore
+import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
+import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
@@ -30,6 +31,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
     private var storage: VgsStore
     private val emitter: IStateEmitter
     private val dependencyDispatcher: DependencyDispatcher
+    private val externalDependencyDispatcher: ExternalDependencyDispatcher
     private var client: ApiClient
 
     var onResponseListener:VgsCollectResponseListener? = null
@@ -42,8 +44,9 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
     private val isURLValid:Boolean
 
     init {
-        dependencyDispatcher =
-            Notifier()
+        dependencyDispatcher = Notifier()
+        externalDependencyDispatcher = DependencyReceiver()
+
         val store = DefaultStorage(dependencyDispatcher)
 
         storage = store
@@ -58,6 +61,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         if(view is VGSEditText) {
             view.addStateListener(emitter.performSubscription())
             dependencyDispatcher.addDependencyListener(view.getFieldType(), view.notifier)
+            externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.notifier)
         }
     }
 
@@ -152,6 +156,15 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         tasks.add(task)
 
         task.execute(p)
+    }
+
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == Activity.RESULT_OK) {
+            val map:VGSHashMapWrapper<String, Any?>? = data?.extras?.getParcelable(BaseTransmitActivity.RESULT_DATA)
+            map?.run {
+                externalDependencyDispatcher.dispatch(mapOf())
+            }
+        }
     }
 
 

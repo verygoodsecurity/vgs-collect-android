@@ -1,2 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.verygoodsecurity.api" />
+    package="com.verygoodsecurity.api" >
+
+    <application>
+        <activity android:name=".cardio.ScanActivity"
+            android:launchMode="singleTask"/>
+    </application>
+
+</manifest>
