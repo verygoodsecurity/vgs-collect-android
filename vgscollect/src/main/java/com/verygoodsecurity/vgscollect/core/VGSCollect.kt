@@ -35,6 +35,10 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
 
     private val tasks = mutableListOf<AsyncTask<Payload, Void, VGSResponse>>()
 
+    companion object {
+        internal const val TAG = "VGSCollect"
+    }
+
     internal val baseURL:String
 
     private val isURLValid:Boolean
@@ -43,7 +47,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         baseURL = if(id.isTennant()) {
             id.setupURL(environment.rawValue)
         } else {
-            Logger.e("VGSCollect", "tennantId is not valid")
+            Logger.e(TAG, "tennantId is not valid")
             ""
         }
         isURLValid = URLUtil.isValidUrl(baseURL)
@@ -105,8 +109,8 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         when {
             ContextCompat.checkSelfPermission(mainActivity,android.Manifest.permission.INTERNET)
                     == PackageManager.PERMISSION_DENIED ->
-                Logger.e("VGSCollect", "Permission denied (missing INTERNET permission?)")
-            !isURLValid -> Logger.e("VGSCollect", "URL is not valid")
+                Logger.e(TAG, "Permission denied (missing INTERNET permission?)")
+            !isURLValid -> Logger.e(TAG, "URL is not valid")
             !isValidData() -> return
             else -> func(storage.getStates())
         }

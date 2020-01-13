@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.core.api
 
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
+import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.mapToEncodedQuery
 import com.verygoodsecurity.vgscollect.core.model.mapToJson
@@ -74,7 +75,7 @@ internal class URLConnectionClient:ApiClient {
 
         } catch (e: Exception) {
             response = VGSResponse.ErrorResponse("error:")  //fixme
-            Logger.e("VGSCollect", e.localizedMessage)
+            Logger.e(VGSCollect.TAG, e.localizedMessage)
         }
         conn?.disconnect()
 
@@ -128,7 +129,7 @@ internal class URLConnectionClient:ApiClient {
 
         } catch (e: Exception) {
             response = VGSResponse.ErrorResponse("Can't connect to server")  //fixme
-            Logger.e("VGSCollect", e.localizedMessage)
+            Logger.e(VGSCollect.TAG, e.localizedMessage)
         }
         conn?.disconnect()
 
