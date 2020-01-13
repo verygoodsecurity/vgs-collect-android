@@ -62,7 +62,7 @@ public void scanCard() {
 }
 ```
 
-Also very important to call VGSCollect **onActivityResult** method inside Activity onActivityResult callback:
+Also very important to call [VGSCollect](https://github.com/verygoodsecurity/vgs-collect-android) **onActivityResult** method inside Activity onActivityResult callback:
 ```
 @Override 
 public void onActivityResult(int requestCode, int resultCode, Intent data) {
