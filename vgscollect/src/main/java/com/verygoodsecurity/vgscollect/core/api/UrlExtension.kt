@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.api
 
+import java.util.regex.Pattern
+
 internal fun String.setupURL(env:String):String {
     val DOMEN = "verygoodproxy.com"
     val DIVIDER = "."
@@ -11,4 +13,10 @@ internal fun String.setupURL(env:String):String {
         .append(DOMEN)
 
     return builder.toString()
+}
+
+internal fun String.isTennant():Boolean {
+    val m = Pattern.compile("^[tnt][a-zA-Z0-9]*\$").matcher(this)
+
+    return m.matches()
 }

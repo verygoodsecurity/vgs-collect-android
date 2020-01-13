@@ -5,12 +5,10 @@ import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
+import com.verygoodsecurity.vgscollect.core.api.*
+import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
 import com.verygoodsecurity.vgscollect.core.storage.DependencyDispatcher
 import com.verygoodsecurity.vgscollect.core.storage.Notifier
-import com.verygoodsecurity.vgscollect.core.api.ApiClient
-import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
-import com.verygoodsecurity.vgscollect.core.api.doAsync
-import com.verygoodsecurity.vgscollect.core.api.setupURL
 import com.verygoodsecurity.vgscollect.core.model.Payload
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.mapUsefulPayloads
@@ -37,21 +35,26 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
 
     private val tasks = mutableListOf<AsyncTask<Payload, Void, VGSResponse>>()
 
-    internal val baseURL:String = id.setupURL(environment.rawValue)
+    internal val baseURL:String
 
     private val isURLValid:Boolean
 
     init {
-        dependencyDispatcher =
-            Notifier()
+        baseURL = if(id.isTennant()) {
+            id.setupURL(environment.rawValue)
+        } else {
+            Logger.e("VGSCollect", "tennantId is not valid")
+            ""
+        }
+        isURLValid = URLUtil.isValidUrl(baseURL)
+
+        dependencyDispatcher = Notifier()
         val store = DefaultStorage(dependencyDispatcher)
 
         storage = store
         emitter = store
 
         client = URLConnectionClient.newInstance(baseURL)
-
-        isURLValid = URLUtil.isValidUrl(baseURL)
     }
 
     fun bindView(view: InputFieldView?) {
