@@ -180,7 +180,7 @@ internal class InputField(context: Context): TextInputEditText(context),
         applyNewTextWatcher(ExpirationDateTextWatcher)
         val filterLength = InputFilter.LengthFilter(5)
         filters = arrayOf(filterLength)
-        applyTextInputType()
+        applyDateInputType()
     }
 
     private fun applyCardHolderFieldType() {
@@ -307,6 +307,15 @@ internal class InputField(context: Context): TextInputEditText(context),
             super.setCompoundDrawables(right, top, left, bottom)
         } else {
             super.setCompoundDrawables(left, top, right, bottom)
+        }
+    }
+
+    private fun applyDateInputType() {
+        val type = inputType
+        if(type == InputType.TYPE_TEXT_VARIATION_PASSWORD || type == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
+            inputType = InputType.TYPE_CLASS_DATETIME or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        } else {
+            inputType = InputType.TYPE_CLASS_DATETIME
         }
     }
 
