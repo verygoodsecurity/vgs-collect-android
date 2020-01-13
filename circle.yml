@@ -119,7 +119,7 @@ workflows:
   version: 2.1
   main:
     jobs:
-      - "Prepared Sources"
+      - "Prepared Sources":
           filters:
             branches:
               only:
