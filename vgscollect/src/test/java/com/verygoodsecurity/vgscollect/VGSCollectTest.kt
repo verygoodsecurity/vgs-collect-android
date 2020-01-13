@@ -10,6 +10,18 @@ import java.util.regex.Pattern
 class VGSCollectTest {
 
     @Test
+    fun testInvalidTennantIdURL() {
+        val c = VGSCollect("tennId.com")
+        assertTrue(c.baseURL == "")
+    }
+
+    @Test
+    fun testValidTennantIdURL() {
+        val c = VGSCollect("tntTennId123")
+        assertTrue(c.baseURL == "https://tntTennId123.sandbox.verygoodproxy.com")
+    }
+
+    @Test
     fun testEnvironmentByDefault() {
         val c = VGSCollect("abc")
         assertTrue(c.baseURL.contains("sandbox"))
