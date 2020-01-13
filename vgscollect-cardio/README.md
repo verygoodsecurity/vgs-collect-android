@@ -42,7 +42,10 @@ Before scanning you have to setup which information you need to retrieve and fin
 ```
 HashMap<String, Integer> scanSettings = new HashMap<>();
 scanSettings.put(cardNumberField.getFieldName(), ScanActivity.CARD_NUMBER);
+scanSettings.put(cardCvcield.getFieldName(), ScanActivity.CARD_CVC);
+scanSettings.put(cardHolderField.getFieldName(), ScanActivity.CARD_HOLDER);
 scanSettings.put(cardExpDateField.getFieldName(), ScanActivity.CARD_EXP_DATE);
+scanSettings.put(cardPostalCodeField.getFieldName(), ScanActivity.POSTAL_CODE);
 ```
 
 To start scanning you need to attach a Map with settings to Intent and start ScanActivity.
@@ -52,7 +55,6 @@ public void scanCard() {
  
    HashMap<String, Integer> scanSettings = new HashMap<>();
    scanSettings.put(cardNumberField.getFieldName(), ScanActivity.CARD_NUMBER);
-   scanSettings.put(cardExpDateField.getFieldName(), ScanActivity.CARD_EXP_DATE);
  
    intent.putExtra(ScanActivity.SCAN_CONFIGURATION, scanSettings);
  
