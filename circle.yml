@@ -120,11 +120,11 @@ workflows:
   main:
     jobs:
       - "Prepared Sources"
-        filters:
-          branches:
-            only:
-              - master
-              - stage
+          filters:
+            branches:
+              only:
+                - master
+                - stage
       - "Run Lint":
           requires:
             *prepare_sources
