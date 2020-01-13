@@ -23,26 +23,26 @@ class VGSCollectTest {
 
     @Test
     fun testEnvironmentByDefault() {
-        val c = VGSCollect("abc")
+        val c = VGSCollect("tntabc")
         assertTrue(c.baseURL.contains("sandbox"))
     }
 
     @Test
     fun testEnvironmentSandboxByDefault() {
-        val c = VGSCollect("abc", Environment.SANDBOX)
+        val c = VGSCollect("tntabc", Environment.SANDBOX)
         assertTrue(c.baseURL.contains("sandbox"))
     }
 
     @Test
     fun testEnvironmentLiveByDefault() {
-        val c = VGSCollect("abc", Environment.LIVE)
+        val c = VGSCollect("tntabc", Environment.LIVE)
         assertTrue(c.baseURL.contains("live"))
     }
 
     @Test
     fun testUrl() {
         val regex = "^(https:\\/\\/)+[a-zA-Z0-9 ,]+[.]+[live, sandbox]+[.](verygoodproxy.com)\$"
-        val c = VGSCollect("abc")
+        val c = VGSCollect("tntabc")
 
         assertTrue(Pattern.compile(regex).matcher(c.baseURL).matches())
     }
@@ -51,7 +51,7 @@ class VGSCollectTest {
     fun onDestroyTest() {
         val store = Mockito.mock(VgsStore::class.java)
 
-        val collect = VGSCollect("s")
+        val collect = VGSCollect("tnts")
         collect.setStorage(store)
 
         collect.onDestroy()
@@ -63,7 +63,7 @@ class VGSCollectTest {
     fun getAllStates() {
         val store = Mockito.mock(VgsStore::class.java)
 
-        val collect = VGSCollect("s")
+        val collect = VGSCollect("tnts")
         collect.setStorage(store)
 
         collect.getAllStates()
