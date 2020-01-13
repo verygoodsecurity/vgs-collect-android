@@ -18,7 +18,6 @@ import com.verygoodsecurity.vgscollect.widget.VGSEditText;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.Map;
 
 public class JavaActivity extends Activity implements View.OnClickListener, VgsCollectResponseListener, OnFieldStateChangeListener {
