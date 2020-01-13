@@ -87,21 +87,24 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
     fun submit(mainActivity:Activity
                , path:String
                , method:HTTPMethod = HTTPMethod.POST
+               , userData:Map<String,String>? = null
                , headers:Map<String,String>? = null
     ) {
         appValidationCheck(mainActivity) { data ->
-            doRequest(path, method, headers, data)
+            val dataBundledata = data.mapUsefulPayloads(userData)
+            doRequest(path, method, headers, dataBundledata)
         }
     }
 
     fun asyncSubmit(mainActivity:Activity
                     , path:String
                     , method:HTTPMethod
-                    , headers:Map<String,String>?
+                    , userData:Map<String,String>? = null
+                    , headers:Map<String,String>? = null
     ) {
-
         appValidationCheck(mainActivity) { data ->
-            doAsyncRequest(path, method, headers, data)
+            val dataBundledata = data.mapUsefulPayloads(userData)
+            doAsyncRequest(path, method, headers, dataBundledata)
         }
     }
 
@@ -131,23 +134,23 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
 
     protected fun doRequest(path: String,
                             method: HTTPMethod,
-                            headers: Map<String, String>?,
-                            data: MutableCollection<VGSFieldState>
+                            data: Map<String, String>?,
+                            headers: Map<String, String>?
     ) {
-        val r = client.call(path, method, headers, data.mapUsefulPayloads())
+        val r = client.call(path, method, headers, data)
         onResponseListener?.onResponse(r)
     }
 
     protected fun doAsyncRequest(path: String,
                                  method: HTTPMethod,
-                                 headers: Map<String, String>?,
-                                 data: MutableCollection<VGSFieldState>
+                                 data: Map<String, String>?,
+                                 headers: Map<String, String>?
     ) {
         val p = Payload(
             path,
             method,
-            headers,
-            data.mapUsefulPayloads()
+            data,
+            headers
         )
 
         val task = doAsync(onResponseListener) {
@@ -178,6 +181,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
                                      headers: Map<String, String>?,
                                      data: MutableCollection<VGSFieldState>
     ) {
-        doRequest(path, method, headers, data)
+        val dataBundledata = data.mapUsefulPayloads()
+        doRequest(path, method, headers, dataBundledata)
     }
 }
