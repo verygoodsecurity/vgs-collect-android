@@ -29,7 +29,7 @@ class VGSCollectTest {
 
     @Test
     fun testEnvironmentSandboxByDefault() {
-        val c = VGSCollect("tntabc", Environment.SANDBOX)
+        val c = VGSCollect("abc", Environment.SANDBOX)
         assertTrue(c.baseURL.contains("sandbox"))
     }
 
@@ -42,7 +42,7 @@ class VGSCollectTest {
     @Test
     fun testUrl() {
         val regex = "^(https:\\/\\/)+[a-zA-Z0-9 ,]+[.]+[live, sandbox]+[.](verygoodproxy.com)\$"
-        val c = VGSCollect("tntabc")
+        val c = VGSCollect("abc")
 
         assertTrue(Pattern.compile(regex).matcher(c.baseURL).matches())
     }
