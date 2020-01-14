@@ -41,8 +41,20 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     override fun onClick(v: View?) {
         progressBar?.visibility = View.VISIBLE
         when (v?.id) {
-            R.id.submitBtn -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST)
+            R.id.submitBtn -> submitData()
         }
+    }
+
+    private fun submitData() {
+        vgsForm.resetCustomData()
+        vgsForm.resetCustomHeaders()
+        val data = HashMap<String, String>()
+        vgsForm.setCustomData(data)
+
+        val headers = HashMap<String, String>()
+        vgsForm.setCustomHeaders(headers)
+
+        vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
