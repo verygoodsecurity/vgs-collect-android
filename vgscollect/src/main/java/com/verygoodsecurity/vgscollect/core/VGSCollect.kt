@@ -44,7 +44,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
     private val isURLValid:Boolean
 
     init {
-        baseURL = if(id.isTennant()) {
+        baseURL = if(id.isTennantIdValid()) {
             id.setupURL(environment.rawValue)
         } else {
             Logger.e(TAG, "tennantId is not valid")
