@@ -24,9 +24,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     }
 
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-//        super.setPadding(0,0,0,0)
         super.setPadding(left, top, right, bottom)
-//        textInputLayout.setPadding(left, top, right, bottom)
     }
 
     override fun getPaddingBottom(): Int {
@@ -99,7 +97,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         if(isAttachPermitted) {
             super.onAttachedToWindow()
-//            isAttachPermitted = false
+            isAttachPermitted = false
         }
     }
 

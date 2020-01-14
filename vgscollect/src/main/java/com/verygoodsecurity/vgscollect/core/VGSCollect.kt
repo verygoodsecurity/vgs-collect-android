@@ -156,7 +156,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         val task = doAsync(onResponseListener) {
             it?.run {
                 client.call(this.path, this.method, this.headers, this.data)
-            } ?: VGSResponse.ErrorResponse("error")  //fixme
+            } ?: VGSResponse.ErrorResponse("error")
         }
 
         tasks.add(task)

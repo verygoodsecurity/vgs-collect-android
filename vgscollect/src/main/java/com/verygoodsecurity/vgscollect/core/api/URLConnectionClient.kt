@@ -70,11 +70,11 @@ internal class URLConnectionClient:ApiClient {
                 responseStr = conn.inputStream?.bufferedReader()?.use { it.readText() }
                 response = VGSResponse.SuccessResponse(successCode = responseCode)
             } else {
-                response = VGSResponse.ErrorResponse("error:")  //fixme
+                response = VGSResponse.ErrorResponse("error:")
             }
 
         } catch (e: Exception) {
-            response = VGSResponse.ErrorResponse("error:")  //fixme
+            response = VGSResponse.ErrorResponse("error:")
             Logger.e(VGSCollect.TAG, e.localizedMessage)
         }
         conn?.disconnect()
@@ -128,7 +128,7 @@ internal class URLConnectionClient:ApiClient {
             }
 
         } catch (e: Exception) {
-            response = VGSResponse.ErrorResponse("Can't connect to server")  //fixme
+            response = VGSResponse.ErrorResponse("Can't connect to server")
             Logger.e(VGSCollect.TAG, e.localizedMessage)
         }
         conn?.disconnect()
