@@ -83,8 +83,8 @@ public class ExampleActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.examle_layout);
         
-        vgsForm.addOnFieldStateChangeListener(...)
-        vgsForm.setOnResponseListener(...)
+        vgsForm.addOnFieldStateChangeListener(...);
+        vgsForm.setOnResponseListener(...);
         
         VGSEditText yourField = findViewById(R.id.your_field);
         vgsForm.bindView(yourField);
@@ -114,8 +114,8 @@ There is an option to send custom fields in the same request that the SDK CTA se
 ```
 private void submitData() {
     //..
-    val data = HashMap<String, String>();
-    data["key"] = "value";
+    HashMap data = HashMap<String, String>();
+    data.put("key", "value");
     vgsForm.setCustomData(data);
     
     vgsForm.asyncSubmit(this@MainActivity, "/path", HTTPMethod.POST);
@@ -126,8 +126,8 @@ More to the point SDK allows send your custom headers:
 ```
 private void submitData() {
     //..
-    val headers = HashMap<String, String>();
-    headers["key"] = "value";
+    HashMap headers = HashMap<String, String>();
+    headers.put("key", "value");
     vgsForm.setCustomHeaders(headers);
     
     vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
@@ -139,8 +139,8 @@ To clear all custom headers use `resetCustomHeaders` or `resetCustomData` to cle
 private void submitData() {
     vgsForm.resetCustomHeaders();
     
-    val headers = HashMap<String, String>();
-    headers["key"] = "value";
+    HashMap headers = HashMap<String, String>();
+    headers.put("key", "value");
     vgsForm.setCustomHeaders(headers);
     
     vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
