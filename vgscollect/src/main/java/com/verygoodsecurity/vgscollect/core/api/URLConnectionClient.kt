@@ -16,6 +16,10 @@ import java.nio.charset.Charset
 
 internal class URLConnectionClient:ApiClient {
 
+    private val tempStore:VgsApiTemporaryStorage by lazy {
+        VgsApiTemporaryStorageImpl()
+    }
+
     private var baseURL:String = ""
 
     companion object {
@@ -44,6 +48,8 @@ internal class URLConnectionClient:ApiClient {
             else -> VGSResponse.ErrorResponse()
         }
     }
+
+    override fun getTemporaryStorage(): VgsApiTemporaryStorage = tempStore
 
     private fun getRequest(path: String, headers: Map<String, String>? = null, data: Map<String, String>?): VGSResponse {
         val url = buildURL(path, data?.mapToEncodedQuery())
