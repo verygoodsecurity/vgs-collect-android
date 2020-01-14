@@ -149,11 +149,11 @@ workflows:
               only:
                 - master
                 - stage
-      - "Deploy to Bintray":
-          requires:
-            *debug_build
-          filters:
-            branches:
-              only:
-                - master
+#      - "Deploy to Bintray":
+#          requires:
+#            *debug_build
+#          filters:
+#            branches:
+#              only:
+#                - master
 
