@@ -15,9 +15,37 @@ android {
     }
     buildTypes {
         release {
+            buildConfigField "String", "TENNANT_ID", getLocalProperty('VGS_TENNANT_ID')
+            buildConfigField "String", "ENDPOINT", getLocalProperty('VGS_ENDPOINT')
+            buildConfigField "com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentRelease()
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            buildConfigField "String", "TENNANT_ID", getLocalProperty('VGS_TENNANT_ID')
+            buildConfigField "String", "ENDPOINT", getLocalProperty('VGS_ENDPOINT')
+            buildConfigField "com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentDebug()
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+static def getEnvironmentRelease() {
+    return "com.verygoodsecurity.vgscollect.core.Environment.LIVE"
+}
+static def getEnvironmentDebug() {
+    return "com.verygoodsecurity.vgscollect.core.Environment.SANDBOX"
+}
+
+def getLocalProperty(String propName) {
+    def propsFile = rootProject.file('local.properties')
+    if (propsFile.exists()) {
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
+        return props[propName]
+    } else {
+        return "";
     }
 }
 
