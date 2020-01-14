@@ -83,8 +83,20 @@ public class ExampleActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.examle_layout);
         
+        vgsForm.addOnFieldStateChangeListener(...);
+        vgsForm.setOnResponseListener(...);
+        
         VGSEditText yourField = findViewById(R.id.your_field);
         vgsForm.bindView(yourField);
+    }
+    
+    private void submitData() {
+        //...
+    }
+    
+    @Override
+    protected void onDestroy() {
+        //...
     }
 }
 ```
@@ -92,9 +104,47 @@ public class ExampleActivity extends Activity {
 #### Submit information
 Call `asyncSubmit` or `submit` to execute and send data on VGS Server if you want to handle multithreading by yourself:
 ```
-  vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST, customHeaders);
-  //  or
-  vgsForm.submit(this, "/path", HTTPMethod.POST, customHeaders);
+private void submitData() {
+    //..
+    vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
+}
+```
+
+There is an option to send custom fields in the same request that the SDK CTA sends:
+```
+private void submitData() {
+    //..
+    HashMap data = HashMap<String, String>();
+    data.put("key", "value");
+    vgsForm.setCustomData(data);
+    
+    vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
+}
+```
+
+More to the point SDK allows send your custom headers:
+```
+private void submitData() {
+    //..
+    HashMap headers = HashMap<String, String>();
+    headers.put("key", "value");
+    vgsForm.setCustomHeaders(headers);
+    
+    vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
+}
+```
+
+To clear all custom headers use `resetCustomHeaders` or `resetCustomData` to clear custom fields added before.
+```
+private void submitData() {
+    vgsForm.resetCustomHeaders();
+    
+    HashMap headers = HashMap<String, String>();
+    headers.put("key", "value");
+    vgsForm.setCustomHeaders(headers);
+    
+    vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
+}
 ```
 
 #### Fields state tracking
@@ -103,7 +153,7 @@ Whenever an EditText changes, **VGSCollect** can notify user about it. Implement
   vgsForm.addOnFieldStateChangeListener(new OnFieldStateChangeListener() {
             @Override
             public void onStateChange(FieldState state) {
-                //  your code
+                //...
             }
         });
 ```
@@ -114,7 +164,7 @@ You need to implement `VgsCollectResponseListener` to read response:
   vgsForm.setOnResponseListener(new VgsCollectResponseListener() {
             @Override
             public void onResponse(@org.jetbrains.annotations.Nullable VGSResponse response) {
-                //  your code
+                //...
             }
         });
 ```
