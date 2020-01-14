@@ -37,7 +37,7 @@ internal class URLConnectionClient:ApiClient {
         }
     }
 
-    override fun call(path: String, method: HTTPMethod, data: Map<String, String>?, headers: Map<String, String>?): VGSResponse {
+    override fun call(path: String, method: HTTPMethod, headers: Map<String, String>?, data: Map<String, String>?): VGSResponse {
         return when(method.ordinal) {
             HTTPMethod.GET.ordinal -> getRequest(path, headers, data)
             HTTPMethod.POST.ordinal -> postRequest(path, headers, data)
