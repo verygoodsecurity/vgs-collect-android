@@ -20,7 +20,7 @@ class ApiClientTest {
     fun test() {
         val client = Mockito.mock(ApiClient::class.java)
 
-        val collect = VGSCollect("tntxrsfgxcn", Environment.SANDBOX)
+        val collect = VGSCollect("tennantid", Environment.SANDBOX)
 
         collect.setClient(client)
         collect.setStorage(Mockito.mock(VgsStore::class.java))
