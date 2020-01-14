@@ -118,7 +118,7 @@ private void submitData() {
     data.put("key", "value");
     vgsForm.setCustomData(data);
     
-    vgsForm.asyncSubmit(this@MainActivity, "/path", HTTPMethod.POST);
+    vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
 }
 ```
 
