@@ -15,7 +15,7 @@ import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
 
-    val vgsForm = VGSCollect("tntpszqgikn")
+    val vgsForm = VGSCollect(BuildConfig.TENNANT_ID, BuildConfig.ENVIRINMENT)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +46,18 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     }
 
     private fun submitData() {
-        val customData = HashMap<String, String>()
-        customData["nonSDKValue"] = "some additional data"
+        vgsForm.resetCustomData()
+        vgsForm.resetCustomHeaders()
 
-        val customHeaders = HashMap<String, String>()
-        customHeaders["customHeader"] = "value"
-        vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST, customData, customHeaders)
+        val data = HashMap<String, String>()
+        data["nonSDKValue"] = "some additional data"
+        vgsForm.setCustomData(data)
+
+        val headers = HashMap<String, String>()
+        headers["CUSTOMHEADER"] = "value"
+        vgsForm.setCustomHeaders(headers)
+
+        vgsForm.asyncSubmit(this@MainActivity, BuildConfig.ENDPOINT, HTTPMethod.POST)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
