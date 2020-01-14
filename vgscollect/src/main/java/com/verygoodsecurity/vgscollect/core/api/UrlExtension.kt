@@ -16,7 +16,7 @@ internal fun String.setupURL(env:String):String {
 }
 
 internal fun String.isTennant():Boolean {
-    val m = Pattern.compile("^[tnt][a-zA-Z0-9]*\$").matcher(this)
+    val m = Pattern.compile("^[a-zA-Z0-9]*\$").matcher(this)
 
     return m.matches()
 }
