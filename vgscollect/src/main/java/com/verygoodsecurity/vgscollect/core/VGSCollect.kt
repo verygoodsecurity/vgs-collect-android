@@ -143,9 +143,9 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
 
     protected fun doAsyncRequest(path: String,
                                  method: HTTPMethod,
-                                 data: Map<String, String>?,
-                                 headers: Map<String, String>?
-    ) {
+                                 headers: Map<String, String>?,
+                                 data: Map<String, String>?
+                                 ) {
         val p = Payload(
             path,
             method,

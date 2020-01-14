@@ -15,7 +15,7 @@ import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
 
-    val vgsForm = VGSCollect("tntxrsfgxcn")
+    val vgsForm = VGSCollect("tntpszqgikn")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +41,17 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     override fun onClick(v: View?) {
         progressBar?.visibility = View.VISIBLE
         when (v?.id) {
-            R.id.submitBtn -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST)
+            R.id.submitBtn -> submitData()
         }
+    }
+
+    private fun submitData() {
+        val customData = HashMap<String, String>()
+        customData["nonSDKValue"] = "some additional data"
+
+        val customHeaders = HashMap<String, String>()
+        customHeaders["customHeader"] = "value"
+        vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST, customData, customHeaders)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
