@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.verygoodsecurity.vgscollect.core.Environment;
 import com.verygoodsecurity.vgscollect.core.HTTPMethod;
 import com.verygoodsecurity.vgscollect.core.VGSCollect;
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener;
@@ -18,12 +17,12 @@ import com.verygoodsecurity.vgscollect.widget.VGSEditText;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 public class JavaActivity extends Activity implements View.OnClickListener, VgsCollectResponseListener, OnFieldStateChangeListener {
 
-    private VGSCollect vgsForm = new VGSCollect("tntxrsfgxcn", Environment.SANDBOX);
+    private VGSCollect vgsForm = new VGSCollect(BuildConfig.TENNANT_ID, BuildConfig.ENVIRINMENT);
 
     private TextView responseView;
 
@@ -53,8 +52,23 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.submitBtn: vgsForm.asyncSubmit(this, "/post", HTTPMethod.POST);
+            case R.id.submitBtn: submitData();
         }
+    }
+
+    private void submitData() {
+        vgsForm.resetCustomData();
+        vgsForm.resetCustomHeaders();
+
+        HashMap data = new HashMap<String, String>();
+        data.put("nonSDKValue", "some additional data");
+        vgsForm.setCustomData(data);
+
+        HashMap headers = new HashMap<String, String>();
+        headers.put("CUSTOMHEADER", "value");
+        vgsForm.setCustomHeaders(headers);
+
+        vgsForm.asyncSubmit(this, BuildConfig.ENDPOINT, HTTPMethod.POST);
     }
 
     @Override
