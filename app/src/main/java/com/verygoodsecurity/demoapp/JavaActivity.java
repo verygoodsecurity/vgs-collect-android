@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class JavaActivity extends Activity implements View.OnClickListener, VgsCollectResponseListener, OnFieldStateChangeListener {
 
-    private VGSCollect vgsForm = new VGSCollect(BuildConfig.TENNANT_ID, BuildConfig.ENVIRINMENT);
+    private VGSCollect vgsForm = new VGSCollect(Configuration.INSTANCE.getTennantId(), Configuration.INSTANCE.getEnvironment());
 
     private TextView responseView;
 
@@ -68,7 +68,7 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
         headers.put("CUSTOMHEADER", "value");
         vgsForm.setCustomHeaders(headers);
 
-        vgsForm.asyncSubmit(this, BuildConfig.ENDPOINT, HTTPMethod.POST);
+        vgsForm.asyncSubmit(this, Configuration.INSTANCE.getEndpoint(), HTTPMethod.POST);
     }
 
     @Override
