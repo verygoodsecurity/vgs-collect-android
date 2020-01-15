@@ -101,6 +101,17 @@ public class ExampleActivity extends Activity {
 }
 ```
 
+#### Fields state tracking
+Whenever an EditText changes, **VGSCollect** can notify user about it. Implement `OnFieldStateChangeListener` to observe changes:
+```
+  vgsForm.addOnFieldStateChangeListener(new OnFieldStateChangeListener() {
+            @Override
+            public void onStateChange(FieldState state) {
+                //...
+            }
+        });
+```
+
 #### Submit information
 Call `asyncSubmit` or `submit` to execute and send data on VGS Server if you want to handle multithreading by yourself:
 ```
@@ -147,17 +158,6 @@ private void submitData() {
 }
 ```
 
-#### Fields state tracking
-Whenever an EditText changes, **VGSCollect** can notify user about it. Implement `OnFieldStateChangeListener` to observe changes:
-```
-  vgsForm.addOnFieldStateChangeListener(new OnFieldStateChangeListener() {
-            @Override
-            public void onStateChange(FieldState state) {
-                //...
-            }
-        });
-```
-
 #### Handle service response
 You need to implement `VgsCollectResponseListener` to read response:
 ```
@@ -178,6 +178,6 @@ Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy 
         vgsForm.onDestroy();
     }
  ```
-
+ 
 ## License
 VGSCollect Android SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE) for details.
