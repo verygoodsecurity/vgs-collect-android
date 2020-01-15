@@ -15,7 +15,7 @@ import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
 
-    val vgsForm = VGSCollect(BuildConfig.TENNANT_ID, BuildConfig.ENVIRINMENT)
+    val vgsForm = VGSCollect(Configuration.tennantId, Configuration.environment)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         headers["CUSTOMHEADER"] = "value"
         vgsForm.setCustomHeaders(headers)
 
-        vgsForm.asyncSubmit(this@MainActivity, BuildConfig.ENDPOINT, HTTPMethod.POST)
+        vgsForm.asyncSubmit(this@MainActivity, Configuration.endpoint, HTTPMethod.POST)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
