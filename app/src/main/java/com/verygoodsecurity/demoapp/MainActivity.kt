@@ -2,6 +2,7 @@ package com.verygoodsecurity.demoapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -14,7 +15,7 @@ import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
 
-    val vgsForm = VGSCollect("tntxrsfgxcn")
+    val vgsForm = VGSCollect(Configuration.tennantId, Configuration.environment)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +41,23 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     override fun onClick(v: View?) {
         progressBar?.visibility = View.VISIBLE
         when (v?.id) {
-            R.id.submitBtn -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST, null)
+            R.id.submitBtn -> submitData()
         }
+    }
+
+    private fun submitData() {
+        vgsForm.resetCustomData()
+        vgsForm.resetCustomHeaders()
+
+        val data = HashMap<String, String>()
+        data["nonSDKValue"] = "some additional data"
+        vgsForm.setCustomData(data)
+
+        val headers = HashMap<String, String>()
+        headers["CUSTOMHEADER"] = "value"
+        vgsForm.setCustomHeaders(headers)
+
+        vgsForm.asyncSubmit(this@MainActivity, Configuration.endpoint, HTTPMethod.POST)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
@@ -81,7 +97,9 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                 response.response?.forEach {
                     builder.append(it.key).append(": ").append(it.value).append("\n\n")
                 }
-                responseView.text = builder.toString()
+                val str = builder.toString()
+                Log.e("response", str)
+                responseView.text = str
             }
             is VGSResponse.ErrorResponse -> responseView.text =
                 "CODE: ${response.errorCode} \n\n ${response.localizeMessage}"

@@ -12,6 +12,7 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import android.os.Looper
 import android.text.InputFilter
 import android.view.Gravity
+import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -32,7 +33,7 @@ import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
 
-internal class EditTextWrapper(context: Context): TextInputEditText(context),
+internal class InputField(context: Context): TextInputEditText(context),
     DependencyListener {
 
     var fieldType: FieldType = FieldType.INFO
@@ -98,6 +99,38 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
         isListeningPermitted = false
     }
 
+    private var hasRTL = false
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        if(isRTL()
+            && (fieldType == FieldType.CARD_NUMBER
+                    || fieldType == FieldType.CVC
+                    || fieldType == FieldType.CARD_EXPIRATION_DATE)) {
+            hasRTL = true
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                layoutDirection = View.LAYOUT_DIRECTION_LTR
+                textDirection = View.TEXT_DIRECTION_LTR
+            }
+            gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
+        }
+    }
+
+    private fun isRTL():Boolean {
+        val direction = getResolvedLayoutDirection()
+        return direction == View.LAYOUT_DIRECTION_RTL
+                || direction == View.TEXT_DIRECTION_ANY_RTL
+                || direction == View.TEXT_DIRECTION_FIRST_STRONG_RTL
+                || direction == View.TEXT_DIRECTION_RTL
+    }
+
+    private fun getResolvedLayoutDirection():Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            layoutDirection
+        } else {
+            View.LAYOUT_DIRECTION_LTR
+        }
+    }
+
     private fun applyAttributes() {
         when(fieldType) {
             FieldType.CARD_NUMBER -> applyCardNumFieldType()
@@ -146,7 +179,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
         applyNewTextWatcher(ExpirationDateTextWatcher)
         val filterLength = InputFilter.LengthFilter(5)
         filters = arrayOf(filterLength)
-        applyTextInputType()
+        applyDateInputType()
     }
 
     private fun applyCardHolderFieldType() {
@@ -195,7 +228,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
                 object :
                     InputCardNumberConnection.IdrawCardBrand {
                     override fun drawCardBrandPreview() {
-                        this@EditTextWrapper.drawCardBrandPreview()
+                        this@InputField.drawCardBrandPreview()
                     }
                 },
                 divider)
@@ -206,7 +239,7 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
 
         val str = text.toString()
         val stateContent = FieldContent.CardNumberContent().apply {
-            cardtype = this@EditTextWrapper.cardtype
+            cardtype = this@InputField.cardtype
             this.data = str
         }
         val state = collectCurrentState(stateContent)
@@ -225,12 +258,12 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
 
     private fun collectCurrentState(stateContent:FieldContent): VGSFieldState {
         val state = VGSFieldState().apply {
-            isRequired = this@EditTextWrapper.isRequired
-            isFocusable = this@EditTextWrapper.hasFocus()
-            type = this@EditTextWrapper.fieldType
+            isRequired = this@InputField.isRequired
+            isFocusable = this@InputField.hasFocus()
+            type = this@InputField.fieldType
             content = stateContent
 
-            fieldName = this@EditTextWrapper.tag as? String
+            fieldName = this@InputField.tag as? String
         }
 
         return state
@@ -242,21 +275,48 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
         var l: Drawable? = null
         var r: Drawable? = null
 
-        val privaryRes = (state?.content as? FieldContent.CardNumberContent)?.iconResId?:0
+        val privaryRes = (state?.content as? FieldContent.CardNumberContent)?.iconResId
 
         when (iconGravity) {
-            Gravity.LEFT -> l = ContextCompat.getDrawable(context, privaryRes)
-            Gravity.START -> l = ContextCompat.getDrawable(context, privaryRes)
-            Gravity.RIGHT -> r = ContextCompat.getDrawable(context, privaryRes)
-            Gravity.END -> r = ContextCompat.getDrawable(context, privaryRes)
+            Gravity.LEFT -> l = getDrawable(privaryRes)
+            Gravity.START -> l = getDrawable(privaryRes)
+            Gravity.RIGHT -> r = getDrawable(privaryRes)
+            Gravity.END -> r = getDrawable(privaryRes)
         }
 
-        val cIconSize = resources.getDimension(R.dimen.c_icon_size).toInt()
-        r?.setBounds(0, 0, cIconSize, cIconSize)
-        l?.setBounds(0, 0, cIconSize, cIconSize)
         setCompoundDrawables(l,null,r,null)
     }
 
+    private fun getDrawable(primaryRes:Int?): Drawable? {
+        return primaryRes?.run {
+            val cIconSize = resources.getDimension(R.dimen.c_icon_size).toInt()
+            val drawable = ContextCompat.getDrawable(context, primaryRes)
+            drawable?.setBounds(0, 0, cIconSize, cIconSize)
+            return drawable
+        }
+    }
+
+    override fun setCompoundDrawables(
+        left: Drawable?,
+        top: Drawable?,
+        right: Drawable?,
+        bottom: Drawable?
+    ) {
+        if(hasRTL) {
+            super.setCompoundDrawables(right, top, left, bottom)
+        } else {
+            super.setCompoundDrawables(left, top, right, bottom)
+        }
+    }
+
+    private fun applyDateInputType() {
+        val type = inputType
+        if(type == InputType.TYPE_TEXT_VARIATION_PASSWORD || type == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
+            inputType = InputType.TYPE_CLASS_DATETIME or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        } else {
+            inputType = InputType.TYPE_CLASS_DATETIME
+        }
+    }
 
     private fun applyNumberInputType() {
         val type = inputType
@@ -348,8 +408,8 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
 
     internal fun setNumberDivider(divider: String?) {
         when {
-            divider.isNullOrEmpty() -> this@EditTextWrapper.divider = ""
-            divider.length == 1 -> this@EditTextWrapper.divider = divider
+            divider.isNullOrEmpty() -> this@InputField.divider = ""
+            divider.length == 1 -> this@InputField.divider = divider
             else -> Logger.i("VGSEditTextView", "Divider for number can't be greater than 1 symbol. (${divider})")
         }
     }
@@ -357,6 +417,6 @@ internal class EditTextWrapper(context: Context): TextInputEditText(context),
     override fun dispatchDependencySetting(dependency: Dependency) {
         val filterLength = InputFilter.LengthFilter(dependency.value)
         filters = arrayOf(CVCValidateFilter(), filterLength)
-        setText(text)
+        text = text
     }
 }

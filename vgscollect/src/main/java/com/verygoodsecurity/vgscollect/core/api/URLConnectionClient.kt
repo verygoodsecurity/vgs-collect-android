@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.core.api
 
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
+import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.mapToEncodedQuery
 import com.verygoodsecurity.vgscollect.core.model.mapToJson
@@ -14,6 +15,10 @@ import java.net.URL
 import java.nio.charset.Charset
 
 internal class URLConnectionClient:ApiClient {
+
+    private val tempStore:VgsApiTemporaryStorage by lazy {
+        VgsApiTemporaryStorageImpl()
+    }
 
     private var baseURL:String = ""
 
@@ -36,13 +41,15 @@ internal class URLConnectionClient:ApiClient {
         }
     }
 
-    override fun call(path: String, method: HTTPMethod, data: Map<String, String>?, headers: Map<String, String>?): VGSResponse {
+    override fun call(path: String, method: HTTPMethod, headers: Map<String, String>?, data: Map<String, String>?): VGSResponse {
         return when(method.ordinal) {
             HTTPMethod.GET.ordinal -> getRequest(path, headers, data)
             HTTPMethod.POST.ordinal -> postRequest(path, headers, data)
             else -> VGSResponse.ErrorResponse()
         }
     }
+
+    override fun getTemporaryStorage(): VgsApiTemporaryStorage = tempStore
 
     private fun getRequest(path: String, headers: Map<String, String>? = null, data: Map<String, String>?): VGSResponse {
         val url = buildURL(path, data?.mapToEncodedQuery())
@@ -69,12 +76,12 @@ internal class URLConnectionClient:ApiClient {
                 responseStr = conn.inputStream?.bufferedReader()?.use { it.readText() }
                 response = VGSResponse.SuccessResponse(successCode = responseCode)
             } else {
-                response = VGSResponse.ErrorResponse("error:")  //fixme
+                response = VGSResponse.ErrorResponse("error:")
             }
 
         } catch (e: Exception) {
-            response = VGSResponse.ErrorResponse("error:")  //fixme
-            Logger.e("VGSCollect", e.localizedMessage)
+            response = VGSResponse.ErrorResponse("error:")
+            Logger.e(VGSCollect.TAG, e.localizedMessage)
         }
         conn?.disconnect()
 
@@ -127,8 +134,8 @@ internal class URLConnectionClient:ApiClient {
             }
 
         } catch (e: Exception) {
-            response = VGSResponse.ErrorResponse("Can't connect to server")  //fixme
-            Logger.e("VGSCollect", e.localizedMessage)
+            response = VGSResponse.ErrorResponse("Can't connect to server")
+            Logger.e(VGSCollect.TAG, e.localizedMessage)
         }
         conn?.disconnect()
 

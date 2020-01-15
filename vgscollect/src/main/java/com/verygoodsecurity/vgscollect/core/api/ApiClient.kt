@@ -10,4 +10,6 @@ interface ApiClient {
         data: Map<String, String>?,
         headers: Map<String, String>?
     ):VGSResponse
+
+    fun getTemporaryStorage():VgsApiTemporaryStorage
 }
