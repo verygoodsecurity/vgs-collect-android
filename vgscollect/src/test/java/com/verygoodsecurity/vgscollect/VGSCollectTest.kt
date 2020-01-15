@@ -13,7 +13,7 @@ class VGSCollectTest {
 
     @Test
     fun testInvalidTennantIdURL() {
-        val c = VGSCollect("tennId.com")
+        val c = VGSCollect("t/en*&^ ds?/\\|543!d s2~+_)(*=-98djdnId.com")
         assertTrue(c.baseURL == "")
     }
 
