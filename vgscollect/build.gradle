@@ -1,9 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-//apply plugin: 'com.jfrog.bintray'
-//apply plugin: 'maven-publish'
 
+//apply plugin: 'com.jfrog.bintray'
 apply from: 'src/version.gradle'
 //apply from: 'src/bintray.gradle'
 
@@ -26,6 +25,10 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
     androidExtensions {
         experimental = true
@@ -34,6 +37,7 @@ android {
         unitTests.returnDefaultValues = true
     }
 }
+
 tasks.withType(Javadoc).all {
     enabled = false
 }
@@ -48,7 +52,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
     testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:3.1.0'
+    testImplementation 'org.mockito:mockito-core:3.2.4'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
