@@ -15,15 +15,11 @@ android {
     }
     buildTypes {
         release {
-            buildConfigField "String", "TENNANT_ID", getLocalProperty('VGS_TENNANT_ID')
-            buildConfigField "String", "ENDPOINT", getLocalProperty('VGS_ENDPOINT')
             buildConfigField "com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentRelease()
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField "String", "TENNANT_ID", getLocalProperty('VGS_TENNANT_ID')
-            buildConfigField "String", "ENDPOINT", getLocalProperty('VGS_ENDPOINT')
             buildConfigField "com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentDebug()
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
