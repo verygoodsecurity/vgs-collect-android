@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         const val USER_SCAN_REQUEST_CODE = 0x7
     }
 
-    val vgsForm = VGSCollect("tntxrsfgxcn")
+    val vgsForm = VGSCollect("your_tennant_id")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
