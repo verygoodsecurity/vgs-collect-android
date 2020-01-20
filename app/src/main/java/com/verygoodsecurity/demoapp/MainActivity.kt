@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.verygoodsecurity.api.bouncer.ScanActivity
+import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
         submitBtn?.setOnClickListener(this)
         scanCardIOBtn?.setOnClickListener(this)
-        scanGetBouncerBtn?.setOnClickListener(this)
 
         vgsForm.onResponseListener = this
 
@@ -50,33 +49,17 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         when (v?.id) {
             R.id.submitBtn -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST, null)
             R.id.scanCardIOBtn -> scanByCardIOCard()
-            R.id.scanGetBouncerBtn -> scanByGetBouncerCard()
         }
     }
 
     private fun scanByCardIOCard() {
         progressBar?.visibility = View.INVISIBLE
-//        val intent = Intent(this, ScanActivity::class.java)
-//
-//        val scanSettings = hashMapOf<String?, Int>().apply {
-//            this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
-//            this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
-//            this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
-//            this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
-//        }
-//
-//        intent.putExtra(ScanActivity.SCAN_CONFIGURATION, scanSettings)
-//
-//        startActivityForResult(intent, USER_SCAN_REQUEST_CODE)
-    }
-
-
-    private fun scanByGetBouncerCard() {
-        progressBar?.visibility = View.INVISIBLE
         val intent = Intent(this, ScanActivity::class.java)
 
         val scanSettings = hashMapOf<String?, Int>().apply {
             this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
+            this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
+            this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
             this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
         }
 

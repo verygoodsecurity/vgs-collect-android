@@ -132,13 +132,6 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <Button
-            android:id="@+id/scanGetBouncerBtn"
-            android:text="Scan by getBouncer"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <ScrollView
