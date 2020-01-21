@@ -25,6 +25,10 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
     }
     androidExtensions {
         experimental = true
@@ -33,6 +37,7 @@ android {
         unitTests.returnDefaultValues = true
     }
 }
+
 tasks.withType(Javadoc).all {
     enabled = false
 }
