@@ -1,6 +1,8 @@
 package com.verygoodsecurity.vgscollect
 
 import com.verygoodsecurity.vgscollect.core.*
+import com.verygoodsecurity.vgscollect.core.api.ApiClient
+import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -11,7 +13,7 @@ class VGSCollectTest {
 
     @Test
     fun testInvalidTennantIdURL() {
-        val c = VGSCollect("tennId.com")
+        val c = VGSCollect("t/en*&^ ds?/\\|543!d s2~+_)(*=-98djdnId.com")
         assertTrue(c.baseURL == "")
     }
 
@@ -29,7 +31,7 @@ class VGSCollectTest {
 
     @Test
     fun testEnvironmentSandboxByDefault() {
-        val c = VGSCollect("tntabc", Environment.SANDBOX)
+        val c = VGSCollect("abc", Environment.SANDBOX)
         assertTrue(c.baseURL.contains("sandbox"))
     }
 
@@ -42,13 +44,13 @@ class VGSCollectTest {
     @Test
     fun testUrl() {
         val regex = "^(https:\\/\\/)+[a-zA-Z0-9 ,]+[.]+[live, sandbox]+[.](verygoodproxy.com)\$"
-        val c = VGSCollect("tntabc")
+        val c = VGSCollect("abc")
 
         assertTrue(Pattern.compile(regex).matcher(c.baseURL).matches())
     }
 
     @Test
-    fun onDestroyTest() {
+    fun testOnDestroyTest() {
         val store = Mockito.mock(VgsStore::class.java)
 
         val collect = VGSCollect("tnts")
@@ -60,7 +62,7 @@ class VGSCollectTest {
 
 
     @Test
-    fun getAllStates() {
+    fun testGetAllStates() {
         val store = Mockito.mock(VgsStore::class.java)
 
         val collect = VGSCollect("tnts")
@@ -69,5 +71,65 @@ class VGSCollectTest {
         collect.getAllStates()
 
         Mockito.verify(store).getStates()
+    }
+
+    @Test
+    fun testSetCustomData() {
+        val client = Mockito.mock(ApiClient::class.java)
+        Mockito.doReturn(VgsApiTemporaryStorageImpl())
+            .`when`(client).getTemporaryStorage()
+
+        val collect = VGSCollect("tnts")
+        collect.setClient(client)
+
+        val data = HashMap<String, String>()
+        data["key"] = "value"
+        collect.setCustomHeaders(data)
+
+        Mockito.verify(client).getTemporaryStorage()
+    }
+
+    @Test
+    fun testSetCustomHeaders() {
+        val client = Mockito.mock(ApiClient::class.java)
+        Mockito.doReturn(VgsApiTemporaryStorageImpl())
+            .`when`(client).getTemporaryStorage()
+
+        val collect = VGSCollect("tnts")
+        collect.setClient(client)
+
+        val data = HashMap<String, String>()
+        data["key"] = "value"
+        collect.setCustomHeaders(data)
+
+        Mockito.verify(client).getTemporaryStorage()
+    }
+
+    @Test
+    fun testResetCustomData() {
+        val client = Mockito.mock(ApiClient::class.java)
+        Mockito.doReturn(VgsApiTemporaryStorageImpl())
+            .`when`(client).getTemporaryStorage()
+
+        val collect = VGSCollect("tnts")
+        collect.setClient(client)
+
+        collect.resetCustomData()
+
+        Mockito.verify(client).getTemporaryStorage()
+    }
+
+    @Test
+    fun testResetCustomHeaders() {
+        val client = Mockito.mock(ApiClient::class.java)
+        Mockito.doReturn(VgsApiTemporaryStorageImpl())
+            .`when`(client).getTemporaryStorage()
+
+        val collect = VGSCollect("tnts")
+        collect.setClient(client)
+
+        collect.resetCustomHeaders()
+
+        Mockito.verify(client).getTemporaryStorage()
     }
 }
