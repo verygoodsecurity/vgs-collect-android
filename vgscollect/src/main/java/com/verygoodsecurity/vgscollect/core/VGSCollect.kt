@@ -62,19 +62,21 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         dependencyDispatcher = Notifier()
         externalDependencyDispatcher = DependencyReceiver()
 
-        val store = DefaultStorage(dependencyDispatcher)
+        with(DefaultStorage()) {
+            attachFieldDependencyObserver(dependencyDispatcher)
 
-        storage = store
-        emitter = store
+            storage = this
+            emitter = this
+        }
 
         client = URLConnectionClient.newInstance(baseURL)
     }
 
     fun bindView(view: InputFieldView?) {
         if(view is VGSEditText) {
-            view.addStateListener(emitter.performSubscription())
             dependencyDispatcher.addDependencyListener(view.getFieldType(), view.notifier)
             externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.notifier)
+            view.addStateListener(emitter.performSubscription())
         }
     }
 
