@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         const val USER_SCAN_REQUEST_CODE = 0x7
     }
 
-    val vgsForm = VGSCollect("your_tennant_id")
+    private val vgsForm = VGSCollect(Configuration.tennantId, Configuration.environment)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,12 +47,12 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     override fun onClick(v: View?) {
         progressBar?.visibility = View.VISIBLE
         when (v?.id) {
-            R.id.submitBtn -> vgsForm.asyncSubmit(this@MainActivity, "/post", HTTPMethod.POST, null)
-            R.id.scanCardIOBtn -> scanByCardIOCard()
+            R.id.submitBtn -> submitData()
+            R.id.scanCardIOBtn -> scanData()
         }
     }
 
-    private fun scanByCardIOCard() {
+    private fun scanData() {
         progressBar?.visibility = View.INVISIBLE
         val intent = Intent(this, ScanActivity::class.java)
 
@@ -71,6 +71,21 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         vgsForm.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun submitData() {
+        vgsForm.resetCustomData()
+        vgsForm.resetCustomHeaders()
+
+        val data = HashMap<String, String>()
+        data["nonSDKValue"] = "some additional data"
+        vgsForm.setCustomData(data)
+
+        val headers = HashMap<String, String>()
+        headers["CUSTOMHEADER"] = "value"
+        vgsForm.setCustomHeaders(headers)
+
+        vgsForm.asyncSubmit(this@MainActivity, Configuration.endpoint, HTTPMethod.POST)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {

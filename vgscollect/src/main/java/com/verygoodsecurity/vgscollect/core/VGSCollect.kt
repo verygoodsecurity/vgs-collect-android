@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
-import com.verygoodsecurity.vgscollect.core.api.setupURL
 import com.verygoodsecurity.vgscollect.core.storage.DependencyDispatcher
 import com.verygoodsecurity.vgscollect.core.storage.Notifier
 import com.verygoodsecurity.vgscollect.core.model.Payload
@@ -51,7 +50,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
     private val isURLValid:Boolean
 
     init {
-        baseURL = if(id.isTennant()) {
+        baseURL = if(id.isTennantIdValid()) {
             id.setupURL(environment.rawValue)
         } else {
             Logger.e(TAG, "tennantId is not valid")
@@ -72,9 +71,9 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
 
     fun bindView(view: InputFieldView?) {
         if(view is VGSEditText) {
-            view.addStateListener(emitter.performSubscription())
             dependencyDispatcher.addDependencyListener(view.getFieldType(), view.notifier)
             externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.notifier)
+            view.addStateListener(emitter.performSubscription())
         }
     }
 
@@ -97,10 +96,12 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
     fun submit(mainActivity:Activity
                , path:String
                , method:HTTPMethod = HTTPMethod.POST
-               , userData:Map<String,String>? = null
-               , headers:Map<String,String>? = null
     ) {
         appValidationCheck(mainActivity) { data ->
+            val tempStore = client.getTemporaryStorage()
+            val headers = tempStore.getCustomHeaders()
+            val userData = tempStore.getCustomData()
+
             val dataBundledata = data.mapUsefulPayloads(userData)
             doRequest(path, method, headers, dataBundledata)
         }
@@ -109,10 +110,12 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
     fun asyncSubmit(mainActivity:Activity
                     , path:String
                     , method:HTTPMethod
-                    , userData:Map<String,String>? = null
-                    , headers:Map<String,String>? = null
     ) {
         appValidationCheck(mainActivity) { data ->
+            val tempStore = client.getTemporaryStorage()
+            val headers = tempStore.getCustomHeaders()
+            val userData = tempStore.getCustomData()
+
             val dataBundledata = data.mapUsefulPayloads(userData)
             doAsyncRequest(path, method, headers, dataBundledata)
         }
@@ -144,8 +147,8 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
 
     protected fun doRequest(path: String,
                             method: HTTPMethod,
-                            data: Map<String, String>?,
-                            headers: Map<String, String>?
+                            headers: Map<String, String>?,
+                            data: Map<String, String>?
     ) {
         val r = client.call(path, method, headers, data)
         onResponseListener?.onResponse(r)
@@ -153,20 +156,15 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
 
     protected fun doAsyncRequest(path: String,
                                  method: HTTPMethod,
-                                 data: Map<String, String>?,
-                                 headers: Map<String, String>?
+                                 headers: Map<String, String>?,
+                                 data: Map<String, String>?
     ) {
-        val p = Payload(
-            path,
-            method,
-            data,
-            headers
-        )
+        val p = Payload(path, method, data, headers)
 
         val task = doAsync(onResponseListener) {
             it?.run {
                 client.call(this.path, this.method, this.headers, this.data)
-            } ?: VGSResponse.ErrorResponse("error")  //fixme
+            } ?: VGSResponse.ErrorResponse("error")
         }
 
         tasks.add(task)
@@ -176,13 +174,29 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode == Activity.RESULT_OK) {
-            val map:VGSHashMapWrapper<String, Any?>? = data?.extras?.getParcelable(BaseTransmitActivity.RESULT_DATA)
+            val map: VGSHashMapWrapper<String, Any?>? = data?.extras?.getParcelable(
+                BaseTransmitActivity.RESULT_DATA)
             map?.run {
                 externalDependencyDispatcher.dispatch(mapOf())
             }
         }
     }
 
+    fun setCustomHeaders(headers: Map<String, String>?) {
+        client.getTemporaryStorage().setCustomHeaders(headers)
+    }
+
+    fun resetCustomHeaders() {
+        client.getTemporaryStorage().resetCustomHeaders()
+    }
+
+    fun setCustomData(data: Map<String, String>?) {
+        client.getTemporaryStorage().setCustomData(data)
+    }
+
+    fun resetCustomData() {
+        client.getTemporaryStorage().resetCustomData()
+    }
 
     @TestOnly
     internal fun setClient(c: ApiClient) {
