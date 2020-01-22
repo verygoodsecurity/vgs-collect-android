@@ -21,6 +21,7 @@ Table of contents
       * [Fields state tracking](#fields-state-tracking)
       * [Handle service response](#handle-service-response)
       * [End session](#end-session)
+   * [Demo Application](#demo-application)
    * [License](#license)
 <!--te-->
 
@@ -178,6 +179,9 @@ Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy 
         vgsForm.onDestroy();
     }
  ```
- 
+
+## Demo Application
+Demo application for collecting card data on Android is <a href="https://github.com/verygoodsecurity/android-sdk-demo">here</a>.
+
 ## License
 VGSCollect Android SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE) for details.
