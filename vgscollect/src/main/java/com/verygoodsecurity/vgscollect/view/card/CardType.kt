@@ -14,7 +14,7 @@ enum class CardType(val regex:String,
     ),
     VISA_ELECTRON(
         "^4(026|17500|405|508|844|91[37])",
-        R.mipmap.visa_electron,
+        R.drawable.ic_visa_electron_lite,
         arrayOf(16),
         arrayOf(3)
     ),
@@ -26,37 +26,37 @@ enum class CardType(val regex:String,
     ),
     MAESTRO(
         "^(5018|5020|5038|6304|6390[0-9]{2}|67[0-9]{4})",
-        R.mipmap.maestro,
+        R.drawable.ic_maestro_dark,
         (13..16).toList().toTypedArray(),
         arrayOf(3)
     ),
     FORBRUGSFORENINGEN(
         "^600",
-        R.drawable.card_preview,
+        R.drawable.ic_forbrugsforeningen_dark,
         arrayOf(16),
         arrayOf(3)
     ),
     DANKORT(
         "^5019",
-        R.drawable.card_preview,
+        R.drawable.ic_dankort_dark,
         arrayOf(16),
         arrayOf(3)
     ),
     VISA(
         "^4",
-        R.mipmap.visa,
+        R.drawable.ic_visa_dark,
         arrayOf(13,16,19),
         arrayOf(3)
     ),
     MASTERCARD(
         "^(5[1-5][0-9]{4}|677189)|^(222[1-9]|2[3-6]\\d{2}|27[0-1]\\d|2720)([0-9]{2})",
-        R.mipmap.mastercard,
+        R.drawable.ic_mastercard_dark,
         arrayOf(16),
         arrayOf(3)
     ),
     AMERICAN_EXPRESS(
         "^3[47]",
-        R.mipmap.amex,
+        R.drawable.ic_amex_lite,
         arrayOf(15),
         arrayOf(4)
     ),
@@ -68,25 +68,25 @@ enum class CardType(val regex:String,
     ),
     DINCLUB(
         "^(36|38|30[0-5])",
-        R.mipmap.din_club,
+        R.drawable.ic_diners_dark,
         arrayOf(14),
         arrayOf(3)
     ),
     DISCOVER(
         "^(6011|65|64[4-9]|622)",
-        R.mipmap.discover,
+        R.drawable.ic_discover_lite,
         arrayOf(16),
         arrayOf(3)
     ),
     UNIONPAY(
         "^62",
-        R.drawable.card_preview,
+        R.drawable.ic_union_pay_lite,
         (16..19).toList().toTypedArray(),
         arrayOf(3)
     ),
     JCB(
         "^35",
-        R.mipmap.jcb,
+        R.drawable.ic_jcb_lite,
         (16..19).toList().toTypedArray(),
         arrayOf(3)
     ),
