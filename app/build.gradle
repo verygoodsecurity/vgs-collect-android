@@ -15,19 +15,27 @@ android {
     }
     buildTypes {
         release {
-            buildConfigField "String", "TENNANT_ID", getLocalProperty('VGS_TENNANT_ID')
-            buildConfigField "String", "ENDPOINT", getLocalProperty('VGS_ENDPOINT')
+            buildConfigField "String", "VGS_TENNANT_ID", getLocalProperty('VGS_TENNANT_ID')
+            buildConfigField "String", "VGS_ENDPOINT", getLocalProperty('VGS_ENDPOINT')
             buildConfigField "com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentRelease()
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField "String", "TENNANT_ID", getLocalProperty('VGS_TENNANT_ID')
-            buildConfigField "String", "ENDPOINT", getLocalProperty('VGS_ENDPOINT')
+            buildConfigField "String", "VGS_TENNANT_ID", getLocalProperty('VGS_TENNANT_ID')
+            buildConfigField "String", "VGS_ENDPOINT", getLocalProperty('VGS_ENDPOINT')
             buildConfigField "com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentDebug()
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    applicationVariants.all { variant ->
+        String vari = getLocalProperty("VGS_TENNANT_ID")
+        variant.resValue "string", "tennant_id", vari+''
+        String vari2 = getLocalProperty("VGS_ENDPOINT")
+        variant.resValue "string", "endpoint", vari2+''
     }
 }
 
@@ -43,7 +51,7 @@ def getLocalProperty(String propName) {
     if (propsFile.exists()) {
         def props = new Properties()
         props.load(new FileInputStream(propsFile))
-        return props[propName]
+        return props[propName]+''
     } else {
         return "";
     }
