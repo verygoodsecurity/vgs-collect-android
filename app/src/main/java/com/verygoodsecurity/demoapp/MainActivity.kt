@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -15,14 +16,27 @@ import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
 
+    companion object {
+        const val VAULT_ID = "user_vault_id"
+        const val ENVIROMENT = "user_env"
+        const val PATH = "user_path"
+    }
+
+    private lateinit var vault_id:String
+    private lateinit var path:String
+    private lateinit var env:Environment
+
     private val vgsForm:VGSCollect by lazy {
-        val tenn = getString(R.string.tennant_id)
-        VGSCollect(tenn, BuildConfig.ENVIRINMENT)
+        VGSCollect(vault_id, env)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        retrieveSettings()
+
+        showVaultId()
 
         submitBtn?.setOnClickListener(this)
 
@@ -34,6 +48,29 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         vgsForm.bindView(cardCVCField)
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
+    }
+
+    private fun showVaultId() {
+        val message:String = resources.getString(R.string.user_vault_id_hint)+": "+vault_id
+        userVault?.setText(message)
+    }
+
+    private fun retrieveSettings() {
+        val bndl = intent?.extras
+        vault_id = bndl?.getString(VAULT_ID, "")?:""
+        path = bndl?.getString(PATH,"/")?.run {
+            if(this.first() == '/') {
+                this
+            } else {
+                "/$this"
+            }
+        }?:"/"
+
+        val envId = bndl?.getInt(ENVIROMENT, 0)?:0
+        env = Environment.values()[envId]
+
+        Log.e("test", "$vault_id $path $env")
+
     }
 
     override fun onDestroy() {
@@ -60,8 +97,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         headers["CUSTOMHEADER"] = "value"
         vgsForm.setCustomHeaders(headers)
 
-        val endpoint = getString(R.string.endpoint)
-        vgsForm.asyncSubmit(this@MainActivity, endpoint, HTTPMethod.POST)
+        vgsForm.asyncSubmit(this@MainActivity, path, HTTPMethod.POST)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {

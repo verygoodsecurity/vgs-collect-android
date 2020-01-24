@@ -5,4 +5,8 @@
     <string name="cvc">CVC</string>
     <string name="card_holder">Name on card</string>
     <string name="exp_date">Expiration date</string>
+
+    <string name="user_vault_id_hint">Vault ID</string>
+    <string name="user_endpoint_hint">path</string>
+    <string name="start">Start</string>
 </resources>

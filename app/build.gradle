@@ -29,8 +29,8 @@ android {
     }
 
     applicationVariants.all { variant ->
-        String vari = getLocalProperty("VGS_TENNANT_ID")
-        variant.resValue "string", "tennant_id", vari+''
+        String vari = getLocalProperty("VGS_VAULT_ID")
+        variant.resValue "string", "vault_id", vari+''
         String vari2 = getLocalProperty("VGS_ENDPOINT")
         variant.resValue "string", "endpoint", vari2+''
     }
