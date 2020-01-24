@@ -15,20 +15,24 @@ android {
     }
     buildTypes {
         release {
-            buildConfigField "String", "VGS_TENNANT_ID", getLocalProperty('VGS_TENNANT_ID')
-            buildConfigField "String", "VGS_ENDPOINT", getLocalProperty('VGS_ENDPOINT')
-            buildConfigField "com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentRelease()
+            buildConfigField("com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentRelease())
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField "String", "VGS_TENNANT_ID", getLocalProperty('VGS_TENNANT_ID')
-            buildConfigField "String", "VGS_ENDPOINT", getLocalProperty('VGS_ENDPOINT')
             buildConfigField "com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentDebug()
 
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    applicationVariants.all { variant ->
+        String vari = getLocalProperty("VGS_VAULT_ID")
+        variant.resValue "string", "vault_id", vari+''
+        String vari2 = getLocalProperty("VGS_ENDPOINT")
+        variant.resValue "string", "endpoint", vari2+''
     }
 }
 
@@ -44,7 +48,13 @@ def getLocalProperty(String propName) {
     if (propsFile.exists()) {
         def props = new Properties()
         props.load(new FileInputStream(propsFile))
-        return props[propName]
+        def value = props[propName]
+        if(value == null) {
+            return "\"\" "
+        } else {
+            return value
+        }
+
     } else {
         return "";
     }
@@ -66,4 +76,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
 }

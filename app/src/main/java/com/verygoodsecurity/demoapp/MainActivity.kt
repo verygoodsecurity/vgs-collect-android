@@ -3,8 +3,10 @@ package com.verygoodsecurity.demoapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.verygoodsecurity.api.cardio.ScanActivity
+import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -18,13 +20,27 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
     companion object {
         const val USER_SCAN_REQUEST_CODE = 0x7
+
+        const val VAULT_ID = "user_vault_id"
+        const val ENVIROMENT = "user_env"
+        const val PATH = "user_path"
     }
 
-    private val vgsForm = VGSCollect(Configuration.tennantId, Configuration.environment)
+    private lateinit var vault_id:String
+    private lateinit var path:String
+    private lateinit var env:Environment
+
+    private val vgsForm:VGSCollect by lazy {
+        VGSCollect(vault_id, env)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        retrieveSettings()
+
+        showVaultId()
 
         submitBtn?.setOnClickListener(this)
         scanCardIOBtn?.setOnClickListener(this)
@@ -37,6 +53,29 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         vgsForm.bindView(cardCVCField)
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
+    }
+
+    private fun showVaultId() {
+        val message:String = resources.getString(R.string.user_vault_id_hint)+": "+vault_id
+        userVault?.setText(message)
+    }
+
+    private fun retrieveSettings() {
+        val bndl = intent?.extras
+        vault_id = bndl?.getString(VAULT_ID, "")?:""
+        path = bndl?.getString(PATH,"/")?.run {
+            if(this.first() == '/') {
+                this
+            } else {
+                "/$this"
+            }
+        }?:"/"
+
+        val envId = bndl?.getInt(ENVIROMENT, 0)?:0
+        env = Environment.values()[envId]
+
+        Log.e("test", "$vault_id $path $env")
+
     }
 
     override fun onDestroy() {
@@ -85,7 +124,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         headers["CUSTOMHEADER"] = "value"
         vgsForm.setCustomHeaders(headers)
 
-        vgsForm.asyncSubmit(this@MainActivity, Configuration.endpoint, HTTPMethod.POST)
+        vgsForm.asyncSubmit(this@MainActivity, path, HTTPMethod.POST)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
@@ -125,7 +164,9 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                 response.response?.forEach {
                     builder.append(it.key).append(": ").append(it.value).append("\n\n")
                 }
-                responseView.text = builder.toString()
+                val str = builder.toString()
+                Log.e("response", str)
+                responseView.text = str
             }
             is VGSResponse.ErrorResponse -> responseView.text =
                 "CODE: ${response.errorCode} \n\n ${response.localizeMessage}"
