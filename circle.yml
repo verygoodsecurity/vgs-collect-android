@@ -125,6 +125,7 @@ workflows:
               only:
                 - master
                 - stage
+                - dmytro.k/ch58643/vgs-collect-android-sdk-need-to-remove-all
       - "Run Lint":
           requires:
             *prepare_sources
@@ -133,6 +134,7 @@ workflows:
               only:
                 - master
                 - stage
+                - dmytro.k/ch58643/vgs-collect-android-sdk-need-to-remove-all
       - "Run Unit Tests":
           requires:
             *prepare_sources
@@ -141,6 +143,7 @@ workflows:
               only:
                 - master
                 - stage
+                - dmytro.k/ch58643/vgs-collect-android-sdk-need-to-remove-all
       - "Assemble Debug Build":
           requires:
             *all_test
@@ -149,6 +152,7 @@ workflows:
               only:
                 - master
                 - stage
+                - dmytro.k/ch58643/vgs-collect-android-sdk-need-to-remove-all
       - "Deploy to Bintray":
           requires:
             *debug_build
