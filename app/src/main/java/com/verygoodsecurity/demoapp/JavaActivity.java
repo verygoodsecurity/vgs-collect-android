@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.verygoodsecurity.vgscollect.core.Environment;
 import com.verygoodsecurity.vgscollect.core.HTTPMethod;
 import com.verygoodsecurity.vgscollect.core.VGSCollect;
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener;
@@ -23,7 +22,7 @@ import java.util.Map;
 
 public class JavaActivity extends Activity implements View.OnClickListener, VgsCollectResponseListener, OnFieldStateChangeListener {
 
-    private VGSCollect vgsForm = new VGSCollect("tntxrsfgxcn", Environment.SANDBOX);
+    private VGSCollect vgsForm;
 
     private TextView responseView;
 
@@ -31,6 +30,9 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String tenn = getString(R.string.vault_id);
+        vgsForm = new VGSCollect(tenn, BuildConfig.ENVIRINMENT);
 
         findViewById(R.id.submitBtn).setOnClickListener(this);
 
@@ -69,7 +71,8 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
         headers.put("CUSTOMHEADER", "value");
         vgsForm.setCustomHeaders(headers);
 
-        vgsForm.asyncSubmit(this, Configuration.INSTANCE.getEndpoint(), HTTPMethod.POST);
+        String endpoint = getString(R.string.endpoint);
+        vgsForm.asyncSubmit(this, endpoint, HTTPMethod.POST);
     }
 
     @Override
