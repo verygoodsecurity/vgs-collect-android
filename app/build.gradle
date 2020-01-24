@@ -51,7 +51,13 @@ def getLocalProperty(String propName) {
     if (propsFile.exists()) {
         def props = new Properties()
         props.load(new FileInputStream(propsFile))
-        return props[propName]+''
+        def value = props[propName]
+        if(value == null) {
+            return "\"\" "
+        } else {
+            return value
+        }
+
     } else {
         return "";
     }
