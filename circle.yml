@@ -134,7 +134,6 @@ workflows:
               only:
                 - master
                 - stage
-                - dmytro.k/ch58643/vgs-collect-android-sdk-need-to-remove-all
       - "Run Unit Tests":
           requires:
             *prepare_sources
