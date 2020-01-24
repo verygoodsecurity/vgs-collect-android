@@ -15,17 +15,9 @@ import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
 
-    val vgsForm = VGSCollect(BuildConfig.VGS_TENNANT_ID, BuildConfig.ENVIRINMENT)
-
-    private fun testInitializing() {
-        val vgsCollect1 = VGSCollect(BuildConfig.VGS_TENNANT_ID, BuildConfig.ENVIRINMENT)
-        vgsCollect1.asyncSubmit(this@MainActivity, BuildConfig.VGS_ENDPOINT, HTTPMethod.POST)
-
+    private val vgsForm:VGSCollect by lazy {
         val tenn = getString(R.string.tennant_id)
-        val path = getString(R.string.endpoint)
-        val vgsCollect2 = VGSCollect(tenn, BuildConfig.ENVIRINMENT)
-        vgsCollect2.asyncSubmit(this@MainActivity, path, HTTPMethod.POST)
-
+        VGSCollect(tenn, BuildConfig.ENVIRINMENT)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,7 +60,8 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         headers["CUSTOMHEADER"] = "value"
         vgsForm.setCustomHeaders(headers)
 
-        vgsForm.asyncSubmit(this@MainActivity, BuildConfig.VGS_ENDPOINT, HTTPMethod.POST)
+        val endpoint = getString(R.string.endpoint)
+        vgsForm.asyncSubmit(this@MainActivity, endpoint, HTTPMethod.POST)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {

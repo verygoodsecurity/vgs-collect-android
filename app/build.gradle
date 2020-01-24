@@ -15,16 +15,12 @@ android {
     }
     buildTypes {
         release {
-            buildConfigField("String", "VGS_TENNANT_ID", "" + getLocalProperty('VGS_TENNANT_ID')+"")
-            buildConfigField("String", "VGS_ENDPOINT", "" + getLocalProperty('VGS_ENDPOINT')+"")
             buildConfigField("com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentRelease())
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField("String", "API_TOKEN", "" + getLocalProperty('VGS_TfENNANT_ID') + "")
-            buildConfigField("String", "VGS_TENNANT_ID", "" + getLocalProperty('VGS_TENNANT_ID')+"")
-            buildConfigField("String", "VGS_ENDPOINT", "" + getLocalProperty('VGS_ENDPOINT')+"")
             buildConfigField "com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentDebug()
 
             minifyEnabled false
