@@ -24,12 +24,24 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import org.jetbrains.annotations.TestOnly
 
-open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
+/**
+ * VGS Collect allows you to securely collect data from your users without having
+ * to have that data pass through your systems.
+ *
+ * @param id Unique Vault id
+ * @param environment Type of Vaults
+ *
+ * @version 1.0.0
+ */
+class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     private var storage: VgsStore
     private val emitter: IStateEmitter
     private val dependencyDispatcher: DependencyDispatcher
     private var client: ApiClient
 
+/**
+ *
+ */
     var onResponseListener:VgsCollectResponseListener? = null
     @JvmName("addOnResponseListeners") set
 
@@ -61,6 +73,11 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         client = URLConnectionClient.newInstance(baseURL)
     }
 
+    /**
+     * Allows VGS secure fields to interact with @VGSCollect.
+     *
+     * @param view base class for VGS secure fields.
+     */
     fun bindView(view: InputFieldView?) {
         if(view is VGSEditText) {
             view.addStateListener(emitter.performSubscription())
@@ -68,10 +85,16 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         }
     }
 
+    /**
+     *
+     */
     fun addOnFieldStateChangeListener(listener: OnFieldStateChangeListener?) {
         emitter.attachStateChangeListener(listener)
     }
 
+    /**
+     *
+     */
     fun onDestroy() {
         tasks.forEach {
             it.cancel(true)
@@ -80,10 +103,16 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         storage.clear()
     }
 
+    /**
+     *
+     */
     fun getAllStates(): List<FieldState> {
         return storage.getStates().map { it.mapToFieldState() }
     }
 
+    /**
+     *
+     */
     fun submit(mainActivity:Activity
                , path:String
                , method:HTTPMethod = HTTPMethod.POST
@@ -98,6 +127,9 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         }
     }
 
+    /**
+     *
+     */
     fun asyncSubmit(mainActivity:Activity
                     , path:String
                     , method:HTTPMethod
@@ -163,18 +195,30 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         task.execute(p)
     }
 
+    /**
+     *
+     */
     fun setCustomHeaders(headers: Map<String, String>?) {
         client.getTemporaryStorage().setCustomHeaders(headers)
     }
 
+    /**
+     *
+     */
     fun resetCustomHeaders() {
         client.getTemporaryStorage().resetCustomHeaders()
     }
 
+    /**
+     *
+     */
     fun setCustomData(data: Map<String, String>?) {
         client.getTemporaryStorage().setCustomData(data)
     }
 
+    /**
+     *
+     */
     fun resetCustomData() {
         client.getTemporaryStorage().resetCustomData()
     }
