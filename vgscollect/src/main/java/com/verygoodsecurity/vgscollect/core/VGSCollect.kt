@@ -31,7 +31,7 @@ import org.jetbrains.annotations.TestOnly
  * @param id Unique Vault id
  * @param environment Type of Vaults
  *
- * @version 1.0.0
+ * @version 1.0.1
  */
 class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     private var storage: VgsStore
