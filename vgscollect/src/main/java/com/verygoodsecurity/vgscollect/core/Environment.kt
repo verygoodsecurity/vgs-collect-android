@@ -9,7 +9,7 @@ package com.verygoodsecurity.vgscollect.core
  *
  * @param rawValue Unique identifier.
  *
- * @version 1.0.0
+ * @version 1.0.1
  */
 enum class Environment(val rawValue:String) {
 
@@ -19,7 +19,7 @@ enum class Environment(val rawValue:String) {
     SANDBOX("sandbox"),
 
     /**
-     *  Live Environment using sandbox Live Vault
+     *  Live Environment using Live Vault
      */
     LIVE("live")
 }
