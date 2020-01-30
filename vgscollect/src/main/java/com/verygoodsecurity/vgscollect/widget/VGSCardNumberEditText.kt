@@ -24,7 +24,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
             try {
                 val previewGravity = getInt(R.styleable.VGSCardNumberEditText_cardBrandIconGravity, 0)
-                val divider = getString(R.styleable.VGSCardNumberEditText_numberDivider)
+                val divider:String = getString(R.styleable.VGSCardNumberEditText_numberDivider)?:" "
 
                 val cursorColor = getColor(R.styleable.VGSCardNumberEditText_cursorColor, 0)
                 val inputType = getInt(R.styleable.VGSCardNumberEditText_inputType, EditorInfo.TYPE_NULL)
