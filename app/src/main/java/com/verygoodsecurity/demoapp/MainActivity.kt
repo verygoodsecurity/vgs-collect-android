@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
         submitBtn?.setOnClickListener(this)
 
-        vgsForm.onResponseListener = this
+        vgsForm.addOnResponseListeners(this)
 
         vgsForm.addOnFieldStateChangeListener(getOnFieldStateChangeListener())
 
