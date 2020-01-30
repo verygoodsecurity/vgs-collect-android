@@ -85,4 +85,8 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     fun addCardBrand(c: CustomCardBrand) {
         applyCardBrand(c)
     }
+
+    fun setDivider(char:Char) {
+        setNumberDivider(char.toString())
+    }
 }
