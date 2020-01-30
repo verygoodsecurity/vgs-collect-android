@@ -62,7 +62,7 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
     }
 
     fun bindView(view: InputFieldView?) {
-        if(view is VGSEditText) {
+        if(view is InputFieldView) {
             view.addStateListener(emitter.performSubscription())
             dependencyDispatcher.addDependencyListener(view.getFieldType(), view.notifier)
         }

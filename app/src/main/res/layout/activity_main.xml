@@ -57,7 +57,6 @@
                 android:id="@+id/cardNumberField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:numberDivider="-"
                 app:fieldName="cardNumber"
                 app:isRequired="false"
                 app:textColor="@color/black"
