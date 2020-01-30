@@ -33,6 +33,7 @@ import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
 
+@Deprecated("This class is deprecated. Please use @BaseInputField.")
 internal class InputField(context: Context): TextInputEditText(context),
     DependencyListener {
 
