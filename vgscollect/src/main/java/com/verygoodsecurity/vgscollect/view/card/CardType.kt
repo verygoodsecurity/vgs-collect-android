@@ -2,6 +2,16 @@ package com.verygoodsecurity.vgscollect.view.card
 
 import com.verygoodsecurity.vgscollect.R
 
+/**
+ * Standard constants of credit card brands that are supported by SDK.
+ *
+ * @param regex Regular expression rules for detection card's brand.
+ * @param resId The drawable resource represents credit card logo.
+ * @param rangeNumber The length of the card's number which a brand supported.
+ * @param rangeCVV The length of the card's CVC number which a brand supported.
+ *
+ * @version 1.0.1
+ */
 enum class CardType(val regex:String,
                     val resId:Int,
                     val rangeNumber:Array<Int>,
@@ -42,18 +52,24 @@ enum class CardType(val regex:String,
         arrayOf(16),
         arrayOf(3)
     ),
+
+    /** Validation of this card brand includes the Luhn algorithm. */
     VISA(
         "^4",
         R.mipmap.visa,
         arrayOf(13,16,19),
         arrayOf(3)
     ),
+
+    /** Validation of this card brand includes the Luhn algorithm. */
     MASTERCARD(
         "^(5[1-5][0-9]{4}|677189)|^(222[1-9]|2[3-6]\\d{2}|27[0-1]\\d|2720)([0-9]{2})",
         R.mipmap.mastercard,
         arrayOf(16),
         arrayOf(3)
     ),
+
+    /** Validation of this card brand includes the Luhn algorithm. */
     AMERICAN_EXPRESS(
         "^3[47]",
         R.mipmap.amex,
@@ -66,12 +82,16 @@ enum class CardType(val regex:String,
         (14..19).toList().toTypedArray(),
         arrayOf(3)
     ),
+
+    /** Validation of this card brand includes the Luhn algorithm. */
     DINCLUB(
         "^(36|38|30[0-5])",
         R.mipmap.din_club,
         arrayOf(14),
         arrayOf(3)
     ),
+
+    /** Validation of this card brand includes the Luhn algorithm. */
     DISCOVER(
         "^(6011|65|64[4-9]|622)",
         R.mipmap.discover,
@@ -84,6 +104,8 @@ enum class CardType(val regex:String,
         (16..19).toList().toTypedArray(),
         arrayOf(3)
     ),
+
+    /** Validation of this card brand includes the Luhn algorithm. */
     JCB(
         "^35",
         R.mipmap.jcb,
