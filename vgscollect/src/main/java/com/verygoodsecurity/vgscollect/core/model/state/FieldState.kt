@@ -9,26 +9,18 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
  */
 sealed class FieldState {
 
-    /**
-     * The State is true if this input field has focus itself.
-     */
+    /** The State is true if this input field has focus itself. */
     var hasFocus:Boolean = false
         internal set
-    /**
-     * The state is true if the content inside the input field is valid.
-     */
+    /** The state is true if the content inside the input field is valid. */
     var isValid:Boolean = false
         internal set
 
-    /**
-     * The state is true if the input field has no input inside.
-     */
+    /** The state is true if the input field has no input inside. */
     var isEmpty:Boolean = false
         internal set
 
-    /**
-     * The state is true if the input field may be skipped for submitting.
-     */
+    /** The state is true if the input field may be skipped for submitting. */
     var isRequired:Boolean = false
         internal set
 
@@ -39,9 +31,7 @@ sealed class FieldState {
     var fieldName:String = ""
         internal set
 
-    /**
-     * The type of current VGS input field.
-     */
+    /** The type of current VGS input field. */
     var fieldType: FieldType = FieldType.INFO
     internal set
 
@@ -52,29 +42,23 @@ sealed class FieldState {
      */
     class CardNumberState:FieldState() {
 
-        /**
-         * Bank Identification Number.
-         */
+        /** Bank Identification Number. */
         var bin:String? = ""
             internal set
-        /**
-         * The last numbers on card.
-         */
+
+        /** The last numbers on card. */
         var last:String? = ""
             internal set
-        /**
-         * The card number.
-         */
+
+        /** The card number. */
         var number:String? = ""
             internal set
-        /**
-         * The brand of the card.
-         */
+
+        /** The brand of the card. */
         var cardBrand: String? = ""
             internal set
-        /**
-         * The resource identifier of the detected card brand.
-         */
+
+        /** The resource identifier of the detected card brand. */
         var drawableBrandResId: Int = 0
             internal set
     }
