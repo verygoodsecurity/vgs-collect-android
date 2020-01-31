@@ -21,6 +21,9 @@ import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.internal.InputField
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
+/**
+ * An abstract class that provide displays text user-editable text to the user.
+ */
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
@@ -29,6 +32,12 @@ abstract class InputFieldView @JvmOverloads constructor(
     private var isAttachPermitted = true
 
     internal val notifier = DependencyNotifier(inputField!!)
+
+    /**
+     * Delegate class that helps deliver new requirements between related input fields.
+     *
+     * @param notifier The listener that emits new dependencies for apply.
+     */
     class DependencyNotifier(notifier: DependencyListener) : DependencyListener by notifier
 
     override fun onDetachedFromWindow() {
@@ -155,18 +164,41 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Set the type of the content with a constant as defined for input field.
+     *
+     * @param inputType
+     */
     open fun setInputType(inputType: Int) {
         inputField?.inputType = inputType
     }
 
+    /**
+     * Sets the text to be used for data transfer to VGS proxy. Usually,
+     * it is similar to field-name in JSON path in your inbound route filters.
+     *
+     * @param fieldName the name of the field
+     */
     open fun setFieldName(fieldName:String?) {
         inputField?.tag = fieldName
     }
 
+    /**
+     * Sets the text to be used for data transfer to VGS proxy. Usually,
+     * it is similar to field-name in JSON path in your inbound route filters.
+     *
+     * @param resId the resource identifier of the field name
+     */
     open fun setFieldName(resId:Int) {
         inputField?.tag = resources.getString(resId, "")
     }
 
+    /**
+     * Causes words in the text that are longer than the view's width to be ellipsized
+     * instead of broken in the middle.
+     *
+     * @param type integer value of TextUtils.TruncateAt
+     */
     open fun setEllipsize(type: Int) {
         val ellipsize = when(type) {
             1 -> TextUtils.TruncateAt.START
@@ -178,18 +210,40 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField?.ellipsize = ellipsize
     }
 
+    /**
+     * Causes words in the text that are longer than the view's width to be ellipsized
+     * instead of broken in the middle.
+     *
+     * @param ellipsis
+     */
     open fun setEllipsize(ellipsis: TextUtils.TruncateAt) {
         inputField?.ellipsize = ellipsis
     }
 
+    /**
+     * Sets the height of the TextView to be at least minLines tall.
+     *
+     * @param lines the minimum height of TextView in terms of number of lines
+     */
     open fun setMinLines(lines:Int) {
         inputField?.minLines = lines
     }
 
+    /**
+     * Sets the height of the TextView to be at most maxLines tall.
+     *
+     * @param lines the maximum height of TextView in terms of number of lines.
+     */
     open fun setMaxLines(lines:Int) {
         inputField?.maxLines = lines
     }
 
+    /**
+     * If true, sets the properties of this field
+     * (number of lines, horizontally scrolling, transformation method) to be for a single-line input.
+     *
+     * @param singleLine
+     */
     open fun setSingleLine(singleLine:Boolean) {
         inputField?.setSingleLine(singleLine)
     }
@@ -199,14 +253,32 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField?.isFocusableInTouchMode = focusableInTouchMode
     }
 
+    /**
+     * Sets the text to be displayed when the text of the TextView is empty.
+     * Null means to use the normal empty text. The hint does not currently participate
+     * in determining the size of the view.
+     *
+     * @param text
+     */
     open fun setHint(text:String?) {
         inputField?.hint = text
     }
 
+    /**
+     * Sets the color of the hint text.
+     *
+     * @param colors
+     */
     open fun setHintTextColor(colors: ColorStateList) {
         inputField?.setHintTextColor(colors)
     }
 
+    /**
+     * Sets the color of the hint text for all the states (disabled, focussed, selected...)
+     * of this TextView.
+     *
+     * @param color
+     */
     open fun setHintTextColor(color:Int) {
         inputField?.setHintTextColor(color)
     }
@@ -215,35 +287,80 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField?.setHorizontallyScrolling(canScroll)
     }
 
+    /**
+     * Sets the horizontal alignment of the text and the vertical gravity that will be used when
+     * there is extra space in the TextView beyond what is required for the text itself.
+     *
+     * @param gravity
+     */
     open fun setGravity(gravity:Int) {
         inputField?.gravity = gravity
     }
 
+    /**
+     * Returns the horizontal and vertical alignment of this TextView.
+     *
+     * @return current gravity
+     */
     open fun getGravity() = inputField?.gravity
 
+    /**
+     * Set whether the cursor is visible.
+     *
+     * @param isVisible
+     */
     open fun setCursorVisible(isVisible:Boolean) {
         inputField?.isCursorVisible = isVisible
     }
 
+    /**
+     * Sets the text color, size, style, hint color, and highlight color from the specified
+     * TextAppearance resource.
+     *
+     * @param context
+     * @param resId the resource identifier of the style to apply
+     */
     @Deprecated("deprecated")
     open fun setTextAppearance( context: Context, resId:Int) {
         inputField?.setTextAppearance(context, resId)
     }
 
+    /**
+     * Sets the text appearance from the specified style resource.
+     *
+     * @param resId the resource identifier of the style to apply
+     */
     @RequiresApi(Build.VERSION_CODES.M)
     open fun setTextAppearance(resId:Int) {
         inputField?.setTextAppearance(resId)
     }
 
+    /**
+     * Gets the current Typeface that is used to style the text.
+     *
+     * @return The current Typeface.
+     */
     open fun getTypeface():Typeface? {
         return inputField?.typeface
     }
 
+    /**
+     * Sets the typeface and style in which the text should be displayed.
+     *
+     * @param typeface This value may be null.
+     */
     open fun setTypeface(typeface: Typeface) {
         inputField?.typeface = typeface
-
     }
 
+    /**
+     * Sets the typeface and style in which the text should be displayed,
+     * and turns on the fake bold and italic bits in the Paint if the Typeface
+     * that you provided does not have all the bits in the style that you specified.
+     *
+     * @param tf This value may be null.
+     * @param style Value is Typeface.NORMAL, Typeface.BOLD, Typeface.ITALIC, or Typeface.BOLD_ITALIC
+     */
     open fun setTypeface(tf: Typeface, style:Int) {
         when(style) {
             0 -> inputField?.typeface = Typeface.DEFAULT_BOLD
@@ -252,46 +369,115 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the text to be displayed using a string resource identifier.
+     *
+     * @param resId the resource identifier of the string resource to be displayed
+     */
     open fun setText( resId:Int) {
         inputField?.setText(resId)
     }
 
+    /**
+     * Sets the text to be displayed using a string resource identifier and the TextView.BufferType.
+     *
+     * @param resId the resource identifier of the string resource to be displayed
+     * @param type a TextView.BufferType which defines whether the text is stored as a static text,
+     * styleable/spannable text, or editable text
+     */
     open fun setText( resId:Int, type: TextView.BufferType) {
         inputField?.setText(resId, type)
     }
 
+    /**
+     * Sets the text to be displayed.
+     *
+     * @param text text to be displayed
+     */
     open fun setText(text:CharSequence?) {
         inputField?.setText(text)
     }
 
+    /**
+     * Sets the text to be displayed and the TextView.BufferType.
+     *
+     * @param text text to be displayed
+     * @param type a TextView.BufferType which defines whether the text is stored as a static text,
+     * styleable/spannable text, or editable text
+     *
+     * @see TextView.BufferType
+     */
     open fun setText( text:CharSequence?, type: TextView.BufferType) {
         inputField?.setText(text, type)
     }
 
+    /**
+     * Set the default text size to the given value, interpreted as "scaled pixel" units.
+     * This size is adjusted based on the current density and user font size preference.
+     *
+     * @param size The scaled pixel size.
+     */
     open fun setTextSize( size:Float ) {
         inputField?.textSize = size
     }
 
+    /**
+     * Set the default text size to a given unit and value.
+     * See TypedValue for the possible dimension units.
+     *
+     * @param unit The desired dimension unit.
+     * @param size The desired size in the given units.
+     */
     open fun setTextSize( unit:Int, size:Float) {
         inputField?.setTextSize(unit, size)
     }
 
+    /**
+     * Sets the text color for all the states (normal, selected, focused) to be this color.
+     *
+     * @param color A color value that will be applied
+     */
     open fun setTextColor(color:Int) {
         inputField?.setTextColor(color)
     }
 
+    /**
+     * Specifies whether the text inside input field is required to be filled before sending.
+     *
+     * @param state Set true if the input required.
+     */
     open fun setIsRequired(state:Boolean) {
         inputField?.isRequired = state
     }
 
+    /**
+     * Gets the current field type of the InputFieldView.
+     *
+     * @return FieldType
+     *
+     * @see FieldType
+     */
     open fun getFieldType():FieldType {
         return inputField?.fieldType?:FieldType.INFO
     }
 
+    /**
+     * Sets type of current input field.
+     * Choosing the input type you configure the limitations for this type.
+     *
+     * @param type The type of current input field.
+     *
+     * @see FieldType
+     */
     open fun setFieldType(type: FieldType) {
         inputField?.fieldType = type
     }
 
+    /**
+     * Sets the color of the input field cursor.
+     *
+     * @param color The cursor color.
+     */
     open fun setCursorColor(color:Int) {
         inputField?.setCursorDrawableColor(color)
     }
