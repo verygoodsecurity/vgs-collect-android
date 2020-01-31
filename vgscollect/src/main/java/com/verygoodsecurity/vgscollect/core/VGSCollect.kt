@@ -138,8 +138,8 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
 
     protected fun doRequest(path: String,
                             method: HTTPMethod,
-                            data: Map<String, String>?,
-                            headers: Map<String, String>?
+                            headers: Map<String, String>?,
+                            data: Map<String, String>?
     ) {
         val r = client.call(path, method, headers, data)
         onResponseListener?.onResponse(r)
@@ -147,15 +147,15 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
 
     protected fun doAsyncRequest(path: String,
                                  method: HTTPMethod,
-                                 data: Map<String, String>?,
-                                 headers: Map<String, String>?
+                                 headers: Map<String, String>?,
+                                 data: Map<String, String>?
     ) {
         val p = Payload(path, method, data, headers)
 
         val task = doAsync(onResponseListener) {
             it?.run {
                 client.call(this.path, this.method, this.headers, this.data)
-            } ?: VGSResponse.ErrorResponse("error")  //fixme
+            } ?: VGSResponse.ErrorResponse("error")
         }
 
         tasks.add(task)

@@ -50,13 +50,13 @@ def getLocalProperty(String propName) {
         props.load(new FileInputStream(propsFile))
         def value = props[propName]
         if(value == null) {
-            return "\"\" "
+            return ""
         } else {
             return value
         }
 
     } else {
-        return "";
+        return ""
     }
 }
 

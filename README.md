@@ -49,14 +49,14 @@ For integration you need to install the [Android Studio](http://developer.androi
 
 #### Add the SDK to your project
 If you are using Maven, add the following to your `build.gradle` file:
-```
+```gradle
 dependencies {
    implementation 'com.verygoodsecurity:vgscollect:1.0.0’
 }
 ```
 #### Add permissions
 The **SDK** requires the following permissions. Please add them to your `AndroidManifest.xml` file if they are not already present:
-```
+```xml
 <uses-permission android:name="android.permission.INTERNET"/>
 ```
 
@@ -64,7 +64,7 @@ The **SDK** requires the following permissions. Please add them to your `Android
 
 #### Session initialization
 Add VGSEditText to your layout file:
-```
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 
 <com.verygoodsecurity.vgscollect.widget.VGSEditText
@@ -74,7 +74,7 @@ Add VGSEditText to your layout file:
 ```
 
 Add the following code to initialize the SDK to your Activity or Fragment class:
-```
+```java
 public class ExampleActivity extends Activity {
    private VGSCollect vgsForm = new VGSCollect( user_key, Environment.SANDBOX);
    
@@ -101,9 +101,20 @@ public class ExampleActivity extends Activity {
 }
 ```
 
+#### Fields state tracking
+Whenever an EditText changes, **VGSCollect** can notify user about it. Implement `OnFieldStateChangeListener` to observe changes:
+```java
+  vgsForm.addOnFieldStateChangeListener(new OnFieldStateChangeListener() {
+            @Override
+            public void onStateChange(FieldState state) {
+                //...
+            }
+        });
+```
+
 #### Submit information
 Call `asyncSubmit` or `submit` to execute and send data on VGS Server if you want to handle multithreading by yourself:
-```
+```java
 private void submitData() {
     //..
     vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
@@ -111,7 +122,7 @@ private void submitData() {
 ```
 
 There is an option to send custom fields in the same request that the SDK CTA sends:
-```
+```java
 private void submitData() {
     //..
     HashMap data = HashMap<String, String>();
@@ -123,7 +134,7 @@ private void submitData() {
 ```
 
 More to the point SDK allows send your custom headers:
-```
+```java
 private void submitData() {
     //..
     HashMap headers = HashMap<String, String>();
@@ -135,7 +146,7 @@ private void submitData() {
 ```
 
 To clear all custom headers use `resetCustomHeaders` or `resetCustomData` to clear custom fields added before.
-```
+```java
 private void submitData() {
     vgsForm.resetCustomHeaders();
     
@@ -147,20 +158,9 @@ private void submitData() {
 }
 ```
 
-#### Fields state tracking
-Whenever an EditText changes, **VGSCollect** can notify user about it. Implement `OnFieldStateChangeListener` to observe changes:
-```
-  vgsForm.addOnFieldStateChangeListener(new OnFieldStateChangeListener() {
-            @Override
-            public void onStateChange(FieldState state) {
-                //...
-            }
-        });
-```
-
 #### Handle service response
 You need to implement `VgsCollectResponseListener` to read response:
-```
+```java
   vgsForm.setOnResponseListener(new VgsCollectResponseListener() {
             @Override
             public void onResponse(@org.jetbrains.annotations.Nullable VGSResponse response) {
@@ -171,13 +171,13 @@ You need to implement `VgsCollectResponseListener` to read response:
 
 #### End session
 Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy callback:
-```
+```java
     @Override
     protected void onDestroy() {
         super.onDestroy();
         vgsForm.onDestroy();
     }
  ```
-
+ 
 ## License
 VGSCollect Android SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE) for details.

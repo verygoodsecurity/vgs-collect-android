@@ -4,6 +4,7 @@ import com.verygoodsecurity.vgscollect.core.*
 import com.verygoodsecurity.vgscollect.core.api.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.Mockito
@@ -13,8 +14,26 @@ class VGSCollectTest {
 
     @Test
     fun testInvalidTennantIdURL() {
-        val c = VGSCollect("tennId.com")
-        assertTrue(c.baseURL == "")
+        val testUrl1 = " "
+        assertEquals("", VGSCollect(testUrl1).baseURL )
+
+        val testUrl2 = "tnt.com"
+        assertEquals("", VGSCollect(testUrl2).baseURL )
+
+        val testUrl3 = "tnt com"
+        assertEquals("", VGSCollect(testUrl3).baseURL )
+
+        val testUrl4 = "2tnt/com"
+        assertEquals("", VGSCollect(testUrl4).baseURL )
+
+        val testUrl5 = "tnt:com"
+        assertEquals("", VGSCollect(testUrl5).baseURL )
+
+        val testUrl6 = "tnt*com"
+        assertEquals("", VGSCollect(testUrl6).baseURL )
+
+        val testUrl7 = "tnt?com"
+        assertEquals("", VGSCollect(testUrl7).baseURL )
     }
 
     @Test

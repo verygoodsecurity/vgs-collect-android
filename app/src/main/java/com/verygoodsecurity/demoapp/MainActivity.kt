@@ -2,7 +2,6 @@ package com.verygoodsecurity.demoapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
@@ -68,9 +67,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
         val envId = bndl?.getInt(ENVIROMENT, 0)?:0
         env = Environment.values()[envId]
-
-        Log.e("test", "$vault_id $path $env")
-
     }
 
     override fun onDestroy() {
@@ -138,7 +134,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                     builder.append(it.key).append(": ").append(it.value).append("\n\n")
                 }
                 val str = builder.toString()
-                Log.e("response", str)
                 responseView.text = str
             }
             is VGSResponse.ErrorResponse -> responseView.text =
