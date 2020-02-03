@@ -289,9 +289,10 @@ internal class InputField(context: Context): TextInputEditText(context),
 
     private fun getDrawable(primaryRes:Int?): Drawable? {
         return primaryRes?.run {
-            val cIconSize = resources.getDimension(R.dimen.c_icon_size).toInt()
+            val cIconSizeW = resources.getDimension(R.dimen.c_icon_size_w).toInt()
+            val cIconSizeH = resources.getDimension(R.dimen.c_icon_size_h).toInt()
             val drawable = ContextCompat.getDrawable(context, primaryRes)
-            drawable?.setBounds(0, 0, cIconSize, cIconSize)
+            drawable?.setBounds(0, 0, cIconSizeW, cIconSizeH)
             return drawable
         }
     }

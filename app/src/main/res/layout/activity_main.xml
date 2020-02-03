@@ -37,6 +37,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/state">
 
+        <EditText
+            android:id="@+id/userVault"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:textColor="@android:color/darker_gray"
+            android:cursorVisible="false"
+            android:enabled="false"/>
+
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardNumberFieldLay"
             android:layout_width="match_parent"
@@ -55,8 +65,7 @@
                 app:textSize="12dp"
                 app:text="4111111111111111"
                 app:hint="Card number"
-                app:cardBrandIconGravity="end"
-                app:fieldType="cardNumber"/>
+                app:cardBrandIconGravity="end"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
