@@ -163,6 +163,8 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField?.tag = fieldName
     }
 
+    open fun getFieldName():String? = inputField?.tag as String?
+
     open fun setFieldName(resId:Int) {
         inputField?.tag = resources.getString(resId, "")
     }
