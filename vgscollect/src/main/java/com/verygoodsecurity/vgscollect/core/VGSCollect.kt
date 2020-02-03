@@ -26,7 +26,6 @@ import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.InputFieldView
-import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import org.jetbrains.annotations.TestOnly
 
 open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
