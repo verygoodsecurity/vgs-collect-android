@@ -45,7 +45,7 @@ Table of contents
 * **VGSCollect SDK** - provides an API for interacting with the VGS Vault
 * **app** - sample application to act as the host app for testing the SDK during development
 
-## Integration 
+## Integration
 For integration you need to install the [Android Studio](http://developer.android.com/sdk/index.html) and a [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) on your machine.
 
 #### Add the SDK to your project
@@ -78,23 +78,23 @@ Add the following code to initialize the SDK to your Activity or Fragment class:
 ```java
 public class ExampleActivity extends Activity {
    private VGSCollect vgsForm = new VGSCollect( user_key, Environment.SANDBOX);
-   
+
    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.examle_layout);
-        
+
         vgsForm.addOnFieldStateChangeListener(...);
         vgsForm.setOnResponseListener(...);
-        
+
         VGSEditText yourField = findViewById(R.id.your_field);
         vgsForm.bindView(yourField);
     }
-    
+
     private void submitData() {
         //...
     }
-    
+
     @Override
     protected void onDestroy() {
         //...
@@ -129,7 +129,7 @@ private void submitData() {
     HashMap data = HashMap<String, String>();
     data.put("key", "value");
     vgsForm.setCustomData(data);
-    
+
     vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
 }
 ```
@@ -141,7 +141,7 @@ private void submitData() {
     HashMap headers = HashMap<String, String>();
     headers.put("key", "value");
     vgsForm.setCustomHeaders(headers);
-    
+
     vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
 }
 ```
@@ -150,11 +150,11 @@ To clear all custom headers use `resetCustomHeaders` or `resetCustomData` to cle
 ```java
 private void submitData() {
     vgsForm.resetCustomHeaders();
-    
+
     HashMap headers = HashMap<String, String>();
     headers.put("key", "value");
     vgsForm.setCustomHeaders(headers);
-    
+
     vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
 }
 ```

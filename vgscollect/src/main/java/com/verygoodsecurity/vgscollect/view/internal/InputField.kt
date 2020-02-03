@@ -22,6 +22,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
+import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
@@ -289,9 +290,10 @@ internal class InputField(context: Context): TextInputEditText(context),
 
     private fun getDrawable(primaryRes:Int?): Drawable? {
         return primaryRes?.run {
-            val cIconSize = resources.getDimension(R.dimen.c_icon_size).toInt()
+            val cIconSizeW = resources.getDimension(R.dimen.c_icon_size_w).toInt()
+            val cIconSizeH = resources.getDimension(R.dimen.c_icon_size_h).toInt()
             val drawable = ContextCompat.getDrawable(context, primaryRes)
-            drawable?.setBounds(0, 0, cIconSize, cIconSize)
+            drawable?.setBounds(0, 0, cIconSizeW, cIconSizeH)
             return drawable
         }
     }
@@ -415,8 +417,13 @@ internal class InputField(context: Context): TextInputEditText(context),
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {
-        val filterLength = InputFilter.LengthFilter(dependency.value)
-        filters = arrayOf(CVCValidateFilter(), filterLength)
-        text = text
+        when(dependency.dependencyType) {
+            DependencyType.LENGTH -> {
+                val filterLength = InputFilter.LengthFilter(dependency.value as Int)
+                filters = arrayOf(CVCValidateFilter(), filterLength)
+                text = text
+            }
+            DependencyType.TEXT -> setText(dependency.value.toString())
+        }
     }
 }

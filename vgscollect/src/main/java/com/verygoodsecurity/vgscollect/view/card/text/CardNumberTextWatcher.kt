@@ -2,31 +2,47 @@ package com.verygoodsecurity.vgscollect.view.card.text
 
 import android.text.Editable
 import android.text.TextWatcher
+import com.verygoodsecurity.vgscollect.util.toInt
 
 class CardNumberTextWatcher(
     dividerStr:String? = " "
 ): TextWatcher {
 
     companion object {
-        private const val TOTAL_SYMBOLS = 22 // 0000 0000 0000 0000
         private const val TOTAL_DIGITS = 19 // 0000 x 4
-        private const val DIVIDER_MODULO = 5 // means divider position is every 5th symbol beginning with 1
-        private const val DIVIDER_POSITION = DIVIDER_MODULO - 1
     }
 
+    private val TOTAL_SYMBOLS:Int
+    private val DIVIDER_MODULO:Int
+    private val DIVIDER_POSITION:Int
+
     private var hasDivider = true
-    private val divider:Char
+    private val divider:Char?
 
     init {
         divider = dividerStr?.run {
             if(length != 1) {
                 hasDivider = false
-                ' '
+                null
             } else {
                 hasDivider = true
                 this[0]
             }
-        }?:' '
+        }
+
+        val dividerCounter = hasDivider.toInt() * 3 //0000_0000_0000_0000
+
+        TOTAL_SYMBOLS = TOTAL_DIGITS + dividerCounter
+        DIVIDER_MODULO = if(hasDivider) {
+            5           // means divider position is every 5th symbol beginning with 1
+        } else {
+            0
+        }
+        DIVIDER_POSITION = if(hasDivider) {
+            DIVIDER_MODULO - 1
+        } else {
+            0
+        }
     }
 
 
@@ -41,7 +57,7 @@ class CardNumberTextWatcher(
         }
     }
 
-    private fun isInputCorrect(s: Editable, totalSymbols:Int, dividerModulo:Int, divider:Char):Boolean {
+    private fun isInputCorrect(s: Editable, totalSymbols:Int, dividerModulo:Int, divider:Char?):Boolean {
         var isCorrect = s.length <= totalSymbols
         for (i in s.indices) {
             isCorrect = when {
@@ -54,14 +70,16 @@ class CardNumberTextWatcher(
         return isCorrect
     }
 
-    private fun buildCorrectString(digits: CharArray, dividerPosition: Int, divider: Char): String {
+    private fun buildCorrectString(digits: CharArray, dividerPosition: Int, divider: Char?): String {
         val formatted = StringBuilder()
 
         for (i in digits.indices) {
             if (digits[i].toInt() != 0) {
                 formatted.append(digits[i])
                 if(!hasDivider || i < 15) {
-                    if (i > 0 && i < digits.size - 1 && (i + 1) % dividerPosition == 0) {
+                    if (i > 0 &&
+                        divider != null &&
+                        i < digits.size - 1 && (i + 1) % dividerPosition == 0) {
                         formatted.append(divider)
                     }
                 }
