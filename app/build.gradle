@@ -7,7 +7,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.verygoodsecurity.demoapp"
-        minSdkVersion 19
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -15,20 +15,24 @@ android {
     }
     buildTypes {
         release {
-            buildConfigField "String", "VGS_TENNANT_ID", getLocalProperty('VGS_TENNANT_ID')
-            buildConfigField "String", "VGS_ENDPOINT", getLocalProperty('VGS_ENDPOINT')
-            buildConfigField "com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentRelease()
+            buildConfigField("com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentRelease())
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            buildConfigField "String", "VGS_TENNANT_ID", getLocalProperty('VGS_TENNANT_ID')
-            buildConfigField "String", "VGS_ENDPOINT", getLocalProperty('VGS_ENDPOINT')
             buildConfigField "com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentDebug()
 
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    applicationVariants.all { variant ->
+        String vari = getLocalProperty("VGS_VAULT_ID")
+        variant.resValue "string", "vault_id", vari+''
+        String vari2 = getLocalProperty("VGS_ENDPOINT")
+        variant.resValue "string", "endpoint", vari2+''
     }
 }
 
@@ -44,9 +48,15 @@ def getLocalProperty(String propName) {
     if (propsFile.exists()) {
         def props = new Properties()
         props.load(new FileInputStream(propsFile))
-        return props[propName]
+        def value = props[propName]
+        if(value == null) {
+            return ""
+        } else {
+            return value
+        }
+
     } else {
-        return "";
+        return ""
     }
 }
 
@@ -57,8 +67,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
 
-    api project(":vgscollect")
-    api project(":vgscollect-cardio")
+    implementation project(":vgscollect")
+    implementation project(":vgscollect-cardio")
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'

@@ -2,22 +2,27 @@ package com.verygoodsecurity.vgscollect.core.model
 
 import android.net.Uri
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 import org.json.JSONObject
 
 internal fun MutableCollection<VGSFieldState>.mapUsefulPayloads(
     userData: Map<String, String>? = null
 ): Map<String,String>? {
 
-    val map = mutableMapOf<String,String>()
-    userData?.let { map.putAll(userData) }
+    val fieldsState = this.associate {
+        val key = it.fieldName?:""
+        val value = if(it.type == FieldType.CARD_NUMBER) {
+            it.content?.data?.replace("\\s".toRegex(),"")?:""
+        } else {
+            it.content?.data?:""
+        }
 
-    for (entry in this) {
-        val key = entry.fieldName?:""
-        val value = entry.content
+        Pair(key, value)
+    }.toMutableMap()
 
-        map[key] = value?.data?:""
-    }
-    return map
+    userData?.let { fieldsState.putAll(it) }
+
+    return fieldsState.toMap()
 }
 
 internal fun Map<String,String>.mapToJson(): String? {
