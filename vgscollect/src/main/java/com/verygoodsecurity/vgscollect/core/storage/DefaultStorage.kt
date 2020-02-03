@@ -1,23 +1,22 @@
 package com.verygoodsecurity.vgscollect.core.storage
 
-import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
-import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.core.model.state.isCardNumberType
-import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
+import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
-internal class DefaultStorage(
-    private val notifier: DependencyDispatcher? = null
-):VgsStore,IStateEmitter {
+internal class DefaultStorage : VgsStore,IStateEmitter {
 
     private val store = mutableMapOf<Int, VGSFieldState>()
 
-    private var onFieldStateChangeListener: OnFieldStateChangeListener? = null
+    private val dependencyObservers = mutableListOf<FieldDependencyObserver>()
+    private val onFieldStateChangeListeners = mutableListOf<OnFieldStateChangeListener>()
 
     override fun attachStateChangeListener(listener: OnFieldStateChangeListener?) {
-        onFieldStateChangeListener = listener
+        listener?.let { onFieldStateChangeListeners.add(it) }
+    }
+
+    override fun attachFieldDependencyObserver(listener: FieldDependencyObserver?) {
+        listener?.let { dependencyObservers.add(it) }
     }
 
     override fun clear() {
@@ -28,21 +27,36 @@ internal class DefaultStorage(
 
     override fun performSubscription() = object: OnVgsViewStateChangeListener {
         override fun emit(viewId: Int, state: VGSFieldState) {
-            notifyRelatedFields(state)
+            if(store.containsKey(viewId).not()) {
+                notifyOnNewFieldAdd(state)
+            }
             addItem(viewId, state)
+            notifyOnDataChange(state)
         }
     }
 
-    private fun notifyRelatedFields(state: VGSFieldState) {
-        if(state.isCardNumberType()) {
-            val maxCvcLength = (state.content as? FieldContent.CardNumberContent)?.cardtype?.rangeCVV?.last()?:4
-            val dependency =
-                Dependency(
-                    DependencyType.LENGTH,
-                    maxCvcLength
-                )
-            notifier?.onDependencyDetected(FieldType.CVC, dependency)
+    private fun notifyOnNewFieldAdd(state: VGSFieldState) {
+        if(state.isCardCVCType()) {
+            store.forEach {
+                if(it.value.type == FieldType.CARD_NUMBER) {
+                    refreshDependenciesOnNewField(it.value)
+                }
+            }
         }
+    }
+
+    private fun notifyOnDataChange(state: VGSFieldState) {
+        if(state.isCardNumberType()) {
+            refreshDependencies(state)
+        }
+    }
+
+    private fun refreshDependencies(value: VGSFieldState) {
+        dependencyObservers.forEach { it.onStateUpdate(value) }
+    }
+
+    private fun refreshDependenciesOnNewField(value: VGSFieldState) {
+        dependencyObservers.forEach { it.onRefreshState(value) }
     }
 
     override fun addItem(viewId: Int, newState: VGSFieldState) {
@@ -52,6 +66,6 @@ internal class DefaultStorage(
 
     private fun notifyUser(state: VGSFieldState) {
         val fs = state.mapToFieldState()
-        onFieldStateChangeListener?.onStateChange(fs)
+        onFieldStateChangeListeners.forEach { it.onStateChange(fs) }
     }
 }

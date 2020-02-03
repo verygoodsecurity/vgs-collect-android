@@ -41,3 +41,4 @@ fun VGSFieldState.mapToFieldState():FieldState {
 }
 
 fun VGSFieldState.isCardNumberType() = type == FieldType.CARD_NUMBER
+fun VGSFieldState.isCardCVCType() = type == FieldType.CVC
