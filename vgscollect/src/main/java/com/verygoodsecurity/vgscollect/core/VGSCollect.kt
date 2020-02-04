@@ -26,7 +26,6 @@ import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.InputFieldView
-import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import org.jetbrains.annotations.TestOnly
 
 open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
@@ -61,16 +60,18 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
         dependencyDispatcher = Notifier()
         externalDependencyDispatcher = DependencyReceiver()
 
-        val store = DefaultStorage(dependencyDispatcher)
+        with(DefaultStorage()) {
+            attachFieldDependencyObserver(dependencyDispatcher)
 
-        storage = store
-        emitter = store
+            storage = this
+            emitter = this
+        }
 
         client = URLConnectionClient.newInstance(baseURL)
     }
 
     fun bindView(view: InputFieldView?) {
-        if(view is VGSEditText) {
+        if(view is InputFieldView) {
             dependencyDispatcher.addDependencyListener(view.getFieldType(), view.notifier)
             externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.notifier)
             view.addStateListener(emitter.performSubscription())
