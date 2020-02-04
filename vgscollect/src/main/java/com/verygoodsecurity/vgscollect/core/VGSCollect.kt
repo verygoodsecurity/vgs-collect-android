@@ -1,15 +1,18 @@
 package com.verygoodsecurity.vgscollect.core
 
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
+import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
 import com.verygoodsecurity.vgscollect.core.storage.DependencyDispatcher
 import com.verygoodsecurity.vgscollect.core.storage.Notifier
 import com.verygoodsecurity.vgscollect.core.model.Payload
+import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
@@ -19,9 +22,10 @@ import com.verygoodsecurity.vgscollect.core.storage.DefaultStorage
 import com.verygoodsecurity.vgscollect.core.storage.IStateEmitter
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
+import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
+import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.InputFieldView
-import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import org.jetbrains.annotations.TestOnly
 
 /**
@@ -37,6 +41,7 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     private var storage: VgsStore
     private val emitter: IStateEmitter
     private val dependencyDispatcher: DependencyDispatcher
+    private val externalDependencyDispatcher: ExternalDependencyDispatcher
     private var client: ApiClient
 
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
@@ -61,10 +66,14 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         isURLValid = URLUtil.isValidUrl(baseURL)
 
         dependencyDispatcher = Notifier()
-        val store = DefaultStorage(dependencyDispatcher)
+        externalDependencyDispatcher = DependencyReceiver()
 
-        storage = store
-        emitter = store
+        with(DefaultStorage()) {
+            attachFieldDependencyObserver(dependencyDispatcher)
+
+            storage = this
+            emitter = this
+        }
 
         client = URLConnectionClient.newInstance(baseURL)
     }
@@ -86,9 +95,10 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
      * @param view base class for VGS secure fields.
      */
     fun bindView(view: InputFieldView?) {
-        if(view is VGSEditText) {
-            view.addStateListener(emitter.performSubscription())
+        if(view is InputFieldView) {
             dependencyDispatcher.addDependencyListener(view.getFieldType(), view.notifier)
+            externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.notifier)
+            view.addStateListener(emitter.performSubscription())
         }
     }
 
@@ -191,8 +201,8 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
 
     protected fun doRequest(path: String,
                             method: HTTPMethod,
-                            data: Map<String, String>?,
-                            headers: Map<String, String>?
+                            headers: Map<String, String>?,
+                            data: Map<String, String>?
     ) {
         val r = client.call(path, method, headers, data)
         responseListeners.forEach { it.onResponse(r) }
@@ -200,20 +210,30 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
 
     protected fun doAsyncRequest(path: String,
                                  method: HTTPMethod,
-                                 data: Map<String, String>?,
-                                 headers: Map<String, String>?
+                                 headers: Map<String, String>?,
+                                 data: Map<String, String>?
     ) {
         val p = Payload(path, method, data, headers)
 
         val task = doAsync(responseListeners) {
             it?.run {
                 client.call(this.path, this.method, this.headers, this.data)
-            } ?: VGSResponse.ErrorResponse("error")  //fixme
+            } ?: VGSResponse.ErrorResponse("error")
         }
 
         tasks.add(task)
 
         task.execute(p)
+    }
+
+    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == Activity.RESULT_OK) {
+            val map: VGSHashMapWrapper<String, Any?>? = data?.extras?.getParcelable(
+                BaseTransmitActivity.RESULT_DATA)
+            map?.run {
+                externalDependencyDispatcher.dispatch(mapOf())
+            }
+        }
     }
 
     /**

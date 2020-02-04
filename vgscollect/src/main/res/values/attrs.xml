@@ -92,7 +92,7 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="VGSCardNumberEditText" parent="VGSEditText">
+    <declare-styleable name="VGSCardNumberEditText">
         <attr name="fieldName"/>
         <attr name="cursorColor"/>
 

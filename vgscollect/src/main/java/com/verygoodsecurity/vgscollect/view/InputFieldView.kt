@@ -194,6 +194,11 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
+     *
+     */
+    open fun getFieldName():String? = inputField?.tag as String?
+
+    /**
      * Causes words in the text that are longer than the view's width to be ellipsized
      * instead of broken in the middle.
      *
@@ -283,6 +288,9 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField?.setHintTextColor(color)
     }
 
+    /**
+     *
+     */
     open fun canScrollHorizontally(canScroll:Boolean) {
         inputField?.setHorizontallyScrolling(canScroll)
     }
