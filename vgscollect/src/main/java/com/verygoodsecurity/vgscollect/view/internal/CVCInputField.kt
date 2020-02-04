@@ -46,7 +46,7 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {
-        val filterLength = InputFilter.LengthFilter(dependency.value)
+        val filterLength = InputFilter.LengthFilter(dependency.value as Int)
         filters = arrayOf(CVCValidateFilter(), filterLength)
         text = text
     }
