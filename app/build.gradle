@@ -7,7 +7,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.verygoodsecurity.demoapp"
-        minSdkVersion 19
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -50,13 +50,13 @@ def getLocalProperty(String propName) {
         props.load(new FileInputStream(propsFile))
         def value = props[propName]
         if(value == null) {
-            return "\"\" "
+            return ""
         } else {
             return value
         }
 
     } else {
-        return "";
+        return ""
     }
 }
 
@@ -67,8 +67,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
 
-    api project(":vgscollect")
-    api project(":vgscollect-cardio")
+    implementation project(":vgscollect")
+    implementation project(":vgscollect-cardio")
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
@@ -77,5 +77,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
 }
