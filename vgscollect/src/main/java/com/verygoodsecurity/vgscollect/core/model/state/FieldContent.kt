@@ -18,6 +18,8 @@ sealed class FieldContent {
     class InfoContent:FieldContent()
 }
 
+internal fun FieldContent.CardNumberContent.CVCMaxLength() =  cardtype.rangeCVV.last()
+
 internal fun FieldContent.CardNumberContent.parseCardBin():String {
     return data?.run {
         val numberSTR = data!!.replace("\\D".toRegex(), "")
