@@ -105,6 +105,8 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     /**
      * Sets the symbol that will divide groups of digits in the card number.
      * 0000 0000 0000 0000
+     *
+     * @param char The divider symbol.
      */
     fun setDivider(char:Char) {
         setNumberDivider(char.toString())
