@@ -11,6 +11,12 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgscollect.view.internal.TextInputLayoutWrapper
 
+/**
+ * An abstract class that provide floating label when
+ * the hint is hidden due to user inputting text.
+ *
+ * @version 1.0.0
+ */
 abstract class TextInputFieldLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {

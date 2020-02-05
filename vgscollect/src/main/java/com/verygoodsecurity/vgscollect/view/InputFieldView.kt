@@ -23,6 +23,8 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
+ *
+ * @version 1.0.2
  */
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -194,7 +196,9 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
+     * Return the text that field is using for data transfer to VGS proxy.
      *
+     * @return The text used by the field.
      */
     open fun getFieldName():String? = inputField?.tag as String?
 
@@ -289,7 +293,10 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
+     * Sets whether the text should be allowed to be wider than the View is. If false,
+     * it will be wrapped to the width of the View.
      *
+     * @param canScroll
      */
     open fun canScrollHorizontally(canScroll:Boolean) {
         inputField?.setHorizontallyScrolling(canScroll)
