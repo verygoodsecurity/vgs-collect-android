@@ -39,7 +39,7 @@ Table of contents
 | androidx.appcompat:appcompat | 1.1.0 |
 | androidx.core:core-ktx | 1.1.0 |
 | com.android.support:design | 28.0.0 |
-| org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.50 |
+| org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.61 |
 
 ## Structure
 * **VGSCollect SDK** - provides an API for interacting with the VGS Vault
@@ -52,7 +52,7 @@ For integration you need to install the [Android Studio](http://developer.androi
 If you are using Maven, add the following to your `build.gradle` file:
 ```gradle
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:1.0.0’
+   implementation 'com.verygoodsecurity:vgscollect:1.0.2’
 }
 ```
 #### Add permissions
