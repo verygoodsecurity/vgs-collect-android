@@ -2,8 +2,8 @@
     xmlns:aapt="http://schemas.android.com/aapt"
     android:width="658dp"
     android:height="423dp"
-    android:viewportWidth="658"
-    android:viewportHeight="423">
+    android:viewportWidth="682"
+    android:viewportHeight="436">
   <path
       android:pathData="M30,4L628,4A26,26 0,0 1,654 30L654,393A26,26 0,0 1,628 419L30,419A26,26 0,0 1,4 393L4,30A26,26 0,0 1,30 4z"
       android:fillColor="#F8F8F8"/>
