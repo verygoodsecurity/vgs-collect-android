@@ -19,7 +19,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValid
 
 internal class CardInputField(context: Context): BaseInputField(context) {
 
-    override val fieldType: FieldType = FieldType.CARD_NUMBER
+    override var fieldType: FieldType = FieldType.CARD_NUMBER
 
     private var divider:String? = " "
     private var iconGravity:Int = Gravity.NO_GRAVITY

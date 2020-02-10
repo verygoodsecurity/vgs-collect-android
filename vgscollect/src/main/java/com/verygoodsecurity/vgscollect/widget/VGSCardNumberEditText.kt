@@ -16,6 +16,8 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
 
     init {
+        setupViewType(FieldType.CARD_NUMBER)
+
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.VGSCardNumberEditText,
@@ -57,7 +59,6 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                 setMinLines(minLines)
                 setSingleLine(singleLine)
                 setIsRequired(isRequired)
-                setFieldType(FieldType.CARD_NUMBER)
                 getTypeface()?.let {
                     setTypeface(it, textStyle)
                 }

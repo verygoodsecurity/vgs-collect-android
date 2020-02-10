@@ -14,7 +14,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.CardExpDateValidator
 
 internal class DateInputField(context: Context): BaseInputField(context) {
 
-    override val fieldType: FieldType = FieldType.CARD_EXPIRATION_DATE
+    override var fieldType: FieldType = FieldType.CARD_EXPIRATION_DATE
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)

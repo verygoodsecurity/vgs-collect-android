@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.InfoValidator
 
 internal class InfoInputField(context: Context): BaseInputField(context) {
 
-    override val fieldType: FieldType = FieldType.INFO
+    override var fieldType: FieldType = FieldType.INFO
 
     override fun applyFieldType() {
         validator = InfoValidator()
