@@ -82,7 +82,7 @@ internal class CardInputField(context: Context): BaseInputField(context) {
             val c_icon_size_h = resources.getDimension(R.dimen.c_icon_size_h).toInt()
             val c_icon_size_w = resources.getDimension(R.dimen.c_icon_size_w).toInt()
             val drawable = ContextCompat.getDrawable(context, primaryRes)
-            drawable?.setBounds(0, 0, c_icon_size_h, c_icon_size_h)
+            drawable?.setBounds(0, 0, c_icon_size_w, c_icon_size_h)
             return drawable
         }
     }
