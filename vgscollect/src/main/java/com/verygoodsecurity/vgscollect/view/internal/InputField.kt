@@ -106,7 +106,7 @@ internal class InputField(context: Context): BaseInputField(context) {
             FieldType.INFO -> applyInfoFieldType()
         }
 
-        text = text
+        refreshInput()
 
         inputConnection?.run()
     }

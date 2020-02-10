@@ -43,6 +43,7 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
         } else {
             inputType = InputType.TYPE_CLASS_TEXT
         }
+        refreshInput()
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {

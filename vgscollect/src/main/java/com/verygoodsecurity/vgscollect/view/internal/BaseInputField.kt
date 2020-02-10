@@ -95,7 +95,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-
     override fun onAttachedToWindow() {
         isListeningPermitted = true
         applyFieldType()
@@ -151,6 +150,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         } else {
             View.LAYOUT_DIRECTION_LTR
         }
+    }
+
+    protected fun refreshInput() {
+        setText(text)
     }
 
     override fun setTag(tag: Any?) {

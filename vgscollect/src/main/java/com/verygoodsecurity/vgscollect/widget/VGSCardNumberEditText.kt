@@ -10,6 +10,11 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
+/**
+ * A user interface element that displays text to the user in card number format.
+ *
+ * @version 1.0.2
+ */
 class VGSCardNumberEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
@@ -26,7 +31,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
             try {
                 val previewGravity = getInt(R.styleable.VGSCardNumberEditText_cardBrandIconGravity, 0)
-                val divider:String = getString(R.styleable.VGSCardNumberEditText_numberDivider)?:" "
+                val divider:String? = getString(R.styleable.VGSCardNumberEditText_numberDivider)?:null
 
                 val cursorColor = getColor(R.styleable.VGSCardNumberEditText_cursorColor, 0)
                 val inputType = getInt(R.styleable.VGSCardNumberEditText_inputType, EditorInfo.TYPE_NULL)
@@ -79,14 +84,31 @@ class VGSCardNumberEditText @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Specifies how to align the icon by the view’s x-axis. To specify gravity programmatically
+     * you could use android Gravity class.
+     *
+     * @param gravity Specifies how to align the icon by the view’s x-axis.
+     */
     fun setCardBrandIconGravity(gravity:Int) {
         applyCardIconGravity(gravity)
     }
 
+    /**
+     * It may be useful to add new brands in addition to already defined brands or override existing ones.
+     *
+     * @param c new card definition
+     */
     fun addCardBrand(c: CustomCardBrand) {
         applyCardBrand(c)
     }
 
+    /**
+     * Sets the symbol that will divide groups of digits in the card number.
+     * 0000 0000 0000 0000
+     *
+     * @param char The divider symbol.
+     */
     fun setDivider(char:Char) {
         setNumberDivider(char.toString())
     }
