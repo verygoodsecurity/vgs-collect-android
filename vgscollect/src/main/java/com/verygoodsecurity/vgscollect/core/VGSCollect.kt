@@ -25,6 +25,7 @@ import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import org.jetbrains.annotations.TestOnly
 
@@ -71,11 +72,11 @@ open class VGSCollect(id:String, environment: Environment = Environment.SANDBOX)
     }
 
     fun bindView(view: InputFieldView?) {
-        if(view is InputFieldView) {
-            dependencyDispatcher.addDependencyListener(view.getFieldType(), view.notifier)
-            externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.notifier)
-            view.addStateListener(emitter.performSubscription())
+        if(view is AccessibilityStatePreparer) {
+            dependencyDispatcher.addDependencyListener(view.getFieldType(), view.getDependencyListener())
+            externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.getDependencyListener())
         }
+        view?.addStateListener(emitter.performSubscription())
     }
 
     fun addOnFieldStateChangeListener(listener: OnFieldStateChangeListener?) {

@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.CardHolderValidator
 
 internal class PersonNameInputField(context: Context): BaseInputField(context) {
 
-    override val fieldType: FieldType = FieldType.CARD_HOLDER_NAME
+    override var fieldType: FieldType = FieldType.CARD_HOLDER_NAME
 
     override fun applyFieldType() {
         validator = CardHolderValidator()

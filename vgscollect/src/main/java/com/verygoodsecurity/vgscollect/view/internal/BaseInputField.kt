@@ -26,13 +26,25 @@ import com.verygoodsecurity.vgscollect.util.Logger
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
     DependencyListener {
 
-    protected abstract val fieldType: FieldType
+    companion object {
+        fun getInputField(context: Context, type:FieldType):BaseInputField {
+            return when(type) {
+                FieldType.CARD_NUMBER -> CardInputField(context)
+                FieldType.CVC -> CVCInputField(context)
+                FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
+                FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
+                FieldType.INFO -> InfoInputField(context)
+            }
+        }
+    }
+
+    protected abstract var fieldType: FieldType
 
     protected var inputConnection: InputRunnable? = null
     protected var validator: VGSValidator? = null
 
-    protected var stateListener: OnVgsViewStateChangeListener? = null
-        protected set(value) {
+    internal var stateListener: OnVgsViewStateChangeListener? = null
+        set(value) {
             field = value
             inputConnection?.setOutputListener(value)
         }
@@ -42,7 +54,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     protected var hasRTL = false
 
-    protected var isRequired:Boolean = true
+    var isRequired:Boolean = true
         set(value) {
             field = value
             inputConnection?.getOutput()?.isRequired = value
@@ -124,21 +136,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         super.onSelectionChanged(selStart, selEnd)
         setSelection(text?.length?:0)
     }
-
-//    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-//        if(isRTL()
-//            && (fieldType == FieldType.CARD_NUMBER
-//                    || fieldType == FieldType.CVC
-//                    || fieldType == FieldType.CARD_EXPIRATION_DATE)) {
-//            hasRTL = true
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//                layoutDirection = View.LAYOUT_DIRECTION_LTR
-//                textDirection = View.TEXT_DIRECTION_LTR
-//            }
-//            gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
-//        }
-//    }
 
     protected fun isRTL():Boolean {
         val direction = getResolvedLayoutDirection()

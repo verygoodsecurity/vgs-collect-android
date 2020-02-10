@@ -15,7 +15,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.CardCVCCodeValidator
 
 internal class CVCInputField(context: Context): BaseInputField(context) {
 
-    override val fieldType: FieldType = FieldType.CVC
+    override var fieldType: FieldType = FieldType.CVC
 
     override fun applyFieldType() {
         validator = CardCVCCodeValidator()

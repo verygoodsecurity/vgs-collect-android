@@ -1,27 +1,21 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
-import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
 import android.text.InputType
 import android.text.TextWatcher
-import com.google.android.material.textfield.TextInputEditText
-import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import android.os.Looper
 import android.text.InputFilter
 import android.view.Gravity
 import android.view.View
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.verygoodsecurity.vgscollect.*
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
-import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.card.*
@@ -34,12 +28,8 @@ import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
 
-@Deprecated("This class is deprecated. Please use @BaseInputField.")
-internal class InputField(context: Context): TextInputEditText(context),
-    DependencyListener {
-
-    var fieldType: FieldType = FieldType.INFO
-        internal set
+@Deprecated("This class is deprecated from 1.0.3")
+internal class InputField(context: Context): BaseInputField(context) {
 
     private var cardtype: CardType = CardType.NONE
 
@@ -47,28 +37,15 @@ internal class InputField(context: Context): TextInputEditText(context),
         CardBrandFilter( this, divider)
     }
 
-    private var validator: VGSValidator? = null
-    private var inputConnection: InputRunnable? = null
+    override var fieldType: FieldType = FieldType.INFO
 
-    private var isListeningPermitted = false
-    private var isBackgroundVisible = true
+    fun setType(type:FieldType) {
+        fieldType = type
+    }
+
     private var divider:String? = " "
 
     private var iconGravity:Int = Gravity.NO_GRAVITY
-
-    private var activeTextWatcher: TextWatcher? = null
-    internal var stateListener: OnVgsViewStateChangeListener? = null
-        internal set(value) {
-            field = value
-            inputConnection?.setOutputListener(value)
-        }
-
-    internal var isRequired:Boolean = true
-        set(value) {
-            field = value
-            inputConnection?.getOutput()?.isRequired = value
-            inputConnection?.run()
-        }
 
     init {
         isListeningPermitted = true
@@ -101,7 +78,10 @@ internal class InputField(context: Context): TextInputEditText(context),
         isListeningPermitted = false
     }
 
-    private var hasRTL = false
+    override fun applyFieldType() {
+        applyAttributes()
+    }
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         if(isRTL()
@@ -114,22 +94,6 @@ internal class InputField(context: Context): TextInputEditText(context),
                 textDirection = View.TEXT_DIRECTION_LTR
             }
             gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
-        }
-    }
-
-    private fun isRTL():Boolean {
-        val direction = getResolvedLayoutDirection()
-        return direction == View.LAYOUT_DIRECTION_RTL
-                || direction == View.TEXT_DIRECTION_ANY_RTL
-                || direction == View.TEXT_DIRECTION_FIRST_STRONG_RTL
-                || direction == View.TEXT_DIRECTION_RTL
-    }
-
-    private fun getResolvedLayoutDirection():Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            layoutDirection
-        } else {
-            View.LAYOUT_DIRECTION_LTR
         }
     }
 
@@ -252,25 +216,6 @@ internal class InputField(context: Context): TextInputEditText(context),
         applyNumberInputType()
     }
 
-    private fun applyNewTextWatcher(textWatcher: TextWatcher?) {
-        activeTextWatcher?.let { removeTextChangedListener(activeTextWatcher) }
-        textWatcher?.let { addTextChangedListener(textWatcher) }
-        activeTextWatcher = textWatcher
-    }
-
-    private fun collectCurrentState(stateContent:FieldContent): VGSFieldState {
-        val state = VGSFieldState().apply {
-            isRequired = this@InputField.isRequired
-            isFocusable = this@InputField.hasFocus()
-            type = this@InputField.fieldType
-            content = stateContent
-
-            fieldName = this@InputField.tag as? String
-        }
-
-        return state
-    }
-
     private fun drawCardBrandPreview() {
         val state = inputConnection?.getOutput()
 
@@ -352,37 +297,6 @@ internal class InputField(context: Context): TextInputEditText(context),
         }
     }
 
-    internal fun setCursorDrawableColor(color: Int) {
-        try {
-            val cursorDrawableResField = TextView::class.java.getDeclaredField("mCursorDrawableRes")
-            cursorDrawableResField.isAccessible = true
-            val cursorDrawableRes = cursorDrawableResField.getInt(this)
-            val editorField = TextView::class.java.getDeclaredField("mEditor")
-            editorField.isAccessible = true
-            val editor = editorField.get(this)
-            val clazz = editor.javaClass
-            val res = context.resources
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                val drawableForCursorField = clazz.getDeclaredField("mDrawableForCursor")
-                drawableForCursorField.isAccessible = true
-                val drawable = res.getDrawable(cursorDrawableRes)
-                drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN)
-                drawableForCursorField.set(editor, drawable)
-            } else {
-                val cursorDrawableField = clazz.getDeclaredField("mCursorDrawable")
-                cursorDrawableField.isAccessible = true
-                val drawables = arrayOfNulls<Drawable>(2)
-                drawables[0] = res.getDrawable(cursorDrawableRes)
-                drawables[0]?.setColorFilter(color, PorterDuff.Mode.SRC_IN)
-                drawables[1] = res.getDrawable(cursorDrawableRes)
-                drawables[1]?.setColorFilter(color, PorterDuff.Mode.SRC_IN)
-                cursorDrawableField.set(editor, drawables)
-            }
-        } catch (t: Throwable) {
-            Logger.i("VGSEditText", "Can't apply color on cursor")
-        }
-    }
-
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
         val minPaddingV = resources.getDimension(R.dimen.default_vertical_field).toInt()
         val minPaddingH = resources.getDimension(R.dimen.default_horizontal_field).toInt()
@@ -391,13 +305,6 @@ internal class InputField(context: Context): TextInputEditText(context),
         val r = if(right < minPaddingH) minPaddingH else right
         val b = if(bottom < minPaddingV) minPaddingV else bottom
         super.setPadding(l, t, r, b)
-    }
-
-    internal fun setHasBackground(state:Boolean) {
-        isBackgroundVisible = state
-        if(isBackgroundVisible) {
-            setBackgroundResource(android.R.color.transparent)
-        }
     }
 
     internal fun setCardPreviewIconGravity(gravity:Int) {
