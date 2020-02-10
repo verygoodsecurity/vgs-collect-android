@@ -55,7 +55,7 @@ internal class CardInputField(context: Context): BaseInputField(context) {
 
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
-        applyNewTextWatcher(CardNumberTextWatcher(divider))    //fixme needTo apply TextWatcher
+        applyNewTextWatcher(CardNumberTextWatcher(divider))
         applyInputType()
     }
 
@@ -103,6 +103,7 @@ internal class CardInputField(context: Context): BaseInputField(context) {
         } else {
             inputType = InputType.TYPE_CLASS_DATETIME
         }
+        refreshInput()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

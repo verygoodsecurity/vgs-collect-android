@@ -61,5 +61,6 @@ internal class DateInputField(context: Context): BaseInputField(context) {
         } else {
             inputType = InputType.TYPE_CLASS_DATETIME
         }
+        refreshInput()
     }
 }

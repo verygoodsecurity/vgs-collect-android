@@ -36,6 +36,7 @@ internal class InfoInputField(context: Context): BaseInputField(context) {
         } else {
             inputType = InputType.TYPE_CLASS_TEXT
         }
+        refreshInput()
     }
 
 }

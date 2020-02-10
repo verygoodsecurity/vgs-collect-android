@@ -61,19 +61,13 @@
                 android:layout_height="match_parent"
                 app:fieldName="cardNumber"
                 app:isRequired="false"
+                app:fieldType="cardNumber"
                 app:textColor="@color/black"
                 app:singleLine="true"
                 app:textSize="12dp"
                 app:text="4111111111111111"
                 app:hint="Card number"/>
-        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
-        <!--        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout-->
-<!--            android:id="@+id/cardNumberFieldLay"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="@dimen/default_margin"-->
-<!--            android:layout_marginEnd="@dimen/default_margin">-->
 <!--            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText-->
 <!--                android:id="@+id/cardNumberField"-->
 <!--                android:layout_width="match_parent"-->
@@ -87,7 +81,8 @@
 <!--                app:text="4111111111111111"-->
 <!--                app:hint="Card number"-->
 <!--                app:cardBrandIconGravity="end"/>-->
-<!--        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>-->
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardCVCFieldLay"

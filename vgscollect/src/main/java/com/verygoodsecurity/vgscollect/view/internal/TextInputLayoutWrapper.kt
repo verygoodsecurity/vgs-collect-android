@@ -39,7 +39,7 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
     private  fun handleNewChild(child: View?):View? {
         return child?.run {
             when(this) {
-                is InputField -> this
+                is BaseInputField -> this
                 is AccessibilityStatePreparer -> {
                     val v = (this as? AccessibilityStatePreparer)?.getView()
                     return applyAndReturnDefaultLayoutParams(child, v)
