@@ -7,8 +7,8 @@ import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.util.Logger
 import java.lang.ref.WeakReference
 
-class doAsync(listener: VgsCollectResponseListener?, val handler: (arg: Payload?) -> VGSResponse) : AsyncTask<Payload, Void, VGSResponse>() {
-    var onResponseListener: WeakReference<VgsCollectResponseListener>? = WeakReference<VgsCollectResponseListener>(listener)
+class doAsync(listeners: MutableList<VgsCollectResponseListener>, val handler: (arg: Payload?) -> VGSResponse) : AsyncTask<Payload, Void, VGSResponse>() {
+    var onResponseListeners: WeakReference<MutableList<VgsCollectResponseListener>>? = WeakReference(listeners)
     override fun doInBackground(vararg arg: Payload?): VGSResponse? {
         val param = if(!arg.isNullOrEmpty()) {
             arg[0]
@@ -21,10 +21,12 @@ class doAsync(listener: VgsCollectResponseListener?, val handler: (arg: Payload?
 
     override fun onPostExecute(result: VGSResponse?) {
         super.onPostExecute(result)
-        if(onResponseListener == null) {
+        if(onResponseListeners == null) {
             Logger.i("VGSCollect", "VgsCollectResponseListener not set")
         } else {
-            onResponseListener?.get()?.onResponse(result)
+            onResponseListeners?.get()?.forEach {
+                it.onResponse(result)
+            }
         }
     }
 }

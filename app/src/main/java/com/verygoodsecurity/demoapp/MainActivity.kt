@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         submitBtn?.setOnClickListener(this)
         scanCardIOBtn?.setOnClickListener(this)
 
-        vgsForm.onResponseListener = this
+        vgsForm.addOnResponseListeners(this)
 
         vgsForm.addOnFieldStateChangeListener(getOnFieldStateChangeListener())
 
