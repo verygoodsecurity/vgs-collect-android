@@ -30,7 +30,7 @@ internal class CardInputField(context: Context): BaseInputField(context) {
     }
 
     override fun applyFieldType() {
-        validator = CardNumberValidator(divider)
+        val validator = CardNumberValidator(divider)
 
         inputConnection = InputCardNumberConnection(id,
             validator,

@@ -41,7 +41,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected abstract var fieldType: FieldType
 
     protected var inputConnection: InputRunnable? = null
-    protected var validator: VGSValidator? = null
 
     internal var stateListener: OnVgsViewStateChangeListener? = null
         set(value) {

@@ -12,7 +12,7 @@ internal class InfoInputField(context: Context): BaseInputField(context) {
     override var fieldType: FieldType = FieldType.INFO
 
     override fun applyFieldType() {
-        validator = InfoValidator()
+        val validator = InfoValidator()
         inputConnection = InputInfoConnection(id, validator)
 
         val str = text.toString()

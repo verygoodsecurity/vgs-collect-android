@@ -37,101 +37,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/state">
 
-        <EditText
-            android:id="@+id/userVault"
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/cardExpDateFieldLay1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
-            android:textColor="@android:color/darker_gray"
-            android:cursorVisible="false"
-            android:enabled="false"/>
-
-
-
-        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-            android:id="@+id/cardNumberFieldLay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin">
-<!--            <com.verygoodsecurity.vgscollect.widget.VGSEditText-->
-<!--                android:id="@+id/cardNumberField"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                app:fieldName="cardNumber"-->
-<!--                app:isRequired="false"-->
-<!--                app:fieldType="cardNumber"-->
-<!--                app:textColor="@color/black"-->
-<!--                app:singleLine="true"-->
-<!--                app:textSize="12dp"-->
-<!--                app:text="4111111111111111"-->
-<!--                app:hint="Card number"/>-->
-
-            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
-                android:id="@+id/cardNumberField"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:numberDivider="-"
-                app:fieldName="cardNumber"
-                app:isRequired="false"
-                app:textColor="@color/black"
-                app:singleLine="true"
-                app:textSize="12dp"
-                app:text="4111111111111111"
-                app:hint="Card number"
-                app:cardBrandIconGravity="end"/>
-        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
-
-
-        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-            android:id="@+id/cardCVCFieldLay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            app:hint="@string/cvc">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
-                android:id="@+id/cardCVCField"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:fieldName="cardCvc"
-                app:textColor="@color/black"
-                app:isRequired="true"
-                app:singleLine="true"
-                app:textSize="12dp"
-                app:text="123"
-                app:fieldType="cvc"/>
-        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
-        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-            android:id="@+id/cardHolderFieldLay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            app:hint="@string/card_holder">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
-                android:id="@+id/cardHolderField"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:fieldName="cardHolder"
-                app:textColor="@color/black"
-                app:singleLine="true"
-                app:inputType="text"
-                app:isRequired="true"
-                app:textSize="12dp"
-                app:fieldType="cardHolderName"
-                app:text="John Galt"/>
-        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
-        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-            android:id="@+id/cardExpDateFieldLay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            app:hint="@string/exp_date">
+            app:hint="calendar: ISO 8601 full">
             <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
-                android:id="@+id/cardExpDateField"
+                android:id="@+id/cardExpDateField1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="expDate"
@@ -140,7 +54,91 @@
                 app:singleLine="true"
                 app:isRequired="true"
                 app:datePattern="yyyy-MMMM-dd'T'HH:mm:ss.SSSXXX"
+                app:datePickerModes="calendar"
+                app:fieldType="expDate"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/cardExpDateFieldLay2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:hint="calendar: yyyy-MMMM-dd">
+            <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+                android:id="@+id/cardExpDateField2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="expDate"
+                app:textColor="@color/black"
+                app:textSize="12dp"
+                app:singleLine="true"
+                app:isRequired="true"
+                app:datePattern="yyyy-MMMM-dd"
+                app:datePickerModes="calendar"
+                app:fieldType="expDate"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/cardExpDateFieldLay3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:hint="spinner: yyyy/MM/dd">
+            <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+                android:id="@+id/cardExpDateField3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="expDate"
+                app:textColor="@color/black"
+                app:textSize="12dp"
+                app:singleLine="true"
+                app:isRequired="true"
+                app:datePattern="yyyy/MM/dd"
                 app:datePickerModes="spinner"
+                app:fieldType="expDate"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/cardExpDateFieldLay4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:hint="spinner: MM/yy">
+            <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+                android:id="@+id/cardExpDateField4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="expDate"
+                app:textColor="@color/black"
+                app:textSize="12dp"
+                app:singleLine="true"
+                app:isRequired="true"
+                app:datePattern="MM/yy"
+                app:datePickerModes="spinner"
+                app:fieldType="expDate"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/cardExpDateFieldLay5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:hint="input: MM/yyyy">
+            <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+                android:id="@+id/cardExpDateField5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="expDate"
+                app:textColor="@color/black"
+                app:textSize="12dp"
+                app:singleLine="true"
+                app:isRequired="true"
+                app:datePattern="MM/yyyy"
+                app:datePickerModes="input"
                 app:fieldType="expDate"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
