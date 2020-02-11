@@ -27,6 +27,7 @@ import com.verygoodsecurity.vgscollect.view.card.text.CardNumberTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
+import com.verygoodsecurity.vgscollect.view.date.validation.CardExpDateValidator
 
 @Deprecated("This class is deprecated from 1.0.3")
 internal class InputField(context: Context): BaseInputField(context) {
@@ -42,6 +43,8 @@ internal class InputField(context: Context): BaseInputField(context) {
     fun setType(type:FieldType) {
         fieldType = type
     }
+
+    protected var validator: VGSValidator? = null
 
     private var divider:String? = " "
 
@@ -131,7 +134,7 @@ internal class InputField(context: Context): BaseInputField(context) {
 
     private fun applyCardExpDateFieldType() {
         validator = CardExpDateValidator()
-        inputConnection = InputCardExpDateConnection(id, validator)
+        inputConnection = InputCardExpDateConnection(id, validator as CardExpDateValidator)
 
         val str = text.toString()
         val stateContent = FieldContent.InfoContent().apply {

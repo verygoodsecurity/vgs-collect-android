@@ -1,34 +1,38 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
-import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.DatePicker
-import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.InputCardExpDateConnection
 import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
-import com.verygoodsecurity.vgscollect.view.card.validation.CardExpDateValidator
+import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
+import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
 import java.text.SimpleDateFormat
 import java.util.*
 
 internal class DateInputField(context: Context): BaseInputField(context), View.OnClickListener {
 
     private var datePattern:String = "mm/yy"
+    private var charLimit = datePattern.length
+
+    private var minDate:Long = 0
+    private var maxDate:Long = 0
 
     private val selectedDate = Calendar.getInstance()
-    private val sdf:SimpleDateFormat = SimpleDateFormat("MM/yy")
+
+    private val dateLimitationFormat = SimpleDateFormat("mm/dd/yyyy", Locale.getDefault())
+    private var fieldDateFormat:SimpleDateFormat? = null
 
     private var datePickerMode:DatePickerMode = DatePickerMode.SPINNER
+    private var isDaysVisible = true
 
     override var fieldType: FieldType = FieldType.CARD_EXPIRATION_DATE
 
@@ -46,15 +50,15 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     override fun onAttachedToWindow() {
         isListeningPermitted = true
-        setOnClickListener(this)
         applyFieldType()
         super.onAttachedToWindow()
         isListeningPermitted = false
     }
 
     override fun applyFieldType() {
-        validator = CardExpDateValidator()
-        inputConnection = InputCardExpDateConnection(id, validator)
+        val timeGapsValidator = TimeGapsValidator(datePattern, minDate, maxDate)
+
+        inputConnection = InputCardExpDateConnection(id, timeGapsValidator)
 
         val str = text.toString()
         val stateContent = FieldContent.InfoContent().apply {
@@ -83,74 +87,38 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     private fun showDatePickerDialog() {
-        isListeningPermitted = true
-        when(datePickerMode) {
-            DatePickerMode.CALENDAR -> setupCalendarDialog()
-            DatePickerMode.SPINNER -> setupSpinnerDialog()
-            DatePickerMode.INPUT -> applyTextStyle()
-        }
-
-        isListeningPermitted = false
-        dialog?.show()
-    }
-
-
-    private fun applyTextStyle() {
-        applyNewTextWatcher(ExpirationDateTextWatcher)
-        val filterLength = InputFilter.LengthFilter(7)
-        filters = arrayOf(filterLength)
-    }
-
-
-    private var dialog: Dialog? = null
-    private fun setupCalendarDialog() {
-        filters = arrayOf()
-        applyNewTextWatcher(null)
-        dialog = DatePickerDialog(context,
-            DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                selectedDate.set(Calendar.YEAR, year)
-                selectedDate.set(Calendar.MONTH, month)
-                applyDate()
-            },
-            selectedDate.get(Calendar.YEAR),
-            selectedDate.get(Calendar.MONTH),
-            selectedDate.getActualMinimum(Calendar.DAY_OF_MONTH)
-        )
-    }
-
-    private fun setupSpinnerDialog() {
-        filters = arrayOf()
-        applyNewTextWatcher(null)
         val tempC = Calendar.getInstance()
+        tempC.time = selectedDate.time
 
-        val v = LayoutInflater.from(context).inflate(R.layout.vgs_datepicker_layout, null) as DatePicker
-
-        dialog = AlertDialog.Builder(context)
-            .setView(v)
-            .setPositiveButton("Done") { d, v ->
-                selectedDate.time = tempC.time
-                applyDate()
-            }
-            .setNegativeButton("cancel", null)
-            .create()
-
-        val dp = v.findViewById<DatePicker>(R.id.datePickerControl)
-//        dp.minDate = System.currentTimeMillis()
-//        dp?.findViewById<ViewGroup>(  //todo move to expirationDate Field
-//            Resources.getSystem().getIdentifier("day", "id", "android")
-//        )?.visibility = View.GONE
-
-        dp.init(selectedDate.get(Calendar.YEAR),
-            selectedDate.get(Calendar.MONTH),
-            selectedDate.get(Calendar.DAY_OF_MONTH)
-        ) { _, year, monthOfYear, dayOfMonth ->
+        val ls = DatePicker.OnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
             tempC.set(Calendar.YEAR, year)
             tempC.set(Calendar.MONTH, monthOfYear)
         }
+
+        val pos = DialogInterface.OnClickListener { dialog, which ->
+            selectedDate.time = tempC.time
+            applyDate()
+        }
+        val neg = DialogInterface.OnClickListener { dialog, which -> }
+
+        DatePickerBuilder(context, datePickerMode)
+            .setMinDate(minDate)
+            .setMaxDate(maxDate)
+            .setCurrentDate(tempC.timeInMillis)
+            .setDayFieldVisibility(isDaysVisible)
+            .setOnDateChangedListener(ls)
+            .setOnPositiveButtonClick(pos)
+            .setOnNegativeButtonClick(neg)
+            .build()
+            .show()
     }
 
     private fun applyDate() {
-        val strDate = sdf.format(selectedDate.time)
+        if(!isDaysVisible) {
+            val dayLast = selectedDate.getActualMaximum(Calendar.DAY_OF_MONTH)
+            selectedDate.set(Calendar.DAY_OF_MONTH, dayLast)
+        }
+        val strDate = fieldDateFormat?.format(selectedDate.time)?:""
         setText(strDate)
     }
 
@@ -160,6 +128,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         } else {
             pattern
         }
+        fieldDateFormat = SimpleDateFormat(datePattern, Locale.getDefault())
     }
 
     internal fun setDatePickerMode(mode:Int) {
@@ -176,5 +145,37 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         isCursorVisible = isActive
         isFocusable = isActive
         isFocusableInTouchMode = isActive
+        isListeningPermitted = true
+        if(isActive) {
+            charLimit = datePattern.length
+
+            setOnClickListener(null)
+            applyNewTextWatcher(ExpirationDateTextWatcher)
+            val filterLength = InputFilter.LengthFilter(charLimit)
+            filters = arrayOf(filterLength)
+        } else {
+            charLimit = 255
+
+            setOnClickListener(this)
+            filters = arrayOf()
+            applyNewTextWatcher(null)
+        }
+        isListeningPermitted = false
+    }
+
+    fun setMaxDate(date: String) {
+        maxDate = dateLimitationFormat.parse(date).time
+    }
+
+    fun setMinDate(date: String) {
+        minDate = dateLimitationFormat.parse(date).time
+    }
+
+    fun setMinDate(date: Long) {
+        minDate = date
+    }
+
+    internal fun setDaysVisibility(state:Boolean) {
+        isDaysVisible = state
     }
 }

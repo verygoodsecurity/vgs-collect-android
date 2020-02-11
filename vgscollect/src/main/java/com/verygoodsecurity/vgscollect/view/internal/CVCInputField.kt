@@ -18,7 +18,7 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
     override var fieldType: FieldType = FieldType.CVC
 
     override fun applyFieldType() {
-        validator = CardCVCCodeValidator()
+        val validator = CardCVCCodeValidator()
         inputConnection = InputCardCVCConnection(id, validator)
 
         val str = text.toString()

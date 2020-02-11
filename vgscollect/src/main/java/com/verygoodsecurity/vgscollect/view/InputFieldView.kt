@@ -13,6 +13,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import android.os.Parcelable
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
@@ -605,6 +606,27 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun setDatePickerMode(type:Int) {
         if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setDatePickerMode(type)
+        }
+    }
+
+    protected fun maxDate(date:String) {
+        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setMaxDate(date)
+        }
+    }
+    protected fun minDate(date:String) {
+        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setMinDate(date)
+        }
+    }
+    protected fun setMinDate(date:Long) {
+        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setMinDate(date)
+        }
+    }
+    protected fun setDaysVisibility(state:Boolean) {
+        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setDaysVisibility(state)
         }
     }
 }

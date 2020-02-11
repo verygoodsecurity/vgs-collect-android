@@ -1,12 +1,13 @@
 package com.verygoodsecurity.vgscollect.card.validator
 
-import com.verygoodsecurity.vgscollect.view.card.validation.CardExpDateValidator
+import com.verygoodsecurity.vgscollect.view.date.validation.CardExpDateValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class CardExpDateValidatorTest {
-    private val validator = CardExpDateValidator()
+    private val validator =
+        CardExpDateValidator()
 
     @Test
     fun date_text() {

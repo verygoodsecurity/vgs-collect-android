@@ -8,11 +8,13 @@ import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import java.text.SimpleDateFormat
 
 class DateTextField @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
 
+    private val sdf = SimpleDateFormat("mm/dd/yyyy")
 
     init {
         setupViewType(FieldType.CARD_EXPIRATION_DATE)
@@ -24,8 +26,10 @@ class DateTextField @JvmOverloads constructor(
         ).apply {
 
             try {
+                val maxDate = getString(R.styleable.DateTextField_maxDate)
+                val minDate = getString(R.styleable.DateTextField_minDate)
                 val datePattern = getString(R.styleable.DateTextField_datePattern)
-                val datePickerMode = getInt(R.styleable.DateTextField_datePickerMode, 1)
+                val datePickerMode = getInt(R.styleable.DateTextField_datePickerModes, 1)
 
                 val inputType = getInt(R.styleable.DateTextField_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.DateTextField_fieldName)
@@ -68,5 +72,4 @@ class DateTextField @JvmOverloads constructor(
             }
         }
     }
-
 }

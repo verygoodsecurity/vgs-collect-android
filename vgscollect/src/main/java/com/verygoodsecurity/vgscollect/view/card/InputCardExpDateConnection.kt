@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 class InputCardExpDateConnection(
     private val id:Int,
-    private val validator: VGSValidator?
+    private vararg val validators: VGSValidator
 ): InputRunnable {
     private var stateListener: OnVgsViewStateChangeListener? = null
 
@@ -31,8 +31,13 @@ class InputCardExpDateConnection(
         } else {
             val updatedStr = str?.trim()?:""
 
-            val isStrValid = validator?.isValid(updatedStr)?:false
-            output.isValid = isStrValid
+            var isDateValid = true
+            validators.forEach {
+                if(isDateValid) {
+                    isDateValid = it.isValid(updatedStr)
+                }
+            }
+            output.isValid = isDateValid
         }
 
         stateListener?.emit(id, output)

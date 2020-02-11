@@ -14,7 +14,7 @@ import java.util.*
 fun showExpirationDialog(context:Context) {
     val c = Calendar.getInstance()
     val tempC = Calendar.getInstance()
-    val v = LayoutInflater.from(context).inflate(R.layout.vgs_datepicker_layout, null)
+    val v = LayoutInflater.from(context).inflate(R.layout.vgs_datepicker_spinner_layout, null)
 
     val dialog = AlertDialog.Builder(context)
         .setView(v)
