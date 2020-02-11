@@ -126,6 +126,39 @@
         </attr>
     </declare-styleable>
 
+
+    <declare-styleable name="DateTextField">
+        <attr name="fieldName"/>
+
+        <attr name="inputType"/>
+
+        <attr name="text"/>
+        <attr name="enabled"/>
+        <attr name="textSize"/>
+        <attr name="textColor" />
+        <attr name="ellipsize"/>
+
+        <attr name="textStyle" />
+
+        <attr name="cursorVisible" />
+        <attr name="singleLine"  />
+        <attr name="isRequired"/>
+
+        <attr name="gravity" />
+        <attr name="scrollHorizontally"/>
+
+        <attr name="hint" />
+
+
+        <attr name="datePattern" format="string"/>
+        <attr name="datePickerMode">
+            <enum name="calendar" value="0" />
+            <enum name="spinner" value="1" />
+            <enum name="input" value="2" />
+        </attr>
+
+    </declare-styleable>
+
     <declare-styleable name="VGSTextInputLayout">
         <attr name="hint" />
         <attr name="passwordToggleEnabled" format="boolean"/>

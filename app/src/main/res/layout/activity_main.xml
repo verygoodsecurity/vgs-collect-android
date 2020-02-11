@@ -130,7 +130,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="@string/exp_date">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.DateTextField
                 android:id="@+id/cardExpDateField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -139,7 +139,8 @@
                 app:textSize="12dp"
                 app:singleLine="true"
                 app:isRequired="true"
-                app:text="05/25"
+                app:datePattern="mm/yyyy"
+                app:datePickerMode="input"
                 app:fieldType="expDate"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <DatePicker
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/datePickerControl"
     android:datePickerMode="spinner"
     android:spinnersShown="true"
     android:calendarViewShown="false"
-    android:layout_width="50dp"
-    android:layout_height="50dp"
-    android:layout_gravity="center_horizontal"/>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/default_padding"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginBottom="40dp"/>
