@@ -23,7 +23,7 @@ class VGSFieldStateTest {
         val ce = VGSFieldState(type = FieldType.CARD_EXPIRATION_DATE)
 
         val ce1 = ce.mapToFieldState()
-        assertTrue(ce1 is FieldState.CardExpirationDate)
+        assertTrue(ce1 is FieldState.CardExpirationDateState)
     }
 
     @Test
@@ -31,7 +31,7 @@ class VGSFieldStateTest {
         val ce = VGSFieldState(type = FieldType.CARD_HOLDER_NAME)
 
         val ce1 = ce.mapToFieldState()
-        assertTrue(ce1 is FieldState.CardName)
+        assertTrue(ce1 is FieldState.CardHolderNameState)
     }
 
     @Test
@@ -47,7 +47,7 @@ class VGSFieldStateTest {
         val ce = VGSFieldState(type = FieldType.INFO)
 
         val ce1 = ce.mapToFieldState()
-        assertTrue(ce1 is FieldState.Info)
+        assertTrue(ce1 is FieldState.InfoState)
     }
 
     @Test
