@@ -8,7 +8,13 @@ import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 
+/**
+ * Provides a user interface element for date input. The range of dates supported by this field is not configurable.
+ *
+ * @version 1.0.3
+ */
 class ExpirationDateEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
@@ -69,6 +75,26 @@ class ExpirationDateEditText @JvmOverloads constructor(
             }
         }
         setMinDate(System.currentTimeMillis())
+    }
+
+    /**
+     * Representation of dates and times is an international standard covering the exchange of date- and time-related data.
+     * The method uses the ISO 8601 standard.
+     *
+     * @param regex Specifies date representation format
+     *
+     */
+    fun setDateRegex(regex:String) {
+        setDatePattern(regex)
+    }
+
+    /**
+     * Sets type of exact appearance and interaction model of this widget.
+     *
+     * @param mode
+     */
+    fun setDatePickerMode(mode: DatePickerMode) {
+        setDatePickerMode(mode.ordinal)
     }
 
 }
