@@ -8,7 +8,6 @@ import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import java.text.SimpleDateFormat
 
 class ExpirationDateEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
