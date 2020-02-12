@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
-            app:hint="calendar: yyyy-MMMM-dd">
+            app:hint="calendar: yyyy-MMMM">
             <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
                 android:id="@+id/cardExpDateField2"
                 android:layout_width="match_parent"
@@ -73,7 +73,7 @@
                 app:textSize="12dp"
                 app:singleLine="true"
                 app:isRequired="true"
-                app:datePattern="yyyy-MMMM-dd"
+                app:datePattern="yyyy-MMMM"
                 app:datePickerModes="calendar"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 

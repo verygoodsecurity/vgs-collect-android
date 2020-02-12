@@ -69,7 +69,6 @@ class ExpirationDateEditText @JvmOverloads constructor(
             }
         }
         setMinDate(System.currentTimeMillis())
-        setDaysVisibility(false)
     }
 
 }

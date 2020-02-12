@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.card.validation
 
 import java.util.regex.Pattern
 
+@Deprecated("Deprecated from version 1.0.3")
 class CardExpDateValidator:
     VGSValidator {
     private val m = Pattern.compile("^([01]|0[1-9]|1[012])[\\/]((19|20)\\d\\d|(2)\\d|(19))\$")

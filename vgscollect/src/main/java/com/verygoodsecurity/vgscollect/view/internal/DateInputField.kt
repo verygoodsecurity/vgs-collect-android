@@ -93,6 +93,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         val ls = DatePicker.OnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
             tempC.set(Calendar.YEAR, year)
             tempC.set(Calendar.MONTH, monthOfYear)
+            tempC.set(Calendar.DAY_OF_MONTH, dayOfMonth)
         }
 
         val pos = DialogInterface.OnClickListener { dialog, which ->
@@ -128,6 +129,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         } else {
             pattern
         }
+        isDaysVisible = datePattern.contains("dd")
         fieldDateFormat = SimpleDateFormat(datePattern, Locale.getDefault())
     }
 
@@ -173,9 +175,5 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     fun setMinDate(date: Long) {
         minDate = date
-    }
-
-    internal fun setDaysVisibility(state:Boolean) {
-        isDaysVisible = state
     }
 }

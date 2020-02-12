@@ -5,14 +5,29 @@ import android.text.TextWatcher
 import java.util.regex.Pattern
 
 class ExpirationDateTextWatcher(
-    private val pattern:String = "MM/yy"
+    private val datePattern:String = "MM/yy"
 ): TextWatcher {
 
-    private val mountPattern = "^([10]|0[1-9]|1[012])\$"
+    companion object {
+        private const val YEAR_FULL_REGEX = "^([2]|2[0]|20[23]|20[23][0123456789])\$"   //using for credit cards years from 2020 to 2039
+        private const val YEAR_SHORT_REGEX = "^([23]|[123]\\d)\$"
+        private const val MONTH_REGEX = "^([10]|0[1-9]|1[012])\$"
+        private const val DAY_REGEX = "^([1230]|0[1-9]|1[012]|[12]\\d|3[01])\$"
+        private const val DIVIDER_REGEX = "^[^0-9]\$"
+
+        private const val DEFAULT_PATTERN = "MM/yy"
+
+        private const val YYYY = "yyyy"
+        private const val YY = "yy"
+        private const val MM = "MM"
+        private const val DD = "dd"
+    }
+
+    private val mountPattern = MONTH_REGEX
     private val mountPositionStart:Int
     private val mountPositionEnd:Int
 
-    private val dayPattern = "^([1230]|0[1-9]|1[012]|[12]\\d|3[01])\$"
+    private val dayPattern = DAY_REGEX
     private val dayPositionStart:Int
     private val dayPositionEnd:Int
 
@@ -24,14 +39,14 @@ class ExpirationDateTextWatcher(
     private val totalDigits:Int
 
     init {
-        val symbolLength = pattern.replace("yyyy", "")
-            .replace("yy", "")
-            .replace("dd", "")
-            .replace("MM", "")
+        val symbolLength = datePattern.replace(YYYY, "")
+            .replace(YY, "")
+            .replace(DD, "")
+            .replace(MM, "")
             .length
 
 
-        dayPositionStart = pattern.lastIndexOf("dd")
+        dayPositionStart = datePattern.lastIndexOf(DD)
         dayPositionEnd = if(dayPositionStart >= 0) {
             dayPositionStart+2
         } else {
@@ -39,7 +54,7 @@ class ExpirationDateTextWatcher(
         }
 
 
-        mountPositionStart = pattern.lastIndexOf("MM")
+        mountPositionStart = datePattern.lastIndexOf(MM)
         mountPositionEnd = if(mountPositionStart >= 0) {
             mountPositionStart+2
         } else {
@@ -47,8 +62,8 @@ class ExpirationDateTextWatcher(
         }
 
 
-        val fullYPosition = pattern.lastIndexOf("yyyy")
-        val YPosition = pattern.lastIndexOf("yy")
+        val fullYPosition = datePattern.lastIndexOf(YYYY)
+        val YPosition = datePattern.lastIndexOf(YY)
         yearPattern = if(fullYPosition != -1) {
             yearPositionStart = fullYPosition
             yearPositionEnd = if(yearPositionStart >= 0) {
@@ -56,7 +71,7 @@ class ExpirationDateTextWatcher(
             } else {
                 -1
             }
-            "^([2]|2[0]|20[23]|20[23][0123456789])\$"
+            YEAR_FULL_REGEX
         } else {
             yearPositionStart = YPosition
             yearPositionEnd = if(yearPositionStart > 0) {
@@ -64,18 +79,18 @@ class ExpirationDateTextWatcher(
             } else {
                 -1
             }
-            "^([23]|[123]\\d)\$"
+            YEAR_SHORT_REGEX
         }
 
 
-        totalSymbols = pattern.length
+        totalSymbols = datePattern.length
         totalDigits = totalSymbols - symbolLength
     }
 
     private val patternMounts = Pattern.compile(mountPattern)
     private val patternYear = Pattern.compile(yearPattern)
     private val patternDay = Pattern.compile(dayPattern)
-    private val patternDivider = Pattern.compile("^[^0-9]\$")
+    private val patternDivider = Pattern.compile(DIVIDER_REGEX)
 
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -90,7 +105,7 @@ class ExpirationDateTextWatcher(
     }
 
     private fun build(s: Editable): CharSequence? {
-        if(pattern.length < s.length) {
+        if(datePattern.length < s.length) {
             return s.substring(0, s.length-1)
         }
 
@@ -121,7 +136,7 @@ class ExpirationDateTextWatcher(
 
             }
             else -> {
-                val divider = pattern.substring(s.length-1,s.length)
+                val divider = datePattern.substring(s.length-1,s.length)
                 val str = s.substring(0,s.length-1)+divider+s.substring(s.length-1,s.length)
                 return str
             }
