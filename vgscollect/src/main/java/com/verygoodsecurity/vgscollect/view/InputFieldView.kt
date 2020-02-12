@@ -621,9 +621,4 @@ abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? DateInputField)?.setMinDate(date)
         }
     }
-    protected fun setDaysVisibility(state:Boolean) {
-        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setDaysVisibility(state)
-        }
-    }
 }
