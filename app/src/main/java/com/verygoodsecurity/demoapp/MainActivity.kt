@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.activity_main.responseView
 import kotlinx.android.synthetic.main.activity_main.scanCardIOBtn
 import kotlinx.android.synthetic.main.activity_main.submitBtn
 import kotlinx.android.synthetic.main.activity_main.titleHeader
-import kotlinx.android.synthetic.main.test_date_field_activity.*
 import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
@@ -41,7 +40,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.test_date_field_activity)
+        setContentView(R.layout.activity_main)
 
         retrieveSettings()
 
@@ -54,15 +53,10 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
         vgsForm.addOnFieldStateChangeListener(getOnFieldStateChangeListener())
 
-//        vgsForm.bindView(cardNumberField)
-//        vgsForm.bindView(cardCVCField)
-//        vgsForm.bindView(cardHolderField)
-//        vgsForm.bindView(cardExpDateField)
-        vgsForm.bindView(cardExpDateField1)
-        vgsForm.bindView(cardExpDateField2)
-        vgsForm.bindView(cardExpDateField3)
-        vgsForm.bindView(cardExpDateField4)
-        vgsForm.bindView(cardExpDateField5)
+        vgsForm.bindView(cardNumberField)
+        vgsForm.bindView(cardCVCField)
+        vgsForm.bindView(cardHolderField)
+        vgsForm.bindView(cardExpDateField)
     }
 
     private fun showVaultId() {
