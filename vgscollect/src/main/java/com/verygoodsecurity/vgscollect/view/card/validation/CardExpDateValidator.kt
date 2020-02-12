@@ -1,6 +1,5 @@
-package com.verygoodsecurity.vgscollect.view.date.validation
+package com.verygoodsecurity.vgscollect.view.card.validation
 
-import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import java.util.regex.Pattern
 
 class CardExpDateValidator:

@@ -150,7 +150,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             charLimit = datePattern.length
 
             setOnClickListener(null)
-            applyNewTextWatcher(ExpirationDateTextWatcher)
+            applyNewTextWatcher(ExpirationDateTextWatcher(datePattern))
             val filterLength = InputFilter.LengthFilter(charLimit)
             filters = arrayOf(filterLength)
         } else {

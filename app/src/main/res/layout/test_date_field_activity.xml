@@ -54,8 +54,7 @@
                 app:singleLine="true"
                 app:isRequired="true"
                 app:datePattern="yyyy-MMMM-dd'T'HH:mm:ss.SSSXXX"
-                app:datePickerModes="calendar"
-                app:fieldType="expDate"/>
+                app:datePickerModes="calendar"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -75,8 +74,7 @@
                 app:singleLine="true"
                 app:isRequired="true"
                 app:datePattern="yyyy-MMMM-dd"
-                app:datePickerModes="calendar"
-                app:fieldType="expDate"/>
+                app:datePickerModes="calendar"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -96,8 +94,7 @@
                 app:singleLine="true"
                 app:isRequired="true"
                 app:datePattern="yyyy/MM/dd"
-                app:datePickerModes="spinner"
-                app:fieldType="expDate"/>
+                app:datePickerModes="spinner"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -117,8 +114,7 @@
                 app:singleLine="true"
                 app:isRequired="true"
                 app:datePattern="MM/yy"
-                app:datePickerModes="spinner"
-                app:fieldType="expDate"/>
+                app:datePickerModes="spinner"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -127,9 +123,29 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
-            app:hint="input: MM/yyyy">
+            app:hint="input: dd MM/yyyy">
             <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
                 android:id="@+id/cardExpDateField5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="expDate"
+                app:textColor="@color/black"
+                app:textSize="12dp"
+                app:singleLine="true"
+                app:isRequired="true"
+                app:datePattern="dd MM/yy"
+                app:datePickerModes="input"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/oldLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:hint="old VGSEditText">
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:id="@+id/old"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="expDate"
