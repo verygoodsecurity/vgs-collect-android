@@ -36,7 +36,7 @@ class TimeGapsValidator(
         }?:true
 
         val isLowerThanMax:Boolean = maxDate?.run {
-            if(minDate != null && minDate < this) {
+            if(minDate != null && minDate < this || minDate == null) {
                 calendar.timeInMillis < this
             } else {
                 true
