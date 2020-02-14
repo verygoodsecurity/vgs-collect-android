@@ -20,7 +20,7 @@ import java.util.*
 
 internal class DateInputField(context: Context): BaseInputField(context), View.OnClickListener {
 
-    private var datePattern:String = "mm/yy"
+    private var datePattern:String = "MM/yy"
     private var charLimit = datePattern.length
 
     private var minDate:Long = 0
@@ -28,7 +28,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     private val selectedDate = Calendar.getInstance()
 
-    private val dateLimitationFormat = SimpleDateFormat("mm/dd/yyyy", Locale.getDefault())
+    private val dateLimitationFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
     private var fieldDateFormat:SimpleDateFormat? = null
 
     private var datePickerMode:DatePickerMode = DatePickerMode.SPINNER
@@ -125,7 +125,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     internal fun setDatePattern(pattern:String?) {
         datePattern = if(pattern.isNullOrEmpty()) {
-            "mm/yy"
+            "MM/yy"
         } else {
             pattern
         }
