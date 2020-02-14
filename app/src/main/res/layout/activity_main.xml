@@ -127,7 +127,6 @@
                 app:textSize="12dp"
                 app:singleLine="true"
                 app:isRequired="true"
-                app:datePattern="yyyy-MMMM-dd"
                 app:datePickerModes="calendar"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
