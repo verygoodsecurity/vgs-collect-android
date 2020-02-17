@@ -9,12 +9,11 @@ import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
+import com.verygoodsecurity.vgscollect.core.model.*
+import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
+import com.verygoodsecurity.vgscollect.core.model.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.core.storage.DependencyDispatcher
 import com.verygoodsecurity.vgscollect.core.storage.Notifier
-import com.verygoodsecurity.vgscollect.core.model.Payload
-import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
-import com.verygoodsecurity.vgscollect.core.model.VGSResponse
-import com.verygoodsecurity.vgscollect.core.model.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
@@ -155,6 +154,28 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         }
     }
 
+
+    /**
+     * This method executes and send data on VGS Server. It could be useful if you want to handle
+     * multithreading by yourself.
+     * Do not use this method on the UI thread as this may crash.
+     *
+     * @param mainActivity current activity
+     * @param request data class with attributes for submit
+     */
+    fun submit(mainActivity:Activity, request: VGSRequest) {
+        appValidationCheck(mainActivity) { data ->
+            val tempStore = client.getTemporaryStorage()
+            val headers = tempStore.getCustomHeaders()
+            headers.putAll(request.customHeader)
+            val userData = tempStore.getCustomData()
+            userData.putAll(request.customData)
+
+            val dataBundleData = data.mapUsefulPayloads(userData)
+            doAsyncRequest(request.path, request.method, headers, dataBundleData)
+        }
+    }
+
     /**
      * This method executes and send data on VGS Server.
      *
@@ -173,6 +194,25 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
 
             val dataBundledata = data.mapUsefulPayloads(userData)
             doAsyncRequest(path, method, headers, dataBundledata)
+        }
+    }
+
+    /**
+     * This method executes and send data on VGS Server.
+     *
+     * @param mainActivity current activity
+     * @param request data class with attributes for submit
+     */
+    fun asyncSubmit(mainActivity:Activity, request: VGSRequest) {
+        appValidationCheck(mainActivity) { data ->
+            val tempStore = client.getTemporaryStorage()
+            val headers = tempStore.getCustomHeaders()
+            headers.putAll(request.customHeader)
+            val userData = tempStore.getCustomData()
+            userData.putAll(request.customData)
+
+            val dataBundleData = data.mapUsefulPayloads(userData)
+            doAsyncRequest(request.path, request.method, headers, dataBundleData)
         }
     }
 
