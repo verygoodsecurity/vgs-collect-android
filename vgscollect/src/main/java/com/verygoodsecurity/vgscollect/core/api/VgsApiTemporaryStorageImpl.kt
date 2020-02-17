@@ -9,7 +9,7 @@ class VgsApiTemporaryStorageImpl : VgsApiTemporaryStorage {
         }
     }
 
-    override fun getCustomHeaders(): Map<String, String> = headers
+    override fun getCustomHeaders(): HashMap<String, String> = headers
 
     override fun resetCustomHeaders() {
         headers.clear()
@@ -21,7 +21,7 @@ class VgsApiTemporaryStorageImpl : VgsApiTemporaryStorage {
         }
     }
 
-    override fun getCustomData(): Map<String, String> = data
+    override fun getCustomData(): HashMap<String, String> = data
 
     override fun resetCustomData() {
         data.clear()

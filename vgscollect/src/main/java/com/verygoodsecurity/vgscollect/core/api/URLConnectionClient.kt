@@ -105,7 +105,7 @@ internal class URLConnectionClient:ApiClient {
             conn.setRequestProperty( CONTENT_TYPE, APPLICATION_JSON )
             conn.setRequestProperty( AGENT, TEMPORARY_STR_AGENT )
             headers?.forEach {
-                conn.setRequestProperty( it.key, it.value )
+                conn.setRequestProperty( it.key.toUpperCase(), it.value)
             }
 
             val content = data?.mapToJson()
