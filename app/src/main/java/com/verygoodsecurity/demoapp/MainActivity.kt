@@ -9,6 +9,7 @@ import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscollect.core.model.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
@@ -57,6 +58,15 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         vgsForm.bindView(cardCVCField)
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
+
+        val data = HashMap<String, String>()
+        data["nonSDKValue"] = "all time data"
+        vgsForm.setCustomData(data)
+
+        val headers = HashMap<String, String>()
+        headers["CUSTOM-HEADER"] = "all time header"
+        vgsForm.setCustomHeaders(headers)
+
     }
 
     private fun showVaultId() {
@@ -114,18 +124,20 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     }
 
     private fun submitData() {
-        vgsForm.resetCustomData()
-        vgsForm.resetCustomHeaders()
-
         val data = HashMap<String, String>()
-        data["nonSDKValue"] = "some additional data"
-        vgsForm.setCustomData(data)
+        data["some_value_datata"] = "custom data"
 
         val headers = HashMap<String, String>()
-        headers["CUSTOMHEADER"] = "value"
-        vgsForm.setCustomHeaders(headers)
+        headers["some-headers"] = "custom-header"
 
-        vgsForm.asyncSubmit(this@MainActivity, path, HTTPMethod.POST)
+        val request: VGSRequest = VGSRequest.VGSRequestBuilder()
+            .setMethod(HTTPMethod.POST)
+            .setPath(path)
+            .setCustomHeader(headers)
+            .setCustomData(data)
+            .build()
+
+        vgsForm.asyncSubmit(this@MainActivity, request)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
