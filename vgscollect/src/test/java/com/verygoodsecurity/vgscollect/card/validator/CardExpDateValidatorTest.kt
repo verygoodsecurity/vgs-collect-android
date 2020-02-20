@@ -6,7 +6,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class CardExpDateValidatorTest {
-    private val validator = CardExpDateValidator()
+    private val validator =
+        CardExpDateValidator()
 
     @Test
     fun date_text() {

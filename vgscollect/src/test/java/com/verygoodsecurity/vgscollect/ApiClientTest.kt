@@ -18,7 +18,7 @@ class ApiClientTest {
     private fun <T> uninitialized(): T = null as T
 
     @Test
-    fun testApiCall() {
+    fun test_Api_Call() {
         val client = Mockito.mock(ApiClient::class.java)
 
         val collect = VGSCollect("tennantid", Environment.SANDBOX)

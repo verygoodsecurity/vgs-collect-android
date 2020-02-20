@@ -46,6 +46,8 @@ open class VGSEditText @JvmOverloads constructor(
                 val minLines = getInt(R.styleable.VGSEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.VGSEditText_maxLines, 0)
 
+                setFieldType(FieldType.values()[fieldType])
+
                 setFieldName(fieldName)
                 setHint(hint)
                 setTextColor(textColor)
@@ -71,5 +73,9 @@ open class VGSEditText @JvmOverloads constructor(
                 recycle()
             }
         }
+    }
+
+    fun setFieldType(type: FieldType) {
+        applyFieldType(type)
     }
 }

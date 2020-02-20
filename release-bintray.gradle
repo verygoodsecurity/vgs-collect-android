@@ -1,0 +1,30 @@
+ext {
+    bintrayRepo = 'vgs-collect-android'
+    bintrayName = POM_BINTRAY_NAME
+
+    publishedGroupId = 'com.verygoodsecurity'
+    libraryName = 'VGS Collect'
+    artifact = POM_ARTIFACT_ID
+    packagingType = POM_PACKAGING
+
+    libraryDescription = POM_DESCRIPTION
+
+    siteUrl = 'https://github.com/verygoodsecurity/vgs-collect-android'
+    gitUrl = 'https://github.com/verygoodsecurity/vgs-collect-android.git'
+
+    libraryVersion = POM_VERSION
+
+    developerId = 'dmytro'
+    developerName = 'Dmytro'
+    developerEmail = 'dmitriy.kosolapenko@vgs.io'
+
+    licenseName = 'MIT License'
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+    allLicenses = ["MIT License"]
+}
+
+// Set up the Android Maven publication.
+apply from: rootProject.file('jcenter/maven-install.gradle')
+
+// Publish on Bintray.
+apply from: rootProject.file('jcenter/bintray.gradle')

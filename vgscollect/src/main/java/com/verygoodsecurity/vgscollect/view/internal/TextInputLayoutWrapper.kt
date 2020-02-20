@@ -4,9 +4,10 @@ import android.content.Context
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.util.Logger
-import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 
 internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(context) {
 
@@ -38,19 +39,10 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
     private  fun handleNewChild(child: View?):View? {
         return child?.run {
             when(this) {
-                is InputField -> this
-                is InputFieldView -> {
-                    val v = (this as? InputFieldView)?.getEditTextWrapper()
-                    val LP = LayoutParams(child.layoutParams.width, child.layoutParams.height)
-                    LP.setMargins(0,0,0,0)
-                    if(LP.gravity == -1) {
-                        LP.gravity = Gravity.CENTER_VERTICAL
-                    }
-                    v?.layoutParams = LP
-                    if(v?.gravity == Gravity.TOP or Gravity.START) {
-                        v.gravity = Gravity.CENTER_VERTICAL
-                    }
-                    v
+                is BaseInputField -> this
+                is AccessibilityStatePreparer -> {
+                    val v = (this as? AccessibilityStatePreparer)?.getView()
+                    return applyAndReturnDefaultLayoutParams(child, v)
                 }
                 is ViewGroup -> this
                 else -> {
@@ -59,5 +51,21 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
                 }
             }
         }
+    }
+
+    private fun applyAndReturnDefaultLayoutParams(parentView: View, v: View?):View {
+        return v?.apply {
+            val LP = LayoutParams(parentView.layoutParams.width, parentView.layoutParams.height)
+            LP.setMargins(0,0,0,0)
+            if(LP.gravity == -1) {
+                LP.gravity = Gravity.CENTER_VERTICAL
+            }
+            layoutParams = LP
+
+            if(this is TextView &&
+                this.gravity == Gravity.TOP or Gravity.START) {
+                this.gravity = Gravity.CENTER_VERTICAL
+            }
+        }?:parentView
     }
 }
