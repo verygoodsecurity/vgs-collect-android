@@ -351,7 +351,7 @@ internal class InputField(context: Context): TextInputEditText(context),
         }
     }
 
-    internal fun setCursorDrawableColor(color: Int) {
+    private fun setCursorDrawableColor(color: Int) {
         try {
             val cursorDrawableResField = TextView::class.java.getDeclaredField("mCursorDrawableRes")
             cursorDrawableResField.isAccessible = true
