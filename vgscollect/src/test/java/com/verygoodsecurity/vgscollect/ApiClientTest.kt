@@ -27,11 +27,11 @@ class ApiClientTest {
         collect.setStorage(Mockito.mock(VgsStore::class.java))
 
         var res:VGSResponse? = null
-        collect.onResponseListener = object : VgsCollectResponseListener {
+        collect.addOnResponseListeners(object : VgsCollectResponseListener {
             override fun onResponse(response: VGSResponse?) {
                 res = response
             }
-        }
+        })
 
         Mockito.doReturn(VGSResponse.SuccessResponse(successCode = 200))
             .`when`(client).call(Mockito.anyString(),
