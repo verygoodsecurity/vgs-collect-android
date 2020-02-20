@@ -17,7 +17,7 @@ class InputCardNumberConnection(
 ): InputRunnable {
     private var stateListener: OnVgsViewStateChangeListener? = null
 
-    private val cardFilters = ArrayList<VGSCardFilter>()
+    private val cardFilters = mutableListOf<VGSCardFilter>()
     private val brandLuhnValidations by lazy {
         val set = HashMap<CardType, VGSValidator>()
         set[CardType.VISA] = VisaDelegate()

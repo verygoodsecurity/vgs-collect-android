@@ -24,6 +24,7 @@ import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import org.jetbrains.annotations.TestOnly
@@ -95,11 +96,11 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
      * @param view base class for VGS secure fields.
      */
     fun bindView(view: InputFieldView?) {
-        if(view is InputFieldView) {
-            dependencyDispatcher.addDependencyListener(view.getFieldType(), view.notifier)
-            externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.notifier)
-            view.addStateListener(emitter.performSubscription())
+        if(view is AccessibilityStatePreparer) {
+            dependencyDispatcher.addDependencyListener(view.getFieldType(), view.getDependencyListener())
+            externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.getDependencyListener())
         }
+        view?.addStateListener(emitter.performSubscription())
     }
 
     /**
@@ -149,8 +150,8 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
             val headers = tempStore.getCustomHeaders()
             val userData = tempStore.getCustomData()
 
-//            val dataBundledata = data.mapUsefulPayloads(userData)
-            doRequest(path, method, headers, HashMap())
+            val dataBundledata = data.mapUsefulPayloads(userData)
+            doRequest(path, method, headers, dataBundledata)
         }
     }
 
@@ -299,6 +300,6 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
                                      data: MutableCollection<VGSFieldState>
     ) {
         val dataBundledata = data.mapUsefulPayloads()
-        doRequest(path, method, headers, HashMap())
+        doRequest(path, method, headers, dataBundledata)
     }
 }

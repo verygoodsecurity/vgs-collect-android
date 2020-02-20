@@ -13,6 +13,11 @@ import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.progressBar
+import kotlinx.android.synthetic.main.activity_main.responseView
+import kotlinx.android.synthetic.main.activity_main.scanCardIOBtn
+import kotlinx.android.synthetic.main.activity_main.submitBtn
+import kotlinx.android.synthetic.main.activity_main.titleHeader
 import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
