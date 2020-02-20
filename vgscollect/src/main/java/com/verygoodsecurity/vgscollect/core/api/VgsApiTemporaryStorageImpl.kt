@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.api
 
 class VgsApiTemporaryStorageImpl : VgsApiTemporaryStorage {
-    private val data = HashMap<String, String>()
+    private val data = HashMap<String, Any>()
     private val headers = HashMap<String, String>()
     override fun setCustomHeaders(newheaders: Map<String, String>?) {
         newheaders?.let {
@@ -15,13 +15,13 @@ class VgsApiTemporaryStorageImpl : VgsApiTemporaryStorage {
         headers.clear()
     }
 
-    override fun setCustomData(newData: Map<String, String>?) {
+    override fun setCustomData(newData: Map<String, Any>?) {
         newData?.let {
             data.putAll(it)
         }
     }
 
-    override fun getCustomData(): Map<String, String> = data
+    override fun getCustomData(): HashMap<String, Any> = data
 
     override fun resetCustomData() {
         data.clear()

@@ -8,6 +8,7 @@ import com.verygoodsecurity.vgscollect.core.model.mapToEncodedQuery
 import com.verygoodsecurity.vgscollect.core.model.mapToJson
 import com.verygoodsecurity.vgscollect.core.model.parseVGSResponse
 import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.util.mapMapToJSON
 import java.net.HttpURLConnection.HTTP_OK
 import java.io.*
 import java.net.HttpURLConnection
@@ -41,7 +42,7 @@ internal class URLConnectionClient:ApiClient {
         }
     }
 
-    override fun call(path: String, method: HTTPMethod, headers: Map<String, String>?, data: Map<String, String>?): VGSResponse {
+    override fun call(path: String, method: HTTPMethod, headers: Map<String, String>?, data: Map<String, Any>?): VGSResponse {
         return when(method.ordinal) {
             HTTPMethod.GET.ordinal -> getRequest(path, headers, data)
             HTTPMethod.POST.ordinal -> postRequest(path, headers, data)
@@ -51,8 +52,8 @@ internal class URLConnectionClient:ApiClient {
 
     override fun getTemporaryStorage(): VgsApiTemporaryStorage = tempStore
 
-    private fun getRequest(path: String, headers: Map<String, String>? = null, data: Map<String, String>?): VGSResponse {
-        val url = buildURL(path, data?.mapToEncodedQuery())
+    private fun getRequest(path: String, headers: Map<String, String>? = null, data: Map<String, Any>?): VGSResponse {
+        val url = buildURL(path)
 
         var conn: HttpURLConnection? = null
         var response: VGSResponse
@@ -88,7 +89,7 @@ internal class URLConnectionClient:ApiClient {
         return response
     }
 
-    private fun postRequest(path: String, headers: Map<String, String>? = null, data: Map<String, String>? = null): VGSResponse {
+    private fun postRequest(path: String, headers: Map<String, String>? = null, data: Map<String, Any>? = null): VGSResponse {
         val url = buildURL(path)
 
         var conn: HttpURLConnection? = null
@@ -108,8 +109,8 @@ internal class URLConnectionClient:ApiClient {
                 conn.setRequestProperty( it.key, it.value )
             }
 
-            val content = data?.mapToJson()
-            val length = content?.byteInputStream(Charset.forName(CHARSET))
+            val content = data?.mapMapToJSON().toString()
+            val length = content.byteInputStream(Charset.forName(CHARSET))
             conn.setRequestProperty(CONTENT_LENGTH, length.toString())
             conn.doOutput = true
 
