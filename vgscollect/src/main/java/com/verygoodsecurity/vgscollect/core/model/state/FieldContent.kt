@@ -48,9 +48,10 @@ internal fun FieldContent.CardNumberContent.parseCardLast4Digits():String {
 
 internal fun FieldContent.CardNumberContent.parseRawCardBin():String {
     return data?.run {
-        val numberSTR = data!!.replace("\\D".toRegex(), "")
-        if(numberSTR.length >= 7) {
-            substring(0, 7)
+        val numberSTR = this.replace("\\D".toRegex(), "")
+        val binEnd = this.cardNumberBinEnd()
+        if(numberSTR.length >= binEnd) {
+            substring(0, binEnd)
         } else {
             substring(0, numberSTR.length)
         }
@@ -59,7 +60,7 @@ internal fun FieldContent.CardNumberContent.parseRawCardBin():String {
 
 internal fun FieldContent.CardNumberContent.parseRawCardLastDigits():String {
     return data?.run {
-        val maxCount = if (data!!.isNumeric()) { 12 } else { 15 }
+        val maxCount = this.cardNumberLastDigStart()
         if(length > maxCount) {
             substring(maxCount, length)
         } else {
@@ -69,21 +70,12 @@ internal fun FieldContent.CardNumberContent.parseRawCardLastDigits():String {
 }
 
 internal fun FieldContent.CardNumberContent.parseCardNumber():String? {
-    val startDig:Int
-    val endDig:Int
-    when {
-        this.data.isNullOrEmpty() -> {
-            return ""
-        }
-        data!!.isNumeric() -> {
-            startDig = 6
-            endDig = 12
-        }
-        else -> {
-            startDig = 7
-            endDig = 15
-        }
+    if(this.data.isNullOrEmpty()) {
+        return ""
     }
+    val startDig = this.data!!.cardNumberBinEnd()
+    val endDig = this.data!!.cardNumberLastDigStart()
+
     val str = if(data!!.length <= startDig) {
         data
     } else if (data!!.length < endDig) {
@@ -114,4 +106,17 @@ internal fun FieldContent.CardNumberContent.parseCardNumber():String? {
     }
     return str
 
+}
+
+
+private fun String.cardNumberBinEnd():Int {
+    return if (this.isNumeric()) { 6 } else { 7 }
+}
+
+private fun String.cardNumberLastDigStart():Int {
+    return if (this.isNumeric()) {
+        12
+    } else {
+        15
+    }
 }

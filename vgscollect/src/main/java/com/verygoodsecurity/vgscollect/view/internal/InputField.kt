@@ -186,7 +186,7 @@ internal class InputField(context: Context): BaseInputField(context) {
         applyNewTextWatcher(null)
         val filterLength = InputFilter.LengthFilter(4)
         filters = arrayOf(CVCValidateFilter(), filterLength)
-        applyNumberInputType()
+        applyDateInputType()
     }
 
     private fun applyCardNumFieldType() {
