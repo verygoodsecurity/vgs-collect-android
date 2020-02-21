@@ -117,8 +117,9 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         vgsForm.resetCustomData()
         vgsForm.resetCustomHeaders()
 
-        val data = HashMap<String, String>()
-        data["nonSDKValue"] = "some additional data"
+        val data = HashMap<String, Any>()
+        data["primitive"] = "some additional data"
+
         vgsForm.setCustomData(data)
 
         val headers = HashMap<String, String>()
