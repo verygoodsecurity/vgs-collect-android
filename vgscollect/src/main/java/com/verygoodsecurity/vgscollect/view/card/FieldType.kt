@@ -24,7 +24,7 @@ enum class FieldType {
      */
     CVC,
 
-    /** The input field provides date limitations with format mm/yy . */
+    /** The input field provides date limitations with format MM/yy . */
     CARD_EXPIRATION_DATE,
 
     /** The input field applies any characters, digits, and space. */
