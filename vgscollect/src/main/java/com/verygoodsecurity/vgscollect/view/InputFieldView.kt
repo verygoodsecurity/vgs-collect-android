@@ -502,7 +502,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @see FieldType
      */
-    @Deprecated("deprecated from 1.0.3")
+    @Deprecated("deprecated from 1.0.5")
     fun applyFieldType(type: FieldType) {
         if(::notifier.isInitialized.not()) {
             inputField = InputField(context)
