@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect
+package com.verygoodsecurity.vgscollect.api
 
 import com.verygoodsecurity.vgscollect.core.*
 import com.verygoodsecurity.vgscollect.core.api.ApiClient

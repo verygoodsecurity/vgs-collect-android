@@ -9,6 +9,7 @@ sealed class FieldContent {
         internal set
 
     class CardNumberContent:FieldContent() {
+        var rawData:String? = null
         var cardtype: CardType = CardType.NONE
         var iconResId:Int? = 0
             internal set

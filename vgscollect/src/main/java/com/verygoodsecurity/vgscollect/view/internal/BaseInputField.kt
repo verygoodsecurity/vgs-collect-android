@@ -15,7 +15,6 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.InputRunnable
-import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import androidx.core.widget.addTextChangedListener
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
@@ -84,7 +83,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    private fun setupInputConnectionListener() {
+    protected open fun setupInputConnectionListener() {
         val handler = Handler(Looper.getMainLooper())
         addTextChangedListener {
             inputConnection?.getOutput()?.content?.data =  it.toString()
