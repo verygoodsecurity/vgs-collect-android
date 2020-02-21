@@ -16,7 +16,7 @@ data class VGSRequest private constructor(
     val method: HTTPMethod,
     val path:String,
     val customHeader:HashMap<String, String>,
-    val customData:HashMap<String, String>
+    val customData:HashMap<String, Any>
 ) {
 
     /**
@@ -27,7 +27,7 @@ data class VGSRequest private constructor(
         private var method: HTTPMethod = HTTPMethod.POST
         private var path:String = "/post"
         private val customHeader:HashMap<String, String> = HashMap()
-        private val customData:HashMap<String, String> = HashMap()
+        private val customData:HashMap<String, Any> = HashMap()
 
         /**
          * It collect custom data which will be send to server.
@@ -35,7 +35,7 @@ data class VGSRequest private constructor(
          * @param customData The Map to save for request.
          * @return current builder instance
          */
-        fun setCustomData(customData:Map<String, String>):VGSRequestBuilder {
+        fun setCustomData(customData:Map<String, Any>):VGSRequestBuilder {
             this.customData.putAll(customData)
             return this
         }

@@ -513,15 +513,6 @@ abstract class InputFieldView @JvmOverloads constructor(
         (inputField as? InputField)?.setType(type)
     }
 
-    /**
-     * Sets the color of the input field cursor.
-     *
-     * @param color The cursor color.
-     */
-    open fun setCursorColor(color:Int) {
-        inputField.setCursorDrawableColor(color)
-    }
-
     internal fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
         inputField.stateListener = stateListener
     }

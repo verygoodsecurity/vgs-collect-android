@@ -27,7 +27,6 @@ open class VGSEditText @JvmOverloads constructor(
         ).apply {
 
             try {
-                val cursorColor = getColor(R.styleable.VGSEditText_cursorColor, 0)
                 val fieldType = getInteger(R.styleable.VGSEditText_fieldType, 4)
                 val inputType = getInt(R.styleable.VGSEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.VGSEditText_fieldName)
@@ -69,9 +68,7 @@ open class VGSEditText @JvmOverloads constructor(
                 setEnabled(enabled)
 
                 setInputType(inputType)
-                if(cursorColor != 0) {
-                    setCursorColor(cursorColor)
-                }
+                setFieldType(FieldType.values()[fieldType])
             } finally {
                 recycle()
             }
