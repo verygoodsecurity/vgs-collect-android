@@ -4,11 +4,9 @@ import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
-import com.verygoodsecurity.vgscollect.core.model.mapToEncodedQuery
-import com.verygoodsecurity.vgscollect.core.model.mapToJson
 import com.verygoodsecurity.vgscollect.core.model.parseVGSResponse
 import com.verygoodsecurity.vgscollect.util.Logger
-import com.verygoodsecurity.vgscollect.util.mapMapToJSON
+import com.verygoodsecurity.vgscollect.util.mapToJSON
 import java.net.HttpURLConnection.HTTP_OK
 import java.io.*
 import java.net.HttpURLConnection
@@ -109,7 +107,7 @@ internal class URLConnectionClient:ApiClient {
                 conn.setRequestProperty( it.key.toUpperCase(), it.value)
             }
 
-            val content = data?.mapMapToJSON().toString()
+            val content = data?.mapToJSON().toString()
             val length = content.byteInputStream(Charset.forName(CHARSET))
             conn.setRequestProperty(CONTENT_LENGTH, length.toString())
             conn.doOutput = true

@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscollect.card
 
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.util.mapMapToJSON
+import com.verygoodsecurity.vgscollect.util.mapToJSON
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import org.junit.Assert.assertEquals
@@ -44,7 +44,7 @@ class MapToJsonExtensionTest {
 
         val json = userFieldStorageImpl.
             mapUsefulPayloads()?.
-            mapMapToJSON()
+            mapToJSON()
         val result = json.toString()
 
         assertEquals(resultJSON, result)
@@ -61,7 +61,7 @@ class MapToJsonExtensionTest {
 
         val result = userFieldStorageImpl.
             mapUsefulPayloads(customData)?.
-            mapMapToJSON().toString()
+            mapToJSON().toString()
 
         assertEquals(resultJSON, result)
     }
@@ -76,7 +76,7 @@ class MapToJsonExtensionTest {
 
         val result = userFieldStorageImpl.
             mapUsefulPayloads(customData)?.
-            mapMapToJSON().toString()
+            mapToJSON().toString()
 
         assertEquals(resultJSON, result)
     }
@@ -91,7 +91,7 @@ class MapToJsonExtensionTest {
 
         val result = userFieldStorageImpl.
             mapUsefulPayloads(customData)?.
-            mapMapToJSON().toString()
+            mapToJSON().toString()
 
         assertEquals(resultJSON, result)
     }
@@ -106,7 +106,7 @@ class MapToJsonExtensionTest {
 
         val result = userFieldStorageImpl.
             mapUsefulPayloads(customData)?.
-            mapMapToJSON().toString()
+            mapToJSON().toString()
 
         assertEquals(resultJSON, result)
     }
@@ -133,7 +133,7 @@ class MapToJsonExtensionTest {
 
         val result = userFieldStorageImpl.
             mapUsefulPayloads(customData)?.
-            mapMapToJSON().toString()
+            mapToJSON().toString()
 
         assertEquals(resultJSON, result)
     }
@@ -162,7 +162,7 @@ class MapToJsonExtensionTest {
         val result = userFieldStorageImpl.
             mapUsefulPayloads(customData)
 
-        val result1 =            result?.mapMapToJSON().toString()
+        val result1 =            result?.mapToJSON().toString()
 
 
         assertEquals(resultJSON, result1)
@@ -191,7 +191,7 @@ class MapToJsonExtensionTest {
 
         val result = userFieldStorageImpl.
             mapUsefulPayloads(customData)?.
-            mapMapToJSON().toString()
+            mapToJSON().toString()
 
         assertEquals(resultJSON, result)
     }
@@ -209,7 +209,7 @@ class MapToJsonExtensionTest {
 
         val result = userFieldStorageImpl.
             mapUsefulPayloads(customData)?.
-            mapMapToJSON().toString()
+            mapToJSON().toString()
 
         assertEquals(resultJSON, result)
     }
@@ -228,7 +228,7 @@ class MapToJsonExtensionTest {
 
         val result = userFieldStorageImpl.
             mapUsefulPayloads(customData)?.
-            mapMapToJSON().toString()
+            mapToJSON().toString()
 
         assertEquals(resultJSON, result)
     }
@@ -247,7 +247,7 @@ class MapToJsonExtensionTest {
 
         val result = userFieldStorageImpl.
             mapUsefulPayloads(customData)?.
-            mapMapToJSON().toString()
+            mapToJSON().toString()
 
         assertEquals(resultJSON, result)
     }
@@ -265,7 +265,7 @@ class MapToJsonExtensionTest {
 
         val result = userFieldStorageImpl.
             mapUsefulPayloads(customData)?.
-            mapMapToJSON().toString()
+            mapToJSON().toString()
 
         assertEquals(resultJSON, result)
     }
