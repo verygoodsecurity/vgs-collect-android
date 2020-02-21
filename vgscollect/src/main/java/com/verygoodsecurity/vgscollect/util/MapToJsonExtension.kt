@@ -118,7 +118,7 @@ private fun String.maps(m:HashMap<String,Any>):HashMap<String,Any>  {
 
 
 
-internal fun Map<*, *>.mapMapToJSON():JSONObject {
+internal fun Map<*, *>.mapToJSON():JSONObject {
     val jObjectData = JSONObject()
 
     this.forEach { entry->
@@ -131,7 +131,7 @@ internal fun Map<*, *>.mapMapToJSON():JSONObject {
             is Float -> jObjectData.put(key, entry.value)
             is Double -> jObjectData.put(key, entry.value as Double)
             is Map<*, *> -> {
-                val j = (entry.value as Map<*, *>).mapMapToJSON()
+                val j = (entry.value as Map<*, *>).mapToJSON()
                 jObjectData.put(key, j)
             }
             is Array<*> -> {
@@ -161,7 +161,7 @@ private fun Collection<*>.mapCollectionToJSON():JSONArray {
             is Float -> array.put(entry)
             is Double -> array.put(entry)
             is Map<*, *> -> {
-                val obj = entry.mapMapToJSON()
+                val obj = entry.mapToJSON()
                 array.put(obj)
             }
             is Array<*> -> {
@@ -190,7 +190,7 @@ private fun Array<*>.mapArrToJSON():JSONArray {
             is Float -> array.put(entry)
             is Double -> array.put(entry)
             is Map<*, *> -> {
-                val obj = entry.mapMapToJSON()
+                val obj = entry.mapToJSON()
                 array.put(obj)
             }
             is Array<*> -> {
