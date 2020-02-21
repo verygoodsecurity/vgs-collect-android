@@ -1,21 +1,27 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
 import android.text.InputType
 import android.text.TextWatcher
+import com.google.android.material.textfield.TextInputEditText
+import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import android.os.Looper
 import android.text.InputFilter
 import android.view.Gravity
 import android.view.View
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.verygoodsecurity.vgscollect.*
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.card.*
@@ -133,8 +139,7 @@ internal class InputField(context: Context): BaseInputField(context) {
     }
 
     private fun applyCardExpDateFieldType() {
-        validator =
-            CardExpDateValidator()
+        validator = CardExpDateValidator()
         inputConnection = InputCardExpDateConnection(id, validator as CardExpDateValidator)
 
         val str = text.toString()

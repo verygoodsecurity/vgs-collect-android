@@ -18,7 +18,6 @@
     <attr name="minLines" format="integer"/>
 
     <attr name="fieldName" format="string"/>
-    <attr name="cursorColor" format="color"/>
 
     <attr name="cursorVisible" format="boolean" />
     <attr name="singleLine" format="boolean" />
@@ -68,7 +67,6 @@
 
     <declare-styleable name="VGSEditText">
         <attr name="fieldName"/>
-        <attr name="cursorColor"/>
 
         <attr name="inputType"/>
 
@@ -102,7 +100,6 @@
 
     <declare-styleable name="VGSCardNumberEditText">
         <attr name="fieldName"/>
-        <attr name="cursorColor"/>
 
         <attr name="inputType"/>
 

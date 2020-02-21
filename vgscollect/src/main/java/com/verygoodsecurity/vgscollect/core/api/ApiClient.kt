@@ -7,9 +7,9 @@ interface ApiClient {
     fun call(
         path: String,
         method: HTTPMethod,
-        data: Map<String, String>?,
-        headers: Map<String, String>?
-    ):VGSResponse
+        headers: Map<String, String>?,
+        data: Map<String, Any>?
+):VGSResponse
 
     fun getTemporaryStorage():VgsApiTemporaryStorage
 }

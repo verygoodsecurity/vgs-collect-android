@@ -14,7 +14,6 @@ import com.verygoodsecurity.vgscollect.core.storage.Notifier
 import com.verygoodsecurity.vgscollect.core.model.Payload
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
-import com.verygoodsecurity.vgscollect.core.model.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
@@ -26,6 +25,7 @@ import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
+import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import org.jetbrains.annotations.TestOnly
 
@@ -170,7 +170,6 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
             val tempStore = client.getTemporaryStorage()
             val headers = tempStore.getCustomHeaders()
             val userData = tempStore.getCustomData()
-
             val dataBundledata = data.mapUsefulPayloads(userData)
             doAsyncRequest(path, method, headers, dataBundledata)
         }
@@ -203,7 +202,7 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     protected fun doRequest(path: String,
                             method: HTTPMethod,
                             headers: Map<String, String>?,
-                            data: Map<String, String>?
+                            data: Map<String, Any>?
     ) {
         val r = client.call(path, method, headers, data)
         responseListeners.forEach { it.onResponse(r) }
@@ -212,9 +211,9 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     protected fun doAsyncRequest(path: String,
                                  method: HTTPMethod,
                                  headers: Map<String, String>?,
-                                 data: Map<String, String>?
+                                 data: Map<String, Any>?
     ) {
-        val p = Payload(path, method, data, headers)
+        val p = Payload(path, method, headers, data)
 
         val task = doAsync(responseListeners) {
             it?.run {
@@ -273,7 +272,7 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
      *
      * @param data The Map to save for request.
      */
-    fun setCustomData(data: Map<String, String>?) {
+    fun setCustomData(data: Map<String, Any>?) {
         client.getTemporaryStorage().setCustomData(data)
     }
 
