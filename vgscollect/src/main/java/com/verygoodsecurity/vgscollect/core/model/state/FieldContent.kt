@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
+import com.verygoodsecurity.vgscollect.util.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import java.lang.StringBuilder
 
@@ -58,8 +59,9 @@ internal fun FieldContent.CardNumberContent.parseRawCardBin():String {
 
 internal fun FieldContent.CardNumberContent.parseRawCardLastDigits():String {
     return data?.run {
-        if(length > 15) {
-            substring(15, length)
+        val maxCount = if (data!!.isNumeric()) { 12 } else { 15 }
+        if(length > maxCount) {
+            substring(maxCount, length)
         } else {
             ""
         }
@@ -67,38 +69,49 @@ internal fun FieldContent.CardNumberContent.parseRawCardLastDigits():String {
 }
 
 internal fun FieldContent.CardNumberContent.parseCardNumber():String? {
-    return if(data != null) {
-        val str = if(data!!.length <= 7) {
-            data
-        } else if (data!!.length < 15) {
-            val bin = parseRawCardBin()
-            val dif = data!!.length - bin.length
-            if(dif > 0) {
-                val start = bin.length
-                val end = data!!.length
-                val mask = data!!.substring(start, end).replace("\\d".toRegex(), "#")
-
-                bin + mask
-            } else {
-                bin
-            }
-        } else {
-            val builder = StringBuilder()
-            val bin = parseRawCardBin()
-            val last = parseRawCardLastDigits()
-
+    val startDig:Int
+    val endDig:Int
+    when {
+        this.data.isNullOrEmpty() -> {
+            return ""
+        }
+        data!!.isNumeric() -> {
+            startDig = 6
+            endDig = 12
+        }
+        else -> {
+            startDig = 7
+            endDig = 15
+        }
+    }
+    val str = if(data!!.length <= startDig) {
+        data
+    } else if (data!!.length < endDig) {
+        val bin = parseRawCardBin()
+        val dif = data!!.length - bin.length
+        if(dif > 0) {
             val start = bin.length
-            val end = data!!.length - last.length
+            val end = data!!.length
             val mask = data!!.substring(start, end).replace("\\d".toRegex(), "#")
 
-            builder.append(bin)
-                .append(mask)
-                .append(last)
-                .toString()
+            bin + mask
+        } else {
+            bin
         }
-        str
     } else {
-        ""
+        val builder = StringBuilder()
+        val bin = parseRawCardBin()
+        val last = parseRawCardLastDigits()
+
+        val start = bin.length
+        val end = data!!.length - last.length
+        val mask = data!!.substring(start, end).replace("\\d".toRegex(), "#")
+
+        builder.append(bin)
+            .append(mask)
+            .append(last)
+            .toString()
     }
+    return str
 
 }
