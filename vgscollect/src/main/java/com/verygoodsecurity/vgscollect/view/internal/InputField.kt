@@ -133,8 +133,7 @@ internal class InputField(context: Context): BaseInputField(context) {
     }
 
     private fun applyCardExpDateFieldType() {
-        validator =
-            CardExpDateValidator()
+        validator = CardExpDateValidator()
         inputConnection = InputCardExpDateConnection(id, validator as CardExpDateValidator)
 
         val str = text.toString()

@@ -22,7 +22,6 @@ internal fun brokeViewMethodTest(v: View) {
 }
 
 private fun hackView(v: EditText) {
-    Log.e("test", "getText: ${v.text}")
     v.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(p0: Editable?) {
             Log.e("test", "hackedView: $p0")
