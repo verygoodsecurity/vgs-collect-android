@@ -24,7 +24,7 @@ fun VGSFieldState.mapToFieldState():FieldState {
                 state.last = content?.parseRawCardLastDigits()
             }
             state.number = content?.parseCardNumber()
-            state.cardBrand = content?.cardBrandName
+            state.cardBrand = content?.cardBrandName?:""
             state.drawableBrandResId = content?.iconResId?:0
 
             state

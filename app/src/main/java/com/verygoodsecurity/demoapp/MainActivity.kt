@@ -62,11 +62,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         val customData = HashMap<String, Any>()
         customData["nonSDKValue"] = "all time data"
 
-
-        val cardData = arrayOf("73737373", 0x1)
-        customData["card_data1"] = cardData
-
-
         vgsForm.setCustomData(customData)
 
         val headers = HashMap<String, String>()
@@ -130,33 +125,8 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     }
 
     private fun submitData() {
-        val data1 = HashMap<String, Any>()
-        data1["str"] = "some_additi"
-        data1["primitive_long"] = 97833333334343443L
-        data1["primitive_int"] = -123
-        data1["primitive_float"] = 123.0123f
-        data1["primitive_double"] = 123.0223
-        data1["primitive_char"] = 'c'
-
-
-
         val customData = HashMap<String, Any>()
-
-        val secret = HashMap<String, Any>()
-        secret["expDate"] = "12.07.1998"
-
-        val personal_data = HashMap<String, Any>()
-        personal_data["cardHolder"] = "alf"
-        personal_data["secret"] = secret
-
-        val data = HashMap<String, Any>()
-        data["personal_data"] = personal_data
-        data["key"] = "nkn77793"
-
-        val cardData = arrayOf("5555555555555555", 0x77, data)
-
-        customData["card_data"] = cardData
-        customData["data1"] = data1
+        customData.put("nickname", "Taras")
 
         val headers = HashMap<String, String>()
         headers["some-headers"] = "custom-header"
