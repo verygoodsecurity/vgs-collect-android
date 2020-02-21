@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.util
 
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import org.json.JSONArray
 import org.json.JSONObject
@@ -10,13 +11,20 @@ internal fun MutableCollection<VGSFieldState>.mapUsefulPayloads(
 
     val map = userData ?: HashMap()
 
-    this.forEach {
-        if(!it.content?.data.isNullOrEmpty()) {
-            it.fieldName?.split(".")?.
+    this.forEach { s->
+        val contentData = s.content?.run {
+            if(this is FieldContent.CardNumberContent) {
+                rawData?:data
+            } else {
+                data
+            }
+        }
+        if(!contentData.isNullOrEmpty()) {
+            s.fieldName?.split(".")?.
                 filter {
                     it.isNotEmpty()
                 }?.
-                mapStr(map, it.content!!.data!!)
+                mapStr(map, contentData)
         }
     }
 

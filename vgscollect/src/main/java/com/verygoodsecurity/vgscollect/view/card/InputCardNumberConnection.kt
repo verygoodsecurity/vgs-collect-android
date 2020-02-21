@@ -63,15 +63,19 @@ class InputCardNumberConnection(
         applyNewRule(card.regex)
 
         val str = output.content?.data
+        val rawStr = if(output.content is FieldContent.CardNumberContent) {
+            (output.content as FieldContent.CardNumberContent).rawData?:""
+        } else {
+            str?.replace(divider?:" ", "")?:""
+        }
+
         if(str.isNullOrEmpty() && !output.isRequired) {
             output.isValid = true
         } else {
-            val updatedStr = str?.replace(divider?:" ", "")?:""
+            val isStrValid = validator?.isValid(rawStr)?:false
+            val isLuhnValid:Boolean = brandLuhnValidations[card.cardType]?.isValid(rawStr)?:true
 
-            val isStrValid = validator?.isValid(updatedStr)?:false
-            val isLuhnValid:Boolean = brandLuhnValidations[card.cardType]?.isValid(updatedStr)?:true
-
-            val isLengthAppropriate = checkLength(card.cardType, updatedStr.length)
+            val isLengthAppropriate = checkLength(card.cardType, rawStr.length)
             output.isValid = isLuhnValid && isStrValid && isLengthAppropriate
         }
 

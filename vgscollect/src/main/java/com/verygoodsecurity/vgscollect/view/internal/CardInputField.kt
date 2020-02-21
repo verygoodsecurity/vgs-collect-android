@@ -48,6 +48,7 @@ internal class CardInputField(context: Context): BaseInputField(context) {
 
         val str = text.toString()
         val stateContent = FieldContent.CardNumberContent().apply {
+            rawData = str.replace(divider?:" ", "")
             cardtype = this@CardInputField.cardtype
             this.data = str
         }
