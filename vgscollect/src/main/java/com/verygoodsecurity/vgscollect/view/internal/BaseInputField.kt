@@ -83,7 +83,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    private fun setupInputConnectionListener() {
+    protected open fun setupInputConnectionListener() {
         val handler = Handler(Looper.getMainLooper())
         addTextChangedListener {
             inputConnection?.getOutput()?.content?.data =  it.toString()
