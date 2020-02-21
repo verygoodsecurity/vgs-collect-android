@@ -21,6 +21,8 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
 
     init {
+        setupViewType(FieldType.CARD_NUMBER)
+
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.VGSCardNumberEditText,
@@ -29,7 +31,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
             try {
                 val previewGravity = getInt(R.styleable.VGSCardNumberEditText_cardBrandIconGravity, 0)
-                val divider:String = getString(R.styleable.VGSCardNumberEditText_numberDivider)?:" "
+                val divider:String? = getString(R.styleable.VGSCardNumberEditText_numberDivider)?:null
 
                 val cursorColor = getColor(R.styleable.VGSCardNumberEditText_cursorColor, 0)
                 val inputType = getInt(R.styleable.VGSCardNumberEditText_inputType, EditorInfo.TYPE_NULL)
@@ -62,7 +64,6 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                 setMinLines(minLines)
                 setSingleLine(singleLine)
                 setIsRequired(isRequired)
-                setFieldType(FieldType.CARD_NUMBER)
                 getTypeface()?.let {
                     setTypeface(it, textStyle)
                 }

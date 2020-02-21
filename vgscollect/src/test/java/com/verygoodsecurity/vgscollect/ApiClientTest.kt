@@ -18,7 +18,7 @@ class ApiClientTest {
     private fun <T> uninitialized(): T = null as T
 
     @Test
-    fun testApiCall() {
+    fun test_Api_Call() {
         val client = Mockito.mock(ApiClient::class.java)
 
         val collect = VGSCollect("tennantid", Environment.SANDBOX)
@@ -27,11 +27,11 @@ class ApiClientTest {
         collect.setStorage(Mockito.mock(VgsStore::class.java))
 
         var res:VGSResponse? = null
-        collect.onResponseListener = object : VgsCollectResponseListener {
+        collect.addOnResponseListeners(object : VgsCollectResponseListener {
             override fun onResponse(response: VGSResponse?) {
                 res = response
             }
-        }
+        })
 
         Mockito.doReturn(VGSResponse.SuccessResponse(successCode = 200))
             .`when`(client).call(Mockito.anyString(),

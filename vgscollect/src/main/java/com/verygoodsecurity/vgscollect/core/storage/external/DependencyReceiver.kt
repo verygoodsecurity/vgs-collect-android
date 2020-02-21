@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgscollect.core.storage.external
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
-import com.verygoodsecurity.vgscollect.view.InputFieldView
 import java.util.HashMap
 
 class DependencyReceiver:ExternalDependencyDispatcher {
@@ -11,7 +10,7 @@ class DependencyReceiver:ExternalDependencyDispatcher {
 
     override fun addDependencyListener(
         fieldName: String?,
-        notifier: InputFieldView.DependencyNotifier
+        notifier: DependencyListener
     ) {
         fieldName?.run {
             views[this] = notifier

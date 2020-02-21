@@ -1,14 +1,13 @@
 package com.verygoodsecurity.vgscollect.core.storage
 
 import com.verygoodsecurity.vgscollect.core.model.state.*
-import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 class Notifier: DependencyDispatcher, FieldDependencyObserver {
 
     private val views = mutableMapOf<FieldType, DependencyListener>()
 
-    override fun addDependencyListener(fieldType: FieldType, notifier: InputFieldView.DependencyNotifier) {
+    override fun addDependencyListener(fieldType: FieldType, notifier: DependencyListener) {
         views[fieldType] = notifier
     }
 
