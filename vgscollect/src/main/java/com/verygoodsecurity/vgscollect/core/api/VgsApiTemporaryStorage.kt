@@ -5,7 +5,7 @@ interface VgsApiTemporaryStorage {
     fun getCustomHeaders():HashMap<String, String>
     fun resetCustomHeaders()
 
-    fun setCustomData(data:Map<String, String>?)
-    fun getCustomData():HashMap<String, String>
+    fun setCustomData(data:Map<String, Any>?)
+    fun getCustomData():HashMap<String, Any>
     fun resetCustomData()
 }
