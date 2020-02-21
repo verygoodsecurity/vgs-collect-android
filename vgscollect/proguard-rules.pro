@@ -42,6 +42,7 @@
 
 -keep public interface  com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener { *; }
 
+-keep public class com.verygoodsecurity.vgscollect.core.model.VGSRequest$* { *; }
 -keep public class * extends com.verygoodsecurity.vgscollect.core.model.state.FieldState { *; }
 -keep public class * extends com.verygoodsecurity.vgscollect.core.model.VGSResponse { *; }
 -keep class com.verygoodsecurity.vgscollect.core.* {
