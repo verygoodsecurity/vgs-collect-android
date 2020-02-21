@@ -3,10 +3,13 @@ package com.verygoodsecurity.vgscollect.view.internal
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.text.InputType
 import android.view.Gravity
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.util.Logger
@@ -58,6 +61,22 @@ internal class CardInputField(context: Context): BaseInputField(context) {
         inputConnection?.setOutputListener(stateListener)
         applyNewTextWatcher(CardNumberTextWatcher(divider))
         applyInputType()
+    }
+
+    override fun setupInputConnectionListener() {
+        val handler = Handler(Looper.getMainLooper())
+        addTextChangedListener {
+            val str = it.toString()
+            inputConnection?.getOutput()?.
+                content = FieldContent.CardNumberContent().apply {
+                rawData = str.replace(divider?:" ", "")
+                cardtype = this@CardInputField.cardtype
+                this.data = str
+            }
+
+            handler.removeCallbacks(inputConnection)
+            handler.postDelayed(inputConnection, 300)
+        }
     }
 
     private fun drawCardBrandPreview() {
