@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscollect.core.api
 
 interface VgsApiTemporaryStorage {
     fun setCustomHeaders(headers:Map<String, String>?)
-    fun getCustomHeaders():Map<String, String>
+    fun getCustomHeaders():HashMap<String, String>
     fun resetCustomHeaders()
 
     fun setCustomData(data:Map<String, Any>?)

@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.util
 
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import org.json.JSONArray
 import org.json.JSONObject
@@ -10,13 +11,20 @@ internal fun MutableCollection<VGSFieldState>.mapUsefulPayloads(
 
     val map = userData ?: HashMap()
 
-    this.forEach {
-        if(!it.content?.data.isNullOrEmpty()) {
-            it.fieldName?.split(".")?.
+    this.forEach { s->
+        val contentData = s.content?.run {
+            if(this is FieldContent.CardNumberContent) {
+                rawData?:data
+            } else {
+                data
+            }
+        }
+        if(!contentData.isNullOrEmpty()) {
+            s.fieldName?.split(".")?.
                 filter {
                     it.isNotEmpty()
                 }?.
-                mapStr(map, it.content!!.data!!)
+                mapStr(map, contentData)
         }
     }
 
@@ -45,9 +53,7 @@ private fun List<String>.mapStr(
                         val mutL = value.toMutableList()
 
                         var containtsТestedItems = false
-                        var hasNextElement = false
                         if(i+1 <= size-1) {
-                            hasNextElement = true
                             val nextKey = this[i+1]
                             mutL.forEach {
                                 if(it != null && it is HashMap<*,*> && it.containsKey(nextKey)) {
@@ -112,7 +118,7 @@ private fun String.maps(m:HashMap<String,Any>):HashMap<String,Any>  {
 
 
 
-internal fun Map<*, *>.mapMapToJSON():JSONObject {
+internal fun Map<*, *>.mapToJSON():JSONObject {
     val jObjectData = JSONObject()
 
     this.forEach { entry->
@@ -125,7 +131,7 @@ internal fun Map<*, *>.mapMapToJSON():JSONObject {
             is Float -> jObjectData.put(key, entry.value)
             is Double -> jObjectData.put(key, entry.value as Double)
             is Map<*, *> -> {
-                val j = (entry.value as Map<*, *>).mapMapToJSON()
+                val j = (entry.value as Map<*, *>).mapToJSON()
                 jObjectData.put(key, j)
             }
             is Array<*> -> {
@@ -155,7 +161,7 @@ private fun Collection<*>.mapCollectionToJSON():JSONArray {
             is Float -> array.put(entry)
             is Double -> array.put(entry)
             is Map<*, *> -> {
-                val obj = entry.mapMapToJSON()
+                val obj = entry.mapToJSON()
                 array.put(obj)
             }
             is Array<*> -> {
@@ -184,7 +190,7 @@ private fun Array<*>.mapArrToJSON():JSONArray {
             is Float -> array.put(entry)
             is Double -> array.put(entry)
             is Map<*, *> -> {
-                val obj = entry.mapMapToJSON()
+                val obj = entry.mapToJSON()
                 array.put(obj)
             }
             is Array<*> -> {

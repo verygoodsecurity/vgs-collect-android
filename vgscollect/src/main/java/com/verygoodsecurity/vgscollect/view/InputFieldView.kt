@@ -15,7 +15,6 @@ import androidx.annotation.RequiresApi
 import android.os.Parcelable
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand

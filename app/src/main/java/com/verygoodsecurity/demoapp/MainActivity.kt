@@ -9,6 +9,7 @@ import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscollect.core.model.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
@@ -57,6 +58,21 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         vgsForm.bindView(cardCVCField)
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
+
+        val customData = HashMap<String, Any>()
+        customData["nonSDKValue"] = "all time data"
+
+
+        val cardData = arrayOf("73737373", 0x1)
+        customData["card_data1"] = cardData
+
+
+        vgsForm.setCustomData(customData)
+
+        val headers = HashMap<String, String>()
+        headers["CUSTOM-HEADER"] = "all time header"
+        vgsForm.setCustomHeaders(headers)
+
     }
 
     private fun showVaultId() {
@@ -114,19 +130,45 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     }
 
     private fun submitData() {
-        vgsForm.resetCustomData()
-        vgsForm.resetCustomHeaders()
+        val data1 = HashMap<String, Any>()
+        data1["str"] = "some_additi"
+        data1["primitive_long"] = 97833333334343443L
+        data1["primitive_int"] = -123
+        data1["primitive_float"] = 123.0123f
+        data1["primitive_double"] = 123.0223
+        data1["primitive_char"] = 'c'
+
+
+
+        val customData = HashMap<String, Any>()
+
+        val secret = HashMap<String, Any>()
+        secret["expDate"] = "12.07.1998"
+
+        val personal_data = HashMap<String, Any>()
+        personal_data["cardHolder"] = "alf"
+        personal_data["secret"] = secret
 
         val data = HashMap<String, Any>()
-        data["primitive"] = "some additional data"
+        data["personal_data"] = personal_data
+        data["key"] = "nkn77793"
 
-        vgsForm.setCustomData(data)
+        val cardData = arrayOf("5555555555555555", 0x77, data)
+
+        customData["card_data"] = cardData
+        customData["data1"] = data1
 
         val headers = HashMap<String, String>()
-        headers["CUSTOMHEADER"] = "value"
-        vgsForm.setCustomHeaders(headers)
+        headers["some-headers"] = "custom-header"
 
-        vgsForm.asyncSubmit(this@MainActivity, path, HTTPMethod.POST)
+        val request: VGSRequest = VGSRequest.VGSRequestBuilder()
+            .setMethod(HTTPMethod.POST)
+            .setPath(path)
+            .setCustomHeader(headers)
+            .setCustomData(customData)
+            .build()
+
+        vgsForm.asyncSubmit(this@MainActivity, request)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
