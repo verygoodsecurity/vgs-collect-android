@@ -66,7 +66,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     override fun addView(child: View?) {
-        if(childCount == 0 && child is InputField) {
+        if(childCount == 0 && child is BaseInputField) {
             super.addView(child)
         }
     }
