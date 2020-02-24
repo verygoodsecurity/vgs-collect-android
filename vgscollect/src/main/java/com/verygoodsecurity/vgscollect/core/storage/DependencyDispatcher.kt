@@ -6,5 +6,5 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 interface DependencyDispatcher {
     fun onDependencyDetected(type: FieldType, dependency: Dependency)
-    fun addDependencyListener(fieldType: FieldType, notifier: InputFieldView.DependencyNotifier)
+    fun addDependencyListener(fieldType: FieldType, notifier: DependencyListener)
 }

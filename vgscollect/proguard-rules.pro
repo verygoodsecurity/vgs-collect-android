@@ -36,12 +36,14 @@
 -keep public class com.verygoodsecurity.vgscollect.view.card.CustomCardBrand  { *; }
 -keep public enum com.verygoodsecurity.vgscollect.view.card.CardType  { *; }
 -keep public enum com.verygoodsecurity.vgscollect.view.card.FieldType  { *; }
+-keep public enum com.verygoodsecurity.vgscollect.view.date.DatePickerMode { *; }
 
 -keep, allowobfuscation public interface com.verygoodsecurity.vgscollect.core.storage.OnVgsViewStateChangeListener { *; }
 -keep, allowobfuscation public class com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper { *; }
 
 -keep public interface  com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener { *; }
 
+-keep public class com.verygoodsecurity.vgscollect.core.model.VGSRequest$* { *; }
 -keep public class * extends com.verygoodsecurity.vgscollect.core.model.state.FieldState { *; }
 -keep public class * extends com.verygoodsecurity.vgscollect.core.model.VGSResponse { *; }
 -keep class com.verygoodsecurity.vgscollect.core.* {

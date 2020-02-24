@@ -5,6 +5,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import org.json.JSONObject
 
+@Deprecated("deprecated from 1.0.5")
 internal fun MutableCollection<VGSFieldState>.mapUsefulPayloads(
     userData: Map<String, String>? = null
 ): Map<String,String>? {

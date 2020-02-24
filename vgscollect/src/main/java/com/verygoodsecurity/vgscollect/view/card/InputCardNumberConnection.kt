@@ -17,7 +17,7 @@ class InputCardNumberConnection(
 ): InputRunnable {
     private var stateListener: OnVgsViewStateChangeListener? = null
 
-    private val cardFilters = ArrayList<VGSCardFilter>()
+    private val cardFilters = mutableListOf<VGSCardFilter>()
     private val brandLuhnValidations by lazy {
         val set = HashMap<CardType, VGSValidator>()
         set[CardType.VISA] = VisaDelegate()
@@ -63,15 +63,15 @@ class InputCardNumberConnection(
         applyNewRule(card.regex)
 
         val str = output.content?.data
+
         if(str.isNullOrEmpty() && !output.isRequired) {
             output.isValid = true
         } else {
-            val updatedStr = str?.replace(divider?:" ", "")?:""
+            val rawStr = str?.replace(divider?:" ", "")?:""
+            val isStrValid = validator?.isValid(rawStr)?:false
+            val isLuhnValid:Boolean = brandLuhnValidations[card.cardType]?.isValid(rawStr)?:true
 
-            val isStrValid = validator?.isValid(updatedStr)?:false
-            val isLuhnValid:Boolean = brandLuhnValidations[card.cardType]?.isValid(updatedStr)?:true
-
-            val isLengthAppropriate = checkLength(card.cardType, updatedStr.length)
+            val isLengthAppropriate = checkLength(card.cardType, rawStr.length)
             output.isValid = isLuhnValid && isStrValid && isLengthAppropriate
         }
 
