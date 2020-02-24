@@ -2,10 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
-//apply plugin: 'com.jfrog.bintray'
-apply from: 'src/version.gradle'
-//apply from: 'src/bintray.gradle'
-
 android {
     compileSdkVersion 28
     buildToolsVersion "29.0.2"
@@ -13,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode project.globalVersionCode
-        versionName project.globalVersionName
+        versionCode 101
+        versionName POM_VERSION
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -30,6 +26,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     androidExtensions {
         experimental = true
     }
@@ -43,19 +49,19 @@ tasks.withType(Javadoc).all {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.1.0'
-    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.core:core-ktx:1.2.0'
+    testImplementation 'junit:junit:4.13'
     testImplementation 'org.mockito:mockito-core:3.2.4'
     testImplementation 'org.mockito:mockito-inline:2.13.0'
+    testImplementation 'org.json:json:20190722'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
-//apply from: 'bintray.script'
+apply from: rootProject.file('release-bintray.gradle')

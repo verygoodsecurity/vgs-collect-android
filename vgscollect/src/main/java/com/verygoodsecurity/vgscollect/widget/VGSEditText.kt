@@ -9,6 +9,12 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
+
+/**
+ * A user interface element that displays text.
+ *
+ * @version 1.0.2
+ */
 open class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
@@ -21,7 +27,6 @@ open class VGSEditText @JvmOverloads constructor(
         ).apply {
 
             try {
-                val cursorColor = getColor(R.styleable.VGSEditText_cursorColor, 0)
                 val fieldType = getInteger(R.styleable.VGSEditText_fieldType, 4)
                 val inputType = getInt(R.styleable.VGSEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.VGSEditText_fieldName)
@@ -40,6 +45,8 @@ open class VGSEditText @JvmOverloads constructor(
 
                 val minLines = getInt(R.styleable.VGSEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.VGSEditText_maxLines, 0)
+
+                setFieldType(FieldType.values()[fieldType])
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -62,12 +69,13 @@ open class VGSEditText @JvmOverloads constructor(
 
                 setInputType(inputType)
                 setFieldType(FieldType.values()[fieldType])
-                if(cursorColor != 0) {
-                    setCursorColor(cursorColor)
-                }
             } finally {
                 recycle()
             }
         }
+    }
+
+    fun setFieldType(type: FieldType) {
+        applyFieldType(type)
     }
 }

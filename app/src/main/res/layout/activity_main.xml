@@ -47,18 +47,21 @@
             android:cursorVisible="false"
             android:enabled="false"/>
 
+
+
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardNumberFieldLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin">
+
             <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
                 android:id="@+id/cardNumberField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:numberDivider="-"
-                app:fieldName="cardNumber"
+                app:numberDivider=" "
+                app:fieldName="card_data.cardNumber"
                 app:isRequired="false"
                 app:textColor="@color/black"
                 app:singleLine="true"
@@ -67,6 +70,7 @@
                 app:hint="Card number"
                 app:cardBrandIconGravity="end"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardCVCFieldLay"
@@ -79,7 +83,7 @@
                 android:id="@+id/cardCVCField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:fieldName="cardCvc"
+                app:fieldName="card_data.cardCvc"
                 app:textColor="@color/black"
                 app:isRequired="true"
                 app:singleLine="true"
@@ -98,7 +102,7 @@
                 android:id="@+id/cardHolderField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:fieldName="cardHolder"
+                app:fieldName="card_data.personal_data.cardHolder"
                 app:textColor="@color/black"
                 app:singleLine="true"
                 app:inputType="text"
@@ -114,17 +118,16 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="@string/exp_date">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
                 android:id="@+id/cardExpDateField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:fieldName="expDate"
+                app:fieldName="card_data.personal_data.secret.expDate"
                 app:textColor="@color/black"
                 app:textSize="12dp"
                 app:singleLine="true"
                 app:isRequired="true"
-                app:text="05/25"
-                app:fieldType="expDate"/>
+                app:datePickerModes="calendar"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <Button

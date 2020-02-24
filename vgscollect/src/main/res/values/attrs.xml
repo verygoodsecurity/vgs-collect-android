@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="datePattern" format="string"/>
+    <attr name="datePickerModes">
+        <enum name="calendar" value="0" />
+        <enum name="spinner" value="1" />
+        <enum name="input" value="2" />
+    </attr>
+
+
     <attr name="textSize" format="dimension"/>
     <attr name="hint" format="string"/>
     <attr name="enabled" format="boolean"/>
@@ -10,7 +18,6 @@
     <attr name="minLines" format="integer"/>
 
     <attr name="fieldName" format="string"/>
-    <attr name="cursorColor" format="color"/>
 
     <attr name="cursorVisible" format="boolean" />
     <attr name="singleLine" format="boolean" />
@@ -60,7 +67,6 @@
 
     <declare-styleable name="VGSEditText">
         <attr name="fieldName"/>
-        <attr name="cursorColor"/>
 
         <attr name="inputType"/>
 
@@ -94,7 +100,6 @@
 
     <declare-styleable name="VGSCardNumberEditText">
         <attr name="fieldName"/>
-        <attr name="cursorColor"/>
 
         <attr name="inputType"/>
 
@@ -124,6 +129,64 @@
             <enum name="start" value="8388611" />
             <enum name="end" value="8388613" />
         </attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="DateTextField">
+        <attr name="fieldName"/>
+
+        <attr name="inputType"/>
+
+        <attr name="text"/>
+        <attr name="enabled"/>
+        <attr name="textSize"/>
+        <attr name="textColor" />
+        <attr name="ellipsize"/>
+
+        <attr name="textStyle" />
+
+        <attr name="cursorVisible" />
+        <attr name="singleLine"  />
+        <attr name="isRequired"/>
+
+        <attr name="gravity" />
+        <attr name="scrollHorizontally"/>
+
+        <attr name="hint" />
+
+
+        <attr name="maxDate" format="string"/>
+        <attr name="minDate" format="string"/>
+        <attr name="datePattern"/>
+        <attr name="datePickerModes"/>
+
+    </declare-styleable>
+
+    <declare-styleable name="ExpirationDateEditText">
+        <attr name="fieldName"/>
+
+        <attr name="inputType"/>
+
+        <attr name="text"/>
+        <attr name="enabled"/>
+        <attr name="textSize"/>
+        <attr name="textColor" />
+        <attr name="ellipsize"/>
+
+        <attr name="textStyle" />
+
+        <attr name="cursorVisible" />
+        <attr name="singleLine"  />
+        <attr name="isRequired"/>
+
+        <attr name="gravity" />
+        <attr name="scrollHorizontally"/>
+
+        <attr name="hint" />
+
+
+        <attr name="datePattern"/>
+        <attr name="datePickerModes"/>
     </declare-styleable>
 
     <declare-styleable name="VGSTextInputLayout">

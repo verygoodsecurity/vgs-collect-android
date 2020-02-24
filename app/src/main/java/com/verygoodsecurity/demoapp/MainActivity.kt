@@ -9,10 +9,16 @@ import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscollect.core.model.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.progressBar
+import kotlinx.android.synthetic.main.activity_main.responseView
+import kotlinx.android.synthetic.main.activity_main.scanCardIOBtn
+import kotlinx.android.synthetic.main.activity_main.submitBtn
+import kotlinx.android.synthetic.main.activity_main.titleHeader
 import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
@@ -44,7 +50,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         submitBtn?.setOnClickListener(this)
         scanCardIOBtn?.setOnClickListener(this)
 
-        vgsForm.onResponseListener = this
+        vgsForm.addOnResponseListeners(this)
 
         vgsForm.addOnFieldStateChangeListener(getOnFieldStateChangeListener())
 
@@ -52,6 +58,16 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         vgsForm.bindView(cardCVCField)
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
+
+        val customData = HashMap<String, Any>()
+        customData["nonSDKValue"] = "all time data"
+
+        vgsForm.setCustomData(customData)
+
+        val headers = HashMap<String, String>()
+        headers["CUSTOM-HEADER"] = "all time header"
+        vgsForm.setCustomHeaders(headers)
+
     }
 
     private fun showVaultId() {
@@ -109,18 +125,20 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     }
 
     private fun submitData() {
-        vgsForm.resetCustomData()
-        vgsForm.resetCustomHeaders()
-
-        val data = HashMap<String, String>()
-        data["nonSDKValue"] = "some additional data"
-        vgsForm.setCustomData(data)
+        val customData = HashMap<String, Any>()
+        customData.put("nickname", "Taras")
 
         val headers = HashMap<String, String>()
-        headers["CUSTOMHEADER"] = "value"
-        vgsForm.setCustomHeaders(headers)
+        headers["some-headers"] = "custom-header"
 
-        vgsForm.asyncSubmit(this@MainActivity, path, HTTPMethod.POST)
+        val request: VGSRequest = VGSRequest.VGSRequestBuilder()
+            .setMethod(HTTPMethod.POST)
+            .setPath(path)
+            .setCustomHeader(headers)
+            .setCustomData(customData)
+            .build()
+
+        vgsForm.asyncSubmit(this@MainActivity, request)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {

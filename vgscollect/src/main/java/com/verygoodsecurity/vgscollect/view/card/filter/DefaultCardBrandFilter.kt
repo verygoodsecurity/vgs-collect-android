@@ -13,8 +13,9 @@ class DefaultCardBrandFilter(
 
     companion object {
         private const val MAX_LENGTH = 19
-        private const val MASK_COUNT = 3
     }
+
+    private val MASK_COUNT:Int = if(divider.isNullOrEmpty()) { 0 } else { 3 }
 
     override fun detect(str: String?): CardBrandWrapper? {
         if(str.isNullOrEmpty()) {
