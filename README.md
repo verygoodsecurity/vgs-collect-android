@@ -52,7 +52,7 @@ For integration you need to install the [Android Studio](http://developer.androi
 If you are using Maven, add the following to your `build.gradle` file:
 ```gradle
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:1.0.2’
+   implementation 'com.verygoodsecurity:vgscollect:1.0.6’
 }
 ```
 #### Add permissions
