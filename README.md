@@ -37,12 +37,13 @@ Table of contents
 | Target SDK | 28 |
 | com.android.support:appcompat-v7 | 28.0.0 |
 | androidx.appcompat:appcompat | 1.1.0 |
-| androidx.core:core-ktx | 1.1.0 |
+| androidx.core:core-ktx | 1.2.0 |
 | com.android.support:design | 28.0.0 |
 | org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.61 |
 
 ## Structure
 * **VGSCollect SDK** - provides an API for interacting with the VGS Vault
+* **Card Scanner** - This module is for adapting <a href="https://github.com/card-io/card.io-Android-SDK">Card.io SDK</a> with VGS Collect Android SDK.
 * **app** - sample application to act as the host app for testing the SDK during development
 
 ## Integration
