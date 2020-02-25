@@ -39,8 +39,11 @@ android {
     androidExtensions {
         experimental = true
     }
+
     testOptions {
-        unitTests.returnDefaultValues = true
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 }
 
@@ -62,6 +65,11 @@ dependencies {
     testImplementation 'org.json:json:20190722'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+
+    testImplementation "org.robolectric:robolectric:4.3"
+    testImplementation "io.mockk:mockk:1.9"
+    androidTestImplementation 'androidx.test:runner:1.2.0'
 }
 
 apply from: rootProject.file('release-bintray.gradle')

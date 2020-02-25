@@ -108,4 +108,8 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     fun setDivider(char:Char) {
         setNumberDivider(char.toString())
     }
+
+    fun getDivider() : Char? {
+        return getNumberDivider()
+    }
 }

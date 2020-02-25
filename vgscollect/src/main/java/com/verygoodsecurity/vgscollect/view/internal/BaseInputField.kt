@@ -27,6 +27,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     companion object {
         fun getInputField(context: Context, type:FieldType):BaseInputField {
+            val s = CardInputField(context)
             return when(type) {
                 FieldType.CARD_NUMBER -> CardInputField(context)
                 FieldType.CVC -> CVCInputField(context)
