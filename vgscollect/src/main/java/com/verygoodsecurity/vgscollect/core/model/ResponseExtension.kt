@@ -9,11 +9,11 @@ internal fun String.parseVGSResponse():Map<String, Any> {
     when {
         isJSONObjectValid(this) -> {
             val json = JSONObject(this)
-            resultMap["body"] = json.toMap()
+            resultMap["response"] = json.toMap()
         }
         isJSONArrayValid(this) -> {
             val json = JSONArray(this)
-            resultMap["body"] = json.toList()
+            resultMap["response"] = json.toList()
         }
     }
 
