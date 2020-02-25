@@ -16,7 +16,7 @@ sealed class VGSResponse(val code:Int = -1) {
      * @param successCode The response code from server.
      */
     class SuccessResponse(
-        val response:Map<String, String>? = null
+        val response:Map<String, Any>? = null
         , val successCode:Int = -1
     ):VGSResponse(successCode)
 

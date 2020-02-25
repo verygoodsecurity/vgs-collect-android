@@ -125,7 +125,7 @@ internal class URLConnectionClient:ApiClient {
             val responseCode = conn.responseCode
             response = if (responseCode == HTTP_OK) {
                 val responseStr = conn.inputStream?.bufferedReader()?.use { it.readText() }
-                val responsePayload:Map<String, String>? = responseStr?.parseVGSResponse()
+                val responsePayload:Map<String, Any>? = responseStr?.parseVGSResponse()
                 VGSResponse.SuccessResponse(responsePayload, responseCode)
             } else {
                 val responseStr = conn.errorStream?.bufferedReader()?.use { it.readText() }
