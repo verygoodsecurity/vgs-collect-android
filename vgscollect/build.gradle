@@ -9,7 +9,7 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 28
-        versionCode 101
+        versionCode CODE_VERSION.toInteger()
         versionName POM_VERSION
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
