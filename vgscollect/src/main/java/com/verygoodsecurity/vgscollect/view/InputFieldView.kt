@@ -163,7 +163,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     private var bgDraw: Drawable? = null
-    override fun onAttachedToWindow() {
+    public override fun onAttachedToWindow() {
         if(isAttachPermitted) {
             super.onAttachedToWindow()
             if (parent !is TextInputFieldLayout) {
@@ -534,6 +534,14 @@ abstract class InputFieldView @JvmOverloads constructor(
         if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setNumberDivider(divider)
             (inputField as? InputField)?.setNumberDivider(divider)
+        }
+    }
+
+    protected fun getNumberDivider(): Char? {
+        return if(fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.getNumberDivider()?.first()
+        } else {
+            null
         }
     }
 

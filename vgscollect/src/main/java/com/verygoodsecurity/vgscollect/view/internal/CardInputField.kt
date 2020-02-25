@@ -146,4 +146,6 @@ internal class CardInputField(context: Context): BaseInputField(context) {
         }
     }
 
+    internal fun getNumberDivider() = divider
+
 }
