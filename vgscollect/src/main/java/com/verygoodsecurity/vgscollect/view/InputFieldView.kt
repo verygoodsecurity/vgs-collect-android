@@ -28,7 +28,7 @@ import com.verygoodsecurity.vgscollect.view.internal.InputField
 /**
  * An abstract class that provide displays text user-editable text to the user.
  *
- * @version 1.0.2
+ * @version 1.0.0
  */
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

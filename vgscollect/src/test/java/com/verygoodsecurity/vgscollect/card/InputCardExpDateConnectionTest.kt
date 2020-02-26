@@ -61,7 +61,7 @@ class InputCardExpDateConnectionTest {
         connection.run()
 
         assertTrue(connection.getOutput().isValid)
-        Mockito.verify(listener).emit(0, VGSFieldState(isValid = true, isRequired = false, fieldName = "fieldName", content = content))
+        Mockito.verify(listener).emit(0, textItem)
     }
 
     @Test
@@ -80,6 +80,6 @@ class InputCardExpDateConnectionTest {
         connection.run()
 
         assertTrue(connection.getOutput().isValid)
-        Mockito.verify(listener).emit(0, VGSFieldState(isValid = true, isRequired = true, fieldName = "fieldName", content = content))
+        Mockito.verify(listener).emit(0, textItem)
     }
 }
