@@ -523,6 +523,14 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    protected fun getCardIconGravity():Int {
+        return if(fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.getCardPreviewIconGravity()?:-1
+        } else {
+            -1
+        }
+    }
+
     protected fun applyCardBrand(c: CustomCardBrand) {
         if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardBrand(c)

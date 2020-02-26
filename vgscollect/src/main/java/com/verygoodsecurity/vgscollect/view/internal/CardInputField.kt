@@ -108,7 +108,17 @@ internal class CardInputField(context: Context): BaseInputField(context) {
     }
 
     internal fun setCardPreviewIconGravity(gravity:Int) {
-        iconGravity = gravity
+        iconGravity = when(gravity) {
+            Gravity.RIGHT -> gravity
+            Gravity.LEFT -> gravity
+            Gravity.START -> gravity
+            Gravity.END -> gravity
+            else -> Gravity.END
+        }
+    }
+
+    internal fun getCardPreviewIconGravity():Int {
+        return iconGravity
     }
 
     internal fun setCardBrand(c: CustomCardBrand) {
