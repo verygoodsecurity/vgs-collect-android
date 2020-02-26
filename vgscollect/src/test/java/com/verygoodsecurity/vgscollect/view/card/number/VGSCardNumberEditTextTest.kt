@@ -1,9 +1,11 @@
-package com.verygoodsecurity.vgscollect.view
+package com.verygoodsecurity.vgscollect.view.card.number
 
 import android.app.Activity
 import android.os.Build
 import android.view.Gravity
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -46,6 +48,14 @@ class VGSCardNumberEditTextTest {
 
         assertEquals(1, view.childCount)
     }
+
+
+    @Test
+    fun test_field_type() {
+        val type = view.getFieldType()
+        Assert.assertEquals(FieldType.CARD_NUMBER, type)
+    }
+
 
     @Test
     fun test_set_divider() {
