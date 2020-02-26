@@ -19,6 +19,7 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CardInputField
 import com.verygoodsecurity.vgscollect.view.internal.DateInputField
@@ -607,10 +608,18 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    protected fun getDatePattern():String? {
+        return (inputField as? DateInputField)?.getDatePattern()
+    }
+
     protected fun setDatePickerMode(type:Int) {
         if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setDatePickerMode(type)
         }
+    }
+
+    protected fun getDateMode(): DatePickerMode? {
+        return (inputField as? DateInputField)?.getDatePickerMode()
     }
 
     protected fun maxDate(date:String) {
