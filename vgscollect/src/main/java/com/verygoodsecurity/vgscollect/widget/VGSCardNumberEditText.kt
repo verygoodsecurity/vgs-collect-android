@@ -91,6 +91,15 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     /**
+     * Return the align the icon by the view’s x-axis.
+     *
+     * @return the icon gravity value.
+     */
+    fun getCardPreviewIconGravity():Int {
+        return getCardIconGravity()
+    }
+
+    /**
      * It may be useful to add new brands in addition to already defined brands or override existing ones.
      *
      * @param c new card definition
@@ -109,6 +118,11 @@ class VGSCardNumberEditText @JvmOverloads constructor(
         setNumberDivider(char.toString())
     }
 
+    /**
+     * Return symbol that will divide groups of digits in the card number.
+     *
+     * @return divider symbol
+     */
     fun getDivider() : Char? {
         return getNumberDivider()
     }
