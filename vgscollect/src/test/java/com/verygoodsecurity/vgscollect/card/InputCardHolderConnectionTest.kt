@@ -40,7 +40,7 @@ class InputCardHolderConnectionTest {
         connection.setOutput(textItem)
 
         connection.run()
-        Mockito.verify(listener).emit(0, VGSFieldState(fieldName = "fieldName"))
+        Mockito.verify(listener).emit(0, textItem)
     }
 
     @Test
@@ -49,7 +49,7 @@ class InputCardHolderConnectionTest {
         connection.setOutputListener(listener)
 
         val content = FieldContent.InfoContent()
-        content.data = ""
+        content.data = "123"
         val textItem = VGSFieldState(isValid = false,
             isRequired = false,
             fieldName = "fieldName",
@@ -57,7 +57,7 @@ class InputCardHolderConnectionTest {
         connection.setOutput(textItem)
 
         connection.run()
-        Mockito.verify(listener).emit(0, VGSFieldState(isValid = true, isRequired = false, fieldName = "fieldName", content = content))
+        Mockito.verify(listener).emit(0, textItem)
     }
 
     @Test
@@ -74,6 +74,6 @@ class InputCardHolderConnectionTest {
         connection.setOutput(textItem)
 
         connection.run()
-        Mockito.verify(listener).emit(0, VGSFieldState(isValid = true, isRequired = true, fieldName = "fieldName", content = content))
+        Mockito.verify(listener).emit(0, textItem)
     }
 }

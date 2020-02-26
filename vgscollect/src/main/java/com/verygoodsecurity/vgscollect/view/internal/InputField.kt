@@ -42,6 +42,7 @@ internal class InputField(context: Context): BaseInputField(context) {
 
     fun setType(type:FieldType) {
         fieldType = type
+        applyFieldTypeConfigurations()
     }
 
     protected var validator: VGSValidator? = null
@@ -76,13 +77,13 @@ internal class InputField(context: Context): BaseInputField(context) {
 
     override fun onAttachedToWindow() {
         isListeningPermitted = true
-        applyAttributes()
+        applyFieldTypeConfigurations()
         super.onAttachedToWindow()
         isListeningPermitted = false
     }
 
     override fun applyFieldType() {
-        applyAttributes()
+        applyFieldTypeConfigurations()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -100,7 +101,7 @@ internal class InputField(context: Context): BaseInputField(context) {
         }
     }
 
-    private fun applyAttributes() {
+    private fun applyFieldTypeConfigurations() {
         when(fieldType) {
             FieldType.CARD_NUMBER -> applyCardNumFieldType()
             FieldType.CARD_EXPIRATION_DATE -> applyCardExpDateFieldType()
