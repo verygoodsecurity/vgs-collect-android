@@ -15,12 +15,13 @@ import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
+import com.verygoodsecurity.vgscollect.view.date.validation.isInputDatePatternValid
 import java.text.SimpleDateFormat
 import java.util.*
 
 internal class DateInputField(context: Context): BaseInputField(context), View.OnClickListener {
 
-    private var datePattern:String = "MM/yy"
+    private var datePattern:String = "MM/yyyy"
     private var charLimit = datePattern.length
 
     private var minDate:Long = 0
@@ -124,14 +125,17 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     internal fun setDatePattern(pattern:String?) {
-        datePattern = if(pattern.isNullOrEmpty()) {
-            "MM/yy"
-        } else {
-            pattern
+        datePattern = when {
+            pattern.isNullOrEmpty() -> "MM/yyyy"
+            datePickerMode == DatePickerMode.INPUT && pattern.isInputDatePatternValid().not() -> "MM/yyyy"
+            else -> pattern
         }
+
         isDaysVisible = datePattern.contains("dd")
         fieldDateFormat = SimpleDateFormat(datePattern, Locale.getDefault())
     }
+
+    internal fun getDatePattern():String? = datePattern
 
     internal fun setDatePickerMode(mode:Int) {
         datePickerMode = DatePickerMode.values()[mode]
@@ -139,9 +143,15 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         when(datePickerMode) {
             DatePickerMode.CALENDAR -> setIsActive(false)
             DatePickerMode.SPINNER -> setIsActive(false)
-            DatePickerMode.INPUT -> setIsActive(true)
+            DatePickerMode.INPUT -> {
+                val p = datePattern
+                setDatePattern(p)
+                setIsActive(true)
+            }
         }
     }
+
+    internal fun getDatePickerMode() = datePickerMode
 
     private fun setIsActive(isActive:Boolean) {
         isCursorVisible = isActive

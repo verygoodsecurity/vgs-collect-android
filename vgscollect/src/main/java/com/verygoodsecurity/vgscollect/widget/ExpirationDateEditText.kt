@@ -89,6 +89,13 @@ class ExpirationDateEditText @JvmOverloads constructor(
     }
 
     /**
+     * Return regex date representation format.
+     *
+     * @return regex
+     */
+    fun getDateRegex():String? = getDatePattern()
+
+    /**
      * Sets type of exact appearance and interaction model of this widget.
      *
      * @param mode
@@ -96,5 +103,12 @@ class ExpirationDateEditText @JvmOverloads constructor(
     fun setDatePickerMode(mode: DatePickerMode) {
         setDatePickerMode(mode.ordinal)
     }
+
+    /**
+     * Return type of exact appearance and interaction model of this widget.
+     *
+     * @return date picker mode
+     */
+    fun getDatePickerMode():DatePickerMode? = getDateMode()
 
 }

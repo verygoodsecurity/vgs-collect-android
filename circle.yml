@@ -125,6 +125,7 @@ workflows:
               only:
                 - master
                 - stage
+                - dmytro.k/ch55902/vgs-collect-android-sdk-tests-add-instrumented
       - "Run Lint":
           requires:
             *prepare_sources
@@ -141,6 +142,7 @@ workflows:
               only:
                 - master
                 - stage
+                - dmytro.k/ch55902/vgs-collect-android-sdk-tests-add-instrumented
       - "Assemble Debug Build":
           requires:
             *all_test

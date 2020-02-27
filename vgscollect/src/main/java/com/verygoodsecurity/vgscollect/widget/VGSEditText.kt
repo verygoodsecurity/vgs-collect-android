@@ -9,11 +9,10 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
-
 /**
  * A user interface element that displays text.
  *
- * @version 1.0.2
+ * @version 1.0.0
  */
 open class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -28,6 +27,7 @@ open class VGSEditText @JvmOverloads constructor(
 
             try {
                 val fieldType = getInteger(R.styleable.VGSEditText_fieldType, 4)
+
                 val inputType = getInt(R.styleable.VGSEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.VGSEditText_fieldName)
                 val hint = getString(R.styleable.VGSEditText_hint)
