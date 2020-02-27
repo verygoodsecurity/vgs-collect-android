@@ -73,7 +73,7 @@ internal class URLConnectionClient:ApiClient {
             var responseStr: String? = null
             if (responseCode == HTTP_OK) {
                 responseStr = conn.inputStream?.bufferedReader()?.use { it.readText() }
-                response = VGSResponse.SuccessResponse(successCode = responseCode)
+                response = VGSResponse.SuccessResponse(successCode = responseCode, rawResponse = responseStr)
             } else {
                 response = VGSResponse.ErrorResponse("error:")
             }
@@ -124,9 +124,9 @@ internal class URLConnectionClient:ApiClient {
 
             val responseCode = conn.responseCode
             response = if (responseCode == HTTP_OK) {
-                val responseStr = conn.inputStream?.bufferedReader()?.use { it.readText() }
-                val responsePayload:Map<String, String>? = responseStr?.parseVGSResponse()
-                VGSResponse.SuccessResponse(responsePayload, responseCode)
+                val rawResponse = conn.inputStream?.bufferedReader()?.use { it.readText() }
+                val responsePayload:Map<String, Any>? = rawResponse?.parseVGSResponse()
+                VGSResponse.SuccessResponse(responsePayload, rawResponse, responseCode)
             } else {
                 val responseStr = conn.errorStream?.bufferedReader()?.use { it.readText() }
                 VGSResponse.ErrorResponse(responseStr, responseCode)

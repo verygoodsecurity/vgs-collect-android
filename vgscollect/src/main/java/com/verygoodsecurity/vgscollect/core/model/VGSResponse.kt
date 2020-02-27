@@ -13,11 +13,13 @@ sealed class VGSResponse(val code:Int = -1) {
      * The class definition for a success response state.
      *
      * @param response The response code from server.
+     * @param rawResponse The response string.
      * @param successCode The response code from server.
      */
     class SuccessResponse(
-        val response:Map<String, String>? = null
-        , val successCode:Int = -1
+        val response:Map<String, Any>? = null,
+        val rawResponse:String? = null,
+        val successCode:Int = -1
     ):VGSResponse(successCode)
 
     /**
