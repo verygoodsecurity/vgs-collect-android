@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect
 
 import com.verygoodsecurity.vgscollect.core.Environment
+import com.verygoodsecurity.vgscollect.core.api.buildURL
 import com.verygoodsecurity.vgscollect.core.api.isTennantIdValid
 import com.verygoodsecurity.vgscollect.core.api.isURLValid
 import com.verygoodsecurity.vgscollect.core.api.setupURL
@@ -9,6 +10,42 @@ import org.junit.Test
 import java.util.regex.Pattern
 
 class UrlExtensionTest {
+
+    @Test
+    fun test_build_URL_fault() {
+        val url1 = "a".buildURL("path")
+        assertEquals(null, url1)
+
+        val url2 = "".buildURL("path")
+        assertEquals(null, url2)
+
+        val url3 = "a.a".buildURL("path")
+        assertEquals(null, url3)
+    }
+
+    @Test
+    fun test_build_URL_path_right() {
+        val url1 = "http://a.a".buildURL("path")
+        assertEquals("http://a.a/path", url1.toString())
+
+        val url2 = "http://a.a".buildURL("")
+        assertEquals("http://a.a", url2.toString())
+
+        val url3 = "http://a.a".buildURL("/path")
+        assertEquals("http://a.a/path", url3.toString())
+    }
+
+    @Test
+    fun test_build_URL_path_query_right() {
+        val url1 = "http://a.a".buildURL("path", "method=EMPTY", "class=android", "param3")
+        assertEquals("http://a.a/path?method=EMPTY&class=android&param3", url1.toString())
+
+        val url2 = "http://a.a".buildURL("","method=EMPTY", "class=android", "param3")
+        assertEquals("http://a.a?method=EMPTY&class=android&param3", url2.toString())
+
+        val url3 = "http://a.a".buildURL("")
+        assertEquals("http://a.a", url3.toString())
+    }
 
     @Test
     fun test_is_tennantId_not_valid() {
