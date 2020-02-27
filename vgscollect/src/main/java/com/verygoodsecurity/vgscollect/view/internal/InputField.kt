@@ -18,6 +18,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
@@ -324,7 +325,13 @@ internal class InputField(context: Context): BaseInputField(context) {
         when {
             divider.isNullOrEmpty() -> this@InputField.divider = ""
             divider.length == 1 -> this@InputField.divider = divider
-            else -> Logger.i("VGSEditTextView", "Divider for number can't be greater than 1 symbol. (${divider})")
+            else -> {
+                val message = String.format(
+                    context.getString(R.string.error_divider_card_number_field),
+                    divider
+                )
+                Logger.e(InputFieldView::class.java, message)
+            }
         }
     }
 
