@@ -18,6 +18,14 @@ sealed class FieldContent {
     }
 
     class InfoContent:FieldContent()
+
+    override fun hashCode(): Int {
+        return data.hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return other is String && other == data
+    }
 }
 
 internal fun FieldContent.CardNumberContent.CVCMaxLength() =  cardtype.rangeCVV.last()

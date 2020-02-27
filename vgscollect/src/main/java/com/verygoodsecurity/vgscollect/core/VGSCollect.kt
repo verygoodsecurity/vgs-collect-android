@@ -54,18 +54,12 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         internal const val TAG = "VGSCollect"
     }
 
-    internal val baseURL:String
+    internal val baseURL:String = id.setupURL(environment.rawValue)
 
     private val isURLValid:Boolean
 
     init {
-        baseURL = if(id.isTennantIdValid()) {
-            id.setupURL(environment.rawValue)
-        } else {
-            Logger.e(TAG, "tennantId is not valid")
-            ""
-        }
-        isURLValid = URLUtil.isValidUrl(baseURL)
+        isURLValid = baseURL.isURLValid()
 
         dependencyDispatcher = Notifier()
         externalDependencyDispatcher = DependencyReceiver()

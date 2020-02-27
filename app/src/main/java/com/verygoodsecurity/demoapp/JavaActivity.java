@@ -78,11 +78,11 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
     @Override
     public void onResponse(@org.jetbrains.annotations.Nullable VGSResponse response) {
         if(response.getCode() >= 200 && response.getCode() <=300 ) {
-            Map<String, String> m = ((VGSResponse.SuccessResponse)response).getResponse();
+            Map<String, Object> m = ((VGSResponse.SuccessResponse)response).getResponse();
             int c = ((VGSResponse.SuccessResponse)response).getSuccessCode();
             StringBuilder builder = new StringBuilder("CODE: ")
                     .append(response.getCode()).append("\n\n");
-            for (Map.Entry<String, String> entry : m.entrySet()) {
+            for (Map.Entry<String, Object> entry : m.entrySet()) {
                 builder.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
             }
             responseView.setText(builder.toString());

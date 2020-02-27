@@ -19,6 +19,7 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CardInputField
 import com.verygoodsecurity.vgscollect.view.internal.DateInputField
@@ -27,7 +28,7 @@ import com.verygoodsecurity.vgscollect.view.internal.InputField
 /**
  * An abstract class that provide displays text user-editable text to the user.
  *
- * @version 1.0.2
+ * @version 1.0.0
  */
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -163,7 +164,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     private var bgDraw: Drawable? = null
-    override fun onAttachedToWindow() {
+    public override fun onAttachedToWindow() {
         if(isAttachPermitted) {
             super.onAttachedToWindow()
             if (parent !is TextInputFieldLayout) {
@@ -523,6 +524,14 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    protected fun getCardIconGravity():Int {
+        return if(fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.getCardPreviewIconGravity()?:-1
+        } else {
+            -1
+        }
+    }
+
     protected fun applyCardBrand(c: CustomCardBrand) {
         if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardBrand(c)
@@ -534,6 +543,14 @@ abstract class InputFieldView @JvmOverloads constructor(
         if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setNumberDivider(divider)
             (inputField as? InputField)?.setNumberDivider(divider)
+        }
+    }
+
+    protected fun getNumberDivider(): Char? {
+        return if(fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.getNumberDivider()?.first()
+        } else {
+            null
         }
     }
 
@@ -591,10 +608,18 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    protected fun getDatePattern():String? {
+        return (inputField as? DateInputField)?.getDatePattern()
+    }
+
     protected fun setDatePickerMode(type:Int) {
         if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setDatePickerMode(type)
         }
+    }
+
+    protected fun getDateMode(): DatePickerMode? {
+        return (inputField as? DateInputField)?.getDatePickerMode()
     }
 
     protected fun maxDate(date:String) {
