@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card.oldview
 import android.app.Activity
 import android.os.Build
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import org.junit.Assert
 import org.junit.Before
@@ -65,6 +66,34 @@ class VGSEditTextTest {
     fun test_cvc() {
         view.applyFieldType(FieldType.CVC)
         Assert.assertEquals(FieldType.CVC, view.getFieldType())
+    }
+
+    @Test
+    fun test_cvc_set_text_false() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CVC)
+        Assert.assertEquals(FieldType.CVC, view.getFieldType())
+
+        view.setText("12f")
+        Assert.assertEquals("", (view.getView() as BaseInputField).text.toString())
+        view.setText("12 333333")
+        Assert.assertEquals("", (view.getView() as BaseInputField).text.toString())
+    }
+
+    @Test
+    fun test_cvc_set_text_true() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CVC)
+
+        view.setText("12333333")
+        Assert.assertEquals("1233", (view.getView() as BaseInputField).text.toString())
+
+        view.setText("123")
+        Assert.assertEquals("123", (view.getView() as BaseInputField).text.toString())
     }
 
     @Test
