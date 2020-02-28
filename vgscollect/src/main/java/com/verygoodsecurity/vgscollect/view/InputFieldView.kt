@@ -485,6 +485,16 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
+     * Specifies whether the text inside input field is required to be filled before sending.
+     * If the field doesn't require, then it may be sent to the server as empty.
+     *
+     * @return true if the input required.
+     */
+    open fun isRequired():Boolean {
+        return inputField.isRequired
+    }
+
+    /**
      * Gets the current field type of the InputFieldView.
      *
      * @return FieldType
