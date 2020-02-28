@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
+import com.verygoodsecurity.vgscollect.view.internal.InputField
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import org.junit.Assert
 import org.junit.Before
@@ -43,6 +44,16 @@ class VGSEditTextTest {
 
         Assert.assertEquals(1, view.childCount)
     }
+
+    @Test
+    fun test_check_internal_view() {
+        val internal = view.getView()
+        Assert.assertNotNull(internal)
+
+        val child = view.getView()
+        Assert.assertTrue(child is InputField)
+    }
+
 
     @Test
     fun test_card_number() {
