@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
+import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 import org.junit.Assert
 import org.junit.Before
@@ -43,6 +44,15 @@ class ExpirationDateEditTextTest {
         view.onAttachedToWindow()
 
         Assert.assertEquals(1, view.childCount)
+    }
+
+    @Test
+    fun test_check_internal_view() {
+        val internal = view.getView()
+        Assert.assertNotNull(internal)
+
+        val child = view.getView()
+        Assert.assertTrue(child is DateInputField)
     }
 
     @Test
