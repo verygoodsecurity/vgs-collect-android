@@ -10,7 +10,6 @@ import com.verygoodsecurity.vgscollect.util.mapToJSON
 import java.net.HttpURLConnection.HTTP_OK
 import java.io.*
 import java.net.HttpURLConnection
-import java.net.URL
 import java.nio.charset.Charset
 
 internal class URLConnectionClient:ApiClient {
@@ -51,7 +50,7 @@ internal class URLConnectionClient:ApiClient {
     override fun getTemporaryStorage(): VgsApiTemporaryStorage = tempStore
 
     private fun getRequest(path: String, headers: Map<String, String>? = null, data: Map<String, Any>?): VGSResponse {
-        val url = buildURL(path)
+        val url = baseURL.buildURL(path = path) ?: return VGSResponse.ErrorResponse()
 
         var conn: HttpURLConnection? = null
         var response: VGSResponse
@@ -75,12 +74,12 @@ internal class URLConnectionClient:ApiClient {
                 responseStr = conn.inputStream?.bufferedReader()?.use { it.readText() }
                 response = VGSResponse.SuccessResponse(successCode = responseCode, rawResponse = responseStr)
             } else {
-                response = VGSResponse.ErrorResponse("error:")
+                response = VGSResponse.ErrorResponse()
             }
 
         } catch (e: Exception) {
-            response = VGSResponse.ErrorResponse("error:")
-            Logger.e(VGSCollect.TAG, e.localizedMessage)
+            response = VGSResponse.ErrorResponse()
+            Logger.e(VGSCollect::class.java, e.localizedMessage)
         }
         conn?.disconnect()
 
@@ -88,7 +87,7 @@ internal class URLConnectionClient:ApiClient {
     }
 
     private fun postRequest(path: String, headers: Map<String, String>? = null, data: Map<String, Any>? = null): VGSResponse {
-        val url = buildURL(path)
+        val url = path.buildURL(path = path) ?: return VGSResponse.ErrorResponse()
 
         var conn: HttpURLConnection? = null
         var response: VGSResponse
@@ -133,27 +132,11 @@ internal class URLConnectionClient:ApiClient {
             }
 
         } catch (e: Exception) {
-            response = VGSResponse.ErrorResponse("Can't connect to server")
-            Logger.e(VGSCollect.TAG, e.localizedMessage)
+            response = VGSResponse.ErrorResponse()
+            Logger.e(VGSCollect::class.java, e.localizedMessage)
         }
         conn?.disconnect()
 
         return response
-    }
-
-    private fun buildURL(path: String, getQuery:String? = ""): URL {
-        val builder = StringBuilder(baseURL)
-
-        if(path.length > 1 && path.first().toString() == "/") {
-            builder.append(path)
-        } else {
-            builder.append("/").append(path)
-        }
-
-        if(!getQuery.isNullOrEmpty()) {
-            builder.append("?").append(getQuery)
-        }
-
-        return URL(builder.toString())
     }
 }

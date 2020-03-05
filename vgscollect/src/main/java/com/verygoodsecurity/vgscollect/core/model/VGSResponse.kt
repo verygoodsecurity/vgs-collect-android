@@ -29,7 +29,7 @@ sealed class VGSResponse(val code:Int = -1) {
      * @param errorCode The response code from server.
      */
     class ErrorResponse(
-        val localizeMessage:String? = "",
+        val localizeMessage:String? = "Can't connect to server",
         val errorCode:Int = -1
     ):VGSResponse(errorCode)
 
