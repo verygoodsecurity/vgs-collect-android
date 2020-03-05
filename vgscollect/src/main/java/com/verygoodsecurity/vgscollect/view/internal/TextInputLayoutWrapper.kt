@@ -31,8 +31,8 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
         super.addView(v, width, height)
     }
 
-    override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
-        val v = handleNewChild(child)
+    override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
+        val v = handleNewChild(child)?:child
         super.addView(v, index, params)
     }
 

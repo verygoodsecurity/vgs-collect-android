@@ -1,11 +1,12 @@
 package com.verygoodsecurity.vgscollect.core
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.AsyncTask
-import android.webkit.URLUtil
 import androidx.core.content.ContextCompat
+import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
@@ -37,7 +38,7 @@ import org.jetbrains.annotations.TestOnly
  * @param id Unique Vault id
  * @param environment Type of Vaults
  *
- * @version 1.0.2
+ * @version 1.0.0
  */
 class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     private var storage: VgsStore
@@ -49,10 +50,6 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
 
     private val tasks = mutableListOf<AsyncTask<Payload, Void, VGSResponse>>()
-
-    companion object {
-        internal const val TAG = "VGSCollect"
-    }
 
     internal val baseURL:String = id.setupURL(environment.rawValue)
 
@@ -215,18 +212,22 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         when {
             ContextCompat.checkSelfPermission(mainActivity,android.Manifest.permission.INTERNET)
                     == PackageManager.PERMISSION_DENIED ->
-                Logger.e(TAG, "Permission denied (missing INTERNET permission?)")
-            !isURLValid -> Logger.e(TAG, "URL is not valid")
-            !isValidData() -> return
+                Logger.e(mainActivity, VGSCollect::class.java, R.string.error_internet_permission)
+            !isURLValid -> Logger.e(mainActivity, VGSCollect::class.java, R.string.error_url_validation)
+            !isValidData(mainActivity) -> return
             else -> func(storage.getStates())
         }
     }
 
-    private fun isValidData(): Boolean {
+    private fun isValidData(context: Context): Boolean {
         var isValid = true
         storage.getStates().forEach {
             if(!it.isValid) {
-                val r = VGSResponse.ErrorResponse("FieldName is not a valid ${it.fieldName}", -1)
+                val message = String.format(
+                    context.getString(R.string.error_field_validation),
+                    it.fieldName
+                )
+                val r = VGSResponse.ErrorResponse(message, -1)
                 responseListeners.forEach { it.onResponse(r) }
                 isValid = false
                 return@forEach
@@ -254,7 +255,7 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         val task = doAsync(responseListeners) {
             it?.run {
                 client.call(this.path, this.method, this.headers, this.data)
-            } ?: VGSResponse.ErrorResponse("error")
+            } ?: VGSResponse.ErrorResponse()
         }
 
         tasks.add(task)
