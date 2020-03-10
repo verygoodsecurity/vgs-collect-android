@@ -24,6 +24,7 @@ import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CardInputField
 import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.view.internal.InputField
+import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
@@ -530,7 +531,6 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun applyCardIconGravity(gravity:Int) {
         if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardPreviewIconGravity(gravity)
-            (inputField as? InputField)?.setCardPreviewIconGravity(gravity)
         }
     }
 
@@ -545,14 +545,12 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun applyCardBrand(c: CustomCardBrand) {
         if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardBrand(c)
-            (inputField as? InputField)?.setCardBrand(c)
         }
     }
 
     protected fun setNumberDivider(divider:String?) {
         if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setNumberDivider(divider)
-            (inputField as? InputField)?.setNumberDivider(divider)
         }
     }
 
