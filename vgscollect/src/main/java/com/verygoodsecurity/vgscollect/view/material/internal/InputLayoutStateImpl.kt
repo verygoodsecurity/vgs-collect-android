@@ -1,16 +1,14 @@
-package com.verygoodsecurity.vgscollect.view.material
+package com.verygoodsecurity.vgscollect.view.material.internal
 
 import android.content.res.ColorStateList
 import android.view.View
 import androidx.annotation.DrawableRes
+import androidx.annotation.VisibleForTesting
 import com.google.android.material.textfield.TextInputLayout
-import com.verygoodsecurity.vgscollect.view.material.internal.InputLayoutState
-import com.verygoodsecurity.vgscollect.view.material.internal.TextInputLayoutWrapper
 
-internal class State(
+internal class InputLayoutStateImpl(
     private val textInputLayout: TextInputLayoutWrapper
 ) : InputLayoutState {
-
 
     internal var hint: CharSequence? = null
         set(value) {
@@ -87,9 +85,9 @@ internal class State(
         set(value) {
             field = value
             if(isReady()) {
-                val te = textInputLayout.boxCornerRadiusTopEnd
-                val bs = textInputLayout.boxCornerRadiusBottomStart
-                val ts = textInputLayout.boxCornerRadiusTopStart
+                val ts = boxCornerRadiusTopStart
+                val te = boxCornerRadiusTopEnd
+                val bs = boxCornerRadiusBottomStart
                 textInputLayout.setBoxCornerRadii(ts, te, bs, value)
             }
         }
@@ -97,9 +95,9 @@ internal class State(
         set(value) {
             field = value
             if(isReady()) {
-                val te = textInputLayout.boxCornerRadiusTopEnd
-                val be = textInputLayout.boxCornerRadiusBottomEnd
-                val ts = textInputLayout.boxCornerRadiusTopStart
+                val ts = boxCornerRadiusTopStart
+                val te = boxCornerRadiusTopEnd
+                val be = boxCornerRadiusBottomEnd
                 textInputLayout.setBoxCornerRadii(ts, te, value, be)
             }
         }
@@ -107,9 +105,9 @@ internal class State(
         set(value) {
             field = value
             if(isReady()) {
-                val be = textInputLayout.boxCornerRadiusBottomEnd
-                val bs = textInputLayout.boxCornerRadiusBottomStart
-                val ts = textInputLayout.boxCornerRadiusTopStart
+                val ts = boxCornerRadiusTopStart
+                val bs = boxCornerRadiusBottomStart
+                val be = boxCornerRadiusBottomEnd
                 textInputLayout.setBoxCornerRadii(ts, value, bs, be)
             }
         }
@@ -117,10 +115,9 @@ internal class State(
         set(value) {
             field = value
             if(isReady()) {
-                val te = textInputLayout.boxCornerRadiusTopEnd
-                val be = textInputLayout.boxCornerRadiusBottomEnd
-                val bs = textInputLayout.boxCornerRadiusBottomStart
-                val ts = textInputLayout.boxCornerRadiusTopStart
+                val te = boxCornerRadiusTopEnd
+                val bs = boxCornerRadiusBottomStart
+                val be = boxCornerRadiusBottomEnd
                 textInputLayout.setBoxCornerRadii(value, te, bs, be)
             }
         }
@@ -128,9 +125,9 @@ internal class State(
         set(value) {
             field = value
             if(isReady()) {
-                val top = textInputLayout.top
-                val right = textInputLayout.right
-                val bottom = textInputLayout.bottom
+                val top = top
+                val right = right
+                val bottom = bottom
                 textInputLayout.setPadding(value, top, right, bottom)
             }
         }
@@ -138,9 +135,9 @@ internal class State(
         set(value) {
             field = value
             if (isReady()) {
-                val top = textInputLayout.top
-                val right = textInputLayout.right
-                val bottom = textInputLayout.bottom
+                val top = top
+                val right = right
+                val bottom = bottom
                 textInputLayout.setPadding(value, top, right, bottom)
             }
         }
@@ -148,9 +145,9 @@ internal class State(
         set(value) {
             field = value
             if (isReady()) {
-                val left = textInputLayout.left
-                val right = textInputLayout.right
-                val bottom = textInputLayout.bottom
+                val left = left
+                val right = right
+                val bottom = bottom
                 textInputLayout.setPadding(left, value, right, bottom)
             }
         }
@@ -158,9 +155,9 @@ internal class State(
         set(value) {
             field = value
             if (isReady()) {
-                val left = textInputLayout.left
-                val top = textInputLayout.top
-                val bottom = textInputLayout.bottom
+                val left = left
+                val top = top
+                val bottom = bottom
                 textInputLayout.setPadding(left, top, value, bottom)
             }
         }
@@ -168,9 +165,9 @@ internal class State(
         set(value) {
             field = value
             if (isReady()) {
-                val left = textInputLayout.left
-                val top = textInputLayout.top
-                val bottom = textInputLayout.bottom
+                val left = left
+                val top = top
+                val bottom = bottom
                 textInputLayout.setPadding(left, top, value, bottom)
             }
         }
@@ -178,9 +175,9 @@ internal class State(
         set(value) {
             field = value
             if (isReady()) {
-                val left = textInputLayout.left
-                val top = textInputLayout.top
-                val right = textInputLayout.right
+                val left = left
+                val top = top
+                val right = right
                 textInputLayout.setPadding(left, top, right, value)
             }
         }
@@ -190,27 +187,34 @@ internal class State(
     override fun restore(textInputLayoutWrapper: TextInputLayoutWrapper?) {
         textInputLayoutWrapper?.apply {
 
-            this.isHintEnabled = this@State.isHintEnabled
-            this.isHintAnimationEnabled = this@State.isHintAnimationEnabled
-            this.hint = this@State.hint
+            this.isHintEnabled = this@InputLayoutStateImpl.isHintEnabled
+            this.isHintAnimationEnabled = this@InputLayoutStateImpl.isHintAnimationEnabled
+            this.hint = this@InputLayoutStateImpl.hint
 
-            this.boxBackgroundMode = this@State.boxBackgroundMode
-            if (this@State.boxBackgroundMode != TextInputLayout.BOX_BACKGROUND_NONE) {
-                this.boxBackgroundColor = this@State.boxBackgroundColor
-                this.boxStrokeColor = this@State.boxStrokeColor
+            textInputLayout.setPadding(
+                this@InputLayoutStateImpl.left,
+                this@InputLayoutStateImpl.top,
+                this@InputLayoutStateImpl.right,
+                this@InputLayoutStateImpl.bottom
+            )
 
-                val te = this@State.boxCornerRadiusTopEnd
-                val be = this@State.boxCornerRadiusBottomEnd
-                val bs = this@State.boxCornerRadiusBottomStart
-                val ts = this@State.boxCornerRadiusTopStart
+            this.boxBackgroundMode = this@InputLayoutStateImpl.boxBackgroundMode
+            if (this@InputLayoutStateImpl.boxBackgroundMode != TextInputLayout.BOX_BACKGROUND_NONE) {
+                this.boxBackgroundColor = this@InputLayoutStateImpl.boxBackgroundColor
+                this.boxStrokeColor = this@InputLayoutStateImpl.boxStrokeColor
+
+                val te = this@InputLayoutStateImpl.boxCornerRadiusTopEnd
+                val be = this@InputLayoutStateImpl.boxCornerRadiusBottomEnd
+                val bs = this@InputLayoutStateImpl.boxCornerRadiusBottomStart
+                val ts = this@InputLayoutStateImpl.boxCornerRadiusTopStart
                 textInputLayout.setBoxCornerRadii(ts, te, bs, be)
             }
-            this.error = this@State.error
-            this.isPasswordVisibilityToggleEnabled = this@State.isPasswordVisibilityToggleEnabled
-            if(this@State.passwordVisibilityToggleDrawable != 0) {
-                this.setPasswordVisibilityToggleDrawable(this@State.passwordVisibilityToggleDrawable)
+            this.error = this@InputLayoutStateImpl.error
+            this.isPasswordVisibilityToggleEnabled = this@InputLayoutStateImpl.isPasswordVisibilityToggleEnabled
+            if(this@InputLayoutStateImpl.passwordVisibilityToggleDrawable != 0) {
+                this.setPasswordVisibilityToggleDrawable(this@InputLayoutStateImpl.passwordVisibilityToggleDrawable)
             }
-            setPasswordVisibilityToggleTintList(this@State.passwordToggleTint)
+            setPasswordVisibilityToggleTintList(this@InputLayoutStateImpl.passwordToggleTint)
         }
     }
 
@@ -221,4 +225,7 @@ internal class State(
     internal fun addChildView(child: View?) {
         textInputLayout.addView(child)
     }
+
+    @VisibleForTesting
+    internal fun getInternalView() = textInputLayout
 }
