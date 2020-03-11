@@ -125,6 +125,7 @@ workflows:
               only:
                 - master
                 - stage
+                - dmytro.k/ch64326/vgs-collect-android-sdk-the-issues-with-inputtextlayout
       - "Run Lint":
           requires:
             *prepare_sources
@@ -141,6 +142,7 @@ workflows:
               only:
                 - master
                 - stage
+                - dmytro.k/ch64326/vgs-collect-android-sdk-the-issues-with-inputtextlayout
       - "Assemble Debug Build":
           requires:
             *all_test
