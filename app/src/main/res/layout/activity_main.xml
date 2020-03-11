@@ -47,8 +47,6 @@
             android:cursorVisible="false"
             android:enabled="false"/>
 
-
-
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardNumberFieldLay"
             android:layout_width="match_parent"

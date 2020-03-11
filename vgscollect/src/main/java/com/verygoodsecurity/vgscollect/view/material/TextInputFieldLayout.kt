@@ -156,10 +156,12 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
         fieldState.hint = context.resources.getString(resId)
     }
 
+    @Deprecated("Use {@link #setEndIconMode(int)} instead.")
     open fun setPasswordToggleEnabled(isEnabled:Boolean) {
         fieldState.isPasswordVisibilityToggleEnabled = isEnabled
     }
 
+    @Deprecated("Use {@link #setEndIconDrawable(int)} instead.")
     open fun setPasswordVisibilityToggleDrawable(@DrawableRes resId:Int) {
         fieldState.passwordVisibilityToggleDrawable = resId
     }
@@ -194,6 +196,43 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     open fun setHintAnimationEnabled(state:Boolean) {
         fieldState.isHintAnimationEnabled = state
     }
+
+    fun setCounterEnabled(state:Boolean) {
+        fieldState.isCounterEnabled = state
+    }
+
+    fun setCounterMaxLength(count:Int) {
+        fieldState.counterMaxLength = count
+    }
+
+    fun setStartIconDrawable(resId:Int) {
+        fieldState.startIconDrawable = resId
+    }
+
+    fun setStartIconDrawableTintList(startIconTintList : ColorStateList?) {
+        fieldState.startIconTintList = startIconTintList
+    }
+
+    fun setStartIconOnClickListener(listener : OnClickListener?) {
+        fieldState.startIconOnClickListener = listener
+    }
+
+    fun setEndIconDrawable(resId:Int) {
+        fieldState.endIconDrawable = resId
+    }
+
+    fun setEndIconDrawableTintList(endIconTintList : ColorStateList?) {
+        fieldState.endIconTintList = endIconTintList
+    }
+
+    fun setEndIconMode(mode:Int) {
+        fieldState.endIconMode = mode
+    }
+
+    fun setEndIconOnClickListener(listener : OnClickListener?) {
+        fieldState.endIconOnClickListener = listener
+    }
+
 
     @VisibleForTesting
     internal fun getFieldState():InputLayoutStateImpl {

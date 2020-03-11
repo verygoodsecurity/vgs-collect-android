@@ -4,6 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
@@ -58,6 +61,21 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         vgsForm.bindView(cardCVCField)
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
+
+        cardNumberFieldLay.setCounterEnabled(true)
+        cardNumberFieldLay.setCounterMaxLength(22)
+        cardNumberFieldLay.setStartIconDrawable(R.drawable.ic_scan_test)
+        cardNumberFieldLay.setStartIconDrawableTintList(ContextCompat.getColorStateList(this, R.color.colorAccent))
+        cardNumberFieldLay.setStartIconOnClickListener(View.OnClickListener {
+            Toast.makeText(this, "StartIcon Action", Toast.LENGTH_LONG).show()
+        })
+
+        cardNumberFieldLay.setEndIconDrawable(R.drawable.ic_scan_test)
+        cardNumberFieldLay.setEndIconDrawableTintList(ContextCompat.getColorStateList(this, R.color.black))
+        cardNumberFieldLay.setEndIconMode(TextInputLayout.END_ICON_CUSTOM)
+        cardNumberFieldLay.setEndIconOnClickListener(View.OnClickListener {
+            Toast.makeText(this, "EndIcon Action", Toast.LENGTH_LONG).show()
+        })
 
         val customData = HashMap<String, Any>()
         customData["nonSDKValue"] = "all time data"
