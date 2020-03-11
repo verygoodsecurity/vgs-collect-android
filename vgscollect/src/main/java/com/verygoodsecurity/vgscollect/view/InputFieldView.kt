@@ -233,6 +233,15 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
+     * Get the type of the editable content.
+     *
+     * @return inputType
+     */
+    open fun getInputType(): Int {
+        return inputField.inputType
+    }
+
+    /**
      * Set the type of the content with a constant as defined for input field.
      *
      * @param inputType
