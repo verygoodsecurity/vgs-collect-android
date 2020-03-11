@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.material.internal.InputLayoutStateImpl
 import com.verygoodsecurity.vgscollect.view.material.internal.TextInputLayoutWrapper
 
 /**
@@ -24,7 +26,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
 
     private var isAttachPermitted = true
 
-    private val fieldState: State
+    private val fieldState: InputLayoutStateImpl
 
     init {
         val textInputLayout = TextInputLayoutWrapper(
@@ -32,7 +34,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
         ).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         }
-        fieldState = State(textInputLayout)
+        fieldState = InputLayoutStateImpl(textInputLayout)
 
         addView(textInputLayout)
     }
@@ -140,10 +142,18 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
         fieldState.error = errorText
     }
 
+    open fun setError(resId:Int) {
+        fieldState.error = context.resources.getString(resId)
+    }
+
     open fun getHint() = fieldState.hint
 
     open fun setHint(text:String?) {
         fieldState.hint = text
+    }
+
+    open fun setHint(resId:Int) {
+        fieldState.hint = context.resources.getString(resId)
     }
 
     open fun setPasswordToggleEnabled(isEnabled:Boolean) {
@@ -184,4 +194,10 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     open fun setHintAnimationEnabled(state:Boolean) {
         fieldState.isHintAnimationEnabled = state
     }
+
+    @VisibleForTesting
+    internal fun getFieldState():InputLayoutStateImpl {
+        return fieldState
+    }
+
 }
