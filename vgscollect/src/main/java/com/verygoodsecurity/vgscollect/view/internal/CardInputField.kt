@@ -13,6 +13,7 @@ import androidx.core.widget.addTextChangedListener
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
@@ -127,15 +128,6 @@ internal class CardInputField(context: Context): BaseInputField(context) {
         inputConnection?.run()
     }
 
-    private fun applyInputType() {
-        val type = inputType
-        if(type == InputType.TYPE_TEXT_VARIATION_PASSWORD || type == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
-            inputType = InputType.TYPE_CLASS_DATETIME or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        } else {
-            inputType = InputType.TYPE_CLASS_DATETIME
-        }
-        refreshInput()
-    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -153,10 +145,42 @@ internal class CardInputField(context: Context): BaseInputField(context) {
         when {
             divider.isNullOrEmpty() -> this@CardInputField.divider = ""
             divider.length == 1 -> this@CardInputField.divider = divider
-            else -> Logger.i("VGSEditTextView", "Divider for number can't be greater than 1 symbol. (${divider})")
+            else -> {
+                val message = String.format(
+                    context.getString(R.string.error_divider_card_number_field),
+                    divider
+                )
+                Logger.e(InputFieldView::class.java, message)
+            }
         }
     }
 
     internal fun getNumberDivider() = divider
 
+    override fun setInputType(type: Int) {
+        val validType = validateInputType(type)
+        super.setInputType(validType)
+        refreshInput()
+    }
+
+    private fun applyInputType() {
+        if(!isValidInputType(inputType)) {
+            inputType = InputType.TYPE_CLASS_NUMBER
+        }
+        refreshInput()
+    }
+
+    private fun isValidInputType(type: Int):Boolean {
+        return type == InputType.TYPE_CLASS_NUMBER ||
+                type == InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+    }
+
+    private fun validateInputType(type: Int):Int {
+        return when(type) {
+            InputType.TYPE_CLASS_NUMBER -> type
+            InputType.TYPE_NUMBER_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> type
+            else -> InputType.TYPE_CLASS_NUMBER
+        }
+    }
 }
