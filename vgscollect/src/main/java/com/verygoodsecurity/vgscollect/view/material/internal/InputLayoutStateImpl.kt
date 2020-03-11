@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.material.internal
 
 import android.content.res.ColorStateList
+import android.graphics.PorterDuff
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.VisibleForTesting
@@ -9,6 +10,79 @@ import com.google.android.material.textfield.TextInputLayout
 internal class InputLayoutStateImpl(
     private val textInputLayout: TextInputLayoutWrapper
 ) : InputLayoutState {
+
+    internal var isCounterEnabled: Boolean = false
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.isCounterEnabled = value
+            }
+        }
+    internal var counterMaxLength: Int = -1
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.counterMaxLength = value
+            }
+        }
+    internal var startIconDrawable: Int = 0
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.setStartIconDrawable(value)
+            }
+        }
+
+    internal var startIconTintList: ColorStateList? = null
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.setStartIconTintList(value)
+            }
+        }
+    internal var startIconOnClickListener: View.OnClickListener? = null
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.setStartIconOnClickListener(value)
+            }
+        }
+    internal var endIconDrawable: Int = 0
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.setEndIconDrawable(value)
+            }
+        }
+    internal var endIconTintMode: PorterDuff.Mode? = null
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.setEndIconTintMode(value)
+            }
+        }
+    internal var endIconTintList: ColorStateList? = null
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.setEndIconTintList(value)
+            }
+        }
+    internal var endIconMode: Int = TextInputLayout.END_ICON_NONE
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.endIconMode = value
+            }
+        }
+    internal var endIconOnClickListener: View.OnClickListener? = null
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.setEndIconOnClickListener(value)
+            }
+        }
+
 
     internal var hint: CharSequence? = null
         set(value) {
@@ -186,7 +260,6 @@ internal class InputLayoutStateImpl(
 
     override fun restore(textInputLayoutWrapper: TextInputLayoutWrapper?) {
         textInputLayoutWrapper?.apply {
-
             this.isHintEnabled = this@InputLayoutStateImpl.isHintEnabled
             this.isHintAnimationEnabled = this@InputLayoutStateImpl.isHintAnimationEnabled
             this.hint = this@InputLayoutStateImpl.hint
@@ -211,10 +284,34 @@ internal class InputLayoutStateImpl(
             }
             this.error = this@InputLayoutStateImpl.error
             this.isPasswordVisibilityToggleEnabled = this@InputLayoutStateImpl.isPasswordVisibilityToggleEnabled
+
             if(this@InputLayoutStateImpl.passwordVisibilityToggleDrawable != 0) {
                 this.setPasswordVisibilityToggleDrawable(this@InputLayoutStateImpl.passwordVisibilityToggleDrawable)
             }
             setPasswordVisibilityToggleTintList(this@InputLayoutStateImpl.passwordToggleTint)
+
+            this.isCounterEnabled = this@InputLayoutStateImpl.isCounterEnabled
+            this.counterMaxLength = this@InputLayoutStateImpl.counterMaxLength
+
+            this.setStartIconDrawable(this@InputLayoutStateImpl.startIconDrawable)
+            this.setStartIconOnClickListener(this@InputLayoutStateImpl.startIconOnClickListener)
+            setStartIconTintList(this@InputLayoutStateImpl.startIconTintList)
+
+            if(this@InputLayoutStateImpl.endIconDrawable != 0) {
+                this.setEndIconDrawable(this@InputLayoutStateImpl.endIconDrawable)
+            }
+            if(isPasswordVisibilityToggleEnabled) {
+                this.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
+            } else {
+                this.setEndIconOnClickListener(this@InputLayoutStateImpl.endIconOnClickListener)
+                if(this@InputLayoutStateImpl.endIconTintMode != null) {
+                    this.setEndIconTintMode(this@InputLayoutStateImpl.endIconTintMode)
+                }
+                if(this@InputLayoutStateImpl.endIconTintList != null) {
+                    setEndIconTintList(this@InputLayoutStateImpl.endIconTintList)
+                }
+                this.endIconMode = this@InputLayoutStateImpl.endIconMode
+            }
         }
     }
 
