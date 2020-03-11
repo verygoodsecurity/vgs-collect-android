@@ -37,7 +37,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 val hintEnabled = getBoolean(R.styleable.VGSTextInputLayout_hintEnabled, true)
                 val hintAnimationEnabled = getBoolean(R.styleable.VGSTextInputLayout_hintAnimationEnabled, true)
 
-                val defRadius = 7f
+                val defRadius = resources.getDimension(R.dimen.default_horizontal_field)
                 val boxCornerRadius = getDimension(R.styleable.VGSTextInputLayout_boxCornerRadius, defRadius)
 
                 setHint(hint)
