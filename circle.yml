@@ -125,6 +125,7 @@ workflows:
               only:
                 - master
                 - stage
+                - dmytro.k/ch64499/vgs-collect-android-sdk-the-password-toggle
       - "Run Lint":
           requires:
             *prepare_sources
@@ -141,6 +142,7 @@ workflows:
               only:
                 - master
                 - stage
+                - dmytro.k/ch64499/vgs-collect-android-sdk-the-password-toggle
       - "Assemble Debug Build":
           requires:
             *all_test
