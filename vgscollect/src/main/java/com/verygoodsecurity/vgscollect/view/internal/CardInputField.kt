@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.text.InputType
+import android.text.method.DigitsKeyListener
 import android.view.Gravity
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -69,7 +70,7 @@ internal class CardInputField(context: Context): BaseInputField(context) {
         addTextChangedListener {
             val str = it.toString()
             inputConnection?.getOutput()?.
-                content = FieldContent.CardNumberContent().apply {
+            content = FieldContent.CardNumberContent().apply {
                 rawData = str.replace(divider?:" ", "")
                 cardtype = this@CardInputField.cardtype
                 this.data = str
@@ -99,12 +100,14 @@ internal class CardInputField(context: Context): BaseInputField(context) {
     }
 
     private fun getDrawable(primaryRes:Int?): Drawable? {
-        return primaryRes?.run {
+        return if(primaryRes!= null && primaryRes != 0) {
             val c_icon_size_h = resources.getDimension(R.dimen.c_icon_size_h).toInt()
             val c_icon_size_w = resources.getDimension(R.dimen.c_icon_size_w).toInt()
             val drawable = ContextCompat.getDrawable(context, primaryRes)
             drawable?.setBounds(0, 0, c_icon_size_w, c_icon_size_h)
-            return drawable
+            drawable
+        } else {
+            null
         }
     }
 
@@ -153,6 +156,10 @@ internal class CardInputField(context: Context): BaseInputField(context) {
                 Logger.e(InputFieldView::class.java, message)
             }
         }
+
+        val digits = resources.getString(R.string.card_number_digits) + this@CardInputField.divider
+        keyListener = DigitsKeyListener.getInstance(digits)
+        refreshInputConnection()
     }
 
     internal fun getNumberDivider() = divider
@@ -178,6 +185,8 @@ internal class CardInputField(context: Context): BaseInputField(context) {
     private fun validateInputType(type: Int):Int {
         return when(type) {
             InputType.TYPE_CLASS_NUMBER -> type
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
             InputType.TYPE_NUMBER_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
             InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> type
             else -> InputType.TYPE_CLASS_NUMBER
