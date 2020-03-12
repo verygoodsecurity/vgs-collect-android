@@ -34,6 +34,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
+    init {
+        setBackgroundResource(0);
+    }
+
     protected abstract var fieldType: FieldType
 
     protected var inputConnection: InputRunnable? = null

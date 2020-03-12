@@ -116,7 +116,7 @@ class VGSCardNumberEditTextTest {
         view.setCardBrandIconGravity(Gravity.BOTTOM)
         assertEquals(Gravity.END, view.getCardPreviewIconGravity())
         view.setCardBrandIconGravity(Gravity.NO_GRAVITY)
-        assertEquals(Gravity.END, view.getCardPreviewIconGravity())
+        assertEquals(Gravity.NO_GRAVITY, view.getCardPreviewIconGravity())
         view.setCardBrandIconGravity(Gravity.CENTER_VERTICAL)
         assertEquals(Gravity.END, view.getCardPreviewIconGravity())
         view.setCardBrandIconGravity(Gravity.CENTER_HORIZONTAL)
