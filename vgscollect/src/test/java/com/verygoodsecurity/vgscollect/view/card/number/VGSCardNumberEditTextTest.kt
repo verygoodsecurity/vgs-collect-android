@@ -145,12 +145,15 @@ class VGSCardNumberEditTextTest {
     }
 
     @Test
-    fun test_input_type_number_text_password() {
+    fun test_input_type_text_password() {
         assertNotNull(view)
 
         val passType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         view.setInputType(passType)
-        assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+
+        val correctType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        val it = view.getInputType()
+        assertEquals(correctType, it)
     }
 
     @Test

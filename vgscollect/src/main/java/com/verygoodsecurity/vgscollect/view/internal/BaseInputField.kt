@@ -101,6 +101,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         isListeningPermitted = false
     }
 
+    protected fun refreshInputConnection() {
+        isListeningPermitted = true
+        applyFieldType()
+        isListeningPermitted = false
+    }
+
     protected abstract fun applyFieldType()
 
     protected fun applyNewTextWatcher(textWatcher: TextWatcher?) {
@@ -108,7 +114,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         textWatcher?.let { addTextChangedListener(textWatcher) }
         activeTextWatcher = textWatcher
     }
-
 
     protected fun collectCurrentState(stateContent: FieldContent): VGSFieldState {
         val state = VGSFieldState().apply {
