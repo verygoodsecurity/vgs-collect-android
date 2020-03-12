@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view
+package com.verygoodsecurity.vgscollect.view.material
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -9,7 +9,10 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
-import com.verygoodsecurity.vgscollect.view.internal.TextInputLayoutWrapper
+import androidx.annotation.VisibleForTesting
+import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.material.internal.InputLayoutStateImpl
+import com.verygoodsecurity.vgscollect.view.material.internal.TextInputLayoutWrapper
 
 /**
  * An abstract class that provide floating label when
@@ -21,42 +24,53 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private val textInputLayout = TextInputLayoutWrapper(context)
     private var isAttachPermitted = true
 
+    private val fieldState: InputLayoutStateImpl
+
     init {
-        textInputLayout.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        val textInputLayout = TextInputLayoutWrapper(
+            context
+        ).apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        }
+        fieldState = InputLayoutStateImpl(textInputLayout)
+
         addView(textInputLayout)
     }
 
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        super.setPadding(left, top, right, bottom)
+        fieldState.left = left
+        fieldState.top = top
+        fieldState.right = right
+        fieldState.bottom = bottom
+        super.setPadding(0,0,0,0)
     }
 
     override fun getPaddingBottom(): Int {
-        return textInputLayout.paddingBottom
+        return fieldState.bottom
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingEnd(): Int {
-        return textInputLayout.paddingEnd
+        return fieldState.end
     }
 
     override fun getPaddingLeft(): Int {
-        return textInputLayout.paddingLeft
+        return fieldState.left
     }
 
     override fun getPaddingRight(): Int {
-        return textInputLayout.paddingRight
+        return fieldState.right
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingStart(): Int {
-        return textInputLayout.paddingStart
+        return fieldState.start
     }
 
     override fun getPaddingTop(): Int {
-        return textInputLayout.paddingTop
+        return fieldState.top
     }
 
     override fun attachViewToParent(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
@@ -74,6 +88,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     override fun addView(child: View?) {
         val v = handleNewChild(child)
         super.addView(v)
+        fieldState.refresh()
     }
 
     override fun addView(child: View?, index: Int) {
@@ -115,7 +130,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
                     val editText = child as InputFieldView
                     attachViewToParent(editText, childCount, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
 
-                    textInputLayout.addView(child)
+                    fieldState.addChildView(child)
                     null
                 }
                 else -> null
@@ -124,51 +139,65 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     }
 
     open fun setError(errorText:CharSequence?) {
-        textInputLayout.error = errorText
+        fieldState.error = errorText
     }
 
-    open fun getHint() = textInputLayout.hint
+    open fun setError(resId:Int) {
+        fieldState.error = context.resources.getString(resId)
+    }
+
+    open fun getHint() = fieldState.hint
 
     open fun setHint(text:String?) {
-        textInputLayout.hint = text
+        fieldState.hint = text
+    }
+
+    open fun setHint(resId:Int) {
+        fieldState.hint = context.resources.getString(resId)
     }
 
     open fun setPasswordToggleEnabled(isEnabled:Boolean) {
-        textInputLayout.isPasswordVisibilityToggleEnabled = isEnabled
+        fieldState.isPasswordVisibilityToggleEnabled = isEnabled
     }
 
     open fun setPasswordVisibilityToggleDrawable(@DrawableRes resId:Int) {
-        textInputLayout.setPasswordVisibilityToggleDrawable(resId)
+        fieldState.passwordVisibilityToggleDrawable = resId
     }
 
     open fun setPasswordVisibilityToggleTintList(tintList: ColorStateList?) {
-        tintList?.let {
-            textInputLayout.setPasswordVisibilityToggleTintList(tintList)
-        }
+        fieldState.passwordToggleTint = tintList
     }
 
     open fun setBoxCornerRadius(boxCornerRadiusTopStart:Float, boxCornerRadiusTopEnd:Float, boxCornerRadiusBottomStart:Float, boxCornerRadiusBottomEnd:Float) {
-        textInputLayout.setBoxCornerRadii(boxCornerRadiusTopStart, boxCornerRadiusTopEnd, boxCornerRadiusBottomStart, boxCornerRadiusBottomEnd)
+        fieldState.boxCornerRadiusTopStart = boxCornerRadiusTopStart
+        fieldState.boxCornerRadiusTopEnd = boxCornerRadiusTopEnd
+        fieldState.boxCornerRadiusBottomStart = boxCornerRadiusBottomStart
+        fieldState.boxCornerRadiusBottomEnd = boxCornerRadiusBottomEnd
     }
 
     open fun setBoxBackgroundMode(style:Int) {
-        textInputLayout.setBoxBackgroundMode(style)
+        fieldState.boxBackgroundMode = style
     }
 
     open fun setBoxBackgroundColor(c:Int) {
-        textInputLayout.boxBackgroundColor = c
+        fieldState.boxBackgroundColor = c
     }
 
     open fun setBoxStrokeColor(c:Int) {
-        textInputLayout.boxStrokeColor = c
+        fieldState.boxStrokeColor = c
     }
 
     open fun setHintEnabled(state:Boolean) {
-        textInputLayout.isHintEnabled = state
+        fieldState.isHintEnabled = state
     }
 
     open fun setHintAnimationEnabled(state:Boolean) {
-        textInputLayout.isHintAnimationEnabled = state
+        fieldState.isHintAnimationEnabled = state
+    }
+
+    @VisibleForTesting
+    internal fun getFieldState():InputLayoutStateImpl {
+        return fieldState
     }
 
 }

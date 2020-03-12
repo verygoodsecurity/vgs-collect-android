@@ -24,6 +24,7 @@ import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CardInputField
 import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.view.internal.InputField
+import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
@@ -108,11 +109,28 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the padding.
+     * The view may add on the space required to display the scrollbars, depending on the style and visibility of the scrollbars.
+     * So the values returned from getPaddingLeft(), getPaddingTop(), getPaddingRight() and getPaddingBottom()
+     * may be different from the values set in this call.
+     *
+     * @param left the left padding in pixels
+     * @param top the top padding in pixels
+     * @param right the right padding in pixels
+     * @param bottom the bottom padding in pixels
+     */
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
         inputField.setPadding(left, top, right, bottom)
         super.setPadding(0, 0, 0, 0)
     }
 
+    /**
+     * Returns the bottom padding of this view.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the bottom padding in pixels
+     */
     override fun getPaddingBottom(): Int {
         return if(isAttachPermitted) {
             super.getPaddingBottom()
@@ -121,6 +139,12 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Returns the end padding of this view depending on its resolved layout direction.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the end padding in pixels
+     */
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingEnd(): Int {
         return if(isAttachPermitted) {
@@ -130,6 +154,12 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Returns the left padding of this view.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the left padding in pixels
+     */
     override fun getPaddingLeft(): Int {
         return if(isAttachPermitted) {
             super.getPaddingLeft()
@@ -138,6 +168,12 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Returns the right padding of this view.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the right padding in pixels
+     */
     override fun getPaddingRight(): Int {
         return if(isAttachPermitted) {
             super.getPaddingRight()
@@ -146,6 +182,12 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Returns the start padding of this view depending on its resolved layout direction.
+     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     *
+     * @return the start padding in pixels
+     */
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingStart(): Int {
         return if(isAttachPermitted) {
@@ -155,6 +197,11 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Returns the top padding of this view.
+     *
+     * @return the top padding in pixels
+     */
     override fun getPaddingTop(): Int {
         return if(isAttachPermitted) {
             super.getPaddingTop()
@@ -530,7 +577,6 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun applyCardIconGravity(gravity:Int) {
         if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardPreviewIconGravity(gravity)
-            (inputField as? InputField)?.setCardPreviewIconGravity(gravity)
         }
     }
 
@@ -545,14 +591,12 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun applyCardBrand(c: CustomCardBrand) {
         if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardBrand(c)
-            (inputField as? InputField)?.setCardBrand(c)
         }
     }
 
     protected fun setNumberDivider(divider:String?) {
         if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setNumberDivider(divider)
-            (inputField as? InputField)?.setNumberDivider(divider)
         }
     }
 
