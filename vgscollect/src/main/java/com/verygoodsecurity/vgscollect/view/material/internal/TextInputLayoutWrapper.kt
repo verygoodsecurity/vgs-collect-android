@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.internal
+package com.verygoodsecurity.vgscollect.view.material.internal
 
 import android.content.Context
 import android.view.Gravity
@@ -8,12 +8,25 @@ import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
+import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 
 internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(context) {
+
+    fun isReady():Boolean {
+        return editText != null
+    }
+
+    private var state: InputLayoutState? = null
+    fun restoreState(state: InputLayoutState) {
+        this.state = state
+    }
 
     override fun addView(child: View?) {
         val v = handleNewChild(child)
         super.addView(v)
+        if(isReady()) {
+            state?.restore(this)
+        }
     }
 
     override fun addView(child: View?, params: ViewGroup.LayoutParams?) {
@@ -31,8 +44,8 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
         super.addView(v, width, height)
     }
 
-    override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
-        val v = handleNewChild(child)
+    override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
+        val v = handleNewChild(child)?:child
         super.addView(v, index, params)
     }
 

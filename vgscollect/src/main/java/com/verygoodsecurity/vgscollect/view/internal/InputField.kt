@@ -8,6 +8,7 @@ import android.text.InputType
 import android.text.TextWatcher
 import android.os.Looper
 import android.text.InputFilter
+import android.text.method.DigitsKeyListener
 import android.view.Gravity
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -17,7 +18,6 @@ import com.verygoodsecurity.vgscollect.*
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
-import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
@@ -187,10 +187,13 @@ internal class InputField(context: Context): BaseInputField(context) {
         applyNewTextWatcher(null)
         val filterLength = InputFilter.LengthFilter(4)
         filters = arrayOf(CVCValidateFilter(), filterLength)
-        applyDateInputType()
+        applyCVCInputType()
     }
 
     private fun applyCardNumFieldType() {
+        val digits = resources.getString(R.string.card_number_digits) + this.divider
+        keyListener = DigitsKeyListener.getInstance(digits)
+
         validator = CardNumberValidator(divider)
 
         inputConnection = InputCardNumberConnection(id,
@@ -261,33 +264,6 @@ internal class InputField(context: Context): BaseInputField(context) {
         }
     }
 
-    private fun applyDateInputType() {
-        val type = inputType
-        if(type == InputType.TYPE_TEXT_VARIATION_PASSWORD || type == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
-            inputType = InputType.TYPE_CLASS_DATETIME or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        } else {
-            inputType = InputType.TYPE_CLASS_DATETIME
-        }
-    }
-
-    private fun applyNumberInputType() {
-        val type = inputType
-        if(type == InputType.TYPE_TEXT_VARIATION_PASSWORD || type == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        } else {
-            inputType = InputType.TYPE_CLASS_TEXT
-        }
-    }
-
-    private fun applyTextInputType() {
-        val type = inputType
-        if(type == InputType.TYPE_TEXT_VARIATION_PASSWORD || type == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        } else {
-            inputType = InputType.TYPE_CLASS_TEXT
-        }
-    }
-
     override fun setTag(tag: Any?) {
         tag?.run {
             super.setTag(tag)
@@ -311,23 +287,6 @@ internal class InputField(context: Context): BaseInputField(context) {
         super.setPadding(l, t, r, b)
     }
 
-    internal fun setCardPreviewIconGravity(gravity:Int) {
-        iconGravity = gravity
-    }
-
-    internal fun setCardBrand(c:CustomCardBrand) {
-        userFilter.add(c)
-        inputConnection?.run()
-    }
-
-    internal fun setNumberDivider(divider: String?) {
-        when {
-            divider.isNullOrEmpty() -> this@InputField.divider = ""
-            divider.length == 1 -> this@InputField.divider = divider
-            else -> Logger.i("VGSEditTextView", "Divider for number can't be greater than 1 symbol. (${divider})")
-        }
-    }
-
     override fun dispatchDependencySetting(dependency: Dependency) {
         when(dependency.dependencyType) {
             DependencyType.LENGTH -> {
@@ -336,6 +295,96 @@ internal class InputField(context: Context): BaseInputField(context) {
                 text = text
             }
             DependencyType.TEXT -> setText(dependency.value.toString())
+        }
+    }
+
+    private fun applyCVCInputType() {
+        if(!isValidNumberInputType(inputType)) {
+            inputType = InputType.TYPE_CLASS_NUMBER
+        }
+        refreshInput()
+    }
+
+    private fun applyDateInputType() {
+        if(!isValidDateInputType(inputType)) {
+            inputType = InputType.TYPE_CLASS_DATETIME
+        }
+        refreshInput()
+    }
+
+    private fun applyTextInputType() {
+        if(!isValidTextInputType(inputType)) {
+            inputType = InputType.TYPE_CLASS_TEXT
+        }
+        refreshInput()
+    }
+
+    private fun applyNumberInputType() {
+        if(!isValidNumberInputType(inputType)) {
+            inputType = InputType.TYPE_CLASS_NUMBER
+        }
+        refreshInput()
+    }
+
+    override fun setInputType(type: Int) {
+        val validType = when(fieldType) {
+            FieldType.CARD_NUMBER -> validateNumberFieldType(type)
+            FieldType.CARD_EXPIRATION_DATE -> validateDateFieldType(type)
+            FieldType.CARD_HOLDER_NAME -> validateTextFieldType(type)
+            FieldType.CVC -> validateNumberFieldType(type)
+            FieldType.INFO -> validateTextFieldType(type)
+        }
+        super.setInputType(validType)
+        refreshInput()
+    }
+    private fun isValidNumberInputType(type: Int):Boolean {
+        return type == InputType.TYPE_CLASS_NUMBER ||
+                type == InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+    }
+    private fun isValidDateInputType(type: Int):Boolean {
+        return type == InputType.TYPE_CLASS_TEXT ||
+                type == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD ||
+                type == InputType.TYPE_CLASS_DATETIME
+    }
+    private fun isValidTextInputType(type: Int):Boolean {
+        return type == InputType.TYPE_CLASS_TEXT ||
+                type == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD ||
+                type == InputType.TYPE_CLASS_DATETIME ||
+                type == InputType.TYPE_CLASS_NUMBER ||
+                type == InputType.TYPE_NUMBER_VARIATION_PASSWORD ||
+                type == InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+    }
+
+    private fun validateNumberFieldType(type: Int):Int {
+        return when(type) {
+            InputType.TYPE_CLASS_NUMBER -> type
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            InputType.TYPE_NUMBER_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> type
+            else -> InputType.TYPE_CLASS_NUMBER
+        }
+    }
+    private fun validateDateFieldType(type: Int):Int {
+        return when(type) {
+            InputType.TYPE_CLASS_TEXT -> type
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> type
+            InputType.TYPE_CLASS_DATETIME -> type
+            InputType.TYPE_CLASS_NUMBER -> InputType.TYPE_CLASS_DATETIME
+            InputType.TYPE_NUMBER_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> type
+            else -> InputType.TYPE_CLASS_TEXT
+        }
+    }
+    private fun validateTextFieldType(type: Int):Int {
+        return when(type) {
+            InputType.TYPE_CLASS_TEXT -> type
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> type
+            InputType.TYPE_CLASS_DATETIME -> type
+            InputType.TYPE_CLASS_NUMBER -> type
+            InputType.TYPE_NUMBER_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> type
+            else -> InputType.TYPE_CLASS_TEXT
         }
     }
 }

@@ -1,14 +1,13 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
-import android.graphics.PorterDuff
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.text.TextWatcher
 import android.view.View
-import android.widget.TextView
 import androidx.core.view.ViewCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
@@ -20,7 +19,6 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
-import com.verygoodsecurity.vgscollect.util.Logger
 
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
     DependencyListener {
@@ -35,6 +33,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
                 FieldType.INFO -> InfoInputField(context)
             }
         }
+    }
+
+    init {
+        setBackgroundResource(0);
     }
 
     protected abstract var fieldType: FieldType
@@ -100,6 +102,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         isListeningPermitted = false
     }
 
+    protected fun refreshInputConnection() {
+        isListeningPermitted = true
+        applyFieldType()
+        isListeningPermitted = false
+    }
+
     protected abstract fun applyFieldType()
 
     protected fun applyNewTextWatcher(textWatcher: TextWatcher?) {
@@ -107,7 +115,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         textWatcher?.let { addTextChangedListener(textWatcher) }
         activeTextWatcher = textWatcher
     }
-
 
     protected fun collectCurrentState(stateContent: FieldContent): VGSFieldState {
         val state = VGSFieldState().apply {
@@ -167,37 +174,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    internal fun setCursorDrawableColor(color: Int) {
-        try {
-            val cursorDrawableResField = TextView::class.java.getDeclaredField("mCursorDrawableRes")
-            cursorDrawableResField.isAccessible = true
-            val cursorDrawableRes = cursorDrawableResField.getInt(this)
-            val editorField = TextView::class.java.getDeclaredField("mEditor")
-            editorField.isAccessible = true
-            val editor = editorField.get(this)
-            val clazz = editor.javaClass
-            val res = context.resources
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                val drawableForCursorField = clazz.getDeclaredField("mDrawableForCursor")
-                drawableForCursorField.isAccessible = true
-                val drawable = res.getDrawable(cursorDrawableRes)
-                drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN)
-                drawableForCursorField.set(editor, drawable)
-            } else {
-                val cursorDrawableField = clazz.getDeclaredField("mCursorDrawable")
-                cursorDrawableField.isAccessible = true
-                val drawables = arrayOfNulls<Drawable>(2)
-                drawables[0] = res.getDrawable(cursorDrawableRes)
-                drawables[0]?.setColorFilter(color, PorterDuff.Mode.SRC_IN)
-                drawables[1] = res.getDrawable(cursorDrawableRes)
-                drawables[1]?.setColorFilter(color, PorterDuff.Mode.SRC_IN)
-                cursorDrawableField.set(editor, drawables)
-            }
-        } catch (t: Throwable) {
-            Logger.i("VGSEditText", "Can't apply color on cursor")
-        }
-    }
-
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
         val minPaddingV = resources.getDimension(R.dimen.default_vertical_field).toInt()
         val minPaddingH = resources.getDimension(R.dimen.default_horizontal_field).toInt()
@@ -222,4 +198,9 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {}
+
+    override fun setInputType(type: Int) {
+        super.setInputType(type)
+        typeface = Typeface.DEFAULT
+    }
 }
