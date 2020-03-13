@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.card.date
 
 import android.app.Activity
 import android.os.Build
+import android.text.InputType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.DateInputField
@@ -159,4 +160,65 @@ class ExpirationDateEditTextTest {
         view.setDateRegex("HH:mm dd/MMMM/yy")
         Assert.assertEquals("HH:mm dd/MMMM/yy", view.getDateRegex())
     }
+
+    @Test
+    fun test_input_type_number() {
+        Assert.assertNotNull(view)
+
+        view.setInputType(InputType.TYPE_CLASS_NUMBER)
+        Assert.assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
+    }
+
+    @Test
+    fun test_input_type_number_password() {
+        Assert.assertNotNull(view)
+
+        val passType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        view.setInputType(passType)
+        Assert.assertEquals(passType, view.getInputType())
+    }
+
+    @Test
+    fun test_input_type_text() {
+        Assert.assertNotNull(view)
+
+        val passType = InputType.TYPE_CLASS_TEXT
+        view.setInputType(passType)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+    }
+
+    @Test
+    fun test_input_type_text_password() {
+        Assert.assertNotNull(view)
+
+        val passType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        view.setInputType(passType)
+        Assert.assertEquals(passType, view.getInputType())
+    }
+
+    @Test
+    fun test_input_type_date() {
+        Assert.assertNotNull(view)
+
+        view.setInputType(InputType.TYPE_CLASS_DATETIME)
+        Assert.assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
+    }
+
+    @Test
+    fun test_input_type_other() {
+        Assert.assertNotNull(view)
+
+        view.setInputType(InputType.TYPE_CLASS_PHONE)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+
+        view.setInputType(InputType.TYPE_CLASS_PHONE or InputType.TYPE_CLASS_DATETIME)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+
+        view.setInputType(InputType.TYPE_MASK_CLASS)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+
+        view.setInputType(InputType.TYPE_NULL)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+    }
+
 }

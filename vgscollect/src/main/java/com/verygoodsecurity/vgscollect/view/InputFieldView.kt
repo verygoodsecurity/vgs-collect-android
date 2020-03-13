@@ -121,7 +121,9 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param bottom the bottom padding in pixels
      */
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        inputField.setPadding(left, top, right, bottom)
+        if(::inputField.isInitialized) {
+            inputField.setPadding(left, top, right, bottom)
+        }
         super.setPadding(0, 0, 0, 0)
     }
 
@@ -230,6 +232,15 @@ abstract class InputFieldView @JvmOverloads constructor(
             }
             isAttachPermitted = false
         }
+    }
+
+    /**
+     * Get the type of the editable content.
+     *
+     * @return inputType
+     */
+    open fun getInputType(): Int {
+        return inputField.inputType
     }
 
     /**
