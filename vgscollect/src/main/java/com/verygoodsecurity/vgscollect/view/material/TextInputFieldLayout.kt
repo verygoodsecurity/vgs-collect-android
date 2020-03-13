@@ -40,10 +40,12 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     }
 
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        fieldState.left = left
-        fieldState.top = top
-        fieldState.right = right
-        fieldState.bottom = bottom
+        if(fieldState != null) {
+            fieldState.left = left
+            fieldState.top = top
+            fieldState.right = right
+            fieldState.bottom = bottom
+        }
         super.setPadding(0,0,0,0)
     }
 

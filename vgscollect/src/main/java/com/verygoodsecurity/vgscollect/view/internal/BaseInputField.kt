@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
@@ -101,6 +102,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         isListeningPermitted = false
     }
 
+    protected fun refreshInputConnection() {
+        isListeningPermitted = true
+        applyFieldType()
+        isListeningPermitted = false
+    }
+
     protected abstract fun applyFieldType()
 
     protected fun applyNewTextWatcher(textWatcher: TextWatcher?) {
@@ -108,7 +115,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         textWatcher?.let { addTextChangedListener(textWatcher) }
         activeTextWatcher = textWatcher
     }
-
 
     protected fun collectCurrentState(stateContent: FieldContent): VGSFieldState {
         val state = VGSFieldState().apply {
@@ -192,4 +198,9 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {}
+
+    override fun setInputType(type: Int) {
+        super.setInputType(type)
+        typeface = Typeface.DEFAULT
+    }
 }
