@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
@@ -197,4 +198,9 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {}
+
+    override fun setInputType(type: Int) {
+        super.setInputType(type)
+        typeface = Typeface.DEFAULT
+    }
 }
