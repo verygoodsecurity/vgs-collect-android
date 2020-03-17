@@ -34,12 +34,11 @@ Table of contents
 | Dependency | Version |
 | :--- | :---: |
 | Min SDK | 14 |
-| Target SDK | 28 |
-| com.android.support:appcompat-v7 | 28.0.0 |
+| Target SDK | 29 |
 | androidx.appcompat:appcompat | 1.1.0 |
+| com.google.android.material:material | 1.1.0 |
 | androidx.core:core-ktx | 1.2.0 |
-| com.android.support:design | 28.0.0 |
-| org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.61 |
+| org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.70 |
 
 ## Structure
 * **VGSCollect SDK** - provides an API for interacting with the VGS Vault
@@ -53,7 +52,7 @@ For integration you need to install the [Android Studio](http://developer.androi
 If you are using Maven, add the following to your `build.gradle` file:
 ```gradle
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:1.0.7’
+   implementation 'com.verygoodsecurity:vgscollect:1.0.8’
 }
 ```
 #### Add permissions
@@ -69,8 +68,8 @@ Add VGSEditText to your layout file:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.verygoodsecurity.vgscollect.widget.VGSEditText
-  	 android:id="@+id/my_secure_view"
+<com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+  	 android:id="@+id/your_field"
    	 android:layout_width="match_parent"
   	 android:layout_height="match_parent" />
 ```
@@ -83,12 +82,12 @@ public class ExampleActivity extends Activity {
    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.examle_layout);
+        setContentView(R.layout.example_layout);
 
         vgsForm.addOnFieldStateChangeListener(...);
         vgsForm.setOnResponseListener(...);
 
-        VGSEditText yourField = findViewById(R.id.your_field);
+        VGSCardNumberEditText yourField = findViewById(R.id.your_field);
         vgsForm.bindView(yourField);
     }
 
