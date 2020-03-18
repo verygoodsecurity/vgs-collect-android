@@ -10,6 +10,8 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
+import com.verygoodsecurity.vgscollect.core.content.VGSContentProvider
+import com.verygoodsecurity.vgscollect.core.content.VGSContentProviderImpl
 import com.verygoodsecurity.vgscollect.core.model.*
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.storage.DependencyDispatcher
@@ -35,17 +37,23 @@ import org.jetbrains.annotations.TestOnly
  * VGS Collect allows you to securely collect data from your users without having
  * to have that data pass through your systems.
  *
+ * @param context Activity context
  * @param id Unique Vault id
  * @param environment Type of Vaults
  *
  * @version 1.0.0
  */
-class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
+class VGSCollect(
+    private val context: Context,
+    id: String,
+    environment: Environment = Environment.SANDBOX
+) {
     private var storage: VgsStore
     private val emitter: IStateEmitter
     private val dependencyDispatcher: DependencyDispatcher
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
     private var client: ApiClient
+    private val fileProvider: VGSContentProvider
 
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
 
@@ -57,6 +65,8 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
 
     init {
         isURLValid = baseURL.isURLValid()
+
+        fileProvider = VGSContentProviderImpl()
 
         dependencyDispatcher = Notifier()
         externalDependencyDispatcher = DependencyReceiver()
@@ -129,15 +139,13 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
      * multithreading by yourself.
      * Do not use this method on the UI thread as this may crash.
      *
-     * @param mainActivity current activity
      * @param path path for a request
      * @param method HTTP method
      */
-    fun submit(mainActivity:Activity
-               , path:String
+    fun submit(path:String
                , method:HTTPMethod = HTTPMethod.POST
     ) {
-        appValidationCheck(mainActivity) { data ->
+        appValidationCheck { data ->
             val tempStore = client.getTemporaryStorage()
             val headers = tempStore.getCustomHeaders()
             val userData = tempStore.getCustomData()
@@ -153,11 +161,10 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
      * multithreading by yourself.
      * Do not use this method on the UI thread as this may crash.
      *
-     * @param mainActivity current activity
      * @param request data class with attributes for submit
      */
-    fun submit(mainActivity:Activity, request: VGSRequest) {
-        appValidationCheck(mainActivity) { data ->
+    fun submit(request: VGSRequest) {
+        appValidationCheck { data ->
             val tempStore = client.getTemporaryStorage()
             val headers = tempStore.getCustomHeaders()
             headers.putAll(request.customHeader)
@@ -172,15 +179,13 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     /**
      * This method executes and send data on VGS Server.
      *
-     * @param mainActivity current activity
      * @param path path for a request
      * @param method HTTP method
      */
-    fun asyncSubmit(mainActivity:Activity
-                    , path:String
+    fun asyncSubmit(path:String
                     , method:HTTPMethod
     ) {
-        appValidationCheck(mainActivity) { data ->
+        appValidationCheck { data ->
             val tempStore = client.getTemporaryStorage()
             val headers = tempStore.getCustomHeaders()
             val userData = tempStore.getCustomData()
@@ -192,11 +197,10 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
     /**
      * This method executes and send data on VGS Server.
      *
-     * @param mainActivity current activity
      * @param request data class with attributes for submit
      */
-    fun asyncSubmit(mainActivity:Activity, request: VGSRequest) {
-        appValidationCheck(mainActivity) { data ->
+    fun asyncSubmit(request: VGSRequest) {
+        appValidationCheck { data ->
             val tempStore = client.getTemporaryStorage()
             val headers = tempStore.getCustomHeaders()
             headers.putAll(request.customHeader)
@@ -208,13 +212,13 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
         }
     }
 
-    private fun appValidationCheck(mainActivity: Activity, func: ( data: MutableCollection<VGSFieldState>) -> Unit) {
+    private fun appValidationCheck(func: ( data: MutableCollection<VGSFieldState>) -> Unit) {
         when {
-            ContextCompat.checkSelfPermission(mainActivity,android.Manifest.permission.INTERNET)
+            ContextCompat.checkSelfPermission(context, android.Manifest.permission.INTERNET)
                     == PackageManager.PERMISSION_DENIED ->
-                Logger.e(mainActivity, VGSCollect::class.java, R.string.error_internet_permission)
-            !isURLValid -> Logger.e(mainActivity, VGSCollect::class.java, R.string.error_url_validation)
-            !isValidData(mainActivity) -> return
+                Logger.e(context, VGSCollect::class.java, R.string.error_internet_permission)
+            !isURLValid -> Logger.e(context, VGSCollect::class.java, R.string.error_url_validation)
+            !isValidData(context) -> return
             else -> func(storage.getStates())
         }
     }
@@ -318,6 +322,10 @@ class VGSCollect(id:String, environment: Environment = Environment.SANDBOX) {
      */
     fun resetCustomData() {
         client.getTemporaryStorage().resetCustomData()
+    }
+
+    fun getFileProvider(): VGSContentProvider {
+        return fileProvider
     }
 
     @TestOnly
