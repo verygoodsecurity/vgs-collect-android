@@ -1,37 +1,37 @@
 package com.verygoodsecurity.vgscollect.core
 
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.AsyncTask
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
-import com.verygoodsecurity.vgscollect.core.api.URLConnectionClient
-import com.verygoodsecurity.vgscollect.core.content.VGSContentProvider
-import com.verygoodsecurity.vgscollect.core.content.VGSContentProviderImpl
-import com.verygoodsecurity.vgscollect.core.model.*
-import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
-import com.verygoodsecurity.vgscollect.core.storage.DependencyDispatcher
-import com.verygoodsecurity.vgscollect.core.storage.Notifier
 import com.verygoodsecurity.vgscollect.core.model.Payload
+import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
+import com.verygoodsecurity.vgscollect.core.model.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
-import com.verygoodsecurity.vgscollect.core.storage.DefaultStorage
-import com.verygoodsecurity.vgscollect.core.storage.IStateEmitter
-import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
-import com.verygoodsecurity.vgscollect.core.storage.VgsStore
+import com.verygoodsecurity.vgscollect.core.storage.*
+import com.verygoodsecurity.vgscollect.core.storage.content.file.FFFF
+import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
+import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProvider
+import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProviderImpl
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.Logger
-import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
+import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import org.jetbrains.annotations.TestOnly
+
 
 /**
  * VGS Collect allows you to securely collect data from your users without having
@@ -48,12 +48,13 @@ class VGSCollect(
     id: String,
     environment: Environment = Environment.SANDBOX
 ) {
-    private var storage: VgsStore
+    private var storage: VgsStore<VGSFieldState>
     private val emitter: IStateEmitter
     private val dependencyDispatcher: DependencyDispatcher
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
     private var client: ApiClient
     private val fileProvider: VGSContentProvider
+    private val fileStorage: FileStorage
 
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
 
@@ -66,7 +67,14 @@ class VGSCollect(
     init {
         isURLValid = baseURL.isURLValid()
 
-        fileProvider = VGSContentProviderImpl()
+        with(
+            VGSContentProviderImpl(
+                context
+            )
+        ) {
+            fileProvider = this
+            fileStorage = this
+        }
 
         dependencyDispatcher = Notifier()
         externalDependencyDispatcher = DependencyReceiver()
@@ -131,7 +139,7 @@ class VGSCollect(
      * @return the  list with all states.
      */
     fun getAllStates(): List<FieldState> {
-        return storage.getStates().map { it.mapToFieldState() }
+        return storage.getItems().map { it.mapToFieldState() }
     }
 
     /**
@@ -219,13 +227,13 @@ class VGSCollect(
                 Logger.e(context, VGSCollect::class.java, R.string.error_internet_permission)
             !isURLValid -> Logger.e(context, VGSCollect::class.java, R.string.error_url_validation)
             !isValidData(context) -> return
-            else -> func(storage.getStates())
+            else -> func(storage.getItems())
         }
     }
 
     private fun isValidData(context: Context): Boolean {
         var isValid = true
-        storage.getStates().forEach {
+        storage.getItems().forEach {
             if(!it.isValid) {
                 val message = String.format(
                     context.getString(R.string.error_field_validation),
@@ -267,6 +275,14 @@ class VGSCollect(
         task.execute(p)
     }
 
+    fun test() {
+        val uri = Uri.parse(fileStorage.getItems().toList().get(0))
+        val resolver: ContentResolver = context.getContentResolver()
+        val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        resolver.takePersistableUriPermission(uri, takeFlags)
+        Log.e("test","NEW FILE ${fileStorage.getItems().toList().get(0)}")
+    }
+
     /**
      * Called when an activity you launched exits,
      * giving you the requestCode you started it with, the resultCode is returned,
@@ -283,9 +299,17 @@ class VGSCollect(
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode == Activity.RESULT_OK) {
             val map: VGSHashMapWrapper<String, Any?>? = data?.extras?.getParcelable(
-                BaseTransmitActivity.RESULT_DATA)
-            map?.run {
-                externalDependencyDispatcher.dispatch(mapOf())
+                BaseTransmitActivity.RESULT_DATA
+            )
+
+            if(requestCode == VGSContentProviderImpl.REQUEST_CODE) {
+                fileStorage.getFileCipher().retrieveActivityResult(map)?.let { uri ->
+                    fileStorage.addItem(-1, uri)
+                }
+            } else {
+                map?.run {
+                    externalDependencyDispatcher.dispatch(mapOf())
+                }
             }
         }
     }
@@ -334,7 +358,7 @@ class VGSCollect(
     }
 
     @TestOnly
-    internal fun setStorage(store: VgsStore) {
+    internal fun setStorage(store: VgsStore<VGSFieldState>) {
         storage = store
     }
 
@@ -347,4 +371,23 @@ class VGSCollect(
         val dataBundledata = data.mapUsefulPayloads()
         doRequest(path, method, headers, dataBundledata)
     }
+
+
+//    val intentFilter = IntentFilter("some123code")
+//    val r = AlarmReceiver()
+//    fun onResume() {
+//        Log.e("test", "VGS onResume")
+//        (context as Activity).registerReceiver(r, intentFilter)
+//    }
+//
+//    fun onPause() {
+//        Log.e("test", "VGS onPause")
+//        (context as Activity).unregisterReceiver(r)
+//    }
+//
+//    class AlarmReceiver : BroadcastReceiver() {
+//        override fun onReceive(context: Context?, intent: Intent?) {
+//            Log.e("test", "BroadcastReceiver done")
+//        }
+//    }
 }

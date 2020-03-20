@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
-internal class DefaultStorage : VgsStore,IStateEmitter {
+internal class DefaultStorage : VgsStore<VGSFieldState>,IStateEmitter {
 
     private val store = mutableMapOf<Int, VGSFieldState>()
 
@@ -23,7 +23,7 @@ internal class DefaultStorage : VgsStore,IStateEmitter {
         store.clear()
     }
 
-    override fun getStates() = store.values
+    override fun getItems() = store.values
 
     override fun performSubscription() = object: OnVgsViewStateChangeListener {
         override fun emit(viewId: Int, state: VGSFieldState) {
