@@ -2,5 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.verygoodsecurity.vgscollect" >
     <application android:networkSecurityConfig="@xml/network_security_config"
-        tools:targetApi="n" />
+        tools:targetApi="n" >
+
+        <activity android:name=".app.FilePickerActivity"
+            android:launchMode="singleTask"/>
+
+    </application>
+
 </manifest>

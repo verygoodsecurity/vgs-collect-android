@@ -16,7 +16,8 @@ data class VGSRequest private constructor(
     val method: HTTPMethod,
     val path:String,
     val customHeader:HashMap<String, String>,
-    val customData:HashMap<String, Any>
+    val customData:HashMap<String, Any>,
+    val needIgnore:Boolean = false
 ) {
 
     /**
@@ -80,7 +81,13 @@ data class VGSRequest private constructor(
          * @return VGSRequest instance
          */
         fun build():VGSRequest {
-            return VGSRequest(method, path, customHeader, customData)
+            return VGSRequest(method, path, customHeader, customData, needIgnore)
+        }
+
+        private var needIgnore = false
+        fun ignoreFields(ignoreInputFields:Boolean):VGSRequestBuilder {
+            this.needIgnore = ignoreInputFields
+            return this
         }
     }
 }
