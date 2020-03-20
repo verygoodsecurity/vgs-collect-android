@@ -1,11 +1,16 @@
 package com.verygoodsecurity.demoapp
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
+import android.util.Base64
+import android.util.Log
 import android.view.View
-import com.verygoodsecurity.vgscollect.core.Environment
+import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.api.cardio.ScanActivity
+import com.verygoodsecurity.vgscollect.BLAa
+import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -14,12 +19,10 @@ import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.progressBar
-import kotlinx.android.synthetic.main.activity_main.responseView
-import kotlinx.android.synthetic.main.activity_main.scanCardIOBtn
-import kotlinx.android.synthetic.main.activity_main.submitBtn
-import kotlinx.android.synthetic.main.activity_main.titleHeader
-import java.lang.StringBuilder
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 
 class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
 
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     private lateinit var env:Environment
 
     private val vgsForm:VGSCollect by lazy {
-        VGSCollect(vault_id, env)
+        VGSCollect(this, vault_id, env)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         showVaultId()
 
         submitBtn?.setOnClickListener(this)
+        attachFileBtn?.setOnClickListener(this)
         scanCardIOBtn?.setOnClickListener(this)
 
         vgsForm.addOnResponseListeners(this)
@@ -67,7 +71,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         val headers = HashMap<String, String>()
         headers["CUSTOM-HEADER"] = "all time header"
         vgsForm.setCustomHeaders(headers)
-
     }
 
     private fun showVaultId() {
@@ -99,8 +102,33 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         progressBar?.visibility = View.VISIBLE
         when (v?.id) {
             R.id.submitBtn -> submitData()
+            R.id.attachFileBtn -> attachFile()
             R.id.scanCardIOBtn -> scanData()
         }
+    }
+
+    private fun attachFile() {
+        vgsForm.getFileProvider().attachFile()
+    }
+
+    private fun submitData() {
+        val customData = HashMap<String, Any>()
+        customData.put("nickname", "Taras")
+
+        val headers = HashMap<String, String>()
+        headers["some-headers"] = "custom-header"
+
+        val request: VGSRequest = VGSRequest.VGSRequestBuilder()
+            .setMethod(HTTPMethod.POST)
+            .setPath(path)
+            .setCustomHeader(headers)
+            .setCustomData(customData)
+            .ignoreFields(true) //setup of list ignored fields?
+//            .ignoreFiles(true) //setup ignoreTypes [FILES, FIELDS, ETC., SPECIFIC_FIELD] ?
+            .build()
+
+        vgsForm.asyncSubmit(request)
+        vgsForm.bbbbb()
     }
 
     private fun scanData() {
@@ -119,26 +147,29 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         startActivityForResult(intent, USER_SCAN_REQUEST_CODE)
     }
 
+    override fun onBackPressed() {
+//        super.onBackPressed()
+        Log.e("test", "files BEFORE detach:")
+        val l = vgsForm.getFileProvider().getAttachedFiles()
+        l.forEach { fileInfo->
+            Log.e("test", "${fileInfo.name}, ${fileInfo.size} ${fileInfo.mimeType}")
+        }
+
+        if(l.isEmpty().not()) {
+            vgsForm.getFileProvider().detachFile(l[0])
+        }
+        Log.e("test", "files AFTER detach:")
+        vgsForm.getFileProvider().getAttachedFiles().forEach {fileInfo->
+            Log.e("test", "${fileInfo.name}, ${fileInfo.size} ${fileInfo.mimeType}")
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         vgsForm.onActivityResult(requestCode, resultCode, data)
-    }
-
-    private fun submitData() {
-        val customData = HashMap<String, Any>()
-        customData.put("nickname", "Taras")
-
-        val headers = HashMap<String, String>()
-        headers["some-headers"] = "custom-header"
-
-        val request: VGSRequest = VGSRequest.VGSRequestBuilder()
-            .setMethod(HTTPMethod.POST)
-            .setPath(path)
-            .setCustomHeader(headers)
-            .setCustomData(customData)
-            .build()
-
-        vgsForm.asyncSubmit(this@MainActivity, request)
+//        val s = data?.data.toString()
+//
+//        BLAa.bla2(Uri.parse(s), this)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
@@ -185,4 +216,5 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
                 "CODE: ${response.errorCode} \n\n ${response.localizeMessage}"
         }
     }
+
 }
