@@ -1,0 +1,73 @@
+package com.verygoodsecurity.vgscollect.core.storage
+
+import android.content.Context
+import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
+import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProvider
+import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProviderImpl
+import com.verygoodsecurity.vgscollect.util.merge
+import com.verygoodsecurity.vgscollect.util.toAssociatedList
+import com.verygoodsecurity.vgscollect.view.InputFieldView
+
+internal class InternalStorage(
+    context: Context,
+    fieldsDependencyDispatcher: Notifier
+) {
+
+    private val fileProvider: VGSContentProvider
+    private val fileStorage: FileStorage
+    private val fieldsStorage:VgsStore<Int, VGSFieldState>
+    private val emitter: IStateEmitter
+
+    init {
+        with(VGSContentProviderImpl(context)) {
+            fileProvider = this
+            fileStorage = this
+        }
+
+        with(DefaultStorage()) {
+            attachFieldDependencyObserver(fieldsDependencyDispatcher)
+
+            fieldsStorage = this
+            emitter = this
+        }
+    }
+
+    fun getVGSContentProvider() = fileProvider
+    fun getAttachedFiles() =  fileProvider.getAttachedFiles()
+    fun getFileStorage() = fileStorage
+    fun getFieldsStorage() = fieldsStorage
+
+    fun getFieldsStates():MutableCollection<VGSFieldState> = fieldsStorage.getItems()
+
+    fun getAssociatedList(
+        fieldsIgnore: Boolean = false, fileIgnore: Boolean = false
+    ):MutableCollection<Pair<String, String>> {
+        val list = mutableListOf<Pair<String, String>>()
+        if(!fieldsIgnore) {
+            list.addAll(fieldsStorage.getItems().toAssociatedList())
+        }
+        if(!fileIgnore) {
+            list.merge(fileStorage.getAssociatedList())
+        }
+
+        return list
+    }
+
+    fun clear() {
+        fileStorage.clear()
+        fieldsStorage.clear()
+    }
+
+    fun attachStateChangeListener(fieldStateListener: OnFieldStateChangeListener?) {
+        emitter.attachStateChangeListener(fieldStateListener)
+    }
+
+    fun performSubscription(view: InputFieldView?) {
+        view?.addStateListener(emitter.performSubscription())
+    }
+
+    fun getFileSizeLimit(): Int {
+        return 20 * 1024 * 1024
+    }
+}

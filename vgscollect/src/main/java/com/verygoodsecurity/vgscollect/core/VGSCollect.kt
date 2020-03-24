@@ -17,15 +17,12 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.*
-import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProvider
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProviderImpl
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
-import com.verygoodsecurity.vgscollect.util.merge
-import com.verygoodsecurity.vgscollect.util.toAssociatedList
 import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import org.jetbrains.annotations.TestOnly
@@ -46,13 +43,13 @@ class VGSCollect(
     id: String,
     environment: Environment = Environment.SANDBOX
 ) {
-    private var storage: VgsStore<Int, VGSFieldState>
-    private val emitter: IStateEmitter
-    private val dependencyDispatcher: DependencyDispatcher
+
+    private val fieldsDependencyDispatcher: DependencyDispatcher
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
+
     private var client: ApiClient
-    private val fileProvider: VGSContentProvider
-    private val fileStorage: FileStorage
+
+    private val storage:InternalStorage
 
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
 
@@ -65,26 +62,12 @@ class VGSCollect(
     init {
         isURLValid = baseURL.isURLValid()
 
-        with(
-            VGSContentProviderImpl(
-                context
-            )
-        ) {
-            fileProvider = this
-            fileStorage = this
-        }
-
-        dependencyDispatcher = Notifier()
+        fieldsDependencyDispatcher = Notifier()
         externalDependencyDispatcher = DependencyReceiver()
 
-        with(DefaultStorage()) {
-            attachFieldDependencyObserver(dependencyDispatcher)
+        storage = InternalStorage(context, fieldsDependencyDispatcher)
 
-            storage = this
-            emitter = this
-        }
-
-        client = URLConnectionClient.newInstance(baseURL)
+        client = OkHttpClient.newInstance(context, baseURL)
     }
 
     /**
@@ -105,10 +88,10 @@ class VGSCollect(
      */
     fun bindView(view: InputFieldView?) {
         if(view is AccessibilityStatePreparer) {
-            dependencyDispatcher.addDependencyListener(view.getFieldType(), view.getDependencyListener())
+            fieldsDependencyDispatcher.addDependencyListener(view.getFieldType(), view.getDependencyListener())
             externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.getDependencyListener())
         }
-        view?.addStateListener(emitter.performSubscription())
+        storage.performSubscription(view)
     }
 
     /**
@@ -117,7 +100,7 @@ class VGSCollect(
      * @param fieldStateListener listener which will receive changes updates
      */
     fun addOnFieldStateChangeListener(fieldStateListener : OnFieldStateChangeListener?) {
-        emitter.attachStateChangeListener(fieldStateListener)
+        storage.attachStateChangeListener(fieldStateListener)
     }
 
     /**
@@ -129,7 +112,6 @@ class VGSCollect(
         }
         tasks.clear()
         storage.clear()
-        fileStorage.clear()
     }
 
     /**
@@ -138,7 +120,7 @@ class VGSCollect(
      * @return the  list with all states.
      */
     fun getAllStates(): List<FieldState> {
-        return storage.getItems().map { it.mapToFieldState() }
+        return storage.getFieldsStates().map { it.mapToFieldState() }
     }
 
     /**
@@ -152,13 +134,13 @@ class VGSCollect(
     fun submit(path:String
                , method:HTTPMethod = HTTPMethod.POST
     ) {
-        appValidationCheck { data ->
-            val tempStore = client.getTemporaryStorage()
-            val headers = tempStore.getCustomHeaders()
-            val userData = tempStore.getCustomData()
+        val request = VGSRequest.VGSRequestBuilder()
+            .setPath(path)
+            .setMethod(method)
+            .build()
 
-            val dataBundledata = data.mapUsefulPayloads(userData)
-            doRequest(path, method, headers, dataBundledata)
+        if(checkInternetPermission() && isUrlValid() && validateFields() && validateFiles()) {
+            doRequest(request)
         }
     }
 
@@ -171,15 +153,14 @@ class VGSCollect(
      * @param request data class with attributes for submit
      */
     fun submit(request: VGSRequest) {
-        appValidationCheck { data ->
-            val tempStore = client.getTemporaryStorage()
-            val headers = tempStore.getCustomHeaders()
-            headers.putAll(request.customHeader)
-            val userData = tempStore.getCustomData()
-            userData.putAll(request.customData)
-
-            val dataBundleData = data.mapUsefulPayloads(userData)
-            doAsyncRequest(request.path, request.method, headers, dataBundleData)
+        if(isUrlValid() && checkInternetPermission()) {
+            if(!request.fieldsIgnore && !validateFields()) {
+                return
+            }
+            if(!request.fileIgnore&& !validateFiles()) {
+                return
+            }
+            doRequest(request)
         }
     }
 
@@ -192,12 +173,13 @@ class VGSCollect(
     fun asyncSubmit(path:String
                     , method:HTTPMethod
     ) {
-        appValidationCheck { data ->
-            val tempStore = client.getTemporaryStorage()
-            val headers = tempStore.getCustomHeaders()
-            val userData = tempStore.getCustomData()
-            val dataBundledata = data.mapUsefulPayloads(userData)
-            doAsyncRequest(path, method, headers, dataBundledata)
+        val request = VGSRequest.VGSRequestBuilder()
+            .setPath(path)
+            .setMethod(method)
+            .build()
+
+        if(checkInternetPermission() && isUrlValid() && validateFields() && validateFiles()) {
+            doAsyncRequest(request)
         }
     }
 
@@ -207,34 +189,59 @@ class VGSCollect(
      * @param request data class with attributes for submit
      */
     fun asyncSubmit(request: VGSRequest) {
-        appValidationCheck { data ->
-            val tempStore = client.getTemporaryStorage()
-            val headers = tempStore.getCustomHeaders()
-            headers.putAll(request.customHeader)
-            val userData = tempStore.getCustomData()
-            userData.putAll(request.customData)
+        if(isUrlValid() && checkInternetPermission()) {
+            if(!request.fieldsIgnore && !validateFields()) {
+                return
+            }
+            if(!request.fileIgnore&& !validateFiles()) {
 
-            val dataBundleData = data.mapUsefulPayloads(userData)
-            doAsyncRequest(request.path, request.method, headers, dataBundleData)
+                return
+            }
+            doAsyncRequest(request)
         }
     }
 
-    private fun appValidationCheck(func: ( data: MutableCollection<Pair<String, String>>) -> Unit) {
-        when {
-            ContextCompat.checkSelfPermission(context, android.Manifest.permission.INTERNET)
-                    == PackageManager.PERMISSION_DENIED ->
+    private fun checkInternetPermission():Boolean {
+        return with(ContextCompat.checkSelfPermission(context, android.Manifest.permission.INTERNET) != PackageManager.PERMISSION_DENIED) {
+            if (this) {
                 Logger.e(context, VGSCollect::class.java, R.string.error_internet_permission)
-            !isURLValid -> Logger.e(context, VGSCollect::class.java, R.string.error_url_validation)
-            !isValidData(context) -> return
-            else -> func(
-                storage.getItems().toAssociatedList().merge(fileStorage.getAssociatedList())
-            )
+            }
+            this
         }
     }
 
-    private fun isValidData(context: Context): Boolean {
+    private fun isUrlValid():Boolean {
+        return with(isURLValid) {
+            if (this) {
+                Logger.e(context, VGSCollect::class.java, R.string.error_url_validation)
+            }
+            this
+        }
+    }
+
+    private fun validateFiles():Boolean {
         var isValid = true
-        storage.getItems().forEach {
+
+        storage.getAttachedFiles().forEach {
+            if(it.size > storage.getFileSizeLimit()) {
+                val message = String.format(
+                    context.getString(R.string.error_file_size_validation),
+                    it.name
+                )
+                val r = VGSResponse.ErrorResponse(message, -1)
+                responseListeners.forEach { it.onResponse(r) }
+
+                isValid = false
+                return@forEach
+            }
+        }
+
+        return isValid
+    }
+    private fun validateFields():Boolean {
+        var isValid = true
+
+        storage.getFieldsStorage().getItems().forEach {
             if(!it.isValid) {
                 val message = String.format(
                     context.getString(R.string.error_field_validation),
@@ -249,40 +256,42 @@ class VGSCollect(
         return isValid
     }
 
-    protected fun doRequest(path: String,
-                            method: HTTPMethod,
-                            headers: Map<String, String>?,
-                            data: Map<String, Any>?
+    private fun doRequest(
+        request: VGSRequest
     ) {
-        val r = client.call(path, method, headers, data)
+        val requestBodyMap = request.customData.run {
+            val map = HashMap<String, Any>()
+            map.putAll(this)
+            map
+        }
+
+        val data = storage.getAssociatedList(request.fieldsIgnore, request.fileIgnore).mapUsefulPayloads(requestBodyMap)
+        val r = client.call(request.path, request.method, request.customHeader, data)
         responseListeners.forEach { it.onResponse(r) }
     }
 
-    protected fun doAsyncRequest(path: String,
-                                 method: HTTPMethod,
-                                 headers: Map<String, String>?,
-                                 data: Map<String, Any>?
+    private fun doAsyncRequest(
+        request: VGSRequest
     ) {
-        val p = Payload(path, method, headers, data)
-
         val task = doAsync(responseListeners) {
             it?.run {
-                client.call(this.path, this.method, this.headers, this.data)
+                val requestBodyMap = data?.run {
+                    val map = HashMap<String, Any>()
+                    map.putAll(this)
+                    map
+                }
+
+                val data = storage.getAssociatedList(request.fieldsIgnore, request.fileIgnore).mapUsefulPayloads(requestBodyMap)
+                val r = client.call(this.path, this.method, this.headers, data)
+                r
             } ?: VGSResponse.ErrorResponse()
         }
 
         tasks.add(task)
 
+        val p = Payload(request.path, request.method, request.customHeader, request.customData)
         task.execute(p)
     }
-
-//    fun test() {
-//        val uri = Uri.parse(fileStorage.getItems().toList().get(0))
-//        val resolver: ContentResolver = context.getContentResolver()
-//        val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
-//        resolver.takePersistableUriPermission(uri, takeFlags)
-//        Log.e("test","NEW FILE ${fileStorage.getItems().toList().get(0)}")
-//    }
 
     /**
      * Called when an activity you launched exits,
@@ -305,7 +314,7 @@ class VGSCollect(
 
             if(requestCode == VGSContentProviderImpl.REQUEST_CODE) {
                 map?.run {
-                    fileStorage.dispatch(mapOf())
+                    storage.getFileStorage().dispatch(mapOf())
                 }
             } else {
                 map?.run {
@@ -350,7 +359,7 @@ class VGSCollect(
     }
 
     fun getFileProvider(): VGSContentProvider {
-        return fileProvider
+        return storage.getVGSContentProvider()
     }
 
     @TestOnly
@@ -360,7 +369,7 @@ class VGSCollect(
 
     @TestOnly
     internal fun setStorage(store: VgsStore<Int, VGSFieldState>) {
-        storage = store
+//        storage = store
     }
 
     @TestOnly

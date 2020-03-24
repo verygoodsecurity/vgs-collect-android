@@ -68,6 +68,10 @@ internal class VGSContentProviderImpl(
     }
 
     override fun getAssociatedList(): MutableCollection<Pair<String, String>> {
-        return store.values
+        return store.values.map {
+            val uri = Uri.parse(it.second)
+            val fileBase64 = cipher.getBase64(uri)
+            it.first to fileBase64
+        }.toMutableList()
     }
 }
