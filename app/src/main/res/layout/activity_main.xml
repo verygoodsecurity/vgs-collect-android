@@ -143,8 +143,6 @@
             android:orientation="horizontal">
             <ImageButton
                 android:id="@+id/submitBtn"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"
                 android:src="@android:drawable/ic_menu_send"
                 android:tint="@color/colorPrimary"
                 android:tintMode="src_in"
@@ -152,8 +150,6 @@
                 android:layout_height="@dimen/button_size"/>
             <ImageButton
                 android:id="@+id/attachFileBtn"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"
                 android:tintMode="src_in"
                 android:src="@android:drawable/stat_sys_upload"
                 android:tint="@color/colorPrimary"
@@ -161,8 +157,6 @@
                 android:layout_height="@dimen/button_size"/>
             <ImageButton
                 android:id="@+id/scanCardIOBtn"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"
                 android:tint="@color/colorPrimary"
                 android:tintMode="src_in"
                 android:src="@android:drawable/ic_menu_camera"

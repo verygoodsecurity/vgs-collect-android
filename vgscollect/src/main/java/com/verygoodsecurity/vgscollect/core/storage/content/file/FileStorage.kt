@@ -1,8 +1,9 @@
 package com.verygoodsecurity.vgscollect.core.storage.content.file
 
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
-import com.verygoodsecurity.vgscollect.core.storage.content.file.VgsFileCipher
+import java.util.HashMap
 
-internal interface FileStorage:VgsStore<String> {
-    fun getFileCipher(): VgsFileCipher
+internal interface FileStorage:VgsStore<String,String> {
+    fun getAssociatedList():MutableCollection<Pair<String, String>>
+    fun dispatch(map: HashMap<String, Any?>)
 }

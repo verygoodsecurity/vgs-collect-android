@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.storage.content.file
 
 interface VGSContentProvider {
-    fun attachFile()
+    fun attachFile(fieldName : String)
 
     fun getAttachedFiles():List<FileData>
 

@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
  *
  * @version 1.0.0
  */
-interface VgsStore<T> {
+interface VgsStore<K, T> {
 
     /**
      * Clears all custom data which added before.
@@ -17,7 +17,7 @@ interface VgsStore<T> {
     /**
      * Appends the specified state to the storage.
      */
-    fun addItem(id: Int, newState: T)
+    fun addItem(id: K, newState: T)
 
     /**
      * Returns the states of all fields bonded before to VGSCollect.
