@@ -1,13 +1,10 @@
 package com.verygoodsecurity.vgscollect.core
 
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.AsyncTask
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
@@ -20,7 +17,6 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.*
-import com.verygoodsecurity.vgscollect.core.storage.content.file.FFFF
 import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProvider
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProviderImpl
@@ -28,6 +24,8 @@ import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
+import com.verygoodsecurity.vgscollect.util.merge
+import com.verygoodsecurity.vgscollect.util.toAssociatedList
 import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import org.jetbrains.annotations.TestOnly
@@ -48,7 +46,7 @@ class VGSCollect(
     id: String,
     environment: Environment = Environment.SANDBOX
 ) {
-    private var storage: VgsStore<VGSFieldState>
+    private var storage: VgsStore<Int, VGSFieldState>
     private val emitter: IStateEmitter
     private val dependencyDispatcher: DependencyDispatcher
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
@@ -131,6 +129,7 @@ class VGSCollect(
         }
         tasks.clear()
         storage.clear()
+        fileStorage.clear()
     }
 
     /**
@@ -220,14 +219,16 @@ class VGSCollect(
         }
     }
 
-    private fun appValidationCheck(func: ( data: MutableCollection<VGSFieldState>) -> Unit) {
+    private fun appValidationCheck(func: ( data: MutableCollection<Pair<String, String>>) -> Unit) {
         when {
             ContextCompat.checkSelfPermission(context, android.Manifest.permission.INTERNET)
                     == PackageManager.PERMISSION_DENIED ->
                 Logger.e(context, VGSCollect::class.java, R.string.error_internet_permission)
             !isURLValid -> Logger.e(context, VGSCollect::class.java, R.string.error_url_validation)
             !isValidData(context) -> return
-            else -> func(storage.getItems())
+            else -> func(
+                storage.getItems().toAssociatedList().merge(fileStorage.getAssociatedList())
+            )
         }
     }
 
@@ -275,13 +276,13 @@ class VGSCollect(
         task.execute(p)
     }
 
-    fun test() {
-        val uri = Uri.parse(fileStorage.getItems().toList().get(0))
-        val resolver: ContentResolver = context.getContentResolver()
-        val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
-        resolver.takePersistableUriPermission(uri, takeFlags)
-        Log.e("test","NEW FILE ${fileStorage.getItems().toList().get(0)}")
-    }
+//    fun test() {
+//        val uri = Uri.parse(fileStorage.getItems().toList().get(0))
+//        val resolver: ContentResolver = context.getContentResolver()
+//        val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
+//        resolver.takePersistableUriPermission(uri, takeFlags)
+//        Log.e("test","NEW FILE ${fileStorage.getItems().toList().get(0)}")
+//    }
 
     /**
      * Called when an activity you launched exits,
@@ -303,8 +304,8 @@ class VGSCollect(
             )
 
             if(requestCode == VGSContentProviderImpl.REQUEST_CODE) {
-                fileStorage.getFileCipher().retrieveActivityResult(map)?.let { uri ->
-                    fileStorage.addItem(-1, uri)
+                map?.run {
+                    fileStorage.dispatch(mapOf())
                 }
             } else {
                 map?.run {
@@ -358,7 +359,7 @@ class VGSCollect(
     }
 
     @TestOnly
-    internal fun setStorage(store: VgsStore<VGSFieldState>) {
+    internal fun setStorage(store: VgsStore<Int, VGSFieldState>) {
         storage = store
     }
 
@@ -368,26 +369,7 @@ class VGSCollect(
                                      headers: Map<String, String>?,
                                      data: MutableCollection<VGSFieldState>
     ) {
-        val dataBundledata = data.mapUsefulPayloads()
-        doRequest(path, method, headers, dataBundledata)
+//        val dataBundledata = data.mapUsefulPayloads()
+//        doRequest(path, method, headers, dataBundledata)
     }
-
-
-//    val intentFilter = IntentFilter("some123code")
-//    val r = AlarmReceiver()
-//    fun onResume() {
-//        Log.e("test", "VGS onResume")
-//        (context as Activity).registerReceiver(r, intentFilter)
-//    }
-//
-//    fun onPause() {
-//        Log.e("test", "VGS onPause")
-//        (context as Activity).unregisterReceiver(r)
-//    }
-//
-//    class AlarmReceiver : BroadcastReceiver() {
-//        override fun onReceive(context: Context?, intent: Intent?) {
-//            Log.e("test", "BroadcastReceiver done")
-//        }
-//    }
 }

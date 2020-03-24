@@ -1,15 +1,11 @@
 package com.verygoodsecurity.demoapp
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.OpenableColumns
-import android.util.Base64
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.api.cardio.ScanActivity
-import com.verygoodsecurity.vgscollect.BLAa
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -19,10 +15,6 @@ import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
 
 class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
 
@@ -108,7 +100,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     }
 
     private fun attachFile() {
-        vgsForm.getFileProvider().attachFile()
+        vgsForm.getFileProvider().attachFile("files.somePic")
     }
 
     private fun submitData() {
@@ -123,12 +115,11 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
             .setPath(path)
             .setCustomHeader(headers)
             .setCustomData(customData)
-            .ignoreFields(true) //setup of list ignored fields?
+//            .ignoreFields(true) //setup of list ignored fields?
 //            .ignoreFiles(true) //setup ignoreTypes [FILES, FIELDS, ETC., SPECIFIC_FIELD] ?
             .build()
 
         vgsForm.asyncSubmit(request)
-        vgsForm.bbbbb()
     }
 
     private fun scanData() {
@@ -147,29 +138,9 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         startActivityForResult(intent, USER_SCAN_REQUEST_CODE)
     }
 
-    override fun onBackPressed() {
-//        super.onBackPressed()
-        Log.e("test", "files BEFORE detach:")
-        val l = vgsForm.getFileProvider().getAttachedFiles()
-        l.forEach { fileInfo->
-            Log.e("test", "${fileInfo.name}, ${fileInfo.size} ${fileInfo.mimeType}")
-        }
-
-        if(l.isEmpty().not()) {
-            vgsForm.getFileProvider().detachFile(l[0])
-        }
-        Log.e("test", "files AFTER detach:")
-        vgsForm.getFileProvider().getAttachedFiles().forEach {fileInfo->
-            Log.e("test", "${fileInfo.name}, ${fileInfo.size} ${fileInfo.mimeType}")
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         vgsForm.onActivityResult(requestCode, resultCode, data)
-//        val s = data?.data.toString()
-//
-//        BLAa.bla2(Uri.parse(s), this)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {

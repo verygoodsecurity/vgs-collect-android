@@ -2,8 +2,6 @@ package com.verygoodsecurity.vgscollect.app
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Parcelable
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 
@@ -38,20 +36,10 @@ abstract class BaseTransmitActivity:AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.e("test", "B onStart")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.e("test", "B onStop")
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        resultIntent.data = data?.data//fixme test string
+//        resultIntent.data = data?.data//fixme test string
 
         resultIntent.putExtra(RESULT_DATA, storage)
         if(resultCode != Activity.RESULT_CANCELED) {

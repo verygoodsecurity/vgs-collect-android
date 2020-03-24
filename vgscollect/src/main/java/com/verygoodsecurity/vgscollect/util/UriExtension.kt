@@ -1,10 +1,11 @@
-package com.verygoodsecurity.vgscollect.core.storage.content.file
+package com.verygoodsecurity.vgscollect.util
 
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
+import com.verygoodsecurity.vgscollect.core.storage.content.file.FileData
 
-fun Uri.parseFile(context: Context): FileData? {
+fun Uri.parseFile(context: Context, fieldName:String): FileData? {
     val mimeType: String? = this.let { returnUri ->
         context.contentResolver.getType(returnUri)
     }
@@ -23,6 +24,7 @@ fun Uri.parseFile(context: Context): FileData? {
     return FileData(
         sizeIndexL,
         name,
-        mimeType
+        mimeType,
+        fieldName
     )
 }
