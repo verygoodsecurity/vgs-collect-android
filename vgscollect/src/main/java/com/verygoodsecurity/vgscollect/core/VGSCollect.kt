@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.AsyncTask
+import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
@@ -25,7 +26,6 @@ import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.InputFieldView
-import org.jetbrains.annotations.TestOnly
 
 
 /**
@@ -49,7 +49,7 @@ class VGSCollect(
 
     private var client: ApiClient
 
-    private val storage:InternalStorage
+    private var storage:InternalStorage
 
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
 
@@ -110,6 +110,7 @@ class VGSCollect(
         tasks.forEach {
             it.cancel(true)
         }
+        responseListeners.clear()
         tasks.clear()
         storage.clear()
     }
@@ -362,23 +363,23 @@ class VGSCollect(
         return storage.getVGSContentProvider()
     }
 
-    @TestOnly
+    @VisibleForTesting
+    internal fun getResponseListeners(): Collection<VgsCollectResponseListener> {
+        return responseListeners
+    }
+
+    @VisibleForTesting
+    internal fun setStorage(store: InternalStorage) {
+        storage = store
+    }
+
+    @VisibleForTesting
     internal fun setClient(c: ApiClient) {
         client = c
     }
 
-    @TestOnly
-    internal fun setStorage(store: VgsStore<Int, VGSFieldState>) {
-//        storage = store
-    }
-
-    @TestOnly
-    internal fun doMainThreadRequest(path: String,
-                                     method: HTTPMethod,
-                                     headers: Map<String, String>?,
-                                     data: MutableCollection<VGSFieldState>
-    ) {
-//        val dataBundledata = data.mapUsefulPayloads()
-//        doRequest(path, method, headers, dataBundledata)
+    @VisibleForTesting
+    internal fun getExternalDependencyDispatcher(): ExternalDependencyDispatcher {
+        return externalDependencyDispatcher
     }
 }
