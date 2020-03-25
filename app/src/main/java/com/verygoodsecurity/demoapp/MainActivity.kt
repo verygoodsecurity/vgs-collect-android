@@ -91,7 +91,6 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     }
 
     override fun onClick(v: View?) {
-        progressBar?.visibility = View.VISIBLE
         when (v?.id) {
             R.id.submitBtn -> submitData()
             R.id.attachFileBtn -> attachFile()
@@ -101,11 +100,14 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
     private fun attachFile() {
         vgsForm.getFileProvider().attachFile("files.somePic")
+        refreshAllStates()
+        vgsForm.getFileProvider()
     }
 
     private fun submitData() {
+        progressBar?.visibility = View.VISIBLE
         val customData = HashMap<String, Any>()
-        customData.put("nickname", "Taras")
+        customData["nickname"] = "Taras"
 
         val headers = HashMap<String, String>()
         headers["some-headers"] = "custom-header"
@@ -115,14 +117,15 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
             .setPath(path)
             .setCustomHeader(headers)
             .setCustomData(customData)
-//            .ignoreFields(true) //setup of list ignored fields?
-//            .ignoreFiles(true) //setup ignoreTypes [FILES, FIELDS, ETC., SPECIFIC_FIELD] ?
+//            .ignoreFields() //setup of list ignored fields?
+            .ignoreFiles()
             .build()
 
         vgsForm.asyncSubmit(request)
     }
 
     private fun scanData() {
+        refreshAllStates()
         progressBar?.visibility = View.INVISIBLE
         val intent = Intent(this, ScanActivity::class.java)
 
@@ -147,26 +150,30 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         return object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
                 titleHeader?.text = "STATE:"
-                val states = vgsForm.getAllStates()
-                val builder = StringBuilder()
-                states.forEach {
-                    builder.append(it.fieldName).append("\n")
-                        .append("   hasFocus: ").append(it.hasFocus).append("\n")
-                        .append("   isValid: ").append(it.isValid).append("\n")
-                        .append("   isEmpty: ").append(it.isEmpty).append("\n")
-                        .append("   isRequired: ").append(it.isRequired).append("\n")
-                    if (it is FieldState.CardNumberState) {
-                        builder.append("    type: ").append(it.cardBrand).append("\n")
-                            .append("       end: ").append(it.last).append("\n")
-                            .append("       bin: ").append(it.bin).append("\n")
-                            .append(it.number).append("\n")
-                    }
-
-                    builder.append("\n")
-                }
-                responseView?.text = builder.toString()
+                refreshAllStates()
             }
         }
+    }
+
+    private fun refreshAllStates() {
+        val states = vgsForm.getAllStates()
+        val builder = StringBuilder()
+        states.forEach {
+            builder.append(it.fieldName).append("\n")
+                .append("   hasFocus: ").append(it.hasFocus).append("\n")
+                .append("   isValid: ").append(it.isValid).append("\n")
+                .append("   isEmpty: ").append(it.isEmpty).append("\n")
+                .append("   isRequired: ").append(it.isRequired).append("\n")
+            if (it is FieldState.CardNumberState) {
+                builder.append("    type: ").append(it.cardBrand).append("\n")
+                    .append("       end: ").append(it.last).append("\n")
+                    .append("       bin: ").append(it.bin).append("\n")
+                    .append(it.number).append("\n")
+            }
+
+            builder.append("\n")
+        }
+        responseView?.text = builder.toString()
     }
 
     override fun onResponse(response: VGSResponse?) {
@@ -175,12 +182,10 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         titleHeader?.text = "RESPONSE:"
         when (response) {
             is VGSResponse.SuccessResponse -> {
-                val builder = StringBuilder("CODE: ")
-                    .append(response.code.toString()).append("\n\n")
-                response.response?.forEach {
-                    builder.append(it.key).append(": ").append(it.value).append("\n\n")
-                }
-                val str = builder.toString()
+                Log.e("test", "${response.rawResponse}")
+
+                val str = StringBuilder("CODE: ")
+                    .append(response.code.toString()).toString()
                 responseView.text = str
             }
             is VGSResponse.ErrorResponse -> responseView.text =
