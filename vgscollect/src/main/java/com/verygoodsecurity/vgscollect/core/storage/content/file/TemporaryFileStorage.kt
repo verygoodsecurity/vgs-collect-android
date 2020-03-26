@@ -13,7 +13,7 @@ import java.util.HashMap
 
 internal class TemporaryFileStorage(
     private val context: Context
-) : VGSContentProvider, FileStorage {
+) : VGSFileProvider, FileStorage {
 
     companion object {
         internal const val REQUEST_CODE = 0x3712

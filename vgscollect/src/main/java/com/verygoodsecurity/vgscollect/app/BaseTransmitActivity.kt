@@ -39,14 +39,11 @@ abstract class BaseTransmitActivity:AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-//        resultIntent.data = data?.data//fixme test string
-
         resultIntent.putExtra(RESULT_DATA, storage)
         if(resultCode != Activity.RESULT_CANCELED) {
             setResult(Activity.RESULT_OK, resultIntent)
         } else {
             setResult(Activity.RESULT_CANCELED)
         }
-        intent.putExtra(RESULT_DATA, storage)
     }
 }

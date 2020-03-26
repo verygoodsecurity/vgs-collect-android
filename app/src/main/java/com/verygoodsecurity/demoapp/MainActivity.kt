@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     }
 
     private fun attachFile() {
-        vgsForm.getFileProvider().attachFile("files.somePic")
+        vgsForm.getFileProvider().attachFile("card_data.cardNumber")
         refreshAllStates()
         vgsForm.getFileProvider()
     }
@@ -117,11 +117,12 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
             .setPath(path)
             .setCustomHeader(headers)
             .setCustomData(customData)
-//            .ignoreFields() //setup of list ignored fields?
-            .ignoreFiles()
+            .ignoreFields()
+//            .ignoreFiles()
             .build()
 
         vgsForm.asyncSubmit(request)
+
     }
 
     private fun scanData() {

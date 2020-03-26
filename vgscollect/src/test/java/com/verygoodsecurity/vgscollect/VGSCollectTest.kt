@@ -210,7 +210,7 @@ class VGSCollectTest {
     fun test_get_file_provider() {
         val storage = applyStorage()
         collect.getFileProvider()
-        Mockito.verify(storage).getVGSContentProvider()
+        Mockito.verify(storage).getFileProvider()
     }
 
     private fun <T> any(): T = Mockito.any<T>()
