@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.app.FilePickerActivity
 import com.verygoodsecurity.vgscollect.util.parseFile
 import java.util.HashMap
@@ -17,7 +18,7 @@ internal class TemporaryFileStorage(
         internal const val REQUEST_CODE = 0x3712
     }
 
-    private val cipher = Base64Cipher(context)
+    private var cipher:VgsFileCipher = Base64Cipher(context)
 
     private val store = mutableMapOf<FileData, Pair<String, String>>()
 
@@ -73,5 +74,10 @@ internal class TemporaryFileStorage(
             val fileBase64 = cipher.getBase64(uri)
             it.first to fileBase64
         }.toMutableList()
+    }
+
+    @VisibleForTesting
+    fun setCipher(c:VgsFileCipher) {
+        cipher = c
     }
 }
