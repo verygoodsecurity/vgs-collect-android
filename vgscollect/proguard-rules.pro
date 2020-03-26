@@ -41,9 +41,11 @@
 -keep, allowobfuscation public interface com.verygoodsecurity.vgscollect.core.storage.OnVgsViewStateChangeListener { *; }
 -keep, allowobfuscation public class com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper { *; }
 
--keep public interface  com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener { *; }
+-keep public interface com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener { *; }
 
 -keep public class com.verygoodsecurity.vgscollect.core.model.VGSRequest$* { *; }
+-keep public interface com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider { *; }
+-keep public class com.verygoodsecurity.vgscollect.core.model.state.FileState  { *; }
 -keep public class * extends com.verygoodsecurity.vgscollect.core.model.state.FieldState { *; }
 -keep public class * extends com.verygoodsecurity.vgscollect.core.model.VGSResponse { *; }
 -keep class com.verygoodsecurity.vgscollect.core.* {
