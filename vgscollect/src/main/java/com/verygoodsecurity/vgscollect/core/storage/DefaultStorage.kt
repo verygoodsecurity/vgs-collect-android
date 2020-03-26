@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.storage
 
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.view.card.FieldType
@@ -67,5 +68,15 @@ internal class DefaultStorage : VgsStore<Int, VGSFieldState>,IStateEmitter {
     private fun notifyUser(state: VGSFieldState) {
         val fs = state.mapToFieldState()
         onFieldStateChangeListeners.forEach { it.onStateChange(fs) }
+    }
+
+    @VisibleForTesting
+    fun  getFieldStateChangeListeners(): MutableList<OnFieldStateChangeListener> {
+        return onFieldStateChangeListeners
+    }
+
+    @VisibleForTesting
+    fun  getDependencyObservers(): MutableList<FieldDependencyObserver> {
+        return dependencyObservers
     }
 }
