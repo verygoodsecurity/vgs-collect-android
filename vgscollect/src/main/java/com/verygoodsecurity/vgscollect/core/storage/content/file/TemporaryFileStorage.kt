@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.app.FilePickerActivity
+import com.verygoodsecurity.vgscollect.core.model.state.FileState
 import com.verygoodsecurity.vgscollect.util.parseFile
 import java.util.HashMap
 
@@ -20,7 +21,7 @@ internal class TemporaryFileStorage(
 
     private var cipher:VgsFileCipher = Base64Cipher(context)
 
-    private val store = mutableMapOf<FileData, Pair<String, String>>()
+    private val store = mutableMapOf<FileState, Pair<String, String>>()
 
     override fun detachAll() {
         store.clear()
@@ -40,9 +41,9 @@ internal class TemporaryFileStorage(
         )
     }
 
-    override fun getAttachedFiles():List<FileData> = store.keys.toList()
+    override fun getAttachedFiles():List<FileState> = store.keys.toList()
 
-    override fun detachFile(file: FileData) {
+    override fun detachFile(file: FileState) {
         store.remove(file)
     }
 
