@@ -4,7 +4,7 @@ import android.content.Context
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
-import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProvider
+import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.util.merge
 import com.verygoodsecurity.vgscollect.util.toAssociatedList
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -14,7 +14,7 @@ internal class InternalStorage(
     fieldsDependencyDispatcher: Notifier? = null
 ) {
 
-    private val fileProvider: VGSContentProvider
+    private val fileProvider: VGSFileProvider
     private val fileStorage: FileStorage
     private val fieldsStorage:VgsStore<Int, VGSFieldState>
     private val emitter: IStateEmitter
@@ -33,7 +33,7 @@ internal class InternalStorage(
         }
     }
 
-    fun getVGSContentProvider() = fileProvider
+    fun getFileProvider() = fileProvider
     fun getAttachedFiles() =  fileProvider.getAttachedFiles()
     fun getFileStorage() = fileStorage
     fun getFieldsStorage() = fieldsStorage
@@ -44,10 +44,10 @@ internal class InternalStorage(
         fieldsIgnore: Boolean = false, fileIgnore: Boolean = false
     ):MutableCollection<Pair<String, String>> {
         val list = mutableListOf<Pair<String, String>>()
-        if(!fieldsIgnore) {
+        if(fieldsIgnore.not()) {
             list.addAll(fieldsStorage.getItems().toAssociatedList())
         }
-        if(!fileIgnore) {
+        if(fileIgnore.not()) {
             list.merge(fileStorage.getAssociatedList())
         }
 
@@ -68,6 +68,6 @@ internal class InternalStorage(
     }
 
     fun getFileSizeLimit(): Int {
-        return 20 * 1024 * 1024
+        return 19 * 1024 * 1024
     }
 }
