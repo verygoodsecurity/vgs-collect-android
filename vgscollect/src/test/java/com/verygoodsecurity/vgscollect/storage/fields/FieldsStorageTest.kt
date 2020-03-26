@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.storage
+package com.verygoodsecurity.vgscollect.storage.fields
 
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
