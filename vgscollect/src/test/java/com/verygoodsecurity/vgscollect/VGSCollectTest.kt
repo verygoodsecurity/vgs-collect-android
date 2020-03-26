@@ -16,7 +16,6 @@ import com.verygoodsecurity.vgscollect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProviderImpl
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.material.TestApplication
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import org.junit.Assert.assertEquals
 import org.junit.Before
