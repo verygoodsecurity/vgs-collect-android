@@ -14,7 +14,7 @@ import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.VGSRequest
 import com.verygoodsecurity.vgscollect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
-import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProviderImpl
+import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import org.junit.Assert.assertEquals
@@ -149,7 +149,7 @@ class VGSCollectTest {
         val map = VGSHashMapWrapper<String, Any?>()
         intent.putExtra(BaseTransmitActivity.RESULT_DATA, map)
 
-        collect.onActivityResult(VGSContentProviderImpl.REQUEST_CODE, Activity.RESULT_OK, intent)
+        collect.onActivityResult(TemporaryFileStorage.REQUEST_CODE, Activity.RESULT_OK, intent)
 
         Mockito.verify(storage).getFileStorage()
     }

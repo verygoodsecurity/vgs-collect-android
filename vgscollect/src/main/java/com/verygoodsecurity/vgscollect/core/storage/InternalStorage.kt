@@ -3,15 +3,15 @@ package com.verygoodsecurity.vgscollect.core.storage
 import android.content.Context
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
+import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProvider
-import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProviderImpl
 import com.verygoodsecurity.vgscollect.util.merge
 import com.verygoodsecurity.vgscollect.util.toAssociatedList
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 
 internal class InternalStorage(
     context: Context,
-    fieldsDependencyDispatcher: Notifier
+    fieldsDependencyDispatcher: Notifier? = null
 ) {
 
     private val fileProvider: VGSContentProvider
@@ -20,12 +20,12 @@ internal class InternalStorage(
     private val emitter: IStateEmitter
 
     init {
-        with(VGSContentProviderImpl(context)) {
+        with(TemporaryFileStorage(context)) {
             fileProvider = this
             fileStorage = this
         }
 
-        with(DefaultStorage()) {
+        with(TemporaryFieldsStorage()) {
             attachFieldDependencyObserver(fieldsDependencyDispatcher)
 
             fieldsStorage = this

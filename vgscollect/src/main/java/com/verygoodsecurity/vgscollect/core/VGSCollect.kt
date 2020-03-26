@@ -15,11 +15,10 @@ import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
-import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.*
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProvider
-import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProviderImpl
+import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.Logger
@@ -313,7 +312,7 @@ class VGSCollect(
                 BaseTransmitActivity.RESULT_DATA
             )
 
-            if(requestCode == VGSContentProviderImpl.REQUEST_CODE) {
+            if(requestCode == TemporaryFileStorage.REQUEST_CODE) {
                 map?.run {
                     storage.getFileStorage().dispatch(mapOf())
                 }

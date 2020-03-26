@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscollect.app.FilePickerActivity
 import com.verygoodsecurity.vgscollect.util.parseFile
 import java.util.HashMap
 
-internal class VGSContentProviderImpl(
+internal class TemporaryFileStorage(
     private val context: Context
 ) : VGSContentProvider, FileStorage {
 
