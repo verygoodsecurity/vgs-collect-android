@@ -17,7 +17,7 @@ import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.*
-import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProvider
+import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
@@ -30,6 +30,7 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 /**
  * VGS Collect allows you to securely collect data from your users without having
  * to have that data pass through your systems.
+ * Entry-point to the Stripe SDK.
  *
  * @param context Activity context
  * @param id Unique Vault id
@@ -52,7 +53,7 @@ class VGSCollect(
 
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
 
-    private val tasks = mutableListOf<AsyncTask<Payload, Void, VGSResponse>>()
+    private var currentTask:AsyncTask<Payload, Void, VGSResponse>? = null
 
     internal val baseURL:String = id.setupURL(environment.rawValue)
 
@@ -106,18 +107,15 @@ class VGSCollect(
      * Clear all information collected before by VGSCollect.
      */
     fun onDestroy() {
-        tasks.forEach {
-            it.cancel(true)
-        }
+        currentTask?.cancel(true)
         responseListeners.clear()
-        tasks.clear()
         storage.clear()
     }
 
     /**
      * Returns the states of all fields bonded before to VGSCollect.
      *
-     * @return the  list with all states.
+     * @return the list with all states.
      */
     fun getAllStates(): List<FieldState> {
         return storage.getFieldsStates().map { it.mapToFieldState() }
@@ -203,7 +201,7 @@ class VGSCollect(
 
     private fun checkInternetPermission():Boolean {
         return with(ContextCompat.checkSelfPermission(context, android.Manifest.permission.INTERNET) != PackageManager.PERMISSION_DENIED) {
-            if (this) {
+            if (this.not()) {
                 Logger.e(context, VGSCollect::class.java, R.string.error_internet_permission)
             }
             this
@@ -212,7 +210,7 @@ class VGSCollect(
 
     private fun isUrlValid():Boolean {
         return with(isURLValid) {
-            if (this) {
+            if (this.not()) {
                 Logger.e(context, VGSCollect::class.java, R.string.error_url_validation)
             }
             this
@@ -242,7 +240,7 @@ class VGSCollect(
         var isValid = true
 
         storage.getFieldsStorage().getItems().forEach {
-            if(!it.isValid) {
+            if(it.isValid.not()) {
                 val message = String.format(
                     context.getString(R.string.error_field_validation),
                     it.fieldName
@@ -273,7 +271,10 @@ class VGSCollect(
     private fun doAsyncRequest(
         request: VGSRequest
     ) {
-        val task = doAsync(responseListeners) {
+        if(currentTask?.isCancelled == false) {
+            currentTask?.cancel(true)
+        }
+        currentTask = doAsync(responseListeners) {
             it?.run {
                 val requestBodyMap = data?.run {
                     val map = HashMap<String, Any>()
@@ -287,10 +288,8 @@ class VGSCollect(
             } ?: VGSResponse.ErrorResponse()
         }
 
-        tasks.add(task)
-
         val p = Payload(request.path, request.method, request.customHeader, request.customData)
-        task.execute(p)
+        currentTask!!.execute(p)
     }
 
     /**
@@ -345,7 +344,7 @@ class VGSCollect(
      * It collect custom data which will be send to server. User's custom data are stored until
      * resetCustomData method will be called.
      *
-     * @param data The Map to save for request.
+     * @param [Map] The Map to save for request.
      */
     fun setCustomData(data: Map<String, Any>?) {
         client.getTemporaryStorage().setCustomData(data)
@@ -358,8 +357,13 @@ class VGSCollect(
         client.getTemporaryStorage().resetCustomData()
     }
 
-    fun getFileProvider(): VGSContentProvider {
-        return storage.getVGSContentProvider()
+    /**
+     * Return instance for managing attached files to request.
+     *
+     * @return [VGSFileProvider] instance
+     */
+    fun getFileProvider(): VGSFileProvider {
+        return storage.getFileProvider()
     }
 
     @VisibleForTesting

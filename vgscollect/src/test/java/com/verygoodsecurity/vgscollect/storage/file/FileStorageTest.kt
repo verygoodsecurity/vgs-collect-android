@@ -6,7 +6,7 @@ import android.os.Build
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
-import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProvider
+import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VgsFileCipher
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -131,7 +131,7 @@ class FileStorageTest {
 
         val fieldName = "store.file"
 
-        val provider: VGSContentProvider = with(TemporaryFileStorage(activity)) {
+        val provider: VGSFileProvider = with(TemporaryFileStorage(activity)) {
             this.setCipher(c)
 
             this
@@ -149,7 +149,7 @@ class FileStorageTest {
         val fieldName = "store.file"
         val uri = "file:///tmp/user.txt"
 
-        val provider: VGSContentProvider = with(TemporaryFileStorage(activity)) {
+        val provider: VGSFileProvider = with(TemporaryFileStorage(activity)) {
             this.setCipher(c)
 
             addItem(fieldName, uri)
@@ -169,7 +169,7 @@ class FileStorageTest {
         val fieldName = "store.file"
         val uri = "file:///tmp/user.txt"
 
-        val provider: VGSContentProvider = with(TemporaryFileStorage(activity)) {
+        val provider: VGSFileProvider = with(TemporaryFileStorage(activity)) {
             this.setCipher(c)
 
             addItem(fieldName, uri)
@@ -190,7 +190,7 @@ class FileStorageTest {
         val fieldName = "store.file"
         val uri = "file:///tmp/user.txt"
 
-        val provider: VGSContentProvider = with(TemporaryFileStorage(activity)) {
+        val provider: VGSFileProvider = with(TemporaryFileStorage(activity)) {
             this.setCipher(c)
 
             addItem(fieldName, uri)

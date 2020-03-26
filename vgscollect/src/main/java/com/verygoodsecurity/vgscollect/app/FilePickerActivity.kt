@@ -30,7 +30,6 @@ class FilePickerActivity :BaseTransmitActivity() {
     }
 
     private fun selectFile() {
-//        var chooseFile = Intent(Intent.ACTION_GET_CONTENT)
         var chooseFile = Intent(Intent.ACTION_OPEN_DOCUMENT)
         chooseFile.type = "*/*"
         chooseFile = Intent.createChooser(chooseFile, "Choose a file")
@@ -47,79 +46,4 @@ class FilePickerActivity :BaseTransmitActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         finish()
     }
-
-
-    private fun handleOnActivityResult() {
-//        if(requestCode == 789) {
-//            val fileUri = data?.data
-//            val mimeType: String? = fileUri?.let { returnUri ->
-//                contentResolver.getType(returnUri)
-//            }
-//            var name:String = ""
-//            var sizeIndexStr:String = ""
-//            fileUri?.let { returnUri ->
-//                contentResolver.query(returnUri, null, null, null, null)
-//            }?.use { cursor ->
-//                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-//                val sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
-//                cursor.moveToFirst()
-//                name = cursor.getString(nameIndex)
-//                sizeIndexStr = cursor.getLong(sizeIndex).toString()
-//            }
-//
-//
-//            val file = bla(fileUri!!)
-//            val base64Str = convertToBase64(file)
-//            Log.e("test", "file: $fileUri, $mimeType $name $sizeIndexStr $file")
-//            Log.e("test", "base64Str: $base64Str")
-//
-//
-//            val arr = decodefromBase64(base64Str)
-////            saveReceivedImage(arr!!, arr.size)
-//        }
-    }
-
-
-    fun convertToBase64(attachment: File): String {
-        return Base64.encodeToString(attachment.readBytes(), Base64.NO_WRAP)
-    }
-
-    fun bla(fileUri: Uri): File {
-        val tempFile = File.createTempFile(
-            "splitName[0]",
-            "jpg"
-        )
-
-//        val inputStream: InputStream = contentResolver.openInputStream(fileUri)
-//        val out: OutputStream = FileOutputStream(tempFile)
-//        val buf = ByteArray(1024)
-//        var len = 0
-//        while (inputStream.read(buf).also { len = it } > 0) {
-//            out.write(buf, 0, len)
-//        }
-//        out.close()
-//        inputStream.close()
-
-        return tempFile
-    }
-
-    fun decodefromBase64(attachment: String): ByteArray? {
-        return Base64.decode(attachment, Base64.NO_WRAP)
-    }
-
-    private fun saveReceivedImage(
-        imageByteArray: ByteArray,
-        numberOfBytes: Int
-    ) {
-        val bmp = BitmapFactory.decodeByteArray(imageByteArray, 0, numberOfBytes)
-//        val image: ImageView = findViewById<View>(R.id.imageView1) as ImageView
-
-//        image.setImageBitmap(
-//            Bitmap.createScaledBitmap(
-//                bmp, image.getWidth(),
-//                image.getHeight(), false
-//            )
-//        )
-    }
-
 }

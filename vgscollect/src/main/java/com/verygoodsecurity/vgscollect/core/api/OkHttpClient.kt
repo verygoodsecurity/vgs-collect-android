@@ -73,11 +73,10 @@ internal class OkHttpClient(
 
         val request = requestBuilder.build()
 
-        var responseMessage:VGSResponse
-        try {
+        return try {
             val response = client.newCall(request).execute()
 
-            responseMessage = if(response.isSuccessful) {
+            if(response.isSuccessful) {
                 val responseBodyStr = response.body?.string()
                 val responsePayload:Map<String, Any>? = responseBodyStr?.parseVGSResponse()
                 VGSResponse.SuccessResponse(responsePayload, responseBodyStr, response.code)
@@ -86,10 +85,8 @@ internal class OkHttpClient(
             }
 
         } catch (e: IOException) {
-            responseMessage = VGSResponse.ErrorResponse(e.message)
+            VGSResponse.ErrorResponse(e.message)
         }
-
-        return responseMessage
     }
 
     private fun addRequestBody(requestBuilder: Request.Builder, data: Map<String, Any>?) {
