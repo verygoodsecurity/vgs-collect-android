@@ -1,6 +1,6 @@
-package com.verygoodsecurity.vgscollect.core.storage.content.file
+package com.verygoodsecurity.vgscollect.core.model.state
 
-data class FileData(
+data class FileState(
     val size:Long = 0,
     val name:String?,
     val mimeType:String?,
@@ -11,6 +11,6 @@ data class FileData(
     }
 
     override fun equals(other: Any?): Boolean {
-        return other is FileData && other.hashCode() == hashCode()
+        return other is FileState && other.hashCode() == hashCode()
     }
 }
