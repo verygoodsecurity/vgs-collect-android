@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
-internal class DefaultStorage : VgsStore<Int, VGSFieldState>,IStateEmitter {
+internal class TemporaryFieldsStorage : VgsStore<Int, VGSFieldState>,IStateEmitter {
 
     private val store = mutableMapOf<Int, VGSFieldState>()
 
