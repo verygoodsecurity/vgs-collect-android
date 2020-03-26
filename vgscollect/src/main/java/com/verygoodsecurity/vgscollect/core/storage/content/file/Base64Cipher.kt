@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.net.Uri
 import android.util.Base64
+import androidx.annotation.VisibleForTesting
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -16,7 +17,7 @@ internal class Base64Cipher(context: Context):VgsFileCipher {
     private var submitCode = -1L
     private var fieldName = ""
 
-    fun save(fieldName:String):Long {
+    override fun save(fieldName:String):Long {
         if (submitCode == -1L) {
             this.fieldName = fieldName
             submitCode = System.currentTimeMillis()
@@ -24,7 +25,7 @@ internal class Base64Cipher(context: Context):VgsFileCipher {
         return submitCode
     }
 
-    fun retrieve(map: HashMap<String, Any?>):Pair<String, String>? {
+    override fun retrieve(map: HashMap<String, Any?>):Pair<String, String>? {
         val uri = map[submitCode.toString()]?.toString()
         val pair = uri?.run {
             uri to fieldName
@@ -44,7 +45,7 @@ internal class Base64Cipher(context: Context):VgsFileCipher {
         }?:""
     }
 
-    fun getFile(fileUri: Uri): ByteArray? {
+    private fun getFile(fileUri: Uri): ByteArray? {
         var ret: ByteArray? = null
 //            val tempFile = File.createTempFile(
 //                "splitName[0]",
@@ -95,4 +96,10 @@ internal class Base64Cipher(context: Context):VgsFileCipher {
         val ff = getFile(file)
         return getFileBase64(ff)
     }
+
+    @VisibleForTesting
+    fun getFieldName() = fieldName
+
+    @VisibleForTesting
+    fun getCode() = submitCode
 }

@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.storage
+package com.verygoodsecurity.vgscollect.storage.file
 
 import android.app.Activity
 import android.net.Uri
@@ -8,14 +8,12 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSContentProvider
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VgsFileCipher
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.spy
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
@@ -23,7 +21,7 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [Build.VERSION_CODES.P])
-class FileStorage {
+class FileStorageTest {
     private lateinit var activityController: ActivityController<Activity>
     private lateinit var activity: Activity
 
