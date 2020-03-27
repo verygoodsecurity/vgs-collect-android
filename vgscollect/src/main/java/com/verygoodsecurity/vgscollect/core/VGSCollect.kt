@@ -55,7 +55,7 @@ class VGSCollect(
 
     private var currentTask:AsyncTask<Payload, Void, VGSResponse>? = null
 
-    internal val baseURL:String = id.setupURL(environment.rawValue)
+    private val baseURL:String = id.setupURL(environment.rawValue)
 
     private val isURLValid:Boolean
 
@@ -202,7 +202,7 @@ class VGSCollect(
     private fun checkInternetPermission():Boolean {
         return with(ContextCompat.checkSelfPermission(context, android.Manifest.permission.INTERNET) != PackageManager.PERMISSION_DENIED) {
             if (this.not()) {
-                Logger.e(context, VGSCollect::class.java, R.string.error_internet_permission)
+                notifyErrorResponse(R.string.error_internet_permission)
             }
             this
         }
@@ -211,10 +211,18 @@ class VGSCollect(
     private fun isUrlValid():Boolean {
         return with(isURLValid) {
             if (this.not()) {
-                Logger.e(context, VGSCollect::class.java, R.string.error_url_validation)
+                notifyErrorResponse(R.string.error_url_validation)
             }
             this
         }
+    }
+
+    private fun notifyErrorResponse(messageResId:Int) {
+        val message = context.getString(messageResId)
+        responseListeners.forEach {
+            it.onResponse(VGSResponse.ErrorResponse(message, -1))
+        }
+        Logger.e(VGSCollect::class.java, message)
     }
 
     private fun validateFiles():Boolean {
