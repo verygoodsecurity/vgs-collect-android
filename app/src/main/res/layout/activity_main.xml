@@ -54,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
+            app:hint="@string/card_number"
             android:layout_marginEnd="@dimen/default_margin">
 
             <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
@@ -61,13 +62,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:numberDivider=" "
+                android:paddingLeft="@dimen/half_default_padding"
                 app:fieldName="card_data.cardNumber"
                 app:isRequired="false"
                 app:textColor="@color/black"
                 app:singleLine="true"
                 app:textSize="12dp"
                 app:text="4111111111111111"
-                app:hint="Card number"
                 app:cardBrandIconGravity="end"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -78,13 +79,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/colorAccent"
             app:hint="@string/cvc">
             <com.verygoodsecurity.vgscollect.widget.VGSEditText
                 android:id="@+id/cardCVCField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
+                app:inputType="textPassword"
                 app:textColor="@color/black"
+                android:paddingLeft="@dimen/half_default_padding"
                 app:isRequired="true"
                 app:singleLine="true"
                 app:textSize="12dp"
@@ -105,6 +110,7 @@
                 app:fieldName="card_data.personal_data.cardHolder"
                 app:textColor="@color/black"
                 app:singleLine="true"
+                android:paddingLeft="@dimen/half_default_padding"
                 app:inputType="text"
                 app:isRequired="true"
                 app:textSize="12dp"
@@ -125,25 +131,43 @@
                 app:fieldName="card_data.personal_data.secret.expDate"
                 app:textColor="@color/black"
                 app:textSize="12dp"
+                android:paddingLeft="@dimen/half_default_padding"
                 app:singleLine="true"
                 app:isRequired="true"
                 app:datePickerModes="calendar"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
-        <Button
-            android:id="@+id/submitBtn"
-            android:text="Submit"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:id="@+id/scanCardIOBtn"
-            android:text="Scan by Card.IO"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="@dimen/default_padding"
+            android:layout_marginEnd="@dimen/default_padding">
+            <ImageButton
+                android:id="@+id/submitBtn"
+                android:src="@android:drawable/ic_menu_send"
+                android:tint="@color/colorPrimary"
+                android:tintMode="src_in"
+                android:layout_weight="1"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"/>
+            <ImageButton
+                android:id="@+id/attachFileBtn"
+                android:tintMode="src_in"
+                android:layout_weight="1"
+                android:src="@android:drawable/stat_sys_upload"
+                android:tint="@color/colorPrimary"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"/>
+            <ImageButton
+                android:id="@+id/scanCardIOBtn"
+                android:layout_weight="1"
+                android:tint="@color/colorPrimary"
+                android:tintMode="src_in"
+                android:src="@android:drawable/ic_menu_camera"
+                android:layout_width="@dimen/button_size"
+                android:layout_height="@dimen/button_size"/>
+        </LinearLayout>
     </LinearLayout>
 
     <ScrollView

@@ -1,41 +1,26 @@
 package com.verygoodsecurity.vgscollect.card
 
-import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
-import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.util.mapToJSON
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
-import com.verygoodsecurity.vgscollect.view.card.FieldType
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
 class MapToJsonExtensionTest {
 
-    private val userFieldStorageImpl:MutableCollection<VGSFieldState> = mutableListOf()
+    private val userFieldStorageImpl:MutableCollection<Pair<String, String>> = mutableListOf()
 
     @Before
     fun initUserData() {
         userFieldStorageImpl.clear()
 
-        val stateCardNumber_content = FieldContent.CardNumberContent()
-        stateCardNumber_content.data = "4111111111111111"
-        val stateCardNumber = VGSFieldState(type = FieldType.CARD_NUMBER, content = stateCardNumber_content, fieldName = "card_data.cardNumber")
-        userFieldStorageImpl.add(stateCardNumber)
+        userFieldStorageImpl.add(Pair("card_data.cardNumber","4111111111111111"))
 
-        val stateCVC_content = FieldContent.InfoContent()
-        stateCVC_content.data = "123"
-        val stateCVC = VGSFieldState(type = FieldType.CVC, content = stateCVC_content, fieldName = "card_data.cardCvc")
-        userFieldStorageImpl.add(stateCVC)
+        userFieldStorageImpl.add(Pair("card_data.cardCvc", "123"))
 
-        val stateHolder_content = FieldContent.InfoContent()
-        stateHolder_content.data = "John Galt"
-        val stateHolder = VGSFieldState(type = FieldType.CARD_HOLDER_NAME, content = stateHolder_content, fieldName = "card_data.personal_data.cardHolder")
-        userFieldStorageImpl.add(stateHolder)
+        userFieldStorageImpl.add(Pair("card_data.personal_data.cardHolder", "John Galt"))
 
-        val stateExpDate_content = FieldContent.InfoContent()
-        stateExpDate_content.data = "05/25"
-        val stateExpDate = VGSFieldState(type = FieldType.CARD_EXPIRATION_DATE, content = stateExpDate_content, fieldName = "card_data.personal_data.secret.expDate")
-        userFieldStorageImpl.add(stateExpDate)
+        userFieldStorageImpl.add(Pair("card_data.personal_data.secret.expDate", "05/25"))
     }
 
     @Test

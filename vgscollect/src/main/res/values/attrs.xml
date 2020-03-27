@@ -28,9 +28,9 @@
     <attr name="inputType">
         <enum name="none" value="0" />
         <enum name="text" value="1" />
-        <enum name="textPassword" value="128" />
+        <enum name="textPassword" value="129" />
         <enum name="number" value="2" />
-        <enum name="numberPassword" value="16" />
+        <enum name="numberPassword" value="18" />
         <enum name="date" value="4" />
     </attr>
 
@@ -191,6 +191,9 @@
 
     <declare-styleable name="VGSTextInputLayout">
         <attr name="hint" />
+        <attr name="hintEnabled" format="boolean"/>
+        <attr name="hintAnimationEnabled" format="boolean"/>
+
         <attr name="passwordToggleEnabled" format="boolean"/>
         <attr name="passwordToggleTint" format="color"/>
         <attr name="passwordToggleDrawable" format="reference"/>
@@ -200,9 +203,6 @@
             <enum name="filled" value="1"/>
             <enum name="none" value="2"/>
         </attr>
-
-        <attr name="hintEnabled" format="boolean"/>
-        <attr name="hintAnimationEnabled" format="boolean"/>
         <attr name="boxBackgroundColor" format="color"/>
         <attr name="boxStrokeColor" format="color"/>
         <attr name="boxCornerRadiusTopEnd" format="dimension"/>
@@ -210,6 +210,5 @@
         <attr name="boxCornerRadiusBottomStart" format="dimension"/>
         <attr name="boxCornerRadiusBottomEnd" format="dimension"/>
         <attr name="boxCornerRadius" format="dimension"/>
-
     </declare-styleable>
 </resources>
