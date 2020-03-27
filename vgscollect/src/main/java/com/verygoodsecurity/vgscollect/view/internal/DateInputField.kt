@@ -73,16 +73,6 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         applyInputType()
     }
 
-    private fun applyInputType() {
-        val type = inputType
-        if(type == InputType.TYPE_TEXT_VARIATION_PASSWORD || type == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
-            inputType = InputType.TYPE_CLASS_DATETIME or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        } else {
-            inputType = InputType.TYPE_CLASS_DATETIME
-        }
-        refreshInput()
-    }
-
     override fun onClick(v: View?) {
         showDatePickerDialog()
     }
@@ -185,5 +175,36 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     fun setMinDate(date: Long) {
         minDate = date
+    }
+
+    override fun setInputType(type: Int) {
+        val validType = validateInputType(type)
+        super.setInputType(validType)
+        refreshInput()
+    }
+
+    private fun applyInputType() {
+        if(!isValidInputType(inputType)) {
+            inputType = InputType.TYPE_CLASS_DATETIME
+        }
+        refreshInput()
+    }
+
+    private fun isValidInputType(type: Int):Boolean {
+        return type == InputType.TYPE_CLASS_TEXT ||
+                type == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD ||
+                type == InputType.TYPE_CLASS_DATETIME
+    }
+
+    private fun validateInputType(type: Int):Int {
+        return when(type) {
+            InputType.TYPE_CLASS_TEXT -> type
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> type
+            InputType.TYPE_CLASS_DATETIME -> type
+            InputType.TYPE_CLASS_NUMBER -> InputType.TYPE_CLASS_DATETIME
+            InputType.TYPE_NUMBER_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> type
+            else -> InputType.TYPE_CLASS_TEXT
+        }
     }
 }

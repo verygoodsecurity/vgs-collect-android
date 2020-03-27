@@ -9,14 +9,18 @@ import com.verygoodsecurity.vgscollect.core.HTTPMethod
  * @param path path for a request
  * @param customHeader The headers to save for request.
  * @param customData The Map to save for request.
+ * @param fieldsIgnore contains true if need to skip data from input fields.
+ * @param fileIgnore contains true if need to skip files.
  *
- * @version 1.0.3
+ * @since 1.0.6
  */
 data class VGSRequest private constructor(
     val method: HTTPMethod,
     val path:String,
     val customHeader:HashMap<String, String>,
-    val customData:HashMap<String, Any>
+    val customData:HashMap<String, Any>,
+    val fieldsIgnore:Boolean = false,
+    val fileIgnore:Boolean = false
 ) {
 
     /**
@@ -28,9 +32,11 @@ data class VGSRequest private constructor(
         private var path:String = "/post"
         private val customHeader:HashMap<String, String> = HashMap()
         private val customData:HashMap<String, Any> = HashMap()
+        private var fieldsIgnore:Boolean = false
+        private var fileIgnore:Boolean = false
 
         /**
-         * It collect custom data which will be send to server.
+         * It collect custom data which will be send to the server.
          *
          * @param customData The Map to save for request.
          * @return current builder instance
@@ -41,7 +47,7 @@ data class VGSRequest private constructor(
         }
 
         /**
-         * It collect headers which will be send to server.
+         * It collect headers which will be send to the server.
          *
          * @param customHeader The headers to save for request.
          * @return current builder instance
@@ -52,7 +58,7 @@ data class VGSRequest private constructor(
         }
 
         /**
-         * Set the path using for a request to server.
+         * Set the path using for a request to the server.
          *
          * @param path path for a request
          * @return current builder instance
@@ -64,7 +70,7 @@ data class VGSRequest private constructor(
 
 
         /**
-         * Set the HTTP method using for a request to server.
+         * Set the HTTP method using for a request to the server.
          *
          * @param method HTTP method
          * @return current builder instance
@@ -75,12 +81,35 @@ data class VGSRequest private constructor(
         }
 
         /**
+         * Ignore input's data in a request to the server.
+         *
+         * @return current builder instance
+         *
+         * @since 1.0.10
+         */
+        fun ignoreFields():VGSRequestBuilder {
+            fieldsIgnore = true
+            return this
+        }
+
+        /**
+         * Ignore files in a request to the server.
+         *
+         * @return current builder instance
+         * @since 1.0.10
+         */
+        fun ignoreFiles():VGSRequestBuilder {
+            fieldsIgnore = true
+            return this
+        }
+
+        /**
          * Creates a VGSRequest with the arguments supplied to this.
          *
          * @return VGSRequest instance
          */
         fun build():VGSRequest {
-            return VGSRequest(method, path, customHeader, customData)
+            return VGSRequest(method, path, customHeader, customData, fieldsIgnore, fileIgnore)
         }
     }
 }
