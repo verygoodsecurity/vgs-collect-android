@@ -1,12 +1,11 @@
 package com.verygoodsecurity.vgscollect.app
 
 import android.content.Intent
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.util.Base64
-import java.io.File
 
+/**
+ * The Activity class that use when need to attach some file to VGSCollect.
+ */
 class FilePickerActivity :BaseTransmitActivity() {
 
     companion object {

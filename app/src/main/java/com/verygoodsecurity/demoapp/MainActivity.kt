@@ -99,9 +99,8 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     }
 
     private fun attachFile() {
-        vgsForm.getFileProvider().attachFile("card_data.cardNumber")
+        vgsForm.getFileProvider().attachFile("card_data.file")
         refreshAllStates()
-        vgsForm.getFileProvider()
     }
 
     private fun submitData() {
@@ -121,7 +120,8 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 //            .ignoreFiles()
             .build()
 
-        vgsForm.asyncSubmit(request)
+//        vgsForm.asyncSubmit(request)
+        vgsForm.asyncSubmit(path, HTTPMethod.POST)
 
     }
 

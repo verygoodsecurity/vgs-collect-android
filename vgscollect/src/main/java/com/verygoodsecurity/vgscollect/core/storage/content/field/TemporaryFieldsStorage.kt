@@ -1,11 +1,16 @@
-package com.verygoodsecurity.vgscollect.core.storage
+package com.verygoodsecurity.vgscollect.core.storage.content.field
 
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.*
+import com.verygoodsecurity.vgscollect.core.storage.FieldDependencyObserver
+import com.verygoodsecurity.vgscollect.core.storage.IStateEmitter
+import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
-internal class TemporaryFieldsStorage : VgsStore<Int, VGSFieldState>,IStateEmitter {
+internal class TemporaryFieldsStorage : VgsStore<Int, VGSFieldState>,
+    IStateEmitter {
 
     private val store = mutableMapOf<Int, VGSFieldState>()
 

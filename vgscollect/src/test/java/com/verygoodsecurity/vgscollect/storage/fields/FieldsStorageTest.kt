@@ -4,6 +4,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.*
+import com.verygoodsecurity.vgscollect.core.storage.content.field.TemporaryFieldsStorage
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import org.junit.Assert
@@ -18,7 +19,8 @@ class FieldsStorageTest {
 
     @Test
     fun test_add_item() {
-        val store = TemporaryFieldsStorage()
+        val store =
+            TemporaryFieldsStorage()
 
         store.addItem(0, VGSFieldState(isFocusable = false))
         assertEquals(1, store.getItems().size)
@@ -35,7 +37,8 @@ class FieldsStorageTest {
 
     @Test
     fun test_clear() {
-        val store = TemporaryFieldsStorage()
+        val store =
+            TemporaryFieldsStorage()
         store.addItem(0, VGSFieldState())
         store.addItem(1, VGSFieldState())
 
@@ -47,7 +50,8 @@ class FieldsStorageTest {
 
     @Test
     fun test_get_items() {
-        val store = TemporaryFieldsStorage()
+        val store =
+            TemporaryFieldsStorage()
 
         store.addItem(0, VGSFieldState(isFocusable = false))
         store.addItem(1, VGSFieldState(isFocusable = true))
@@ -57,7 +61,8 @@ class FieldsStorageTest {
 
     @Test
     fun test_perform_subscription() {
-        val store = TemporaryFieldsStorage()
+        val store =
+            TemporaryFieldsStorage()
         val listener = store.performSubscription()
 
         val item1 = VGSFieldState()
@@ -76,7 +81,8 @@ class FieldsStorageTest {
     @Test
     fun test_attach_state_change_listener() {
         val listener = mock(OnFieldStateChangeListener::class.java)
-        val store = TemporaryFieldsStorage()
+        val store =
+            TemporaryFieldsStorage()
         store.attachStateChangeListener(listener)
 
         assertEquals(1, store.getFieldStateChangeListeners().size)
@@ -85,7 +91,8 @@ class FieldsStorageTest {
     @Test
     fun test_trigger_state_change_listener() {
         val listener = mock(OnFieldStateChangeListener::class.java)
-        val store = TemporaryFieldsStorage()
+        val store =
+            TemporaryFieldsStorage()
         store.attachStateChangeListener(listener)
 
         store.addItem(0, VGSFieldState())
@@ -96,7 +103,8 @@ class FieldsStorageTest {
     @Test
     fun test_attach_field_dependency_observer() {
         val listener = mock(FieldDependencyObserver::class.java)
-        val store = TemporaryFieldsStorage()
+        val store =
+            TemporaryFieldsStorage()
         store.attachFieldDependencyObserver(listener)
 
         assertEquals(1, store.getDependencyObservers().size)
@@ -104,7 +112,8 @@ class FieldsStorageTest {
 
     @Test
     fun test_trigger_field_dependency_observer_refresh_state() {
-        val store = TemporaryFieldsStorage()
+        val store =
+            TemporaryFieldsStorage()
 
         val onFieldStateChangeListener = mock(FieldDependencyObserver::class.java)
         store.attachFieldDependencyObserver(onFieldStateChangeListener)
@@ -118,7 +127,8 @@ class FieldsStorageTest {
 
     @Test
     fun test_trigger_field_dependency_observer_state_update() {
-        val store = TemporaryFieldsStorage()
+        val store =
+            TemporaryFieldsStorage()
 
         val onFieldStateChangeListener = mock(FieldDependencyObserver::class.java)
         store.attachFieldDependencyObserver(onFieldStateChangeListener)
@@ -138,7 +148,8 @@ class FieldsStorageTest {
             }
         }
 
-        val store = TemporaryFieldsStorage()
+        val store =
+            TemporaryFieldsStorage()
         store.attachStateChangeListener(listener)
 
         store.addItem(0, VGSFieldState(isFocusable = false, isRequired = true, fieldName = "alias"))
@@ -156,7 +167,8 @@ class FieldsStorageTest {
     @Test
     fun test_CVC_3_Length_dependency_detector() {
         val observer = mock(FieldDependencyObserver::class.java)
-        val store = TemporaryFieldsStorage()
+        val store =
+            TemporaryFieldsStorage()
         store.attachFieldDependencyObserver(observer)
 
         val listener = store.performSubscription()
