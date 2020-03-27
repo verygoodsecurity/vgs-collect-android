@@ -116,12 +116,9 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
             .setPath(path)
             .setCustomHeader(headers)
             .setCustomData(customData)
-            .ignoreFields()
-//            .ignoreFiles()
             .build()
 
-//        vgsForm.asyncSubmit(request)
-        vgsForm.asyncSubmit(path, HTTPMethod.POST)
+        vgsForm.asyncSubmit(request)
 
     }
 
