@@ -46,15 +46,6 @@ internal class Base64Cipher(context: Context):VgsFileCipher {
     }
 
     private fun getFile(fileUri: Uri): ByteArray? {
-        var ret: ByteArray? = null
-//            val tempFile = File.createTempFile(
-//                "splitName[0]",
-//                "jpg"
-//            )
-//            contentResolver.takePersistableUriPermission(
-//                fileUri,
-//                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-//            )
         val tempFile = File.createTempFile("prefix", "extension", outputDir)
 
         val inputStream: InputStream = contentResolver.openInputStream(fileUri)!!
@@ -66,28 +57,6 @@ internal class Base64Cipher(context: Context):VgsFileCipher {
         }
         out.close()
         inputStream.close()
-
-//        contentResolver?.openInputStream(fileUri)?.use { inputStream->
-//            val outputStream = ByteArrayOutputStream()
-//
-//            var nextByte = inputStream.read()
-//            while (nextByte != -1) {
-//                outputStream.write(nextByte)
-//                nextByte = inputStream.read()
-//            }
-//
-//            ret = outputStream.toByteArray()
-//            outputStream.close()
-////                FileOutputStream(tempFile).use { outputStream->
-////                    val buf = ByteArray(1024)
-////                    var len = 0
-////                    while (inputStream.read(buf).also { len = it } > 0) {
-////                        outputStream.write(buf, 0, len)
-////                    }
-////                }
-//        }
-
-//            val inputStream: InputStream = contentResolver.openInputStream(fileUri)
 
         return tempFile.readBytes()
     }

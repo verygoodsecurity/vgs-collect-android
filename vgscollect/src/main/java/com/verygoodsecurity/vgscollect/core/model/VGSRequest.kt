@@ -9,8 +9,10 @@ import com.verygoodsecurity.vgscollect.core.HTTPMethod
  * @param path path for a request
  * @param customHeader The headers to save for request.
  * @param customData The Map to save for request.
+ * @param fieldsIgnore contains true if need to skip data from input fields.
+ * @param fileIgnore contains true if need to skip files.
  *
- * @version 1.0.3
+ * @since 1.0.6
  */
 data class VGSRequest private constructor(
     val method: HTTPMethod,
@@ -82,6 +84,8 @@ data class VGSRequest private constructor(
          * Ignore input's data in a request to the server.
          *
          * @return current builder instance
+         *
+         * @since 1.0.10
          */
         fun ignoreFields():VGSRequestBuilder {
             fieldsIgnore = true
@@ -92,6 +96,7 @@ data class VGSRequest private constructor(
          * Ignore files in a request to the server.
          *
          * @return current builder instance
+         * @since 1.0.10
          */
         fun ignoreFiles():VGSRequestBuilder {
             fieldsIgnore = true

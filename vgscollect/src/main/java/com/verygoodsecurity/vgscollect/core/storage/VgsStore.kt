@@ -1,11 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.storage
 
-import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-
 /**
  * Interface definition of storage for states of VGS fields.
- *
- * @version 1.0.0
  */
 interface VgsStore<K, T> {
 

@@ -344,7 +344,7 @@ class VGSCollect(
      * It collect custom data which will be send to server. User's custom data are stored until
      * resetCustomData method will be called.
      *
-     * @param [Map] The Map to save for request.
+     * @param data The Map to save for request.
      */
     fun setCustomData(data: Map<String, Any>?) {
         client.getTemporaryStorage().setCustomData(data)
