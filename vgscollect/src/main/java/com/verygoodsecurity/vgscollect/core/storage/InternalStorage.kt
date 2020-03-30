@@ -4,6 +4,7 @@ import android.content.Context
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.content.field.TemporaryFieldsStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
+import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageErrorListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.util.merge
@@ -12,7 +13,8 @@ import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 
 internal class InternalStorage(
-    context: Context
+    context: Context,
+    private val errorListener: StorageErrorListener? = null
 ) {
     private val fieldsDependencyDispatcher: DependencyDispatcher
 
@@ -24,7 +26,7 @@ internal class InternalStorage(
     init {
         fieldsDependencyDispatcher = Notifier()
 
-        with(TemporaryFileStorage(context)) {
+        with(TemporaryFileStorage(context, errorListener)) {
             fileProvider = this
             fileStorage = this
         }
