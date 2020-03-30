@@ -6,13 +6,15 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
+import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.app.FilePickerActivity
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
 import com.verygoodsecurity.vgscollect.util.parseFile
 import java.util.HashMap
 
 internal class TemporaryFileStorage(
-    private val context: Context
+    private val context: Context,
+    private val errorListener: StorageErrorListener
 ) : VGSFileProvider, FileStorage {
 
     companion object {
@@ -48,8 +50,11 @@ internal class TemporaryFileStorage(
     }
 
     override fun dispatch(map: HashMap<String, Any?>) {
-        cipher.retrieve(map)?.let {
-            addItem(it.second, it.first)
+        val fileInfo = cipher.retrieve(map)
+        if(fileInfo == null) {
+            errorListener.onStorageError(R.string.file_not_fount)
+        } else {
+            addItem(fileInfo.second, fileInfo.first)
         }
     }
 

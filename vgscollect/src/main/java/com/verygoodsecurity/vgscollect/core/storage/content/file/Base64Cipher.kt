@@ -26,10 +26,14 @@ internal class Base64Cipher(context: Context):VgsFileCipher {
     }
 
     override fun retrieve(map: HashMap<String, Any?>):Pair<String, String>? {
-        val uri = map[submitCode.toString()]?.toString()
-        val pair = uri?.run {
-            uri to fieldName
+        val uri = map[submitCode.toString()]?.toString()+"s"
+
+        val pair = when {
+            uri.isNullOrEmpty() -> null
+            File(Uri.parse(uri).path?:"").exists() -> uri.run { uri to fieldName }
+            else -> null
         }
+
         reset()
         return pair
     }
