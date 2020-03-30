@@ -12,6 +12,7 @@ import java.io.*
 import java.net.HttpURLConnection
 import java.nio.charset.Charset
 
+@Deprecated("from 1.1.0")
 internal class URLConnectionClient:ApiClient {
 
     private val tempStore:VgsApiTemporaryStorage by lazy {
