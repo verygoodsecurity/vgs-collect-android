@@ -14,7 +14,7 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 
 internal class InternalStorage(
     context: Context,
-    private val errorListener: StorageErrorListener
+    private val errorListener: StorageErrorListener? = null
 ) {
     private val fieldsDependencyDispatcher: DependencyDispatcher
 

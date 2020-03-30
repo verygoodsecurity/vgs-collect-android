@@ -14,7 +14,7 @@ import java.util.HashMap
 
 internal class TemporaryFileStorage(
     private val context: Context,
-    private val errorListener: StorageErrorListener
+    private val errorListener: StorageErrorListener? = null
 ) : VGSFileProvider, FileStorage {
 
     companion object {
@@ -52,7 +52,7 @@ internal class TemporaryFileStorage(
     override fun dispatch(map: HashMap<String, Any?>) {
         val fileInfo = cipher.retrieve(map)
         if(fileInfo == null) {
-            errorListener.onStorageError(R.string.file_not_fount)
+            errorListener?.onStorageError(R.string.file_not_fount)
         } else {
             addItem(fileInfo.second, fileInfo.first)
         }
