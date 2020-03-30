@@ -3,15 +3,29 @@ package com.verygoodsecurity.vgscollect.core.api
 import com.verygoodsecurity.vgscollect.R
 
 enum class VGSError(val code:Int, val messageResId:Int) {
-    INPUT_DATA_REQUIRED(1001,
+    URL_NOT_VALID(1480,
+        R.string.error_url_validation
+    ),
+    NO_INTERNET_PERMISSIONS(1481,
+        R.string.error_internet_permission
+    ),
+    NO_NETWORK_CONNECTIONS(1482,
+        R.string.error_internet_connection
+    ),
+    TIME_OUT(1483,
+        R.string.error_time_out
+    ),
+
+
+
+    INPUT_DATA_NOT_VALID(1001,
         R.string.error_field_validation
     ),
-    INPUT_DATA_REQUIRED_VALID_ONLY(1002,
-        R.string.error_field_validation
-    ),
-    INPUT_FILE_SIZE_EXCEEDS_THE_LIMIT(1101,
+    FILE_SIZE_OVER_LIMIT(1101,
         R.string.error_file_size_validation
     ),
+
+
     INPUT_FILE_TYPE_IS_WRONG(1102,
         R.string.error_field_validation
     ),
