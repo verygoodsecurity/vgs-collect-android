@@ -1,6 +1,7 @@
 <resources>
     <string name="sdk_name">VGSCollect</string>
     <string name="error_internet_permission">Permission denied (missing INTERNET permission?)</string>
+    <string name="error_internet_connection">No Internet connection</string>
     <string name="error_url_validation">URL is not valid</string>
     <string name="error_field_validation">Field %1$s is not a valid.</string>
     <string name="error_file_size_validation">File %1$s is over 20Mb.</string>

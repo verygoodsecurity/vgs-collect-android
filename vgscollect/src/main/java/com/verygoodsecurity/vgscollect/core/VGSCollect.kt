@@ -44,7 +44,6 @@ class VGSCollect(
     environment: Environment = Environment.SANDBOX
 ) {
 
-    private val fieldsDependencyDispatcher: DependencyDispatcher
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
     private var client: ApiClient
@@ -55,17 +54,16 @@ class VGSCollect(
 
     private var currentTask:AsyncTask<Payload, Void, VGSResponse>? = null
 
-    internal val baseURL:String = id.setupURL(environment.rawValue)
+    private val baseURL:String = id.setupURL(environment.rawValue)
 
     private val isURLValid:Boolean
 
     init {
         isURLValid = baseURL.isURLValid()
 
-        fieldsDependencyDispatcher = Notifier()
         externalDependencyDispatcher = DependencyReceiver()
 
-        storage = InternalStorage(context, fieldsDependencyDispatcher)
+        storage = InternalStorage(context)
 
         client = OkHttpClient.newInstance(context, baseURL)
     }
@@ -88,7 +86,6 @@ class VGSCollect(
      */
     fun bindView(view: InputFieldView?) {
         if(view is AccessibilityStatePreparer) {
-            fieldsDependencyDispatcher.addDependencyListener(view.getFieldType(), view.getDependencyListener())
             externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.getDependencyListener())
         }
         storage.performSubscription(view)
@@ -192,7 +189,6 @@ class VGSCollect(
                 return
             }
             if(!request.fileIgnore&& !validateFiles()) {
-
                 return
             }
             doAsyncRequest(request)
@@ -202,7 +198,7 @@ class VGSCollect(
     private fun checkInternetPermission():Boolean {
         return with(ContextCompat.checkSelfPermission(context, android.Manifest.permission.INTERNET) != PackageManager.PERMISSION_DENIED) {
             if (this.not()) {
-                Logger.e(context, VGSCollect::class.java, R.string.error_internet_permission)
+                notifyErrorResponse(R.string.error_internet_permission)
             }
             this
         }
@@ -211,10 +207,18 @@ class VGSCollect(
     private fun isUrlValid():Boolean {
         return with(isURLValid) {
             if (this.not()) {
-                Logger.e(context, VGSCollect::class.java, R.string.error_url_validation)
+                notifyErrorResponse(R.string.error_url_validation)
             }
             this
         }
+    }
+
+    private fun notifyErrorResponse(messageResId:Int) {
+        val message = context.getString(messageResId)
+        responseListeners.forEach {
+            it.onResponse(VGSResponse.ErrorResponse(message, -1))
+        }
+        Logger.e(VGSCollect::class.java, message)
     }
 
     private fun validateFiles():Boolean {
@@ -236,6 +240,7 @@ class VGSCollect(
 
         return isValid
     }
+
     private fun validateFields():Boolean {
         var isValid = true
 
@@ -379,10 +384,5 @@ class VGSCollect(
     @VisibleForTesting
     internal fun setClient(c: ApiClient) {
         client = c
-    }
-
-    @VisibleForTesting
-    internal fun getExternalDependencyDispatcher(): ExternalDependencyDispatcher {
-        return externalDependencyDispatcher
     }
 }
