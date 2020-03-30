@@ -44,7 +44,6 @@ class VGSCollect(
     environment: Environment = Environment.SANDBOX
 ) {
 
-    private val fieldsDependencyDispatcher: DependencyDispatcher
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
     private var client: ApiClient
@@ -62,10 +61,9 @@ class VGSCollect(
     init {
         isURLValid = baseURL.isURLValid()
 
-        fieldsDependencyDispatcher = Notifier()
         externalDependencyDispatcher = DependencyReceiver()
 
-        storage = InternalStorage(context, fieldsDependencyDispatcher)
+        storage = InternalStorage(context)
 
         client = OkHttpClient.newInstance(context, baseURL)
     }
@@ -88,7 +86,6 @@ class VGSCollect(
      */
     fun bindView(view: InputFieldView?) {
         if(view is AccessibilityStatePreparer) {
-            fieldsDependencyDispatcher.addDependencyListener(view.getFieldType(), view.getDependencyListener())
             externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.getDependencyListener())
         }
         storage.performSubscription(view)
@@ -192,7 +189,6 @@ class VGSCollect(
                 return
             }
             if(!request.fileIgnore&& !validateFiles()) {
-
                 return
             }
             doAsyncRequest(request)
@@ -244,6 +240,7 @@ class VGSCollect(
 
         return isValid
     }
+
     private fun validateFields():Boolean {
         var isValid = true
 
@@ -387,10 +384,5 @@ class VGSCollect(
     @VisibleForTesting
     internal fun setClient(c: ApiClient) {
         client = c
-    }
-
-    @VisibleForTesting
-    internal fun getExternalDependencyDispatcher(): ExternalDependencyDispatcher {
-        return externalDependencyDispatcher
     }
 }
