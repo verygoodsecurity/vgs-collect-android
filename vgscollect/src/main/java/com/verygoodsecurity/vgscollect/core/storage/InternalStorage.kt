@@ -8,12 +8,13 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileSt
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.util.merge
 import com.verygoodsecurity.vgscollect.util.toAssociatedList
+import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 
 internal class InternalStorage(
-    context: Context,
-    fieldsDependencyDispatcher: Notifier? = null
+    context: Context
 ) {
+    private val fieldsDependencyDispatcher: DependencyDispatcher
 
     private val fileProvider: VGSFileProvider
     private val fileStorage: FileStorage
@@ -21,6 +22,8 @@ internal class InternalStorage(
     private val emitter: IStateEmitter
 
     init {
+        fieldsDependencyDispatcher = Notifier()
+
         with(TemporaryFileStorage(context)) {
             fileProvider = this
             fileStorage = this
@@ -65,6 +68,12 @@ internal class InternalStorage(
     }
 
     fun performSubscription(view: InputFieldView?) {
+        if(view is AccessibilityStatePreparer) {
+            fieldsDependencyDispatcher.addDependencyListener(
+                view.getFieldType(),
+                view.getDependencyListener()
+            )
+        }
         view?.addStateListener(emitter.performSubscription())
     }
 
