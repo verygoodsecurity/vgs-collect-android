@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.*
+import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageErrorListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
@@ -42,7 +43,7 @@ class VGSCollect(
     private val context: Context,
     id: String,
     environment: Environment = Environment.SANDBOX
-) {
+) : StorageErrorListener {
 
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
@@ -63,7 +64,7 @@ class VGSCollect(
 
         externalDependencyDispatcher = DependencyReceiver()
 
-        storage = InternalStorage(context)
+        storage = InternalStorage(context, this)
 
         client = OkHttpClient.newInstance(context, baseURL)
     }
@@ -211,6 +212,10 @@ class VGSCollect(
             }
             this
         }
+    }
+
+    override fun onStorageError(messageResId: Int) {
+        notifyErrorResponse(messageResId)
     }
 
     private fun notifyErrorResponse(messageResId:Int) {
