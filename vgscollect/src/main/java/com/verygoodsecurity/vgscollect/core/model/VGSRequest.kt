@@ -64,7 +64,14 @@ data class VGSRequest private constructor(
          * @return current builder instance
          */
         fun setPath(path:String):VGSRequestBuilder {
-            this.path = path
+            this.path = path.run {
+                val p = when {
+                    length == 0 -> "/"
+                    first() == '/' -> this
+                    else ->  "/$this"
+                }
+                p
+            }
             return this
         }
 

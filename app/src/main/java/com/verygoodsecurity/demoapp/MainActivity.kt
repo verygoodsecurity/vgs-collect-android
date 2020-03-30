@@ -30,9 +30,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     private lateinit var path:String
     private lateinit var env:Environment
 
-    private val vgsForm:VGSCollect by lazy {
-        VGSCollect(this, vault_id, env)
-    }
+    private lateinit var vgsForm:VGSCollect
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,17 +70,14 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
     private fun retrieveSettings() {
         val bndl = intent?.extras
+
         vault_id = bndl?.getString(VAULT_ID, "")?:""
-        path = bndl?.getString(PATH,"/")?.run {
-            if(this.first() == '/') {
-                this
-            } else {
-                "/$this"
-            }
-        }?:"/"
+        path = bndl?.getString(PATH,"/")?:""
 
         val envId = bndl?.getInt(ENVIROMENT, 0)?:0
         env = Environment.values()[envId]
+
+        vgsForm = VGSCollect(this, vault_id, env)
     }
 
     override fun onDestroy() {
@@ -99,7 +94,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     }
 
     private fun attachFile() {
-        vgsForm.getFileProvider().attachFile("card_data.file")
+        vgsForm.getFileProvider().attachFile("base64")
         refreshAllStates()
     }
 

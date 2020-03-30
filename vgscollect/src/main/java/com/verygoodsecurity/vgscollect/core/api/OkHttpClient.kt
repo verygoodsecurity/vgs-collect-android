@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.api
 
 import android.content.Context
+import android.net.ConnectivityManager
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
@@ -51,6 +52,11 @@ internal class OkHttpClient(
         headers: Map<String, String>?,
         data: Map<String, Any>?
     ): VGSResponse {
+        if(hasNetworkAvailable().not()) {
+            val message = context.getString(R.string.error_internet_connection)
+            return VGSResponse.ErrorResponse(message)
+        }
+
         return when(method.ordinal) {
 //            HTTPMethod.GET.ordinal -> getRequest(path, headers, data)
             HTTPMethod.POST.ordinal -> postRequest(path, headers, data)
@@ -109,5 +115,11 @@ internal class OkHttpClient(
     private fun makeErrorResponse(resId: Int): VGSResponse {
         val errMessage = context.resources.getString(resId)
         return VGSResponse.ErrorResponse(errMessage)
+    }
+
+    private fun hasNetworkAvailable(): Boolean {
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val network = manager?.activeNetworkInfo
+        return (network != null)
     }
 }
