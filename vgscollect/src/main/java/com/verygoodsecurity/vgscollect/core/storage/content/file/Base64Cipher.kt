@@ -1,8 +1,11 @@
 package com.verygoodsecurity.vgscollect.core.storage.content.file
 
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
+import android.provider.BaseColumns
+import android.provider.DocumentsContract
 import android.util.Base64
 import androidx.annotation.VisibleForTesting
 import java.io.File
@@ -11,8 +14,8 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.util.*
 
-internal class Base64Cipher(context: Context):VgsFileCipher {
-    private val contentResolver = (context as Activity).contentResolver
+internal class Base64Cipher(val context: Context):VgsFileCipher {
+    private var contentResolver = (context as Activity).contentResolver
     private val outputDir = context.cacheDir
     private var submitCode = -1L
     private var fieldName = ""
@@ -25,12 +28,36 @@ internal class Base64Cipher(context: Context):VgsFileCipher {
         return submitCode
     }
 
+    private fun documentUriExists(uri: Uri): Boolean = resolveUri(uri, DocumentsContract.Document.COLUMN_DOCUMENT_ID)
+
+    private fun contentUriExists(uri: Uri): Boolean = resolveUri(uri, BaseColumns._ID)
+
+    private fun resolveUri(uri: Uri, column: String): Boolean {
+
+        val cursor = contentResolver.query(uri,
+            arrayOf(column),
+            null,
+            null,
+            null)
+
+        val result = cursor?.moveToFirst() ?: false
+
+        cursor?.close()
+
+        return result
+    }
     override fun retrieve(map: HashMap<String, Any?>):Pair<String, String>? {
         val uri = map[submitCode.toString()]?.toString()
-        val pair = uri?.run {
-            uri to fieldName
+
+        val pair = when {
+            uri.isNullOrEmpty() -> null
+            DocumentsContract.isDocumentUri(context, Uri.parse(uri)) &&
+                    documentUriExists(Uri.parse(uri)) -> uri to fieldName
+            contentUriExists(Uri.parse(uri)) -> uri to fieldName
+            else -> null
         }
         reset()
+
         return pair
     }
 
@@ -71,4 +98,9 @@ internal class Base64Cipher(context: Context):VgsFileCipher {
 
     @VisibleForTesting
     fun getCode() = submitCode
+
+    @VisibleForTesting
+    fun setContentResolver(c: ContentResolver) {
+        contentResolver = c
+    }
 }
