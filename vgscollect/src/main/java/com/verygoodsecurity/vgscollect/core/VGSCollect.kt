@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.AsyncTask
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
-import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.model.Payload
@@ -240,6 +239,10 @@ class VGSCollect(
             }
         }
         return isValid
+    }
+
+    override fun onStorageError(error: VGSError) {
+        notifyErrorResponse(error)
     }
 
     private fun notifyErrorResponse(error:VGSError, vararg params:String?) {
