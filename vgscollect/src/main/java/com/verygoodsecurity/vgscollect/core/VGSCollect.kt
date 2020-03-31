@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.AsyncTask
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
-import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.model.Payload
@@ -199,7 +198,7 @@ class VGSCollect(
     private fun checkInternetPermission():Boolean {
         return with(ContextCompat.checkSelfPermission(context, android.Manifest.permission.INTERNET) != PackageManager.PERMISSION_DENIED) {
             if (this.not()) {
-                notifyErrorResponse(R.string.error_internet_permission)
+                notifyErrorResponse(VGSError.NO_INTERNET_PERMISSIONS)
             }
             this
         }
@@ -208,22 +207,10 @@ class VGSCollect(
     private fun isUrlValid():Boolean {
         return with(isURLValid) {
             if (this.not()) {
-                notifyErrorResponse(R.string.error_url_validation)
+                notifyErrorResponse(VGSError.URL_NOT_VALID)
             }
             this
         }
-    }
-
-    override fun onStorageError(messageResId: Int) {
-        notifyErrorResponse(messageResId)
-    }
-
-    private fun notifyErrorResponse(messageResId:Int) {
-        val message = context.getString(messageResId)
-        responseListeners.forEach {
-            it.onResponse(VGSResponse.ErrorResponse(message, -1))
-        }
-        Logger.e(VGSCollect::class.java, message)
     }
 
     private fun validateFiles():Boolean {
@@ -231,12 +218,7 @@ class VGSCollect(
 
         storage.getAttachedFiles().forEach {
             if(it.size > storage.getFileSizeLimit()) {
-                val message = String.format(
-                    context.getString(R.string.error_file_size_validation),
-                    it.name
-                )
-                val r = VGSResponse.ErrorResponse(message, -1)
-                responseListeners.forEach { it.onResponse(r) }
+                notifyErrorResponse(VGSError.FILE_SIZE_OVER_LIMIT, it.name)
 
                 isValid = false
                 return@forEach
@@ -251,17 +233,31 @@ class VGSCollect(
 
         storage.getFieldsStorage().getItems().forEach {
             if(it.isValid.not()) {
-                val message = String.format(
-                    context.getString(R.string.error_field_validation),
-                    it.fieldName
-                )
-                val r = VGSResponse.ErrorResponse(message, -1)
-                responseListeners.forEach { it.onResponse(r) }
+                notifyErrorResponse(VGSError.INPUT_DATA_NOT_VALID, it.fieldName)
                 isValid = false
                 return@forEach
             }
         }
         return isValid
+    }
+
+    override fun onStorageError(error: VGSError) {
+        notifyErrorResponse(error)
+    }
+
+    private fun notifyErrorResponse(error:VGSError, vararg params:String?) {
+        val message = if(params.isEmpty()) {
+            context.getString(error.messageResId)
+        } else {
+            String.format(
+                context.getString(error.messageResId),
+                *params
+            )
+        }
+        responseListeners.forEach {
+            it.onResponse(VGSResponse.ErrorResponse(message, error.code))
+        }
+        Logger.e(VGSCollect::class.java, message)
     }
 
     private fun doRequest(
