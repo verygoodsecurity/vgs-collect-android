@@ -3,10 +3,11 @@ package com.verygoodsecurity.vgscollect.core.api
 import android.content.Context
 import android.net.ConnectivityManager
 import com.verygoodsecurity.vgscollect.BuildConfig
-import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
+import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.parseVGSResponse
+import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.mapToJSON
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -14,6 +15,7 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 internal class OkHttpClient(
     private val context: Context
@@ -53,8 +55,7 @@ internal class OkHttpClient(
         data: Map<String, Any>?
     ): VGSResponse {
         if(hasNetworkAvailable().not()) {
-            val message = context.getString(R.string.error_internet_connection)
-            return VGSResponse.ErrorResponse(message)
+            return notifyErrorResponse(VGSError.NO_NETWORK_CONNECTIONS)
         }
 
         return when(method.ordinal) {
@@ -71,7 +72,7 @@ internal class OkHttpClient(
     ): VGSResponse {
 
         val url = baseURL.buildURL(path = path)
-            ?: return makeErrorResponse(R.string.error_url_validation)
+            ?: return notifyErrorResponse(VGSError.URL_NOT_VALID)
         val requestBuilder = Request.Builder().url(url)
 
         addHeaders(requestBuilder, headers)
@@ -82,14 +83,15 @@ internal class OkHttpClient(
         return try {
             val response = client.newCall(request).execute()
 
-            if(response.isSuccessful) {
+            if (response.isSuccessful) {
                 val responseBodyStr = response.body?.string()
-                val responsePayload:Map<String, Any>? = responseBodyStr?.parseVGSResponse()
+                val responsePayload: Map<String, Any>? = responseBodyStr?.parseVGSResponse()
                 VGSResponse.SuccessResponse(responsePayload, responseBodyStr, response.code)
             } else {
                 VGSResponse.ErrorResponse(response.message, response.code)
             }
-
+        } catch (e: TimeoutException) {
+            notifyErrorResponse(VGSError.TIME_OUT)
         } catch (e: IOException) {
             VGSResponse.ErrorResponse(e.message)
         }
@@ -112,14 +114,22 @@ internal class OkHttpClient(
 
     override fun getTemporaryStorage(): VgsApiTemporaryStorage = tempStore
 
-    private fun makeErrorResponse(resId: Int): VGSResponse {
-        val errMessage = context.resources.getString(resId)
-        return VGSResponse.ErrorResponse(errMessage)
-    }
-
     private fun hasNetworkAvailable(): Boolean {
         val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
         val network = manager?.activeNetworkInfo
         return (network != null)
+    }
+
+    private fun notifyErrorResponse(error:VGSError, vararg params:String?):VGSResponse.ErrorResponse {
+        val message = if(params.isEmpty()) {
+            context.getString(error.messageResId)
+        } else {
+            String.format(
+                context.getString(error.messageResId),
+                *params
+            )
+        }
+        Logger.e(VGSCollect::class.java, message)
+        return VGSResponse.ErrorResponse(message, error.code)
     }
 }
