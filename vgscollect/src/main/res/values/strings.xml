@@ -1,8 +1,11 @@
 <resources>
     <string name="sdk_name">VGSCollect</string>
     <string name="error_internet_permission">Permission denied (missing INTERNET permission?)</string>
+    <string name="error_internet_connection">No Internet connection</string>
     <string name="error_url_validation">URL is not valid</string>
-    <string name="error_field_validation">FieldName is not a valid %1$s.</string>
+    <string name="error_field_validation">Field %1$s is not a valid.</string>
+    <string name="error_file_size_validation">File %1$s is over 20Mb.</string>
+    <string name="file_not_fount">File not found</string>
     <string name="error_divider_card_number_field">Divider for number can\'t be greater than 1 symbol. (%1$s)</string>
 
     <string name="card_number_digits">0123456789</string>
