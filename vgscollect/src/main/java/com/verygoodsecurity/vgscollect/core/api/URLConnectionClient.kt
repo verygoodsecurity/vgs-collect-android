@@ -87,7 +87,7 @@ internal class URLConnectionClient:ApiClient {
     }
 
     private fun postRequest(path: String, headers: Map<String, String>? = null, data: Map<String, Any>? = null): VGSResponse {
-        val url = path.buildURL(path = path) ?: return VGSResponse.ErrorResponse()
+        val url = baseURL.buildURL(path = path) ?: return VGSResponse.ErrorResponse()
 
         var conn: HttpURLConnection? = null
         var response: VGSResponse

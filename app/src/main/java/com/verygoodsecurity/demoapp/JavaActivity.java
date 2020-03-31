@@ -32,7 +32,7 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
         setContentView(R.layout.activity_main);
 
         String tenn = getString(R.string.vault_id);
-        vgsForm = new VGSCollect(tenn, BuildConfig.ENVIRINMENT);
+        vgsForm = new VGSCollect(this, tenn, BuildConfig.ENVIRINMENT);
 
         findViewById(R.id.submitBtn).setOnClickListener(this);
 
@@ -72,7 +72,7 @@ public class JavaActivity extends Activity implements View.OnClickListener, VgsC
         vgsForm.setCustomHeaders(headers);
 
         String endpoint = getString(R.string.endpoint);
-        vgsForm.asyncSubmit(this, endpoint, HTTPMethod.POST);
+        vgsForm.asyncSubmit(endpoint, HTTPMethod.POST);
     }
 
     @Override
