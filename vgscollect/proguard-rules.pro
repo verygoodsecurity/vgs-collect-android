@@ -43,12 +43,12 @@
 
 -keep public interface com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener { *; }
 
--keep public class com.verygoodsecurity.vgscollect.core.model.VGSError* { *; }
--keep public class com.verygoodsecurity.vgscollect.core.model.VGSRequest$* { *; }
+-keep public class com.verygoodsecurity.vgscollect.core.model.network.VGSError* { *; }
+-keep public class com.verygoodsecurity.vgscollect.core.model.network.VGSRequest$* { *; }
 -keep public interface com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider { *; }
 -keep public class com.verygoodsecurity.vgscollect.core.model.state.FileState  { *; }
 -keep public class * extends com.verygoodsecurity.vgscollect.core.model.state.FieldState { *; }
--keep public class * extends com.verygoodsecurity.vgscollect.core.model.VGSResponse { *; }
+-keep public class * extends com.verygoodsecurity.vgscollect.core.model.network.VGSResponse { *; }
 -keep class com.verygoodsecurity.vgscollect.core.* {
     public void addOnResponseListeners(com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener);
     public void onDestroy();
