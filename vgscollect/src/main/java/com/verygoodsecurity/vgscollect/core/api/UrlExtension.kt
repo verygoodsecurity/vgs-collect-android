@@ -6,6 +6,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.regex.Pattern
 
+/** @suppress */
 internal fun String.setupURL(rawValue:String):String {
     return if(isNotEmpty() && isTennantIdValid()) {
         this.buildURL(rawValue)

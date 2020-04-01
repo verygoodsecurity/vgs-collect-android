@@ -20,6 +20,7 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 
+/** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
     DependencyListener {
 

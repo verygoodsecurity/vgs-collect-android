@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.util
 
-fun Boolean.toInt():Int {
+/** @suppress */
+internal fun Boolean.toInt():Int {
     return if(this) {
         1
     } else {

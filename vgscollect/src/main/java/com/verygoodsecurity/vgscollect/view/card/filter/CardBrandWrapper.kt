@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.card.filter
 
 import com.verygoodsecurity.vgscollect.view.card.CardType
 
+/** @suppress */
 data class CardBrandWrapper(
     val cardType: CardType = CardType.NONE,
     val regex:String = CardType.NONE.regex,

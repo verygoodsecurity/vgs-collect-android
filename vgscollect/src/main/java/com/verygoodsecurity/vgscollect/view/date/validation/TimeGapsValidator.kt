@@ -5,7 +5,8 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TimeGapsValidator(
+/** @suppress */
+internal class TimeGapsValidator(
     pattern:String,
     private val minDate:Long? = null,
     private val maxDate:Long? = null

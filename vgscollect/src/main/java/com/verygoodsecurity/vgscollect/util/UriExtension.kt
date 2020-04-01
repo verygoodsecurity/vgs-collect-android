@@ -5,7 +5,8 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
 
-fun Uri.parseFile(context: Context, fieldName:String): FileState? {
+/** @suppress */
+internal fun Uri.parseFile(context: Context, fieldName:String): FileState? {
     val mimeType: String? = this.let { returnUri ->
         context.contentResolver.getType(returnUri)
     }

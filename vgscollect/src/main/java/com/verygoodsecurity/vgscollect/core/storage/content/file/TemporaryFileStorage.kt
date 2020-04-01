@@ -7,7 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.app.FilePickerActivity
-import com.verygoodsecurity.vgscollect.core.model.VGSError
+import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
 import com.verygoodsecurity.vgscollect.util.parseFile
 import java.util.HashMap

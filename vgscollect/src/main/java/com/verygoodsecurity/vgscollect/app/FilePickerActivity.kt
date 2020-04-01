@@ -6,7 +6,7 @@ import android.os.Bundle
 /**
  * The Activity class that use when need to attach some file to VGSCollect.
  */
-class FilePickerActivity :BaseTransmitActivity() {
+internal class FilePickerActivity :BaseTransmitActivity() {
 
     companion object {
         private const val PICK_FILE_REQUEST_CODE = 0x107

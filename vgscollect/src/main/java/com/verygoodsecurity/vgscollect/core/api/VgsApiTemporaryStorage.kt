@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.api
 
-interface VgsApiTemporaryStorage {
+internal interface VgsApiTemporaryStorage {
     fun setCustomHeaders(headers:Map<String, String>?)
     fun getCustomHeaders():HashMap<String, String>
     fun resetCustomHeaders()

@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import com.verygoodsecurity.vgscollect.core.HTTPMethod;
 import com.verygoodsecurity.vgscollect.core.VGSCollect;
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener;
-import com.verygoodsecurity.vgscollect.core.model.VGSResponse;
+import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse;
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState;
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener;
 import com.verygoodsecurity.vgscollect.widget.VGSEditText;

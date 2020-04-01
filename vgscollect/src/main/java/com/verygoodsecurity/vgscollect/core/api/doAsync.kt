@@ -3,10 +3,10 @@ package com.verygoodsecurity.vgscollect.core.api
 import android.os.AsyncTask
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.Payload
-import com.verygoodsecurity.vgscollect.core.model.VGSResponse
+import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import java.lang.ref.WeakReference
 
-class doAsync(listeners: MutableList<VgsCollectResponseListener>, val handler: (arg: Payload?) -> VGSResponse) : AsyncTask<Payload, Void, VGSResponse>() {
+internal class doAsync(listeners: MutableList<VgsCollectResponseListener>, val handler: (arg: Payload?) -> VGSResponse) : AsyncTask<Payload, Void, VGSResponse>() {
     var onResponseListeners: WeakReference<MutableList<VgsCollectResponseListener>>? = WeakReference(listeners)
     override fun doInBackground(vararg arg: Payload?): VGSResponse? {
         val param = if(!arg.isNullOrEmpty()) {

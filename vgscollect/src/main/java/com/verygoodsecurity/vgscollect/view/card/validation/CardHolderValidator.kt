@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.card.validation
 
 import java.util.regex.Pattern
 
+/** @suppress */
 class CardHolderValidator:VGSValidator {
     private val m = Pattern.compile("^[a-zA-Z0-9 ,]+\$")      //only symbols  -  "^[\\p{L}\\s'.-]+\$"
 

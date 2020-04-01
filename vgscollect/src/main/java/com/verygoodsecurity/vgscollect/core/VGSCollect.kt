@@ -11,6 +11,9 @@ import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.model.*
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
+import com.verygoodsecurity.vgscollect.core.model.network.VGSError
+import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
+import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.*
@@ -26,27 +29,27 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 
 
 /**
- * VGS Collect allows you to securely collect data from your users without having
- * to have that data pass through your systems.
- * Entry-point to the Stripe SDK.
+ * VGS Collect allows you to securely collect data and files from your users without having
+ * to have them pass through your systems.
+ * Entry-point to the Collect SDK.
  *
- * @param context Activity context
- * @param id Unique Vault id
- * @param environment Type of Vaults
- *
- * @version 1.0.0
+ * @since 1.0.0
  */
 class VGSCollect(
+    /** Activity context */
     private val context: Context,
+    /** Unique Vault id */
     id: String,
+    /** Type of Vaults */
     environment: Environment = Environment.SANDBOX
-) : StorageErrorListener {
+) {
 
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
     private var client: ApiClient
 
     private var storage:InternalStorage
+    private var storageErrorListener:StorageErrorListener
 
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
 
@@ -61,7 +64,12 @@ class VGSCollect(
 
         externalDependencyDispatcher = DependencyReceiver()
 
-        storage = InternalStorage(context, this)
+        storageErrorListener = object : StorageErrorListener {
+            override fun onStorageError(error: VGSError) {
+                notifyErrorResponse(error)
+            }
+        }
+        storage = InternalStorage(context, storageErrorListener)
 
         client = OkHttpClient.newInstance(context, baseURL)
     }
@@ -69,7 +77,7 @@ class VGSCollect(
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSCollect receive response from Server.
      *
-     * @param onResponseListener listener which will be added.
+     * @param onResponseListener Interface definition for a receiving callback.
      */
     fun addOnResponseListeners(onResponseListener:VgsCollectResponseListener?) {
         onResponseListener?.let {
@@ -78,7 +86,7 @@ class VGSCollect(
     }
 
     /**
-     * Allows VGS secure fields to interact with @VGSCollect.
+     * Allows VGS secure fields to interact with [VGSCollect] and collect data from this source.
      *
      * @param view base class for VGS secure fields.
      */
@@ -92,7 +100,7 @@ class VGSCollect(
     /**
      * This method adds a listener whose methods are called whenever VGS secure fields state changes.
      *
-     * @param fieldStateListener listener which will receive changes updates
+     * @param fieldStateListener listener which will notify about changes inside input fields.
      */
     fun addOnFieldStateChangeListener(fieldStateListener : OnFieldStateChangeListener?) {
         storage.attachStateChangeListener(fieldStateListener)
@@ -100,6 +108,7 @@ class VGSCollect(
 
     /**
      * Clear all information collected before by VGSCollect.
+     * Preferably call it inside onDestroy system's callback.
      */
     fun onDestroy() {
         currentTask?.cancel(true)
@@ -108,9 +117,9 @@ class VGSCollect(
     }
 
     /**
-     * Returns the states of all fields bonded before to VGSCollect.
+     * Returns the states of all fields bound before to VGSCollect.
      *
-     * @return the list with all states.
+     * @return the list of all input fields states, that were bound before.
      */
     fun getAllStates(): List<FieldState> {
         return storage.getFieldsStates().map { it.mapToFieldState() }
@@ -143,7 +152,7 @@ class VGSCollect(
      * multithreading by yourself.
      * Do not use this method on the UI thread as this may crash.
      *
-     * @param request data class with attributes for submit
+     * @param request data class with attributes for submit.
      */
     fun submit(request: VGSRequest) {
         if(isUrlValid() && checkInternetPermission()) {
@@ -239,10 +248,6 @@ class VGSCollect(
         return isValid
     }
 
-    override fun onStorageError(error: VGSError) {
-        notifyErrorResponse(error)
-    }
-
     private fun notifyErrorResponse(error: VGSError, vararg params:String?) {
         val message = if(params.isEmpty()) {
             context.getString(error.messageResId)
@@ -300,6 +305,7 @@ class VGSCollect(
      * Called when an activity you launched exits,
      * giving you the requestCode you started it with, the resultCode is returned,
      * and any additional data for VGSCollect.
+     * Preferably call it inside onActivityResult system's callback.
      *
      * @param requestCode The integer request code originally supplied to
      *                    startActivityForResult(), allowing you to identify who this
@@ -328,8 +334,8 @@ class VGSCollect(
     }
 
     /**
-     * It collect headers which will be send to server. Headers are stored until
-     * resetCustomHeaders method will be called
+     * It collects headers that will be sent to the server.
+     * This is static headers that are stored and attach for all requests until @resetCustomHeaders method will be called.
      *
      * @param headers The headers to save for request.
      */
@@ -338,15 +344,16 @@ class VGSCollect(
     }
 
     /**
-     * Reset all headers which added before.
+     * Reset all static headers which added before.
+     * This method has no impact on all custom data that were added with [VGSRequest]
      */
     fun resetCustomHeaders() {
         client.getTemporaryStorage().resetCustomHeaders()
     }
 
     /**
-     * It collect custom data which will be send to server. User's custom data are stored until
-     * resetCustomData method will be called.
+     * It collect custom data which will be send to server.
+     * This is static custom data that are stored and attach for all requests until resetCustomData method will be called.
      *
      * @param data The Map to save for request.
      */
@@ -355,7 +362,8 @@ class VGSCollect(
     }
 
     /**
-     * Reset all custom data which added before.
+     * Reset all static custom data which added before.
+     * This method has no impact on all custom data that were added with [VGSRequest]
      */
     fun resetCustomData() {
         client.getTemporaryStorage().resetCustomData()

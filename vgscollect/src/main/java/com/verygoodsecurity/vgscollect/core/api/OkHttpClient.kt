@@ -5,8 +5,8 @@ import android.net.ConnectivityManager
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
-import com.verygoodsecurity.vgscollect.core.model.VGSError
-import com.verygoodsecurity.vgscollect.core.model.VGSResponse
+import com.verygoodsecurity.vgscollect.core.model.network.VGSError
+import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.parseVGSResponse
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.mapToJSON
@@ -121,7 +121,7 @@ internal class OkHttpClient(
         return (network != null)
     }
 
-    private fun notifyErrorResponse(error: VGSError, vararg params:String?):VGSResponse.ErrorResponse {
+    private fun notifyErrorResponse(error: VGSError, vararg params:String?): VGSResponse.ErrorResponse {
         val message = if(params.isEmpty()) {
             context.getString(error.messageResId)
         } else {

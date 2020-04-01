@@ -5,6 +5,7 @@ import android.widget.TextView
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import java.util.regex.Pattern
 
+/** @suppress */
 class DefaultCardBrandFilter(
     private val cardBrands: Array<CardType>,
     private val inputField: TextView?,
