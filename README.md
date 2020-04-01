@@ -178,7 +178,7 @@ Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy 
  ```
 
 ## Next steps
-
+Get started with our topics:
 -  <a href="https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk/overview">Overview</a>
 -  <a href="https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk/ui-components">UI Components</a>
 -  <a href="https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk/submit-data">Observing States and Submitting Data</a>
