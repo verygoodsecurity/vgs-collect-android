@@ -9,10 +9,8 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
-import com.verygoodsecurity.vgscollect.core.model.Payload
+import com.verygoodsecurity.vgscollect.core.model.*
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
-import com.verygoodsecurity.vgscollect.core.model.VGSRequest
-import com.verygoodsecurity.vgscollect.core.model.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.*
@@ -245,7 +243,7 @@ class VGSCollect(
         notifyErrorResponse(error)
     }
 
-    private fun notifyErrorResponse(error:VGSError, vararg params:String?) {
+    private fun notifyErrorResponse(error: VGSError, vararg params:String?) {
         val message = if(params.isEmpty()) {
             context.getString(error.messageResId)
         } else {
