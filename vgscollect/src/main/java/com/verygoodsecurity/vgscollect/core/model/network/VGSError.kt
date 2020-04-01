@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.core.model
+package com.verygoodsecurity.vgscollect.core.model.network
 
 import com.verygoodsecurity.vgscollect.R
 

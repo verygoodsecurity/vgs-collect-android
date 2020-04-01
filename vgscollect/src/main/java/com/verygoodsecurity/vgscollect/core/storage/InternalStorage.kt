@@ -12,6 +12,7 @@ import com.verygoodsecurity.vgscollect.util.toAssociatedList
 import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 
+/** @suppress */
 internal class InternalStorage(
     context: Context,
     private val errorListener: StorageErrorListener? = null

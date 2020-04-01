@@ -7,6 +7,7 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.InputInfoConnection
 import com.verygoodsecurity.vgscollect.view.card.validation.InfoValidator
 
+/** @suppress */
 internal class InfoInputField(context: Context): BaseInputField(context) {
 
     override var fieldType: FieldType = FieldType.INFO

@@ -5,6 +5,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import org.json.JSONArray
 import org.json.JSONObject
 
+/** @suppress */
 internal fun MutableCollection<Pair<String, String>>.merge(
     collection:MutableCollection<Pair<String, String>>
 ) :MutableCollection<Pair<String, String>> {
@@ -17,6 +18,7 @@ internal fun MutableCollection<Pair<String, String>>.merge(
     return this
 }
 
+/** @suppress */
 internal fun MutableCollection<VGSFieldState>.toAssociatedList()
         : MutableCollection<Pair<String, String>> {
     return this.filter { state ->
@@ -34,6 +36,7 @@ internal fun MutableCollection<VGSFieldState>.toAssociatedList()
         }.toMutableList()
 }
 
+/** @suppress */
 internal fun MutableCollection<Pair<String, String>>.mapUsefulPayloads(
     userData: HashMap<String, Any>? = null
 ): Map<String,Any>? {
@@ -133,11 +136,7 @@ private fun String.maps(m:HashMap<String,Any>):HashMap<String,Any>  {
     return map
 }
 
-
-
-
-
-
+/** @suppress */
 internal fun Map<*, *>.mapToJSON():JSONObject {
     val jObjectData = JSONObject()
 

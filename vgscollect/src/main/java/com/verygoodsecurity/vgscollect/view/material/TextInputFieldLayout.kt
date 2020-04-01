@@ -18,7 +18,7 @@ import com.verygoodsecurity.vgscollect.view.material.internal.TextInputLayoutWra
  * An abstract class that provide floating label when
  * the hint is hidden due to user inputting text.
  *
- * @version 1.0.0
+ * @since 1.0.0
  */
 abstract class TextInputFieldLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

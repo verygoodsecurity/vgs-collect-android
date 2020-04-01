@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.card.validation
 
 import java.util.regex.Pattern
 
+/** @suppress */
 class InfoValidator:VGSValidator {
     private val m = Pattern.compile(".*?")
 

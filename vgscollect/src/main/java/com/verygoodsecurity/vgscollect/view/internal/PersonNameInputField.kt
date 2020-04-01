@@ -8,6 +8,7 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.InputCardHolderConnection
 import com.verygoodsecurity.vgscollect.view.card.validation.CardHolderValidator
 
+/** @suppress */
 internal class PersonNameInputField(context: Context): BaseInputField(context) {
 
     override var fieldType: FieldType = FieldType.CARD_HOLDER_NAME

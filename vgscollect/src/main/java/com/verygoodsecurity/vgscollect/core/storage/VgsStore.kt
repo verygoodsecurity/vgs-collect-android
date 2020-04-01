@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.core.storage
 /**
  * Interface definition of storage for states of VGS fields.
  */
-interface VgsStore<K, T> {
+internal interface VgsStore<K, T> {
 
     /**
      * Clears all custom data which added before.

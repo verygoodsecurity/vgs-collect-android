@@ -12,6 +12,7 @@ import android.widget.DatePicker
 import com.verygoodsecurity.vgscollect.R
 import java.util.*
 
+/** @suppress */
 internal class DatePickerBuilder(private val context: Context, mode:DatePickerMode) {
     private val layout: ViewGroup
     private val datePickerControl: DatePicker

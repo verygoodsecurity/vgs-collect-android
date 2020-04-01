@@ -5,7 +5,8 @@ import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
-class InputCardCVCConnection(
+/** @suppress */
+internal class InputCardCVCConnection(
     private val id:Int,
     private val validator: VGSValidator?
 ): InputRunnable {

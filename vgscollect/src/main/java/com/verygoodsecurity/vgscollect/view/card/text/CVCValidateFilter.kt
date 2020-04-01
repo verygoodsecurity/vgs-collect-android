@@ -4,6 +4,7 @@ import android.text.InputFilter
 import android.text.Spanned
 import java.util.regex.Pattern
 
+/** @suppress */
 class CVCValidateFilter: InputFilter {
     override fun filter(
         source : CharSequence?,

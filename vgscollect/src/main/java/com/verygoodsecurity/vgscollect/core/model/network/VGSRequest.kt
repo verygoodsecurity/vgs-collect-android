@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.core.model
+package com.verygoodsecurity.vgscollect.core.model.network
 
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 
@@ -41,7 +41,7 @@ data class VGSRequest private constructor(
          * @param customData The Map to save for request.
          * @return current builder instance
          */
-        fun setCustomData(customData:Map<String, Any>):VGSRequestBuilder {
+        fun setCustomData(customData:Map<String, Any>): VGSRequestBuilder {
             this.customData.putAll(customData)
             return this
         }
@@ -52,7 +52,7 @@ data class VGSRequest private constructor(
          * @param customHeader The headers to save for request.
          * @return current builder instance
          */
-        fun setCustomHeader(customHeader:Map<String, String>):VGSRequestBuilder {
+        fun setCustomHeader(customHeader:Map<String, String>): VGSRequestBuilder {
             this.customHeader.putAll(customHeader)
             return this
         }
@@ -63,7 +63,7 @@ data class VGSRequest private constructor(
          * @param path path for a request
          * @return current builder instance
          */
-        fun setPath(path:String):VGSRequestBuilder {
+        fun setPath(path:String): VGSRequestBuilder {
             this.path = path.run {
                 val p = when {
                     length == 0 -> "/"
@@ -82,7 +82,7 @@ data class VGSRequest private constructor(
          * @param method HTTP method
          * @return current builder instance
          */
-        fun setMethod(method: HTTPMethod):VGSRequestBuilder {
+        fun setMethod(method: HTTPMethod): VGSRequestBuilder {
             this.method = method
             return this
         }
@@ -94,7 +94,7 @@ data class VGSRequest private constructor(
          *
          * @since 1.0.10
          */
-        fun ignoreFields():VGSRequestBuilder {
+        fun ignoreFields(): VGSRequestBuilder {
             fieldsIgnore = true
             return this
         }
@@ -105,7 +105,7 @@ data class VGSRequest private constructor(
          * @return current builder instance
          * @since 1.0.10
          */
-        fun ignoreFiles():VGSRequestBuilder {
+        fun ignoreFiles(): VGSRequestBuilder {
             fieldsIgnore = true
             return this
         }
@@ -115,8 +115,15 @@ data class VGSRequest private constructor(
          *
          * @return VGSRequest instance
          */
-        fun build():VGSRequest {
-            return VGSRequest(method, path, customHeader, customData, fieldsIgnore, fileIgnore)
+        fun build(): VGSRequest {
+            return VGSRequest(
+                method,
+                path,
+                customHeader,
+                customData,
+                fieldsIgnore,
+                fileIgnore
+            )
         }
     }
 }

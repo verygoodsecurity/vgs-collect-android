@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.core.model
+package com.verygoodsecurity.vgscollect.core.model.network
 
 /**
  * The base class definition for a VGSCollect response states.
@@ -20,7 +20,7 @@ sealed class VGSResponse(val code:Int = -1) {
         val response:Map<String, Any>? = null,
         val rawResponse:String? = null,
         val successCode:Int = -1
-    ):VGSResponse(successCode)
+    ): VGSResponse(successCode)
 
     /**
      * The class definition for an error response state.
@@ -31,6 +31,6 @@ sealed class VGSResponse(val code:Int = -1) {
     class ErrorResponse(
         val localizeMessage:String? = "Can't connect to server",
         val errorCode:Int = -1
-    ):VGSResponse(errorCode)
+    ): VGSResponse(errorCode)
 
 }
