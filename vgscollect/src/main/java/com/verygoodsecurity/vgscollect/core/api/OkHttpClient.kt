@@ -15,6 +15,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
+import java.io.InterruptedIOException
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
@@ -91,6 +92,8 @@ internal class OkHttpClient(
             } else {
                 VGSResponse.ErrorResponse(response.message, response.code)
             }
+        } catch (e: InterruptedIOException) {
+            notifyErrorResponse(VGSError.TIME_OUT)
         } catch (e: TimeoutException) {
             notifyErrorResponse(VGSError.TIME_OUT)
         } catch (e: IOException) {
