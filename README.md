@@ -15,14 +15,13 @@ Table of contents
    * [Structure](#structure)
    * [Integration](#integration)
       * [Add the SDK to your project](#add-the-sdk-to-your-project)
-      * [Add permissions](#add-permissions)
    * [Usage](#usage)
       * [Session initialization](#session-initialization)
       * [Submit information](#submit-information)
       * [Fields state tracking](#fields-state-tracking)
       * [Handle service response](#handle-service-response)
       * [End session](#end-session)
-   * [Demo Application](#demo-application)
+   * [Next steps](#next-steps)
    * [License](#license)
 <!--te-->
 
@@ -34,12 +33,12 @@ Table of contents
 
 | Dependency | Version |
 | :--- | :---: |
-| Min SDK | 14 |
+| Min SDK | 19 |
 | Target SDK | 29 |
 | androidx.appcompat:appcompat | 1.1.0 |
 | com.google.android.material:material | 1.1.0 |
 | androidx.core:core-ktx | 1.2.0 |
-| org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.70 |
+| org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.71 |
 
 ## Structure
 * **VGSCollect SDK** - provides an API for interacting with the VGS Vault
@@ -53,13 +52,8 @@ For integration you need to install the [Android Studio](http://developer.androi
 If you are using Maven, add the following to your `build.gradle` file:
 ```gradle
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:1.0.8’
+   implementation 'com.verygoodsecurity:vgscollect:1.1.0’
 }
-```
-#### Add permissions
-The **SDK** requires the following permissions. Please add them to your `AndroidManifest.xml` file if they are not already present:
-```xml
-<uses-permission android:name="android.permission.INTERNET"/>
 ```
 
 ## Usage
@@ -78,12 +72,14 @@ Add VGSEditText to your layout file:
 Add the following code to initialize the SDK to your Activity or Fragment class:
 ```java
 public class ExampleActivity extends Activity {
-   private VGSCollect vgsForm = new VGSCollect( user_key, Environment.SANDBOX);
+   private VGSCollect vgsForm;
 
    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.example_layout);
+
+        vgsForm = new VGSCollect( this, user_key, Environment.SANDBOX);
 
         vgsForm.addOnFieldStateChangeListener(...);
         vgsForm.setOnResponseListener(...);
@@ -119,7 +115,7 @@ Call `asyncSubmit` or `submit` to execute and send data on VGS Server if you wan
 ```java
 private void submitData() {
     //..
-    vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
+    vgsForm.asyncSubmit("/path", HTTPMethod.POST);
 }
 ```
 
@@ -131,7 +127,7 @@ private void submitData() {
     data.put("key", "value");
     vgsForm.setCustomData(data);
 
-    vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
+    vgsForm.asyncSubmit("/path", HTTPMethod.POST);
 }
 ```
 
@@ -143,7 +139,7 @@ private void submitData() {
     headers.put("key", "value");
     vgsForm.setCustomHeaders(headers);
 
-    vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
+    vgsForm.asyncSubmit("/path", HTTPMethod.POST);
 }
 ```
 
@@ -156,7 +152,7 @@ private void submitData() {
     headers.put("key", "value");
     vgsForm.setCustomHeaders(headers);
 
-    vgsForm.asyncSubmit(this, "/path", HTTPMethod.POST);
+    vgsForm.asyncSubmit("/path", HTTPMethod.POST);
 }
 ```
 
@@ -181,8 +177,13 @@ Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy 
     }
  ```
 
-## Demo Application
-Demo application for collecting card data on Android is <a href="https://github.com/verygoodsecurity/android-sdk-demo">here</a>.
+## Next steps
+
+-  <a href="https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk/overview">Overview</a>
+-  <a href="https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk/ui-components">UI Components</a>
+-  <a href="https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk/submit-data">Observing States and Submitting Data</a>
+
+Also, you could be interested in <a href="https://github.com/verygoodsecurity/android-sdk-demo">Demo application</a>.
 
 ## License
 VGSCollect Android SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE) for details.
