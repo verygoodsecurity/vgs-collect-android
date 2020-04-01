@@ -1,10 +1,16 @@
-package com.verygoodsecurity.vgscollect.core.storage
+package com.verygoodsecurity.vgscollect.core.storage.content.field
 
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.*
+import com.verygoodsecurity.vgscollect.core.storage.FieldDependencyObserver
+import com.verygoodsecurity.vgscollect.core.storage.IStateEmitter
+import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
-internal class DefaultStorage : VgsStore,IStateEmitter {
+internal class TemporaryFieldsStorage : VgsStore<Int, VGSFieldState>,
+    IStateEmitter {
 
     private val store = mutableMapOf<Int, VGSFieldState>()
 
@@ -23,7 +29,7 @@ internal class DefaultStorage : VgsStore,IStateEmitter {
         store.clear()
     }
 
-    override fun getStates() = store.values
+    override fun getItems() = store.values
 
     override fun performSubscription() = object: OnVgsViewStateChangeListener {
         override fun emit(viewId: Int, state: VGSFieldState) {
@@ -67,5 +73,15 @@ internal class DefaultStorage : VgsStore,IStateEmitter {
     private fun notifyUser(state: VGSFieldState) {
         val fs = state.mapToFieldState()
         onFieldStateChangeListeners.forEach { it.onStateChange(fs) }
+    }
+
+    @VisibleForTesting
+    fun  getFieldStateChangeListeners(): MutableList<OnFieldStateChangeListener> {
+        return onFieldStateChangeListeners
+    }
+
+    @VisibleForTesting
+    fun  getDependencyObservers(): MutableList<FieldDependencyObserver> {
+        return dependencyObservers
     }
 }

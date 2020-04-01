@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.verygoodsecurity.vgscollect.BuildConfig
 
+/** @suppress */
 internal object Logger {
     fun e(context: Context, clazz: Class<*>, resId:Int) {
         if (BuildConfig.DEBUG) {

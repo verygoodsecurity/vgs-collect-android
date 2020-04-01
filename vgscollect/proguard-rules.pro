@@ -41,14 +41,27 @@
 -keep, allowobfuscation public interface com.verygoodsecurity.vgscollect.core.storage.OnVgsViewStateChangeListener { *; }
 -keep, allowobfuscation public class com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper { *; }
 
--keep public interface  com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener { *; }
+-keep public interface com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener { *; }
 
--keep public class com.verygoodsecurity.vgscollect.core.model.VGSRequest$* { *; }
+-keep public class com.verygoodsecurity.vgscollect.core.model.network.VGSError* { *; }
+-keep public class com.verygoodsecurity.vgscollect.core.model.network.VGSRequest$* { *; }
+-keep public interface com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider { *; }
+-keep public class com.verygoodsecurity.vgscollect.core.model.state.FileState  { *; }
 -keep public class * extends com.verygoodsecurity.vgscollect.core.model.state.FieldState { *; }
--keep public class * extends com.verygoodsecurity.vgscollect.core.model.VGSResponse { *; }
+-keep public class * extends com.verygoodsecurity.vgscollect.core.model.network.VGSResponse { *; }
 -keep class com.verygoodsecurity.vgscollect.core.* {
     public void addOnResponseListeners(com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener);
     public void onDestroy();
     public List<FieldState> getAllStates();
     *;
 }
+
+
+# JSR 305 annotations are for embedding nullability information.
+-dontwarn javax.annotation.**
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+# OkHttp platform used only on JVM and when Conscrypt dependency is available.
+-dontwarn okhttp3.internal.platform.ConscryptPlatform

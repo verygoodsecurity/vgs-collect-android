@@ -4,6 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
+/** @suppress */
 @Parcelize
 internal class VGSHashMapWrapper<K,V>(
     private val hashMap: @RawValue HashMap<K, V> = HashMap()

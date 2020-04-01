@@ -9,7 +9,8 @@ import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.card.brand.*
 
-class InputCardNumberConnection(
+/** @suppress */
+internal class InputCardNumberConnection(
     private val id:Int,
     private val validator: VGSValidator?,
     private val IcardBrand: IdrawCardBrand? = null,

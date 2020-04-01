@@ -4,6 +4,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import com.verygoodsecurity.vgscollect.util.toInt
 
+/** @suppress */
 class CardNumberTextWatcher(
     dividerStr:String? = " "
 ): TextWatcher {

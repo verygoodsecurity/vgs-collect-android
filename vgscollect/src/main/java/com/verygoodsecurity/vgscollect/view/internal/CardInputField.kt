@@ -22,6 +22,7 @@ import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
 import com.verygoodsecurity.vgscollect.view.card.text.CardNumberTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
 
+/** @suppress */
 internal class CardInputField(context: Context): BaseInputField(context) {
 
     override var fieldType: FieldType = FieldType.CARD_NUMBER
