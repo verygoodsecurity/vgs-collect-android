@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.card.validation
 
 import java.util.regex.Pattern
 
+/** @suppress */
 @Deprecated("Deprecated from version 1.0.5")
 class CardExpDateValidator:
     VGSValidator {

@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscollect.R
  * @param rangeNumber The length of the card's number which a brand supported.
  * @param rangeCVV The length of the card's CVC number which a brand supported.
  *
- * @version 1.0.1
+ * @since 1.0.1
  */
 enum class CardType(val regex:String,
                     val resId:Int,

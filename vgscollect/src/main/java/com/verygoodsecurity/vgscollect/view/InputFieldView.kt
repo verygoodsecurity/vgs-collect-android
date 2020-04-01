@@ -28,8 +28,6 @@ import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
- *
- * @version 1.0.0
  */
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -44,7 +42,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param notifier The listener that emits new dependencies for apply.
      */
-    class DependencyNotifier(notifier: DependencyListener) : DependencyListener by notifier
+    internal class DependencyNotifier(notifier: DependencyListener) : DependencyListener by notifier
 
     private lateinit var fieldType:FieldType
 

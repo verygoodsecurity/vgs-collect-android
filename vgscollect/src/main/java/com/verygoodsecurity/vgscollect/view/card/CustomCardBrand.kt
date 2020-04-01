@@ -4,7 +4,7 @@ package com.verygoodsecurity.vgscollect.view.card
  * The data class definition for represent custom card brand.
  * It may be useful to add new brands in addition to already defined brands or override existing ones.
  *
- * @version 1.0.1
+ * @since 1.0.1
  */
 data class CustomCardBrand(
 

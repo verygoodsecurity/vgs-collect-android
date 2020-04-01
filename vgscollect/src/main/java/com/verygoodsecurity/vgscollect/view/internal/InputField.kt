@@ -29,6 +29,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.CardExpDateValidator
 
+/** @suppress */
 @Deprecated("This class is deprecated from 1.0.5")
 internal class InputField(context: Context): BaseInputField(context) {
 

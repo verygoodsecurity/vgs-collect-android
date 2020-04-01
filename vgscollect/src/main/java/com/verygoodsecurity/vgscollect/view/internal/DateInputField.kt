@@ -19,6 +19,7 @@ import com.verygoodsecurity.vgscollect.view.date.validation.isInputDatePatternVa
 import java.text.SimpleDateFormat
 import java.util.*
 
+/** @suppress */
 internal class DateInputField(context: Context): BaseInputField(context), View.OnClickListener {
 
     private var datePattern:String = "MM/yyyy"

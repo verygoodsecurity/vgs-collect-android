@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
  * Base class for activities that use the AppCompatActivity as a parent.
  * You can use the activity when need to send some data to VGSCollect from external api.
  *
- * @version 1.0.2
+ * @since 1.0.2
  */
 abstract class BaseTransmitActivity:AppCompatActivity() {
     companion object {

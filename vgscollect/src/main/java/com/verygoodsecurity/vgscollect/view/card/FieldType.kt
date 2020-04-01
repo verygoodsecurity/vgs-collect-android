@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card
 /**
  * The enum class represents all available type of VGS input fields.
  *
- * @version 1.0.1
+ * @since 1.0.1
  */
 enum class FieldType {
 

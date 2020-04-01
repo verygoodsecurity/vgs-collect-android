@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.card.material
+package com.verygoodsecurity.vgscollect
 
 import android.app.Application
 import com.verygoodsecurity.vgscollect.R
