@@ -20,7 +20,7 @@ Table of contents
 | io.card:android-sdk | 5.5.1 |
 | androidx.appcompat:appcompat | 1.1.0 |
 | androidx.core:core-ktx | 1.1.0 |
-| org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.50 |
+| org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.61 |
 
 ## Integration 
 For integration you need to install the [Android Studio](http://developer.android.com/sdk/index.html) and a [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) on your machine.
@@ -29,14 +29,14 @@ For integration you need to install the [Android Studio](http://developer.androi
 To use the SDK in project you just simply need to add the following line of dependency in your module `gradle.gradle` file:
 ```
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:1.0.0’ //required version 1.1.0 or above
-   implementation 'com.verygoodsecurity.api:ARFIFACT_ID:VERSION’
+   implementation 'com.verygoodsecurity:vgscollect:1.0.2’ //required version 1.0.2 or above
+   implementation 'com.verygoodsecurity.api:adapter-cardio:1.0.0’
 }
 ```
 
 ## Usage
 
-**Important**: VGSCollect should be configured too. Check [here](https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk#step-2-configure-your-app) how to do it
+**Important**: VGSCollect should be configured too. Check [here](https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk#step-2-configure-your-app) how to do it.
 
 Before scanning you have to setup which information you need to retrieve and final destination VGS secure field:
 ```
