@@ -178,12 +178,12 @@ Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy 
  ```
 
 ## Next steps
-Get started with our topics:
+Check out documentation guides:
 -  <a href="https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk/overview">Overview</a>
 -  <a href="https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk/ui-components">UI Components</a>
 -  <a href="https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk/submit-data">Observing States and Submitting Data</a>
 
-Also, you could be interested in <a href="https://github.com/verygoodsecurity/android-sdk-demo">Demo application</a>.
+For a quick start, try our <a href="https://github.com/verygoodsecurity/android-sdk-demo">Demo application</a>.
 
 ## License
 VGSCollect Android SDK is released under the MIT license. [See LICENSE](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE) for details.
