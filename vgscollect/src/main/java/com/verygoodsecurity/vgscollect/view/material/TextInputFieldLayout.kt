@@ -13,6 +13,7 @@ import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.material.internal.InputLayoutStateImpl
 import com.verygoodsecurity.vgscollect.view.material.internal.TextInputLayoutWrapper
+import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 
 /**
  * An abstract class that provide floating label when
@@ -228,7 +229,13 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     }
 
     fun setEndIconMode(mode:Int) {
-        fieldState.endIconMode = mode
+        if(mode <= VGSTextInputLayout.END_ICON_CLEAR_TEXT) {
+            fieldState.endIconMode = mode
+        }
+    }
+
+    fun getEndIconMode():Int {
+        return fieldState.endIconMode
     }
 
     fun setEndIconOnClickListener(listener : OnClickListener?) {

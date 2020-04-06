@@ -25,8 +25,8 @@ class VGSTextInputLayout @JvmOverloads constructor(
         /**
          * Default for the TextInputLayout. It will not display an end icon.
          *
-         * @see .setEndIconMode
-         * @see .getEndIconMode
+         * @see setEndIconMode
+         * @see getEndIconMode
          */
         const val END_ICON_NONE = 0
 
@@ -35,8 +35,8 @@ class VGSTextInputLayout @JvmOverloads constructor(
          * When this end icon is clicked, the password is shown as plain-text if it was disguised, or
          * vice-versa.
          *
-         * @see .setEndIconMode
-         * @see .getEndIconMode
+         * @see setEndIconMode
+         * @see getEndIconMode
          */
         const val END_ICON_PASSWORD_TOGGLE = 1
 
@@ -44,8 +44,8 @@ class VGSTextInputLayout @JvmOverloads constructor(
          * The TextInputLayout will show a clear text button while there is input in the EditText.
          * Clicking it will clear out the text and hide the icon.
          *
-         * @see .setEndIconMode
-         * @see .getEndIconMode
+         * @see setEndIconMode
+         * @see getEndIconMode
          */
         const val END_ICON_CLEAR_TEXT = 2
     }
