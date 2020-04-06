@@ -15,37 +15,40 @@ class VGSTextInputLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : TextInputFieldLayout(context, attrs, defStyleAttr) {
 
-    /**
-     * The TextInputLayout will show a custom icon specified by the user.
-     */
-    val END_ICON_CUSTOM = -1
+    companion object {
 
-    /**
-     * Default for the TextInputLayout. It will not display an end icon.
-     *
-     * @see .setEndIconMode
-     * @see .getEndIconMode
-     */
-    val END_ICON_NONE = 0
+        /**
+         * The TextInputLayout will show a custom icon specified by the user.
+         */
+        const val END_ICON_CUSTOM = -1
 
-    /**
-     * The TextInputLayout will show a password toggle button if its EditText displays a password.
-     * When this end icon is clicked, the password is shown as plain-text if it was disguised, or
-     * vice-versa.
-     *
-     * @see .setEndIconMode
-     * @see .getEndIconMode
-     */
-    val END_ICON_PASSWORD_TOGGLE = 1
+        /**
+         * Default for the TextInputLayout. It will not display an end icon.
+         *
+         * @see .setEndIconMode
+         * @see .getEndIconMode
+         */
+        const val END_ICON_NONE = 0
 
-    /**
-     * The TextInputLayout will show a clear text button while there is input in the EditText.
-     * Clicking it will clear out the text and hide the icon.
-     *
-     * @see .setEndIconMode
-     * @see .getEndIconMode
-     */
-    val END_ICON_CLEAR_TEXT = 2
+        /**
+         * The TextInputLayout will show a password toggle button if its EditText displays a password.
+         * When this end icon is clicked, the password is shown as plain-text if it was disguised, or
+         * vice-versa.
+         *
+         * @see .setEndIconMode
+         * @see .getEndIconMode
+         */
+        const val END_ICON_PASSWORD_TOGGLE = 1
+
+        /**
+         * The TextInputLayout will show a clear text button while there is input in the EditText.
+         * Clicking it will clear out the text and hide the icon.
+         *
+         * @see .setEndIconMode
+         * @see .getEndIconMode
+         */
+        const val END_ICON_CLEAR_TEXT = 2
+    }
 
     init {
         context.theme.obtainStyledAttributes(
