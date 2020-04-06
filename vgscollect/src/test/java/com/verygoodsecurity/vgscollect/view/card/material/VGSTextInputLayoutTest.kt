@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
+import android.view.View
 import android.widget.EditText
 import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.R
@@ -15,6 +16,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.mock
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
@@ -710,6 +712,17 @@ class VGSTextInputLayoutTest {
     }
 
     @Test
+    fun test_set_start_icon_OnClickListener() {
+        val listener = mock(View.OnClickListener::class.java)
+        textInputLayout.setStartIconOnClickListener(listener)
+        attachView()
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(listener, state.startIconOnClickListener)
+    }
+
+    @Test
     fun test_set_end_icon_drawable() {
         val resID = R.drawable.ic_amex_dark
         textInputLayout.setEndIconDrawable(resID)
@@ -737,6 +750,17 @@ class VGSTextInputLayoutTest {
         val state = textInputLayout.getFieldState()
 
         assertEquals(VGSTextInputLayout.END_ICON_CLEAR_TEXT, state.endIconMode)
+    }
+
+    @Test
+    fun test_set_end_icon_OnClickListener() {
+        val listener = mock(View.OnClickListener::class.java)
+        textInputLayout.setEndIconOnClickListener(listener)
+        attachView()
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(listener, state.endIconOnClickListener)
     }
 
     @Test
