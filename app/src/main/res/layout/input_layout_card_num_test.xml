@@ -31,7 +31,7 @@
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="textPassword, endIconModes(password_toggle)"
             app:endIconTint="@color/colorPrimary"
-            app:endIconDrawable="@drawable/ic_scan_test"
+            app:endIconDrawable="@drawable/ic_scan_card"
             app:endIconModes="password_toggle"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true">
@@ -53,7 +53,7 @@
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="no inputType endIconModes(password_toggle)"
             app:endIconTint="@color/colorPrimary"
-            app:endIconDrawable="@drawable/ic_scan_test"
+            app:endIconDrawable="@drawable/ic_scan_card"
             app:endIconModes="password_toggle"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true">
@@ -74,7 +74,7 @@
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="no endIconDrawable, no endIconTint, endIconModes(password_toggle)"
             app:endIconTint="@color/colorPrimary"
-            app:endIconDrawable="@drawable/ic_scan_test"
+            app:endIconDrawable="@drawable/ic_scan_card"
             app:endIconModes="password_toggle"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true">
@@ -95,7 +95,7 @@
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="endIconDrawable, endIconTint, endIconModes(password_toggle)"
             app:endIconTint="@color/colorPrimary"
-            app:endIconDrawable="@drawable/ic_scan_test"
+            app:endIconDrawable="@drawable/ic_scan_card"
             app:endIconModes="password_toggle"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true">
@@ -134,7 +134,7 @@
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="endIconDrawable, endIconTint, endIconModes(clear_text)"
             app:endIconModes="clear_text"
-            app:endIconDrawable="@drawable/ic_scan_test"
+            app:endIconDrawable="@drawable/ic_scan_card"
             app:endIconTint="@color/colorPrimary">
 
             <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
@@ -167,7 +167,7 @@
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="endIconDrawable, endIconTint, endIconModes(none)"
             app:endIconTint="@color/colorPrimary"
-            app:endIconDrawable="@drawable/ic_scan_test"
+            app:endIconDrawable="@drawable/ic_scan_card"
             app:endIconModes="none"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true">
@@ -188,7 +188,7 @@
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="endIconDrawable, endIconTint, endIconModes(custom)"
             app:endIconTint="@color/colorPrimary"
-            app:endIconDrawable="@drawable/ic_scan_test"
+            app:endIconDrawable="@drawable/ic_scan_card"
             app:endIconModes="custom"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true">
@@ -226,7 +226,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="endIconDrawable endIconTint, no endIconModes"
-            app:endIconDrawable="@drawable/ic_scan_test"
+            app:endIconDrawable="@drawable/ic_scan_card"
             app:endIconTint="@color/colorPrimary"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true">
@@ -246,7 +246,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="endIconDrawable endIconTint, no endIconModes"
-            app:endIconDrawable="@drawable/ic_scan_test"
+            app:endIconDrawable="@drawable/ic_scan_card"
             app:endIconTint="@color/colorPrimary"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true">
@@ -266,7 +266,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="endIconDrawable no endIconTint, no endIconModes"
-            app:endIconDrawable="@drawable/ic_scan_test"
+            app:endIconDrawable="@drawable/ic_scan_card"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true">
 
@@ -311,7 +311,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="startIconDrawable startIconTint"
-            app:startIconDrawable="@drawable/ic_scan_test"
+            app:startIconDrawable="@drawable/ic_scan_card"
             app:startIconTint="@color/colorPrimary"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true">
@@ -331,7 +331,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="startIconDrawable startIconTint"
-            app:startIconDrawable="@drawable/ic_scan_test"
+            app:startIconDrawable="@drawable/ic_scan_card"
             app:startIconTint="@color/colorPrimary"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true">
@@ -351,7 +351,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="startIconDrawable no startIconTint"
-            app:startIconDrawable="@drawable/ic_scan_test"
+            app:startIconDrawable="@drawable/ic_scan_card"
             app:hintAnimationEnabled="true"
             app:hintEnabled="true">
 
