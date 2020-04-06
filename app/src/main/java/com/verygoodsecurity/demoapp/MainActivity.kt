@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.input_layout_card_num_test)
 
         retrieveSettings()
 
@@ -57,25 +57,26 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
 
         vgsForm.addOnFieldStateChangeListener(getOnFieldStateChangeListener())
 
-        vgsForm.bindView(cardNumberField)
-        vgsForm.bindView(cardCVCField)
-        vgsForm.bindView(cardHolderField)
-        vgsForm.bindView(cardExpDateField)
+//        vgsForm.bindView(cardNumberField)
+//        vgsForm.bindView(cardCVCField)
+//        vgsForm.bindView(cardHolderField)
+//        vgsForm.bindView(cardExpDateField)
 
-        cardNumberFieldLay.setCounterEnabled(true)
-        cardNumberFieldLay.setCounterMaxLength(22)
-        cardNumberFieldLay.setStartIconDrawable(R.drawable.ic_scan_test)
-        cardNumberFieldLay.setStartIconDrawableTintList(ContextCompat.getColorStateList(this, R.color.colorAccent))
-        cardNumberFieldLay.setStartIconOnClickListener(View.OnClickListener {
-            Toast.makeText(this, "StartIcon Action", Toast.LENGTH_LONG).show()
-        })
+//        cardNumberFieldLay.setCounterEnabled(true)
+//        cardNumberFieldLay.setCounterMaxLength(22)
 
-        cardNumberFieldLay.setEndIconDrawable(R.drawable.ic_scan_test)
-        cardNumberFieldLay.setEndIconDrawableTintList(ContextCompat.getColorStateList(this, R.color.black))
-        cardNumberFieldLay.setEndIconMode(TextInputLayout.END_ICON_CUSTOM)
-        cardNumberFieldLay.setEndIconOnClickListener(View.OnClickListener {
-            Toast.makeText(this, "EndIcon Action", Toast.LENGTH_LONG).show()
-        })
+//        cardNumberFieldLay.setStartIconDrawable(R.drawable.ic_scan_test)
+//        cardNumberFieldLay.setStartIconDrawableTintList(ContextCompat.getColorStateList(this, R.color.colorAccent))
+//        cardNumberFieldLay.setStartIconOnClickListener(View.OnClickListener {
+//            Toast.makeText(this, "StartIcon Action", Toast.LENGTH_LONG).show()
+//        })
+//
+//        cardNumberFieldLay.setEndIconDrawable(R.drawable.ic_scan_test)
+//        cardNumberFieldLay.setEndIconDrawableTintList(ContextCompat.getColorStateList(this, R.color.black))
+//        cardNumberFieldLay.setEndIconMode(TextInputLayout.END_ICON_CUSTOM)
+//        cardNumberFieldLay.setEndIconOnClickListener(View.OnClickListener {
+//            Toast.makeText(this, "EndIcon Action", Toast.LENGTH_LONG).show()
+//        })
 
         val customData = HashMap<String, Any>()
         customData["nonSDKValue"] = "all time data"
@@ -162,45 +163,45 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
         return object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                titleHeader?.text = "STATE:"
-                val states = vgsForm.getAllStates()
-                val builder = StringBuilder()
-                states.forEach {
-                    builder.append(it.fieldName).append("\n")
-                        .append("   hasFocus: ").append(it.hasFocus).append("\n")
-                        .append("   isValid: ").append(it.isValid).append("\n")
-                        .append("   isEmpty: ").append(it.isEmpty).append("\n")
-                        .append("   isRequired: ").append(it.isRequired).append("\n")
-                    if (it is FieldState.CardNumberState) {
-                        builder.append("    type: ").append(it.cardBrand).append("\n")
-                            .append("       end: ").append(it.last).append("\n")
-                            .append("       bin: ").append(it.bin).append("\n")
-                            .append(it.number).append("\n")
-                    }
-
-                    builder.append("\n")
-                }
-                responseView?.text = builder.toString()
+//                titleHeader?.text = "STATE:"
+//                val states = vgsForm.getAllStates()
+//                val builder = StringBuilder()
+//                states.forEach {
+//                    builder.append(it.fieldName).append("\n")
+//                        .append("   hasFocus: ").append(it.hasFocus).append("\n")
+//                        .append("   isValid: ").append(it.isValid).append("\n")
+//                        .append("   isEmpty: ").append(it.isEmpty).append("\n")
+//                        .append("   isRequired: ").append(it.isRequired).append("\n")
+//                    if (it is FieldState.CardNumberState) {
+//                        builder.append("    type: ").append(it.cardBrand).append("\n")
+//                            .append("       end: ").append(it.last).append("\n")
+//                            .append("       bin: ").append(it.bin).append("\n")
+//                            .append(it.number).append("\n")
+//                    }
+//
+//                    builder.append("\n")
+//                }
+//                responseView?.text = builder.toString()
             }
         }
     }
 
     override fun onResponse(response: VGSResponse?) {
-        progressBar?.visibility = View.INVISIBLE
-
-        titleHeader?.text = "RESPONSE:"
-        when (response) {
-            is VGSResponse.SuccessResponse -> {
-                val builder = StringBuilder("CODE: ")
-                    .append(response.code.toString()).append("\n\n")
-                response.response?.forEach {
-                    builder.append(it.key).append(": ").append(it.value).append("\n\n")
-                }
-                val str = builder.toString()
-                responseView.text = str
-            }
-            is VGSResponse.ErrorResponse -> responseView.text =
-                "CODE: ${response.errorCode} \n\n ${response.localizeMessage}"
-        }
+//        progressBar?.visibility = View.INVISIBLE
+//
+//        titleHeader?.text = "RESPONSE:"
+//        when (response) {
+//            is VGSResponse.SuccessResponse -> {
+//                val builder = StringBuilder("CODE: ")
+//                    .append(response.code.toString()).append("\n\n")
+//                response.response?.forEach {
+//                    builder.append(it.key).append(": ").append(it.value).append("\n\n")
+//                }
+//                val str = builder.toString()
+//                responseView.text = str
+//            }
+//            is VGSResponse.ErrorResponse -> responseView.text =
+//                "CODE: ${response.errorCode} \n\n ${response.localizeMessage}"
+//        }
     }
 }
