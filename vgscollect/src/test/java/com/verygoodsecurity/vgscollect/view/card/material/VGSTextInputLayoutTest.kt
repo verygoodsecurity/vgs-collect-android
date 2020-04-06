@@ -688,4 +688,75 @@ class VGSTextInputLayoutTest {
         assertEquals(End, state.right)
         assertEquals(Bottom, state.bottom)
     }
+
+    @Test
+    fun test_set_start_icon_drawable() {
+        val resID = R.drawable.ic_amex_dark
+        textInputLayout.setStartIconDrawable(resID)
+        val state1 = textInputLayout.getFieldState()
+
+        assertEquals(resID, state1.startIconDrawable)
+    }
+
+    @Test
+    fun test_set_start_drawable_tint_list() {
+        val myList =  ColorStateList(arrayOf(intArrayOf()), intArrayOf(android.R.color.black))
+        textInputLayout.setStartIconDrawableTintList(myList)
+        attachView()
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(myList, state.startIconTintList)
+    }
+
+    @Test
+    fun test_set_end_icon_drawable() {
+        val resID = R.drawable.ic_amex_dark
+        textInputLayout.setEndIconDrawable(resID)
+        val state1 = textInputLayout.getFieldState()
+
+        assertEquals(resID, state1.endIconDrawable)
+    }
+
+    @Test
+    fun test_set_end_drawable_tint_list() {
+        val myList =  ColorStateList(arrayOf(intArrayOf()), intArrayOf(android.R.color.black))
+        textInputLayout.setEndIconDrawableTintList(myList)
+        attachView()
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(myList, state.endIconTintList)
+    }
+
+    @Test
+    fun test_set_end_drawable_mode() {
+        textInputLayout.setEndIconMode(VGSTextInputLayout.END_ICON_CLEAR_TEXT)
+        attachView()
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(VGSTextInputLayout.END_ICON_CLEAR_TEXT, state.endIconMode)
+    }
+
+    @Test
+    fun test_set_counter_enabled() {
+        textInputLayout.setCounterEnabled(true)
+        attachView()
+
+        val state = textInputLayout.getFieldState()
+
+        assertTrue(state.isCounterEnabled)
+    }
+
+    @Test
+    fun test_set_counter_max() {
+        val value = 123
+        textInputLayout.setCounterMaxLength(value)
+        attachView()
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(value, state.counterMaxLength)
+    }
 }
