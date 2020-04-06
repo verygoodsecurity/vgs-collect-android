@@ -6,8 +6,9 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.regex.Pattern
 
+/** @suppress */
 internal fun String.setupURL(rawValue:String):String {
-    return if(this.isTennantIdValid()) {
+    return if(isNotEmpty() && isTennantIdValid()) {
         this.buildURL(rawValue)
     } else {
         Logger.e(VGSCollect::class.java, "tennantId is not valid")

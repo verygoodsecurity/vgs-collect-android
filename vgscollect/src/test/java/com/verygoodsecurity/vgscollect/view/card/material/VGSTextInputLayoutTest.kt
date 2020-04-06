@@ -7,6 +7,7 @@ import android.os.Build
 import android.widget.EditText
 import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout

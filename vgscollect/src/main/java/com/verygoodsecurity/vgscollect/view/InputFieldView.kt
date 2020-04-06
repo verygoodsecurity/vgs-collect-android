@@ -28,8 +28,6 @@ import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
- *
- * @since 1.0.0
  */
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -44,7 +42,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param notifier The listener that emits new dependencies for apply.
      */
-    class DependencyNotifier(notifier: DependencyListener) : DependencyListener by notifier
+    internal class DependencyNotifier(notifier: DependencyListener) : DependencyListener by notifier
 
     private lateinit var fieldType:FieldType
 
@@ -121,7 +119,9 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param bottom the bottom padding in pixels
      */
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        inputField.setPadding(left, top, right, bottom)
+        if(::inputField.isInitialized) {
+            inputField.setPadding(left, top, right, bottom)
+        }
         super.setPadding(0, 0, 0, 0)
     }
 
@@ -230,6 +230,15 @@ abstract class InputFieldView @JvmOverloads constructor(
             }
             isAttachPermitted = false
         }
+    }
+
+    /**
+     * Get the type of the editable content.
+     *
+     * @return inputType
+     */
+    open fun getInputType(): Int {
+        return inputField.inputType
     }
 
     /**

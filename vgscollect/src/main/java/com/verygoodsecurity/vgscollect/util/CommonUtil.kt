@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.util
 
 import java.io.File
 
+/** @suppress */
 internal object CommonUtil {
     fun isRooted():Boolean {
         val buildTags = android.os.Build.TAGS

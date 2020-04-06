@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.core.api
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
-import com.verygoodsecurity.vgscollect.core.model.VGSResponse
+import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.parseVGSResponse
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.mapToJSON
@@ -12,6 +12,7 @@ import java.io.*
 import java.net.HttpURLConnection
 import java.nio.charset.Charset
 
+@Deprecated("from 1.1.0")
 internal class URLConnectionClient:ApiClient {
 
     private val tempStore:VgsApiTemporaryStorage by lazy {
@@ -87,7 +88,7 @@ internal class URLConnectionClient:ApiClient {
     }
 
     private fun postRequest(path: String, headers: Map<String, String>? = null, data: Map<String, Any>? = null): VGSResponse {
-        val url = path.buildURL(path = path) ?: return VGSResponse.ErrorResponse()
+        val url = baseURL.buildURL(path = path) ?: return VGSResponse.ErrorResponse()
 
         var conn: HttpURLConnection? = null
         var response: VGSResponse

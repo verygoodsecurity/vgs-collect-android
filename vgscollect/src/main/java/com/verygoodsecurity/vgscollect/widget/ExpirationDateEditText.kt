@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 /**
  * Provides a user interface element for date input. The range of dates supported by this field is not configurable.
  *
- * @version 1.0.3
+ * @since 1.0.7
  */
 class ExpirationDateEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

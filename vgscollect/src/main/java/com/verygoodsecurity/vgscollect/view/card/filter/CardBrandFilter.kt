@@ -6,6 +6,7 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import java.util.regex.Pattern
 
+/** @suppress */
 class CardBrandFilter(
     private val inputField: TextView? = null,
     private val divider:String? = ""

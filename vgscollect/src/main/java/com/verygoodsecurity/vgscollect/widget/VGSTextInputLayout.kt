@@ -10,8 +10,6 @@ import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
 /**
  * Material component which wraps an VGS field to show a floating label when
  * the hint is hidden due to user inputting text.
- *
- * @version 1.0.0
  */
 class VGSTextInputLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -70,7 +68,10 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 val hintEnabled = getBoolean(R.styleable.VGSTextInputLayout_hintEnabled, true)
                 val hintAnimationEnabled = getBoolean(R.styleable.VGSTextInputLayout_hintAnimationEnabled, true)
 
-                val endIconModes = getInteger(R.styleable.VGSTextInputLayout_endIconModes, -1)
+                val defRadius = resources.getDimension(R.dimen.default_horizontal_field)
+                val boxCornerRadius = getDimension(R.styleable.VGSTextInputLayout_boxCornerRadius, defRadius)
+
+                val endIconModes = getInteger(R.styleable.VGSTextInputLayout_endIconModes, END_ICON_NONE)
                 val endIconDrawables = getResourceId(R.styleable.VGSTextInputLayout_endIconDrawable, 0)
                 val endIconTints = getColorStateList(R.styleable.VGSTextInputLayout_endIconTint)
                 val startIconDrawables = getResourceId(R.styleable.VGSTextInputLayout_startIconDrawable, 0)
@@ -85,8 +86,6 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 setEndIconMode(endIconModes)
                 setEndIconDrawable(endIconDrawables)
                 setEndIconDrawableTintList(endIconTints)
-                val defRadius = resources.getDimension(R.dimen.default_horizontal_field)
-                val boxCornerRadius = getDimension(R.styleable.VGSTextInputLayout_boxCornerRadius, defRadius)
 
                 setHint(hint)
                 setPasswordToggleEnabled(passwordToggleEnabled)

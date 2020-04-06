@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 /**
  * A user interface element that displays text.
  *
- * @version 1.0.0
+ * @since 1.0.0
  */
 open class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0

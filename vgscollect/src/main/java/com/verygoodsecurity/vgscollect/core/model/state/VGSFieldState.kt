@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.core.model.state
 
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
+/** @suppress */
 data class VGSFieldState(var isFocusable:Boolean = false,
                          var isRequired:Boolean = true,
                          var isValid:Boolean = true,
@@ -9,7 +10,8 @@ data class VGSFieldState(var isFocusable:Boolean = false,
                          var content:FieldContent? = null,
                          var fieldName:String? = null)
 
-fun VGSFieldState.mapToFieldState():FieldState {
+/** @suppress */
+internal fun VGSFieldState.mapToFieldState():FieldState {
     val f = when(type) {
         FieldType.INFO -> FieldState.InfoState()
         FieldType.CVC -> FieldState.CVCState()
@@ -40,5 +42,8 @@ fun VGSFieldState.mapToFieldState():FieldState {
     return f
 }
 
-fun VGSFieldState.isCardNumberType() = type == FieldType.CARD_NUMBER
-fun VGSFieldState.isCardCVCType() = type == FieldType.CVC
+/** @suppress */
+internal fun VGSFieldState.isCardNumberType() = type == FieldType.CARD_NUMBER
+
+/** @suppress */
+internal fun VGSFieldState.isCardCVCType() = type == FieldType.CVC

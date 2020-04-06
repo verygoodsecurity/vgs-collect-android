@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 /**
  * Base class definition for a VGS input field state.
  *
- * @version 1.0.1
+ * @since 1.0.1
  */
 sealed class FieldState {
 
