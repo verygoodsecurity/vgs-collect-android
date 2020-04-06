@@ -159,12 +159,12 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
         fieldState.hint = context.resources.getString(resId)
     }
 
-    @Deprecated("Use {@link #setEndIconMode(int)} instead.")
+    @Deprecated("Use #setEndIconMode(int) instead.")
     open fun setPasswordToggleEnabled(isEnabled:Boolean) {
         fieldState.isPasswordVisibilityToggleEnabled = isEnabled
     }
 
-    @Deprecated("Use {@link #setEndIconDrawable(int)} instead.")
+    @Deprecated("Use #setEndIconDrawable(int) instead.")
     open fun setPasswordVisibilityToggleDrawable(@DrawableRes resId:Int) {
         fieldState.passwordVisibilityToggleDrawable = resId
     }
