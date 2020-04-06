@@ -4,6 +4,12 @@
     <dimen name="default_vertical_field">8dp</dimen>
     <dimen name="default_horizontal_field">4dp</dimen>
 
+    <dimen name="preview_holder_name_text_size">16dp</dimen>
+    <dimen name="preview_card_horizontal_padding">35dp</dimen>
+    <dimen name="preview_card_vertical_padding">22dp</dimen>
+
+    <dimen name="vgs_field_horizontal_padding">20dp</dimen>
+
 
 
     <dimen name="c_icon_size_w">32dp</dimen>

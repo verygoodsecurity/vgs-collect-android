@@ -1,5 +1,12 @@
 <resources>
-    <string name="app_name">VGSCollectDemo</string>
+    <string name="app_name">VGS Collect Demo</string>
+    <string name="collect_activity_cards_title">Collecting credit card data</string>
+    <string name="collect_activity_submit_btn">submit</string>
+    <string name="collect_activity_attach_btn">Attach file</string>
+    <string name="collect_activity_detach_btn">detach file</string>
+    <string name="collect_activity_state_item">STATE</string>
+    <string name="collect_activity_response_item">RESPONSE</string>
+
     <string name="demo_description">Collecting credit card data</string>
 
     <string name="card_number">Card number</string>
@@ -10,4 +17,6 @@
     <string name="user_vault_id_hint">Vault ID</string>
     <string name="user_endpoint_hint">path</string>
     <string name="start">Start</string>
+
+    <string name="scan_item">Scan Card</string>
 </resources>
