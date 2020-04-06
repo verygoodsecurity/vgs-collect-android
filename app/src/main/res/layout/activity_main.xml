@@ -53,7 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             app:hint="Card number"
-            android:layout_marginEnd="@dimen/default_margin">
+            android:layout_marginEnd="@dimen/default_margin"
+            >
 
             <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
                 android:id="@+id/cardNumberField"
