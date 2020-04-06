@@ -10,6 +10,7 @@ import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 
+/** @suppress */
 internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(context) {
 
     fun isReady():Boolean {

@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.api
 
-class VgsApiTemporaryStorageImpl : VgsApiTemporaryStorage {
+internal class VgsApiTemporaryStorageImpl : VgsApiTemporaryStorage {
     private val data = HashMap<String, Any>()
     private val headers = HashMap<String, String>()
     override fun setCustomHeaders(newheaders: Map<String, String>?) {

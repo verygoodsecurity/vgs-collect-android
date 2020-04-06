@@ -4,6 +4,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
+/** @suppress */
 internal fun String.parseVGSResponse():Map<String, Any> {
     val resultMap = HashMap<String, Any>()
     when {

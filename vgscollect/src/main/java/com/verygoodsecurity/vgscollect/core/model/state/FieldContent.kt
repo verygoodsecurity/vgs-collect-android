@@ -4,6 +4,7 @@ import com.verygoodsecurity.vgscollect.util.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import java.lang.StringBuilder
 
+/** @suppress */
 sealed class FieldContent {
     var data:String? = null
         internal set
@@ -28,8 +29,10 @@ sealed class FieldContent {
     }
 }
 
+/** @suppress */
 internal fun FieldContent.CardNumberContent.CVCMaxLength() =  cardtype.rangeCVV.last()
 
+/** @suppress */
 internal fun FieldContent.CardNumberContent.parseCardBin():String {
     return data?.run {
         val numberSTR = data!!.replace("\\D".toRegex(), "")
@@ -41,6 +44,7 @@ internal fun FieldContent.CardNumberContent.parseCardBin():String {
     }?:""
 }
 
+/** @suppress */
 internal fun FieldContent.CardNumberContent.parseCardLast4Digits():String {
     return data?.run {
         val numberSTR = data!!.replace("\\D".toRegex(), "")
@@ -54,6 +58,7 @@ internal fun FieldContent.CardNumberContent.parseCardLast4Digits():String {
     }?:""
 }
 
+/** @suppress */
 internal fun FieldContent.CardNumberContent.parseRawCardBin():String {
     return data?.run {
         val numberSTR = this.replace("\\D".toRegex(), "")
@@ -66,6 +71,7 @@ internal fun FieldContent.CardNumberContent.parseRawCardBin():String {
     }?:""
 }
 
+/** @suppress */
 internal fun FieldContent.CardNumberContent.parseRawCardLastDigits():String {
     return data?.run {
         val maxCount = this.cardNumberLastDigStart()
@@ -77,6 +83,7 @@ internal fun FieldContent.CardNumberContent.parseRawCardLastDigits():String {
     }?:""
 }
 
+/** @suppress */
 internal fun FieldContent.CardNumberContent.parseCardNumber():String? {
     if(this.data.isNullOrEmpty()) {
         return ""
@@ -115,7 +122,6 @@ internal fun FieldContent.CardNumberContent.parseCardNumber():String? {
     return str
 
 }
-
 
 private fun String.cardNumberBinEnd():Int {
     return if (this.isNumeric()) { 6 } else { 7 }

@@ -3,7 +3,8 @@ package com.verygoodsecurity.vgscollect.core.storage
 import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
-class Notifier: DependencyDispatcher, FieldDependencyObserver {
+/** @suppress */
+internal class Notifier: DependencyDispatcher, FieldDependencyObserver {
 
     private val views = mutableMapOf<FieldType, DependencyListener>()
 

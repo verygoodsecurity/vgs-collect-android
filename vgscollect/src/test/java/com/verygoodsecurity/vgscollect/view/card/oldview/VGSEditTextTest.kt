@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.card.oldview
 
 import android.app.Activity
 import android.os.Build
+import android.text.InputType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.InputField
@@ -111,5 +112,360 @@ class VGSEditTextTest {
     fun test_info() {
         view.applyFieldType(FieldType.INFO)
         Assert.assertEquals(FieldType.INFO, view.getFieldType())
+    }
+
+    @Test
+    fun test_card_number_input_type_none() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_NUMBER)
+
+        view.setInputType(InputType.TYPE_NULL)
+        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+    }
+
+    @Test
+    fun test_card_number_input_type_number() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_NUMBER)
+
+        view.setInputType(InputType.TYPE_CLASS_NUMBER)
+        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+    }
+
+    @Test
+    fun test_card_number_input_type_number_password() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_NUMBER)
+
+        val passType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        view.setInputType(passType)
+        Assert.assertEquals(passType, view.getInputType())
+
+        view.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD)
+        Assert.assertEquals(passType, view.getInputType())
+    }
+
+    @Test
+    fun test_card_number_input_type_text_password() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_NUMBER)
+
+        val passType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        view.setInputType(passType)
+
+        val correctType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        val it = view.getInputType()
+        Assert.assertEquals(correctType, it)
+    }
+
+    @Test
+    fun test_card_number_input_type_other() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_NUMBER)
+
+        view.setInputType(InputType.TYPE_CLASS_TEXT)
+        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+
+        view.setInputType(InputType.TYPE_CLASS_DATETIME)
+        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+    }
+
+    @Test
+    fun test_exp_date_input_type_number() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+
+        view.setInputType(InputType.TYPE_CLASS_NUMBER)
+        Assert.assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
+    }
+
+    @Test
+    fun test_exp_date_input_type_number_password() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+
+        val passType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        view.setInputType(passType)
+        Assert.assertEquals(passType, view.getInputType())
+    }
+
+    @Test
+    fun test_exp_date_input_type_text() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+
+        val passType = InputType.TYPE_CLASS_TEXT
+        view.setInputType(passType)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+    }
+
+    @Test
+    fun test_exp_date_input_type_text_password() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+
+        val passType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        view.setInputType(passType)
+        Assert.assertEquals(passType, view.getInputType())
+    }
+
+    @Test
+    fun test_exp_date_input_type_date() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+
+        view.setInputType(InputType.TYPE_CLASS_DATETIME)
+        Assert.assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
+    }
+
+    @Test
+    fun test_exp_date_input_type_other() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+
+        view.setInputType(InputType.TYPE_CLASS_PHONE)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+
+        view.setInputType(InputType.TYPE_CLASS_PHONE or InputType.TYPE_CLASS_DATETIME)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+
+        view.setInputType(InputType.TYPE_MASK_CLASS)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+
+    }
+
+    @Test
+    fun test_exp_date_input_type_none() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+
+        view.setInputType(InputType.TYPE_NULL)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+    }
+
+    @Test
+    fun test_cvc_input_type_number() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CVC)
+
+        view.setInputType(InputType.TYPE_CLASS_NUMBER)
+        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+    }
+
+    @Test
+    fun test_cvc_input_type_number_password() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CVC)
+
+        val passType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        view.setInputType(passType)
+        Assert.assertEquals(passType, view.getInputType())
+
+        view.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD)
+        Assert.assertEquals(passType, view.getInputType())
+    }
+
+    @Test
+    fun test_cvc_input_type_text_password() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CVC)
+
+        val passType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        view.setInputType(passType)
+
+        val correctType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        val it = view.getInputType()
+        Assert.assertEquals(correctType, it)
+    }
+
+    @Test
+    fun test_cvc_input_type_other() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CVC)
+
+        view.setInputType(InputType.TYPE_CLASS_TEXT)
+        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+
+        view.setInputType(InputType.TYPE_CLASS_DATETIME)
+        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+    }
+
+    @Test
+    fun test_cvc_input_type_none() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CVC)
+
+        view.setInputType(InputType.TYPE_NULL)
+        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+    }
+
+    @Test
+    fun test_card_holder_input_type_text() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_HOLDER_NAME)
+
+        view.setInputType(InputType.TYPE_CLASS_TEXT)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+    }
+
+    @Test
+    fun test_card_holder_input_type_number() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_HOLDER_NAME)
+
+        view.setInputType(InputType.TYPE_CLASS_NUMBER)
+        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+    }
+
+    @Test
+    fun test_card_holder_input_type_date() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_HOLDER_NAME)
+
+        view.setInputType(InputType.TYPE_CLASS_DATETIME)
+        Assert.assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
+    }
+
+    @Test
+    fun test_card_holder_input_type_text_password() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_HOLDER_NAME)
+
+        val textPass = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        view.setInputType(textPass)
+        Assert.assertEquals(textPass, view.getInputType())
+    }
+
+    @Test
+    fun test_card_holder_input_type_number_password() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_HOLDER_NAME)
+
+        val numPass = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        view.setInputType(numPass)
+        Assert.assertEquals(numPass, view.getInputType())
+    }
+
+    @Test
+    fun test_card_holder_input_type_none() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.CARD_HOLDER_NAME)
+
+        view.setInputType(InputType.TYPE_NULL)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+    }
+
+    @Test
+    fun test_info_input_type_text() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.INFO)
+
+        view.setInputType(InputType.TYPE_CLASS_TEXT)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+    }
+
+    @Test
+    fun test_info_input_type_number() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.INFO)
+
+        view.setInputType(InputType.TYPE_CLASS_NUMBER)
+        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+    }
+
+    @Test
+    fun test_info_input_type_date() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.INFO)
+
+        view.setInputType(InputType.TYPE_CLASS_DATETIME)
+        Assert.assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
+    }
+
+    @Test
+    fun test_info_input_type_text_password() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.INFO)
+
+        val textPass = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        view.setInputType(textPass)
+        Assert.assertEquals(textPass, view.getInputType())
+    }
+
+    @Test
+    fun test_info_input_type_number_password() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.INFO)
+
+        val numPass = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+        view.setInputType(numPass)
+        Assert.assertEquals(numPass, view.getInputType())
+    }
+
+    @Test
+    fun test_info_input_type_none() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.applyFieldType(FieldType.INFO)
+
+        view.setInputType(InputType.TYPE_NULL)
+        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
     }
 }

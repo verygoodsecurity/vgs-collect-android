@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import java.util.HashMap
 
-class DependencyReceiver:ExternalDependencyDispatcher {
+internal class DependencyReceiver:ExternalDependencyDispatcher {
     private val views = mutableMapOf<String, DependencyListener>()
 
     override fun addDependencyListener(

@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.api
 
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
-import com.verygoodsecurity.vgscollect.core.model.VGSRequest
+import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

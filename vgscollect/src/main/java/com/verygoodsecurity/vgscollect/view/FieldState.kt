@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscollect.view
 
-import android.view.View
-
+/** @suppress */
 interface FieldState {
     fun refresh()
     fun isReady():Boolean

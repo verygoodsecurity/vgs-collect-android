@@ -5,7 +5,8 @@ import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
-class InputCardExpDateConnection(
+/** @suppress */
+internal class InputCardExpDateConnection(
     private val id:Int,
     private vararg val validators: VGSValidator
 ): InputRunnable {

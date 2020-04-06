@@ -7,6 +7,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.VisibleForTesting
 import com.google.android.material.textfield.TextInputLayout
 
+/** @suppress */
 internal class InputLayoutStateImpl(
     private val textInputLayout: TextInputLayoutWrapper
 ) : InputLayoutState {

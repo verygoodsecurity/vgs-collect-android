@@ -13,6 +13,7 @@ import com.verygoodsecurity.vgscollect.view.card.InputCardCVCConnection
 import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.CardCVCCodeValidator
 
+/** @suppress */
 internal class CVCInputField(context: Context): BaseInputField(context) {
 
     override var fieldType: FieldType = FieldType.CVC

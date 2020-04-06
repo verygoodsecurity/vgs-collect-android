@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 /**
  * A user interface element that displays text to the user in card number format.
  *
- * @version 1.0.2
+ * @since 1.0.2
  */
 class VGSCardNumberEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
