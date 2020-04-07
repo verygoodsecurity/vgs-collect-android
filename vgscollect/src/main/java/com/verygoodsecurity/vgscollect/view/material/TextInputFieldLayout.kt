@@ -31,7 +31,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
 
     init {
         val textInputLayout = TextInputLayoutWrapper(
-            context
+            context, attrs
         ).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         }

@@ -1,14 +1,20 @@
 package com.verygoodsecurity.vgscollect.view.date
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Resources
+import android.graphics.Color
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.annotation.NonNull
 import com.verygoodsecurity.vgscollect.R
 import java.util.*
 
@@ -87,7 +93,29 @@ internal class DatePickerBuilder(private val context: Context, mode:DatePickerMo
         setupFieldVisibility()
         setupPickerControl()
 
+        dialog.setOnShowListener {
+            val c = getThemeColor(context, R.attr.colorAccent)
+            dialog?.getButton(DatePickerDialog.BUTTON_NEGATIVE)?.apply {
+                setTextColor(c)
+                setBackgroundColor(Color.TRANSPARENT)
+            }
+            dialog?.getButton(DatePickerDialog.BUTTON_POSITIVE)?.apply {
+                setTextColor(c)
+                setBackgroundColor(Color.TRANSPARENT)
+            }
+        }
+
         return dialog
+    }
+
+    @ColorInt
+    fun getThemeColor(
+        @NonNull context: Context,
+        @AttrRes attributeColor: Int
+    ): Int {
+        val value = TypedValue()
+        context.theme.resolveAttribute(attributeColor, value, true)
+        return value.data
     }
 
     private fun setupPickerControl() {
