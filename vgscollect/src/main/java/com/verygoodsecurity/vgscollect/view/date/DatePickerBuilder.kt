@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Resources
 import android.graphics.Color
+import android.os.Build
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -33,10 +34,17 @@ internal class DatePickerBuilder(private val context: Context, mode:DatePickerMo
 
     init {
         val layoutId = when(mode) {
-            DatePickerMode.CALENDAR -> R.layout.vgs_datepicker_calendar_layout
+            DatePickerMode.CALENDAR -> if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                // This is a bug in Android 5.0 and up that occurs when the datepicker is in its new material style calendar mode.
+                R.layout.vgs_datepicker_spinner_layout
+            } else {
+                R.layout.vgs_datepicker_calendar_layout
+            }
             DatePickerMode.SPINNER -> R.layout.vgs_datepicker_spinner_layout
             else -> R.layout.vgs_datepicker_calendar_layout
         }
+
+
         layout = LayoutInflater.from(context).inflate(layoutId, null) as ViewGroup
         datePickerControl = layout.findViewById(R.id.datePickerControl)
     }
