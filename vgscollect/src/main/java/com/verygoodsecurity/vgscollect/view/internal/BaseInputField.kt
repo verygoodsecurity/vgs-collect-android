@@ -64,6 +64,9 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private var activeTextWatcher: TextWatcher? = null
 
+    internal fun setIsListeningPermitted(state:Boolean) {
+        isListeningPermitted = state
+    }
     init {
         isListeningPermitted = true
         setupFocusChangeListener()

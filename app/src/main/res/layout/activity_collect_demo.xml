@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#61000000">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingEnd="@dimen/default_padding"
+            android:paddingTop="@dimen/half_default_padding"
+            android:paddingBottom="@dimen/default_padding">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingTop="@dimen/default_padding"
+                        android:paddingStart="@dimen/default_padding"
+                        android:paddingEnd="@dimen/default_padding">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_cards"
+                            android:textColor="@color/title_color"
+                            android:drawablePadding="@dimen/half_default_padding"
+                            android:textSize="@dimen/collect_activity_cards_title_text_size"
+                            android:text="@string/collect_activity_cards_title"
+                            android:layout_marginBottom="@dimen/default_padding"/>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/previewCard"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/card_preview_height"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            app:cardCornerRadius="@dimen/half_default_padding"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/half_default_padding">
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_card_preview"
+                                android:paddingStart="@dimen/preview_card_horizontal_padding"
+                                android:paddingEnd="@dimen/preview_card_horizontal_padding"
+                                android:paddingBottom="@dimen/preview_card_vertical_padding"
+                                android:paddingTop="@dimen/preview_card_vertical_padding">
+
+                                <TextView
+                                    android:id="@+id/previewHolderName"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/preview_holder_name_text_size"
+                                    android:text="John Galt"
+                                    android:visibility="invisible"
+                                    android:textColor="@color/preview_holder_name_color"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"/>
+
+                                <TextView
+                                    android:id="@+id/previewCardNumber"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/preview_holder_name_text_size"
+                                    android:paddingTop="24dp"
+                                    android:paddingBottom="24dp"
+                                    android:textColor="@color/preview_holder_name_color"
+                                    app:layout_constraintTop_toBottomOf="@+id/previewHolderName"
+                                    app:layout_constraintStart_toStartOf="parent"/>
+
+                                <TextView
+                                    android:id="@+id/previewExpirationDate"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/preview_holder_name_text_size"
+                                    android:text="12/24"
+                                    android:visibility="invisible"
+                                    android:textColor="@color/preview_holder_name_color"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/previewCardBrand"
+                                    app:layout_constraintTop_toTopOf="@+id/previewCardBrand"
+                                    app:layout_constraintBottom_toBottomOf="@+id/previewCardBrand"
+                                    />
+
+                                <ImageView
+                                    android:id="@+id/previewCardBrand"
+                                    android:layout_width="64dp"
+                                    android:layout_height="22dp"
+                                    android:scaleType="centerInside"
+                                    app:layout_constraintTop_toBottomOf="@+id/previewCardNumber"
+                                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.cardview.widget.CardView>
+
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/vgsFormView"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/card_preview_height"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            app:cardCornerRadius="@dimen/half_default_padding"
+                            android:layout_gravity="center_horizontal">
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@color/bg_vgs_card_view"
+                                android:paddingStart="@dimen/payment_card_horizontal_padding"
+                                android:paddingEnd="@dimen/payment_card_horizontal_padding"
+                                android:paddingBottom="@dimen/payment_card_vertical_padding"
+                                android:paddingTop="@dimen/payment_card_vertical_padding">
+
+                                <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+                                    android:id="@+id/cardNumberFieldLay"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:hintEnabled="true"
+                                    app:hint="@string/card_number"
+                                    app:boxBackgroundModes="outline"
+                                    app:boxStrokeColor="@color/colorAccent">
+                                    <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                                        android:id="@+id/cardNumberField"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        style="@style/AppTheme.PaymentField"
+                                        app:fieldName="card_data.cardNumber"
+                                        app:numberDivider=" "
+                                        app:text="4111222233334444555"
+                                        app:cardBrandIconGravity="end"/>
+                                </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+                                <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+                                    android:id="@+id/cardHolderFieldLay"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toBottomOf="@+id/cardNumberFieldLay"
+                                    app:hintEnabled="true"
+                                    android:layout_marginTop="@dimen/payment_card_vertical_margin"
+                                    app:endIconTint="@color/colorAccent"
+                                    app:hint="@string/card_holder"
+                                    app:boxBackgroundModes="outline"
+                                    app:boxStrokeColor="@color/colorAccent">
+                                    <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                                        android:id="@+id/cardHolderField"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        style="@style/AppTheme.PaymentField"
+                                        app:fieldName="card_data.personal_data.cardHolder"
+                                        app:fieldType="cardHolderName"
+                                        app:text="John Galt"/>
+                                </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+                                <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+                                    android:id="@+id/cardExpDateFieldLay"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toBottomOf="@+id/cardHolderFieldLay"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/cardCVCFieldLay"
+                                    app:hintEnabled="true"
+                                    android:layout_marginTop="@dimen/payment_card_vertical_margin"
+                                    app:hint="@string/exp_date"
+                                    app:boxBackgroundModes="outline"
+                                    app:boxStrokeColor="@color/colorAccent">
+                                    <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+                                        android:id="@+id/cardExpDateField"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        style="@style/AppTheme.PaymentField"
+                                        app:fieldName="card_data.personal_data.secret.expDate"
+                                        app:datePickerModes="calendar"
+                                        app:datePattern="MM/yy"/>
+                                </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+                                <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+                                    android:id="@+id/cardCVCFieldLay"
+                                    android:layout_width="75dp"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toTopOf="@+id/cardExpDateFieldLay"
+                                    app:layout_constraintBottom_toBottomOf="@+id/cardExpDateFieldLay"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/cardExpDateFieldLay"
+                                    android:layout_marginStart="@dimen/payment_card_vertical_margin"
+                                    app:hintEnabled="true"
+                                    app:hint="@string/cvc"
+                                    app:boxBackgroundModes="outline"
+                                    app:boxStrokeColor="@color/colorAccent">
+                                    <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                                        android:id="@+id/cardCVCField"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        style="@style/AppTheme.PaymentField"
+                                        app:fieldName="card_data.cardCvc"
+                                        app:text="123"
+                                        app:fieldType="cvc"/>
+                                </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/default_padding"
+                            android:gravity="end">
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14dp"/>
+                            </FrameLayout>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/submitBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@android:color/white"
+                                android:textSize="14dp"
+                                android:text="@string/collect_activity_submit_btn"
+                                android:layout_marginEnd="@dimen/default_padding"
+                                app:backgroundTint="@color/colorAccent"
+                                app:cornerRadius="@dimen/default_padding"/>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/attachBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                style="@style/Widget.MaterialComponents.Button.TextButton"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="14dp"
+                                app:iconTint="@color/colorAccent"
+                                app:icon="@drawable/ic_attach_file"
+                                android:text="@string/collect_activity_attach_btn"
+                                android:layout_marginEnd="@dimen/default_padding"
+                                android:background="@color/colorAccent"
+                                app:cornerRadius="33dp"/>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:visibility="gone"
+                                android:clickable="true"
+                                android:layout_gravity="center_vertical">
+                                <ImageView
+                                    android:clickable="false"
+                                    android:layout_width="12dp"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/ic_attach_file"
+                                    android:layout_marginEnd="@dimen/half_default_padding"/>
+                                <TextView
+                                    android:id="@+id/attachBtnTitle"
+                                    android:clickable="false"
+                                    android:text="@string/collect_activity_attach_btn"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="14dp"
+                                    android:textAllCaps="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@android:color/transparent"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/default_padding"
+                            android:gravity="end">
+
+                            <TextView
+                                android:text="@string/collect_activity_state_item"
+                                android:textColor="@color/state_active"
+                                android:layout_weight="1"
+                                android:textStyle="bold"
+                                android:textSize="14dp"
+                                android:gravity="center"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:id="@+id/responseTitleView"
+                                android:text="@string/collect_activity_response_item"
+                                android:textColor="@color/state_unactive"
+                                android:layout_weight="1"
+                                android:textStyle="bold"
+                                android:textSize="14dp"
+                                android:gravity="center"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="@color/colorAccent"
+                            android:layout_marginTop="@dimen/half_default_padding" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:background="@android:color/white"
+                            android:layout_marginBottom="@dimen/half_default_padding"
+                            android:padding="@dimen/default_padding"
+                            android:gravity="end">
+
+                            <TextView
+                                android:id="@+id/stateContainerView"
+                                android:textColor="#5D6A7A"
+                                android:layout_weight="1"
+                                android:textSize="10dp"
+                                android:layout_width="0dp"
+                                android:paddingEnd="@dimen/half_default_padding"
+                                android:layout_height="wrap_content"/>
+
+                            <TextView
+                                android:id="@+id/responseContainerView"
+                                android:textColor="#5D6A7A"
+                                android:layout_weight="1"
+                                android:textSize="10dp"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </FrameLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:visibility="invisible">
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:background="#09000000"
+            android:progressTint="@color/colorAccent"/>
+    </FrameLayout>
+</FrameLayout>
+

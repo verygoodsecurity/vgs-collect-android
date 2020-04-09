@@ -121,6 +121,8 @@
             android:id="@+id/cardExpDateFieldLay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:endIconModes="clear_text"
+            app:endIconTint="@color/colorAccent"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="@string/exp_date">

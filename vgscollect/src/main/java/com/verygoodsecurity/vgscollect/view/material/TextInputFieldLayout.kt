@@ -13,6 +13,7 @@ import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.material.internal.InputLayoutStateImpl
 import com.verygoodsecurity.vgscollect.view.material.internal.TextInputLayoutWrapper
+import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 
 /**
  * An abstract class that provide floating label when
@@ -158,10 +159,12 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
         fieldState.hint = context.resources.getString(resId)
     }
 
+    @Deprecated("Use #setEndIconMode(int) instead.")
     open fun setPasswordToggleEnabled(isEnabled:Boolean) {
         fieldState.isPasswordVisibilityToggleEnabled = isEnabled
     }
 
+    @Deprecated("Use #setEndIconDrawable(int) instead.")
     open fun setPasswordVisibilityToggleDrawable(@DrawableRes resId:Int) {
         fieldState.passwordVisibilityToggleDrawable = resId
     }
@@ -196,6 +199,49 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     open fun setHintAnimationEnabled(state:Boolean) {
         fieldState.isHintAnimationEnabled = state
     }
+
+    fun setCounterEnabled(state:Boolean) {
+        fieldState.isCounterEnabled = state
+    }
+
+    fun setCounterMaxLength(count:Int) {
+        fieldState.counterMaxLength = count
+    }
+
+    fun setStartIconDrawable(resId:Int) {
+        fieldState.startIconDrawable = resId
+    }
+
+    fun setStartIconDrawableTintList(startIconTintList : ColorStateList?) {
+        fieldState.startIconTintList = startIconTintList
+    }
+
+    fun setStartIconOnClickListener(listener : OnClickListener?) {
+        fieldState.startIconOnClickListener = listener
+    }
+
+    fun setEndIconDrawable(resId:Int) {
+        fieldState.endIconDrawable = resId
+    }
+
+    fun setEndIconDrawableTintList(endIconTintList : ColorStateList?) {
+        fieldState.endIconTintList = endIconTintList
+    }
+
+    fun setEndIconMode(mode:Int) {
+        if(mode <= VGSTextInputLayout.END_ICON_CLEAR_TEXT) {
+            fieldState.endIconMode = mode
+        }
+    }
+
+    fun getEndIconMode():Int {
+        return fieldState.endIconMode
+    }
+
+    fun setEndIconOnClickListener(listener : OnClickListener?) {
+        fieldState.endIconOnClickListener = listener
+    }
+
 
     @VisibleForTesting
     internal fun getFieldState():InputLayoutStateImpl {
