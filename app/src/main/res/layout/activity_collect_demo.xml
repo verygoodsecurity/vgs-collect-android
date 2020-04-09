@@ -180,6 +180,7 @@
                                         style="@style/AppTheme.PaymentField"
                                         app:fieldName="card_data.personal_data.secret.expDate"
                                         app:datePickerModes="calendar"
+                                        app:text="12/26"
                                         app:datePattern="MM/yy"/>
                                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
