@@ -210,5 +210,20 @@
         <attr name="boxCornerRadiusBottomStart" format="dimension"/>
         <attr name="boxCornerRadiusBottomEnd" format="dimension"/>
         <attr name="boxCornerRadius" format="dimension"/>
+
+        <attr name="counterEnabled" format="boolean"/>
+        <attr name="counterMaxLength" format="integer"/>
+
+        <attr name="startIconTint" format="color"/>
+        <attr name="startIconDrawable" format="reference"/>
+
+        <attr name="endIconTint" format="color"/>
+        <attr name="endIconDrawable" format="reference"/>
+        <attr name="endIconModes">
+            <enum name="custom" value="-1"/>
+            <enum name="none" value="0"/>
+            <enum name="password_toggle" value="1"/>
+            <enum name="clear_text" value="2"/>
+        </attr>
     </declare-styleable>
 </resources>

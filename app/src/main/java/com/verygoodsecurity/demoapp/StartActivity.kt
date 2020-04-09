@@ -48,10 +48,10 @@ class StartActivity:AppCompatActivity() {
         val path = userPath.text.toString()
         val env = environmentSpinner.selectedItemPosition
 
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra(MainActivity.VAULT_ID, vaultId)
-        intent.putExtra(MainActivity.ENVIROMENT, env)
-        intent.putExtra(MainActivity.PATH, path)
+        val intent = Intent(this, VGSCollectActivity::class.java)
+        intent.putExtra(VGSCollectActivity.VAULT_ID, vaultId)
+        intent.putExtra(VGSCollectActivity.ENVIROMENT, env)
+        intent.putExtra(VGSCollectActivity.PATH, path)
 
         startActivity(intent)
     }
