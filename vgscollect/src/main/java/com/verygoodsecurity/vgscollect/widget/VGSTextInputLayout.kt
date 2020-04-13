@@ -10,12 +10,45 @@ import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
 /**
  * Material component which wraps an VGS field to show a floating label when
  * the hint is hidden due to user inputting text.
- *
- * @since 1.0.0
  */
 class VGSTextInputLayout @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : TextInputFieldLayout(context, attrs, defStyleAttr) {
+
+    companion object {
+
+        /**
+         * The TextInputLayout will show a custom icon specified by the user.
+         */
+        const val END_ICON_CUSTOM = -1
+
+        /**
+         * Default for the TextInputLayout. It will not display an end icon.
+         *
+         * @see setEndIconMode
+         * @see getEndIconMode
+         */
+        const val END_ICON_NONE = 0
+
+        /**
+         * The TextInputLayout will show a password toggle button if its EditText displays a password.
+         * When this end icon is clicked, the password is shown as plain-text if it was disguised, or
+         * vice-versa.
+         *
+         * @see setEndIconMode
+         * @see getEndIconMode
+         */
+        const val END_ICON_PASSWORD_TOGGLE = 1
+
+        /**
+         * The TextInputLayout will show a clear text button while there is input in the EditText.
+         * Clicking it will clear out the text and hide the icon.
+         *
+         * @see setEndIconMode
+         * @see getEndIconMode
+         */
+        const val END_ICON_CLEAR_TEXT = 2
+    }
 
     init {
         context.theme.obtainStyledAttributes(
@@ -25,6 +58,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 val passwordToggleEnabled = getBoolean(R.styleable.VGSTextInputLayout_passwordToggleEnabled, false)
                 val drawRef = getResourceId(R.styleable.VGSTextInputLayout_passwordToggleDrawable, 0)
                 val textColor = getColorStateList(R.styleable.VGSTextInputLayout_passwordToggleTint)
+
                 val hint = getString(R.styleable.VGSTextInputLayout_hint)
 
                 val boxBackgroundColor = getColor(R.styleable.VGSTextInputLayout_boxBackgroundColor, 0)
@@ -39,6 +73,22 @@ class VGSTextInputLayout @JvmOverloads constructor(
 
                 val defRadius = resources.getDimension(R.dimen.default_horizontal_field)
                 val boxCornerRadius = getDimension(R.styleable.VGSTextInputLayout_boxCornerRadius, defRadius)
+
+                val endIconModes = getInteger(R.styleable.VGSTextInputLayout_endIconModes, END_ICON_NONE)
+                val endIconDrawables = getResourceId(R.styleable.VGSTextInputLayout_endIconDrawable, 0)
+                val endIconTints = getColorStateList(R.styleable.VGSTextInputLayout_endIconTint)
+                val startIconDrawables = getResourceId(R.styleable.VGSTextInputLayout_startIconDrawable, 0)
+                val startIconTints = getColorStateList(R.styleable.VGSTextInputLayout_startIconTint)
+
+                val counterEnabled = getBoolean(R.styleable.VGSTextInputLayout_counterEnabled, false)
+                val counterMaxLength = getInteger(R.styleable.VGSTextInputLayout_counterMaxLength, -1)
+
+                setStartIconDrawable(startIconDrawables)
+                setStartIconDrawableTintList(startIconTints)
+
+                setEndIconMode(endIconModes)
+                setEndIconDrawable(endIconDrawables)
+                setEndIconDrawableTintList(endIconTints)
 
                 setHint(hint)
                 setPasswordToggleEnabled(passwordToggleEnabled)
@@ -64,6 +114,10 @@ class VGSTextInputLayout @JvmOverloads constructor(
 
                 setHintEnabled(hintEnabled)
                 setHintAnimationEnabled(hintAnimationEnabled)
+
+                setCounterEnabled(counterEnabled)
+                setCounterMaxLength(counterMaxLength)
+
             } finally {
                 recycle()
             }

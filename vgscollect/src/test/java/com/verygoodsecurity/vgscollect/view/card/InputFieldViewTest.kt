@@ -6,6 +6,7 @@ import android.os.Build
 import android.text.TextUtils
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
@@ -218,5 +219,62 @@ class InputFieldViewTest {
         view.setIsRequired(VISIBILITY)
         assertTrue((child as BaseInputField).isRequired)
         assertTrue(view.isRequired())
+    }
+
+    @Test
+    fun test_next_focus_down_id() {
+        val id = 19011918
+        view.nextFocusDownId = id
+        val internal = view.getView()
+
+        Assert.assertEquals(view.nextFocusDownId, id)
+        Assert.assertEquals(internal.nextFocusDownId, id)
+    }
+
+    @Test
+    fun test_next_focus_forward_id() {
+        val id = 19011918
+        view.nextFocusForwardId = id
+        val internal = view.getView()
+
+        Assert.assertEquals(view.nextFocusForwardId, id)
+        Assert.assertEquals(internal.nextFocusForwardId, id)
+    }
+
+    @Test
+    fun test_next_focus_left_id() {
+        val id = 19011918
+        view.nextFocusLeftId = id
+        val internal = view.getView()
+
+        Assert.assertEquals(view.nextFocusLeftId, id)
+        Assert.assertEquals(internal.nextFocusLeftId, id)
+    }
+
+    @Test
+    fun test_next_focus_right_id() {
+        val id = 19011918
+        view.nextFocusRightId = id
+        val internal = view.getView()
+
+        Assert.assertEquals(view.nextFocusRightId, id)
+        Assert.assertEquals(internal.nextFocusRightId, id)
+    }
+
+    @Test
+    fun test_next_focus_up_id() {
+        val id = 19011918
+        view.nextFocusUpId = id
+        val internal = view.getView()
+
+        Assert.assertEquals(view.nextFocusUpId, id)
+        Assert.assertEquals(internal.nextFocusUpId, id)
+    }
+
+    @Test
+    fun test_set_ime_options() {
+        view.setImeOptions(EditorInfo.IME_ACTION_NEXT)
+
+        Assert.assertEquals(view.getImeOptions(), EditorInfo.IME_ACTION_NEXT)
     }
 }

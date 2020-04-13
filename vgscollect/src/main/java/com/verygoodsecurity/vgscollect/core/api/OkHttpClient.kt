@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.core.api
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.os.Build
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -32,9 +33,13 @@ internal class OkHttpClient(
         private const val TEMPORARY_STR_AGENT = "source=androidSDK&medium=vgs-collect&content=${BuildConfig.VERSION_NAME}"
 
         fun newInstance(context: Context, baseURL:String):ApiClient {
-            val c = OkHttpClient(context)
-            c.baseURL = baseURL
-            return c
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                val c = OkHttpClient(context)
+                c.baseURL = baseURL
+                c
+            } else {
+                URLConnectionClient.newInstance(context, baseURL)
+            }
         }
     }
 

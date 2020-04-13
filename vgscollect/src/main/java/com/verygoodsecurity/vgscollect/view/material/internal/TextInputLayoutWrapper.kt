@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.material.internal
 
 import android.content.Context
+import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,9 @@ import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 
 /** @suppress */
-internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(context) {
+internal class TextInputLayoutWrapper @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : TextInputLayout(context, attrs, defStyleAttr) {
 
     fun isReady():Boolean {
         return editText != null
@@ -53,7 +56,10 @@ internal class TextInputLayoutWrapper(context: Context) : TextInputLayout(contex
     private  fun handleNewChild(child: View?):View? {
         return child?.run {
             when(this) {
-                is BaseInputField -> this
+                is BaseInputField ->  {
+                    this.setIsListeningPermitted(true)
+                    this
+                }
                 is AccessibilityStatePreparer -> {
                     val v = (this as? AccessibilityStatePreparer)?.getView()
                     return applyAndReturnDefaultLayoutParams(child, v)

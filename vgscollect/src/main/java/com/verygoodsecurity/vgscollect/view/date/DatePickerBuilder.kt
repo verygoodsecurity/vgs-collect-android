@@ -1,14 +1,21 @@
 package com.verygoodsecurity.vgscollect.view.date
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Resources
+import android.graphics.Color
+import android.os.Build
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
+import androidx.annotation.NonNull
 import com.verygoodsecurity.vgscollect.R
 import java.util.*
 
@@ -27,10 +34,17 @@ internal class DatePickerBuilder(private val context: Context, mode:DatePickerMo
 
     init {
         val layoutId = when(mode) {
-            DatePickerMode.CALENDAR -> R.layout.vgs_datepicker_calendar_layout
+            DatePickerMode.CALENDAR -> if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                // This is a bug in Android 5.0 and up that occurs when the datepicker is in its new material style calendar mode.
+                R.layout.vgs_datepicker_spinner_layout
+            } else {
+                R.layout.vgs_datepicker_calendar_layout
+            }
             DatePickerMode.SPINNER -> R.layout.vgs_datepicker_spinner_layout
             else -> R.layout.vgs_datepicker_calendar_layout
         }
+
+
         layout = LayoutInflater.from(context).inflate(layoutId, null) as ViewGroup
         datePickerControl = layout.findViewById(R.id.datePickerControl)
     }
@@ -87,7 +101,29 @@ internal class DatePickerBuilder(private val context: Context, mode:DatePickerMo
         setupFieldVisibility()
         setupPickerControl()
 
+        dialog.setOnShowListener {
+            val c = getThemeColor(context, R.attr.colorAccent)
+            dialog?.getButton(DatePickerDialog.BUTTON_NEGATIVE)?.apply {
+                setTextColor(c)
+                setBackgroundColor(Color.TRANSPARENT)
+            }
+            dialog?.getButton(DatePickerDialog.BUTTON_POSITIVE)?.apply {
+                setTextColor(c)
+                setBackgroundColor(Color.TRANSPARENT)
+            }
+        }
+
         return dialog
+    }
+
+    @ColorInt
+    fun getThemeColor(
+        @NonNull context: Context,
+        @AttrRes attributeColor: Int
+    ): Int {
+        val value = TypedValue()
+        context.theme.resolveAttribute(attributeColor, value, true)
+        return value.data
     }
 
     private fun setupPickerControl() {
