@@ -97,7 +97,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             inputConnection?.getOutput()?.content?.data =  it.toString()
 
             handler.removeCallbacks(inputConnection)
-            handler.postDelayed(inputConnection, 300)
+            handler.postDelayed(inputConnection, 200)
         }
     }
 

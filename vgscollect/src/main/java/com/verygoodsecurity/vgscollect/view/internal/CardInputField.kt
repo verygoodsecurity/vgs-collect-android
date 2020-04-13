@@ -78,7 +78,7 @@ internal class CardInputField(context: Context): BaseInputField(context) {
             }
 
             handler.removeCallbacks(inputConnection)
-            handler.postDelayed(inputConnection, 300)
+            handler.postDelayed(inputConnection, 200)
         }
     }
 
