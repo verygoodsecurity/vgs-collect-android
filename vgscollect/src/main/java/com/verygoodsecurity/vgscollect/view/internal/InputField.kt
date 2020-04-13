@@ -63,7 +63,7 @@ internal class InputField(context: Context): BaseInputField(context) {
             inputConnection?.getOutput()?.content?.data =  it.toString()
 
             handler.removeCallbacks(inputConnection)
-            handler.postDelayed(inputConnection, 300)
+            handler.postDelayed(inputConnection, 200)
         }
         isListeningPermitted = false
         id = ViewCompat.generateViewId()
