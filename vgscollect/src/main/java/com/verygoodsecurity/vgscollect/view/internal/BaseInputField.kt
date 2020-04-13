@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.core.view.ViewCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
@@ -19,6 +20,7 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
@@ -203,5 +205,26 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     override fun setInputType(type: Int) {
         super.setInputType(type)
         typeface = Typeface.DEFAULT
+    }
+
+    private fun requestFocusOnView(id:Int) {
+        val nextView = rootView?.findViewById<View>(id)
+
+        when (nextView) {
+            null -> return
+            is InputFieldView -> nextView.getView().requestFocus()
+            is BaseInputField -> nextView.requestFocus()
+            else -> nextView.requestFocus()
+        }
+    }
+
+    override fun onEditorAction(actionCode: Int) {
+        when {
+            actionCode == EditorInfo.IME_ACTION_NEXT
+                    && nextFocusDownId != View.NO_ID -> requestFocusOnView(nextFocusDownId)
+            actionCode == EditorInfo.IME_ACTION_PREVIOUS
+                    && nextFocusUpId != View.NO_ID -> requestFocusOnView(nextFocusUpId)
+            else -> super.onEditorAction(actionCode)
+        }
     }
 }

@@ -3,20 +3,23 @@ package com.verygoodsecurity.vgscollect.view
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Parcel
+import android.os.Parcelable
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import android.os.Parcelable
-import android.view.View
-import android.view.ViewGroup
-import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
+import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
+import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
@@ -36,6 +39,21 @@ abstract class InputFieldView @JvmOverloads constructor(
     private var isAttachPermitted = true
 
     private lateinit var notifier:DependencyNotifier
+    private var imeOptions:Int = 0
+
+    init {
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.InputFieldView,
+            0, 0
+        ).apply {
+            try {
+                imeOptions = getInt(R.styleable.InputFieldView_imeOptions, EditorInfo.IME_ACTION_DONE)
+            } finally {
+                recycle()
+            }
+        }
+    }
 
     /**
      * Delegate class that helps deliver new requirements between related input fields.
@@ -52,11 +70,13 @@ abstract class InputFieldView @JvmOverloads constructor(
         with(type) {
             fieldType = this
             inputField = BaseInputField.getInputField(context, this)
-            notifier = DependencyNotifier(inputField)
+            syncInputState()
         }
     }
 
-    override fun getView():View = inputField
+    override fun getView():View {
+        return inputField
+    }
 
     override fun getDependencyListener(): DependencyListener = notifier
 
@@ -329,7 +349,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param singleLine
      */
     open fun setSingleLine(singleLine:Boolean) {
-        inputField.setSingleLine(singleLine)
+        inputField.isSingleLine = singleLine
     }
 
     override fun setFocusableInTouchMode(focusableInTouchMode: Boolean) {
@@ -571,12 +591,23 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     @Deprecated("deprecated from 1.0.5")
     fun applyFieldType(type: FieldType) {
+        fieldType = type
         if(::notifier.isInitialized.not()) {
             inputField = InputField(context)
-            notifier = DependencyNotifier(inputField)
+            syncInputState()
         }
-        fieldType = type
         (inputField as? InputField)?.setType(type)
+    }
+
+    private fun syncInputState() {
+        notifier = DependencyNotifier(inputField)
+
+        inputField.nextFocusDownId = nextFocusDownId
+        inputField.nextFocusForwardId = nextFocusForwardId
+        inputField.nextFocusUpId = nextFocusUpId
+        inputField.nextFocusLeftId = nextFocusLeftId
+        inputField.nextFocusRightId = nextFocusRightId
+        inputField.imeOptions = imeOptions
     }
 
     internal fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
@@ -700,4 +731,46 @@ abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? DateInputField)?.setMinDate(date)
         }
     }
+
+    override fun setNextFocusForwardId(nextFocusForwardId: Int) {
+        inputField.nextFocusForwardId = nextFocusForwardId
+        super.setNextFocusForwardId(nextFocusForwardId)
+    }
+
+    override fun setNextFocusLeftId(nextFocusLeftId: Int) {
+        inputField.nextFocusLeftId = nextFocusLeftId
+        super.setNextFocusLeftId(nextFocusLeftId)
+    }
+
+    override fun setNextFocusRightId(nextFocusRightId: Int) {
+        inputField.nextFocusRightId = nextFocusRightId
+        super.setNextFocusRightId(nextFocusRightId)
+    }
+
+    override fun setNextFocusUpId(nextFocusUpId: Int) {
+        inputField.nextFocusUpId = nextFocusUpId
+        super.setNextFocusUpId(nextFocusUpId)
+    }
+
+    override fun setNextFocusDownId(nextFocusDownId: Int) {
+        inputField.nextFocusDownId = nextFocusDownId
+        super.setNextFocusDownId(nextFocusDownId)
+    }
+
+    override fun requestFocus(direction: Int, previouslyFocusedRect: Rect?): Boolean {
+        return inputField.requestFocus(direction, previouslyFocusedRect)
+    }
+
+    /**
+     * Change the editor type integer associated with the text view, which
+     * is reported to an Input Method Editor when it has focus.
+     */
+    fun setImeOptions(imeOptions:Int) {
+        inputField.imeOptions = imeOptions
+    }
+
+    fun getImeOptions():Int {
+        return inputField.imeOptions
+    }
+
 }
