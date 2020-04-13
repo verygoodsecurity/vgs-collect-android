@@ -12,7 +12,7 @@ sealed class VGSResponse(val code:Int = -1) {
     /**
      * The class definition for a success response state.
      *
-     * @param response The response code from server.
+     * @param response The response map<String, *> from server.
      * @param rawResponse The response string.
      * @param successCode The response code from server.
      */

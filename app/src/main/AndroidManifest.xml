@@ -7,18 +7,17 @@
 
     <application
         android:name=".DemoApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
         <activity android:name=".StartActivity"
+            android:theme="@style/AppTheme.StartActivity"
             android:screenOrientation="portrait">
             <intent-filter>
-<!--                <action android:name="android.intent.action.VIEW" />-->
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,8 +25,8 @@
         </activity>
 
 
+        <activity android:name=".VGSCollectActivity"/>
         <activity android:name=".MainActivity"/>
-
         <activity android:name=".JavaActivity" />
     </application>
 
