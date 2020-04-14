@@ -4,7 +4,7 @@ import java.util.regex.Pattern
 
 /** @suppress */
 class CardHolderValidator:VGSValidator {
-    private val m = Pattern.compile("^[a-zA-Z0-9 ,]+\$")      //only symbols  -  "^[\\p{L}\\s'.-]+\$"
+    private val m = Pattern.compile("^[a-zA-Z0-9 ,'.-]+\$")      //only symbols  -  "^[\\p{L}\\s'.-]+\$"
 
     override fun isValid(content: String?): Boolean {
         val str = content?.trim()
