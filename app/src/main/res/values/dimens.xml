@@ -7,4 +7,21 @@
     <dimen name="custom_size">12dp</dimen>
 
     <dimen name="collect_activity_cards_title_text_size">20dp</dimen>
+
+
+    <dimen name="preview_holder_name_text_size">16dp</dimen>
+    <dimen name="preview_card_horizontal_padding">40dp</dimen>
+    <dimen name="preview_card_vertical_padding">27dp</dimen>
+
+    <dimen name="payment_card_vertical_margin">20dp</dimen>
+
+    <dimen name="payment_card_horizontal_padding">20dp</dimen>
+    <dimen name="payment_card_vertical_padding">20dp</dimen>
+
+    <dimen name="vgs_field_horizontal_padding">21dp</dimen>
+    <dimen name="vgs_field_vertical_padding">4dp</dimen>
+    <dimen name="vgs_field_text_size">14dp</dimen>
+
+    <dimen name="card_preview_width">300dp</dimen>
+    <dimen name="card_preview_height">190dp</dimen>
 </resources>
