@@ -761,6 +761,10 @@ abstract class InputFieldView @JvmOverloads constructor(
         return inputField.requestFocus(direction, previouslyFocusedRect)
     }
 
+    override fun clearFocus() {
+        inputField.clearFocus()
+    }
+
     /**
      * Change the editor type integer associated with the text view, which
      * is reported to an Input Method Editor when it has focus.
