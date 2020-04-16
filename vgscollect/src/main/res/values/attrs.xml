@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <attr name="datePattern" format="string"/>
     <attr name="datePickerModes">
         <enum name="calendar" value="0" />
@@ -208,6 +208,8 @@
 
     <declare-styleable name="InputFieldView">
         <attr name="imeOptions" />
+
+        <attr name="fontFamily" format="string"/>
     </declare-styleable>
 
 

@@ -40,6 +40,7 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     private lateinit var notifier:DependencyNotifier
     private var imeOptions:Int = 0
+    private var fontFamily:Typeface? = null
 
     init {
         context.theme.obtainStyledAttributes(
@@ -49,6 +50,17 @@ abstract class InputFieldView @JvmOverloads constructor(
         ).apply {
             try {
                 imeOptions = getInt(R.styleable.InputFieldView_imeOptions, EditorInfo.IME_ACTION_DONE)
+
+                fontFamily = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    getFont(R.styleable.InputFieldView_fontFamily)?:Typeface.DEFAULT
+                } else {
+                    val s = getString(R.styleable.InputFieldView_fontFamily)
+                    if(!s.isNullOrEmpty()) {
+                        Typeface.create(s, Typeface.NORMAL)
+                    } else {
+                        Typeface.DEFAULT
+                    }
+                }
             } finally {
                 recycle()
             }
@@ -608,6 +620,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.nextFocusLeftId = nextFocusLeftId
         inputField.nextFocusRightId = nextFocusRightId
         inputField.imeOptions = imeOptions
+        inputField.typeface = fontFamily
     }
 
     internal fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
