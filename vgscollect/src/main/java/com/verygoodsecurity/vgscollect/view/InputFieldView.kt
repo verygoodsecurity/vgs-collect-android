@@ -61,6 +61,12 @@ abstract class InputFieldView @JvmOverloads constructor(
                         Typeface.DEFAULT
                     }
                 }
+
+                val leftP = paddingLeft
+                val topP = paddingTop
+                val rightP = paddingRight
+                val bottomP = paddingBottom
+                setPadding(leftP, topP, rightP, bottomP)
             } finally {
                 recycle()
             }
@@ -151,9 +157,10 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param bottom the bottom padding in pixels
      */
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        if(::inputField.isInitialized) {
-            inputField.setPadding(left, top, right, bottom)
-        }
+        this.leftP = left
+        this.topP = top
+        this.rightP = right
+        this.bottomP = bottom
         super.setPadding(0, 0, 0, 0)
     }
 
@@ -242,15 +249,25 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    private var leftP:Int = 0
+    private var topP:Int = 0
+    private var rightP:Int = 0
+    private var bottomP:Int = 0
+
     private var bgDraw: Drawable? = null
     public override fun onAttachedToWindow() {
         if(isAttachPermitted) {
             super.onAttachedToWindow()
             if (parent !is TextInputFieldLayout) {
                 setAddStatesFromChildren(true)
+                inputField.setMinimumPaddingLimitations(
+                    resources.getDimension(R.dimen.default_horizontal_field).toInt(),
+                    resources.getDimension(R.dimen.default_vertical_field).toInt()
+                )
                 addView(inputField)
             }
-            inputField.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
+            inputField.setPadding(leftP, topP, rightP, bottomP)
+
             bgDraw = background
             if(background != null) {
                 setBackgroundColor(Color.TRANSPARENT)
