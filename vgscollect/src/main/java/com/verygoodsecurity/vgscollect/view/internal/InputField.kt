@@ -278,13 +278,6 @@ internal class InputField(context: Context): BaseInputField(context) {
         }
     }
 
-    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        val minPaddingH = resources.getDimension(R.dimen.default_horizontal_field).toInt()
-        val l = if(left < minPaddingH) minPaddingH else left
-        val r = if(right < minPaddingH) minPaddingH else right
-        super.setPadding(l, top, r, bottom)
-    }
-
     override fun dispatchDependencySetting(dependency: Dependency) {
         when(dependency.dependencyType) {
             DependencyType.LENGTH -> {

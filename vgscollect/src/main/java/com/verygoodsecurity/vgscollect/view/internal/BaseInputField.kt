@@ -7,19 +7,20 @@ import android.os.Handler
 import android.os.Looper
 import android.text.TextWatcher
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.ViewCompat
-import com.google.android.material.textfield.TextInputEditText
-import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
-import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.InputRunnable
 import androidx.core.widget.addTextChangedListener
+import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.InputRunnable
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
@@ -35,10 +36,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
                 FieldType.INFO -> InfoInputField(context)
             }
         }
-    }
-
-    init {
-        setBackgroundResource(0);
     }
 
     protected abstract var fieldType: FieldType
@@ -179,11 +176,19 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
+    private var minH:Int = 0
+    private var minW:Int = 0
+    internal fun setMinimumPaddingLimitations(w:Int, h:Int) {
+        minH = h
+        minW = w
+    }
+
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        val minPaddingH = resources.getDimension(R.dimen.default_horizontal_field).toInt()
-        val l = if(left < minPaddingH) minPaddingH else left
-        val r = if(right < minPaddingH) minPaddingH else right
-        super.setPadding(l, top, r, bottom)
+        val l = if(left < minW) minW else left
+        val r = if(right < minW) minW else right
+        val t = if(top < minH) minH else top
+        val b = if(bottom < minH) minH else bottom
+        super.setPadding(l, t, r, b)
     }
 
     override fun setCompoundDrawables(
