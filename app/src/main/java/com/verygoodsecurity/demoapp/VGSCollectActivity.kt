@@ -169,7 +169,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
                 if(response.response.isNullOrEmpty()) {
                     builder.append(response.rawResponse)
-                    Log.e("test", "${response.rawResponse}")
+                    Log.e("response", "${response.rawResponse}")
                 } else {
                     val json = (response.response?.get("response") as? Map<*, *>)?.get("json")
                     builder.append(json)

@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
@@ -254,7 +253,6 @@ abstract class InputFieldView @JvmOverloads constructor(
     private var rightP:Int = 0
     private var bottomP:Int = 0
 
-    private var bgDraw: Drawable? = null
     public override fun onAttachedToWindow() {
         if(isAttachPermitted) {
             super.onAttachedToWindow()
@@ -268,15 +266,6 @@ abstract class InputFieldView @JvmOverloads constructor(
             }
             inputField.setPadding(leftP, topP, rightP, bottomP)
 
-            bgDraw = background
-            if(background != null) {
-                setBackgroundColor(Color.TRANSPARENT)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    inputField.background = bgDraw
-                } else {
-                    inputField.setBackgroundDrawable(bgDraw)
-                }
-            }
             isAttachPermitted = false
         }
     }
@@ -638,6 +627,16 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.nextFocusRightId = nextFocusRightId
         inputField.imeOptions = imeOptions
         inputField.typeface = fontFamily
+
+        val bgDraw = background?.constantState?.newDrawable()
+        if(bgDraw != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                inputField.background = bgDraw
+            } else {
+                inputField.setBackgroundDrawable(bgDraw)
+            }
+        }
+        setBackgroundColor(Color.TRANSPARENT)
     }
 
     internal fun addStateListener(stateListener: OnVgsViewStateChangeListener) {

@@ -175,7 +175,7 @@ class MainActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnCli
         titleHeader?.text = "RESPONSE:"
         when (response) {
             is VGSResponse.SuccessResponse -> {
-                Log.e("test", "${response.rawResponse}")
+                Log.e("response ", "${response.rawResponse}")
 
                 val str = StringBuilder("CODE: ")
                     .append(response.code.toString()).toString()
