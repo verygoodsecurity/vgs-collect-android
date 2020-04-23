@@ -2,7 +2,6 @@ package com.verygoodsecurity.demoapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -169,7 +168,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
                 if(response.response.isNullOrEmpty()) {
                     builder.append(response.rawResponse)
-                    Log.e("response", "${response.rawResponse}")
                 } else {
                     val json = (response.response?.get("response") as? Map<*, *>)?.get("json")
                     builder.append(json)
