@@ -280,13 +280,16 @@ internal class InputField(context: Context): BaseInputField(context) {
 
     override fun dispatchDependencySetting(dependency: Dependency) {
         when(dependency.dependencyType) {
-            DependencyType.LENGTH -> {
-                val filterLength = InputFilter.LengthFilter(dependency.value as Int)
-                filters = arrayOf(CVCValidateFilter(), filterLength)
-                text = text
-            }
+            DependencyType.LENGTH -> manageLengthDependency(dependency)
             DependencyType.TEXT -> setText(dependency.value.toString())
         }
+    }
+
+    private fun manageLengthDependency(dependency: Dependency) {
+        val filterLength = InputFilter.LengthFilter(dependency.value as Int)
+        filters = arrayOf(CVCValidateFilter(), filterLength)
+        (inputConnection as? InputCardCVCConnection)?.runtimeValidator = CardCVCCodeValidator(dependency.value)
+        text = text
     }
 
     private fun applyCVCInputType() {
