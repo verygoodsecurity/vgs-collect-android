@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.material.internal
 
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
+import android.graphics.Typeface
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.VisibleForTesting
@@ -12,6 +13,13 @@ internal class InputLayoutStateImpl(
     private val textInputLayout: TextInputLayoutWrapper
 ) : InputLayoutState {
 
+    internal var typeface: Typeface = Typeface.DEFAULT
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.typeface = value
+            }
+        }
     internal var isCounterEnabled: Boolean = false
         set(value) {
             field = value
@@ -261,6 +269,7 @@ internal class InputLayoutStateImpl(
 
     override fun restore(textInputLayoutWrapper: TextInputLayoutWrapper?) {
         textInputLayoutWrapper?.apply {
+            this.typeface = this@InputLayoutStateImpl.typeface
             this.isHintEnabled = this@InputLayoutStateImpl.isHintEnabled
             this.isHintAnimationEnabled = this@InputLayoutStateImpl.isHintAnimationEnabled
             this.hint = this@InputLayoutStateImpl.hint

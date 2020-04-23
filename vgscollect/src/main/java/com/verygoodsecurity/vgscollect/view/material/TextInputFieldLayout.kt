@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.material
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
@@ -246,6 +247,22 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     @VisibleForTesting
     internal fun getFieldState():InputLayoutStateImpl {
         return fieldState
+    }
+
+    /**
+     * Sets the typeface and style in which the text should be displayed.
+     *
+     * @param typeface This value may be null.
+     */
+    open fun setTypeface(typeface: Typeface) {
+        fieldState.typeface = typeface
+    }
+
+    /**
+     * Returns the typeface used for the hint and any label views (such as counter and error views).
+     */
+    fun getTypeface():Typeface {
+        return fieldState.typeface
     }
 
 }
