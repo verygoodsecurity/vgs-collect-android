@@ -53,15 +53,9 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
 
-
-
-
-
-        vgsForm.setCustomData(getStaticData())
-
-        val ch = mutableMapOf<String, String>()
-        ch.put("data-2", "static setCustomHeaders")
-        vgsForm.setCustomHeaders(ch)
+        val staticData = mutableMapOf<String, String>()
+        staticData["static_data"] = "static custom data"
+        vgsForm.setCustomData(staticData)
     }
 
     private fun retrieveSettings() {
@@ -222,10 +216,8 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         setEnabledResponseHeader(false)
         setStateLoading(true)
 
-
-
-//        val customData = HashMap<String, Any>()
-//        customData["card_data.dynamic"] = "Taras"
+        val customData = HashMap<String, Any>()
+        customData["card_data.dynamic"] = "Taras"
 
         val headers = HashMap<String, String>()
         headers["some-headers"] = "dynamic-header"
@@ -234,46 +226,11 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
             .setMethod(HTTPMethod.POST)
             .setPath(path)
             .setCustomHeader(headers)
-            .setCustomData(getDynamicData())
+            .setCustomData(customData)
             .build()
 
         vgsForm.asyncSubmit(request)
     }
-
-    private fun getDynamicData(): Map<String, Any> {
-        val innerMap_2 = mutableMapOf<String, String>()
-        innerMap_2.put("new_come", "dynamic updated item")
-
-        val innerMap = mutableMapOf<String, Any>()
-        innerMap["personal_data.something_interesting"] = innerMap_2
-        innerMap["personal_data.nothing_interesting"] = "dynamic string"
-
-        val cd = mutableMapOf<String, Any>()
-        cd["dynamic.data"] = "dynamic setCustomData"
-        cd["nickname"] = "dynamic Taras"
-        cd["card_data"] = innerMap
-        cd["card_data.personal_data.a"] = "dynamic data with ."
-
-        return cd
-    }
-
-    private fun getStaticData(): Map<String, Any>? {
-        val innerMap_2 = mutableMapOf<String, String>()
-        innerMap_2["new_come"] = "static new Value"
-
-        val innerMap = mutableMapOf<String, Any>()
-        innerMap["personal_data.something_interesting"] = innerMap_2
-        innerMap["personal_data.stat_map"] = "static inner map"
-
-        val cd = mutableMapOf<String, Any>()
-        cd["static.data"] = "static.data"
-        cd["nickname"] = "static GP1"
-        cd["card_data"] = innerMap
-        cd["card_data.personal_data.stat_data"] = "static card_data.personal_data"
-
-        return cd
-    }
-
     private fun attachFile() {
         if(vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
             vgsForm.getFileProvider().attachFile("attachments.file")
