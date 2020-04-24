@@ -23,6 +23,8 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileSt
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.util.deepMerge
+import com.verygoodsecurity.vgscollect.util.mapToMap
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -268,11 +270,21 @@ class VGSCollect(
     ) {
         val requestBodyMap = request.customData.run {
             val map = HashMap<String, Any>()
-            map.putAll(this)
+            val customData = client.getTemporaryStorage().getCustomData()
+            val newDynamicData = this.mapToMap()
+            val newStaticData = customData.mapToMap()
+            val mergedMap = newStaticData.deepMerge(newDynamicData)
+
+            map.putAll(mergedMap)
             map
         }
 
-        val data = storage.getAssociatedList(request.fieldsIgnore, request.fileIgnore).mapUsefulPayloads(requestBodyMap)
+        requestBodyMap.forEach {
+            Logger.e("test", "${it.key} - ${it.value}")
+        }
+
+        val data = storage.getAssociatedList(request.fieldsIgnore, request.fileIgnore)
+            .mapUsefulPayloads(requestBodyMap)
         val r = client.call(request.path, request.method, request.customHeader, data)
         responseListeners.forEach { it.onResponse(r) }
     }
@@ -285,9 +297,14 @@ class VGSCollect(
         }
         currentTask = doAsync(responseListeners) {
             it?.run {
-                val requestBodyMap = data?.run {
+                val requestBodyMap = request.customData.run {
                     val map = HashMap<String, Any>()
-                    map.putAll(this)
+                    val customData = client.getTemporaryStorage().getCustomData()
+                    val newDynamicData = this.mapToMap()
+                    val newStaticData = customData.mapToMap()
+                    val mergedMap = newStaticData.deepMerge(newDynamicData)
+
+                    map.putAll(mergedMap)
                     map
                 }
 
