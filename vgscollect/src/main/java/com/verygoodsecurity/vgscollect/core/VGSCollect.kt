@@ -279,10 +279,6 @@ class VGSCollect(
             map
         }
 
-        requestBodyMap.forEach {
-            Logger.e("test", "${it.key} - ${it.value}")
-        }
-
         val data = storage.getAssociatedList(request.fieldsIgnore, request.fileIgnore)
             .mapUsefulPayloads(requestBodyMap)
         val r = client.call(request.path, request.method, request.customHeader, data)
