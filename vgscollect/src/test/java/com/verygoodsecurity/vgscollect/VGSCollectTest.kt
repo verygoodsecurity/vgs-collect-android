@@ -157,8 +157,6 @@ class VGSCollectTest {
     @Test
     fun test_set_custom_headers() {
         val client = applyApiClient()
-        Mockito.doReturn(VgsApiTemporaryStorageImpl())
-            .`when`(client).getTemporaryStorage()
 
         val data = HashMap<String, String>()
         data["key"] = "value"
@@ -171,8 +169,6 @@ class VGSCollectTest {
     @Test
     fun test_reset_custom_headers() {
         val client = applyApiClient()
-        Mockito.doReturn(VgsApiTemporaryStorageImpl())
-            .`when`(client).getTemporaryStorage()
 
         collect.resetCustomHeaders()
 
@@ -183,8 +179,6 @@ class VGSCollectTest {
     @Test
     fun test_set_custom_data() {
         val client = applyApiClient()
-        Mockito.doReturn(VgsApiTemporaryStorageImpl())
-            .`when`(client).getTemporaryStorage()
 
         val data = HashMap<String, String>()
         data["key"] = "value"
@@ -197,8 +191,6 @@ class VGSCollectTest {
     @Test
     fun testResetCustomData() {
         val client = applyApiClient()
-        Mockito.doReturn(VgsApiTemporaryStorageImpl())
-            .`when`(client).getTemporaryStorage()
 
         collect.resetCustomData()
 
@@ -247,6 +239,9 @@ class VGSCollectTest {
 
     private fun applyApiClient(): ApiClient {
         val client = mock(ApiClient::class.java)
+        Mockito.doReturn(VgsApiTemporaryStorageImpl())
+            .`when`(client).getTemporaryStorage()
+
         collect.setClient(client)
 
         return client

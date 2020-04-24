@@ -58,10 +58,8 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         if(isRTL()) {
             hasRTL = true
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                layoutDirection = View.LAYOUT_DIRECTION_LTR
-                textDirection = View.TEXT_DIRECTION_LTR
-            }
+            layoutDirection = View.LAYOUT_DIRECTION_LTR
+            textDirection = View.TEXT_DIRECTION_LTR
             gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
         }
     }
