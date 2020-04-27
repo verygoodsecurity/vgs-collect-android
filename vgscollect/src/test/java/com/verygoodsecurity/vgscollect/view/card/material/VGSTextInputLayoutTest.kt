@@ -744,6 +744,17 @@ class VGSTextInputLayoutTest {
     }
 
     @Test
+    fun test_set_hint_text_color() {
+        val myList =  ColorStateList.valueOf(Color.GREEN)
+        textInputLayout.setHintTextColor(myList)
+        attachView()
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(myList, state.hintTextColor)
+    }
+
+    @Test
     fun test_set_end_drawable_mode() {
         textInputLayout.setEndIconMode(VGSTextInputLayout.END_ICON_CLEAR_TEXT)
         attachView()

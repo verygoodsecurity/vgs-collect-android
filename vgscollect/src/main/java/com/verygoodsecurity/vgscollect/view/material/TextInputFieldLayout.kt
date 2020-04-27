@@ -265,4 +265,18 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
         return fieldState.typeface
     }
 
+    /**
+     * Sets the collapsed hint text color from the specified ColorStateList resource.
+     */
+    fun setHintTextColor(hintTextColor:ColorStateList) {
+        fieldState.hintTextColor = hintTextColor
+    }
+
+    /**
+     * Gets the collapsed hint text color.
+     */
+    fun getHintTextColor() : ColorStateList? {
+        return fieldState.hintTextColor
+    }
+
 }

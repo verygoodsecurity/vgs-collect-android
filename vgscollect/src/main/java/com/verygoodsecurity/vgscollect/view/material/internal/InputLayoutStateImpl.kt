@@ -45,6 +45,13 @@ internal class InputLayoutStateImpl(
             }
         }
 
+    internal var hintTextColor: ColorStateList? = null
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.hintTextColor = value
+            }
+        }
     internal var startIconTintList: ColorStateList? = null
         set(value) {
             field = value
@@ -283,6 +290,10 @@ internal class InputLayoutStateImpl(
                 this@InputLayoutStateImpl.right,
                 this@InputLayoutStateImpl.bottom
             )
+
+            if(this@InputLayoutStateImpl.hintTextColor != null) {
+                hintTextColor = this@InputLayoutStateImpl.hintTextColor
+            }
 
             this.boxBackgroundMode = this@InputLayoutStateImpl.boxBackgroundMode
             if (this@InputLayoutStateImpl.boxBackgroundMode != TextInputLayout.BOX_BACKGROUND_NONE) {
