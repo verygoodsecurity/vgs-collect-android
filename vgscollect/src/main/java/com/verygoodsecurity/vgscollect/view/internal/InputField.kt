@@ -68,7 +68,7 @@ internal class InputField(context: Context): BaseInputField(context) {
         isListeningPermitted = false
         id = ViewCompat.generateViewId()
 
-        compoundDrawablePadding = resources.getDimension(R.dimen.half_default_padding).toInt()
+        compoundDrawablePadding = resources.getDimension(R.dimen.half_vgsfield_padding).toInt()
     }
 
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
@@ -276,13 +276,6 @@ internal class InputField(context: Context): BaseInputField(context) {
         if(isListeningPermitted) {
             super.addTextChangedListener(watcher)
         }
-    }
-
-    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        val minPaddingH = resources.getDimension(R.dimen.default_horizontal_field).toInt()
-        val l = if(left < minPaddingH) minPaddingH else left
-        val r = if(right < minPaddingH) minPaddingH else right
-        super.setPadding(l, top, r, bottom)
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {

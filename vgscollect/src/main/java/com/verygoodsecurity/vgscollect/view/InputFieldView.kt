@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
@@ -61,6 +60,12 @@ abstract class InputFieldView @JvmOverloads constructor(
                         Typeface.DEFAULT
                     }
                 }
+
+                val leftP = paddingLeft
+                val topP = paddingTop
+                val rightP = paddingRight
+                val bottomP = paddingBottom
+                setPadding(leftP, topP, rightP, bottomP)
             } finally {
                 recycle()
             }
@@ -151,9 +156,10 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param bottom the bottom padding in pixels
      */
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        if(::inputField.isInitialized) {
-            inputField.setPadding(left, top, right, bottom)
-        }
+        this.leftP = left
+        this.topP = top
+        this.rightP = right
+        this.bottomP = bottom
         super.setPadding(0, 0, 0, 0)
     }
 
@@ -242,24 +248,24 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    private var bgDraw: Drawable? = null
+    private var leftP:Int = 0
+    private var topP:Int = 0
+    private var rightP:Int = 0
+    private var bottomP:Int = 0
+
     public override fun onAttachedToWindow() {
         if(isAttachPermitted) {
             super.onAttachedToWindow()
             if (parent !is TextInputFieldLayout) {
                 setAddStatesFromChildren(true)
+                inputField.setMinimumPaddingLimitations(
+                    resources.getDimension(R.dimen.default_horizontal_field).toInt(),
+                    resources.getDimension(R.dimen.default_vertical_field).toInt()
+                )
                 addView(inputField)
             }
-            inputField.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
-            bgDraw = background
-            if(background != null) {
-                setBackgroundColor(Color.TRANSPARENT)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    inputField.background = bgDraw
-                } else {
-                    inputField.setBackgroundDrawable(bgDraw)
-                }
-            }
+            inputField.setPadding(leftP, topP, rightP, bottomP)
+
             isAttachPermitted = false
         }
     }
@@ -621,6 +627,16 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.nextFocusRightId = nextFocusRightId
         inputField.imeOptions = imeOptions
         inputField.typeface = fontFamily
+
+        val bgDraw = background?.constantState?.newDrawable()
+        if(bgDraw != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                inputField.background = bgDraw
+            } else {
+                inputField.setBackgroundDrawable(bgDraw)
+            }
+        }
+        setBackgroundColor(Color.TRANSPARENT)
     }
 
     internal fun addStateListener(stateListener: OnVgsViewStateChangeListener) {

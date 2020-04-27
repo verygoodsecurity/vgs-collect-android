@@ -7,6 +7,9 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.VisibleForTesting
 import com.google.android.material.textfield.TextInputLayout
+import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 
 /** @suppress */
 internal class InputLayoutStateImpl(
@@ -329,8 +332,21 @@ internal class InputLayoutStateImpl(
         textInputLayout.restoreState(this)
     }
 
-    internal fun addChildView(child: View?) {
+    internal fun addChildView(child: InputFieldView?) {
+        prepareInternalView(child)
+
         textInputLayout.addView(child)
+    }
+
+    private fun prepareInternalView(view: InputFieldView?) {
+        (view?.getView() as? BaseInputField)?.apply {
+            setMinimumPaddingLimitations(
+                resources.getDimension(R.dimen.f_label_horizontal_field).toInt(),
+                resources.getDimension(R.dimen.f_label_vertical_field).toInt()
+            )
+
+            setBackgroundResource(0)
+        }
     }
 
     @VisibleForTesting
