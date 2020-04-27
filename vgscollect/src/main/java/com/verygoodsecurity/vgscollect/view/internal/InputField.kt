@@ -68,7 +68,7 @@ internal class InputField(context: Context): BaseInputField(context) {
         isListeningPermitted = false
         id = ViewCompat.generateViewId()
 
-        compoundDrawablePadding = resources.getDimension(R.dimen.half_default_padding).toInt()
+        compoundDrawablePadding = resources.getDimension(R.dimen.half_vgsfield_padding).toInt()
     }
 
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
