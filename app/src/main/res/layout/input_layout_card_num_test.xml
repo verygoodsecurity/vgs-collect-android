@@ -739,7 +739,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardNumber"
-                android:padding="@dimen/default_padding"
+                android:padding="@dimen/default_margin"
                 app:cardBrandIconGravity="end"
                 app:textSize="12dp" />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
