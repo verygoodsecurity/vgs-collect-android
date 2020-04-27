@@ -1,6 +1,6 @@
 <resources>
-    <dimen name="default_padding">16dp</dimen>
-    <dimen name="half_default_padding">8dp</dimen>
+    <dimen name="vgsfield_padding">16dp</dimen>
+    <dimen name="half_vgsfield_padding">8dp</dimen>
 
     <dimen name="default_vertical_field">8dp</dimen>
     <dimen name="default_horizontal_field">2dp</dimen>
