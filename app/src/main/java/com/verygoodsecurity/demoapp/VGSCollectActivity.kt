@@ -194,7 +194,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         setStateLoading(true)
 
         val customData = HashMap<String, Any>()
-        customData["card_data.dynamic"] = "Taras"
+        customData["nickname"] = "Taras"
 
         val headers = HashMap<String, String>()
         headers["some-headers"] = "dynamic-header"
