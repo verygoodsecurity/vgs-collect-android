@@ -6,7 +6,7 @@
     <dimen name="default_horizontal_field">0dp</dimen>
 
     <dimen name="f_label_vertical_field">4dp</dimen>
-    <dimen name="f_label_horizontal_field">0dp</dimen>
+    <dimen name="f_label_horizontal_field">3dp</dimen>
 
     <dimen name="c_icon_size_w">32dp</dimen>
     <dimen name="c_icon_size_h">21dp</dimen>
