@@ -124,8 +124,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         val states = vgsForm.getAllStates()
         val builder = StringBuilder()
         states.forEach {
-            builder.append(it.toString()).append("\n")
-            builder.append("\n")
+            builder.append(it.toString()).append("\n\n")
         }
         stateContainerView?.text = builder.toString()
     }
