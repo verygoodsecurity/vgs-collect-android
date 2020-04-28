@@ -496,7 +496,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     /**
      * Returns the typeface used for the hint and any label views (such as counter and error views).
      */
-    fun getTypeface():Typeface {
+    fun getTypeface():Typeface? {
         return fieldState.typeface
     }
 

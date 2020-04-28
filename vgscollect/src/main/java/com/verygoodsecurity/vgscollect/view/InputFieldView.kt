@@ -51,13 +51,13 @@ abstract class InputFieldView @JvmOverloads constructor(
                 imeOptions = getInt(R.styleable.InputFieldView_imeOptions, EditorInfo.IME_ACTION_DONE)
 
                 fontFamily = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    getFont(R.styleable.InputFieldView_fontFamily)?:Typeface.DEFAULT
+                    getFont(R.styleable.InputFieldView_fontFamily)
                 } else {
                     val s = getString(R.styleable.InputFieldView_fontFamily)
-                    if(!s.isNullOrEmpty()) {
-                        Typeface.create(s, Typeface.NORMAL)
+                    if(s.isNullOrEmpty()) {
+                        null
                     } else {
-                        Typeface.DEFAULT
+                        Typeface.create(s, Typeface.NORMAL)
                     }
                 }
 
@@ -625,6 +625,10 @@ abstract class InputFieldView @JvmOverloads constructor(
         (inputField as? InputField)?.setType(type)
     }
 
+    internal fun getFontFamily() : Typeface? {
+        return fontFamily
+    }
+
     private fun syncInputState() {
         notifier = DependencyNotifier(inputField)
 
@@ -634,7 +638,9 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.nextFocusLeftId = nextFocusLeftId
         inputField.nextFocusRightId = nextFocusRightId
         inputField.imeOptions = imeOptions
-        inputField.typeface = fontFamily
+        if(fontFamily != null) {
+            inputField.typeface = fontFamily
+        }
 
         val bgDraw = background?.constantState?.newDrawable()
         if(bgDraw != null) {
