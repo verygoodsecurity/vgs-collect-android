@@ -22,6 +22,7 @@ internal class InputCardNumberConnection(
     private val brandLuhnValidations by lazy {
         val set = HashMap<CardType, VGSValidator>()
         set[CardType.VISA] = VisaDelegate()
+        set[CardType.VISA_ELECTRON] = VisaElectronDelegate()
         set[CardType.MASTERCARD] = MastercardDelegate()
         set[CardType.AMERICAN_EXPRESS] = AmexDelegate()
         set[CardType.DINCLUB] = DinersClubDelegate()
