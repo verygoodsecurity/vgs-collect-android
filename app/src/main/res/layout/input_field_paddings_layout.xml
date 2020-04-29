@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/default_margin">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#22ff0000"
+            android:layout_marginBottom="@dimen/half_default_margin"
+            android:text="some text"/>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+            android:id="@+id/cardNumberField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card_data.cardNumber"
+            app:numberDivider=" "
+            android:background="#22ff0000"
+            app:hint="no paddings"
+            app:imeOptions="actionNext"
+            app:cardBrandIconGravity="end"/>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/cardHolderFieldLay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:endIconTint="@color/colorAccent"
+            app:hint="no paddings"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorAccent">
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:id="@+id/cardHolderField"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nextFocusDown="@+id/cardExpDateField"
+                app:imeOptions="actionNext"
+                app:fieldName="card_data.personal_data.cardHolder"
+                app:fieldType="cardHolderName"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
+
+
+        <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+            android:id="@+id/cardExpDateField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card_data.personal_data.secret.expDate"
+            android:nextFocusDown="@+id/cardCVCField"
+            app:imeOptions="actionNext"
+            app:datePickerModes="input"
+            app:hint="padding left"
+            android:background="#22ff0000"
+            app:datePattern="MM/yy"
+            android:paddingLeft="@dimen/default_margin"/>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:endIconTint="@color/colorAccent"
+            app:hint="padding left"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorAccent">
+            <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:fieldName="card_data.personal_data.secret.expDate"
+                android:nextFocusDown="@+id/cardCVCField"
+                app:imeOptions="actionNext"
+                app:datePickerModes="input"
+                app:datePattern="MM/yy"
+                android:paddingLeft="@dimen/default_margin"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:id="@+id/cardCVCField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card_data.cardCvc"
+            app:imeOptions="actionDone"
+            app:hint="padding start"
+            app:fieldType="cvc"
+            android:background="#22ff0000"
+            android:paddingStart="@dimen/default_margin"/>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:endIconTint="@color/colorAccent"
+            app:hint="padding start"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorAccent">
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:fieldName="card_data.cardCvc"
+                app:imeOptions="actionDone"
+                app:fieldType="cvc"
+                android:paddingStart="@dimen/default_margin"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
+
+
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card_data.cardCvc"
+            app:imeOptions="actionDone"
+            app:hint="padding end"
+            app:singleLine="true"
+            android:background="#22ff0000"
+            app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+            app:fieldType="cardHolderName"
+            android:paddingRight="@dimen/default_margin"/>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:endIconTint="@color/colorAccent"
+            app:hint="padding right"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorAccent">
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="card_data.cardCvc"
+                app:imeOptions="actionDone"
+                app:hint="padding end"
+                app:singleLine="true"
+                app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+                app:fieldType="cardHolderName"
+                android:paddingRight="@dimen/default_margin"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card_data.cardCvc"
+            app:imeOptions="actionDone"
+            app:singleLine="true"
+            android:background="#22ff0000"
+            app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+            app:hint="padding end"
+            app:fieldType="cardHolderName"
+            android:paddingEnd="@dimen/default_margin"/>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:endIconTint="@color/colorAccent"
+            app:hint="padding end"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorAccent">
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="card_data.cardCvc"
+                app:imeOptions="actionDone"
+                app:fieldType="cardHolderName"
+                app:singleLine="true"
+                app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+                android:paddingEnd="@dimen/default_margin"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
+
+
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card_data.cardCvc"
+            app:imeOptions="actionDone"
+            app:hint="padding top"
+            android:background="#22ff0000"
+            app:singleLine="true"
+            app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+            app:fieldType="cardHolderName"
+            android:paddingTop="@dimen/default_margin"/>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:endIconTint="@color/colorAccent"
+            app:hint="padding right"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorAccent">
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="card_data.cardCvc"
+                app:imeOptions="actionDone"
+                app:hint="padding top"
+                app:singleLine="true"
+                app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+                app:fieldType="cardHolderName"
+                android:paddingTop="@dimen/default_margin"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card_data.cardCvc"
+            app:imeOptions="actionDone"
+            app:singleLine="true"
+            android:background="#22ff0000"
+            app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+            app:hint="padding Bottom"
+            app:fieldType="cardHolderName"
+            android:paddingBottom="@dimen/default_margin"/>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:endIconTint="@color/colorAccent"
+            app:hint="padding bottom"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorAccent">
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="card_data.cardCvc"
+                app:imeOptions="actionDone"
+                app:fieldType="cardHolderName"
+                app:singleLine="true"
+                app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+                android:paddingBottom="@dimen/default_margin"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card_data.cardCvc"
+            app:imeOptions="actionDone"
+            app:singleLine="true"
+            android:background="#22ff0000"
+            app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+            app:hint="padding start top"
+            app:fieldType="cardHolderName"
+            android:paddingTop="@dimen/default_margin"
+            android:paddingStart="@dimen/default_margin"
+            />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:endIconTint="@color/colorAccent"
+            app:hint="padding start top"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorAccent">
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="card_data.cardCvc"
+                app:imeOptions="actionDone"
+                app:fieldType="cardHolderName"
+                app:singleLine="true"
+                app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+                android:paddingTop="@dimen/default_margin"
+                android:paddingStart="@dimen/default_margin"
+                />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card_data.cardCvc"
+            app:imeOptions="actionDone"
+            app:singleLine="true"
+            android:background="#22ff0000"
+            app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+            app:hint="padding end bottom"
+            app:fieldType="cardHolderName"
+            android:paddingBottom="@dimen/default_margin"
+            android:paddingEnd="@dimen/default_margin"
+            />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:endIconTint="@color/colorAccent"
+            app:hint="padding end bottom"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorAccent">
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="card_data.cardCvc"
+                app:imeOptions="actionDone"
+                app:fieldType="cardHolderName"
+                app:singleLine="true"
+                app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+                android:paddingBottom="@dimen/default_margin"
+                android:paddingEnd="@dimen/default_margin"
+                />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
+
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card_data.cardCvc"
+            app:imeOptions="actionDone"
+            app:singleLine="true"
+            android:background="#22ff0000"
+            app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+            app:hint="padding top bottom"
+            app:fieldType="cardHolderName"
+            android:paddingBottom="@dimen/default_margin"
+            android:paddingTop="@dimen/default_margin"
+            />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:endIconTint="@color/colorAccent"
+            app:hint="padding top bottom"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorAccent">
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="card_data.cardCvc"
+                app:imeOptions="actionDone"
+                app:fieldType="cardHolderName"
+                app:singleLine="true"
+                app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+                android:paddingBottom="@dimen/default_margin"
+                android:paddingTop="@dimen/default_margin"
+                />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card_data.cardCvc"
+            app:imeOptions="actionDone"
+            app:singleLine="true"
+            android:background="#22ff0000"
+            app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+            app:hint="padding left right"
+            app:fieldType="cardHolderName"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
+            />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:endIconTint="@color/colorAccent"
+            app:hint="padding left right"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorAccent">
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="card_data.cardCvc"
+                app:imeOptions="actionDone"
+                app:fieldType="cardHolderName"
+                app:singleLine="true"
+                app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+                android:paddingLeft="@dimen/default_margin"
+                android:paddingRight="@dimen/default_margin"
+                />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card_data.cardCvc"
+            app:imeOptions="actionDone"
+            app:singleLine="true"
+            android:background="#22ff0000"
+            app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+            app:hint="padding all"
+            app:fieldType="cardHolderName"
+            android:paddingLeft="@dimen/default_margin"
+            android:paddingRight="@dimen/default_margin"
+            android:paddingBottom="@dimen/default_margin"
+            android:paddingTop="@dimen/default_margin"
+            />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintEnabled="true"
+            app:endIconTint="@color/colorAccent"
+            app:hint="padding all"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorAccent">
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="card_data.cardCvc"
+                app:imeOptions="actionDone"
+                app:fieldType="cardHolderName"
+                app:singleLine="true"
+                app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
+                android:paddingLeft="@dimen/default_margin"
+                android:paddingRight="@dimen/default_margin"
+                android:paddingBottom="@dimen/default_margin"
+                android:paddingTop="@dimen/default_margin"
+                />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+    </LinearLayout>
+</ScrollView>
+

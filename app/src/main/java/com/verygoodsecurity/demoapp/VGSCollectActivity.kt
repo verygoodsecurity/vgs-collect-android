@@ -2,7 +2,6 @@ package com.verygoodsecurity.demoapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -53,6 +52,10 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardCVCField)
         vgsForm.bindView(cardHolderField)
         vgsForm.bindView(cardExpDateField)
+
+        val staticData = mutableMapOf<String, String>()
+        staticData["static_data"] = "static custom data"
+        vgsForm.setCustomData(staticData)
     }
 
     private fun retrieveSettings() {
@@ -121,19 +124,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         val states = vgsForm.getAllStates()
         val builder = StringBuilder()
         states.forEach {
-            builder.append(it.fieldName).append("\n")
-                .append("   hasFocus: ").append(it.hasFocus).append("\n")
-                .append("   isValid: ").append(it.isValid).append("\n")
-                .append("   isEmpty: ").append(it.isEmpty).append("\n")
-                .append("   isRequired: ").append(it.isRequired).append("\n")
-            if (it is FieldState.CardNumberState) {
-                builder.append("    type: ").append(it.cardBrand).append("\n")
-                    .append("       end: ").append(it.last).append("\n")
-                    .append("       bin: ").append(it.bin).append("\n")
-                    .append(it.number).append("\n")
-            }
-
-            builder.append("\n")
+            builder.append(it.toString()).append("\n\n")
         }
         stateContainerView?.text = builder.toString()
     }
@@ -163,22 +154,9 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
         when (response) {
             is VGSResponse.SuccessResponse -> {
-                val builder = StringBuilder("CODE: ")
-                    .append(response.code.toString())
-                    .append("\n\n")
-
-                if(response.response.isNullOrEmpty()) {
-                    builder.append(response.rawResponse)
-                    Log.e("test", "${response.rawResponse}")
-                } else {
-                    val json = (response.response?.get("response") as? Map<*, *>)?.get("json")
-                    builder.append(json)
-                }
-
-                responseContainerView.text = builder.toString()
+                responseContainerView.text = response.toString()
             }
-            is VGSResponse.ErrorResponse -> responseContainerView.text =
-                "CODE: ${response.errorCode} \n\n ${response.localizeMessage}"
+            is VGSResponse.ErrorResponse -> responseContainerView.text = response.toString()
         }
     }
 
@@ -218,7 +196,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         customData["nickname"] = "Taras"
 
         val headers = HashMap<String, String>()
-        headers["some-headers"] = "custom-header"
+        headers["some-headers"] = "dynamic-header"
 
         val request: VGSRequest = VGSRequest.VGSRequestBuilder()
             .setMethod(HTTPMethod.POST)
@@ -229,7 +207,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
         vgsForm.asyncSubmit(request)
     }
-
     private fun attachFile() {
         if(vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
             vgsForm.getFileProvider().attachFile("attachments.file")

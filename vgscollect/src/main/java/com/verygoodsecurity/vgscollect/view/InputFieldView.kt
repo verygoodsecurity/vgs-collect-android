@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
@@ -40,6 +39,7 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     private lateinit var notifier:DependencyNotifier
     private var imeOptions:Int = 0
+    private var fontFamily:Typeface? = null
 
     init {
         context.theme.obtainStyledAttributes(
@@ -49,6 +49,23 @@ abstract class InputFieldView @JvmOverloads constructor(
         ).apply {
             try {
                 imeOptions = getInt(R.styleable.InputFieldView_imeOptions, EditorInfo.IME_ACTION_DONE)
+
+                fontFamily = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    getFont(R.styleable.InputFieldView_fontFamily)
+                } else {
+                    val s = getString(R.styleable.InputFieldView_fontFamily)
+                    if(s.isNullOrEmpty()) {
+                        null
+                    } else {
+                        Typeface.create(s, Typeface.NORMAL)
+                    }
+                }
+
+                val leftP = paddingLeft
+                val topP = paddingTop
+                val rightP = paddingRight
+                val bottomP = paddingBottom
+                setPadding(leftP, topP, rightP, bottomP)
             } finally {
                 recycle()
             }
@@ -139,9 +156,10 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param bottom the bottom padding in pixels
      */
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        if(::inputField.isInitialized) {
-            inputField.setPadding(left, top, right, bottom)
-        }
+        this.leftP = left
+        this.topP = top
+        this.rightP = right
+        this.bottomP = bottom
         super.setPadding(0, 0, 0, 0)
     }
 
@@ -230,24 +248,24 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    private var bgDraw: Drawable? = null
+    private var leftP:Int = 0
+    private var topP:Int = 0
+    private var rightP:Int = 0
+    private var bottomP:Int = 0
+
     public override fun onAttachedToWindow() {
         if(isAttachPermitted) {
             super.onAttachedToWindow()
             if (parent !is TextInputFieldLayout) {
                 setAddStatesFromChildren(true)
+                inputField.setMinimumPaddingLimitations(
+                    resources.getDimension(R.dimen.default_horizontal_field).toInt(),
+                    resources.getDimension(R.dimen.default_vertical_field).toInt()
+                )
                 addView(inputField)
             }
-            inputField.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom)
-            bgDraw = background
-            if(background != null) {
-                setBackgroundColor(Color.TRANSPARENT)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    inputField.background = bgDraw
-                } else {
-                    inputField.setBackgroundDrawable(bgDraw)
-                }
-            }
+            inputField.setPadding(leftP, topP, rightP, bottomP)
+
             isAttachPermitted = false
         }
     }
@@ -352,6 +370,14 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.isSingleLine = singleLine
     }
 
+    /**
+     * Set whether this view can receive focus while in touch mode.
+     *
+     * Setting this to true will also ensure that this view is focusable.
+     *
+     * @param focusableInTouchMode If true, this view can receive the focus while
+     *   in touch mode.
+     */
     override fun setFocusableInTouchMode(focusableInTouchMode: Boolean) {
         super.setFocusableInTouchMode(focusableInTouchMode)
         inputField.isFocusableInTouchMode = focusableInTouchMode
@@ -599,6 +625,10 @@ abstract class InputFieldView @JvmOverloads constructor(
         (inputField as? InputField)?.setType(type)
     }
 
+    internal fun getFontFamily() : Typeface? {
+        return fontFamily
+    }
+
     private fun syncInputState() {
         notifier = DependencyNotifier(inputField)
 
@@ -608,6 +638,19 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.nextFocusLeftId = nextFocusLeftId
         inputField.nextFocusRightId = nextFocusRightId
         inputField.imeOptions = imeOptions
+        if(fontFamily != null) {
+            inputField.typeface = fontFamily
+        }
+
+        val bgDraw = background?.constantState?.newDrawable()
+        if(bgDraw != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                inputField.background = bgDraw
+            } else {
+                inputField.setBackgroundDrawable(bgDraw)
+            }
+        }
+        setBackgroundColor(Color.TRANSPARENT)
     }
 
     internal fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
@@ -648,6 +691,14 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Hook allowing a view to generate a representation of its internal state
+     * that can later be used to create a new instance with that same state.
+     * This state should only contain information that is not persistent or can
+     * not be reconstructed later. For example, you will never store your
+     * current position on screen because that will be computed again when a
+     * new instance of the view is placed in its view hierarchy.
+     */
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())
         savedState.text = inputField.text.toString()
@@ -691,6 +742,12 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Set the enabled state of this view. The interpretation of the enabled
+     * state varies by subclass.
+     *
+     * @param enabled True if this view is enabled, false otherwise.
+     */
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
         inputField.isEnabled = enabled
@@ -732,33 +789,98 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the id of the view to use when the next focus is FOCUS_FORWARD.
+     * @param nextFocusForwardId The next focus ID, or NO_ID if the framework should
+     * decide automatically.
+     */
     override fun setNextFocusForwardId(nextFocusForwardId: Int) {
         inputField.nextFocusForwardId = nextFocusForwardId
         super.setNextFocusForwardId(nextFocusForwardId)
     }
 
+    /**
+     * Sets the id of the view to use when the next focus is FOCUS_LEFT.
+     * @param nextFocusLeftId The next focus ID, or NO_ID if the framework should
+     * decide automatically.
+     */
     override fun setNextFocusLeftId(nextFocusLeftId: Int) {
         inputField.nextFocusLeftId = nextFocusLeftId
         super.setNextFocusLeftId(nextFocusLeftId)
     }
 
+    /**
+     * Sets the id of the view to use when the next focus is FOCUS_RIGHT.
+     * @param nextFocusRightId The next focus ID, or NO_ID if the framework should
+     * decide automatically.
+     */
     override fun setNextFocusRightId(nextFocusRightId: Int) {
         inputField.nextFocusRightId = nextFocusRightId
         super.setNextFocusRightId(nextFocusRightId)
     }
 
+    /**
+     * Sets the id of the view to use when the next focus is FOCUS_UP.
+     * @param nextFocusUpId The next focus ID, or NO_ID if the framework should
+     * decide automatically.
+     */
     override fun setNextFocusUpId(nextFocusUpId: Int) {
         inputField.nextFocusUpId = nextFocusUpId
         super.setNextFocusUpId(nextFocusUpId)
     }
 
+    /**
+     * Sets the id of the view to use when the next focus is FOCUS_DOWN.
+     * @param nextFocusDownId The next focus ID, or NO_ID if the framework should
+     * decide automatically.
+     */
     override fun setNextFocusDownId(nextFocusDownId: Int) {
         inputField.nextFocusDownId = nextFocusDownId
         super.setNextFocusDownId(nextFocusDownId)
     }
 
+    /**
+     * Call this to try to give focus to a specific view or to one of its descendants
+     * and give it hints about the direction and a specific rectangle that the focus
+     * is coming from.  The rectangle can help give larger views a finer grained hint
+     * about where focus is coming from, and therefore, where to show selection, or
+     * forward focus change internally.
+     *
+     * A view will not actually take focus if it is not focusable (isFocusable} returns
+     * false), or if it is focusable and it is not focusable in touch mode
+     * (isFocusableInTouchMode) while the device is in touch mode.
+     *
+     * A View will not take focus if it is not visible.
+     *
+     * See also focusSearch(int), which is what you call to say that you
+     * have focus, and you want your parent to look for the next one.
+     *
+     * You may wish to override this method if your custom {@link View} has an internal
+     * View that it wishes to forward the request to.
+     *
+     * @param direction One of FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, and FOCUS_RIGHT
+     * @param previouslyFocusedRect The rectangle (in this View's coordinate system)
+     *        to give a finer grained hint about where focus is coming from.  May be null
+     *        if there is no hint.
+     * @return Whether this view or one of its descendants actually took focus.
+     */
     override fun requestFocus(direction: Int, previouslyFocusedRect: Rect?): Boolean {
         return inputField.requestFocus(direction, previouslyFocusedRect)
+    }
+
+    /**
+     * Called when this view wants to give up focus. If focus is cleared
+     * onFocusChanged(boolean, int, android.graphics.Rect) is called.
+     * <p>
+     * <strong>Note:</strong> When not in touch-mode, the framework will try to give focus
+     * to the first focusable View from the top after focus is cleared. Hence, if this
+     * View is the first from the top that can take focus, then all callbacks
+     * related to clearing focus will be invoked after which the framework will
+     * give focus to this view.
+     * </p>
+     */
+    override fun clearFocus() {
+        inputField.clearFocus()
     }
 
     /**
@@ -769,6 +891,10 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.imeOptions = imeOptions
     }
 
+    /**
+     * Get the type of the Input Method Editor (IME).
+     * @return the type of the IME
+     */
     fun getImeOptions():Int {
         return inputField.imeOptions
     }

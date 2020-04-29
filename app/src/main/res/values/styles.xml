@@ -26,10 +26,4 @@
         <item name="textSize">@dimen/vgs_field_text_size</item>
     </style>
 
-    <style name="EditUnderBar" parent="android:Widget.Holo.Light.TextView">
-        <item name="android:drawablePadding">3dp</item>
-        <item name="android:layout_marginTop">12dp</item>
-        <item name="android:paddingLeft">4dp</item>
-        <item name="android:textSize">16sp</item>
-    </style>
 </resources>
