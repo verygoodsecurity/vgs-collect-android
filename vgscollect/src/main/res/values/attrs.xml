@@ -341,6 +341,7 @@
 
     <declare-styleable name="VGSTextInputLayout">
         <attr name="hint" />
+        <attr name="hintTextColor" format="color" />
         <attr name="hintEnabled" format="boolean"/>
         <attr name="hintAnimationEnabled" format="boolean"/>
 

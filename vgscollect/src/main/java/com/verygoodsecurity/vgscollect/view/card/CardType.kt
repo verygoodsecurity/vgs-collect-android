@@ -99,7 +99,7 @@ enum class CardType(val regex:String,
         arrayOf(3)
     ),
     UNIONPAY(
-        "^62",
+        "^(62|81)",
         R.drawable.ic_union_pay,
         (16..19).toList().toTypedArray(),
         arrayOf(3)

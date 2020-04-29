@@ -51,9 +51,11 @@ internal class InternalStorage(
         fieldsIgnore: Boolean = false, fileIgnore: Boolean = false
     ):MutableCollection<Pair<String, String>> {
         val list = mutableListOf<Pair<String, String>>()
+
         if(fieldsIgnore.not()) {
             list.addAll(fieldsStorage.getItems().toAssociatedList())
         }
+
         if(fileIgnore.not()) {
             list.merge(fileStorage.getAssociatedList())
         }

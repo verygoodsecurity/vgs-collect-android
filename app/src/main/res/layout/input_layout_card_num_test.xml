@@ -3,13 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/state"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/default_margin">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingRight="@dimen/default_margin">
+
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:hintTextColor="#88ff0000"
+            app:boxBackgroundModes="outline"
+            app:boxStrokeColor="@color/colorPrimaryDark"
+            app:hint="boxStrokeColor + hintTextColor">
+
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:fieldName="card_data.cardNumber"
+                app:cardBrandIconGravity="end"
+
+                app:textSize="18dp" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -835,7 +858,6 @@
                 app:cardBrandIconGravity="end"
                 app:textSize="12dp" />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
-
 
     </LinearLayout>
 </ScrollView>

@@ -75,6 +75,14 @@ open class VGSEditText @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets type of current input field.
+     * Choosing the input type you configure the limitations for this type.
+     *
+     * @param type The type of current input field.
+     *
+     * @see FieldType
+     */
     fun setFieldType(type: FieldType) {
         applyFieldType(type)
     }
