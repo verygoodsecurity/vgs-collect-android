@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:numberDivider=" "
-                android:paddingLeft="@dimen/half_default_padding"
+                android:paddingLeft="@dimen/half_default_margin"
                 app:fieldName="card_data.cardNumber"
                 app:isRequired="false"
                 app:textColor="@color/black"
@@ -89,7 +89,7 @@
                 app:fieldName="card_data.cardCvc"
                 app:inputType="textPassword"
                 app:textColor="@color/black"
-                android:paddingLeft="@dimen/half_default_padding"
+                android:paddingLeft="@dimen/half_default_margin"
                 app:isRequired="true"
                 app:singleLine="true"
                 app:textSize="12dp"
@@ -110,7 +110,7 @@
                 app:fieldName="card_data.personal_data.cardHolder"
                 app:textColor="@color/black"
                 app:singleLine="true"
-                android:paddingLeft="@dimen/half_default_padding"
+                android:paddingLeft="@dimen/half_default_margin"
                 app:inputType="text"
                 app:isRequired="true"
                 app:textSize="12dp"
@@ -133,7 +133,7 @@
                 app:fieldName="card_data.personal_data.secret.expDate"
                 app:textColor="@color/black"
                 app:textSize="12dp"
-                android:paddingLeft="@dimen/half_default_padding"
+                android:paddingLeft="@dimen/half_default_margin"
                 app:singleLine="true"
                 app:isRequired="true"
                 app:datePickerModes="calendar"/>
@@ -143,8 +143,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginStart="@dimen/default_padding"
-            android:layout_marginEnd="@dimen/default_padding">
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin">
             <ImageButton
                 android:id="@+id/submitBtn"
                 android:src="@android:drawable/ic_menu_send"

@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.material
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
@@ -40,6 +41,13 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
         addView(textInputLayout)
     }
 
+    /**
+     * Sets the padding. The view may add on the space required to display
+     * the scrollbars, depending on the style and visibility of the scrollbars.
+     * So the values returned from getPaddingLeft, getPaddingTop,
+     * getPaddingRight and getPaddingBottom may be different
+     * from the values set in this call.
+     */
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
         if(fieldState != null) {
             fieldState.left = left
@@ -50,28 +58,68 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
         super.setPadding(0,0,0,0)
     }
 
+    /**
+     * Returns the bottom padding of this view. If there are inset and enabled
+     * scrollbars, this value may include the space required to display the
+     * scrollbars as well.
+     *
+     * @return the bottom padding in pixels
+     */
     override fun getPaddingBottom(): Int {
         return fieldState.bottom
     }
 
+    /**
+     * Returns the end padding of this view depending on its resolved layout direction.
+     * If there are inset and enabled scrollbars, this value may include the space
+     * required to display the scrollbars as well.
+     *
+     * @return the end padding in pixels
+     */
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingEnd(): Int {
         return fieldState.end
     }
 
+    /**
+     * Returns the left padding of this view. If there are inset and enabled
+     * scrollbars, this value may include the space required to display the
+     * scrollbars as well.
+     *
+     * @return the left padding in pixels
+     */
     override fun getPaddingLeft(): Int {
         return fieldState.left
     }
 
+    /**
+     * Returns the right padding of this view. If there are inset and enabled
+     * scrollbars, this value may include the space required to display the
+     * scrollbars as well.
+     *
+     * @return the right padding in pixels
+     */
     override fun getPaddingRight(): Int {
         return fieldState.right
     }
 
+    /**
+     * Returns the start padding of this view depending on its resolved layout direction.
+     * If there are inset and enabled scrollbars, this value may include the space
+     * required to display the scrollbars as well.
+     *
+     * @return the start padding in pixels
+     */
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingStart(): Int {
         return fieldState.start
     }
 
+    /**
+     * Returns the top padding of this view.
+     *
+     * @return the top padding in pixels
+     */
     override fun getPaddingTop(): Int {
         return fieldState.top
     }
@@ -141,111 +189,329 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets an error message that will be displayed below our EditText. If the error
+     * is null, the error message will be cleared.
+     *
+     * <p>If the error functionality has not been enabled via setErrorEnabled(), then
+     * it will be automatically enabled if {@code error} is not empty.
+     *
+     * @param errorText Error message to display, or null to clear
+     * @see #getError()
+     */
     open fun setError(errorText:CharSequence?) {
         fieldState.error = errorText
     }
 
+    /**
+     * Sets an error message that will be displayed below our EditText. If the error
+     * is null, the error message will be cleared.
+     *
+     * <p>If the error functionality has not been enabled via setErrorEnabled(), then
+     * it will be automatically enabled if {@code error} is not empty.
+     *
+     * @param errorText Error messageResId to display, or null to clear
+     * @see #getError()
+     */
     open fun setError(resId:Int) {
         fieldState.error = context.resources.getString(resId)
     }
 
+    /**
+     * Returns the hint that is displayed when the text of the TextView
+     * is empty.
+     */
     open fun getHint() = fieldState.hint
 
+    /**
+     * Sets the text to be displayed when the text of the TextView is empty.
+     * Null means to use the normal empty text. The hint does not currently
+     * participate in determining the size of the view.
+     */
     open fun setHint(text:String?) {
         fieldState.hint = text
     }
 
+    /**
+     * Sets the text to be displayed when the text of the TextView is empty,
+     * from a resource.
+     */
     open fun setHint(resId:Int) {
         fieldState.hint = context.resources.getString(resId)
     }
 
+    /**
+     * Enables or disable the password visibility toggle functionality.
+     *
+     * <p>When enabled, a button is placed at the end of the EditText which enables the user to switch
+     * between the field's input being visibly disguised or not.
+     *
+     * @param isEnabled true to enable the functionality
+     * @deprecated Use setEndIconMode(int) instead.
+     */
     @Deprecated("Use #setEndIconMode(int) instead.")
     open fun setPasswordToggleEnabled(isEnabled:Boolean) {
         fieldState.isPasswordVisibilityToggleEnabled = isEnabled
     }
 
+    /**
+     * Set the icon to use for the password visibility toggle button.
+     *
+     * <p>If you use an icon you should also set a description for its action using setPasswordVisibilityToggleContentDescription(CharSequence).
+     * This is used for accessibility.
+     *
+     * @param resId resource id of the drawable to set, or 0 to clear the icon
+     * @deprecated Use setEndIconDrawable(int) instead.
+     */
     @Deprecated("Use #setEndIconDrawable(int) instead.")
     open fun setPasswordVisibilityToggleDrawable(@DrawableRes resId:Int) {
         fieldState.passwordVisibilityToggleDrawable = resId
     }
 
+    /**
+     * Applies a tint to the password visibility toggle drawable. Does not modify the current tint
+     * mode, which is PorterDuff.Mode#SRC_IN by default.
+     *
+     * <p>Subsequent calls to setPasswordVisibilityToggleDrawable(Drawable) will
+     * automatically mutate the drawable and apply the specified tint and tint mode using
+     * DrawableCompat.setTintList(Drawable, ColorStateList).
+     *
+     * @param tintList the tint to apply, may be null to clear tint
+     * @deprecated Use setEndIconTintList(ColorStateList) instead.
+     */
     open fun setPasswordVisibilityToggleTintList(tintList: ColorStateList?) {
         fieldState.passwordToggleTint = tintList
     }
 
-    open fun setBoxCornerRadius(boxCornerRadiusTopStart:Float, boxCornerRadiusTopEnd:Float, boxCornerRadiusBottomStart:Float, boxCornerRadiusBottomEnd:Float) {
+    /**
+     * Set the box's corner radii.
+     *
+     * @param boxCornerRadiusTopStart the value to use for the box's top start corner radius
+     * @param boxCornerRadiusTopEnd the value to use for the box's top end corner radius
+     * @param boxCornerRadiusBottomStart the value to use for the box's bottom start corner radius
+     * @param boxCornerRadiusBottomEnd the value to use for the box's bottom end corner radius
+     * @see #getBoxCornerRadiusTopStart()
+     * @see #getBoxCornerRadiusTopEnd()
+     * @see #getBoxCornerRadiusBottomStart()
+     * @see #getBoxCornerRadiusBottomEnd()
+     */
+    open fun setBoxCornerRadius(boxCornerRadiusTopStart:Float,
+                                boxCornerRadiusTopEnd:Float,
+                                boxCornerRadiusBottomStart:Float,
+                                boxCornerRadiusBottomEnd:Float) {
         fieldState.boxCornerRadiusTopStart = boxCornerRadiusTopStart
         fieldState.boxCornerRadiusTopEnd = boxCornerRadiusTopEnd
         fieldState.boxCornerRadiusBottomStart = boxCornerRadiusBottomStart
         fieldState.boxCornerRadiusBottomEnd = boxCornerRadiusBottomEnd
     }
 
-    open fun setBoxBackgroundMode(style:Int) {
-        fieldState.boxBackgroundMode = style
+    /**
+     * Set the box background mode (filled, outline, or none).
+     *
+     * <p>May be one of BOX_BACKGROUND_NONE, BOX_BACKGROUND_FILLED, or BOX_BACKGROUND_OUTLINE.
+     *
+     * <p>Note: This method defines TextInputLayout's internal behavior (for example, it allows the
+     * hint to be displayed inline with the stroke in a cutout), but doesn't set all attributes that
+     * are set in the styles provided for the box background modes. To achieve the look of an outlined
+     * or filled text field, supplement this method with other methods that modify the box, such as
+     * setBoxStrokeColor(int) and setBoxBackgroundColor(int).
+     *
+     * @param boxBackgroundMode box's background mode
+     */
+    open fun setBoxBackgroundMode(boxBackgroundMode:Int) {
+        fieldState.boxBackgroundMode = boxBackgroundMode
     }
 
-    open fun setBoxBackgroundColor(c:Int) {
-        fieldState.boxBackgroundColor = c
+    /**
+     * Set the filled box's background color.
+     *
+     * <p>Note: The background color is only supported for filled boxes. When used with box variants
+     * other than BoxBackgroundMode.BOX_BACKGROUND_FILLED, the box background color may not
+     * work as intended.
+     *
+     * @param boxBackgroundColor the color to use for the filled box's background
+     * @see #getBoxBackgroundColor()
+     */
+    open fun setBoxBackgroundColor(boxBackgroundColor:Int) {
+        fieldState.boxBackgroundColor = boxBackgroundColor
     }
 
-    open fun setBoxStrokeColor(c:Int) {
-        fieldState.boxStrokeColor = c
+    /**
+     * Set the outline box's stroke color.
+     *
+     * <p>Calling this method when not in outline box mode will do nothing.
+     *
+     * @param boxStrokeColor the color to use for the box's stroke
+     * @see #getBoxStrokeColor()
+     */
+    open fun setBoxStrokeColor(boxStrokeColor:Int) {
+        fieldState.boxStrokeColor = boxStrokeColor
     }
 
+    /**
+     * Sets whether the floating label functionality is enabled or not in this layout.
+     *
+     * <p>If enabled, any non-empty hint in the child EditText will be moved into the floating hint,
+     * and its existing hint will be cleared. If disabled, then any non-empty floating hint in this
+     * layout will be moved into the EditText, and this layout's hint will be cleared.
+     */
     open fun setHintEnabled(state:Boolean) {
         fieldState.isHintEnabled = state
     }
 
+    /**
+     * Set whether any hint state changes, due to being focused or non-empty text, are animated.
+     */
     open fun setHintAnimationEnabled(state:Boolean) {
         fieldState.isHintAnimationEnabled = state
     }
 
+    /**
+     * Whether the character counter functionality is enabled or not in this layout.
+     */
     fun setCounterEnabled(state:Boolean) {
         fieldState.isCounterEnabled = state
     }
 
-    fun setCounterMaxLength(count:Int) {
-        fieldState.counterMaxLength = count
+    /**
+     * Sets the max length to display at the character counter.
+     *
+     * @param maxLength maxLength to display. Any value less than or equal to 0 will not be shown.
+     */
+    fun setCounterMaxLength(maxLength:Int) {
+        fieldState.counterMaxLength = maxLength
     }
 
+    /**
+     * Sets the start icon.
+     *
+     * <p>If you use an icon you should also set a description for its action using
+     * setStartIconContentDescription(CharSequence). This is used for accessibility.
+     *
+     * @param resId resource id of the drawable to set, or 0 to clear and remove the icon
+     */
     fun setStartIconDrawable(resId:Int) {
         fieldState.startIconDrawable = resId
     }
 
+    /**
+     * Applies a tint to the start icon drawable. Does not modify the current tint mode, which is
+     * {@link PorterDuff.Mode#SRC_IN} by default.
+     *
+     * <p>Subsequent calls to setStartIconDrawable(Drawable) will automatically mutate the
+     * drawable and apply the specified tint and tint mode using
+     * DrawableCompat.setTintList(Drawable, ColorStateList).
+     *
+     * @param startIconTintList the tint to apply, may be null to clear tint
+     */
     fun setStartIconDrawableTintList(startIconTintList : ColorStateList?) {
         fieldState.startIconTintList = startIconTintList
     }
 
-    fun setStartIconOnClickListener(listener : OnClickListener?) {
-        fieldState.startIconOnClickListener = listener
+    /**
+     * Sets the start icon's functionality that is performed when the start icon is clicked. The icon
+     * will not be clickable if its click and long click listeners are null.
+     *
+     * @param startIconOnClickListener the android.view.View.OnClickListener the start icon
+     *     view will have, or null to clear it.
+     */
+    fun setStartIconOnClickListener(startIconOnClickListener : OnClickListener?) {
+        fieldState.startIconOnClickListener = startIconOnClickListener
     }
 
+    /**
+     * Set the icon to use for the end icon.
+     *
+     * <p>If you use an icon you should also set a description for its action using
+     * setEndIconContentDescription(CharSequence). This is used for accessibility.
+     *
+     * @param resId resource id of the drawable to set, or 0 to clear the icon
+     */
     fun setEndIconDrawable(resId:Int) {
         fieldState.endIconDrawable = resId
     }
 
+    /**
+     * Applies a tint to the end icon drawable. Does not modify the current tint mode, which is
+     * PorterDuff.Mode#SRC_IN by default.
+     *
+     * <p>Subsequent calls to setEndIconDrawable(Drawable) will automatically mutate the
+     * drawable and apply the specified tint and tint mode using
+     * DrawableCompat#setTintList(Drawable, ColorStateList).
+     *
+     * @param endIconTintList the tint to apply, may be null to clear tint
+     */
     fun setEndIconDrawableTintList(endIconTintList : ColorStateList?) {
         fieldState.endIconTintList = endIconTintList
     }
 
+    /**
+     * Set up the EndIconMode. When set, a button is placed at the end of the EditText which
+     * enables the user to perform the specific icon's functionality.
+     *
+     * @param endIconMode the EndIconMode to be set, or END_ICON_NONE to clear the current
+     * icon if any
+     */
     fun setEndIconMode(mode:Int) {
         if(mode <= VGSTextInputLayout.END_ICON_CLEAR_TEXT) {
             fieldState.endIconMode = mode
         }
     }
 
+    /**
+     * Returns the current {@link EndIconMode}.
+     *
+     * @return the end icon mode enum
+     */
     fun getEndIconMode():Int {
         return fieldState.endIconMode
     }
 
-    fun setEndIconOnClickListener(listener : OnClickListener?) {
-        fieldState.endIconOnClickListener = listener
+    /**
+     * Sets the end icon's functionality that is performed when the icon is clicked. The icon will not
+     * be clickable if its click and long click listeners are null.
+     *
+     * @param endIconOnClickListener the android.view.View.OnClickListener the end icon view
+     * will have
+     */
+    fun setEndIconOnClickListener(endIconOnClickListener : OnClickListener?) {
+        fieldState.endIconOnClickListener = endIconOnClickListener
     }
 
 
     @VisibleForTesting
     internal fun getFieldState():InputLayoutStateImpl {
         return fieldState
+    }
+
+    /**
+     * Sets the typeface and style in which the text should be displayed.
+     *
+     * @param typeface This value may be null.
+     */
+    open fun setTypeface(typeface: Typeface) {
+        fieldState.typeface = typeface
+    }
+
+    /**
+     * Returns the typeface used for the hint and any label views (such as counter and error views).
+     */
+    fun getTypeface():Typeface? {
+        return fieldState.typeface
+    }
+
+    /**
+     * Sets the collapsed hint text color from the specified ColorStateList resource.
+     */
+    fun setHintTextColor(hintTextColor:ColorStateList) {
+        fieldState.hintTextColor = hintTextColor
+    }
+
+    /**
+     * Gets the collapsed hint text color.
+     */
+    fun getHintTextColor() : ColorStateList? {
+        return fieldState.hintTextColor
     }
 
 }

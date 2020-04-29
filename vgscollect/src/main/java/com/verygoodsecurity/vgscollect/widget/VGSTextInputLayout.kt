@@ -58,6 +58,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 val passwordToggleEnabled = getBoolean(R.styleable.VGSTextInputLayout_passwordToggleEnabled, false)
                 val drawRef = getResourceId(R.styleable.VGSTextInputLayout_passwordToggleDrawable, 0)
                 val textColor = getColorStateList(R.styleable.VGSTextInputLayout_passwordToggleTint)
+                val hintTextColor = getColorStateList(R.styleable.VGSTextInputLayout_hintTextColor)
 
                 val hint = getString(R.styleable.VGSTextInputLayout_hint)
 
@@ -117,6 +118,9 @@ class VGSTextInputLayout @JvmOverloads constructor(
 
                 setCounterEnabled(counterEnabled)
                 setCounterMaxLength(counterMaxLength)
+                if(hintTextColor != null) {
+                    setHintTextColor(hintTextColor)
+                }
 
             } finally {
                 recycle()

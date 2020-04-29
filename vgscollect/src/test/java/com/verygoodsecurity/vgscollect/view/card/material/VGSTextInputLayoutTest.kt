@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card.material
 import android.app.Activity
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Build
 import android.view.View
 import android.widget.EditText
@@ -743,6 +744,17 @@ class VGSTextInputLayoutTest {
     }
 
     @Test
+    fun test_set_hint_text_color() {
+        val myList =  ColorStateList.valueOf(Color.GREEN)
+        textInputLayout.setHintTextColor(myList)
+        attachView()
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(myList, state.hintTextColor)
+    }
+
+    @Test
     fun test_set_end_drawable_mode() {
         textInputLayout.setEndIconMode(VGSTextInputLayout.END_ICON_CLEAR_TEXT)
         attachView()
@@ -782,5 +794,18 @@ class VGSTextInputLayoutTest {
         val state = textInputLayout.getFieldState()
 
         assertEquals(value, state.counterMaxLength)
+    }
+
+
+    @Test
+    fun test_set_typeface() {
+        val typeface = Typeface.DEFAULT_BOLD
+        textInputLayout.setTypeface(typeface)
+        attachView()
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(typeface, textInputLayout.getTypeface())
+        assertEquals(typeface, state.typeface)
     }
 }

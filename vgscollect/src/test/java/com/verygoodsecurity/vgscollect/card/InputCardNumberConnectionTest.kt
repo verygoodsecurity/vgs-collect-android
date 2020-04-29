@@ -41,7 +41,7 @@ class InputCardNumberConnectionTest {
         connection.setOutputListener(listener)
 
         val content = FieldContent.CardNumberContent()
-        content.data = "5555-5551-1111-1890"
+        content.data = "5555-5555-5555-4444"
         val textItem = VGSFieldState(isValid = false,
             isRequired = true,
             fieldName = "fieldName",
@@ -140,7 +140,7 @@ class InputCardNumberConnectionTest {
         connection.setOutputListener(listener)
 
         val content = FieldContent.CardNumberContent()
-        content.data = "4111 1111 5555 5555"
+        content.data = "4111 1111 1111 1111"
         val textItem = VGSFieldState(isValid = false,
             isRequired = true,
             fieldName = "fieldName",

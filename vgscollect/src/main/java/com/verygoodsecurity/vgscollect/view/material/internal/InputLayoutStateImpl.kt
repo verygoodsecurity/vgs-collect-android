@@ -2,16 +2,27 @@ package com.verygoodsecurity.vgscollect.view.material.internal
 
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
+import android.graphics.Typeface
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.VisibleForTesting
 import com.google.android.material.textfield.TextInputLayout
+import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 
 /** @suppress */
 internal class InputLayoutStateImpl(
     private val textInputLayout: TextInputLayoutWrapper
 ) : InputLayoutState {
 
+    internal var typeface: Typeface? = null
+        set(value) {
+            field = value
+            if(isReady() && value != null) {
+                textInputLayout.typeface = value
+            }
+        }
     internal var isCounterEnabled: Boolean = false
         set(value) {
             field = value
@@ -34,6 +45,13 @@ internal class InputLayoutStateImpl(
             }
         }
 
+    internal var hintTextColor: ColorStateList? = null
+        set(value) {
+            field = value
+            if(isReady() && value != null) {
+                textInputLayout.hintTextColor = value
+            }
+        }
     internal var startIconTintList: ColorStateList? = null
         set(value) {
             field = value
@@ -261,6 +279,9 @@ internal class InputLayoutStateImpl(
 
     override fun restore(textInputLayoutWrapper: TextInputLayoutWrapper?) {
         textInputLayoutWrapper?.apply {
+            if(this@InputLayoutStateImpl.typeface != null) {
+                this.typeface = this@InputLayoutStateImpl.typeface
+            }
             this.isHintEnabled = this@InputLayoutStateImpl.isHintEnabled
             this.isHintAnimationEnabled = this@InputLayoutStateImpl.isHintAnimationEnabled
             this.hint = this@InputLayoutStateImpl.hint
@@ -271,6 +292,10 @@ internal class InputLayoutStateImpl(
                 this@InputLayoutStateImpl.right,
                 this@InputLayoutStateImpl.bottom
             )
+
+            if(this@InputLayoutStateImpl.hintTextColor != null) {
+                hintTextColor = this@InputLayoutStateImpl.hintTextColor
+            }
 
             this.boxBackgroundMode = this@InputLayoutStateImpl.boxBackgroundMode
             if (this@InputLayoutStateImpl.boxBackgroundMode != TextInputLayout.BOX_BACKGROUND_NONE) {
@@ -320,8 +345,21 @@ internal class InputLayoutStateImpl(
         textInputLayout.restoreState(this)
     }
 
-    internal fun addChildView(child: View?) {
+    internal fun addChildView(child: InputFieldView?) {
+        prepareInternalView(child)
+
         textInputLayout.addView(child)
+    }
+
+    private fun prepareInternalView(view: InputFieldView?) {
+        (view?.getView() as? BaseInputField)?.apply {
+            setMinimumPaddingLimitations(
+                resources.getDimension(R.dimen.f_label_horizontal_field).toInt(),
+                resources.getDimension(R.dimen.f_label_vertical_field).toInt()
+            )
+
+            setBackgroundResource(0)
+        }
     }
 
     @VisibleForTesting

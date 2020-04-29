@@ -8,8 +8,9 @@ import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 /** @suppress */
 internal class InputCardCVCConnection(
     private val id:Int,
-    private val validator: VGSValidator?
+    validator: VGSValidator?
 ): InputRunnable {
+    internal var runtimeValidator: VGSValidator? = validator
     private var stateListener: OnVgsViewStateChangeListener? = null
 
     private var output = VGSFieldState()
@@ -32,7 +33,7 @@ internal class InputCardCVCConnection(
         } else {
             val updatedStr = str?.trim()?:""
 
-            val isStrValid = validator?.isValid(updatedStr)?:false
+            val isStrValid = runtimeValidator?.isValid(updatedStr)?:false
             output.isValid = isStrValid
         }
 
