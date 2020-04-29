@@ -15,26 +15,25 @@ class DefaultCardValidator(
     }
 }
 
-internal fun VGSValidator.isLuhnChecksumValid(number: String): Boolean {
-    var sum = 0
+internal fun VGSValidator.isLuhnCheckSumValid(number: String): Boolean {
+    var cardSum = 0
     var isDoubled = false
     for (i in number.length - 1 downTo 0) {
         val digit = number[i] - '0'
         if (digit < 0 || digit > 9) {
-            // Ignore non-digits
             continue
         }
-        var addend: Int
+        var append: Int
         if (isDoubled) {
-            addend = digit * 2
-            if (addend > 9) {
-                addend -= 9
+            append = digit * 2
+            if (append > 9) {
+                append -= 9
             }
         } else {
-            addend = digit
+            append = digit
         }
-        sum += addend
+        cardSum += append
         isDoubled = !isDoubled
     }
-    return sum % 10 == 0
+    return cardSum % 10 == 0
 }
