@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.view.View
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.InputCardCVCConnection
 import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
@@ -48,10 +49,15 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {
-        val filterLength = InputFilter.LengthFilter(dependency.value as Int)
-        filters = arrayOf(CVCValidateFilter(), filterLength)
-        (inputConnection as? InputCardCVCConnection)?.runtimeValidator = CardCVCCodeValidator(dependency.value)
-        text = text
+        if(dependency.dependencyType == DependencyType.LENGTH) {
+            val filterLength = InputFilter.LengthFilter(dependency.value as Int)
+            filters = arrayOf(CVCValidateFilter(), filterLength)
+            (inputConnection as? InputCardCVCConnection)?.runtimeValidator =
+                CardCVCCodeValidator(dependency.value)
+            text = text
+        } else {
+            super.dispatchDependencySetting(dependency)
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

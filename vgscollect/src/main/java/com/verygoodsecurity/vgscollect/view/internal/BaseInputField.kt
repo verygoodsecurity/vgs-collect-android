@@ -18,6 +18,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
+import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.InputRunnable
@@ -204,7 +205,11 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    override fun dispatchDependencySetting(dependency: Dependency) {}
+    override fun dispatchDependencySetting(dependency: Dependency) {
+        if(dependency.dependencyType == DependencyType.TEXT) {
+            setText(dependency.value.toString())
+        }
+    }
 
     private fun requestFocusOnView(id:Int) {
         val nextView = rootView?.findViewById<View>(id)
