@@ -185,10 +185,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        val l = if(left < minW) minW else left
-        val r = if(right < minW) minW else right
-        val t = if(top < minH) minH else top
-        val b = if(bottom < minH) minH else bottom
+        val l = left + minW
+        val r = right + minW
+        val t = top + minH
+        val b = bottom + minH
         super.setPadding(l, t, r, b)
     }
 
