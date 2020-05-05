@@ -79,6 +79,10 @@ class ExpirationDateEditText @JvmOverloads constructor(
         setMinDate(System.currentTimeMillis())
     }
 
+    fun setOutputRegex(regex:String) {
+        setOutputPattern(regex)
+    }
+
     /**
      * Representation of dates and times is an international standard covering the exchange of date- and time-related data.
      * The method uses the ISO 8601 standard.
