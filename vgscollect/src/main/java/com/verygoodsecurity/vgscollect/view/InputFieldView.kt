@@ -19,6 +19,7 @@ import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
+import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
@@ -899,4 +900,12 @@ abstract class InputFieldView @JvmOverloads constructor(
         return inputField.imeOptions
     }
 
+    /**
+     * This method adds a listener whose methods are called whenever VGS secure field state changes.
+     *
+     * @param onFieldStateChangeListener listener which will notify about changes inside input field.
+     */
+    fun setOnFieldStateChangeListener(onFieldStateChangeListener: OnFieldStateChangeListener?) {
+        inputField.setOnFieldStateChangeListener(onFieldStateChangeListener)
+    }
 }
