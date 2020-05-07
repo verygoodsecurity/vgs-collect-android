@@ -103,7 +103,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="@string/card_holder">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
                 android:id="@+id/cardHolderField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -114,7 +114,6 @@
                 app:inputType="text"
                 app:isRequired="true"
                 app:textSize="12dp"
-                app:fieldType="cardHolderName"
                 app:text="John Galt"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
