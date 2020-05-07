@@ -58,25 +58,25 @@ class VGSEditTextTest {
 
     @Test
     fun test_card_number() {
-        view.applyFieldType(FieldType.CARD_NUMBER)
+        view.setFieldType(FieldType.CARD_NUMBER)
         Assert.assertEquals(FieldType.CARD_NUMBER, view.getFieldType())
     }
 
     @Test
     fun test_exp_date() {
-        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+        view.setFieldType(FieldType.CARD_EXPIRATION_DATE)
         Assert.assertEquals(FieldType.CARD_EXPIRATION_DATE, view.getFieldType())
     }
 
     @Test
     fun test_holder_name() {
-        view.applyFieldType(FieldType.CARD_HOLDER_NAME)
+        view.setFieldType(FieldType.CARD_HOLDER_NAME)
         Assert.assertEquals(FieldType.CARD_HOLDER_NAME, view.getFieldType())
     }
 
     @Test
     fun test_cvc() {
-        view.applyFieldType(FieldType.CVC)
+        view.setFieldType(FieldType.CVC)
         Assert.assertEquals(FieldType.CVC, view.getFieldType())
     }
 
@@ -85,7 +85,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CVC)
+        view.setFieldType(FieldType.CVC)
         Assert.assertEquals(FieldType.CVC, view.getFieldType())
 
         view.setText("12f")
@@ -99,7 +99,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CVC)
+        view.setFieldType(FieldType.CVC)
 
         view.setText("12333333")
         Assert.assertEquals("1233", (view.getView() as BaseInputField).text.toString())
@@ -110,7 +110,7 @@ class VGSEditTextTest {
 
     @Test
     fun test_info() {
-        view.applyFieldType(FieldType.INFO)
+        view.setFieldType(FieldType.INFO)
         Assert.assertEquals(FieldType.INFO, view.getFieldType())
     }
 
@@ -119,7 +119,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_NUMBER)
+        view.setFieldType(FieldType.CARD_NUMBER)
 
         view.setInputType(InputType.TYPE_NULL)
         Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
@@ -130,7 +130,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_NUMBER)
+        view.setFieldType(FieldType.CARD_NUMBER)
 
         view.setInputType(InputType.TYPE_CLASS_NUMBER)
         Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
@@ -141,7 +141,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_NUMBER)
+        view.setFieldType(FieldType.CARD_NUMBER)
 
         val passType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         view.setInputType(passType)
@@ -156,7 +156,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_NUMBER)
+        view.setFieldType(FieldType.CARD_NUMBER)
 
         val passType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         view.setInputType(passType)
@@ -171,7 +171,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_NUMBER)
+        view.setFieldType(FieldType.CARD_NUMBER)
 
         view.setInputType(InputType.TYPE_CLASS_TEXT)
         Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
@@ -185,7 +185,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+        view.setFieldType(FieldType.CARD_EXPIRATION_DATE)
 
         view.setInputType(InputType.TYPE_CLASS_NUMBER)
         Assert.assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
@@ -196,7 +196,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+        view.setFieldType(FieldType.CARD_EXPIRATION_DATE)
 
         val passType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         view.setInputType(passType)
@@ -208,7 +208,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+        view.setFieldType(FieldType.CARD_EXPIRATION_DATE)
 
         val passType = InputType.TYPE_CLASS_TEXT
         view.setInputType(passType)
@@ -220,7 +220,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+        view.setFieldType(FieldType.CARD_EXPIRATION_DATE)
 
         val passType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         view.setInputType(passType)
@@ -232,7 +232,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+        view.setFieldType(FieldType.CARD_EXPIRATION_DATE)
 
         view.setInputType(InputType.TYPE_CLASS_DATETIME)
         Assert.assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
@@ -243,7 +243,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+        view.setFieldType(FieldType.CARD_EXPIRATION_DATE)
 
         view.setInputType(InputType.TYPE_CLASS_PHONE)
         Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
@@ -261,7 +261,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_EXPIRATION_DATE)
+        view.setFieldType(FieldType.CARD_EXPIRATION_DATE)
 
         view.setInputType(InputType.TYPE_NULL)
         Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
@@ -272,7 +272,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CVC)
+        view.setFieldType(FieldType.CVC)
 
         view.setInputType(InputType.TYPE_CLASS_NUMBER)
         Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
@@ -283,7 +283,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CVC)
+        view.setFieldType(FieldType.CVC)
 
         val passType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         view.setInputType(passType)
@@ -298,7 +298,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CVC)
+        view.setFieldType(FieldType.CVC)
 
         val passType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         view.setInputType(passType)
@@ -313,7 +313,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CVC)
+        view.setFieldType(FieldType.CVC)
 
         view.setInputType(InputType.TYPE_CLASS_TEXT)
         Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
@@ -327,7 +327,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CVC)
+        view.setFieldType(FieldType.CVC)
 
         view.setInputType(InputType.TYPE_NULL)
         Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
@@ -338,7 +338,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_HOLDER_NAME)
+        view.setFieldType(FieldType.CARD_HOLDER_NAME)
 
         view.setInputType(InputType.TYPE_CLASS_TEXT)
         Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
@@ -349,7 +349,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_HOLDER_NAME)
+        view.setFieldType(FieldType.CARD_HOLDER_NAME)
 
         view.setInputType(InputType.TYPE_CLASS_NUMBER)
         Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
@@ -360,7 +360,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_HOLDER_NAME)
+        view.setFieldType(FieldType.CARD_HOLDER_NAME)
 
         view.setInputType(InputType.TYPE_CLASS_DATETIME)
         Assert.assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
@@ -371,7 +371,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_HOLDER_NAME)
+        view.setFieldType(FieldType.CARD_HOLDER_NAME)
 
         val textPass = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         view.setInputType(textPass)
@@ -383,7 +383,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_HOLDER_NAME)
+        view.setFieldType(FieldType.CARD_HOLDER_NAME)
 
         val numPass = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         view.setInputType(numPass)
@@ -395,7 +395,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.CARD_HOLDER_NAME)
+        view.setFieldType(FieldType.CARD_HOLDER_NAME)
 
         view.setInputType(InputType.TYPE_NULL)
         Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
@@ -406,7 +406,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.INFO)
+        view.setFieldType(FieldType.INFO)
 
         view.setInputType(InputType.TYPE_CLASS_TEXT)
         Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
@@ -417,7 +417,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.INFO)
+        view.setFieldType(FieldType.INFO)
 
         view.setInputType(InputType.TYPE_CLASS_NUMBER)
         Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
@@ -428,7 +428,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.INFO)
+        view.setFieldType(FieldType.INFO)
 
         view.setInputType(InputType.TYPE_CLASS_DATETIME)
         Assert.assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
@@ -439,7 +439,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.INFO)
+        view.setFieldType(FieldType.INFO)
 
         val textPass = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         view.setInputType(textPass)
@@ -451,7 +451,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.INFO)
+        view.setFieldType(FieldType.INFO)
 
         val numPass = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         view.setInputType(numPass)
@@ -463,7 +463,7 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        view.applyFieldType(FieldType.INFO)
+        view.setFieldType(FieldType.INFO)
 
         view.setInputType(InputType.TYPE_NULL)
         Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())

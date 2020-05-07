@@ -39,13 +39,32 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
     }
 
     private fun applyInputType() {
-        val type = inputType
-        if(type == InputType.TYPE_TEXT_VARIATION_PASSWORD || type == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        } else {
-            inputType = InputType.TYPE_CLASS_TEXT
+        if(!isValidInputType(inputType)) {
+            inputType = InputType.TYPE_CLASS_NUMBER
         }
         refreshInput()
+    }
+
+    private fun isValidInputType(type: Int):Boolean {
+        return type == InputType.TYPE_CLASS_NUMBER ||
+                type == InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+    }
+
+    override fun setInputType(type: Int) {
+        val validType = validateInputType(type)
+        super.setInputType(validType)
+        refreshInput()
+    }
+
+    private fun validateInputType(type: Int):Int {
+        return when(type) {
+            InputType.TYPE_CLASS_NUMBER -> type
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            InputType.TYPE_NUMBER_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
+            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> type
+            else -> InputType.TYPE_CLASS_NUMBER
+        }
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {
