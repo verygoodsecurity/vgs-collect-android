@@ -37,14 +37,13 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="no paddings"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                 android:id="@+id/cardHolderField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:nextFocusDown="@+id/cardExpDateField"
                 app:imeOptions="actionNext"
-                app:fieldName="card_data.personal_data.cardHolder"
-                app:fieldType="cardHolderName"/>
+                app:fieldName="card_data.personal_data.cardHolder"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
@@ -82,14 +81,13 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:paddingLeft="@dimen/default_margin"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
-        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
             android:id="@+id/cardCVCField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
             app:imeOptions="actionDone"
             app:hint="padding start"
-            app:fieldType="cvc"
             android:background="#22ff0000"
             android:paddingStart="@dimen/default_margin"/>
 
@@ -101,19 +99,18 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding start"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:fieldName="card_data.cardCvc"
                 app:imeOptions="actionDone"
-                app:fieldType="cvc"
                 android:paddingStart="@dimen/default_margin"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
 
 
-        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -122,7 +119,6 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:singleLine="true"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-            app:fieldType="cardHolderName"
             android:paddingRight="@dimen/default_margin"/>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -133,7 +129,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding right"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
@@ -141,11 +137,10 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:hint="padding end"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-                app:fieldType="cardHolderName"
                 android:paddingRight="@dimen/default_margin"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
-        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -154,7 +149,6 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding end"
-            app:fieldType="cardHolderName"
             android:paddingEnd="@dimen/default_margin"/>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -165,12 +159,11 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding end"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
                 app:imeOptions="actionDone"
-                app:fieldType="cardHolderName"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
                 android:paddingEnd="@dimen/default_margin"/>
@@ -179,7 +172,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 
 
 
-        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -188,7 +181,6 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:singleLine="true"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-            app:fieldType="cardHolderName"
             android:paddingTop="@dimen/default_margin"/>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -199,7 +191,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding right"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
@@ -207,12 +199,11 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:hint="padding top"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-                app:fieldType="cardHolderName"
                 android:paddingTop="@dimen/default_margin"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
-        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -221,7 +212,6 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding Bottom"
-            app:fieldType="cardHolderName"
             android:paddingBottom="@dimen/default_margin"/>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -232,19 +222,18 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding bottom"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
                 app:imeOptions="actionDone"
-                app:fieldType="cardHolderName"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
                 android:paddingBottom="@dimen/default_margin"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
-        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -253,7 +242,6 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding start top"
-            app:fieldType="cardHolderName"
             android:paddingTop="@dimen/default_margin"
             android:paddingStart="@dimen/default_margin"
             />
@@ -266,12 +254,11 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding start top"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
                 app:imeOptions="actionDone"
-                app:fieldType="cardHolderName"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
                 android:paddingTop="@dimen/default_margin"
@@ -280,7 +267,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
-        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -289,7 +276,6 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding end bottom"
-            app:fieldType="cardHolderName"
             android:paddingBottom="@dimen/default_margin"
             android:paddingEnd="@dimen/default_margin"
             />
@@ -302,12 +288,11 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding end bottom"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
                 app:imeOptions="actionDone"
-                app:fieldType="cardHolderName"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
                 android:paddingBottom="@dimen/default_margin"
@@ -317,7 +302,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 
 
 
-        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -326,7 +311,6 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding top bottom"
-            app:fieldType="cardHolderName"
             android:paddingBottom="@dimen/default_margin"
             android:paddingTop="@dimen/default_margin"
             />
@@ -339,12 +323,11 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding top bottom"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
                 app:imeOptions="actionDone"
-                app:fieldType="cardHolderName"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
                 android:paddingBottom="@dimen/default_margin"
@@ -353,7 +336,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
-        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -362,7 +345,6 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding left right"
-            app:fieldType="cardHolderName"
             android:paddingLeft="@dimen/default_margin"
             android:paddingRight="@dimen/default_margin"
             />
@@ -375,12 +357,11 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding left right"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
                 app:imeOptions="actionDone"
-                app:fieldType="cardHolderName"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
                 android:paddingLeft="@dimen/default_margin"
@@ -389,7 +370,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
-        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -398,7 +379,6 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding all"
-            app:fieldType="cardHolderName"
             android:paddingLeft="@dimen/default_margin"
             android:paddingRight="@dimen/default_margin"
             android:paddingBottom="@dimen/default_margin"
@@ -413,12 +393,11 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding all"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
                 app:imeOptions="actionDone"
-                app:fieldType="cardHolderName"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
                 android:paddingLeft="@dimen/default_margin"
