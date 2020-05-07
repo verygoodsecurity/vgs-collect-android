@@ -9,8 +9,9 @@ import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
-import com.verygoodsecurity.vgscollect.widget.VGSEditText
+import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import org.junit.Assert
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -29,14 +30,14 @@ class InputFieldViewTest {
     private lateinit var activityController: ActivityController<Activity>
     private lateinit var activity: Activity
 
-    private lateinit var view: VGSEditText
+    private lateinit var view: InputFieldView
 
     @Before
     fun setUp() {
         activityController = Robolectric.buildActivity(Activity::class.java)
         activity = activityController.get()
 
-        view = VGSEditText(activity)
+        view = CardVerificationCodeEditText(activity)
     }
 
     @Test
