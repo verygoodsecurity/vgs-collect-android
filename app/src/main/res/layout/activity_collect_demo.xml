@@ -122,7 +122,7 @@
 
                             <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
                                 android:id="@+id/cardNumberFieldLay"
-                                android:layout_width="155dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:hintEnabled="true"
