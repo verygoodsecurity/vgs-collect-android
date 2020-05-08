@@ -133,10 +133,9 @@
                                     android:id="@+id/cardNumberField"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    style="@style/AppTheme.PaymentField"
                                     app:fieldName="card_data.cardNumber"
+                                    style="@style/AppTheme.PaymentField"
                                     app:numberDivider=" "
-                                    app:text="4111222233334444555"
                                     android:nextFocusDown="@+id/cardHolderField"
                                     app:imeOptions="actionNext"
                                     app:cardBrandIconGravity="end"/>
@@ -151,9 +150,10 @@
                                 android:layout_marginTop="@dimen/payment_card_vertical_margin"
                                 app:endIconTint="@color/colorAccent"
                                 app:hint="@string/card_holder"
-                                app:boxBackgroundModes="outline"
+                                app:boxBackgroundModes="filled"
+                                app:boxBackgroundColor="@color/bg_vgs_card_view"
                                 app:boxStrokeColor="@color/colorAccent">
-                                <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                                <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
                                     android:id="@+id/cardHolderField"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
@@ -161,7 +161,6 @@
                                     android:nextFocusDown="@+id/cardExpDateField"
                                     app:imeOptions="actionNext"
                                     app:fieldName="card_data.personal_data.cardHolder"
-                                    app:fieldType="cardHolderName"
                                     app:text="John Galt"/>
                             </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -185,8 +184,9 @@
                                     app:fieldName="card_data.personal_data.secret.expDate"
                                     android:nextFocusDown="@+id/cardCVCField"
                                     app:imeOptions="actionNext"
+                                    app:inputType="date"
                                     app:datePickerModes="input"
-                                    app:text="12/26"
+                                    app:outputPattern="yyyy-MM-dd'T'HH:mm:ss.SSSSSSS"
                                     app:datePattern="MM/yy"/>
                             </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -203,15 +203,14 @@
                                 app:hint="@string/cvc"
                                 app:boxBackgroundModes="outline"
                                 app:boxStrokeColor="@color/colorAccent">
-                                <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                                <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                                     android:id="@+id/cardCVCField"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     style="@style/AppTheme.PaymentField"
                                     app:fieldName="card_data.cardCvc"
                                     app:imeOptions="actionDone"
-                                    app:text="123"
-                                    app:fieldType="cvc"/>
+                                    app:text="123"/>
                             </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -283,7 +282,6 @@
                                 android:layout_height="wrap_content"
                                 android:background="@android:color/transparent"/>
                         </LinearLayout>
-
                     </LinearLayout>
 
 

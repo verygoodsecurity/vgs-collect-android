@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.material.internal
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.graphics.Typeface
@@ -346,19 +347,33 @@ internal class InputLayoutStateImpl(
     }
 
     internal fun addChildView(child: InputFieldView?) {
-        prepareInternalView(child)
+        (child?.getView() as? BaseInputField)?.apply {
 
-        textInputLayout.addView(child)
-    }
-
-    private fun prepareInternalView(view: InputFieldView?) {
-        (view?.getView() as? BaseInputField)?.apply {
-            setMinimumPaddingLimitations(
-                resources.getDimension(R.dimen.f_label_horizontal_field).toInt(),
-                resources.getDimension(R.dimen.f_label_vertical_field).toInt()
-            )
+            val limitations = produceInnerViewPaddingLimitations(boxBackgroundMode, context)
+            setMinimumPaddingLimitations(limitations.first, limitations.second)
 
             setBackgroundResource(0)
+
+            textInputLayout.addView(this)
+
+        }
+    }
+
+    private fun produceInnerViewPaddingLimitations(mode: Int, context:Context):Pair<Int, Int> {
+        return when(mode) {
+            TextInputLayout.BOX_BACKGROUND_OUTLINE -> Pair(
+                context.resources.getDimension(R.dimen.f_label_horizontal_field_set_1).toInt(),
+                context.resources.getDimension(R.dimen.f_label_vertical_field_set_1).toInt()
+            )
+            TextInputLayout.BOX_BACKGROUND_FILLED -> Pair(
+                context.resources.getDimension(R.dimen.f_label_horizontal_field_set_2).toInt(),
+                context.resources.getDimension(R.dimen.f_label_vertical_field_set_2).toInt()
+            )
+            TextInputLayout.BOX_BACKGROUND_NONE -> Pair(
+                context.resources.getDimension(R.dimen.f_label_horizontal_field_set_3).toInt(),
+                context.resources.getDimension(R.dimen.f_label_vertical_field_set_3).toInt()
+            )
+            else -> Pair(0,0)
         }
     }
 

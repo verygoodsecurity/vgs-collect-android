@@ -3,6 +3,8 @@ package com.verygoodsecurity.vgscollect.core.model.state
 import com.verygoodsecurity.vgscollect.util.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import java.lang.StringBuilder
+import java.text.SimpleDateFormat
+import java.util.*
 
 /** @suppress */
 sealed class FieldContent {
@@ -18,6 +20,10 @@ sealed class FieldContent {
             internal set
     }
 
+    class CreditCardExpDateContent:FieldContent() {
+        var rawData:String? = null
+    }
+
     class InfoContent:FieldContent()
 
     override fun hashCode(): Int {
@@ -26,6 +32,17 @@ sealed class FieldContent {
 
     override fun equals(other: Any?): Boolean {
         return other is String && other == data
+    }
+}
+
+/** @suppress */
+internal fun FieldContent.CreditCardExpDateContent.handleOutputFormat(selectedDate: Calendar, fieldDateFormat: SimpleDateFormat?, fieldDateOutPutFormat: SimpleDateFormat?) {
+    if(fieldDateFormat != null && fieldDateFormat.toPattern() == fieldDateOutPutFormat?.toPattern()) {
+        data = fieldDateFormat?.format(selectedDate.time)
+        rawData = data
+    } else {
+        data = fieldDateFormat?.format(selectedDate.time)
+        rawData = fieldDateOutPutFormat?.format(selectedDate.time)
     }
 }
 
