@@ -125,6 +125,7 @@ workflows:
               only:
                 - master
                 - stage
+                - develop
       - "Run Lint":
           requires:
             *prepare_sources
@@ -141,6 +142,7 @@ workflows:
               only:
                 - master
                 - stage
+                - develop
       - "Assemble Debug Build":
           requires:
             *all_test
