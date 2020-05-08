@@ -15,9 +15,7 @@ internal class InputCardNumberConnection(
     private val validator: VGSValidator?,
     private val IcardBrand: IdrawCardBrand? = null,
     private val divider:String? = null
-): InputRunnable {
-    private var stateListener: OnVgsViewStateChangeListener? = null
-
+): BaseInputConnection() {
     private val cardFilters = mutableListOf<VGSCardFilter>()
     private val brandLuhnValidations by lazy {
         val set = HashMap<CardType, VGSValidator>()
@@ -41,9 +39,10 @@ internal class InputCardNumberConnection(
 
     override fun getOutput() = output
 
-    override fun setOutputListener(l: OnVgsViewStateChangeListener?) {
-        stateListener = l
-        run()
+    override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
+        listener?.let {
+            addNewListener(it)
+        }
     }
 
     override fun clearFilters() {
@@ -77,7 +76,7 @@ internal class InputCardNumberConnection(
             output.isValid = isLuhnValid && isStrValid && isLengthAppropriate
         }
 
-        stateListener?.emit(id, output)
+        notifyAllListeners(id, output)
     }
 
     private fun mapValue(item: CardBrandWrapper) {

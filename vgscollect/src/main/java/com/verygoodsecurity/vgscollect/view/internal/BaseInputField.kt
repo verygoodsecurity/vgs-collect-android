@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
+import androidx.annotation.VisibleForTesting
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
@@ -17,15 +18,17 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
+import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.InputRunnable
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
-    DependencyListener {
+    DependencyListener, OnVgsViewStateChangeListener {
 
     companion object {
         fun getInputField(context: Context, type:FieldType):BaseInputField {
@@ -42,6 +45,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected abstract var fieldType: FieldType
 
     protected var inputConnection: InputRunnable? = null
+    private var onFieldStateChangeListener:OnFieldStateChangeListener? = null
 
     internal var stateListener: OnVgsViewStateChangeListener? = null
         set(value) {
@@ -102,6 +106,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         isListeningPermitted = true
         applyFieldType()
         super.onAttachedToWindow()
+        applyInternalFieldStateChangeListener()
         isListeningPermitted = false
     }
 
@@ -230,5 +235,25 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
                     && nextFocusUpId != View.NO_ID -> requestFocusOnView(nextFocusUpId)
             else -> super.onEditorAction(actionCode)
         }
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun applyInternalFieldStateChangeListener() {
+        inputConnection?.setOutputListener(this)
+    }
+
+    override fun emit(viewId: Int, state: VGSFieldState) {
+        val userState = state.mapToFieldState()
+        onFieldStateChangeListener?.onStateChange(userState)
+    }
+
+    fun setOnFieldStateChangeListener(onFieldStateChangeListener: OnFieldStateChangeListener?) {
+        this.onFieldStateChangeListener = onFieldStateChangeListener
+        inputConnection?.run()
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun prepareFieldTypeConnection() {
+        applyFieldType()
     }
 }

@@ -3,12 +3,16 @@ package com.verygoodsecurity.vgscollect.view.internal
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.text.InputFilter
 import android.text.InputType
 import android.view.Gravity
 import android.view.View
 import android.widget.DatePicker
+import androidx.core.widget.addTextChangedListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.InputCardExpDateConnection
 import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
@@ -16,6 +20,7 @@ import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
 import com.verygoodsecurity.vgscollect.view.date.validation.isInputDatePatternValid
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,6 +28,8 @@ import java.util.*
 internal class DateInputField(context: Context): BaseInputField(context), View.OnClickListener {
 
     private var datePattern:String = "MM/yyyy"
+    private var outputPattern:String = datePattern
+
     private var charLimit = datePattern.length
 
     private var minDate:Long = 0
@@ -32,6 +39,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     private val dateLimitationFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
     private var fieldDateFormat:SimpleDateFormat? = null
+    private var fieldDateOutPutFormat:SimpleDateFormat? = null
 
     private var datePickerMode:DatePickerMode = DatePickerMode.SPINNER
     private var isDaysVisible = true
@@ -42,10 +50,8 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         if(isRTL()) {
             hasRTL = true
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                layoutDirection = View.LAYOUT_DIRECTION_LTR
-                textDirection = View.TEXT_DIRECTION_LTR
-            }
+            layoutDirection = View.LAYOUT_DIRECTION_LTR
+            textDirection = View.TEXT_DIRECTION_LTR
             gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
         }
     }
@@ -62,9 +68,8 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
         inputConnection = InputCardExpDateConnection(id, timeGapsValidator)
 
-        val str = text.toString()
-        val stateContent = FieldContent.InfoContent().apply {
-            this.data = str
+        val stateContent = FieldContent.CreditCardExpDateContent().apply {
+            handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
         }
         val state = collectCurrentState(stateContent)
 
@@ -72,6 +77,39 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         inputConnection?.setOutputListener(stateListener)
 
         applyInputType()
+    }
+
+    override fun setupInputConnectionListener() {
+        val handler = Handler(Looper.getMainLooper())
+        addTextChangedListener {
+            inputConnection?.getOutput()?.
+            content = FieldContent.CreditCardExpDateContent().apply {
+                if(datePickerMode == DatePickerMode.INPUT) {
+                    try {
+                        handleInputMode(it.toString())
+                        handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
+                    } catch (e: ParseException) {
+                        data = it.toString()
+                        rawData = data
+                    }
+                } else {
+                    handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
+                }
+            }
+
+            handler.removeCallbacks(inputConnection)
+            handler.postDelayed(inputConnection, 200)
+        }
+    }
+
+    private fun handleInputMode(str:String) {
+        val currentDate = fieldDateFormat!!.parse(str)
+        selectedDate.time = currentDate
+        selectedDate.set(Calendar.DAY_OF_MONTH, selectedDate.getActualMaximum(Calendar.DATE))
+        selectedDate.set(Calendar.HOUR, 23)
+        selectedDate.set(Calendar.MINUTE, 59)
+        selectedDate.set(Calendar.SECOND, 59)
+        selectedDate.set(Calendar.MILLISECOND, 999)
     }
 
     override fun onClick(v: View?) {
@@ -113,6 +151,17 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
         val strDate = fieldDateFormat?.format(selectedDate.time)?:""
         setText(strDate)
+    }
+
+    internal fun setOutputPattern(pattern:String?) {
+        outputPattern = if(pattern.isNullOrEmpty() ||
+            (pattern.contains('T') && !pattern.contains("'T'"))) {
+            datePattern
+        } else {
+            pattern
+        }
+
+        fieldDateOutPutFormat = SimpleDateFormat(outputPattern, Locale.getDefault())
     }
 
     internal fun setDatePattern(pattern:String?) {
