@@ -754,6 +754,12 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.isEnabled = enabled
     }
 
+    protected fun setOutputPattern(pattern:String?) {
+        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setOutputPattern(pattern)
+        }
+    }
+
     protected fun setDatePattern(pattern:String?) {
         if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setDatePattern(pattern)
