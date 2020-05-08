@@ -37,7 +37,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="no paddings"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+            <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
                 android:id="@+id/cardHolderField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -81,7 +81,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:paddingLeft="@dimen/default_margin"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
-        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
             android:id="@+id/cardCVCField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -129,7 +129,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding right"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
@@ -140,7 +140,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:paddingRight="@dimen/default_margin"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
-        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+        <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -159,7 +159,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding end"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
@@ -172,7 +172,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
 
 
 
-        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -191,7 +191,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding right"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+            <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
@@ -203,7 +203,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
-        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+        <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -222,7 +222,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding bottom"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+            <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
@@ -233,7 +233,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
-        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+        <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -254,7 +254,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding start top"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
-            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:fieldName="card_data.cardCvc"
@@ -267,7 +267,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
-        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+        <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -336,7 +336,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
-        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+        <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"
@@ -370,7 +370,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
-        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+        <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:fieldName="card_data.cardCvc"

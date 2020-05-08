@@ -152,7 +152,7 @@
                                 app:hint="@string/card_holder"
                                 app:boxBackgroundModes="outline"
                                 app:boxStrokeColor="@color/colorAccent">
-                                <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                                <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
                                     android:id="@+id/cardHolderField"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
@@ -160,7 +160,6 @@
                                     android:nextFocusDown="@+id/cardExpDateField"
                                     app:imeOptions="actionNext"
                                     app:fieldName="card_data.personal_data.cardHolder"
-                                    app:fieldType="cardHolderName"
                                     app:text="John Galt"/>
                             </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 

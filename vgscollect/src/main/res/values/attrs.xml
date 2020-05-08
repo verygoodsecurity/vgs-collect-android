@@ -328,6 +328,30 @@
         <attr name="fontFamily" format="string"/>
     </declare-styleable>
 
+    <declare-styleable name="PersonNameEditText">
+        <attr name="fieldName"/>
+
+        <attr name="inputType"/>
+
+        <attr name="text"/>
+        <attr name="enabled"/>
+        <attr name="textSize"/>
+        <attr name="textColor" />
+        <attr name="maxLines"/>
+        <attr name="minLines"/>
+        <attr name="ellipsize"/>
+
+        <attr name="textStyle" />
+
+        <attr name="cursorVisible" />
+        <attr name="singleLine"  />
+        <attr name="isRequired"/>
+
+        <attr name="gravity" />
+        <attr name="scrollHorizontally"/>
+
+        <attr name="hint" />
+    </declare-styleable>
 
     <declare-styleable name="VGSEditText">
         <attr name="fieldName"/>
