@@ -15,6 +15,12 @@
       public <init>(android.content.Context, android.util.AttributeSet, int);
       public void set*(...);
 }
+-keep public class com.verygoodsecurity.vgscollect.view.material.* {
+      public <init>(android.content.Context);
+      public <init>(android.content.Context, android.util.AttributeSet);
+      public <init>(android.content.Context, android.util.AttributeSet, int);
+      public void set*(...);
+}
 
 -keep, allowobfuscation public class * extends com.google.android.material.textfield.TextInputLayout {
       public <init>(android.content.Context);

@@ -7,6 +7,7 @@ import com.verygoodsecurity.vgscollect.view.card.InputCardCVCConnection
 import com.verygoodsecurity.vgscollect.view.card.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import org.junit.Test
+import org.mockito.Mockito
 import org.mockito.Mockito.*
 
 class InputCardCVCConnectionTest {
@@ -20,15 +21,14 @@ class InputCardCVCConnectionTest {
     fun setChangeListener() {
         val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
-        verify(listener).emit(0, VGSFieldState())
+        verify(listener, times(2)).emit(anyInt(), any())
     }
 
     @Test
     fun emitItem() {
         val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
-        connection.run()
-        verify(listener, times(2)).emit(0, VGSFieldState())
+        verify(listener, times(2)).emit(anyInt(), any())
     }
 
     @Test
@@ -76,4 +76,6 @@ class InputCardCVCConnectionTest {
         connection.run()
         verify(listener).emit(0, textItem)
     }
+
+    private fun <T> any(): T = Mockito.any<T>()
 }

@@ -11,7 +11,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.view.InputFieldView
-import com.verygoodsecurity.vgscollect.widget.VGSEditText
+import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 import org.junit.Assert.*
 import org.junit.Before
@@ -40,7 +40,7 @@ class VGSTextInputLayoutTest {
     }
 
     private fun getVGSTextView(): InputFieldView {
-        return VGSEditText(activity).apply {
+        return CardVerificationCodeEditText(activity).apply {
             this.setBackgroundResource(0)
         }
     }
@@ -517,27 +517,6 @@ class VGSTextInputLayoutTest {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Test
     fun test_empty_container_set_error_string() {
         val TAG = "test"
@@ -741,6 +720,17 @@ class VGSTextInputLayoutTest {
         val state = textInputLayout.getFieldState()
 
         assertEquals(myList, state.endIconTintList)
+    }
+
+    @Test
+    fun test_set_hint_text_color() {
+        val myList =  ColorStateList.valueOf(Color.GREEN)
+        textInputLayout.setHintTextColor(myList)
+        attachView()
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(myList, state.hintTextColor)
     }
 
     @Test

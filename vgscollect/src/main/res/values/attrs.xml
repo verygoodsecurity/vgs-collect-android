@@ -1,39 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Representation of dates and times that will be visible for end-user.
+         The method uses the ISO 8601 standard.
+     -->
     <attr name="datePattern" format="string"/>
+
+    <!-- Representation of date and times which will be sent to the Vault Proxy Server.
+         The method uses the ISO 8601 standard.
+     -->
+    <attr name="outputPattern" format="string"/>
+
+    <!--  Sets the symbol that will divide groups of digits in the card number.-->
     <attr name="datePickerModes">
+
+    <!-- set date from CalendarView.-->
         <enum name="calendar" value="0" />
+
+    <!-- set date from spinner DatePicker.-->
         <enum name="spinner" value="1" />
+
+    <!-- set date manually.-->
         <enum name="input" value="2" />
     </attr>
 
-
+    <!-- Size of text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp).
+         Supported values include the following:<p/>
+    <ul>
+        <li><b>px</b> Pixels</li>
+        <li><b>sp</b> Scaled pixels (scaled to relative pixel size on screen). See {@link android.util.DisplayMetrics} for more information.</li>
+        <li><b>pt</b> Points</li>
+        <li><b>dip</b> Device independent pixels. See {@link android.util.DisplayMetrics} for more information.</li>
+    </ul>
+        -->
     <attr name="textSize" format="dimension"/>
+
+    <!-- Hint text to display when the text is empty. -->
     <attr name="hint" format="string"/>
+
+    <!-- Specifies whether the widget is enabled. The interpretation of the enabled state varies by subclass.
+         For example, a non-enabled EditText prevents the user from editing the contained text, and
+         a non-enabled Button prevents the user from tapping the button.
+         The appearance of enabled and non-enabled widgets may differ, if the drawables referenced
+         from evaluating state_enabled differ. -->
     <attr name="enabled" format="boolean"/>
+
+    <!-- Color of text (usually same as colorForeground). -->
     <attr name="textColor" format="color"/>
+
+    <!-- Text to display. -->
     <attr name="text" format="string"  localization="suggested"/>
 
     <attr name="maxLines" format="integer"/>
     <attr name="minLines" format="integer"/>
 
+    <!--    Sets the text to be used for data transfer to VGS proxy.
+            Usually, it is similar to field-name in JSON path in your inbound route filters.
+            It is highly important to specify this parameter because the VGSCollect module relies on it too.-->
     <attr name="fieldName" format="string"/>
 
+    <!-- Makes the cursor visible (the default) or invisible. -->
     <attr name="cursorVisible" format="boolean" />
+
+    <!-- Constrains the text to a single horizontally scrolling line
+         instead of letting it wrap onto multiple lines, and advances
+         focus instead of inserting a newline when you press the
+         enter key.
+
+         The default value is false (multi-line wrapped text mode) for non-editable text, but if
+         you specify any value for inputType, the default is true (single-line input field mode).
+
+         {@deprecated This attribute is deprecated. Use <code>maxLines</code> instead to change
+         the layout of a static text, and use the <code>textMultiLine</code> flag in the
+         inputType attribute instead for editable text views (if both singleLine and inputType
+         are supplied, the inputType flags will override the value of singleLine). } -->
     <attr name="singleLine" format="boolean" />
+
+    <!-- Specifies whether the text inside input field is required to be filled.
+
+         When app:isRequired set as true, then input data should be valid only.
+         If app:isRequired set as false, then input data will be valid in case the field is empty. Otherwise input data should be valid-->
     <attr name="isRequired" format="boolean" />
 
+
+    <!-- Whether the text is allowed to be wider than the view (and
+         therefore can be scrolled horizontally). -->
     <attr name="scrollHorizontally" format="boolean" />
 
+    <!-- The type of data being placed in a text field, used to help an
+         input method decide how to let the user enter text.  The constants
+         here correspond to those defined by
+         InputType.  Generally you can select
+         a single value, though some can be combined together as
+         indicated.  Setting this attribute to anything besides
+         <var>none</var> also implies that the text is editable. -->
     <attr name="inputType">
+        <!-- There is no content type.  The text is not editable. -->
         <enum name="none" value="0" />
+        <!-- Just plain old text.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_TEXT} |
+             {@link android.text.InputType#TYPE_TEXT_VARIATION_NORMAL}. -->
         <enum name="text" value="1" />
+
+        <!-- Text that is a password.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_TEXT} |
+             {@link android.text.InputType#TYPE_TEXT_VARIATION_PASSWORD}. -->
         <enum name="textPassword" value="129" />
+
+        <!-- A numeric only field.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_NUMBER} |
+             {@link android.text.InputType#TYPE_NUMBER_VARIATION_NORMAL}. -->
         <enum name="number" value="2" />
+
+        <!-- A numeric password field.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_NUMBER} |
+             {@link android.text.InputType#TYPE_NUMBER_VARIATION_PASSWORD}. -->
         <enum name="numberPassword" value="18" />
+
+        <!-- For entering a date.  Corresponds to
+             {@link android.text.InputType#TYPE_CLASS_DATETIME} |
+             {@link android.text.InputType#TYPE_DATETIME_VARIATION_DATE}. -->
         <enum name="date" value="4" />
     </attr>
 
+    <!-- Where to ellipsize text. -->
     <attr name="ellipsize">
         <enum name="none" value="0" />
         <enum name="start" value="1" />
@@ -42,23 +132,46 @@
         <enum name="marquee" value="4" />
     </attr>
 
+    <!-- Specifies how an object should position its content, on both the X and Y axes,
+         within its own bounds.  -->
     <attr name="gravity">
+        <!-- Push object to the top of its container, not changing its size. -->
         <flag name="top" value="0x30" />
+        <!-- Push object to the bottom of its container, not changing its size. -->
         <flag name="bottom" value="0x50" />
+        <!-- Push object to the left of its container, not changing its size. -->
         <flag name="left" value="0x03" />
+        <!-- Push object to the right of its container, not changing its size. -->
         <flag name="right" value="0x05" />
+        <!-- Place object in the vertical center of its container, not changing its size. -->
         <flag name="center_vertical" value="0x10" />
+        <!-- Grow the vertical size of the object if needed so it completely fills its container. -->
         <flag name="fill_vertical" value="0x70" />
+        <!-- Place object in the horizontal center of its container, not changing its size. -->
         <flag name="center_horizontal" value="0x01" />
+        <!-- Grow the horizontal size of the object if needed so it completely fills its container. -->
         <flag name="fill_horizontal" value="0x07" />
+        <!-- Place the object in the center of its container in both the vertical and horizontal axis, not changing its size. -->
         <flag name="center" value="0x11" />
+        <!-- Grow the horizontal and vertical size of the object if needed so it completely fills its container. -->
         <flag name="fill" value="0x77" />
+        <!-- Additional option that can be set to have the top and/or bottom edges of
+             the child clipped to its container's bounds.
+             The clip will be based on the vertical gravity: a top gravity will clip the bottom
+             edge, a bottom gravity will clip the top edge, and neither will clip both edges. -->
         <flag name="clip_vertical" value="0x80" />
+        <!-- Additional option that can be set to have the left and/or right edges of
+             the child clipped to its container's bounds.
+             The clip will be based on the horizontal gravity: a left gravity will clip the right
+             edge, a right gravity will clip the left edge, and neither will clip both edges. -->
         <flag name="clip_horizontal" value="0x08" />
+        <!-- Push object to the beginning of its container, not changing its size. -->
         <flag name="start" value="0x00800003" />
+        <!-- Push object to the end of its container, not changing its size. -->
         <flag name="end" value="0x00800005" />
     </attr>
 
+    <!-- Default text typeface style. -->
     <attr name="textStyle">
         <flag name="normal" value="0" />
         <flag name="bold" value="1" />
@@ -66,6 +179,9 @@
     </attr>
 
 
+    <!-- Additional features you can enable in an IME associated with an editor
+         to improve the integration with your application.  The constants
+         here correspond to those defined by android.view.inputmethod.EditorInfo#imeOptions. -->
     <attr name="imeOptions">
         <!-- There are no special semantics associated with this editor. -->
         <flag name="normal" value="0x00000000" />
@@ -208,13 +324,34 @@
 
     <declare-styleable name="InputFieldView">
         <attr name="imeOptions" />
-
+        <!-- Font family (named by string or as a font resource reference) for the text. -->
         <attr name="fontFamily" format="string"/>
     </declare-styleable>
 
+    <declare-styleable name="PersonNameEditText">
+        <attr name="fieldName"/>
 
+        <attr name="inputType"/>
 
+        <attr name="text"/>
+        <attr name="enabled"/>
+        <attr name="textSize"/>
+        <attr name="textColor" />
+        <attr name="maxLines"/>
+        <attr name="minLines"/>
+        <attr name="ellipsize"/>
 
+        <attr name="textStyle" />
+
+        <attr name="cursorVisible" />
+        <attr name="singleLine"  />
+        <attr name="isRequired"/>
+
+        <attr name="gravity" />
+        <attr name="scrollHorizontally"/>
+
+        <attr name="hint" />
+    </declare-styleable>
 
     <declare-styleable name="VGSEditText">
         <attr name="fieldName"/>
@@ -240,13 +377,46 @@
 
         <attr name="hint" />
 
+        <!-- Sets type of current input field.
+             Choosing the input type you configure the limitations for this type. By default, widget configure as info.
+         -->
         <attr name="fieldType" format="enum">
+        <!-- Field will have the card number validation.-->
             <enum name="cardNumber" value="0"/>
+        <!-- Field will have card security code(CVC) validation.-->
             <enum name="cvc" value="1"/>
+        <!-- Field will have the card expiration date validation.-->
             <enum name="expDate" value="2"/>
+        <!-- Field will have the card holder name validation.-->
             <enum name="cardHolderName" value="3"/>
+        <!-- Default field without validation.-->
             <enum name="info" value="4"/>
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="CardVerificationCodeEditText">
+        <attr name="fieldName"/>
+
+        <attr name="inputType"/>
+
+        <attr name="text"/>
+        <attr name="enabled"/>
+        <attr name="textSize"/>
+        <attr name="textColor" />
+        <attr name="maxLines"/>
+        <attr name="minLines"/>
+        <attr name="ellipsize"/>
+
+        <attr name="textStyle" />
+
+        <attr name="cursorVisible" />
+        <attr name="singleLine"  />
+        <attr name="isRequired"/>
+
+        <attr name="gravity" />
+        <attr name="scrollHorizontally"/>
+
+        <attr name="hint" />
     </declare-styleable>
 
     <declare-styleable name="VGSCardNumberEditText">
@@ -273,8 +443,14 @@
 
         <attr name="hint" />
 
-
+    <!--  To set the symbol that will divide groups of digits in the card number add app:numberDivider to your field's declaration in xml.
+          By default, the widget doesn't have any pre-configured divider and all number will be a single line.
+    -->
         <attr name="numberDivider" format="string"/>
+
+        <!-- Specifies how to align the icon by the view’s x-axis. To specify gravity programmatically you could use android Gravity class.
+             By default, gravity in end position.
+         -->
         <attr name="cardBrandIconGravity">
             <enum name="none" value="0" />
             <enum name="start" value="8388611" />
@@ -336,43 +512,73 @@
         <attr name="hint" />
 
         <attr name="datePattern"/>
+        <attr name="outputPattern"/>
         <attr name="datePickerModes"/>
     </declare-styleable>
 
     <declare-styleable name="VGSTextInputLayout">
         <attr name="hint" />
+        <!-- The color of the label when it is collapsed and the text field is active -->
+        <attr name="hintTextColor" format="color" />
+        <!-- Whether the layout's floating label functionality is enabled. -->
         <attr name="hintEnabled" format="boolean"/>
+        <!-- Whether to animate hint state changes. -->
         <attr name="hintAnimationEnabled" format="boolean"/>
 
+        <!-- Whether the view will display a toggle when the EditText has a password.
+             Deprecated. The view's end icon should be specified via endIconMode instead. -->
         <attr name="passwordToggleEnabled" format="boolean"/>
+        <!-- Icon to use for the password input visibility toggle
+         Deprecated. Use endIconTint instead. -->
         <attr name="passwordToggleTint" format="color"/>
+        <!-- Drawable to use as the password input visibility toggle icon.
+         Deprecated. Use endIconDrawable instead. -->
         <attr name="passwordToggleDrawable" format="reference"/>
 
+<!--        Set the box background more(filled, outline, or none).-->
         <attr name="boxBackgroundModes" >
             <enum name="outline" value="0"/>
             <enum name="filled" value="1"/>
             <enum name="none" value="2"/>
         </attr>
+        <!-- The color to use for the box's background color when in filled box mode. -->
         <attr name="boxBackgroundColor" format="color"/>
+        <!-- The color to use for the box's stroke when in outline box mode. -->
         <attr name="boxStrokeColor" format="color"/>
+        <!-- The value to use for the box's top end corner radius when in box mode. -->
         <attr name="boxCornerRadiusTopEnd" format="dimension"/>
+        <!-- The value to use for the box's top start corner radius when in box mode. -->
         <attr name="boxCornerRadiusTopStart" format="dimension"/>
+        <!-- The value to use for the box's bottom start corner radius when in box mode. -->
         <attr name="boxCornerRadiusBottomStart" format="dimension"/>
+        <!-- The value to use for the box's bottom end corner radius when in box mode. -->
         <attr name="boxCornerRadiusBottomEnd" format="dimension"/>
         <attr name="boxCornerRadius" format="dimension"/>
 
+        <!-- Whether the layout is laid out as if the character counter will be displayed. -->
         <attr name="counterEnabled" format="boolean"/>
+        <!-- The max length to display in the character counter. -->
         <attr name="counterMaxLength" format="integer"/>
 
+        <!-- Tint color to use for the start icon. -->
         <attr name="startIconTint" format="color"/>
+        <!-- Drawable to use for the start icon. -->
         <attr name="startIconDrawable" format="reference"/>
 
+        <!-- Tint color to use for the end icon. -->
         <attr name="endIconTint" format="color"/>
+        <!-- Drawable to use for the end icon. -->
         <attr name="endIconDrawable" format="reference"/>
+        <!-- The end icon mode of the TextInputLayout. It will display one of the end icons detailed
+         below, or no end icon. -->
         <attr name="endIconModes">
+            <!-- The view will display a custom icon specified by the user. -->
             <enum name="custom" value="-1"/>
+            <!-- No end icon. -->
             <enum name="none" value="0"/>
+            <!-- The view will display a toggle when the EditText has a password. -->
             <enum name="password_toggle" value="1"/>
+            <!-- The view will display a clear text button while the EditText contains input. -->
             <enum name="clear_text" value="2"/>
         </attr>
     </declare-styleable>

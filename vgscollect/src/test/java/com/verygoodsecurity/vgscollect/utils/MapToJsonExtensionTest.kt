@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.card
+package com.verygoodsecurity.vgscollect.utils
 
 import com.verygoodsecurity.vgscollect.util.mapToJSON
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads

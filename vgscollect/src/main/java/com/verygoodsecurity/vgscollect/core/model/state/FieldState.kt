@@ -35,6 +35,16 @@ sealed class FieldState {
     var fieldType: FieldType = FieldType.INFO
     internal set
 
+
+    override fun toString(): String {
+        return "field name: $fieldName, \n" +
+                "field type: $fieldType \n" +
+                "isEmpty: $isEmpty \n" +
+                "hasFocus: $hasFocus \n" +
+                "isValid: $isValid \n" +
+                "isRequired: $isRequired \n"
+    }
+
     /**
      * Class definition for a CardNumber field state.
      *
@@ -61,6 +71,19 @@ sealed class FieldState {
         /** The resource identifier of the detected card brand. */
         var drawableBrandResId: Int = 0
             internal set
+
+        override fun toString(): String {
+            return "field name: $fieldName \n" +
+                    "field type: $fieldType \n" +
+                    "bin: $bin \n" +
+                    "last: $last \n" +
+                    "number: $number \n" +
+                    "card brand: $cardBrand \n" +
+                    "isEmpty: $isEmpty \n" +
+                    "hasFocus: $hasFocus \n" +
+                    "isValid: $isValid \n" +
+                    "isRequired: $isRequired "
+        }
     }
 
     /**
@@ -90,4 +113,5 @@ sealed class FieldState {
      * @version 1.0.1
      */
     class InfoState:FieldState()
+
 }

@@ -8,9 +8,9 @@ import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 /** @suppress */
 internal class InputCardCVCConnection(
     private val id:Int,
-    private val validator: VGSValidator?
-): InputRunnable {
-    private var stateListener: OnVgsViewStateChangeListener? = null
+    validator: VGSValidator?
+): BaseInputConnection() {
+    internal var runtimeValidator: VGSValidator? = validator
 
     private var output = VGSFieldState()
 
@@ -21,7 +21,7 @@ internal class InputCardCVCConnection(
     override fun getOutput() = output
 
     override fun setOutputListener(l: OnVgsViewStateChangeListener?) {
-        stateListener = l
+        l?.let { addNewListener(it) }
         run()
     }
 
@@ -32,11 +32,11 @@ internal class InputCardCVCConnection(
         } else {
             val updatedStr = str?.trim()?:""
 
-            val isStrValid = validator?.isValid(updatedStr)?:false
+            val isStrValid = runtimeValidator?.isValid(updatedStr)?:false
             output.isValid = isStrValid
         }
 
-        stateListener?.emit(id, output)
+        notifyAllListeners(id, output)
     }
 
     override fun clearFilters() {}
