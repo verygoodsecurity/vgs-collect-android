@@ -136,7 +136,7 @@
                                     style="@style/AppTheme.PaymentField"
                                     app:fieldName="card_data.cardNumber"
                                     app:numberDivider=" "
-                                    app:text="4111222233334444555"
+                                    app:text="4111111111111111"
                                     android:nextFocusDown="@+id/cardHolderField"
                                     app:imeOptions="actionNext"
                                     app:cardBrandIconGravity="end"/>
