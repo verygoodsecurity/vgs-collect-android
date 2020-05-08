@@ -11,12 +11,15 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.parseVGSResponse
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.mapToJSON
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import java.io.IOException
 import java.io.InterruptedIOException
+import java.lang.StringBuilder
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
@@ -45,6 +48,7 @@ internal class OkHttpClient(
 
     private val client:OkHttpClient by lazy {
         OkHttpClient().newBuilder()
+            .addInterceptor(HttpLoggingInterceptor())
             .callTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .readTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .writeTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
@@ -140,5 +144,44 @@ internal class OkHttpClient(
         }
         Logger.e(VGSCollect::class.java, message)
         return VGSResponse.ErrorResponse(message, error.code)
+    }
+
+
+    class HttpLoggingInterceptor: Interceptor {
+
+        companion object {
+            private fun buildRequestLog(request: Request):String {
+                val builder = StringBuilder("Request")
+                    .append("{")
+                    .append("method=")
+                    .append(request.method)
+                    .append("}")
+
+                return builder.toString()
+            }
+
+            private fun buildResponseLog(response: Response):String {
+                val builder = StringBuilder("Response")
+                    .append("{")
+                    .append("code=")
+                    .append(response.code.toString())
+                    .append(", ")
+                    .append("message=")
+                    .append(response.message)
+                    .append("}")
+
+                return builder.toString()
+            }
+        }
+
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val request = chain.request()
+            Logger.i(VGSCollect::class.java.simpleName, buildRequestLog(request))
+
+            val response = chain.proceed(request)
+            Logger.i(VGSCollect::class.java.simpleName, buildResponseLog(response))
+
+            return response
+        }
     }
 }
