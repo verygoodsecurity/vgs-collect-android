@@ -26,11 +26,12 @@ internal fun MutableCollection<VGSFieldState>.toAssociatedList()
         val content = state.content!!
         val name = state.fieldName!!
 
-        val data = if(content is FieldContent.CardNumberContent) {
-            content.rawData?:content.data!!
-        } else {
-            content.data!!
+        val data = when(content) {
+            is FieldContent.CardNumberContent -> content.rawData?:content.data!!
+            is FieldContent.CreditCardExpDateContent -> content.rawData?:content.data!!
+            else -> content.data!!
         }
+
         name to data
     }.toMutableList()
 }
