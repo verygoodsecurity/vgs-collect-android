@@ -43,6 +43,29 @@ internal class URLConnectionClient(
             client.baseURL = baseURL
             return client
         }
+
+        private fun buildRequestLog(connection: HttpURLConnection):String {
+            val builder = StringBuilder("Request")
+                .append("{")
+                .append("method=")
+                .append(connection.requestMethod)
+                .append("}")
+
+            return builder.toString()
+        }
+
+        private fun buildResponseLog(connection: HttpURLConnection):String {
+            val builder = StringBuilder("Response")
+                .append("{")
+                .append("code=")
+                .append(connection.responseCode.toString())
+                .append(", ")
+                .append("message=")
+                .append(connection.responseMessage)
+                .append("}")
+
+            return builder.toString()
+        }
     }
 
     override fun call(path: String, method: HTTPMethod, headers: Map<String, String>?, data: Map<String, Any>?): VGSResponse {
@@ -69,6 +92,8 @@ internal class URLConnectionClient(
 
             writeOutput(connection, data)
 
+            Logger.i(VGSCollect::class.java.simpleName, buildRequestLog(connection))
+
             response = handleResponse(connection)
         } catch (e: IOException) {
             response = VGSResponse.ErrorResponse(e.localizedMessage)
@@ -82,6 +107,9 @@ internal class URLConnectionClient(
 
     private fun handleResponse(connection: HttpURLConnection): VGSResponse {
         val responseCode = connection.responseCode
+
+        Logger.i(VGSCollect::class.java.simpleName, buildResponseLog(connection))
+
         return if (responseCode == HTTP_OK) {
             val rawResponse = connection.inputStream?.bufferedReader()?.use { it.readText() }
             val responsePayload:Map<String, Any>? = rawResponse?.parseVGSResponse()

@@ -31,6 +31,7 @@ class ExpirationDateEditText @JvmOverloads constructor(
 
             try {
                 val datePattern = getString(R.styleable.ExpirationDateEditText_datePattern)
+                val outputPattern = getString(R.styleable.ExpirationDateEditText_outputPattern)
                 val datePickerMode = getInt(R.styleable.ExpirationDateEditText_datePickerModes, 1)
 
                 val inputType = getInt(R.styleable.ExpirationDateEditText_inputType, EditorInfo.TYPE_NULL)
@@ -70,11 +71,16 @@ class ExpirationDateEditText @JvmOverloads constructor(
                 setDatePattern(datePattern)
                 setDatePickerMode(datePickerMode)
 
+                setOutputPattern(outputPattern)
             } finally {
                 recycle()
             }
         }
         setMinDate(System.currentTimeMillis())
+    }
+
+    fun setOutputRegex(regex:String) {
+        setOutputPattern(regex)
     }
 
     /**
