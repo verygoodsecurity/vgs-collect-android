@@ -133,8 +133,8 @@
                                     android:id="@+id/cardNumberField"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    style="@style/AppTheme.PaymentField"
                                     app:fieldName="card_data.cardNumber"
+                                    style="@style/AppTheme.PaymentField"
                                     app:numberDivider=" "
                                     android:nextFocusDown="@+id/cardHolderField"
                                     app:imeOptions="actionNext"
@@ -150,7 +150,8 @@
                                 android:layout_marginTop="@dimen/payment_card_vertical_margin"
                                 app:endIconTint="@color/colorAccent"
                                 app:hint="@string/card_holder"
-                                app:boxBackgroundModes="outline"
+                                app:boxBackgroundModes="filled"
+                                app:boxBackgroundColor="@color/bg_vgs_card_view"
                                 app:boxStrokeColor="@color/colorAccent">
                                 <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
                                     android:id="@+id/cardHolderField"
@@ -183,8 +184,9 @@
                                     app:fieldName="card_data.personal_data.secret.expDate"
                                     android:nextFocusDown="@+id/cardCVCField"
                                     app:imeOptions="actionNext"
+                                    app:inputType="date"
                                     app:datePickerModes="input"
-                                    app:outputPattern="yyyy-MM-dd'T'HH:mm:ss.SSSSSSSX"
+                                    app:outputPattern="yyyy-MM-dd'T'HH:mm:ss.SSSSSSS"
                                     app:datePattern="MM/yy"/>
                             </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 

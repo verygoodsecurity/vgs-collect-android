@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.material.internal
 
 import android.content.Context
+import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
@@ -10,11 +11,58 @@ import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
+import java.lang.reflect.InvocationTargetException
+import java.lang.reflect.Method
 
 /** @suppress */
 internal class TextInputLayoutWrapper @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : TextInputLayout(context, attrs, defStyleAttr) {
+
+    private var bounds: Rect? = null
+    private var recalculateMethod: Method? = null
+    private var collapsingTextHelper: Any? = null
+
+    companion object {
+        private const val COLLAPSING_HELPER = "collapsingTextHelper"
+        private const val COLLAPSED_BOUNDS = "collapsedBounds"
+        private const val RECALCULATE = "recalculate"
+    }
+
+    init {
+        tryInitCollapsingTextHelper()
+    }
+
+    private fun tryInitCollapsingTextHelper() {
+        try {
+            //Search internal and private class over object called as variable
+            val cthField = TextInputLayout::class.java.getDeclaredField(COLLAPSING_HELPER)
+            cthField.isAccessible = true
+            collapsingTextHelper = cthField.get(this)
+
+            //Search in private class the other component to create a view
+            val boundsField = collapsingTextHelper?.javaClass?.getDeclaredField(COLLAPSED_BOUNDS)
+            boundsField?.isAccessible = true
+            bounds = boundsField?.get(collapsingTextHelper) as Rect
+            recalculateMethod = collapsingTextHelper?.javaClass?.getDeclaredMethod(RECALCULATE)
+
+        } catch (e: NoSuchFieldException) {
+            collapsingTextHelper = null
+            bounds = null
+            recalculateMethod = null
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            collapsingTextHelper = null
+            bounds = null
+            recalculateMethod = null
+            e.printStackTrace()
+        } catch (e: NoSuchMethodException) {
+            collapsingTextHelper = null
+            bounds = null
+            recalculateMethod = null
+            e.printStackTrace()
+        }
+    }
 
     fun isReady():Boolean {
         return editText != null
@@ -87,5 +135,25 @@ internal class TextInputLayoutWrapper @JvmOverloads constructor(
                 this.gravity = Gravity.CENTER_VERTICAL
             }
         }?:parentView
+    }
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        adjustBounds()
+    }
+
+    private fun adjustBounds() {
+        if (collapsingTextHelper == null) return
+
+        try {
+            bounds?.top = 0
+            recalculateMethod?.invoke(collapsingTextHelper)
+        } catch (e: InvocationTargetException) {
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+        }
     }
 }
