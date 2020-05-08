@@ -79,6 +79,11 @@ class ExpirationDateEditText @JvmOverloads constructor(
         setMinDate(System.currentTimeMillis())
     }
 
+    /**
+     * Representation of date and times which will be sent to the Vault Proxy Server. The method uses the ISO 8601 standard.
+     *
+     * @param regex Specifies date representation format
+     */
     fun setOutputRegex(regex:String) {
         setOutputPattern(regex)
     }
