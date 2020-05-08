@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/state"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#110000ff"
+    android:layout_margin="@dimen/default_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="4dp">
+
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="vgs filled mode"
+            app:boxBackgroundModes="filled"
+            android:layout_marginTop="20dp"
+            android:background="#000000"
+            app:boxCornerRadiusTopStart="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxBackgroundColor="#110000ff">
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:numberDivider=" "
+                app:cardBrandIconGravity="end"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundMode="filled"
+            android:layout_marginTop="20dp"
+            android:background="#10ff0000">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="default filled"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="vgs filled mode"
+            app:boxCornerRadius="8dp"
+            app:boxBackgroundModes="filled"
+            android:layout_marginTop="20dp"
+            android:background="#17ff0000"
+            app:boxBackgroundColor="#ff0000">
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:numberDivider=" "
+                android:background="@null"
+                app:cardBrandIconGravity="end"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundMode="filled"
+            android:layout_marginTop="20dp"
+            android:background="#17ff0000"
+            app:boxStrokeColor="#000000"
+            app:boxBackgroundColor="#00ff00">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="default filled"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="vgs outline mode"
+            app:boxBackgroundModes="outline"
+            app:boxCornerRadius="8dp"
+            android:layout_marginTop="20dp"
+            android:background="#17ff0000">
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:numberDivider=" "
+                android:background="@null"
+                app:cardBrandIconGravity="end"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundMode="outline"
+            android:layout_marginTop="20dp"
+            android:background="#17ff0000">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="default outline"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="vgs outline mode"
+            app:boxBackgroundModes="outline"
+            android:layout_marginTop="20dp"
+            app:boxCornerRadius="8dp"
+            android:background="#17ff0000"
+            app:boxBackgroundColor="#ff0000"
+            app:boxStrokeColor="#0000ff">
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:numberDivider=" "
+                android:background="@null"
+                app:cardBrandIconGravity="end"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundMode="outline"
+            android:layout_marginTop="20dp"
+            android:background="#17ff0000"
+            app:boxStrokeColor="#0000ff"
+            app:boxBackgroundColor="#00ff00">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="default outline"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--    <com.google.android.material.textfield.TextInputLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:boxBackgroundMode="outline"-->
+    <!--        android:layout_marginTop="20dp"-->
+    <!--        android:background="#10ff0000">-->
+    <!--        <EditText-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:hint="default "/>-->
+    <!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+
+    <!--    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:hint="vgs outline mode"-->
+    <!--        app:boxBackgroundModes="none"-->
+    <!--        android:layout_marginTop="20dp"-->
+    <!--        android:background="#10ff0000">-->
+    <!--        <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            app:numberDivider=" "-->
+    <!--            app:cardBrandIconGravity="end"/>-->
+    <!--    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>-->
+
+    <!--    <com.google.android.material.textfield.TextInputLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:boxBackgroundMode="none"-->
+    <!--        android:layout_marginTop="20dp"-->
+    <!--        android:background="#10ff0000">-->
+    <!--        <EditText-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:hint="default "/>-->
+    <!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="vgs none mode"
+            app:boxBackgroundModes="none"
+            app:boxCornerRadius="8dp"
+            android:layout_marginTop="20dp"
+            android:background="#17ff0000">
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:numberDivider=" "
+                android:background="@null"
+                app:cardBrandIconGravity="end"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundMode="none"
+            android:layout_marginTop="20dp"
+            android:background="#17ff0000">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="default none"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="vgs outline mode"
+            app:boxBackgroundModes="none"
+            android:layout_marginTop="20dp"
+            app:boxCornerRadius="8dp"
+            android:background="#17ff0000"
+            app:boxBackgroundColor="#ff0000"
+            app:boxStrokeColor="#0000ff">
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:numberDivider=" "
+                android:background="@null"
+                app:cardBrandIconGravity="end"/>
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundMode="none"
+            android:layout_marginTop="20dp"
+            android:background="#17ff0000"
+            app:boxStrokeColor="#0000ff"
+            app:boxBackgroundColor="#00ff00">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="default none"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+</ScrollView>

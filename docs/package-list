@@ -7,7 +7,6 @@ com.verygoodsecurity.vgscollect.core.storage.content.file
 com.verygoodsecurity.vgscollect.util
 com.verygoodsecurity.vgscollect.view
 com.verygoodsecurity.vgscollect.view.card
-com.verygoodsecurity.vgscollect.view.card.validation.card.brand
 com.verygoodsecurity.vgscollect.view.date
 com.verygoodsecurity.vgscollect.view.material
 com.verygoodsecurity.vgscollect.widget
