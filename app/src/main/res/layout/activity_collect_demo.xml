@@ -136,7 +136,6 @@
                                     style="@style/AppTheme.PaymentField"
                                     app:fieldName="card_data.cardNumber"
                                     app:numberDivider=" "
-                                    app:text="4111111111111111"
                                     android:nextFocusDown="@+id/cardHolderField"
                                     app:imeOptions="actionNext"
                                     app:cardBrandIconGravity="end"/>
@@ -202,15 +201,14 @@
                                 app:hint="@string/cvc"
                                 app:boxBackgroundModes="outline"
                                 app:boxStrokeColor="@color/colorAccent">
-                                <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                                <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                                     android:id="@+id/cardCVCField"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     style="@style/AppTheme.PaymentField"
                                     app:fieldName="card_data.cardCvc"
                                     app:imeOptions="actionDone"
-                                    app:text="123"
-                                    app:fieldType="cvc"/>
+                                    app:text="123"/>
                             </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
                         </androidx.constraintlayout.widget.ConstraintLayout>

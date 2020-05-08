@@ -11,7 +11,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.view.InputFieldView
-import com.verygoodsecurity.vgscollect.widget.VGSEditText
+import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 import org.junit.Assert.*
 import org.junit.Before
@@ -40,7 +40,7 @@ class VGSTextInputLayoutTest {
     }
 
     private fun getVGSTextView(): InputFieldView {
-        return VGSEditText(activity).apply {
+        return CardVerificationCodeEditText(activity).apply {
             this.setBackgroundResource(0)
         }
     }
@@ -515,27 +515,6 @@ class VGSTextInputLayoutTest {
         assertEquals(iv.paddingBottom, state.bottom)
         assertEquals(Bottom, state.bottom)
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Test
