@@ -4,7 +4,9 @@ import android.app.Activity
 import android.os.Build
 import android.text.InputType
 import android.view.Gravity
+import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CardInputField
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 import org.junit.Assert
@@ -13,6 +15,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
@@ -167,4 +170,36 @@ class VGSCardNumberEditTextTest {
         assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
     }
 
+
+    @Test
+    fun test_field_state_change_listener_first() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        val listener = Mockito.mock(OnFieldStateChangeListener::class.java)
+        view.setOnFieldStateChangeListener(listener)
+        Mockito.verify(listener, Mockito.times(0)).onStateChange(any())
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        Mockito.verify(listener, Mockito.times(1)).onStateChange(any())
+    }
+
+    @Test
+    fun test_field_state_change_listener_last() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val listener = Mockito.mock(OnFieldStateChangeListener::class.java)
+        view.setOnFieldStateChangeListener(listener)
+
+        Mockito.verify(listener, Mockito.times(1)).onStateChange(any())
+    }
+
+
+    private fun <T> any(): T = Mockito.any<T>()
 }
