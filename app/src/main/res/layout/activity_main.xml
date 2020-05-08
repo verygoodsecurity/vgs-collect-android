@@ -82,7 +82,7 @@
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/colorAccent"
             app:hint="@string/cvc">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                 android:id="@+id/cardCVCField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -93,8 +93,7 @@
                 app:isRequired="true"
                 app:singleLine="true"
                 app:textSize="12dp"
-                app:text="123"
-                app:fieldType="cvc"/>
+                app:text="123"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:id="@+id/cardHolderFieldLay"
@@ -103,7 +102,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="@dimen/default_margin"
             app:hint="@string/card_holder">
-            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
                 android:id="@+id/cardHolderField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -114,7 +113,6 @@
                 app:inputType="text"
                 app:isRequired="true"
                 app:textSize="12dp"
-                app:fieldType="cardHolderName"
                 app:text="John Galt"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout

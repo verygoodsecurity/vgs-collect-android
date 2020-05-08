@@ -1,12 +1,11 @@
 package com.verygoodsecurity.vgscollect
 
-import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState
-import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
+import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.text.SimpleDateFormat
+import java.util.*
 
 class VGSFieldStateTest {
 
@@ -128,5 +127,39 @@ class VGSFieldStateTest {
         val c = (newState as FieldState.CardNumberState)
 
         assertTrue(c.last == "5")
+    }
+
+    @Test
+    fun test_map_date_mm_yy() {
+        val date = "12/24"
+        val fieldDateFormat: SimpleDateFormat = SimpleDateFormat("MM/yy", Locale.getDefault())
+        val fieldDateOutPutFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        val content = FieldContent.CreditCardExpDateContent()
+        content.data = date
+
+
+        val c = Calendar.getInstance()
+        c.time = fieldDateFormat.parse(date)
+        content.handleOutputFormat(c, fieldDateFormat, fieldDateOutPutFormat)
+
+        assertTrue(content.rawData == "2024-12-01")
+    }
+
+    @Test
+    fun test_map_date_dd_mm_yyyy() {
+        val date = "31-12-24"
+        val fieldDateFormat = SimpleDateFormat("dd-MM-yy", Locale.getDefault())
+        val fieldDateOutPutFormat = SimpleDateFormat("MM/yyyy", Locale.getDefault())
+
+        val content = FieldContent.CreditCardExpDateContent()
+        content.data = date
+
+
+        val c = Calendar.getInstance()
+        c.time = fieldDateFormat.parse(date)
+        content.handleOutputFormat(c, fieldDateFormat, fieldDateOutPutFormat)
+
+        assertTrue(content.rawData == "12/2024")
     }
 }

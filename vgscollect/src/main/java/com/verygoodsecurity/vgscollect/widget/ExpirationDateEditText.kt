@@ -31,6 +31,7 @@ class ExpirationDateEditText @JvmOverloads constructor(
 
             try {
                 val datePattern = getString(R.styleable.ExpirationDateEditText_datePattern)
+                val outputPattern = getString(R.styleable.ExpirationDateEditText_outputPattern)
                 val datePickerMode = getInt(R.styleable.ExpirationDateEditText_datePickerModes, 1)
 
                 val inputType = getInt(R.styleable.ExpirationDateEditText_inputType, EditorInfo.TYPE_NULL)
@@ -70,11 +71,21 @@ class ExpirationDateEditText @JvmOverloads constructor(
                 setDatePattern(datePattern)
                 setDatePickerMode(datePickerMode)
 
+                setOutputPattern(outputPattern)
             } finally {
                 recycle()
             }
         }
         setMinDate(System.currentTimeMillis())
+    }
+
+    /**
+     * Representation of date and times which will be sent to the Vault Proxy Server. The method uses the ISO 8601 standard.
+     *
+     * @param regex Specifies date representation format
+     */
+    fun setOutputRegex(regex:String) {
+        setOutputPattern(regex)
     }
 
     /**
