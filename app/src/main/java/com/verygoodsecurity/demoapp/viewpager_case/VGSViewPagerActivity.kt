@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.demoapp.R
@@ -129,8 +130,8 @@ class VGSViewPagerActivity:AppCompatActivity(), VgsCollectResponseListener, View
     override fun onResponse(response: VGSResponse?) {
         Log.e("test", "$response")
         when (response) {
-            is VGSResponse.SuccessResponse -> {}//responseContainerView.text = response.toString()
-            is VGSResponse.ErrorResponse -> {}//responseContainerView.text = response.toString()
+            is VGSResponse.SuccessResponse -> Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()//responseContainerView.text = response.toString()
+            is VGSResponse.ErrorResponse -> Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()//responseContainerView.text = response.toString()
         }
     }
 
