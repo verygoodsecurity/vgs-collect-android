@@ -1,13 +1,23 @@
 package com.verygoodsecurity.demoapp
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
+import com.verygoodsecurity.demoapp.fragment_case.VGSCollectFragmentActivity
 import com.verygoodsecurity.vgscollect.core.Environment
 import kotlinx.android.synthetic.main.activity_start.*
 
-class StartActivity:AppCompatActivity() {
+class StartActivity:AppCompatActivity(), View.OnClickListener {
+
+    companion object {
+        const val VAULT_ID = "user_vault_id"
+        const val ENVIROMENT = "user_env"
+        const val PATH = "user_path"
+    }
 
     private val spinnerAdapter:ArrayAdapter<String> by lazy {
         val envArr = arrayOf(
@@ -29,7 +39,9 @@ class StartActivity:AppCompatActivity() {
         setupSpinner()
         setupUI()
 
-        startBtn?.setOnClickListener { startInteraction() }
+        startWithActivityBtn?.setOnClickListener(this)
+        startWithFragmentBtn?.setOnClickListener(this)
+        startWithViewPagerBtn?.setOnClickListener(this)
     }
 
     private fun setupUI() {
@@ -43,16 +55,37 @@ class StartActivity:AppCompatActivity() {
         environmentSpinner.adapter = spinnerAdapter
     }
 
-    private fun startInteraction() {
-        val vaultId = userVault.text.toString()
-        val path = userPath.text.toString()
-        val env = environmentSpinner.selectedItemPosition
+    override fun onClick(v: View) {
+        when(v.id) {
+            R.id.startWithActivityBtn -> startInteractionWithActivity()
+            R.id.startWithFragmentBtn -> startInteractionWithFragment()
+            R.id.startWithViewPagerBtn -> startInteractionWithViewPager()
+        }
+    }
 
-        val intent = Intent(this, VGSCollectActivity::class.java)
-        intent.putExtra(VGSCollectActivity.VAULT_ID, vaultId)
-        intent.putExtra(VGSCollectActivity.ENVIROMENT, env)
-        intent.putExtra(VGSCollectActivity.PATH, path)
-
+    private fun startInteractionWithActivity() {
+        val intent = prepareIntent(VGSCollectActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun startInteractionWithFragment() {
+        val intent = prepareIntent(VGSCollectFragmentActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun startInteractionWithViewPager() {
+
+    }
+
+    private fun prepareIntent(componentClass: Class<out Activity>):Intent {
+        return Intent(this, componentClass).apply {
+            val vaultId = userVault.text.toString()
+            val path = userPath.text.toString()
+            val env = environmentSpinner.selectedItemPosition
+
+            putExtra(VAULT_ID, vaultId)
+            putExtra(ENVIROMENT, env)
+            putExtra(PATH, path)
+        }
     }
 }
