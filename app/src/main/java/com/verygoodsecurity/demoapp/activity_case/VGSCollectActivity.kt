@@ -153,9 +153,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         setStateLoading(false)
 
         when (response) {
-            is VGSResponse.SuccessResponse -> {
-                responseContainerView.text = response.toString()
-            }
+            is VGSResponse.SuccessResponse -> responseContainerView.text = response.toString()
             is VGSResponse.ErrorResponse -> responseContainerView.text = response.toString()
         }
     }
