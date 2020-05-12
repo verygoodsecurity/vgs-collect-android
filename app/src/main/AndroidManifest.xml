@@ -25,9 +25,12 @@
         </activity>
 
 
-        <activity android:name=".activity_case.VGSCollectActivity"/>
-        <activity android:name=".fragment_case.VGSCollectFragmentActivity"/>
-        <activity android:name=".viewpager_case.VGSViewPagerActivity"/>
+        <activity android:name=".activity_case.VGSCollectActivity"
+            android:label="Activity Demo"/>
+        <activity android:name=".fragment_case.VGSCollectFragmentActivity"
+            android:label="Fragment Demo"/>
+        <activity android:name=".viewpager_case.VGSViewPagerActivity"
+            android:label="ViewPager Demo"/>
     </application>
 
 </manifest>
