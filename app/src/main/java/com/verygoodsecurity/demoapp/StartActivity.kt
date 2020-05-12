@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
 import com.verygoodsecurity.demoapp.fragment_case.VGSCollectFragmentActivity
+import com.verygoodsecurity.demoapp.viewpager_case.VGSViewPagerActivity
 import com.verygoodsecurity.vgscollect.core.Environment
 import kotlinx.android.synthetic.main.activity_start.*
 
@@ -74,7 +75,8 @@ class StartActivity:AppCompatActivity(), View.OnClickListener {
     }
 
     private fun startInteractionWithViewPager() {
-
+        val intent = prepareIntent(VGSViewPagerActivity::class.java)
+        startActivity(intent)
     }
 
     private fun prepareIntent(componentClass: Class<out Activity>):Intent {

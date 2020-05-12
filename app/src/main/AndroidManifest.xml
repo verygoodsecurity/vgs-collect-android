@@ -27,6 +27,7 @@
 
         <activity android:name=".activity_case.VGSCollectActivity"/>
         <activity android:name=".fragment_case.VGSCollectFragmentActivity"/>
+        <activity android:name=".viewpager_case.VGSViewPagerActivity"/>
     </application>
 
 </manifest>
