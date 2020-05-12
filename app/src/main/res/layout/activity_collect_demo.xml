@@ -136,6 +136,7 @@
                                     app:fieldName="card_data.cardNumber"
                                     style="@style/AppTheme.PaymentField"
                                     app:numberDivider=" "
+                                    app:fontFamily="@font/robotomono_light"
                                     android:nextFocusDown="@+id/cardHolderField"
                                     app:imeOptions="actionNext"
                                     app:cardBrandIconGravity="end"/>
@@ -150,7 +151,7 @@
                                 android:layout_marginTop="@dimen/payment_card_vertical_margin"
                                 app:endIconTint="@color/colorAccent"
                                 app:hint="@string/card_holder"
-                                app:boxBackgroundModes="filled"
+                                app:boxBackgroundModes="outline"
                                 app:boxBackgroundColor="@color/bg_vgs_card_view"
                                 app:boxStrokeColor="@color/colorAccent">
                                 <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
@@ -160,6 +161,7 @@
                                     style="@style/AppTheme.PaymentField"
                                     android:nextFocusDown="@+id/cardExpDateField"
                                     app:imeOptions="actionNext"
+                                    app:fontFamily="@font/robotomono_light"
                                     app:fieldName="card_data.personal_data.cardHolder"
                                     app:text="John Galt"/>
                             </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
@@ -185,6 +187,7 @@
                                     android:nextFocusDown="@+id/cardCVCField"
                                     app:imeOptions="actionNext"
                                     app:inputType="date"
+                                    app:fontFamily="@font/robotomono_light"
                                     app:datePickerModes="input"
                                     app:outputPattern="yyyy-MM-dd'T'HH:mm:ss.SSSSSSS"
                                     app:datePattern="MM/yy"/>
@@ -209,6 +212,7 @@
                                     android:layout_height="match_parent"
                                     style="@style/AppTheme.PaymentField"
                                     app:fieldName="card_data.cardCvc"
+                                    app:fontFamily="@font/robotomono_light"
                                     app:imeOptions="actionDone"
                                     app:text="123"/>
                             </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
