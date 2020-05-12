@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
+    android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -36,17 +35,49 @@
         android:id="@+id/environmentSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/default_margin" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/startBtn"
+        android:id="@+id/startWithActivityBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
         android:textColor="@android:color/white"
         android:textSize="14dp"
-        android:layout_marginEnd="@dimen/default_margin"
+        android:textAllCaps="false"
         app:backgroundTint="@color/colorAccent"
         app:cornerRadius="@dimen/default_margin"
-        android:text="@string/start"/>
+        android:text="@string/start_with_activity"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/startWithFragmentBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:textColor="@android:color/white"
+        android:textSize="14dp"
+        android:textAllCaps="false"
+        app:backgroundTint="@color/colorAccent"
+        app:cornerRadius="@dimen/default_margin"
+        android:text="@string/start_with_fragment"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/startWithViewPagerBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:textColor="@android:color/white"
+        android:textSize="14dp"
+        android:textAllCaps="false"
+        android:visibility="invisible"
+        app:backgroundTint="@color/colorAccent"
+        app:cornerRadius="@dimen/default_margin"
+        android:text="@string/start_view_pager"/>
 </LinearLayout>
