@@ -26,9 +26,11 @@
 
 
         <activity android:name=".activity_case.VGSCollectActivity"
-            android:label="Activity Demo"/>
+            android:label="Activity Demo"
+            android:screenOrientation="sensor"/>
         <activity android:name=".fragment_case.VGSCollectFragmentActivity"
-            android:label="Fragment Demo"/>
+            android:label="Fragment Demo"
+            android:screenOrientation="sensor"/>
         <activity android:name=".viewpager_case.VGSViewPagerActivity"
             android:label="ViewPager Demo"/>
     </application>

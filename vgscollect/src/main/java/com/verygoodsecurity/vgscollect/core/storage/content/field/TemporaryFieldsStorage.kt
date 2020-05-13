@@ -9,8 +9,7 @@ import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
-internal class TemporaryFieldsStorage : VgsStore<Int, VGSFieldState>,
-    IStateEmitter {
+internal class TemporaryFieldsStorage : VgsStore<Int, VGSFieldState>, IStateEmitter {
 
     private val store = mutableMapOf<Int, VGSFieldState>()
 
@@ -31,12 +30,31 @@ internal class TemporaryFieldsStorage : VgsStore<Int, VGSFieldState>,
 
     override fun getItems() = store.values
 
+    private fun Map<Int, VGSFieldState>.containsState(state: VGSFieldState):Int {
+        forEach {
+            if(state.fieldName == it.value.fieldName) {
+                return it.key
+            }
+        }
+
+        return -1
+    }
+
     override fun performSubscription() = object: OnVgsViewStateChangeListener {
         override fun emit(viewId: Int, state: VGSFieldState) {
+            val itemID = store.containsState(state)
+
             if(store.containsKey(viewId).not()) {
                 notifyOnNewFieldAdd(state)
             }
-            addItem(viewId, state)
+
+            if(itemID != -1) {
+                store.remove(itemID)
+                store[viewId] = state
+                notifyUser(state)
+            } else {
+                store[viewId] = state
+            }
             notifyOnDataChange(state)
         }
     }

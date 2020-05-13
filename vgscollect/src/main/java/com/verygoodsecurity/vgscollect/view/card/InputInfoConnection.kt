@@ -23,7 +23,6 @@ internal class InputInfoConnection(
 
     override fun setOutputListener(l: OnVgsViewStateChangeListener?) {
         stateListener = l
-        run()
     }
 
     override fun run() {

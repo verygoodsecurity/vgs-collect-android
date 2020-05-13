@@ -8,7 +8,17 @@ data class VGSFieldState(var isFocusable:Boolean = false,
                          var isValid:Boolean = true,
                          var type: FieldType = FieldType.INFO,
                          var content:FieldContent? = null,
-                         var fieldName:String? = null)
+                         var fieldName:String? = null) {
+
+    override fun toString(): String {
+        return "isFocusable: $isFocusable\n"+
+                "isRequired: $isRequired\n" +
+                "isValid: $isValid\n" +
+                "type: $type\n" +
+                "content: ${content.toString()}\n" +
+                "fieldName: $fieldName\n"
+    }
+}
 
 /** @suppress */
 internal fun VGSFieldState.mapToFieldState():FieldState {

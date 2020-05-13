@@ -35,19 +35,6 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
         applyNewTextWatcher(null)
         val filterLength = InputFilter.LengthFilter(4)
         filters = arrayOf(CVCValidateFilter(), filterLength)
-        applyInputType()
-    }
-
-    private fun applyInputType() {
-        if(!isValidInputType(inputType)) {
-            inputType = InputType.TYPE_CLASS_NUMBER
-        }
-        refreshInput()
-    }
-
-    private fun isValidInputType(type: Int):Boolean {
-        return type == InputType.TYPE_CLASS_NUMBER ||
-                type == InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
     }
 
     override fun setInputType(type: Int) {
