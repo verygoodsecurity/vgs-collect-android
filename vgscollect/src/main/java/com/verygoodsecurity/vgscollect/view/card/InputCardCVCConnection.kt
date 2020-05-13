@@ -22,7 +22,6 @@ internal class InputCardCVCConnection(
 
     override fun setOutputListener(l: OnVgsViewStateChangeListener?) {
         l?.let { addNewListener(it) }
-        run()
     }
 
     override fun run() {

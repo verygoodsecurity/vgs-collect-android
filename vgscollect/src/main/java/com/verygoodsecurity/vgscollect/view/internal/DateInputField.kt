@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
 import android.content.DialogInterface
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.text.InputFilter
@@ -56,27 +55,23 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
     }
 
-    override fun onAttachedToWindow() {
-        isListeningPermitted = true
-        applyFieldType()
-        super.onAttachedToWindow()
-        isListeningPermitted = false
-    }
-
     override fun applyFieldType() {
         val timeGapsValidator = TimeGapsValidator(datePattern, minDate, maxDate)
 
         inputConnection = InputCardExpDateConnection(id, timeGapsValidator)
 
         val stateContent = FieldContent.CreditCardExpDateContent().apply {
-            handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
+            if(!text.isNullOrEmpty() && handleInputMode(text.toString())) {
+                handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
+            } else {
+                data = text.toString()
+                rawData = data
+            }
         }
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
-
-        applyInputType()
     }
 
     override fun setupInputConnectionListener() {
@@ -84,16 +79,17 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         addTextChangedListener {
             inputConnection?.getOutput()?.
             content = FieldContent.CreditCardExpDateContent().apply {
-                if(datePickerMode == DatePickerMode.INPUT) {
-                    try {
-                        handleInputMode(it.toString())
-                        handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
-                    } catch (e: ParseException) {
+                val isValid = handleInputMode(it.toString())
+                when {
+                    text.isNullOrEmpty() -> {
                         data = it.toString()
                         rawData = data
                     }
-                } else {
-                    handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
+                    !isValid -> {
+                        data = it.toString()
+                        rawData = data
+                    }
+                    else -> handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
                 }
             }
 
@@ -102,14 +98,19 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
     }
 
-    private fun handleInputMode(str:String) {
-        val currentDate = fieldDateFormat!!.parse(str)
-        selectedDate.time = currentDate
-        selectedDate.set(Calendar.DAY_OF_MONTH, selectedDate.getActualMaximum(Calendar.DATE))
-        selectedDate.set(Calendar.HOUR, 23)
-        selectedDate.set(Calendar.MINUTE, 59)
-        selectedDate.set(Calendar.SECOND, 59)
-        selectedDate.set(Calendar.MILLISECOND, 999)
+    private fun handleInputMode(str:String):Boolean {
+        return try {
+            val currentDate = fieldDateFormat!!.parse(str)
+            selectedDate.time = currentDate
+            selectedDate.set(Calendar.DAY_OF_MONTH, selectedDate.getActualMaximum(Calendar.DATE))
+            selectedDate.set(Calendar.HOUR, 23)
+            selectedDate.set(Calendar.MINUTE, 59)
+            selectedDate.set(Calendar.SECOND, 59)
+            selectedDate.set(Calendar.MILLISECOND, 999)
+            true
+        } catch (e: ParseException) {
+            false
+        }
     }
 
     override fun onClick(v: View?) {
@@ -231,19 +232,6 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         val validType = validateInputType(type)
         super.setInputType(validType)
         refreshInput()
-    }
-
-    private fun applyInputType() {
-        if(!isValidInputType(inputType)) {
-            inputType = InputType.TYPE_CLASS_DATETIME
-        }
-        refreshInput()
-    }
-
-    private fun isValidInputType(type: Int):Boolean {
-        return type == InputType.TYPE_CLASS_TEXT ||
-                type == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD ||
-                type == InputType.TYPE_CLASS_DATETIME
     }
 
     private fun validateInputType(type: Int):Int {

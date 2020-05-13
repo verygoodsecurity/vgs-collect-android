@@ -62,21 +62,23 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         set(value) {
             field = value
             inputConnection?.getOutput()?.isRequired = value
-            inputConnection?.run()
         }
 
     private var activeTextWatcher: TextWatcher? = null
 
-    internal fun setIsListeningPermitted(state:Boolean) {
-        isListeningPermitted = state
-    }
     init {
+        freezesText = true
+
         isListeningPermitted = true
         setupFocusChangeListener()
         setupInputConnectionListener()
         isListeningPermitted = false
 
         setupViewAttributes()
+    }
+
+    internal fun setIsListeningPermitted(state:Boolean) {
+        isListeningPermitted = state
     }
 
     private fun setupViewAttributes() {
@@ -86,9 +88,11 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     private fun setupFocusChangeListener() {
-        onFocusChangeListener = OnFocusChangeListener { _, f ->
-            inputConnection?.getOutput()?.isFocusable = f
-            inputConnection?.run()
+        onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+            if(hasFocus != inputConnection?.getOutput()?.isFocusable) {
+                inputConnection?.getOutput()?.isFocusable = hasFocus
+                inputConnection?.run()
+            }
         }
     }
 
@@ -249,7 +253,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     fun setOnFieldStateChangeListener(onFieldStateChangeListener: OnFieldStateChangeListener?) {
         this.onFieldStateChangeListener = onFieldStateChangeListener
-        inputConnection?.run()
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)

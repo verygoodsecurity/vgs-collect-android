@@ -9,7 +9,6 @@ internal abstract class BaseInputConnection: InputRunnable {
     protected fun addNewListener(listener: OnVgsViewStateChangeListener) {
         if(!stateListeners.contains(listener)) {
             stateListeners.add(listener)
-            run()
         }
     }
 
