@@ -152,8 +152,7 @@
                                 app:endIconTint="@color/colorAccent"
                                 app:hint="@string/card_holder"
                                 app:boxBackgroundModes="outline"
-                                app:boxBackgroundColor="@color/bg_vgs_card_view"
-                                app:boxStrokeColor="@color/colorAccent">
+                                app:boxBackgroundColor="@color/bg_vgs_card_view">
                                 <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
                                     android:id="@+id/cardHolderField"
                                     android:layout_width="match_parent"
@@ -212,8 +211,8 @@
                                     android:layout_height="match_parent"
                                     style="@style/AppTheme.PaymentField"
                                     app:fieldName="card_data.cardCvc"
-                                    app:fontFamily="@font/robotomono_light"
                                     app:imeOptions="actionDone"
+                                    app:fontFamily="@font/robotomono_light"
                                     app:text="123"/>
                             </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 

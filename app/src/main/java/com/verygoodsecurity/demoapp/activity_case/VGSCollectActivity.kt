@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp
+package com.verygoodsecurity.demoapp.activity_case
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.api.cardio.ScanActivity
+import com.verygoodsecurity.demoapp.R
+import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -24,10 +26,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     companion object {
         const val USER_SCAN_REQUEST_CODE = 0x7
-
-        const val VAULT_ID = "user_vault_id"
-        const val ENVIROMENT = "user_env"
-        const val PATH = "user_path"
     }
 
     private lateinit var vault_id:String
@@ -61,10 +59,10 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     private fun retrieveSettings() {
         val bndl = intent?.extras
 
-        vault_id = bndl?.getString(VAULT_ID, "")?:""
-        path = bndl?.getString(PATH,"/")?:""
+        vault_id = bndl?.getString(StartActivity.VAULT_ID, "")?:""
+        path = bndl?.getString(StartActivity.PATH,"/")?:""
 
-        val envId = bndl?.getInt(ENVIROMENT, 0)?:0
+        val envId = bndl?.getInt(StartActivity.ENVIROMENT, 0)?:0
         env = Environment.values()[envId]
 
         vgsForm = VGSCollect(this, vault_id, env)
@@ -97,7 +95,9 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
         intent.putExtra(ScanActivity.SCAN_CONFIGURATION, scanSettings)
 
-        startActivityForResult(intent, USER_SCAN_REQUEST_CODE)
+        startActivityForResult(intent,
+            USER_SCAN_REQUEST_CODE
+        )
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
@@ -153,9 +153,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         setStateLoading(false)
 
         when (response) {
-            is VGSResponse.SuccessResponse -> {
-                responseContainerView.text = response.toString()
-            }
+            is VGSResponse.SuccessResponse -> responseContainerView.text = response.toString()
             is VGSResponse.ErrorResponse -> responseContainerView.text = response.toString()
         }
     }
@@ -174,10 +172,14 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     private fun setEnabledResponseHeader(isEnabled:Boolean) {
         if(isEnabled) {
-            attachBtn.setTextColor(ContextCompat.getColor(this, R.color.state_active))
+            attachBtn.setTextColor(ContextCompat.getColor(this,
+                R.color.state_active
+            ))
         } else {
             responseContainerView.text = ""
-            attachBtn.setTextColor(ContextCompat.getColor(this, R.color.state_unactive))
+            attachBtn.setTextColor(ContextCompat.getColor(this,
+                R.color.state_unactive
+            ))
         }
     }
 
@@ -207,6 +209,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
         vgsForm.asyncSubmit(request)
     }
+
     private fun attachFile() {
         if(vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
             vgsForm.getFileProvider().attachFile("attachments.file")
