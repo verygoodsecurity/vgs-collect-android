@@ -46,10 +46,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.addOnResponseListeners(this)
         vgsForm.addOnFieldStateChangeListener(getOnFieldStateChangeListener())
 
-
-        cardNumberFieldLay?.setHintTextAppearance(R.style.hint_appearance)
-        cardNumberFieldLay?.setHintTextAppearance(R.style.hint_appearance)
-
         vgsForm.bindView(cardNumberField)
         cardNumberField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
