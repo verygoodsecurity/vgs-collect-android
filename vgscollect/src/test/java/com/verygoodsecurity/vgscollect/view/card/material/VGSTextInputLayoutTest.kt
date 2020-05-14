@@ -843,4 +843,15 @@ class VGSTextInputLayoutTest {
         assertEquals(styleResID, state.helperTextTextAppearance)
     }
 
+    @Test
+    fun test_set_helper_text() {
+        val helper = "7332"
+
+        textInputLayout.setHelperText(helper)
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(helper, state.helperText)
+    }
+
 }
