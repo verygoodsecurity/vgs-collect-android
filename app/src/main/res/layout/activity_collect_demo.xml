@@ -130,11 +130,6 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     app:hintEnabled="true"
-                                    app:counterEnabled="true"
-                                    app:counterMaxLength="3"
-                                    app:counterTextAppearance="@style/counter_appearance"
-                                    app:counterOverflowTextAppearance="@style/counter_owerfloy_appearance"
-                                    app:errorTextAppearance="@style/error_appearance"
                                     app:hint="@string/card_number"
                                     app:boxBackgroundModes="filled">
                                     <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
@@ -144,8 +139,6 @@
                                         app:fieldName="card_data.cardNumber"
                                         style="@style/AppTheme.PaymentField"
                                         app:numberDivider=" "
-                                        app:textAppearance="@style/text_appearance"
-                                        app:text="2"
                                         app:fontFamily="@font/robotomono_light"
                                         android:nextFocusDown="@+id/cardHolderField"
                                         app:imeOptions="actionNext"
@@ -168,8 +161,6 @@
                                     app:hintEnabled="true"
                                     app:endIconTint="@color/colorAccent"
                                     app:hint="@string/card_holder"
-                                    app:helperTextTextAppearance="@style/error_appearance"
-                                    app:hintTextAppearance="@style/hint_appearance"
                                     app:boxBackgroundModes="outline"
                                     app:boxBackgroundColor="@color/bg_vgs_card_view"
                                     app:boxStrokeColor="@color/colorAccent">
@@ -235,8 +226,6 @@
                                     android:layout_height="wrap_content"
                                     app:hintEnabled="true"
                                     app:hint="@string/cvc"
-                                    app:errorTextAppearance="@style/error_appearance"
-                                    app:hintTextAppearance="@style/error_appearance"
                                     app:boxBackgroundModes="outline"
                                     app:boxStrokeColor="@color/colorAccent">
                                     <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
