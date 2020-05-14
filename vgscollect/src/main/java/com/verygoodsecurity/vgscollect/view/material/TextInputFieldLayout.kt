@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
+import androidx.annotation.StyleRes
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.material.internal.InputLayoutStateImpl
@@ -512,6 +513,43 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
      */
     fun getHintTextColor() : ColorStateList? {
         return fieldState.hintTextColor
+    }
+
+    /**
+     * Sets the text color and size for the error message from the specified TextAppearance resource.
+     */
+    fun setErrorTextAppearance(@StyleRes resId: Int) {
+        fieldState.errorTextAppearance = resId
+    }
+
+    /**
+     * Sets the collapsed hint text color, size, style from the specified TextAppearance resource.
+     */
+    fun setHintTextAppearance(@StyleRes resId:Int) {
+        fieldState.hintTextAppearance = resId
+    }
+
+    /**
+     * Sets the text color and size for the helper text from the specified TextAppearance resource.
+     */
+    fun setHelperTextTextAppearance(@StyleRes resId:Int) {
+        fieldState.helperTextTextAppearance = resId
+    }
+
+    /**
+     * Sets the text color and size for the character counter using the specified TextAppearance
+     * resource.
+     */
+    fun setCounterTextAppearance(counterTextAppearance:Int) {
+        fieldState.counterTextAppearance = counterTextAppearance
+    }
+
+    /**
+     * Sets the text color and size for the overflowed character counter using the specified
+     * TextAppearance resource.
+     */
+    fun setCounterOverflowTextAppearance(counterOverflowTextAppearance:Int) {
+        fieldState.counterOverflowTextAppearance = counterOverflowTextAppearance
     }
 
 }
