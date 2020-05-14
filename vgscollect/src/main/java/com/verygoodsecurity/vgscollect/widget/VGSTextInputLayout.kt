@@ -64,6 +64,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 val counterTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_counterTextAppearance, 0)
                 val helperTextTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_helperTextTextAppearance, 0)
                 val errorTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_errorTextAppearance, 0)
+                val helperText = getString(R.styleable.VGSTextInputLayout_helperText)
 
                 val hint = getString(R.styleable.VGSTextInputLayout_hint)
 
@@ -124,6 +125,8 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 setCounterEnabled(counterEnabled)
                 setCounterMaxLength(counterMaxLength)
 
+                setHelperText(helperText)
+
                 if(hintTextColor != null) {
                     setHintTextColor(hintTextColor)
                 }
@@ -143,6 +146,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 if(errorTextAppearance != 0) {
                     setErrorTextAppearance(errorTextAppearance)
                 }
+
 
             } finally {
                 recycle()

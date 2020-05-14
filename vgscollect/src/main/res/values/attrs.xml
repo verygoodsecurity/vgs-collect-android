@@ -600,5 +600,10 @@
         <!-- Sets the text color and size for the helper text from the specified TextAppearance resource.-->
         <attr name="helperTextTextAppearance" format="reference"/>
 
+        <!-- Returns the helper message that was set to be displayed with setHelperText(CharSequence),
+             or null if no helper text was set or if helper text functionality is not enabled.
+        -->
+        <attr name="helperText" format="string"/>
+
     </declare-styleable>
 </resources>
