@@ -552,4 +552,29 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
         fieldState.counterOverflowTextAppearance = counterOverflowTextAppearance
     }
 
+    /**
+     * Sets a helper message that will be displayed below the {@link EditText}. If the helperText
+     * is null, the helper text functionality will be disabled and the helper message will be
+     * hidden.
+     *
+     * If the helper text functionality has not been enabled via setHelperTextEnabled(boolean),
+     * then it will be automatically enabled if helperText is not empty.
+     *
+     * @param helperText Helper text to display
+     * @see #getHelperText()
+     */
+    fun setHelperText(helperText:String?) {
+        fieldState.helperText = helperText
+    }
+
+    /**
+     * Returns the helper message that was set to be displayed with setHelperText(CharSequence),
+     * or null if no helper text was set or if helper text functionality is not enabled.
+     *
+     * @see #setHelperText(CharSequence)
+     */
+    fun getHelperText():String? {
+        return fieldState.helperText
+    }
+
 }

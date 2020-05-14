@@ -17,6 +17,13 @@ internal class InputLayoutStateImpl(
     private val textInputLayout: TextInputLayoutWrapper
 ) : InputLayoutState {
 
+    internal var helperText: String? = null
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.helperText = value
+            }
+        }
     internal var counterOverflowTextAppearance: Int = 0
         set(value) {
             field = value
@@ -374,6 +381,8 @@ internal class InputLayoutStateImpl(
                     setEndIconTintList(this@InputLayoutStateImpl.endIconTintList)
                 }
                 this.endIconMode = this@InputLayoutStateImpl.endIconMode
+
+                textInputLayout.helperText = this@InputLayoutStateImpl.helperText
 
                 this.setCounterOverflowTextAppearance(this@InputLayoutStateImpl.counterOverflowTextAppearance)
                 this.setCounterTextAppearance(this@InputLayoutStateImpl.counterTextAppearance)
