@@ -26,4 +26,38 @@
         <item name="textSize">@dimen/vgs_field_text_size</item>
     </style>
 
+    <style name="counter_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#00ff6f</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:fontFamily">@font/robotomono_light</item>
+    </style>
+
+    <style name="counter_owerfloy_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#ff00ff</item>
+    </style>
+
+    <style name="error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">7dp</item>
+        <item name="android:fontFamily">@font/robotomono_light</item>
+    </style>
+
+    <style name="hint_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#89470d</item>
+        <item name="android:textSize">17dp</item>
+        <item name="android:fontFamily">@font/robotomono_light</item>
+    </style>
+
+    <style name="helper_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#88000000</item>
+        <item name="android:textSize">17dp</item>
+        <item name="android:fontFamily">@font/robotomono_light</item>
+    </style>
+
+    <style name="text_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">#880ff000</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

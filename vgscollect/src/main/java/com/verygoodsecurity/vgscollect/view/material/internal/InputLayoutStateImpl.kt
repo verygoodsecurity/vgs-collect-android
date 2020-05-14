@@ -17,6 +17,42 @@ internal class InputLayoutStateImpl(
     private val textInputLayout: TextInputLayoutWrapper
 ) : InputLayoutState {
 
+    internal var counterOverflowTextAppearance: Int = 0
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.setCounterOverflowTextAppearance(value)
+            }
+        }
+    internal var counterTextAppearance: Int = 0
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.setCounterTextAppearance(value)
+            }
+        }
+    internal var helperTextTextAppearance: Int = 0
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.setHelperTextTextAppearance(value)
+            }
+        }
+    internal var hintTextAppearance: Int = 0
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.setHintTextAppearance(value)
+            }
+        }
+    internal var errorTextAppearance: Int = 0
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.setErrorTextAppearance(value)
+            }
+        }
+
     internal var typeface: Typeface? = null
         set(value) {
             field = value
@@ -338,6 +374,12 @@ internal class InputLayoutStateImpl(
                     setEndIconTintList(this@InputLayoutStateImpl.endIconTintList)
                 }
                 this.endIconMode = this@InputLayoutStateImpl.endIconMode
+
+                this.setCounterOverflowTextAppearance(this@InputLayoutStateImpl.counterOverflowTextAppearance)
+                this.setCounterTextAppearance(this@InputLayoutStateImpl.counterTextAppearance)
+                this.setHelperTextTextAppearance(this@InputLayoutStateImpl.helperTextTextAppearance)
+                this.setErrorTextAppearance(this@InputLayoutStateImpl.errorTextAppearance)
+                this.setHintTextAppearance(this@InputLayoutStateImpl.hintTextAppearance)
             }
         }
     }

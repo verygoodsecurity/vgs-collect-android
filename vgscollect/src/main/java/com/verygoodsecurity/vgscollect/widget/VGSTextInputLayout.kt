@@ -59,6 +59,11 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 val drawRef = getResourceId(R.styleable.VGSTextInputLayout_passwordToggleDrawable, 0)
                 val textColor = getColorStateList(R.styleable.VGSTextInputLayout_passwordToggleTint)
                 val hintTextColor = getColorStateList(R.styleable.VGSTextInputLayout_hintTextColor)
+                val hintTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_hintTextAppearance, 0)
+                val counterOverflowTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_counterOverflowTextAppearance, 0)
+                val counterTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_counterTextAppearance, 0)
+                val helperTextTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_helperTextTextAppearance, 0)
+                val errorTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_errorTextAppearance, 0)
 
                 val hint = getString(R.styleable.VGSTextInputLayout_hint)
 
@@ -118,8 +123,25 @@ class VGSTextInputLayout @JvmOverloads constructor(
 
                 setCounterEnabled(counterEnabled)
                 setCounterMaxLength(counterMaxLength)
+
                 if(hintTextColor != null) {
                     setHintTextColor(hintTextColor)
+                }
+
+                if(hintTextAppearance != 0) {
+                    setHintTextAppearance(hintTextAppearance)
+                }
+                if(helperTextTextAppearance != 0) {
+                    setHelperTextTextAppearance(helperTextTextAppearance)
+                }
+                if(counterTextAppearance != 0) {
+                    setCounterTextAppearance(counterTextAppearance)
+                }
+                if(counterOverflowTextAppearance != 0) {
+                    setCounterOverflowTextAppearance(counterOverflowTextAppearance)
+                }
+                if(errorTextAppearance != 0) {
+                    setErrorTextAppearance(errorTextAppearance)
                 }
 
             } finally {
