@@ -21,7 +21,6 @@ internal class InputCardHolderConnection(
 
     override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
         listener?.let { addNewListener(it) }
-        run()
     }
 
     override fun run() {

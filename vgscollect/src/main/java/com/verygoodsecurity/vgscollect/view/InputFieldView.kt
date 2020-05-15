@@ -40,6 +40,7 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     private lateinit var notifier:DependencyNotifier
     private var imeOptions:Int = 0
+    private var textAppearance:Int = 0
     private var fontFamily:Typeface? = null
 
     init {
@@ -49,6 +50,7 @@ abstract class InputFieldView @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
+                textAppearance = getResourceId(R.styleable.InputFieldView_textAppearance, 0)
                 imeOptions = getInt(R.styleable.InputFieldView_imeOptions, EditorInfo.IME_ACTION_DONE)
 
                 fontFamily = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -641,6 +643,11 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.imeOptions = imeOptions
         if(fontFamily != null) {
             inputField.typeface = fontFamily
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            inputField.setTextAppearance(textAppearance)
+        } else {
+            inputField.setTextAppearance(context, textAppearance)
         }
 
         val bgDraw = background?.constantState?.newDrawable()

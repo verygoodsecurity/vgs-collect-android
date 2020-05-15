@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
+import androidx.annotation.StyleRes
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.material.internal.InputLayoutStateImpl
@@ -512,6 +513,68 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
      */
     fun getHintTextColor() : ColorStateList? {
         return fieldState.hintTextColor
+    }
+
+    /**
+     * Sets the text color and size for the error message from the specified TextAppearance resource.
+     */
+    fun setErrorTextAppearance(@StyleRes resId: Int) {
+        fieldState.errorTextAppearance = resId
+    }
+
+    /**
+     * Sets the collapsed hint text color, size, style from the specified TextAppearance resource.
+     */
+    fun setHintTextAppearance(@StyleRes resId:Int) {
+        fieldState.hintTextAppearance = resId
+    }
+
+    /**
+     * Sets the text color and size for the helper text from the specified TextAppearance resource.
+     */
+    fun setHelperTextTextAppearance(@StyleRes resId:Int) {
+        fieldState.helperTextTextAppearance = resId
+    }
+
+    /**
+     * Sets the text color and size for the character counter using the specified TextAppearance
+     * resource.
+     */
+    fun setCounterTextAppearance(counterTextAppearance:Int) {
+        fieldState.counterTextAppearance = counterTextAppearance
+    }
+
+    /**
+     * Sets the text color and size for the overflowed character counter using the specified
+     * TextAppearance resource.
+     */
+    fun setCounterOverflowTextAppearance(counterOverflowTextAppearance:Int) {
+        fieldState.counterOverflowTextAppearance = counterOverflowTextAppearance
+    }
+
+    /**
+     * Sets a helper message that will be displayed below the {@link EditText}. If the helperText
+     * is null, the helper text functionality will be disabled and the helper message will be
+     * hidden.
+     *
+     * If the helper text functionality has not been enabled via setHelperTextEnabled(boolean),
+     * then it will be automatically enabled if helperText is not empty.
+     *
+     * @param helperText Helper text to display
+     * @see #getHelperText()
+     */
+    fun setHelperText(helperText:String?) {
+        fieldState.helperText = helperText
+    }
+
+    /**
+     * Returns the helper message that was set to be displayed with setHelperText(CharSequence),
+     * or null if no helper text was set or if helper text functionality is not enabled.
+     *
+     * @see #setHelperText(CharSequence)
+     */
+    fun getHelperText():String? {
+        return fieldState.helperText
     }
 
 }

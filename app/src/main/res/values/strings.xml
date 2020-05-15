@@ -16,7 +16,9 @@
 
     <string name="user_vault_id_hint">Vault ID</string>
     <string name="user_endpoint_hint">path</string>
-    <string name="start">Start</string>
+    <string name="start_with_activity">Start with Activity</string>
+    <string name="start_with_fragment">Start with Fragment</string>
+    <string name="start_view_pager">Start with ViewPager</string>
 
     <string name="scan_item">Scan Card</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
-import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
 import android.view.Gravity
@@ -67,13 +66,17 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
         }
     }
 
+    private var maxCodeLimit:Int = 4
     override fun dispatchDependencySetting(dependency: Dependency) {
         if(dependency.dependencyType == DependencyType.LENGTH) {
-            val filterLength = InputFilter.LengthFilter(dependency.value as Int)
-            filters = arrayOf(CVCValidateFilter(), filterLength)
-            (inputConnection as? InputCardCVCConnection)?.runtimeValidator =
-                CardCVCCodeValidator(dependency.value)
-            text = text
+            if(maxCodeLimit != dependency.value as Int) {
+                maxCodeLimit = dependency.value
+                val filterLength = InputFilter.LengthFilter(dependency.value)
+                filters = arrayOf(CVCValidateFilter(), filterLength)
+                (inputConnection as? InputCardCVCConnection)?.runtimeValidator =
+                    CardCVCCodeValidator(dependency.value)
+                text = text
+            }
         } else {
             super.dispatchDependencySetting(dependency)
         }
