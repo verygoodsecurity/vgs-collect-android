@@ -9,10 +9,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 internal class InputInfoConnection(
     private val id:Int,
     private val validator: VGSValidator?
-): InputRunnable {
-
-    private var stateListener: OnVgsViewStateChangeListener? = null
-
+): BaseInputConnection() {
     private var output = VGSFieldState()
 
     override fun setOutput(state: VGSFieldState) {
@@ -22,7 +19,7 @@ internal class InputInfoConnection(
     override fun getOutput() = output
 
     override fun setOutputListener(l: OnVgsViewStateChangeListener?) {
-        stateListener = l
+        l?.let { addNewListener(it) }
     }
 
     override fun run() {
@@ -36,7 +33,7 @@ internal class InputInfoConnection(
             output.isValid = isStrValid
         }
 
-        stateListener?.emit(id, output)
+        notifyAllListeners(id, output)
     }
 
     override fun clearFilters() {}

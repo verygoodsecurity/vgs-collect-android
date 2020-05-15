@@ -39,6 +39,7 @@ internal class PersonNameInputField(context: Context): BaseInputField(context) {
         } else {
             inputType = InputType.TYPE_CLASS_TEXT
         }
+        refreshInput()
     }
 
 }
