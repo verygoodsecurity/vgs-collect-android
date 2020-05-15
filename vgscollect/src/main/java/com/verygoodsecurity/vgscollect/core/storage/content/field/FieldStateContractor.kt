@@ -7,6 +7,7 @@ import com.verygoodsecurity.vgscollect.core.storage.StorageContractor
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 
+/** @suppress */
 class FieldStateContractor(
     private val context: Context
 ): StorageContractor<VGSFieldState> {
