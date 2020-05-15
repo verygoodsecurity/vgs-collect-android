@@ -51,6 +51,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         set(value) {
             field = value
             inputConnection?.setOutputListener(value)
+            inputConnection?.run()
         }
 
     protected var isListeningPermitted = true
@@ -67,8 +68,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     private var activeTextWatcher: TextWatcher? = null
 
     init {
-        freezesText = true
-
         isListeningPermitted = true
         setupFocusChangeListener()
         setupInputConnectionListener()
@@ -89,9 +88,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private fun setupFocusChangeListener() {
         onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
-            if(hasFocus != inputConnection?.getOutput()?.isFocusable) {
-                inputConnection?.getOutput()?.isFocusable = hasFocus
-                inputConnection?.run()
+            inputConnection?.getOutput()?.apply {
+                if(hasFocus != isFocusable) {
+                    isFocusable = hasFocus
+                    hasUserInteraction = true
+                    inputConnection?.run()
+                }
             }
         }
     }
@@ -99,7 +101,14 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected open fun setupInputConnectionListener() {
         val handler = Handler(Looper.getMainLooper())
         addTextChangedListener {
-            inputConnection?.getOutput()?.content?.data =  it.toString()
+            val str = it.toString()
+
+            inputConnection?.getOutput()?.apply {
+                if(str.isNotEmpty()) {
+                    hasUserInteraction = true
+                }
+                content?.data = str
+            }
 
             handler.removeCallbacks(inputConnection)
             handler.postDelayed(inputConnection, 200)
@@ -253,6 +262,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     fun setOnFieldStateChangeListener(onFieldStateChangeListener: OnFieldStateChangeListener?) {
         this.onFieldStateChangeListener = onFieldStateChangeListener
+        inputConnection?.run()
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)

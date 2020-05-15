@@ -72,30 +72,53 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
+
+        applyInputType()
+    }
+
+    private fun applyInputType() {
+        if(!isValidInputType(inputType)) {
+            inputType = InputType.TYPE_CLASS_DATETIME
+        }
+        refreshInput()
+    }
+
+    private fun isValidInputType(type: Int):Boolean {
+        return type == InputType.TYPE_CLASS_TEXT ||
+                type == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD ||
+                type == InputType.TYPE_CLASS_DATETIME
     }
 
     override fun setupInputConnectionListener() {
         val handler = Handler(Looper.getMainLooper())
         addTextChangedListener {
-            inputConnection?.getOutput()?.
-            content = FieldContent.CreditCardExpDateContent().apply {
-                val isValid = handleInputMode(it.toString())
-                when {
-                    text.isNullOrEmpty() -> {
-                        data = it.toString()
-                        rawData = data
-                    }
-                    !isValid -> {
-                        data = it.toString()
-                        rawData = data
-                    }
-                    else -> handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
+            val str = it.toString()
+            inputConnection?.getOutput()?.apply {
+                if(str.isNotEmpty()) {
+                    hasUserInteraction = true
                 }
+                content = createCreditCardExpDateContent(str)
             }
 
             handler.removeCallbacks(inputConnection)
             handler.postDelayed(inputConnection, 200)
         }
+    }
+
+    private fun createCreditCardExpDateContent(str: String): FieldContent? {
+        val c = FieldContent.CreditCardExpDateContent()
+        when {
+            text.isNullOrEmpty() -> {
+                c.data = str
+                c.rawData = str
+            }
+            !handleInputMode(str) -> {
+                c.data = str
+                c.rawData = str
+            }
+            else -> c.handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
+        }
+        return c
     }
 
     private fun handleInputMode(str:String):Boolean {

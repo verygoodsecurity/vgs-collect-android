@@ -28,7 +28,9 @@ internal class TemporaryFieldsStorage : VgsStore<Int, VGSFieldState>, IStateEmit
         store.clear()
     }
 
-    override fun getItems() = store.values
+    override fun getItems(): MutableCollection<VGSFieldState> {
+        return store.values
+    }
 
     private fun Map<Int, VGSFieldState>.containsState(state: VGSFieldState):Int {
         forEach {
@@ -42,19 +44,21 @@ internal class TemporaryFieldsStorage : VgsStore<Int, VGSFieldState>, IStateEmit
 
     override fun performSubscription() = object: OnVgsViewStateChangeListener {
         override fun emit(viewId: Int, state: VGSFieldState) {
-            val itemID = store.containsState(state)
-
-            if(store.containsKey(viewId).not()) {
+            val previousStateId = store.containsState(state)
+            if(previousStateId == -1) {
                 notifyOnNewFieldAdd(state)
-            }
-
-            if(itemID != -1) {
-                store.remove(itemID)
-                store[viewId] = state
-                notifyUser(state)
             } else {
-                store[viewId] = state
+                val previousInteractionState = store[viewId]?.hasUserInteraction?:false
+                state.hasUserInteraction = state.hasUserInteraction || previousInteractionState
+                if(viewId != previousStateId) {
+                    store.remove(previousStateId)
+                }
+                if (state.hasUserInteraction) {
+                    notifyUser(state)
+                }
             }
+            store[viewId] = state
+
             notifyOnDataChange(state)
         }
     }
