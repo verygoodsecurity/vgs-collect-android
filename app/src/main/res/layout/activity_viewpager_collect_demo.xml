@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+
+            <FrameLayout
+                android:id="@+id/cardPreviewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:background="#22000000"
+                android:paddingTop="@dimen/default_margin"
+                android:paddingStart="@dimen/half_default_margin"
+                android:paddingEnd="@dimen/half_default_margin"
+                android:paddingBottom="@dimen/half_default_margin">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/previewCard"
+                    android:layout_width="340dp"
+                    android:layout_height="@dimen/card_preview_height"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    app:cardCornerRadius="@dimen/half_default_margin"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/half_default_margin">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_card_preview"
+                        android:paddingStart="@dimen/preview_card_horizontal_padding"
+                        android:paddingEnd="@dimen/preview_card_horizontal_padding"
+                        android:paddingBottom="@dimen/preview_card_vertical_padding"
+                        android:paddingTop="@dimen/preview_card_vertical_padding">
+
+                        <TextView
+                            android:id="@+id/previewHolderName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/preview_holder_name_text_size"
+                            android:text="John Galt"
+                            android:visibility="invisible"
+                            android:textColor="@color/preview_holder_name_color"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/previewCardNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/preview_holder_name_text_size"
+                            android:paddingTop="24dp"
+                            android:paddingBottom="24dp"
+                            android:textColor="@color/preview_holder_name_color"
+                            app:layout_constraintTop_toBottomOf="@+id/previewHolderName"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/previewExpirationDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/preview_holder_name_text_size"
+                            android:text="12/24"
+                            android:visibility="invisible"
+                            android:textColor="@color/preview_holder_name_color"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/previewCardBrand"
+                            app:layout_constraintTop_toTopOf="@+id/previewCardBrand"
+                            app:layout_constraintBottom_toBottomOf="@+id/previewCardBrand"
+                            />
+
+                        <ImageView
+                            android:id="@+id/previewCardBrand"
+                            android:layout_width="64dp"
+                            android:layout_height="22dp"
+                            android:scaleType="centerInside"
+                            app:layout_constraintTop_toBottomOf="@+id/previewCardNumber"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+
+            </FrameLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:animateLayoutChanges="false"
+                />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:iconGravity="start"
+            app:icon="@drawable/ic_arrow_left"
+            android:textColor="@android:color/white"
+            android:textSize="14dp"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/colorAccent"
+            app:cornerRadius="@dimen/default_margin"
+            android:text="Back"
+            android:visibility="invisible"
+            android:paddingEnd="@dimen/default_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/nextBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:iconGravity="end"
+            app:icon="@drawable/ic_arrow_right"
+            android:textColor="@android:color/white"
+            android:textSize="14dp"
+            android:textAllCaps="false"
+            app:backgroundTint="@color/colorAccent"
+            app:cornerRadius="@dimen/default_margin"
+            android:text="Next"
+            android:paddingStart="@dimen/default_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.core.storage
 
 import android.content.Context
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.core.storage.content.field.FieldStateContractor
 import com.verygoodsecurity.vgscollect.core.storage.content.field.TemporaryFieldsStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageErrorListener
@@ -32,7 +33,8 @@ internal class InternalStorage(
             fileStorage = this
         }
 
-        with(TemporaryFieldsStorage()) {
+        val fieldStateContractor = FieldStateContractor(context)
+        with(TemporaryFieldsStorage(fieldStateContractor)) {
             attachFieldDependencyObserver(fieldsDependencyDispatcher)
 
             fieldsStorage = this
