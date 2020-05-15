@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/half_default_margin">
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:id="@+id/cardNumberFieldLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hint="editText text_appearance"
+        >
+
+        <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+            android:id="@+id/cardNumberField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:textAppearance="@style/text_appearance"
+            app:text="4111111111111111"
+            app:cardBrandIconGravity="end"/>
+
+
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:id="@+id/cardCVCFieldLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hint="errorTextAppearance"
+        app:errorTextAppearance="@style/error_appearance"
+        >
+
+        <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+            android:id="@+id/cardCVCField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="1"/>
+
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:id="@+id/cardHolderFieldLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:counterEnabled="true"
+        app:counterMaxLength="7"
+        app:hint="counterTextAppearance | Overflow"
+        app:counterOverflowTextAppearance="@style/counter_overflow_appearance"
+        app:counterTextAppearance="@style/counter_appearance">
+
+        <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
+            android:id="@+id/cardHolderField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="card number"
+            app:text="Petro"/>
+
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hint="hint_appearance"
+        app:hintTextAppearance="@style/hint_appearance">
+
+        <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="card number"
+            app:text="Petro"/>
+
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:id="@+id/cardExpDateFieldLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hint="helperTextTextAppearance"
+        app:helperText="helperTextTextAppearance"
+        app:helperTextTextAppearance="@style/helper_appearance">
+
+        <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+            android:id="@+id/cardExpDateField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hint="card number"/>
+
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+</LinearLayout>
