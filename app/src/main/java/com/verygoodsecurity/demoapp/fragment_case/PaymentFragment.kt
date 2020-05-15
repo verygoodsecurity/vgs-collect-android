@@ -2,26 +2,29 @@ package com.verygoodsecurity.demoapp.fragment_case
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.google.android.material.button.MaterialButton
+import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.vgscollect.core.Environment
+import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 
-class PaymentFragment: Fragment(), VgsCollectResponseListener, OnFieldStateChangeListener {
+class PaymentFragment: Fragment(), VgsCollectResponseListener, OnFieldStateChangeListener,
+    View.OnClickListener {
 
     companion object {
         const val VAULT_ID = "vault_id"
@@ -35,6 +38,11 @@ class PaymentFragment: Fragment(), VgsCollectResponseListener, OnFieldStateChang
 
     private lateinit var vgsForm: VGSCollect
 
+    private var cardNumberField: InputFieldView? = null
+    private var cardCVCField: InputFieldView? = null
+    private var cardHolderField: InputFieldView? = null
+    private var cardExpDateField: InputFieldView? = null
+
     private var responseContainerView:TextView? = null
     private var stateContainerView:TextView? = null
     private var previewCardNumber:TextView? = null
@@ -42,12 +50,52 @@ class PaymentFragment: Fragment(), VgsCollectResponseListener, OnFieldStateChang
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+
         retrieveAttributes()
 
         vgsForm = VGSCollect(activity!!, vault_id, env)
+
         vgsForm.addOnResponseListeners(this)
         vgsForm.addOnFieldStateChangeListener(this)
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.details_fragment_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.scan_card -> scanCard()
+            R.id.details_item -> addDetailsFragment()
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
+    }
+
+    private fun addDetailsFragment() {
+        activity?.supportFragmentManager?.beginTransaction()
+            ?.addToBackStack("details")
+            ?.replace(R.id.container, DetailsFragment())
+            ?.commit()
+    }
+
+    private fun scanCard() {
+        val intent = Intent(activity, ScanActivity::class.java)
+
+        val scanSettings = hashMapOf<String?, Int>().apply {
+            this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
+            this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
+            this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
+            this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
+        }
+
+        intent.putExtra(ScanActivity.SCAN_CONFIGURATION, scanSettings)
+
+        startActivityForResult(intent,
+            VGSCollectFragmentActivity.USER_SCAN_REQUEST_CODE
+        )
     }
 
     private fun retrieveAttributes() {
@@ -75,19 +123,22 @@ class PaymentFragment: Fragment(), VgsCollectResponseListener, OnFieldStateChang
     }
 
     private fun initializeViews() {
-        val cardNumberField = view?.findViewById<VGSCardNumberEditText>(R.id.cardNumberField)
+        cardNumberField = view?.findViewById<VGSCardNumberEditText>(R.id.cardNumberField)
         vgsForm.bindView(cardNumberField)
-        val cardCVCField = view?.findViewById<CardVerificationCodeEditText>(R.id.cardCVCField)
+        cardCVCField = view?.findViewById<CardVerificationCodeEditText>(R.id.cardCVCField)
         vgsForm.bindView(cardCVCField)
-        val cardHolderField = view?.findViewById<PersonNameEditText>(R.id.cardHolderField)
+        cardHolderField = view?.findViewById<PersonNameEditText>(R.id.cardHolderField)
         vgsForm.bindView(cardHolderField)
-        val cardExpDateField = view?.findViewById<ExpirationDateEditText>(R.id.cardExpDateField)
+        cardExpDateField = view?.findViewById<ExpirationDateEditText>(R.id.cardExpDateField)
         vgsForm.bindView(cardExpDateField)
 
         responseContainerView =  view?.findViewById(R.id.responseContainerView)
         stateContainerView =  view?.findViewById(R.id.stateContainerView)
         previewCardNumber =  view?.findViewById(R.id.previewCardNumber)
         previewCardBrand =  view?.findViewById(R.id.previewCardBrand)
+
+        view?.findViewById<MaterialButton>(R.id.submitBtn)?.setOnClickListener(this)
+        view?.findViewById<MaterialButton>(R.id.attachBtn)?.setOnClickListener(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -130,5 +181,20 @@ class PaymentFragment: Fragment(), VgsCollectResponseListener, OnFieldStateChang
             builder.append(it.toString()).append("\n\n")
         }
         stateContainerView?.text = builder.toString()
+    }
+
+    override fun onClick(v: View) {
+        when(v.id) {
+            R.id.attachBtn -> attachFile()
+            R.id.submitBtn -> vgsForm.asyncSubmit("/post", HTTPMethod.POST)
+        }
+    }
+
+    private fun attachFile() {
+        if(vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
+            vgsForm.getFileProvider().attachFile("attachments.file")
+        } else {
+            vgsForm.getFileProvider().detachAll()
+        }
     }
 }

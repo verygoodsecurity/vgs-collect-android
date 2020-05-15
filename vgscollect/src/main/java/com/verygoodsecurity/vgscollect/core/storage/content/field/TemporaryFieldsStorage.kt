@@ -9,8 +9,7 @@ import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
-internal class TemporaryFieldsStorage : VgsStore<Int, VGSFieldState>,
-    IStateEmitter {
+internal class TemporaryFieldsStorage : VgsStore<Int, VGSFieldState>, IStateEmitter {
 
     private val store = mutableMapOf<Int, VGSFieldState>()
 
@@ -29,14 +28,37 @@ internal class TemporaryFieldsStorage : VgsStore<Int, VGSFieldState>,
         store.clear()
     }
 
-    override fun getItems() = store.values
+    override fun getItems(): MutableCollection<VGSFieldState> {
+        return store.values
+    }
+
+    private fun Map<Int, VGSFieldState>.containsState(state: VGSFieldState):Int {
+        forEach {
+            if(state.fieldName == it.value.fieldName) {
+                return it.key
+            }
+        }
+
+        return -1
+    }
 
     override fun performSubscription() = object: OnVgsViewStateChangeListener {
         override fun emit(viewId: Int, state: VGSFieldState) {
-            if(store.containsKey(viewId).not()) {
+            val previousStateId = store.containsState(state)
+            if(previousStateId == -1) {
                 notifyOnNewFieldAdd(state)
+            } else {
+                val previousInteractionState = store[viewId]?.hasUserInteraction?:false
+                state.hasUserInteraction = state.hasUserInteraction || previousInteractionState
+                if(viewId != previousStateId) {
+                    store.remove(previousStateId)
+                }
+                if (state.hasUserInteraction) {
+                    notifyUser(state)
+                }
             }
-            addItem(viewId, state)
+            store[viewId] = state
+
             notifyOnDataChange(state)
         }
     }
