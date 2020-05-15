@@ -22,14 +22,14 @@ class InputCardExpDateConnectionTest {
     fun setChangeListener() {
         val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
-        Mockito.verify(listener, Mockito.times(2)).emit(anyInt(), any())
+        Mockito.verify(listener).emit(anyInt(), any())
     }
 
     @Test
     fun emitItem() {
         val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
-        Mockito.verify(listener, Mockito.times(2)).emit(anyInt(), any())
+        Mockito.verify(listener).emit(anyInt(), any())
     }
 
     @Test

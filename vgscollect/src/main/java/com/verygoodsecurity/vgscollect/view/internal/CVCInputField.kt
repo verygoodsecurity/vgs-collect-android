@@ -66,11 +66,11 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
         }
     }
 
-    private var limit:Int = 4
+    private var maxCodeLimit:Int = 4
     override fun dispatchDependencySetting(dependency: Dependency) {
         if(dependency.dependencyType == DependencyType.LENGTH) {
-            if(limit != dependency.value as Int) {
-                limit = dependency.value
+            if(maxCodeLimit != dependency.value as Int) {
+                maxCodeLimit = dependency.value
                 val filterLength = InputFilter.LengthFilter(dependency.value)
                 filters = arrayOf(CVCValidateFilter(), filterLength)
                 (inputConnection as? InputCardCVCConnection)?.runtimeValidator =
