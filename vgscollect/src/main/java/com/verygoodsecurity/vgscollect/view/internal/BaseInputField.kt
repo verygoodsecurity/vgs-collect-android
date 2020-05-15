@@ -63,6 +63,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         set(value) {
             field = value
             inputConnection?.getOutput()?.isRequired = value
+            inputConnection?.run()
         }
 
     private var activeTextWatcher: TextWatcher? = null

@@ -66,12 +66,14 @@ class FieldsStorageTest {
         val listener = store.performSubscription()
 
         val item1 = VGSFieldState()
+        item1.fieldName = "1"
         listener.emit(0, item1)
 
         val itemsCase1 = store.getItems()
         assertEquals(1, itemsCase1.size)
 
         val item2 = VGSFieldState()
+        item2.fieldName = "2"
         listener.emit(1, item2)
 
         val itemsCase2 = store.getItems()
