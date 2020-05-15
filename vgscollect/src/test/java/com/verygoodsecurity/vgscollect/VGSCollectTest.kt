@@ -15,8 +15,10 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.widget.VGSEditText
+import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
+import com.verygoodsecurity.vgscollect.widget.*
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -37,6 +39,8 @@ class VGSCollectTest {
     private lateinit var activity: Activity
 
     private lateinit var collect: VGSCollect
+
+    private var testViewCounter = 0
 
     @Before
     fun setUp() {
@@ -91,10 +95,20 @@ class VGSCollectTest {
 
     @Test
     fun test_get_all_states() {
-        applyEditText(FieldType.CARD_NUMBER)
         applyEditText(FieldType.CVC)
+        applyEditText(FieldType.CARD_NUMBER)
 
         assertEquals(2, collect.getAllStates().size)
+    }
+
+    @Test
+    fun test_get_all_states_4_fields() {
+        applyEditText(FieldType.CVC)
+        applyEditText(FieldType.CARD_NUMBER)
+        applyEditText(FieldType.CARD_EXPIRATION_DATE)
+        applyEditText(FieldType.CARD_HOLDER_NAME)
+
+        assertEquals(4, collect.getAllStates().size)
     }
 
     @Test
@@ -214,13 +228,44 @@ class VGSCollectTest {
         return storage
     }
 
-    private fun applyEditText(typeField: FieldType):VGSEditText {
-        val view = spy( VGSEditText(activity) )
-        view.setFieldType(typeField)
+    private fun applyEditText(typeField: FieldType):InputFieldView {
+        val view = when(typeField) {
+            FieldType.CARD_NUMBER -> createCardNumber()
+            FieldType.CVC -> createCardCVC()
+            FieldType.CARD_EXPIRATION_DATE -> createCardHolder()
+            else -> createCardExpDate()
+        }
+
+        (view.getView() as? BaseInputField)?.prepareFieldTypeConnection()
 
         collect.bindView(view)
 
+
         return view
+    }
+
+    private fun createCardNumber():VGSCardNumberEditText {
+        return  spy( VGSCardNumberEditText(activity) ).apply {
+            setFieldName("createCardNumber")
+        }
+    }
+
+    private fun createCardCVC():CardVerificationCodeEditText {
+        return  spy( CardVerificationCodeEditText(activity) ).apply {
+            setFieldName("createCardCVC")
+        }
+    }
+
+    private fun createCardHolder():PersonNameEditText {
+        return  spy( PersonNameEditText(activity) ).apply {
+            setFieldName("createCardHolder")
+        }
+    }
+
+    private fun createCardExpDate():ExpirationDateEditText {
+        return  spy( ExpirationDateEditText(activity) ).apply {
+            setFieldName("createCardExpDate")
+        }
     }
 
     private fun applyResponseListener(): VgsCollectResponseListener {

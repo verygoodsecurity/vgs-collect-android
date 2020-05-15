@@ -787,4 +787,71 @@ class VGSTextInputLayoutTest {
         assertEquals(typeface, textInputLayout.getTypeface())
         assertEquals(typeface, state.typeface)
     }
+
+    @Test
+    fun test_set_hint_text_appearance() {
+        val styleResID = 7332
+
+        textInputLayout.setHintTextAppearance(styleResID)
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(styleResID, state.hintTextAppearance)
+    }
+
+    @Test
+    fun test_set_error_text_appearance() {
+        val styleResID = 7332
+
+        textInputLayout.setErrorTextAppearance(styleResID)
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(styleResID, state.errorTextAppearance)
+    }
+
+    @Test
+    fun test_set_counter_overflow_text_appearance() {
+        val styleResID = 7332
+
+        textInputLayout.setCounterOverflowTextAppearance(styleResID)
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(styleResID, state.counterOverflowTextAppearance)
+    }
+
+    @Test
+    fun test_set_counter_text_appearance() {
+        val styleResID = 7332
+
+        textInputLayout.setCounterTextAppearance(styleResID)
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(styleResID, state.counterTextAppearance)
+    }
+
+    @Test
+    fun test_set_helper_text_appearance() {
+        val styleResID = 7332
+
+        textInputLayout.setHelperTextTextAppearance(styleResID)
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(styleResID, state.helperTextTextAppearance)
+    }
+
+    @Test
+    fun test_set_helper_text() {
+        val helper = "7332"
+
+        textInputLayout.setHelperText(helper)
+
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(helper, state.helperText)
+    }
+
 }
