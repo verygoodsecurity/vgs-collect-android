@@ -33,6 +33,10 @@ sealed class FieldContent {
     override fun equals(other: Any?): Boolean {
         return other is String && other == data
     }
+
+    override fun toString(): String {
+        return data?:""
+    }
 }
 
 /** @suppress */

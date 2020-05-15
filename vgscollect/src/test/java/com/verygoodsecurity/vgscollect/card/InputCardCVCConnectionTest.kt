@@ -21,14 +21,14 @@ class InputCardCVCConnectionTest {
     fun setChangeListener() {
         val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
-        verify(listener, times(2)).emit(anyInt(), any())
+        verify(listener, times(1)).emit(anyInt(), any())
     }
 
     @Test
     fun emitItem() {
         val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
-        verify(listener, times(2)).emit(anyInt(), any())
+        verify(listener, times(1)).emit(anyInt(), any())
     }
 
     @Test

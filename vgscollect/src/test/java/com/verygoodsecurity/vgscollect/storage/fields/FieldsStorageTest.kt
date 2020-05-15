@@ -66,12 +66,14 @@ class FieldsStorageTest {
         val listener = store.performSubscription()
 
         val item1 = VGSFieldState()
+        item1.fieldName = "1"
         listener.emit(0, item1)
 
         val itemsCase1 = store.getItems()
         assertEquals(1, itemsCase1.size)
 
         val item2 = VGSFieldState()
+        item2.fieldName = "2"
         listener.emit(1, item2)
 
         val itemsCase2 = store.getItems()
@@ -112,15 +114,14 @@ class FieldsStorageTest {
 
     @Test
     fun test_trigger_field_dependency_observer_refresh_state() {
-        val store =
-            TemporaryFieldsStorage()
+        val store = TemporaryFieldsStorage()
 
         val onFieldStateChangeListener = mock(FieldDependencyObserver::class.java)
         store.attachFieldDependencyObserver(onFieldStateChangeListener)
 
         val onVgsViewStateChangeListener = store.performSubscription()
-        onVgsViewStateChangeListener.emit(2, VGSFieldState(type = FieldType.CARD_NUMBER))
-        onVgsViewStateChangeListener.emit(1, VGSFieldState(type = FieldType.CVC))
+        onVgsViewStateChangeListener.emit(2, VGSFieldState(type = FieldType.CARD_NUMBER, fieldName = "n13"))
+        onVgsViewStateChangeListener.emit(1, VGSFieldState(type = FieldType.CVC, fieldName = "n1"))
 
         Mockito.verify(onFieldStateChangeListener).onRefreshState(any())
     }
