@@ -20,7 +20,6 @@ internal class InputCardExpDateConnection(
 
     override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
         listener?.let { addNewListener(it) }
-        run()
     }
 
     override fun run() {

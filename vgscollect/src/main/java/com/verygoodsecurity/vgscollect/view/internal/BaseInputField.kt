@@ -51,6 +51,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         set(value) {
             field = value
             inputConnection?.setOutputListener(value)
+            inputConnection?.run()
         }
 
     protected var isListeningPermitted = true
@@ -67,9 +68,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private var activeTextWatcher: TextWatcher? = null
 
-    internal fun setIsListeningPermitted(state:Boolean) {
-        isListeningPermitted = state
-    }
     init {
         isListeningPermitted = true
         setupFocusChangeListener()
@@ -79,6 +77,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         setupViewAttributes()
     }
 
+    internal fun setIsListeningPermitted(state:Boolean) {
+        isListeningPermitted = state
+    }
+
     private fun setupViewAttributes() {
         id = ViewCompat.generateViewId()
 
@@ -86,16 +88,28 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     private fun setupFocusChangeListener() {
-        onFocusChangeListener = OnFocusChangeListener { _, f ->
-            inputConnection?.getOutput()?.isFocusable = f
-            inputConnection?.run()
+        onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+            inputConnection?.getOutput()?.apply {
+                if(hasFocus != isFocusable) {
+                    isFocusable = hasFocus
+                    hasUserInteraction = true
+                    inputConnection?.run()
+                }
+            }
         }
     }
 
     protected open fun setupInputConnectionListener() {
         val handler = Handler(Looper.getMainLooper())
         addTextChangedListener {
-            inputConnection?.getOutput()?.content?.data =  it.toString()
+            val str = it.toString()
+
+            inputConnection?.getOutput()?.apply {
+                if(str.isNotEmpty()) {
+                    hasUserInteraction = true
+                }
+                content?.data = str
+            }
 
             handler.removeCallbacks(inputConnection)
             handler.postDelayed(inputConnection, 200)

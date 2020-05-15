@@ -13,10 +13,10 @@
     <dimen name="preview_card_horizontal_padding">40dp</dimen>
     <dimen name="preview_card_vertical_padding">27dp</dimen>
 
-    <dimen name="payment_card_vertical_margin">15dp</dimen>
+    <dimen name="payment_card_vertical_margin">1dp</dimen>
 
     <dimen name="payment_card_horizontal_padding">20dp</dimen>
-    <dimen name="payment_card_vertical_padding">20dp</dimen>
+    <dimen name="payment_card_vertical_padding">10dp</dimen>
 
     <dimen name="vgs_field_horizontal_padding">21dp</dimen>
     <dimen name="vgs_field_vertical_padding">2dp</dimen>

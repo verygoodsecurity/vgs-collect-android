@@ -236,7 +236,7 @@ class ExpirationDateEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        Mockito.verify(listener, Mockito.times(2)).onStateChange(any())
+        Mockito.verify(listener).onStateChange(any())
     }
 
     @Test

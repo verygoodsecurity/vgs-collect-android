@@ -18,6 +18,9 @@ enum class VGSError(val code:Int, val messageResId:Int) {
     INPUT_DATA_NOT_VALID(1001,
         R.string.error_field_validation
     ),
+    FIELD_NAME_NOT_SET(1004,
+        R.string.error_field_name_not_set
+    ),
     FILE_NOT_FOUND(1101,
         R.string.error_file_not_fount
     ),

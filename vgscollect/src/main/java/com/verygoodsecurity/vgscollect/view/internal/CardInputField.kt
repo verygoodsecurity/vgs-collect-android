@@ -63,23 +63,44 @@ internal class CardInputField(context: Context): BaseInputField(context) {
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
         applyNewTextWatcher(CardNumberTextWatcher(divider))
+
         applyInputType()
+    }
+
+    private fun applyInputType() {
+        if(!isValidInputType(inputType)) {
+            inputType = InputType.TYPE_CLASS_NUMBER
+        }
+        refreshInput()
+    }
+
+    private fun isValidInputType(type: Int):Boolean {
+        return type == InputType.TYPE_CLASS_NUMBER ||
+                type == InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
     }
 
     override fun setupInputConnectionListener() {
         val handler = Handler(Looper.getMainLooper())
         addTextChangedListener {
             val str = it.toString()
-            inputConnection?.getOutput()?.
-            content = FieldContent.CardNumberContent().apply {
-                rawData = str.replace(divider?:" ", "")
-                cardtype = this@CardInputField.cardtype
-                this.data = str
-            }
+            inputConnection?.getOutput()?.apply {
+                if(str.isNotEmpty()) {
+                    hasUserInteraction = true
+                }
+                content = createCardNumberContent(str)
 
-            handler.removeCallbacks(inputConnection)
-            handler.postDelayed(inputConnection, 200)
+                handler.removeCallbacks(inputConnection)
+                handler.postDelayed(inputConnection, 200)
+            }
         }
+    }
+
+    private fun createCardNumberContent(str: String): FieldContent.CardNumberContent {
+        val c = FieldContent.CardNumberContent()
+        c.cardtype = this@CardInputField.cardtype
+        c.rawData = str.replace(divider?:" ", "")
+        c.data = str
+        return c
     }
 
     private fun drawCardBrandPreview() {
@@ -169,18 +190,6 @@ internal class CardInputField(context: Context): BaseInputField(context) {
         val validType = validateInputType(type)
         super.setInputType(validType)
         refreshInput()
-    }
-
-    private fun applyInputType() {
-        if(!isValidInputType(inputType)) {
-            inputType = InputType.TYPE_CLASS_NUMBER
-        }
-        refreshInput()
-    }
-
-    private fun isValidInputType(type: Int):Boolean {
-        return type == InputType.TYPE_CLASS_NUMBER ||
-                type == InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
     }
 
     private fun validateInputType(type: Int):Int {
