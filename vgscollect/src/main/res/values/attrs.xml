@@ -326,6 +326,9 @@
         <attr name="imeOptions" />
         <!-- Font family (named by string or as a font resource reference) for the text. -->
         <attr name="fontFamily" format="string"/>
+
+        <!-- Sets the text color, size, style, hint color, and highlight color from the specified TextAppearance resource.-->
+        <attr name="textAppearance" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="PersonNameEditText">
@@ -581,5 +584,26 @@
             <!-- The view will display a clear text button while the EditText contains input. -->
             <enum name="clear_text" value="2"/>
         </attr>
+
+        <!-- Sets the text color and size for the error message from the specified TextAppearance resource.-->
+        <attr name="errorTextAppearance" format="reference"/>
+
+        <!-- Sets the collapsed hint text color from the specified ColorStateList resource.-->
+        <attr name="hintTextAppearance" format="reference"/>
+
+        <!-- Sets the text color and size for the overflowed character counter using the specified TextAppearance resource.-->
+        <attr name="counterOverflowTextAppearance" format="reference"/>
+
+        <!-- Sets the text color and size for the character counter using the specified TextAppearance resource.-->
+        <attr name="counterTextAppearance" format="reference"/>
+
+        <!-- Sets the text color and size for the helper text from the specified TextAppearance resource.-->
+        <attr name="helperTextTextAppearance" format="reference"/>
+
+        <!-- Returns the helper message that was set to be displayed with setHelperText(CharSequence),
+             or null if no helper text was set or if helper text functionality is not enabled.
+        -->
+        <attr name="helperText" format="string"/>
+
     </declare-styleable>
 </resources>
