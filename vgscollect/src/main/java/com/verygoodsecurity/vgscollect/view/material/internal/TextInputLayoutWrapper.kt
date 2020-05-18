@@ -132,6 +132,7 @@ internal class TextInputLayoutWrapper @JvmOverloads constructor(
     private fun applyLayoutParams(v: TextView?) {
         v?.apply {
             val LP = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            LP.weight = 1.0f
             LP.setMargins(0,0,0,0)
             if(LP.gravity == -1) {
                 LP.gravity = Gravity.CENTER_VERTICAL
