@@ -41,7 +41,7 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
                     getBoolean(R.styleable.CardVerificationCodeEditText_singleLine, true)
                 val scrollHorizontally =
                     getBoolean(R.styleable.CardVerificationCodeEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.CardVerificationCodeEditText_gravity, 0)
+                val gravity = getInt(R.styleable.CardVerificationCodeEditText_gravity, -1)
                 val ellipsize = getInt(R.styleable.CardVerificationCodeEditText_ellipsize, 0)
 
                 val minLines = getInt(R.styleable.CardVerificationCodeEditText_minLines, 0)

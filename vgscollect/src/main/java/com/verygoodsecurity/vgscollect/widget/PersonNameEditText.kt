@@ -35,7 +35,7 @@ class PersonNameEditText @JvmOverloads constructor(
                 val isRequired = getBoolean(R.styleable.PersonNameEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.PersonNameEditText_singleLine, true)
                 val scrollHorizontally = getBoolean(R.styleable.PersonNameEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.PersonNameEditText_gravity, 0)
+                val gravity = getInt(R.styleable.PersonNameEditText_gravity, -1)
                 val ellipsize = getInt(R.styleable.PersonNameEditText_ellipsize, 0)
 
                 val minLines = getInt(R.styleable.PersonNameEditText_minLines, 0)
