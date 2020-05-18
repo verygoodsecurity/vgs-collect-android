@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/half_default_margin">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="87dp"
+        android:layout_marginTop="30dp"
+        android:text="sadas"
+        />
+
+    <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+        android:layout_width="match_parent"
+        android:layout_height="87dp"
+        android:layout_marginTop="30dp"
+        app:cardBrandIconGravity="start"
+        app:text="41111"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_height="87dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="sadas"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="87dp"
+        android:layout_marginTop="30dp"
+        app:boxBackgroundModes="filled">
+        <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBrandIconGravity="start"
+            app:text="41111"
+            />
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#000"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_height="8dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:text="TextInputLayout 8dp | editText 90dp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginTop="30dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:text="TextInputLayout 90dp | editText 8dp"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</LinearLayout>

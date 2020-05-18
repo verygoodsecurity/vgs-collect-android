@@ -45,7 +45,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                 val isRequired = getBoolean(R.styleable.VGSCardNumberEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.VGSCardNumberEditText_singleLine, true)
                 val scrollHorizontally = getBoolean(R.styleable.VGSCardNumberEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.VGSCardNumberEditText_gravity, 0)
+                val gravity = getInt(R.styleable.VGSCardNumberEditText_gravity, -1)
                 val ellipsize = getInt(R.styleable.VGSCardNumberEditText_ellipsize, 0)
 
                 val minLines = getInt(R.styleable.VGSCardNumberEditText_minLines, 0)
