@@ -141,11 +141,6 @@ internal class TextInputLayoutWrapper @JvmOverloads constructor(
         }
     }
 
-    override fun setError(errorText: CharSequence?) {
-        super.setError(errorText)
-        editText?.parent?.requestLayout()
-    }
-
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         adjustBounds()
