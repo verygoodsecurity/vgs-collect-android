@@ -52,7 +52,7 @@ For integration you need to install the [Android Studio](http://developer.androi
 If you are using Maven, add the following to your `build.gradle` file:
 ```gradle
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:1.1.3’
+   implementation 'com.verygoodsecurity:vgscollect:1.1.6’
 }
 ```
 
@@ -66,7 +66,7 @@ Add VGSEditText to your layout file:
 <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
   	 android:id="@+id/your_field"
    	 android:layout_width="match_parent"
-  	 android:layout_height="match_parent" />
+  	 android:layout_height="wrap_content" />
 ```
 
 Add the following code to initialize the SDK to your Activity or Fragment class:
@@ -119,42 +119,6 @@ private void submitData() {
 }
 ```
 
-There is an option to send custom fields in the same request that the SDK CTA sends:
-```java
-private void submitData() {
-    //..
-    HashMap data = HashMap<String, String>();
-    data.put("key", "value");
-    vgsForm.setCustomData(data);
-
-    vgsForm.asyncSubmit("/path", HTTPMethod.POST);
-}
-```
-
-More to the point SDK allows send your custom headers:
-```java
-private void submitData() {
-    //..
-    HashMap headers = HashMap<String, String>();
-    headers.put("key", "value");
-    vgsForm.setCustomHeaders(headers);
-
-    vgsForm.asyncSubmit("/path", HTTPMethod.POST);
-}
-```
-
-To clear all custom headers use `resetCustomHeaders` or `resetCustomData` to clear custom fields added before.
-```java
-private void submitData() {
-    vgsForm.resetCustomHeaders();
-
-    HashMap headers = HashMap<String, String>();
-    headers.put("key", "value");
-    vgsForm.setCustomHeaders(headers);
-
-    vgsForm.asyncSubmit("/path", HTTPMethod.POST);
-}
-```
 
 #### Handle service response
 You need to implement `VgsCollectResponseListener` to read response:
