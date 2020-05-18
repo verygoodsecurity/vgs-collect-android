@@ -126,7 +126,6 @@ workflows:
                 - master
                 - stage
                 - develop
-                - dmytro.k/ch71808/android-sdk-define-way-to-change-field-height
       - "Run Lint":
           requires:
             *prepare_sources
@@ -144,7 +143,6 @@ workflows:
                 - master
                 - stage
                 - develop
-                - dmytro.k/ch71808/android-sdk-define-way-to-change-field-height
       - "Assemble Debug Build":
           requires:
             *all_test
