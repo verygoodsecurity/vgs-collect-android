@@ -40,7 +40,7 @@ open class VGSEditText @JvmOverloads constructor(
                 val isRequired = getBoolean(R.styleable.VGSEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.VGSEditText_singleLine, true)
                 val scrollHorizontally = getBoolean(R.styleable.VGSEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.VGSEditText_gravity, 0)
+                val gravity = getInt(R.styleable.VGSEditText_gravity, -1)
                 val ellipsize = getInt(R.styleable.VGSEditText_ellipsize, 0)
 
                 val minLines = getInt(R.styleable.VGSEditText_minLines, 0)
