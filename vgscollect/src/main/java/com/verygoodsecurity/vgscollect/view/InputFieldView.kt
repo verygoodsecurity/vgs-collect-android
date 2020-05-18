@@ -10,10 +10,12 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgscollect.R
@@ -265,11 +267,37 @@ abstract class InputFieldView @JvmOverloads constructor(
                     resources.getDimension(R.dimen.default_horizontal_field).toInt(),
                     resources.getDimension(R.dimen.default_vertical_field).toInt()
                 )
+                applyLayoutParams(inputField)
                 addView(inputField)
             }
             inputField.setPadding(leftP, topP, rightP, bottomP)
 
             isAttachPermitted = false
+        }
+    }
+
+    private fun applyLayoutParams(v: TextView?) {
+        v?.apply {
+            var currentGravity = v.gravity
+
+            if (currentGravity and Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK == 0) {
+                currentGravity = currentGravity or Gravity.START
+            }
+            if (currentGravity and Gravity.VERTICAL_GRAVITY_MASK == 0) {
+                currentGravity = currentGravity or Gravity.TOP
+            }
+
+            val LP = LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            LP.setMargins(0,0,0,0)
+            if(LP.gravity == -1) {
+                LP.gravity = Gravity.CENTER_VERTICAL
+            }
+            layoutParams = LP
+
+            this.gravity = currentGravity
         }
     }
 
