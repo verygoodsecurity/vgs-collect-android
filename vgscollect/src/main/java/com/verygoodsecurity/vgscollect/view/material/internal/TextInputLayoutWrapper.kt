@@ -106,6 +106,7 @@ internal class TextInputLayoutWrapper @JvmOverloads constructor(
             when(this) {
                 is BaseInputField ->  {
                     this.setIsListeningPermitted(true)
+                    applyLayoutParams(this)
                     this
                 }
                 is AccessibilityStatePreparer -> {
@@ -122,19 +123,21 @@ internal class TextInputLayoutWrapper @JvmOverloads constructor(
     }
 
     private fun applyAndReturnDefaultLayoutParams(parentView: View, v: View?):View {
-        return v?.apply {
-            val LP = LayoutParams(parentView.layoutParams.width, parentView.layoutParams.height)
+        if(v is TextView) {
+            applyLayoutParams(v)
+        }
+        return v?:parentView
+    }
+
+    private fun applyLayoutParams(v: TextView?) {
+        v?.apply {
+            val LP = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             LP.setMargins(0,0,0,0)
             if(LP.gravity == -1) {
                 LP.gravity = Gravity.CENTER_VERTICAL
             }
             layoutParams = LP
-
-            if(this is TextView &&
-                this.gravity == Gravity.TOP or Gravity.START) {
-                this.gravity = Gravity.CENTER_VERTICAL
-            }
-        }?:parentView
+        }
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
