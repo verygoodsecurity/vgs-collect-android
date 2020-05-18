@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:id="@+id/parents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/default_margin">
+
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
+            app:boxBackgroundModes="filled">
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                android:layout_width="match_parent"
+                android:layout_height="87dp"
+                app:cardBrandIconGravity="start"
+                app:gravity="right"
+                app:text="41111"
+                />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
+            android:text="test"
+            />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
+            app:cardBrandIconGravity="start"
+            app:text="41111"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
+            android:text="test"
+            android:gravity="start|top"
+            />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
+            app:cardBrandIconGravity="start"
+            app:gravity="start|top"
+            app:text="41111"
+            />
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
+            android:text="test"
+            android:gravity="center"
+            />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
+            app:cardBrandIconGravity="start"
+            app:gravity="center"
+            app:text="41111"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
+            android:text="test"
+            android:gravity="center_vertical|right"
+            />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
+            app:cardBrandIconGravity="start"
+            app:gravity="center_vertical|right"
+            app:text="41111"
+            />
+
+    </LinearLayout>
+</ScrollView>
