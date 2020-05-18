@@ -46,7 +46,7 @@ class ExpirationDateEditText @JvmOverloads constructor(
                 val isRequired = getBoolean(R.styleable.ExpirationDateEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.ExpirationDateEditText_singleLine, true)
                 val scrollHorizontally = getBoolean(R.styleable.ExpirationDateEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.ExpirationDateEditText_gravity, 0)
+                val gravity = getInt(R.styleable.ExpirationDateEditText_gravity, -1)
                 val ellipsize = getInt(R.styleable.ExpirationDateEditText_ellipsize, 0)
 
                 setFieldName(fieldName)
