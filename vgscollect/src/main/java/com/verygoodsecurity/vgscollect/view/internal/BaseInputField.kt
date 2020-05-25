@@ -31,21 +31,18 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     DependencyListener, OnVgsViewStateChangeListener {
 
     companion object {
-        fun getInputField(context: Context, type:FieldType):BaseInputField {
-            return when(type) {
+        fun getInputField(context: Context, parent:InputFieldView):BaseInputField {
+            val field = when(parent.getFieldType()) {
                 FieldType.CARD_NUMBER -> CardInputField(context)
                 FieldType.CVC -> CVCInputField(context)
                 FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
                 FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
                 FieldType.INFO -> InfoInputField(context)
             }
+            field.vgsParent = parent
+            return field
         }
     }
-
-    protected abstract var fieldType: FieldType
-
-    protected var inputConnection: InputRunnable? = null
-    private var onFieldStateChangeListener:OnFieldStateChangeListener? = null
 
     internal var stateListener: OnVgsViewStateChangeListener? = null
         set(value) {
@@ -53,18 +50,29 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             inputConnection?.setOutputListener(value)
             inputConnection?.run()
         }
-
-    protected var isListeningPermitted = true
-    private var isBackgroundVisible = true
-
-    protected var hasRTL = false
-
-    var isRequired:Boolean = true
+    internal var isRequired:Boolean = true
         set(value) {
             field = value
             inputConnection?.getOutput()?.isRequired = value
             inputConnection?.run()
         }
+
+    protected var isListeningPermitted = true
+    private var isFocusListeningConfigured = true
+    protected var hasRTL = false
+
+    protected abstract var fieldType: FieldType
+
+    protected var inputConnection: InputRunnable? = null
+
+    protected var vgsParent:InputFieldView? = null
+
+    private var onFieldStateChangeListener:OnFieldStateChangeListener? = null
+
+    private var userFocusChangeListener:OnFocusChangeListener? = null
+
+    private var isBackgroundVisible = true
+
 
     private var activeTextWatcher: TextWatcher? = null
 
@@ -90,6 +98,9 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     private fun setupFocusChangeListener() {
         onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
             inputConnection?.getOutput()?.apply {
+
+                userFocusChangeListener?.onFocusChange(vgsParent, hasFocus)
+
                 if(hasFocus != isFocusable) {
                     isFocusable = hasFocus
                     hasUserInteraction = true
@@ -269,5 +280,14 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun prepareFieldTypeConnection() {
         applyFieldType()
+    }
+
+    override fun setOnFocusChangeListener(l: OnFocusChangeListener?) {
+        if(isFocusListeningConfigured) {
+            isFocusListeningConfigured = false
+            super.setOnFocusChangeListener(l)
+        } else {
+            userFocusChangeListener = l
+        }
     }
 }
