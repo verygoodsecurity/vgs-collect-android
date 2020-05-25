@@ -47,7 +47,10 @@ internal fun VGSFieldState.mapToFieldState():FieldState {
 
     f.fieldType = type
     f.isValid = isValid
-    f.isEmpty = content?.data.isNullOrEmpty()
+
+    f.contentLength = content?.data?.length?:0
+    f.isEmpty = f.contentLength == 0
+
     f.isRequired = isRequired
     f.fieldName = fieldName?:""
     f.hasFocus = isFocusable
