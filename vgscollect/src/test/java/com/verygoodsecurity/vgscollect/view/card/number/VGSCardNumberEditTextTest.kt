@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import android.text.InputType
 import android.view.Gravity
+import android.view.View
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
@@ -16,6 +17,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
@@ -200,6 +202,20 @@ class VGSCardNumberEditTextTest {
         Mockito.verify(listener, Mockito.times(1)).onStateChange(any())
     }
 
+    @Test
+    fun test_on_focus_change_listener() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val listener = mock(View.OnFocusChangeListener::class.java)
+        view.onFocusChangeListener = listener
+        view.requestFocus()
+
+        Mockito.verify(listener, Mockito.times(1)).onFocusChange(view, true)
+    }
 
     private fun <T> any(): T = Mockito.any<T>()
 }
