@@ -2,22 +2,17 @@ package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.os.Build
-import android.os.Handler
 import android.text.InputType
-import android.text.TextWatcher
-import android.os.Looper
 import android.text.InputFilter
 import android.text.method.DigitsKeyListener
 import android.view.Gravity
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.widget.addTextChangedListener
 import com.verygoodsecurity.vgscollect.*
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
@@ -32,6 +27,15 @@ import com.verygoodsecurity.vgscollect.view.card.validation.CardExpDateValidator
 /** @suppress */
 @Deprecated("This class is deprecated from 1.0.5")
 internal class InputField(context: Context): BaseInputField(context) {
+
+    companion object {
+        fun getInputField(context: Context, parent: InputFieldView):BaseInputField {
+            val field = InputField(context)
+            field.vgsParent = parent
+            return field
+        }
+    }
+
 
     private var cardtype: CardType = CardType.NONE
 
@@ -51,25 +55,6 @@ internal class InputField(context: Context): BaseInputField(context) {
     private var divider:String? = " "
 
     private var iconGravity:Int = Gravity.NO_GRAVITY
-
-    init {
-        isListeningPermitted = true
-        onFocusChangeListener = OnFocusChangeListener { _, f ->
-            inputConnection?.getOutput()?.isFocusable = f
-            inputConnection?.run()
-        }
-        val handler = Handler(Looper.getMainLooper())
-        addTextChangedListener {
-            inputConnection?.getOutput()?.content?.data =  it.toString()
-
-            handler.removeCallbacks(inputConnection)
-            handler.postDelayed(inputConnection, 200)
-        }
-        isListeningPermitted = false
-        id = ViewCompat.generateViewId()
-
-        compoundDrawablePadding = resources.getDimension(R.dimen.half_vgsfield_padding).toInt()
-    }
 
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
         super.onSelectionChanged(selStart, selEnd)
@@ -94,10 +79,8 @@ internal class InputField(context: Context): BaseInputField(context) {
                     || fieldType == FieldType.CVC
                     || fieldType == FieldType.CARD_EXPIRATION_DATE)) {
             hasRTL = true
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                layoutDirection = View.LAYOUT_DIRECTION_LTR
-                textDirection = View.TEXT_DIRECTION_LTR
-            }
+            layoutDirection = View.LAYOUT_DIRECTION_LTR
+            textDirection = View.TEXT_DIRECTION_LTR
             gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
         }
     }
@@ -269,12 +252,6 @@ internal class InputField(context: Context): BaseInputField(context) {
         tag?.run {
             super.setTag(tag)
             inputConnection?.getOutput()?.fieldName = this as String
-        }
-    }
-
-    override fun addTextChangedListener(watcher: TextWatcher?) {
-        if(isListeningPermitted) {
-            super.addTextChangedListener(watcher)
         }
     }
 

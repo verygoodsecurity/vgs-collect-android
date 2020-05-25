@@ -652,7 +652,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun applyFieldType(type: FieldType) {
         fieldType = type
         if(::notifier.isInitialized.not()) {
-            inputField = InputField(context)
+            inputField = InputField.getInputField(context, this@InputFieldView)
             syncInputState()
         }
         (inputField as? InputField)?.setType(type)
