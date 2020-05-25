@@ -219,6 +219,14 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     }
 
     /**
+     * Returns the error message that was set to be displayed with setError(CharSequence), or
+     * null if no error was set or if error displaying is not enabled.
+     */
+    fun getError():String? {
+        return fieldState.error?.toString()
+    }
+
+    /**
      * Returns the hint that is displayed when the text of the TextView
      * is empty.
      */
