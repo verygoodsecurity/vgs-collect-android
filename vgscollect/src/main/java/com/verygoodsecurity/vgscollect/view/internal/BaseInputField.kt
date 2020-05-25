@@ -65,7 +65,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     protected var inputConnection: InputRunnable? = null
 
-    private var vgsParent:InputFieldView? = null
+    protected var vgsParent:InputFieldView? = null
 
     private var onFieldStateChangeListener:OnFieldStateChangeListener? = null
 
@@ -100,6 +100,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             inputConnection?.getOutput()?.apply {
 
                 userFocusChangeListener?.onFocusChange(vgsParent, hasFocus)
+
                 if(hasFocus != isFocusable) {
                     isFocusable = hasFocus
                     hasUserInteraction = true
