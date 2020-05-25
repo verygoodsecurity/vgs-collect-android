@@ -91,7 +91,8 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun setupViewType(type:FieldType) {
         with(type) {
             fieldType = this
-            inputField = BaseInputField.getInputField(context, this)
+            inputField = BaseInputField.getInputField(context, this@InputFieldView)
+
             syncInputState()
         }
     }
@@ -651,7 +652,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun applyFieldType(type: FieldType) {
         fieldType = type
         if(::notifier.isInitialized.not()) {
-            inputField = InputField(context)
+            inputField = InputField.getInputField(context, this@InputFieldView)
             syncInputState()
         }
         (inputField as? InputField)?.setType(type)
@@ -949,5 +950,14 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     fun setOnFieldStateChangeListener(onFieldStateChangeListener: OnFieldStateChangeListener?) {
         inputField.setOnFieldStateChangeListener(onFieldStateChangeListener)
+    }
+
+    /**
+     * Register a callback to be invoked when focus of this view changed.
+     *
+     * @param l The callback that will run.
+     */
+    override fun setOnFocusChangeListener(l: OnFocusChangeListener?) {
+        inputField.onFocusChangeListener = l
     }
 }

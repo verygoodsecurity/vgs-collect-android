@@ -128,7 +128,6 @@ class VGSViewPagerActivity:AppCompatActivity(), VgsCollectResponseListener, View
     }
 
     override fun onResponse(response: VGSResponse?) {
-        Log.e("test", "$response")
         when (response) {
             is VGSResponse.SuccessResponse -> Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()//responseContainerView.text = response.toString()
             is VGSResponse.ErrorResponse -> Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()//responseContainerView.text = response.toString()
