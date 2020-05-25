@@ -2,6 +2,7 @@ package com.verygoodsecurity.demoapp.activity_case
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -47,53 +48,59 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.addOnFieldStateChangeListener(getOnFieldStateChangeListener())
 
         vgsForm.bindView(cardNumberField)
-        cardNumberField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
-            override fun onStateChange(state: FieldState) {
-                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
-                    cardNumberFieldLay?.setError("fill it please")
-                    cardNumberFieldLay?.setErrorTextAppearance(R.style.error_appearance)
-                } else {
-                    cardNumberFieldLay?.setError(null)
-                }
-            }
-        })
 
-        vgsForm.bindView(cardCVCField)
-        cardCVCField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
-            override fun onStateChange(state: FieldState) {
-                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
-                    cardCVCFieldLay?.setError("fill it please")
-                } else {
-                    cardCVCFieldLay?.setError(null)
-                }
+        cardNumberField?.onFocusChangeListener = object : View.OnFocusChangeListener {
+            override fun onFocusChange(v: View?, hasFocus: Boolean) {
+                Log.e("test", "$v, $hasFocus")
             }
-        })
-
-        vgsForm.bindView(cardHolderField)
-        cardHolderField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
-            override fun onStateChange(state: FieldState) {
-                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
-                    cardHolderFieldLay?.setError("fill it please")
-                } else {
-                    cardHolderFieldLay?.setError(null)
-                }
-            }
-        })
-
-        vgsForm.bindView(cardExpDateField)
-        cardExpDateField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
-            override fun onStateChange(state: FieldState) {
-                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
-                    cardExpDateFieldLay?.setError("fill it please")
-                } else {
-                    cardExpDateFieldLay?.setError(null)
-                }
-            }
-        })
-
-        val staticData = mutableMapOf<String, String>()
-        staticData["static_data"] = "static custom data"
-        vgsForm.setCustomData(staticData)
+        }
+//        cardNumberField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
+//            override fun onStateChange(state: FieldState) {
+//                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
+//                    cardNumberFieldLay?.setError("fill it please")
+//                    cardNumberFieldLay?.setErrorTextAppearance(R.style.error_appearance)
+//                } else {
+//                    cardNumberFieldLay?.setError(null)
+//                }
+//            }
+//        })
+//
+//        vgsForm.bindView(cardCVCField)
+//        cardCVCField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
+//            override fun onStateChange(state: FieldState) {
+//                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
+//                    cardCVCFieldLay?.setError("fill it please")
+//                } else {
+//                    cardCVCFieldLay?.setError(null)
+//                }
+//            }
+//        })
+//
+//        vgsForm.bindView(cardHolderField)
+//        cardHolderField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
+//            override fun onStateChange(state: FieldState) {
+//                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
+//                    cardHolderFieldLay?.setError("fill it please")
+//                } else {
+//                    cardHolderFieldLay?.setError(null)
+//                }
+//            }
+//        })
+//
+//        vgsForm.bindView(cardExpDateField)
+//        cardExpDateField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
+//            override fun onStateChange(state: FieldState) {
+//                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
+//                    cardExpDateFieldLay?.setError("fill it please")
+//                } else {
+//                    cardExpDateFieldLay?.setError(null)
+//                }
+//            }
+//        })
+//
+//        val staticData = mutableMapOf<String, String>()
+//        staticData["static_data"] = "static custom data"
+//        vgsForm.setCustomData(staticData)
     }
 
     private fun retrieveSettings() {
