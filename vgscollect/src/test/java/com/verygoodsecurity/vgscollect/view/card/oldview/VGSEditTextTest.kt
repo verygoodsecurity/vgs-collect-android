@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card.oldview
 import android.app.Activity
 import android.os.Build
 import android.text.InputType
+import android.view.View
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
@@ -56,7 +57,6 @@ class VGSEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is InputField)
     }
-
 
     @Test
     fun test_card_number() {
@@ -500,6 +500,21 @@ class VGSEditTextTest {
         Mockito.verify(listener, Mockito.times(1)).onStateChange(any())
     }
 
+
+    @Test
+    fun test_on_focus_change_listener() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val listener = Mockito.mock(View.OnFocusChangeListener::class.java)
+        view.onFocusChangeListener = listener
+        view.requestFocus()
+
+        Mockito.verify(listener).onFocusChange(view, true)
+    }
 
     private fun <T> any(): T = Mockito.any<T>()
 }
