@@ -85,9 +85,9 @@ enum class CardType(val regex:String,
 
     /** Validation of this card brand includes the Luhn algorithm. */
     DINCLUB(
-        "^(36|38|30[0-5])",
+        "^3(?:[689]|(?:0[059]+))",
         R.drawable.ic_diners_dark,
-        arrayOf(14),
+        arrayOf(14, 16),
         arrayOf(3)
     ),
 
