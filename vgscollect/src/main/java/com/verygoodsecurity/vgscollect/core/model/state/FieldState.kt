@@ -24,6 +24,9 @@ sealed class FieldState {
     var isRequired:Boolean = false
         internal set
 
+    /** The length of this character sequence inside input. */
+    var contentLength:Int = 0
+
     /**
      * The text to be used for data transfer to VGS proxy.
      * Usually, it is similar to field-name in JSON path in your inbound route filters.
