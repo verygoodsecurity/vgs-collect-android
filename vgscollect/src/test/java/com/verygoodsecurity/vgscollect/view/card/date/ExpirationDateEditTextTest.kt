@@ -85,6 +85,9 @@ class ExpirationDateEditTextTest {
 
         view.setDatePickerMode(DatePickerMode.INPUT)
         Assert.assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
+
+        view.setDatePickerMode(DatePickerMode.DEFAULT)
+        Assert.assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
     }
 
     @Test

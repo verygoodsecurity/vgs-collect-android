@@ -159,11 +159,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     app:hintEnabled="true"
-                                    app:endIconTint="@color/colorAccent"
                                     app:hint="@string/card_holder"
-                                    app:boxBackgroundModes="outline"
-                                    app:boxBackgroundColor="@color/bg_vgs_card_view"
-                                    app:boxStrokeColor="@color/colorAccent">
+                                    app:boxBackgroundModes="outline">
                                     <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
                                         android:id="@+id/cardHolderField"
                                         android:layout_width="match_parent"
@@ -191,8 +188,7 @@
                                     app:hintEnabled="true"
                                     android:layout_weight="1"
                                     app:hint="@string/exp_date"
-                                    app:boxBackgroundModes="outline"
-                                    app:boxStrokeColor="@color/colorAccent">
+                                    app:boxBackgroundModes="outline">
                                     <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
                                         android:id="@+id/cardExpDateField"
                                         android:layout_width="match_parent"
@@ -215,8 +211,7 @@
                                     app:hintEnabled="true"
                                     app:hint="@string/cvc"
                                     app:errorTextAppearance="@style/error_appearance"
-                                    app:boxBackgroundModes="outline"
-                                    app:boxStrokeColor="@color/colorAccent">
+                                    app:boxBackgroundModes="outline">
                                     <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                                         android:id="@+id/cardCVCField"
                                         android:layout_width="match_parent"
