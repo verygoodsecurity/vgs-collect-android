@@ -11,6 +11,7 @@ import android.os.Parcelable
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -30,6 +31,7 @@ import com.verygoodsecurity.vgscollect.view.internal.CardInputField
 import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.view.internal.InputField
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
+import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
@@ -833,6 +835,21 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    protected fun showPickerDialog(
+        dialogMode: DatePickerMode,
+        ignoreFieldMode: Boolean
+    ) {
+        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.showDatePickerDialog(dialogMode, ignoreFieldMode)
+        }
+    }
+
+    protected fun setDatePickerVisibilityListener(l: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
+        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setDatePickerVisibilityListener(l)
+        }
+    }
+
     /**
      * Sets the id of the view to use when the next focus is FOCUS_FORWARD.
      * @param nextFocusForwardId The next focus ID, or NO_ID if the framework should
@@ -960,4 +977,40 @@ abstract class InputFieldView @JvmOverloads constructor(
     override fun setOnFocusChangeListener(l: OnFocusChangeListener?) {
         inputField.onFocusChangeListener = l
     }
+
+    /**
+     * Interface definition for a callback to be invoked when an action is
+     * performed on the editor.
+     */
+    interface OnEditorActionListener {
+        /**
+         * Called when an action is being performed.
+         *
+         * @param v The view that was clicked.
+         * @param actionId Identifier of the action.  This will be either the
+         * identifier you supplied, or [ EditorInfo.IME_NULL][EditorInfo.IME_NULL] if being called due to the enter key
+         * being pressed.
+         * @param event If triggered by an enter key, this is the event;
+         * otherwise, this is null.
+         * @return Return true if you have consumed the action, else false.
+         */
+        fun onEditorAction(
+            v: InputFieldView?,
+            actionId: Int,
+            event: KeyEvent?
+        ): Boolean
+    }
+
+    /**
+     * Set a special listener to be called when an action is performed
+     * on the text view.  This will be called when the enter key is pressed,
+     * or when an action supplied to the IME is selected by the user.  Setting
+     * this means that the normal hard key event will not insert a newline
+     * into the text view, even if it is multi-line; holding down the ALT
+     * modifier will, however, allow the user to insert a newline character.
+     */
+    fun setOnEditorActionListener(l: OnEditorActionListener?) {
+        inputField.setEditorActionListener(l)
+    }
+
 }
