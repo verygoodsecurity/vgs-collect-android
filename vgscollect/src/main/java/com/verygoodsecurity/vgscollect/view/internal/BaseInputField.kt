@@ -58,7 +58,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
 
     protected var isListeningPermitted = true
-    private var isFocusListeningConfigured = true
+    private var isFocusListeningConfigured = false
+    private var isEditorActionListenerConfigured = false
     protected var hasRTL = false
 
     protected abstract var fieldType: FieldType
@@ -70,9 +71,9 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     private var onFieldStateChangeListener:OnFieldStateChangeListener? = null
 
     private var userFocusChangeListener:OnFocusChangeListener? = null
+    private var onEditorActionListener:InputFieldView.OnEditorActionListener? = null
 
     private var isBackgroundVisible = true
-
 
     private var activeTextWatcher: TextWatcher? = null
 
@@ -80,9 +81,18 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         isListeningPermitted = true
         setupFocusChangeListener()
         setupInputConnectionListener()
+        setupEditorActionListener()
         isListeningPermitted = false
 
         setupViewAttributes()
+    }
+
+    private fun setupEditorActionListener() {
+        setOnEditorActionListener { _, actionId, event ->
+            val consumedAction = onEditorActionListener?.onEditorAction(vgsParent, actionId, event)?:false
+
+            consumedAction
+        }
     }
 
     internal fun setIsListeningPermitted(state:Boolean) {
@@ -110,21 +120,23 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    protected open fun setupInputConnectionListener() {
-        val handler = Handler(Looper.getMainLooper())
+    private fun setupInputConnectionListener() {
         addTextChangedListener {
-            val str = it.toString()
-
-            inputConnection?.getOutput()?.apply {
-                if(str.isNotEmpty()) {
-                    hasUserInteraction = true
-                }
-                content?.data = str
-            }
-
-            handler.removeCallbacks(inputConnection)
-            handler.postDelayed(inputConnection, 200)
+            updateTextChanged(it.toString())
         }
+    }
+
+    protected val handlerLooper = Handler(Looper.getMainLooper())
+    protected open fun updateTextChanged(str: String) {
+        inputConnection?.getOutput()?.apply {
+            if(str.isNotEmpty()) {
+                hasUserInteraction = true
+            }
+            content?.data = str
+        }
+
+        handlerLooper.removeCallbacks(inputConnection)
+        handlerLooper.postDelayed(inputConnection, 200)
     }
 
     override fun onAttachedToWindow() {
@@ -258,8 +270,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
                     && nextFocusDownId != View.NO_ID -> requestFocusOnView(nextFocusDownId)
             actionCode == EditorInfo.IME_ACTION_PREVIOUS
                     && nextFocusUpId != View.NO_ID -> requestFocusOnView(nextFocusUpId)
-            else -> super.onEditorAction(actionCode)
         }
+        super.onEditorAction(actionCode)
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -283,11 +295,22 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     override fun setOnFocusChangeListener(l: OnFocusChangeListener?) {
-        if(isFocusListeningConfigured) {
-            isFocusListeningConfigured = false
+        if(!isFocusListeningConfigured) {
+            isFocusListeningConfigured = true
             super.setOnFocusChangeListener(l)
         } else {
             userFocusChangeListener = l
         }
+    }
+
+    override fun setOnEditorActionListener(l: OnEditorActionListener?) {
+        if(!isEditorActionListenerConfigured) {
+            isEditorActionListenerConfigured = true
+            super.setOnEditorActionListener(l)
+        }
+    }
+
+    fun setEditorActionListener(onEditorActionListener:InputFieldView.OnEditorActionListener?) {
+        this.onEditorActionListener = onEditorActionListener
     }
 }
