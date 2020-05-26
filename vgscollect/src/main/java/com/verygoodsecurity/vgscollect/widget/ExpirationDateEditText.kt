@@ -117,4 +117,40 @@ class ExpirationDateEditText @JvmOverloads constructor(
      */
     fun getDatePickerMode():DatePickerMode? = getDateMode()
 
+    /**
+     * Start the DatePicker dialog and display it on screen.
+     *
+     * @param dialogMode
+     * @param ignoreFieldMode Whether the field should ignore state configured
+     * with setDatePickerMode() or through attr.datePickerModes attribute in the XML.
+     * If true, the dialog will show DatePicker with dialogMode mode.
+     */
+    fun showDatePickerDialog(
+        dialogMode: DatePickerMode = DatePickerMode.DEFAULT,
+        ignoreFieldMode: Boolean = false
+    ) {
+        showPickerDialog(dialogMode, ignoreFieldMode)
+    }
+
+    /**
+     * Interface definition for a callback to be invoked when the DatePicker Dialog changes
+     * visibility.
+     */
+    interface OnDatePickerVisibilityChangeListener {
+        /**
+         * Called when the DatePicker Dialog was shown.
+         */
+        fun onShow()
+        /**
+         * Called when the DatePicker Dialog was dismissed.
+         */
+        fun onDismiss()
+    }
+
+    /**
+     * Sets a listener to be invoked when the DatePicker dialog visibility is changing.
+     */
+    fun setOnVisibilityChangeListener(l: OnDatePickerVisibilityChangeListener?) {
+        setDatePickerVisibilityListener(l)
+    }
 }
