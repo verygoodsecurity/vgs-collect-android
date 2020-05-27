@@ -2,14 +2,11 @@ package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
 import android.content.DialogInterface
-import android.os.Handler
-import android.os.Looper
 import android.text.InputFilter
 import android.text.InputType
 import android.view.Gravity
 import android.view.View
 import android.widget.DatePicker
-import androidx.core.widget.addTextChangedListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
 import com.verygoodsecurity.vgscollect.view.card.FieldType
@@ -19,6 +16,7 @@ import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
 import com.verygoodsecurity.vgscollect.view.date.validation.isInputDatePatternValid
+import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,8 +38,10 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     private var fieldDateFormat:SimpleDateFormat? = null
     private var fieldDateOutPutFormat:SimpleDateFormat? = null
 
-    private var datePickerMode:DatePickerMode = DatePickerMode.SPINNER
+    private var datePickerMode:DatePickerMode = DatePickerMode.INPUT
     private var isDaysVisible = true
+
+    private var datePickerVisibilityChangeListener:ExpirationDateEditText.OnDatePickerVisibilityChangeListener? = null
 
     override var fieldType: FieldType = FieldType.CARD_EXPIRATION_DATE
 
@@ -89,20 +89,16 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
                 type == InputType.TYPE_CLASS_DATETIME
     }
 
-    override fun setupInputConnectionListener() {
-        val handler = Handler(Looper.getMainLooper())
-        addTextChangedListener {
-            val str = it.toString()
-            inputConnection?.getOutput()?.apply {
-                if(str.isNotEmpty()) {
-                    hasUserInteraction = true
-                }
-                content = createCreditCardExpDateContent(str)
+    override fun updateTextChanged(str: String) {
+        inputConnection?.getOutput()?.apply {
+            if(str.isNotEmpty()) {
+                hasUserInteraction = true
             }
-
-            handler.removeCallbacks(inputConnection)
-            handler.postDelayed(inputConnection, 200)
+            content = createCreditCardExpDateContent(str)
         }
+
+        handlerLooper.removeCallbacks(inputConnection)
+        handlerLooper.postDelayed(inputConnection, 200)
     }
 
     private fun createCreditCardExpDateContent(str: String): FieldContent? {
@@ -140,7 +136,28 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         showDatePickerDialog()
     }
 
+    internal fun showDatePickerDialog(
+        dialogMode: DatePickerMode,
+        ignoreFieldMode: Boolean
+    ) {
+        if(ignoreFieldMode) {
+            showDatePickerDialog(dialogMode)
+        } else {
+            showDatePickerDialog()
+        }
+    }
+
     private fun showDatePickerDialog() {
+        showDatePickerDialog(datePickerMode)
+    }
+
+    private fun showDatePickerDialog(dialogMode: DatePickerMode) {
+        val mode:DatePickerMode  = when(dialogMode) {
+            DatePickerMode.INPUT -> return
+            DatePickerMode.DEFAULT -> datePickerMode
+            else -> dialogMode
+        }
+
         val tempC = Calendar.getInstance()
         tempC.time = selectedDate.time
 
@@ -156,7 +173,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
         val neg = DialogInterface.OnClickListener { dialog, which -> }
 
-        DatePickerBuilder(context, datePickerMode)
+        DatePickerBuilder(context, mode)
             .setMinDate(minDate)
             .setMaxDate(maxDate)
             .setCurrentDate(tempC.timeInMillis)
@@ -164,6 +181,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             .setOnDateChangedListener(ls)
             .setOnPositiveButtonClick(pos)
             .setOnNegativeButtonClick(neg)
+            .setOnVisibilityChangeListener(datePickerVisibilityChangeListener)
             .build()
             .show()
     }
@@ -202,17 +220,26 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     internal fun getDatePattern():String? = datePattern
 
     internal fun setDatePickerMode(mode:Int) {
-        datePickerMode = DatePickerMode.values()[mode]
+        val pickerMode = DatePickerMode.values()[mode]
 
-        when(datePickerMode) {
-            DatePickerMode.CALENDAR -> setIsActive(false)
-            DatePickerMode.SPINNER -> setIsActive(false)
-            DatePickerMode.INPUT -> {
-                val p = datePattern
-                setDatePattern(p)
-                setIsActive(true)
-            }
+        when(pickerMode) {
+            DatePickerMode.CALENDAR -> setupDialogMode(pickerMode)
+            DatePickerMode.SPINNER -> setupDialogMode(pickerMode)
+            DatePickerMode.DEFAULT -> setupInputMode()
+            DatePickerMode.INPUT -> setupInputMode()
         }
+    }
+
+    private fun setupDialogMode(pickerMode: DatePickerMode) {
+        datePickerMode = pickerMode
+        setIsActive(false)
+    }
+
+    private fun setupInputMode() {
+        datePickerMode = DatePickerMode.INPUT
+        val p = datePattern
+        setDatePattern(p)
+        setIsActive(true)
     }
 
     internal fun getDatePickerMode() = datePickerMode
@@ -268,4 +295,9 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             else -> InputType.TYPE_CLASS_TEXT
         }
     }
+
+    internal fun setDatePickerVisibilityListener(listener: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
+        datePickerVisibilityChangeListener = listener
+    }
+
 }
