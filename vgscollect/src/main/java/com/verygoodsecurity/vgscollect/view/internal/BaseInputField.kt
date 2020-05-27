@@ -31,21 +31,18 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     DependencyListener, OnVgsViewStateChangeListener {
 
     companion object {
-        fun getInputField(context: Context, type:FieldType):BaseInputField {
-            return when(type) {
+        fun getInputField(context: Context, parent:InputFieldView):BaseInputField {
+            val field = when(parent.getFieldType()) {
                 FieldType.CARD_NUMBER -> CardInputField(context)
                 FieldType.CVC -> CVCInputField(context)
                 FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
                 FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
                 FieldType.INFO -> InfoInputField(context)
             }
+            field.vgsParent = parent
+            return field
         }
     }
-
-    protected abstract var fieldType: FieldType
-
-    protected var inputConnection: InputRunnable? = null
-    private var onFieldStateChangeListener:OnFieldStateChangeListener? = null
 
     internal var stateListener: OnVgsViewStateChangeListener? = null
         set(value) {
@@ -53,18 +50,30 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             inputConnection?.setOutputListener(value)
             inputConnection?.run()
         }
-
-    protected var isListeningPermitted = true
-    private var isBackgroundVisible = true
-
-    protected var hasRTL = false
-
-    var isRequired:Boolean = true
+    internal var isRequired:Boolean = true
         set(value) {
             field = value
             inputConnection?.getOutput()?.isRequired = value
             inputConnection?.run()
         }
+
+    protected var isListeningPermitted = true
+    private var isFocusListeningConfigured = false
+    private var isEditorActionListenerConfigured = false
+    protected var hasRTL = false
+
+    protected abstract var fieldType: FieldType
+
+    protected var inputConnection: InputRunnable? = null
+
+    protected var vgsParent:InputFieldView? = null
+
+    private var onFieldStateChangeListener:OnFieldStateChangeListener? = null
+
+    private var userFocusChangeListener:OnFocusChangeListener? = null
+    private var onEditorActionListener:InputFieldView.OnEditorActionListener? = null
+
+    private var isBackgroundVisible = true
 
     private var activeTextWatcher: TextWatcher? = null
 
@@ -72,9 +81,18 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         isListeningPermitted = true
         setupFocusChangeListener()
         setupInputConnectionListener()
+        setupEditorActionListener()
         isListeningPermitted = false
 
         setupViewAttributes()
+    }
+
+    private fun setupEditorActionListener() {
+        setOnEditorActionListener { _, actionId, event ->
+            val consumedAction = onEditorActionListener?.onEditorAction(vgsParent, actionId, event)?:false
+
+            consumedAction
+        }
     }
 
     internal fun setIsListeningPermitted(state:Boolean) {
@@ -90,6 +108,9 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     private fun setupFocusChangeListener() {
         onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
             inputConnection?.getOutput()?.apply {
+
+                userFocusChangeListener?.onFocusChange(vgsParent, hasFocus)
+
                 if(hasFocus != isFocusable) {
                     isFocusable = hasFocus
                     hasUserInteraction = true
@@ -99,21 +120,23 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    protected open fun setupInputConnectionListener() {
-        val handler = Handler(Looper.getMainLooper())
+    private fun setupInputConnectionListener() {
         addTextChangedListener {
-            val str = it.toString()
-
-            inputConnection?.getOutput()?.apply {
-                if(str.isNotEmpty()) {
-                    hasUserInteraction = true
-                }
-                content?.data = str
-            }
-
-            handler.removeCallbacks(inputConnection)
-            handler.postDelayed(inputConnection, 200)
+            updateTextChanged(it.toString())
         }
+    }
+
+    protected val handlerLooper = Handler(Looper.getMainLooper())
+    protected open fun updateTextChanged(str: String) {
+        inputConnection?.getOutput()?.apply {
+            if(str.isNotEmpty()) {
+                hasUserInteraction = true
+            }
+            content?.data = str
+        }
+
+        handlerLooper.removeCallbacks(inputConnection)
+        handlerLooper.postDelayed(inputConnection, 200)
     }
 
     override fun onAttachedToWindow() {
@@ -247,8 +270,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
                     && nextFocusDownId != View.NO_ID -> requestFocusOnView(nextFocusDownId)
             actionCode == EditorInfo.IME_ACTION_PREVIOUS
                     && nextFocusUpId != View.NO_ID -> requestFocusOnView(nextFocusUpId)
-            else -> super.onEditorAction(actionCode)
         }
+        super.onEditorAction(actionCode)
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -269,5 +292,25 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun prepareFieldTypeConnection() {
         applyFieldType()
+    }
+
+    override fun setOnFocusChangeListener(l: OnFocusChangeListener?) {
+        if(!isFocusListeningConfigured) {
+            isFocusListeningConfigured = true
+            super.setOnFocusChangeListener(l)
+        } else {
+            userFocusChangeListener = l
+        }
+    }
+
+    override fun setOnEditorActionListener(l: OnEditorActionListener?) {
+        if(!isEditorActionListenerConfigured) {
+            isEditorActionListenerConfigured = true
+            super.setOnEditorActionListener(l)
+        }
+    }
+
+    fun setEditorActionListener(onEditorActionListener:InputFieldView.OnEditorActionListener?) {
+        this.onEditorActionListener = onEditorActionListener
     }
 }
