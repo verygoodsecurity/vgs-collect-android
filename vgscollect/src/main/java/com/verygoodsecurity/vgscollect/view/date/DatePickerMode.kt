@@ -14,5 +14,7 @@ enum class DatePickerMode {
     SPINNER,
 
     /** Configure date manually. It supports only ``dd``, ``MM``, ``yyyy``,``yy`` forms. */
-    INPUT
+    INPUT,
+
+    DEFAULT
 }

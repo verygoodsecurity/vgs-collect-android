@@ -79,19 +79,15 @@ internal class CardInputField(context: Context): BaseInputField(context) {
                 type == InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
     }
 
-    override fun setupInputConnectionListener() {
-        val handler = Handler(Looper.getMainLooper())
-        addTextChangedListener {
-            val str = it.toString()
-            inputConnection?.getOutput()?.apply {
-                if(str.isNotEmpty()) {
-                    hasUserInteraction = true
-                }
-                content = createCardNumberContent(str)
-
-                handler.removeCallbacks(inputConnection)
-                handler.postDelayed(inputConnection, 200)
+    override fun updateTextChanged(str: String) {
+        inputConnection?.getOutput()?.apply {
+            if(str.isNotEmpty()) {
+                hasUserInteraction = true
             }
+            content = createCardNumberContent(str)
+
+            handlerLooper.removeCallbacks(inputConnection)
+            handlerLooper.postDelayed(inputConnection, 200)
         }
     }
 

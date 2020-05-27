@@ -11,7 +11,7 @@
      -->
     <attr name="outputPattern" format="string"/>
 
-    <!--  Sets the symbol that will divide groups of digits in the card number.-->
+    <!-- Set the date picker mode(calendar, spinner, or input). -->
     <attr name="datePickerModes">
 
     <!-- set date from CalendarView.-->
