@@ -1,7 +1,9 @@
 package com.verygoodsecurity.vgscollect.widget
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
+import android.util.TypedValue
 import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
@@ -69,7 +71,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 val hint = getString(R.styleable.VGSTextInputLayout_hint)
 
                 val boxBackgroundColor = getColor(R.styleable.VGSTextInputLayout_boxBackgroundColor, 0)
-                val boxStrokeColor = getColor(R.styleable.VGSTextInputLayout_boxStrokeColor, 0)
+                val boxStrokeColor = getColor(R.styleable.VGSTextInputLayout_boxStrokeColor, getThemeAccentColor(context))
                 val boxBackgroundMode = getInteger(R.styleable.VGSTextInputLayout_boxBackgroundModes, 0)
                 val boxCornerRadiusBottomEnd = getDimension(R.styleable.VGSTextInputLayout_boxCornerRadiusBottomEnd, 0f)
                 val boxCornerRadiusTopStart = getDimension(R.styleable.VGSTextInputLayout_boxCornerRadiusTopStart, 0f)
@@ -152,5 +154,16 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 recycle()
             }
         }
+    }
+
+    private fun getThemeAccentColor(context: Context): Int {
+        val colorAccentAttr: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            android.R.attr.colorAccent
+        } else {
+            context.resources.getIdentifier("colorAccent", "attr", context.packageName)
+        }
+        val outValue = TypedValue()
+        context.theme.resolveAttribute(colorAccentAttr, outValue, true)
+        return outValue.data
     }
 }

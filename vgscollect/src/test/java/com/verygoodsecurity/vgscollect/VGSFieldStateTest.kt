@@ -50,7 +50,7 @@ class VGSFieldStateTest {
     }
 
     @Test
-    fun mapToFieldStateCardNumber() {
+    fun test_map_to_field_state_card_number() {
         val content = FieldContent.CardNumberContent()
         content.data = "5555 5555 1234 5678"
         val oldState = VGSFieldState(isFocusable = true,
@@ -65,12 +65,13 @@ class VGSFieldStateTest {
         assertTrue(newState.hasFocus == oldState.isFocusable)
         assertTrue(newState.isRequired == oldState.isRequired)
         assertTrue(newState.isEmpty == oldState.content?.data.isNullOrEmpty())
+        assertTrue(newState.contentLength == oldState.content?.data?.length)
         assertTrue(newState.isValid == oldState.isValid)
         assertTrue(newState.fieldName == oldState.fieldName)
     }
 
     @Test
-    fun mapToFieldStateCardNumberInfo() {
+    fun test_map_to_field_state_card_number_info() {
         val content = FieldContent.CardNumberContent()
         content.data = "5555 5555 1234 5678"
         val oldState = VGSFieldState(isFocusable = true,
@@ -87,6 +88,7 @@ class VGSFieldStateTest {
         val c = (newState as FieldState.CardNumberState)
 
         assertTrue(c.number == "5555 55## #### 5678")
+        assertTrue(c.contentLength == 19)
     }
 
     @Test
@@ -162,4 +164,68 @@ class VGSFieldStateTest {
 
         assertTrue(content.rawData == "12/2024")
     }
+
+    @Test
+    fun test_map_to_field_state_cvc() {
+        val content = FieldContent.InfoContent()
+        content.data = "1223"
+        val oldState = VGSFieldState(isFocusable = true,
+            isRequired = true,
+            isValid = true,
+            type = FieldType.CVC,
+            content = content,
+            fieldName = "cvc_field")
+
+        val newState = oldState.mapToFieldState()
+
+        assertTrue(newState.hasFocus == oldState.isFocusable)
+        assertTrue(newState.isRequired == oldState.isRequired)
+        assertTrue(newState.isEmpty == oldState.content?.data.isNullOrEmpty())
+        assertTrue(newState.contentLength == oldState.content?.data?.length)
+        assertTrue(newState.isValid == oldState.isValid)
+        assertTrue(newState.fieldName == oldState.fieldName)
+    }
+
+    @Test
+    fun test_map_to_field_state_person_name() {
+        val content = FieldContent.InfoContent()
+        content.data = "Peter"
+        val oldState = VGSFieldState(isFocusable = true,
+            isRequired = true,
+            isValid = true,
+            type = FieldType.CARD_HOLDER_NAME,
+            content = content,
+            fieldName = "name_field")
+
+        val newState = oldState.mapToFieldState()
+
+        assertTrue(newState.hasFocus == oldState.isFocusable)
+        assertTrue(newState.isRequired == oldState.isRequired)
+        assertTrue(newState.isEmpty == oldState.content?.data.isNullOrEmpty())
+        assertTrue(newState.contentLength == oldState.content?.data?.length)
+        assertTrue(newState.isValid == oldState.isValid)
+        assertTrue(newState.fieldName == oldState.fieldName)
+    }
+
+    @Test
+    fun test_map_to_field_state_exp_date() {
+        val content = FieldContent.InfoContent()
+        content.data = "12/1990"
+        val oldState = VGSFieldState(isFocusable = true,
+            isRequired = true,
+            isValid = true,
+            type = FieldType.CARD_EXPIRATION_DATE,
+            content = content,
+            fieldName = "exp_date")
+
+        val newState = oldState.mapToFieldState()
+
+        assertTrue(newState.hasFocus == oldState.isFocusable)
+        assertTrue(newState.isRequired == oldState.isRequired)
+        assertTrue(newState.isEmpty == oldState.content?.data.isNullOrEmpty())
+        assertTrue(newState.contentLength == oldState.content?.data?.length)
+        assertTrue(newState.isValid == oldState.isValid)
+        assertTrue(newState.fieldName == oldState.fieldName)
+    }
+
 }

@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card.name
 import android.app.Activity
 import android.os.Build
 import android.text.InputType
+import android.view.View
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.PersonNameInputField
@@ -11,6 +12,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
@@ -126,6 +128,21 @@ class PersonNameEditTextTest {
 
         view.setInputType(InputType.TYPE_NULL)
         Assert.assertEquals(InputType.TYPE_NULL, view.getInputType())
+    }
+
+    @Test
+    fun test_on_focus_change_listener() {
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val listener = Mockito.mock(View.OnFocusChangeListener::class.java)
+        view.onFocusChangeListener = listener
+        view.requestFocus()
+
+        Mockito.verify(listener, Mockito.times(1)).onFocusChange(view, true)
     }
 
 }

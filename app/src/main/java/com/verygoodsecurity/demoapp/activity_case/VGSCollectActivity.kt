@@ -47,6 +47,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.addOnFieldStateChangeListener(getOnFieldStateChangeListener())
 
         vgsForm.bindView(cardNumberField)
+
         cardNumberField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
                 if(!state.isEmpty && !state.isValid && !state.hasFocus) {
