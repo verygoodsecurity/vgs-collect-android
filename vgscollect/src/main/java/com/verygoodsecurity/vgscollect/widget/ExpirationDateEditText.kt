@@ -155,7 +155,7 @@ class ExpirationDateEditText @JvmOverloads constructor(
     /**
      * Sets a listener to be invoked when the DatePicker dialog visibility is changing.
      */
-    fun setOnVisibilityChangeListener(l: OnDatePickerVisibilityChangeListener?) {
+    fun setDatePickerVisibilityChangeListener(l: OnDatePickerVisibilityChangeListener?) {
         setDatePickerVisibilityListener(l)
     }
 }
