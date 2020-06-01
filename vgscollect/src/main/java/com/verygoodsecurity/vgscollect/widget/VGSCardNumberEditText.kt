@@ -9,6 +9,7 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 
 /**
  * A user interface element that displays text to the user in card number format.
@@ -125,5 +126,9 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      */
     fun getDivider() : Char? {
         return getNumberDivider()
+    }
+
+    fun setCardIconAdapter(adapter: CardIconAdapter) {
+        setCardBrandIconAdapter(adapter)
     }
 }
