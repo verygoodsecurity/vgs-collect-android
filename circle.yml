@@ -126,7 +126,6 @@ workflows:
                 - master
                 - stage
                 - develop
-                - dmytro.k/ch72249/vgs-collect-android-sdk-need-to-add-ability
       - "Run Lint":
           requires:
             *prepare_sources
@@ -144,7 +143,6 @@ workflows:
                 - master
                 - stage
                 - develop
-                - dmytro.k/ch72249/vgs-collect-android-sdk-need-to-add-ability
       - "Assemble Debug Build":
           requires:
             *all_test
