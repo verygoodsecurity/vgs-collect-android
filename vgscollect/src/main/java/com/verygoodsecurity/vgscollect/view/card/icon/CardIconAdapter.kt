@@ -13,7 +13,6 @@ import com.verygoodsecurity.vgscollect.view.card.CardType
 open class CardIconAdapter(
     private val context: Context
 ) {
-    private var brand:CardBrand? = null
 
     /**
      * Returns a drawable object associated with a particular resource ID.
@@ -44,7 +43,6 @@ open class CardIconAdapter(
         resId: Int,
         r:Rect
     ):Drawable {
-        brand = CardBrand(name?:"", resId)
 
         val icon = getIcon(cardType, name, resId, r)
         if(icon.bounds.isEmpty) {
@@ -77,24 +75,4 @@ open class CardIconAdapter(
 
         return drawable
     }
-
-    /**
-     * Returns a [CardBrand] detected in [VGSCardNumberEditText]
-     * before.
-     */
-    fun getCardBrand():CardBrand? {
-        return brand
-    }
-
-    /**
-     * The data class definition for represent custom card brand.
-     */
-    data class CardBrand(
-        /** The name of current card brand. This name may be visible for users. */
-        val name:String,
-
-        /** The drawable resource represents credit card logo. */
-        val iconResId:Int
-    )
-
 }

@@ -12,32 +12,44 @@ import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
+import org.mockito.Mockito.mock
 
 
 class InputCardNumberConnectionTest {
-    val connection: InputRunnable by lazy {
-        val client = Mockito.mock(VGSValidator::class.java)
+    private lateinit var connection: InputRunnable
+    private lateinit var iCardBrand: InputCardNumberConnection.IDrawCardBrand
+
+    @Before
+    fun setupConnection() {
+        val client = mock(VGSValidator::class.java)
         Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
-        val filter = Mockito.mock(VGSCardFilter::class.java)
-        Mockito.doReturn(CardBrandWrapper(cardType = CardType.VISA)).`when`(filter).detect(Mockito.anyString())
-        val i = InputCardNumberConnection(0, client)
-        i.addFilter(filter)
-        i
+        val filter = mock(VGSCardFilter::class.java)
+        Mockito.doReturn(
+            CardBrandWrapper(
+                CardType.VISA,
+                CardType.VISA.regex,
+                CardType.VISA.name,
+                CardType.VISA.resId)
+        ).`when`(filter).detect(Mockito.anyString())
+        iCardBrand = mock(InputCardNumberConnection.IDrawCardBrand::class.java)
+        connection = InputCardNumberConnection(0, client, iCardBrand)
+        connection.addFilter(filter)
     }
 
     @Test
     fun customDivider() {
         val divider = "-"
 
-        val client = Mockito.mock(VGSValidator::class.java)
+        val client = mock(VGSValidator::class.java)
         Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
 
         val connection: InputRunnable = InputCardNumberConnection(0, client, divider = divider)
         connection.addFilter(DefaultCardBrandFilter(CardType.values(), null, divider))
 
-        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
+        val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
         val content = FieldContent.CardNumberContent()
@@ -56,20 +68,27 @@ class InputCardNumberConnectionTest {
     }
 
     @Test
-    fun drawCardIcon() {
-        val drawer = Mockito.mock(InputCardNumberConnection.IdrawCardBrand::class.java)
-        val client = Mockito.mock(VGSValidator::class.java)
-        val conn = InputCardNumberConnection(0, client, drawer)
+    fun test_draw_card_icon() {
+        connection.run()
 
-        conn.run()
+        Mockito.verify(iCardBrand).drawCardBrandPreview(CardType.NONE, CardType.NONE.name, CardType.NONE.resId)
 
-        Mockito.verify(drawer).drawCardBrandPreview()
+        val content = FieldContent.CardNumberContent()
+        content.data = "4111"
+        val textItem = VGSFieldState(isValid = false,
+            isRequired = false,
+            fieldName = "fieldName",
+            content = content)
+        connection.setOutput(textItem)
+
+        connection.run()
+
+        Mockito.verify(iCardBrand).drawCardBrandPreview(CardType.VISA, CardType.VISA.name, CardType.VISA.resId)
     }
-
 
     @Test
     fun setChangeListener() {
-        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
+        val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
         Mockito.verify(listener).emit(0, VGSFieldState(isValid = false))
@@ -77,7 +96,7 @@ class InputCardNumberConnectionTest {
 
     @Test
     fun emitItem() {
-        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
+        val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
         connection.run()
         Mockito.verify(listener, Mockito.times(2)).emit(0, VGSFieldState(isValid = false))
@@ -85,7 +104,7 @@ class InputCardNumberConnectionTest {
 
     @Test
     fun setOutput() {
-        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
+        val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
         val textItem = VGSFieldState(fieldName = "fieldName")
@@ -97,7 +116,7 @@ class InputCardNumberConnectionTest {
 
     @Test
     fun emitEmptyNotRequired() {
-        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
+        val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
         val content = FieldContent.InfoContent()
@@ -116,7 +135,7 @@ class InputCardNumberConnectionTest {
 
     @Test
     fun emitShortRequired() {
-        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
+        val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
         val content = FieldContent.CardNumberContent()
@@ -136,7 +155,7 @@ class InputCardNumberConnectionTest {
     @Test
     fun emitRequired() {
 
-        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
+        val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
         val content = FieldContent.CardNumberContent()
@@ -152,4 +171,6 @@ class InputCardNumberConnectionTest {
         assertTrue(connection.getOutput().isValid)
         Mockito.verify(listener).emit(0, textItem)
     }
+
+    private fun <T> any(): T = Mockito.any<T>()
 }
