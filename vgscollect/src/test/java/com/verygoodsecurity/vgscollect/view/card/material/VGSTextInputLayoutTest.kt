@@ -24,7 +24,7 @@ import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [Build.VERSION_CODES.O_MR1], application = TestApplication::class)
+@Config(application = TestApplication::class)
 class VGSTextInputLayoutTest {
     private lateinit var activityController: ActivityController<Activity>
     private lateinit var activity: Activity
