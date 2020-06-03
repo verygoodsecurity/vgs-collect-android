@@ -199,9 +199,9 @@
                                         app:imeOptions="actionNext"
                                         app:inputType="date"
                                         app:fontFamily="@font/robotomono_light"
-                                        app:datePickerModes="input"
+                                        app:datePickerModes="calendar"
                                         app:outputPattern="yyyy-MM-dd'T'HH:mm:ss.SSSSSSS"
-                                        app:datePattern="MM/yy"/>
+                                        app:datePattern="yyyy-MM-dd"/>
                                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
                                 <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
