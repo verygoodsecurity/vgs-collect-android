@@ -73,14 +73,14 @@ aliases:
 
   # dependency groups
   - &prepare_sources
-    - "Prepared Sources"
+    - "Prepared_Sources"
 
   - &all_test
-    - "Run Lint"
-    - "Run Unit Tests"
+    - "Run_Lint"
+    - "Run_Unit_Tests"
 
   - &debug_build
-    - "Assemble Debug Build"
+    - "Assemble_Debug_Build"
 
 jobs:
   "Prepared_Sources":
@@ -126,7 +126,7 @@ workflows:
                 - master
                 - stage
                 - develop
-                - dmytro.k/ch72377/vgs-collect-android-sdk-wayfair-year-not
+                - fixci
       - "Run_Lint":
           requires:
             *prepare_sources
@@ -144,7 +144,7 @@ workflows:
                 - master
                 - stage
                 - develop
-                - dmytro.k/ch72377/vgs-collect-android-sdk-wayfair-year-not
+                - fixci
       - "Assemble_Debug_Build":
           requires:
             *all_test
