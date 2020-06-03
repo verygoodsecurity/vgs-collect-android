@@ -126,6 +126,7 @@ workflows:
                 - master
                 - stage
                 - develop
+                - dmytro.k/ch72377/vgs-collect-android-sdk-wayfair-year-not
       - "Run Lint":
           requires:
             *prepare_sources
@@ -143,6 +144,7 @@ workflows:
                 - master
                 - stage
                 - develop
+                - dmytro.k/ch72377/vgs-collect-android-sdk-wayfair-year-not
       - "Assemble Debug Build":
           requires:
             *all_test
