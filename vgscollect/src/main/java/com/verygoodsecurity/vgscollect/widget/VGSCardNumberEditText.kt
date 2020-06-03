@@ -31,7 +31,8 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
             try {
                 val previewGravity = getInt(R.styleable.VGSCardNumberEditText_cardBrandIconGravity, 0)
-                val divider:String? = getString(R.styleable.VGSCardNumberEditText_numberDivider)?:null
+                val divider:String? = getString(R.styleable.VGSCardNumberEditText_numberDivider)
+                val mask:String? = getString(R.styleable.VGSCardNumberEditText_mask)
 
                 val inputType = getInt(R.styleable.VGSCardNumberEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.VGSCardNumberEditText_fieldName)
@@ -74,6 +75,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
                 setNumberDivider(divider)
                 applyCardIconGravity(previewGravity)
+                applyCardNumberMask(mask)
             } finally {
                 recycle()
             }
@@ -125,5 +127,9 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      */
     fun getDivider() : Char? {
         return getNumberDivider()
+    }
+
+    fun setCardNumberMask(mask:String) {
+        applyCardNumberMask(mask)
     }
 }

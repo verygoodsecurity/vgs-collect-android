@@ -1029,4 +1029,9 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.importantForAutofill = mode
     }
 
+    protected fun applyCardNumberMask(mask:String?) {
+        if(fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.setCardNumberMask(mask)
+        }
+    }
 }
