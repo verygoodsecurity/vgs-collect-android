@@ -1,8 +1,10 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
+import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
+import android.view.View
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.InputCardHolderConnection
@@ -40,6 +42,12 @@ internal class PersonNameInputField(context: Context): BaseInputField(context) {
             inputType = InputType.TYPE_CLASS_TEXT
         }
         refreshInput()
+    }
+
+    override fun setupAutofill() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setAutofillHints(View.AUTOFILL_HINT_NAME )
+        }
     }
 
 }

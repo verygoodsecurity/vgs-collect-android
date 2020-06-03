@@ -198,4 +198,10 @@ internal class CardInputField(context: Context): BaseInputField(context) {
             else -> InputType.TYPE_CLASS_NUMBER
         }
     }
+
+    override fun setupAutofill() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setAutofillHints(AUTOFILL_HINT_CREDIT_CARD_NUMBER )
+        }
+    }
 }

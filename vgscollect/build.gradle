@@ -12,6 +12,7 @@ android {
         versionCode CODE_VERSION.toInteger()
         versionName POM_VERSION
 
+        javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
     }
