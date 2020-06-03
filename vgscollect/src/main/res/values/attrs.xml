@@ -459,6 +459,8 @@
             <enum name="start" value="8388611" />
             <enum name="end" value="8388613" />
         </attr>
+
+        <attr name="mask" format="string"/>
     </declare-styleable>
 
 

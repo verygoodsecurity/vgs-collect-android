@@ -31,6 +31,8 @@ internal class CardInputField(context: Context): BaseInputField(context) {
     private var iconGravity:Int = Gravity.NO_GRAVITY
     private var cardtype: CardType = CardType.NONE
 
+    private var cardNumberMask:String = "#### #### #### #### ###"
+
     private val userFilter: MutableCardFilter by lazy {
         CardBrandFilter( this, divider)
     }
@@ -203,5 +205,9 @@ internal class CardInputField(context: Context): BaseInputField(context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setAutofillHints(AUTOFILL_HINT_CREDIT_CARD_NUMBER )
         }
+    }
+
+    internal fun setCardNumberMask(mask:String?) {
+
     }
 }
