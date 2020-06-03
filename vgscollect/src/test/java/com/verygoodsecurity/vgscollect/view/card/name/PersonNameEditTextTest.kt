@@ -19,7 +19,6 @@ import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [Build.VERSION_CODES.O_MR1])
 class PersonNameEditTextTest {
     private lateinit var activityController: ActivityController<Activity>
     private lateinit var activity: Activity
