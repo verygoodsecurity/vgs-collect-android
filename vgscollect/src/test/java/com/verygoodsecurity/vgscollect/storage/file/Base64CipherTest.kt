@@ -16,7 +16,6 @@ import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [Build.VERSION_CODES.P])
 class Base64CipherTest {
     private lateinit var activityController: ActivityController<Activity>
     private lateinit var activity: Activity

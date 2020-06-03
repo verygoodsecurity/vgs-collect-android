@@ -9,6 +9,7 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 
 /**
  * A user interface element that displays text to the user in card number format.
@@ -31,8 +32,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
             try {
                 val previewGravity = getInt(R.styleable.VGSCardNumberEditText_cardBrandIconGravity, 0)
-                val divider:String? = getString(R.styleable.VGSCardNumberEditText_numberDivider)
-                val mask:String? = getString(R.styleable.VGSCardNumberEditText_mask)
+                val divider:String? = getString(R.styleable.VGSCardNumberEditText_numberDivider)?:null
 
                 val inputType = getInt(R.styleable.VGSCardNumberEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.VGSCardNumberEditText_fieldName)
@@ -75,7 +75,6 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
                 setNumberDivider(divider)
                 applyCardIconGravity(previewGravity)
-                applyCardNumberMask(mask)
             } finally {
                 recycle()
             }
@@ -127,6 +126,10 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      */
     fun getDivider() : Char? {
         return getNumberDivider()
+    }
+
+    fun setCardIconAdapter(adapter: CardIconAdapter) {
+        setCardBrandIconAdapter(adapter)
     }
 
     fun setCardNumberMask(mask:String) {

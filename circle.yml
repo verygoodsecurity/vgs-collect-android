@@ -73,41 +73,41 @@ aliases:
 
   # dependency groups
   - &prepare_sources
-    - "Prepared_Sources"
+    - "Prepared Sources"
 
   - &all_test
-    - "Run_Lint"
-    - "Run_Unit_Tests"
+    - "Run Lint"
+    - "Run Unit Tests"
 
   - &debug_build
-    - "Assemble_Debug_Build"
+    - "Assemble Debug Build"
 
 jobs:
-  "Prepared_Sources":
+  "Prepared Sources":
     <<: *test_environment
     environment:
       JVM_OPTS: -Xmx3200m
     steps: *download_dep
 
-  "Run_Lint":
+  "Run Lint":
     <<: *test_environment
     environment:
       JVM_OPTS: -Xmx3200m
     steps: *run_lint
 
-  "Run_Unit_Tests":
+  "Run Unit Tests":
     <<: *test_environment
     environment:
       JVM_OPTS: -Xmx3200m
     steps: *run_unit_tests
 
-  "Assemble_Debug_Build":
+  "Assemble Debug Build":
     <<: *test_environment
     environment:
       JVM_OPTS: -Xmx3200m
     steps: *assembleDebug
 
-  "Deploy_to_Bintray":
+  "Deploy to Bintray":
     <<: *test_environment
     environment:
       JVM_OPTS: -Xmx3200m
@@ -119,15 +119,14 @@ workflows:
   version: 2.1
   main:
     jobs:
-      - "Prepared_Sources":
+      - "Prepared Sources":
           filters:
             branches:
               only:
                 - master
                 - stage
                 - develop
-                - fixci
-      - "Run_Lint":
+      - "Run Lint":
           requires:
             *prepare_sources
           filters:
@@ -135,7 +134,7 @@ workflows:
               only:
                 - master
                 - stage
-      - "Run_Unit_Tests":
+      - "Run Unit Tests":
           requires:
             *prepare_sources
           filters:
@@ -144,8 +143,7 @@ workflows:
                 - master
                 - stage
                 - develop
-                - fixci
-      - "Assemble_Debug_Build":
+      - "Assemble Debug Build":
           requires:
             *all_test
           filters:
