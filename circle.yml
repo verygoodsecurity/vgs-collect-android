@@ -83,31 +83,31 @@ aliases:
     - "Assemble Debug Build"
 
 jobs:
-  "Prepared Sources":
+  "Prepared_Sources":
     <<: *test_environment
     environment:
       JVM_OPTS: -Xmx3200m
     steps: *download_dep
 
-  "Run Lint":
+  "Run_Lint":
     <<: *test_environment
     environment:
       JVM_OPTS: -Xmx3200m
     steps: *run_lint
 
-  "Run Unit Tests":
+  "Run_Unit_Tests":
     <<: *test_environment
     environment:
       JVM_OPTS: -Xmx3200m
     steps: *run_unit_tests
 
-  "Assemble Debug Build":
+  "Assemble_Debug_Build":
     <<: *test_environment
     environment:
       JVM_OPTS: -Xmx3200m
     steps: *assembleDebug
 
-  "Deploy to Bintray":
+  "Deploy_to_Bintray":
     <<: *test_environment
     environment:
       JVM_OPTS: -Xmx3200m
@@ -119,7 +119,7 @@ workflows:
   version: 2.1
   main:
     jobs:
-      - "Prepared Sources":
+      - "Prepared_Sources":
           filters:
             branches:
               only:
@@ -127,7 +127,7 @@ workflows:
                 - stage
                 - develop
                 - dmytro.k/ch72377/vgs-collect-android-sdk-wayfair-year-not
-      - "Run Lint":
+      - "Run_Lint":
           requires:
             *prepare_sources
           filters:
@@ -135,7 +135,7 @@ workflows:
               only:
                 - master
                 - stage
-      - "Run Unit Tests":
+      - "Run_Unit_Tests":
           requires:
             *prepare_sources
           filters:
@@ -145,7 +145,7 @@ workflows:
                 - stage
                 - develop
                 - dmytro.k/ch72377/vgs-collect-android-sdk-wayfair-year-not
-      - "Assemble Debug Build":
+      - "Assemble_Debug_Build":
           requires:
             *all_test
           filters:
