@@ -14,6 +14,7 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.autofill.AutofillId
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -1011,6 +1012,21 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     fun setOnEditorActionListener(l: OnEditorActionListener?) {
         inputField.setEditorActionListener(l)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun setAutofillHints(vararg autofillHints: String?) {
+        inputField.setAutofillHints(*autofillHints)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun setAutofillId(id: AutofillId?) {
+        inputField.autofillId = id
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun setImportantForAutofill(mode: Int) {
+        inputField.importantForAutofill = mode
     }
 
 }
