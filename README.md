@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/verygoodsecurity/vgs-collect-android/tree/master.svg?style=svg&circle-token=24087545f8aff3cee11ebe55330d2df778a7bb1f)](https://circleci.com/gh/verygoodsecurity/vgs-collect-android/tree/master)
+
 [![UT](https://img.shields.io/badge/Unit_Test-pass-green)]()
 [![license](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE)
 [ ![Download](https://api.bintray.com/packages/vg/vgs-collect-android/vgscollect/images/download.svg) ](https://bintray.com/vg/vgs-collect-android/vgscollect/_latestVersion)
