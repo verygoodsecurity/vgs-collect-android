@@ -31,6 +31,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     DependencyListener, OnVgsViewStateChangeListener {
 
     companion object {
+         const val REFRESH_DELAY = 200L
+
         fun getInputField(context: Context, parent:InputFieldView):BaseInputField {
             val field = when(parent.getFieldType()) {
                 FieldType.CARD_NUMBER -> CardInputField(context)
@@ -139,7 +141,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
 
         handlerLooper.removeCallbacks(inputConnection)
-        handlerLooper.postDelayed(inputConnection, 200)
+        handlerLooper.postDelayed(inputConnection, REFRESH_DELAY)
     }
 
     override fun onAttachedToWindow() {
@@ -184,10 +186,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
-        super.onSelectionChanged(selStart, selEnd)
-        setSelection(text?.length?:0)
-    }
+//    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
+//        super.onSelectionChanged(selStart, selEnd)
+//        setSelection(text?.length?:0)
+//    }
 
     protected fun isRTL():Boolean {
         val direction = getResolvedLayoutDirection()
@@ -316,36 +318,4 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     fun setEditorActionListener(onEditorActionListener:InputFieldView.OnEditorActionListener?) {
         this.onEditorActionListener = onEditorActionListener
     }
-
-//
-//    override fun autofill(value: AutofillValue?) {
-//        Log.e("test", "${fieldType} autofill 1 ${value}")
-//        Log.e("test", "${value?.getTextValue()}")
-//        super.autofill(value)
-//    }
-//
-//    override fun autofill(values: SparseArray<AutofillValue>) {
-//        Log.e("test", "${fieldType} autofill few ${values}")
-//        super.autofill(values)
-//    }
-//
-//    override fun setAutofillId(id: AutofillId?) {
-//        Log.e("test", "${fieldType} setAutofillId ${id}")
-//        super.setAutofillId(id)
-//    }
-//
-//    override fun onProvideAutofillStructure(structure: ViewStructure?, flags: Int) {
-//        Log.e("test", "${fieldType} onProvideAutofillStructure ${structure} $flags")
-//        super.onProvideAutofillStructure(structure, flags)
-//    }
-//
-//    override fun dispatchProvideAutofillStructure(structure: ViewStructure, flags: Int) {
-//        Log.e("test", "${fieldType} dispatchProvideAutofillStructure")
-//        super.dispatchProvideAutofillStructure(structure, flags)
-//    }
-//
-//    override fun isVisibleToUserForAutofill(virtualId: Int): Boolean {
-//        Log.e("test", "${fieldType} isVisibleToUserForAutofill")
-//        return super.isVisibleToUserForAutofill(virtualId)
-//    }
 }

@@ -17,25 +17,34 @@ import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
+import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
-import com.verygoodsecurity.vgscollect.view.card.text.CardNumberTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
 
 /** @suppress */
 internal class CardInputField(context: Context): BaseInputField(context), InputCardNumberConnection.IDrawCardBrand {
 
+    companion object {
+        private const val MASK_REGEX = "[^#]"
+        private const val DEFAULT_MASK = "#### #### #### #### ###"
+        private const val EMPTY_CHAR = ""
+        private const val SPACE = " "
+    }
+
     override var fieldType: FieldType = FieldType.CARD_NUMBER
 
-    private var divider:String = " "
+    private var divider:String = SPACE
     private var iconGravity:Int = Gravity.NO_GRAVITY
     private var cardtype: CardType = CardType.NONE
 
-    private var cardNumberMask:String = "#### #### #### #### ###"
+    private var cardNumberMask:String = DEFAULT_MASK
 
     private var iconAdapter = CardIconAdapter(context)
+    private var cardNumberFormatter: Formatter? = null
 
     private val userFilter: MutableCardFilter by lazy {
-        CardBrandFilter( this, divider)
+        CardBrandFilter(divider)
     }
 
     override fun applyFieldType() {
@@ -43,13 +52,13 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
         inputConnection = InputCardNumberConnection(id, validator, this, divider)
 
-        val defFilter = DefaultCardBrandFilter(CardType.values(), this, divider)
+        val defFilter = DefaultCardBrandFilter(CardType.values(), divider)
         inputConnection!!.addFilter(defFilter)
         inputConnection!!.addFilter(userFilter)
 
         val str = text.toString()
         val stateContent = FieldContent.CardNumberContent().apply {
-            rawData = str.replace(divider?:" ", "")
+            rawData = str.replace(divider, EMPTY_CHAR)
             cardtype = this@CardInputField.cardtype
             this.data = str
         }
@@ -57,9 +66,17 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
-        applyNewTextWatcher(CardNumberTextWatcher(divider))
 
+        applyFormatter()
         applyInputType()
+    }
+
+    private fun applyFormatter() {
+        cardNumberFormatter = with(CardNumberFormatter()) {
+            setMask(cardNumberMask)
+            applyNewTextWatcher(this)
+            this
+        }
     }
 
     private fun applyInputType() {
@@ -82,14 +99,14 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
             content = createCardNumberContent(str)
 
             handlerLooper.removeCallbacks(inputConnection)
-            handlerLooper.postDelayed(inputConnection, 200)
+            handlerLooper.postDelayed(inputConnection, REFRESH_DELAY)
         }
     }
 
     private fun createCardNumberContent(str: String): FieldContent.CardNumberContent {
         val c = FieldContent.CardNumberContent()
         c.cardtype = this@CardInputField.cardtype
-        c.rawData = str.replace(divider?:" ", "")
+        c.rawData = str.replace(divider, EMPTY_CHAR)
         c.data = str
         return c
     }
@@ -126,7 +143,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
     internal fun setNumberDivider(divider: String?) {
         when {
-            divider.isNullOrEmpty() -> this@CardInputField.divider = ""
+            divider.isNullOrEmpty() -> this@CardInputField.divider = EMPTY_CHAR
             divider.isNumeric() -> printErrorInLog(R.string.error_divider_card_number_field)
             divider.length > 1 -> printErrorInLog(R.string.error_divider_count_card_number_field)
             else -> this@CardInputField.divider = divider
@@ -212,8 +229,9 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
     private fun applyDividerOnMask() {
         cardNumberMask = with(cardNumberMask) {
-            this.replace(Regex("[^#]"), divider)
+            this.replace(Regex(MASK_REGEX), divider)
         }
+        cardNumberFormatter?.setMask(cardNumberMask)
     }
 
 }

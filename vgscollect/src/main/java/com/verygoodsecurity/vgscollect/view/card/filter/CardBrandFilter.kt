@@ -8,16 +8,11 @@ import java.util.regex.Pattern
 
 /** @suppress */
 class CardBrandFilter(
-    private val inputField: TextView? = null,
     private val divider:String? = ""
 ) : MutableCardFilter {
 
     private val userCustomCardBrands = mutableListOf<CustomCardBrand>()
 
-    companion object {
-        private const val MAX_LENGTH = 19
-        private const val MASK_COUNT = 3
-    }
 
     override fun add(item: CustomCardBrand?) {
         item?.let {
@@ -35,12 +30,10 @@ class CardBrandFilter(
             val value = userCustomCardBrands[i]
             val m = Pattern.compile(value.regex).matcher(preparedStr)
             while (m.find()) {
-                inputField?.filters = arrayOf(InputFilter.LengthFilter(MAX_LENGTH + MASK_COUNT))
                 return CardBrandWrapper(regex = value.regex, name = value.cardBrandName, resId = value.drawableResId)
             }
         }
 
-        inputField?.filters = arrayOf(InputFilter.LengthFilter(MAX_LENGTH + MASK_COUNT))
         return null
     }
 }

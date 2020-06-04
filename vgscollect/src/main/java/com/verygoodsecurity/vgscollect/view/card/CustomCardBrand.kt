@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.card
 
+import android.service.autofill.LuhnChecksumValidator
+
 /**
  * The data class definition for represent custom card brand.
  * It may be useful to add new brands in addition to already defined brands or override existing ones.
@@ -15,5 +17,9 @@ data class CustomCardBrand(
     val cardBrandName:String,
 
     /** The drawable resource represents credit card logo. */
-    val drawableResId:Int = 0
+    val drawableResId:Int = 0,
+
+    val enableLuhnCheck:Boolean = false,
+
+    val mask:String = "#### #### #### ####"
 )
