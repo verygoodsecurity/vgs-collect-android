@@ -14,6 +14,7 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
+import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
@@ -312,11 +313,11 @@ internal class InputField(context: Context): BaseInputField(context),
         }
     }
 
-    override fun drawCardBrandPreview(cardType: CardType, name: String?, resId: Int) {
+    override fun onCardBrandPreview(card: CardBrandPreview) {
         val r = Rect()
         getLocalVisibleRect(r)
 
-        val cardPreview = iconAdapter.getItem(cardType, name, resId, r)
+        val cardPreview = iconAdapter.getItem(card.cardType, card.name, card.resId, r)
 
         when (iconGravity) {
             Gravity.LEFT -> setCompoundDrawables(cardPreview,null,null,null)

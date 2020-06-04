@@ -1,7 +1,5 @@
 package com.verygoodsecurity.vgscollect.view.card.filter
 
-import android.text.InputFilter
-import android.widget.TextView
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import java.util.regex.Pattern
 
@@ -11,9 +9,9 @@ class DefaultCardBrandFilter(
     private val divider:String? = " "
 ) : VGSCardFilter {
 
-    override fun detect(str: String?): CardBrandWrapper? {
+    override fun detect(str: String?): CardBrandPreview? {
         if(str.isNullOrEmpty()) {
-            return CardBrandWrapper()
+            return CardBrandPreview()
         }
         val preparedStr = str.replace(divider?:" ", "")
 
@@ -21,10 +19,14 @@ class DefaultCardBrandFilter(
             val value = cardBrands[i]
             val m = Pattern.compile(value.regex).matcher(preparedStr)
             while (m.find()) {
-                return CardBrandWrapper(value, value.regex, value.name, value.resId)
+                return CardBrandPreview(value,
+                        value.regex,
+                        value.name,
+                        value.resId,
+                        value.mask)
             }
         }
 
-        return CardBrandWrapper()
+        return CardBrandPreview()
     }
 }

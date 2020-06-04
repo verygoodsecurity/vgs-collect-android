@@ -1,10 +1,9 @@
 package com.verygoodsecurity.vgscollect.view.card
 
-import android.util.Log
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandWrapper
+import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
@@ -60,7 +59,7 @@ internal class InputCardNumberConnection(
         val card = runFilters()
         mapValue(card)
 
-        IcardBrand?.drawCardBrandPreview(card.cardType, card.name, card.resId)
+        IcardBrand?.onCardBrandPreview(card)
 
         applyNewRule(card.regex)
 
@@ -75,12 +74,11 @@ internal class InputCardNumberConnection(
 
             val isLengthAppropriate = checkLength(card.cardType, rawStr.length)
             output.isValid = isLuhnValid && isStrValid && isLengthAppropriate
-            Log.e("test", "$isLuhnValid $isStrValid $isLengthAppropriate")
         }
         notifyAllListeners(id, output)
     }
 
-    private fun mapValue(item: CardBrandWrapper) {
+    private fun mapValue(item: CardBrandPreview) {
         val card = (output.content as? FieldContent.CardNumberContent)
         card?.cardtype = item.cardType
         card?.cardBrandName = item.name
@@ -95,7 +93,7 @@ internal class InputCardNumberConnection(
         }
     }
 
-    private fun runFilters(): CardBrandWrapper {
+    private fun runFilters(): CardBrandPreview {
         for(i in cardFilters.indices) {
             val filter = cardFilters[i]
             val brand = filter.detect(output.content?.data)
@@ -103,7 +101,7 @@ internal class InputCardNumberConnection(
                 return brand
             }
         }
-        return CardBrandWrapper()
+        return CardBrandPreview()
     }
 
     private fun checkLength(
@@ -114,10 +112,8 @@ internal class InputCardNumberConnection(
     }
 
     internal interface IDrawCardBrand {
-        fun drawCardBrandPreview(
-            cardType: CardType,
-            name: String?,
-            resId: Int
+        fun onCardBrandPreview(
+            card: CardBrandPreview
         )
     }
 }
