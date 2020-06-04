@@ -11,7 +11,7 @@ class DefaultCardBrandFilterTest {
 
     @Test
     fun detectBrandWithCustomDivider() {
-        val filter = DefaultCardBrandFilter(CardType.values(), null, "-")
+        val filter = DefaultCardBrandFilter(CardType.values(), "-")
 
         val brand = filter.detect("4111-1111-1111-1111")
         assertTrue(brand?.name == CardType.VISA.name)

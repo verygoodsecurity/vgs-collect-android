@@ -20,6 +20,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CardType
+import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener  {
@@ -47,6 +48,25 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.addOnFieldStateChangeListener(getOnFieldStateChangeListener())
 
         vgsForm.bindView(cardNumberField)
+
+        cardNumberField.addCardBrand(CustomCardBrand("^123123"
+            , "brand_name"
+            , R.drawable.cio_paypal_logo))
+        cardNumberField.addCardBrand(CustomCardBrand("^111111"
+            , "brand_name"
+            , R.drawable.cio_paypal_logo)
+        )
+        cardNumberField.addCardBrand(CustomCardBrand("^222222"
+            , "brand_name"
+            , R.drawable.cio_paypal_logo))
+        cardNumberField.addCardBrand(CustomCardBrand("^333333"
+            , "brand_name"
+            , R.drawable.cio_paypal_logo
+            , "# # #### ### #### ####"))
+        cardNumberField.addCardBrand(CustomCardBrand("^7777"
+            , "brand_name"
+            , R.drawable.cio_paypal_logo
+            , "### ## ##"))
 
         cardNumberField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
@@ -95,6 +115,11 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         val staticData = mutableMapOf<String, String>()
         staticData["static_data"] = "static custom data"
         vgsForm.setCustomData(staticData)
+    }
+
+    override fun onBackPressed() {
+//        super.onBackPressed()
+        cardNumberField?.setDivider('*')
     }
 
     private fun retrieveSettings() {

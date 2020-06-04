@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.InputCardNumberConnection
 import com.verygoodsecurity.vgscollect.view.card.InputRunnable
-import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandWrapper
+import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import com.verygoodsecurity.vgscollect.view.card.CardType
@@ -28,7 +28,7 @@ class InputCardNumberConnectionTest {
         Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
         val filter = mock(VGSCardFilter::class.java)
         Mockito.doReturn(
-            CardBrandWrapper(
+            CardBrandPreview(
                 CardType.VISA,
                 CardType.VISA.regex,
                 CardType.VISA.name,
@@ -47,7 +47,7 @@ class InputCardNumberConnectionTest {
         Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
 
         val connection: InputRunnable = InputCardNumberConnection(0, client, divider = divider)
-        connection.addFilter(DefaultCardBrandFilter(CardType.values(), null, divider))
+        connection.addFilter(DefaultCardBrandFilter(CardType.values(), divider))
 
         val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
@@ -71,7 +71,7 @@ class InputCardNumberConnectionTest {
     fun test_draw_card_icon() {
         connection.run()
 
-        Mockito.verify(iCardBrand).drawCardBrandPreview(CardType.NONE, CardType.NONE.name, CardType.NONE.resId)
+        Mockito.verify(iCardBrand).onCardBrandPreview(CardBrandPreview(CardType.NONE, CardType.NONE.regex, CardType.NONE.name, CardType.NONE.resId))
 
         val content = FieldContent.CardNumberContent()
         content.data = "4111"
@@ -83,7 +83,7 @@ class InputCardNumberConnectionTest {
 
         connection.run()
 
-        Mockito.verify(iCardBrand).drawCardBrandPreview(CardType.VISA, CardType.VISA.name, CardType.VISA.resId)
+        Mockito.verify(iCardBrand).onCardBrandPreview(CardBrandPreview(CardType.VISA, CardType.VISA.regex, CardType.VISA.name, CardType.VISA.resId))
     }
 
     @Test
