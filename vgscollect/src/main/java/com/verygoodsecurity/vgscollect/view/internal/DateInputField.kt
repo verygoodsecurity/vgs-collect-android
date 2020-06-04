@@ -27,7 +27,14 @@ import java.util.*
 /** @suppress */
 internal class DateInputField(context: Context): BaseInputField(context), View.OnClickListener {
 
-    private var datePattern:String = "MM/yyyy"
+    companion object {
+        private const val MM_YYYY = "MM/yyyy"
+        private const val MM_YY = "MM/yy"
+        private const val DD = "dd"
+        private const val SDF = "MM/dd/yyyy"
+    }
+
+    private var datePattern:String = MM_YYYY
     private var outputPattern:String = datePattern
 
     private var charLimit = datePattern.length
@@ -37,7 +44,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     private val selectedDate = Calendar.getInstance()
 
-    private val dateLimitationFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+    private val dateLimitationFormat = SimpleDateFormat(SDF, Locale.getDefault())
     private var fieldDateFormat:SimpleDateFormat? = null
     private var fieldDateOutPutFormat:SimpleDateFormat? = null
 
@@ -101,7 +108,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
 
         handlerLooper.removeCallbacks(inputConnection)
-        handlerLooper.postDelayed(inputConnection, 200)
+        handlerLooper.postDelayed(inputConnection, REFRESH_DELAY)
     }
 
     private fun createCreditCardExpDateContent(str: String): FieldContent? {
@@ -211,12 +218,12 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     internal fun setDatePattern(pattern:String?) {
         datePattern = when {
-            pattern.isNullOrEmpty() -> "MM/yyyy"
-            datePickerMode == DatePickerMode.INPUT && pattern.isInputDatePatternValid().not() -> "MM/yyyy"
+            pattern.isNullOrEmpty() -> MM_YYYY
+            datePickerMode == DatePickerMode.INPUT && pattern.isInputDatePatternValid().not() -> MM_YYYY
             else -> pattern
         }
 
-        isDaysVisible = datePattern.contains("dd")
+        isDaysVisible = datePattern.contains(DD)
         fieldDateFormat = SimpleDateFormat(datePattern, Locale.getDefault())
     }
 
@@ -334,7 +341,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         return if(str.length == datePattern.length) {
             value
         } else {
-            val newDateStr = value.textValue.toString().handleDate("MM/yy", datePattern)
+            val newDateStr = value.textValue.toString().handleDate(MM_YY, datePattern)
             if(newDateStr.isNullOrEmpty()) {
                 value
             } else {
@@ -355,7 +362,6 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             selectedDate.set(Calendar.SECOND, 59)
             selectedDate.set(Calendar.MILLISECOND, 999)
             val outcome = SimpleDateFormat(outcomePattern, Locale.getDefault())
-
             outcome.format(selectedDate.time)
         } catch (e: ParseException) {
             null

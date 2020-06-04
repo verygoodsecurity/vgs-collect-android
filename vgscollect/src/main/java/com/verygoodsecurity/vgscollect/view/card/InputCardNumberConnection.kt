@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.card
 
+import android.util.Log
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
@@ -74,8 +75,8 @@ internal class InputCardNumberConnection(
 
             val isLengthAppropriate = checkLength(card.cardType, rawStr.length)
             output.isValid = isLuhnValid && isStrValid && isLengthAppropriate
+            Log.e("test", "$isLuhnValid $isStrValid $isLengthAppropriate")
         }
-
         notifyAllListeners(id, output)
     }
 

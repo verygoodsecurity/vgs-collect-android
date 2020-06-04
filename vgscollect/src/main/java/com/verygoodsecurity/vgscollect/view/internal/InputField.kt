@@ -16,9 +16,9 @@ import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
+import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
-import com.verygoodsecurity.vgscollect.view.card.text.CardNumberTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
@@ -42,7 +42,7 @@ internal class InputField(context: Context): BaseInputField(context),
     private var iconAdapter = CardIconAdapter(context)
 
     private val userFilter: MutableCardFilter by lazy {
-        CardBrandFilter( this, divider)
+        CardBrandFilter(divider)
     }
 
     override var fieldType: FieldType = FieldType.INFO
@@ -184,7 +184,7 @@ internal class InputField(context: Context): BaseInputField(context),
 
         inputConnection = InputCardNumberConnection(id, validator, this, divider)
 
-        val defFilter = DefaultCardBrandFilter(CardType.values(), this, divider)
+        val defFilter = DefaultCardBrandFilter(CardType.values(), divider)
         inputConnection!!.addFilter(defFilter)
         inputConnection!!.addFilter(userFilter)
 
@@ -197,7 +197,7 @@ internal class InputField(context: Context): BaseInputField(context),
 
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
-        applyNewTextWatcher(CardNumberTextWatcher(divider))    //fixme needTo apply TextWatcher
+        applyNewTextWatcher(CardNumberFormatter())
         applyNumberInputType()
     }
 

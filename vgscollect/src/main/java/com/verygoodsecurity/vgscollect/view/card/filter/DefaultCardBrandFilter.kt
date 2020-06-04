@@ -8,15 +8,8 @@ import java.util.regex.Pattern
 /** @suppress */
 class DefaultCardBrandFilter(
     private val cardBrands: Array<CardType>,
-    private val inputField: TextView?,
     private val divider:String? = " "
 ) : VGSCardFilter {
-
-    companion object {
-        private const val MAX_LENGTH = 19
-    }
-
-    private val MASK_COUNT:Int = if(divider.isNullOrEmpty()) { 0 } else { 3 }
 
     override fun detect(str: String?): CardBrandWrapper? {
         if(str.isNullOrEmpty()) {
@@ -28,13 +21,10 @@ class DefaultCardBrandFilter(
             val value = cardBrands[i]
             val m = Pattern.compile(value.regex).matcher(preparedStr)
             while (m.find()) {
-                val length = value.rangeNumber.last()
-                inputField?.filters = arrayOf(InputFilter.LengthFilter(length + MASK_COUNT))
                 return CardBrandWrapper(value, value.regex, value.name, value.resId)
             }
         }
 
-        inputField?.filters = arrayOf(InputFilter.LengthFilter(MAX_LENGTH + MASK_COUNT))
         return CardBrandWrapper()
     }
 }

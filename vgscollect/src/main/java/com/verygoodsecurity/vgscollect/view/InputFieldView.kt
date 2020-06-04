@@ -686,11 +686,7 @@ abstract class InputFieldView @JvmOverloads constructor(
 
         val bgDraw = background?.constantState?.newDrawable()
         if(bgDraw != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                inputField.background = bgDraw
-            } else {
-                inputField.setBackgroundDrawable(bgDraw)
-            }
+            inputField.background = bgDraw
         }
         setBackgroundColor(Color.TRANSPARENT)
     }
