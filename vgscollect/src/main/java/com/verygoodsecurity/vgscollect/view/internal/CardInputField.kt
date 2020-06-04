@@ -4,17 +4,14 @@ import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.text.InputType
 import android.text.method.DigitsKeyListener
 import android.view.Gravity
 import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.util.isNumeric
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
@@ -29,7 +26,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
     override var fieldType: FieldType = FieldType.CARD_NUMBER
 
-    private var divider:String? = " "
+    private var divider:String = " "
     private var iconGravity:Int = Gravity.NO_GRAVITY
     private var cardtype: CardType = CardType.NONE
 
@@ -130,19 +127,24 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
     internal fun setNumberDivider(divider: String?) {
         when {
             divider.isNullOrEmpty() -> this@CardInputField.divider = ""
-            divider.length == 1 -> this@CardInputField.divider = divider
-            else -> {
-                val message = String.format(
-                    context.getString(R.string.error_divider_card_number_field),
-                    divider
-                )
-                Logger.e(InputFieldView::class.java, message)
-            }
+            divider.isNumeric() -> printErrorInLog(R.string.error_divider_card_number_field)
+            divider.length > 1 -> printErrorInLog(R.string.error_divider_count_card_number_field)
+            else -> this@CardInputField.divider = divider
         }
 
+        applyDividerOnMask()
+        setupKeyListener()
+        refreshInputConnection()
+    }
+
+    private fun printErrorInLog(resId: Int) {
+        val message = String.format(context.getString(resId), divider)
+        Logger.e(InputFieldView::class.java, message)
+    }
+
+    private fun setupKeyListener() {
         val digits = resources.getString(R.string.card_number_digits) + this@CardInputField.divider
         keyListener = DigitsKeyListener.getInstance(digits)
-        refreshInputConnection()
     }
 
     internal fun getNumberDivider() = divider
@@ -202,7 +204,16 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
     }
 
     internal fun setCardNumberMask(mask:String?) {
+        if(!mask.isNullOrEmpty()) {
+            cardNumberMask = mask
+            applyDividerOnMask()
+        }
+    }
 
+    private fun applyDividerOnMask() {
+        cardNumberMask = with(cardNumberMask) {
+            this.replace(Regex("[^#]"), divider)
+        }
     }
 
 }
