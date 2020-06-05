@@ -25,17 +25,28 @@ internal class InputCardCVCConnection(
     }
 
     override fun run() {
-        val str = output.content?.data
-        if(str.isNullOrEmpty() && !output.isRequired) {
-            output.isValid = true
-        } else {
-            val updatedStr = str?.trim()?:""
-
-            val isStrValid = runtimeValidator?.isValid(updatedStr)?:false
-            output.isValid = isStrValid
-        }
+        output.isValid = isRequiredValid() && isContentValid()
 
         notifyAllListeners(id, output)
+    }
+
+    private fun isContentValid(): Boolean {
+        val content = output.content?.data
+        return when {
+            !output.isRequired && content.isNullOrEmpty() -> true
+            output.enableValidation -> checkIsContentValid(content)
+            else -> true
+        }
+    }
+
+    private fun checkIsContentValid(content: String?): Boolean {
+        val updatedStr = content?.trim()?:""
+
+        return runtimeValidator?.isValid(updatedStr)?:false
+    }
+
+    private fun isRequiredValid():Boolean {
+        return output.isRequired && !output.content?.data.isNullOrEmpty() || !output.isRequired
     }
 
     override fun clearFilters() {}
