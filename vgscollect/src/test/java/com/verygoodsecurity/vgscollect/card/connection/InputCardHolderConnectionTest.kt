@@ -1,21 +1,20 @@
-package com.verygoodsecurity.vgscollect.card
+package com.verygoodsecurity.vgscollect.card.connection
 
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.InputCardExpDateConnection
+import com.verygoodsecurity.vgscollect.view.card.InputCardHolderConnection
 import com.verygoodsecurity.vgscollect.view.card.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
-import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mockito
 
-class InputCardExpDateConnectionTest {
+class InputCardHolderConnectionTest {
     val connection: InputRunnable by lazy {
         val client = Mockito.mock(VGSValidator::class.java)
         Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
-        InputCardExpDateConnection(0, client)
+        InputCardHolderConnection(0, client)
     }
 
     @Test
@@ -41,7 +40,7 @@ class InputCardExpDateConnectionTest {
         connection.setOutput(textItem)
 
         connection.run()
-        Mockito.verify(listener).emit(0, VGSFieldState(fieldName = "fieldName"))
+        Mockito.verify(listener).emit(0, textItem)
     }
 
     @Test
@@ -50,7 +49,7 @@ class InputCardExpDateConnectionTest {
         connection.setOutputListener(listener)
 
         val content = FieldContent.InfoContent()
-        content.data = ""
+        content.data = "123"
         val textItem = VGSFieldState(isValid = false,
             isRequired = false,
             fieldName = "fieldName",
@@ -58,8 +57,6 @@ class InputCardExpDateConnectionTest {
         connection.setOutput(textItem)
 
         connection.run()
-
-        assertTrue(connection.getOutput().isValid)
         Mockito.verify(listener).emit(0, textItem)
     }
 
@@ -77,8 +74,6 @@ class InputCardExpDateConnectionTest {
         connection.setOutput(textItem)
 
         connection.run()
-
-        assertTrue(connection.getOutput().isValid)
         Mockito.verify(listener).emit(0, textItem)
     }
 
