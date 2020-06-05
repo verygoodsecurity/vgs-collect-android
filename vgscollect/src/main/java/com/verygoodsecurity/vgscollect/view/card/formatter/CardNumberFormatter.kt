@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.card.formatter
 
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.annotation.VisibleForTesting
 import java.lang.StringBuilder
 
 class CardNumberFormatter: TextWatcher, Formatter {
@@ -68,4 +69,10 @@ class CardNumberFormatter: TextWatcher, Formatter {
 
         runtimeData = builder.toString()
     }
+
+    @VisibleForTesting
+    fun getMask():String = mask
+
+    @VisibleForTesting
+    fun getMaskLength():Int = maxLength
 }

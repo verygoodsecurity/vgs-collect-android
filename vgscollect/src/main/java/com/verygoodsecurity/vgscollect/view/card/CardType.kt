@@ -98,7 +98,7 @@ enum class CardType(val regex:String,
     DINCLUB(
         "^3(?:[689]|(?:0[059]+))",
         R.drawable.ic_diners_dark,
-        "#### #### #### ####",
+        "#### ###### ######",
         arrayOf(14, 16),
         arrayOf(3)
     ),
