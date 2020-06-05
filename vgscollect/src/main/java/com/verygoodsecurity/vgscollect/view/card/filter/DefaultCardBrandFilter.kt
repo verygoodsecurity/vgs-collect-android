@@ -1,12 +1,13 @@
 package com.verygoodsecurity.vgscollect.view.card.filter
 
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import java.util.regex.Pattern
 
 /** @suppress */
 class DefaultCardBrandFilter(
     private val cardBrands: Array<CardType>,
-    private val divider:String? = " "
+    private var divider:String? = " "
 ) : VGSCardFilter {
 
     override fun detect(str: String?): CardBrandPreview? {
@@ -28,5 +29,10 @@ class DefaultCardBrandFilter(
         }
 
         return CardBrandPreview()
+    }
+
+    @VisibleForTesting
+    fun setDivider(divider:String) {
+        this.divider = divider
     }
 }

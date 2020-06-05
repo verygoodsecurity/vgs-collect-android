@@ -1,11 +1,12 @@
 package com.verygoodsecurity.vgscollect.view.card.filter
 
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import java.util.regex.Pattern
 
 /** @suppress */
 class CardBrandFilter(
-    private val divider:String? = ""
+    private var divider:String? = ""
 ) : MutableCardFilter {
 
     private val userCustomCardBrands = mutableListOf<CustomCardBrand>()
@@ -35,5 +36,10 @@ class CardBrandFilter(
         }
 
         return null
+    }
+
+    @VisibleForTesting
+    fun setDivider(divider:String) {
+        this.divider = divider
     }
 }
