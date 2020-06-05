@@ -46,6 +46,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     private var imeOptions:Int = 0
     private var textAppearance:Int = 0
     private var fontFamily:Typeface? = null
+    private var enableValidation = true
 
     init {
         context.theme.obtainStyledAttributes(
@@ -54,6 +55,7 @@ abstract class InputFieldView @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
+                enableValidation = getBoolean(R.styleable.InputFieldView_enableValidation, true)
                 textAppearance = getResourceId(R.styleable.InputFieldView_textAppearance, 0)
                 imeOptions = getInt(R.styleable.InputFieldView_imeOptions, EditorInfo.IME_ACTION_DONE)
 
@@ -673,6 +675,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.nextFocusLeftId = nextFocusLeftId
         inputField.nextFocusRightId = nextFocusRightId
         inputField.imeOptions = imeOptions
+        inputField.enableValidation = enableValidation
         if(fontFamily != null) {
             inputField.typeface = fontFamily
         }
@@ -995,7 +998,7 @@ abstract class InputFieldView @JvmOverloads constructor(
          * @return Return true if you have consumed the action, else false.
          */
         fun onEditorAction(
-            v: InputFieldView?,
+            v: View?,
             actionId: Int,
             event: KeyEvent?
         ): Boolean
@@ -1011,6 +1014,10 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     fun setOnEditorActionListener(l: OnEditorActionListener?) {
         inputField.setEditorActionListener(l)
+    }
+
+    fun enableValidation(isEnabled:Boolean) {
+        inputField.enableValidation = isEnabled
     }
 
 }

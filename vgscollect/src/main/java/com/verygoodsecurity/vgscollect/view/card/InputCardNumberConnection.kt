@@ -63,20 +63,33 @@ internal class InputCardNumberConnection(
 
         applyNewRule(card.regex)
 
-        val str = output.content?.data
-
-        if(str.isNullOrEmpty() && !output.isRequired) {
-            output.isValid = true
-        } else {
-            val rawStr = str?.replace(divider?:" ", "")?:""
-            val isStrValid = validator?.isValid(rawStr)?:false
-            val isLuhnValid:Boolean = brandLuhnValidations[card.cardType]?.isValid(rawStr)?:true
-
-            val isLengthAppropriate = checkLength(card.cardType, rawStr.length)
-            output.isValid = isLuhnValid && isStrValid && isLengthAppropriate
-        }
+        output.isValid = isRequiredValid() && isContentValid(card)
 
         notifyAllListeners(id, output)
+    }
+
+    private fun isRequiredValid():Boolean {
+        return output.isRequired && !output.content?.data.isNullOrEmpty() || !output.isRequired
+    }
+
+    private fun isContentValid(card: CardBrandWrapper):Boolean {
+        val content = output.content?.data
+        return when {
+            !output.isRequired && content.isNullOrEmpty() -> true
+            output.enableValidation -> checkIsContentValid(card)
+            else -> true
+        }
+    }
+
+    private fun checkIsContentValid(
+        card: CardBrandWrapper
+    ): Boolean {
+        val rawStr = output.content?.data?.replace(divider ?: " ", "") ?: ""
+        val isStrValid = validator?.isValid(rawStr) ?: false
+        val isLuhnValid: Boolean = brandLuhnValidations[card.cardType]?.isValid(rawStr) ?: true
+
+        val isLengthAppropriate = checkLength(card.cardType, rawStr.length)
+        return isLuhnValid && isStrValid && isLengthAppropriate
     }
 
     private fun mapValue(item: CardBrandWrapper) {
