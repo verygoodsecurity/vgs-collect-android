@@ -73,7 +73,7 @@ aliases:
 
   # dependency groups
   - &prepare_sources
-    - "Prepared Sources"
+    - "Prepared_Sources"
 
   - &all_test
     - "Run_Lint"
