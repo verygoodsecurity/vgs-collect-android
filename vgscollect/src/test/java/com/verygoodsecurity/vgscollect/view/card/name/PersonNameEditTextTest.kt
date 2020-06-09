@@ -10,6 +10,7 @@ import com.verygoodsecurity.vgscollect.view.internal.PersonNameInputField
 import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -18,8 +19,8 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
 
+@Ignore
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [Build.VERSION_CODES.O_MR1])
 class PersonNameEditTextTest {
     private lateinit var activityController: ActivityController<Activity>
     private lateinit var activity: Activity
