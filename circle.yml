@@ -76,11 +76,11 @@ aliases:
     - "Prepared Sources"
 
   - &all_test
-    - "Run Lint"
-    - "Run Unit Tests"
+    - "Run_Lint"
+    - "Run_Unit_Tests"
 
   - &debug_build
-    - "Assemble Debug Build"
+    - "Assemble_Debug_Build"
 
 jobs:
   "Prepared_Sources":
