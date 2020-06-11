@@ -10,6 +10,7 @@ import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
 import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -18,6 +19,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
 
+@Ignore
 @RunWith(RobolectricTestRunner::class)
 class CardVerificationCodeEditTextTest {
     private lateinit var activityController: ActivityController<Activity>
