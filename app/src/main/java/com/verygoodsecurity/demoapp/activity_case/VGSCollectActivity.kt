@@ -49,25 +49,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
         vgsForm.bindView(cardNumberField)
 
-        cardNumberField.addCardBrand(CustomCardBrand("^123123"
-            , "brand_name"
-            , R.drawable.cio_paypal_logo))
-        cardNumberField.addCardBrand(CustomCardBrand("^111111"
-            , "brand_name"
-            , R.drawable.cio_paypal_logo)
-        )
-        cardNumberField.addCardBrand(CustomCardBrand("^222222"
-            , "brand_name"
-            , R.drawable.cio_paypal_logo))
-        cardNumberField.addCardBrand(CustomCardBrand("^333333"
-            , "brand_name"
-            , R.drawable.cio_paypal_logo
-            , "# # #### ### #### ####"))
-        cardNumberField.addCardBrand(CustomCardBrand("^7777"
-            , "brand_name"
-            , R.drawable.cio_paypal_logo
-            , "### ## ##"))
-
         cardNumberField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
                 if(!state.isEmpty && !state.isValid && !state.hasFocus) {
@@ -115,11 +96,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         val staticData = mutableMapOf<String, String>()
         staticData["static_data"] = "static custom data"
         vgsForm.setCustomData(staticData)
-    }
-
-    override fun onBackPressed() {
-//        super.onBackPressed()
-        cardNumberField?.setDivider('*')
     }
 
     private fun retrieveSettings() {
