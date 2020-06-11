@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
 import android.graphics.Rect
+import android.os.Build
 import android.graphics.drawable.Drawable
 import android.text.InputType
 import android.text.method.DigitsKeyListener
