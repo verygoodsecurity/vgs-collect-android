@@ -186,10 +186,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-//    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
-//        super.onSelectionChanged(selStart, selEnd)
-//        setSelection(text?.length?:0)
-//    }
+    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
+        super.onSelectionChanged(selStart, selEnd)
+        setSelection(text?.length?:0)
+    }
 
     protected fun isRTL():Boolean {
         val direction = getResolvedLayoutDirection()
