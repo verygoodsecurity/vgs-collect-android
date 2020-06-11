@@ -19,6 +19,11 @@ internal class InputCardNumberConnection(
     private val cardFilters = mutableListOf<VGSCardFilter>()
     private val brandLuhnValidations by lazy {
         val set = HashMap<CardType, VGSValidator>()
+        set[CardType.ELO] = EloDelegate()
+        set[CardType.DANKORT] = DankortDelegate()
+        set[CardType.FORBRUGSFORENINGEN] = ForbrugsforeningenDelegate()
+        set[CardType.HIPERCARD] = HipercardDelegate()
+        set[CardType.MAESTRO] = MaestroDelegate()
         set[CardType.VISA] = VisaDelegate()
         set[CardType.VISA_ELECTRON] = VisaElectronDelegate()
         set[CardType.MASTERCARD] = MastercardDelegate()
