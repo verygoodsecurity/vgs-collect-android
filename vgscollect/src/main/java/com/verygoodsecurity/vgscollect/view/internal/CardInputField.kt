@@ -2,8 +2,8 @@ package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
 import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.os.Build
+import android.graphics.drawable.Drawable
 import android.text.InputType
 import android.text.method.DigitsKeyListener
 import android.view.Gravity
@@ -187,18 +187,12 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         }
     }
 
-    override fun setupAutofill() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setAutofillHints(AUTOFILL_HINT_CREDIT_CARD_NUMBER )
-        }
-    }
-
     internal fun setCardBrandAdapter(adapter: CardIconAdapter?) {
         iconAdapter = adapter?:CardIconAdapter(context)
     }
 
     internal fun setCardBrandMaskAdapter(adapter: CardMaskAdapter?) {
-        maskAdapter = adapter?:CardMaskAdapter()
+        maskAdapter = adapter?: CardMaskAdapter()
     }
 
     internal fun getState(): FieldState.CardNumberState? {
@@ -241,7 +235,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         right: Drawable?,
         bottom: Drawable?
     ) {
-        if(hasRTL) {
+        if (hasRTL) {
             super.setCompoundDrawables(right, top, left, bottom)
         } else {
             super.setCompoundDrawables(left, top, right, bottom)
@@ -250,11 +244,17 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
     private fun applyDividerOnMask() {
         cardNumberMask = with(cardNumberMask) {
-            this.replace(Regex(MASK_REGEX), divider)
+            this.replace(kotlin.text.Regex(MASK_REGEX), divider)
         }
         if(!text.isNullOrEmpty()) {
             cardNumberFormatter?.setMask(cardNumberMask)
             refreshInput()
+        }
+    }
+
+    override fun setupAutofill() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setAutofillHints(AUTOFILL_HINT_CREDIT_CARD_NUMBER )
         }
     }
 }

@@ -9,12 +9,14 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
+@Ignore
 @RunWith(RobolectricTestRunner::class)
 class CardIconAdapterTest {
 
