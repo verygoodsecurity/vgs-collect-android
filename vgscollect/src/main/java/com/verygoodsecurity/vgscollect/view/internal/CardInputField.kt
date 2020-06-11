@@ -187,4 +187,10 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
             super.setCompoundDrawables(left, top, right, bottom)
         }
     }
+
+    override fun setupAutofill() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setAutofillHints(AUTOFILL_HINT_CREDIT_CARD_NUMBER )
+        }
+    }
 }
