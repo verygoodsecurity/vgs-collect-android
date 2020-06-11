@@ -70,7 +70,7 @@ enum class CardType(val regex:String,
 
     /** Validation of this card brand includes the Luhn algorithm. */
     MASTERCARD(
-        "^(5[1-5]|677189)|^(222[1-9]|2[3-6]\\\\d{2,}|27[0-1]\\\\d|2720)([0-9]{2,})",
+        "^(5[1-5]|677189)|^(222[1-9]|2[3-6]\\d{2,}|27[0-1]\\d|2720)([0-9]{2,})",
         R.drawable.ic_mastercard_dark,
         "#### #### #### ####",
         arrayOf(16),
