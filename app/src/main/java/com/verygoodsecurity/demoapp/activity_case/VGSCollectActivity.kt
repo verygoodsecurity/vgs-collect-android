@@ -20,7 +20,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CardType
-import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
+import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener  {
@@ -48,6 +48,26 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.addOnFieldStateChangeListener(getOnFieldStateChangeListener())
 
         vgsForm.bindView(cardNumberField)
+
+        cardNumberField.setCardMaskAdapter(object :CardMaskAdapter() {
+            override fun getMask(
+                cardType: CardType,
+                name: String,
+                bin: String,
+                mask: String
+            ): String {
+                return when(cardType) {
+                    CardType.AMERICAN_EXPRESS -> {
+                        if (bin.contains("371233")) {
+                            "### # ###### ### ##"
+                        } else {
+                            mask
+                        }
+                    }
+                    else -> super.getMask(cardType, name, bin, mask)
+                }
+            }
+        })
 
         cardNumberField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {

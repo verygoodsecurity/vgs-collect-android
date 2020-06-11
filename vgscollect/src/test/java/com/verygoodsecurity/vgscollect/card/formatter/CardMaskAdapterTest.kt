@@ -24,23 +24,21 @@ class CardMaskAdapterTest {
     @Test
     fun test_get_item() {
         val type = CardType.AMERICAN_EXPRESS
-        val stete = createAmexState1()
-        val mask = adapter.getItem(type, stete, type.mask)
-
+        val state = createAmexState1()
+        val mask = adapter.getItem(type, state.cardBrand?:"", state.bin?:"", type.mask)
 
         Assert.assertEquals(mask, type.mask)
-        Assert.assertEquals(type.name, stete.cardBrand)
+        Assert.assertEquals(type.name, state.cardBrand)
     }
 
     @Test
     fun test_get_item_override() {
         val type = CardType.AMERICAN_EXPRESS
-        val stete = createAmexState2()
-        val mask = adapter.getItem(type, stete, type.mask)
-
+        val state = createAmexState2()
+        val mask = adapter.getItem(type, state.cardBrand?:"", state.bin?:"", type.mask)
 
         Assert.assertEquals(mask, MASK)
-        Assert.assertEquals(type.name, stete.cardBrand)
+        Assert.assertEquals(type.name, state.cardBrand)
     }
 
     private fun createAmexState1(): FieldState.CardNumberState {
@@ -64,12 +62,13 @@ class CardMaskAdapterTest {
 
         override fun getMask(
             cardType: CardType,
-            state: FieldState.CardNumberState?,
+            name: String,
+            bin: String,
             mask: String
         ): String {
             return when(cardType) {
                 CardType.AMERICAN_EXPRESS -> {
-                    currentMask = if (state?.bin != null && state.bin!!.contains(BIN)) {
+                    currentMask = if (bin.contains(BIN)) {
                        MASK
                     } else {
                         mask
@@ -77,7 +76,7 @@ class CardMaskAdapterTest {
                     currentMask?:mask
                 }
                 else -> {
-                    currentMask = super.getMask(cardType, state, mask)
+                    currentMask = super.getMask(cardType, name, bin, mask)
                     mask
                 }
             }

@@ -139,7 +139,6 @@
                                         app:fieldName="card_data.cardNumber"
                                         style="@style/AppTheme.PaymentField"
                                         app:numberDivider="-"
-                                        app:mask="######## ## ## ####"
                                         app:fontFamily="@font/robotomono_light"
                                         android:nextFocusDown="@+id/cardHolderField"
                                         app:imeOptions="actionNext"

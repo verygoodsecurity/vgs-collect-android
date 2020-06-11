@@ -9,8 +9,7 @@ import android.text.method.DigitsKeyListener
 import android.view.Gravity
 import android.view.View
 import com.verygoodsecurity.vgscollect.R
-import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.isNumeric
@@ -207,13 +206,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
     }
 
     override fun onCardBrandPreview(card: CardBrandPreview) {
-        if(!text.isNullOrEmpty()) {
-            cardNumberMask = maskAdapter.getItem(
-                card.cardType,
-                getState(),
-                card.currentMask)
-            applyDividerOnMask()
-        }
+        updateMask(card)
 
         val r = Rect()
         getLocalVisibleRect(r)
@@ -225,6 +218,20 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
             Gravity.START -> setCompoundDrawables(cardPreview,null,null,null)
             Gravity.RIGHT -> setCompoundDrawables(null,null,cardPreview,null)
             Gravity.END -> setCompoundDrawables(null,null,cardPreview,null)
+        }
+    }
+
+    private fun updateMask(
+        card: CardBrandPreview
+    ) {
+        if(!text.isNullOrEmpty()) {
+            val bin = (inputConnection?.getOutput()?.content as FieldContent.CardNumberContent).parseCardBin()
+            cardNumberMask = maskAdapter.getItem(
+                card.cardType,
+                card.name?:"",
+                bin,
+                card.currentMask)
+            applyDividerOnMask()
         }
     }
 
@@ -247,6 +254,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         }
         if(!text.isNullOrEmpty()) {
             cardNumberFormatter?.setMask(cardNumberMask)
+            refreshInput()
         }
     }
 }

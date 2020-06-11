@@ -11,10 +11,11 @@ open class CardMaskAdapter {
     /** @suppress */
     internal fun getItem(
         cardType: CardType,
-        state: FieldState.CardNumberState?,
+        name: String,
+        bin: String,
         mask: String
     ): String {
-        return getMask(cardType, state, mask)
+        return getMask(cardType, name, bin, mask)
     }
 
     /**
@@ -22,15 +23,16 @@ open class CardMaskAdapter {
      * This method trigger when field detect new cardBrand.
      *
      * @param cardType detected card brand type
-     * @param state state of the detected card brand
      * @param name detected card brand name
+     * @param bin detected card brand bin
      * @param mask default format of the current card number
      *
      * @return String mask for the card number.
      */
     protected open fun getMask(
         cardType: CardType,
-        state: FieldState.CardNumberState?,
+        name: String,
+        bin: String,
         mask: String
     ): String {
         return mask
