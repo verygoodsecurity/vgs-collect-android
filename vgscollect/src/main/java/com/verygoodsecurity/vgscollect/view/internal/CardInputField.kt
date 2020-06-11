@@ -10,6 +10,8 @@ import android.view.Gravity
 import android.view.View
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.isNumeric
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -18,6 +20,7 @@ import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
+import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
@@ -42,6 +45,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
     private var cardNumberMask:String = DEFAULT_MASK
 
     private var iconAdapter = CardIconAdapter(context)
+    private var maskAdapter = CardMaskAdapter()
     private var cardNumberFormatter: Formatter? = null
 
     private val userFilter: MutableCardFilter by lazy {
@@ -190,13 +194,24 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         }
     }
 
-    internal fun setCardBrandAdapter(adapter: CardIconAdapter) {
-        iconAdapter = adapter
+    internal fun setCardBrandAdapter(adapter: CardIconAdapter?) {
+        iconAdapter = adapter?:CardIconAdapter(context)
+    }
+
+    internal fun setCardBrandMaskAdapter(adapter: CardMaskAdapter?) {
+        maskAdapter = adapter?:CardMaskAdapter()
+    }
+
+    internal fun getState(): FieldState.CardNumberState? {
+        return inputConnection?.getOutput()?.mapToFieldState() as FieldState.CardNumberState?
     }
 
     override fun onCardBrandPreview(card: CardBrandPreview) {
         if(!text.isNullOrEmpty()) {
-            cardNumberMask = card.currentMask
+            cardNumberMask = maskAdapter.getItem(
+                card.cardType,
+                getState(),
+                card.currentMask)
             applyDividerOnMask()
         }
 
@@ -223,13 +238,6 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
             super.setCompoundDrawables(right, top, left, bottom)
         } else {
             super.setCompoundDrawables(left, top, right, bottom)
-        }
-    }
-
-    internal fun setCardNumberMask(mask:String?) {
-        if(!mask.isNullOrEmpty()) {
-            cardNumberMask = mask
-            applyDividerOnMask()
         }
     }
 

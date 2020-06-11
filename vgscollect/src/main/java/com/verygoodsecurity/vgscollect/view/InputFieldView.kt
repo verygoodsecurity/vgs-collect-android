@@ -22,10 +22,12 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
@@ -993,7 +995,7 @@ abstract class InputFieldView @JvmOverloads constructor(
          * @return Return true if you have consumed the action, else false.
          */
         fun onEditorAction(
-            v: InputFieldView?,
+            v: View?,
             actionId: Int,
             event: KeyEvent?
         ): Boolean
@@ -1016,7 +1018,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.setAutofillHints(*autofillHints)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun setAutofillId(id: AutofillId?) {
         inputField.autofillId = id
     }
@@ -1026,15 +1028,23 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.importantForAutofill = mode
     }
 
-    protected fun applyCardNumberMask(mask:String?) {
+    protected fun setCardBrandIconAdapter(adapter: CardIconAdapter?) {
         if(fieldType == FieldType.CARD_NUMBER) {
-            (inputField as? CardInputField)?.setCardNumberMask(mask)
+            (inputField as? CardInputField)?.setCardBrandAdapter(adapter)
         }
     }
 
-    protected fun setCardBrandIconAdapter(adapter: CardIconAdapter) {
+    protected fun setCardBrandMaskAdapter(adapter: CardMaskAdapter) {
         if(fieldType == FieldType.CARD_NUMBER) {
-            (inputField as? CardInputField)?.setCardBrandAdapter(adapter)
+            (inputField as? CardInputField)?.setCardBrandMaskAdapter(adapter)
+        }
+    }
+
+    fun getCardNumberState() :  FieldState.CardNumberState? {
+        return if(fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.getState()
+        } else {
+            null
         }
     }
 }
