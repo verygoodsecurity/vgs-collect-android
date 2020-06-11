@@ -6,9 +6,11 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 
 /**
@@ -33,7 +35,6 @@ class VGSCardNumberEditText @JvmOverloads constructor(
             try {
                 val previewGravity = getInt(R.styleable.VGSCardNumberEditText_cardBrandIconGravity, 0)
                 val divider:String? = getString(R.styleable.VGSCardNumberEditText_numberDivider)?:null
-                val mask:String? = getString(R.styleable.VGSCardNumberEditText_mask)?:null
 
                 val inputType = getInt(R.styleable.VGSCardNumberEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.VGSCardNumberEditText_fieldName)
@@ -76,7 +77,6 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
                 setNumberDivider(divider)
                 applyCardIconGravity(previewGravity)
-                applyCardNumberMask(mask)
             } finally {
                 recycle()
             }
@@ -130,11 +130,31 @@ class VGSCardNumberEditText @JvmOverloads constructor(
         return getNumberDivider()
     }
 
-    fun setCardIconAdapter(adapter: CardIconAdapter) {
+    /**
+     * Sets the custom icons for Brand.
+     *
+     * @param adapter The adapter is responsible for maintaining the icons backing this view and
+     * for producing a drawable for preview.
+     */
+    fun setCardIconAdapter(adapter: CardIconAdapter?) {
         setCardBrandIconAdapter(adapter)
     }
 
-    fun setCardNumberMask(mask:String?) {
-        applyCardNumberMask(mask)
+    /**
+     * Sets the custom mask for formatting card number.
+     *
+     * @param adapter The adapter is responsible for maintaining the format of the card number.
+     */
+    fun setCardMaskAdapter(adapter: CardMaskAdapter) {
+        setCardBrandMaskAdapter(adapter)
+    }
+
+    /**
+     * It return current state of the field.
+     *
+     * @return current state.
+     */
+    fun getState(): FieldState.CardNumberState? {
+        return getCardNumberState()
     }
 }
