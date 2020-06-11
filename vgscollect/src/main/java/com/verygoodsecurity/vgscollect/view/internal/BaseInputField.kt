@@ -85,7 +85,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         isListeningPermitted = false
 
         setupViewAttributes()
+        setupAutofill()
     }
+
+    internal open fun setupAutofill() {}
 
     private fun setupEditorActionListener() {
         setOnEditorActionListener { _, actionId, event ->
