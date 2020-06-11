@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
+import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
 import android.view.Gravity
@@ -89,6 +90,12 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
             layoutDirection = View.LAYOUT_DIRECTION_LTR
             textDirection = View.TEXT_DIRECTION_LTR
             gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
+        }
+    }
+
+    override fun setupAutofill() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setAutofillHints(View.AUTOFILL_HINT_CREDIT_CARD_SECURITY_CODE )
         }
     }
 
