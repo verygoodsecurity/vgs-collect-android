@@ -189,13 +189,6 @@ class DefaultCardBrandFilterTest {
     }
 
     @Test
-    fun test_mastercard_divider_false() {
-        (filter as DefaultCardBrandFilter).setDivider("-")
-        val brand = filter.detect("5555 5555 5555 5555")
-        assertNotEquals(brand?.name, CardType.MASTERCARD.name)
-    }
-
-    @Test
     fun test_american_express() {
         val brand = filter.detect("3782 822463 10005")
         assertEquals(brand?.name, CardType.AMERICAN_EXPRESS.name)
@@ -468,57 +461,5 @@ class DefaultCardBrandFilterTest {
         (filter as DefaultCardBrandFilter).setDivider("-")
         val brand = filter.detect("6212-3456-7890-1232-123")
         assertEquals(brand?.name, CardType.UNIONPAY.name)
-    }
-
-    @Test
-    fun test_laser_16() {
-        val brand = filter.detect("6706 7603 8979 1268")
-        assertEquals(brand?.name, CardType.LASER.name)
-    }
-
-    @Test
-    fun test_laser_16_divider() {
-        (filter as DefaultCardBrandFilter).setDivider("-")
-        val brand = filter.detect("6706-7603-8979-1268")
-        assertEquals(brand?.name, CardType.LASER.name)
-    }
-
-    @Test
-    fun test_laser_17() {
-        val brand = filter.detect("6706 7603 8979 1268 2")
-        assertEquals(brand?.name, CardType.LASER.name)
-    }
-
-    @Test
-    fun test_laser_17_divider() {
-        (filter as DefaultCardBrandFilter).setDivider("-")
-        val brand = filter.detect("6706-7603-8979-1268-2")
-        assertEquals(brand?.name, CardType.LASER.name)
-    }
-
-    @Test
-    fun test_laser_18() {
-        val brand = filter.detect("6706 7603 8979 1268 21")
-        assertEquals(brand?.name, CardType.LASER.name)
-    }
-
-    @Test
-    fun test_laser_18_divider() {
-        (filter as DefaultCardBrandFilter).setDivider("-")
-        val brand = filter.detect("6706-7603-8979-1268-21")
-        assertEquals(brand?.name, CardType.LASER.name)
-    }
-
-    @Test
-    fun test_laser_19() {
-        val brand = filter.detect("6706 7603 8979 1268 211")
-        assertEquals(brand?.name, CardType.LASER.name)
-    }
-
-    @Test
-    fun test_laser_19_divider() {
-        (filter as DefaultCardBrandFilter).setDivider("-")
-        val brand = filter.detect("6706-7603-8979-1268-211")
-        assertEquals(brand?.name, CardType.LASER.name)
     }
 }
