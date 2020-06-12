@@ -9,30 +9,46 @@ import android.text.method.DigitsKeyListener
 import android.view.Gravity
 import android.view.View
 import com.verygoodsecurity.vgscollect.R
-import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscollect.core.model.state.*
+import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.util.isNumeric
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
+import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
+import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
+import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
-import com.verygoodsecurity.vgscollect.view.card.text.CardNumberTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
 
 /** @suppress */
 internal class CardInputField(context: Context): BaseInputField(context), InputCardNumberConnection.IDrawCardBrand {
 
+    companion object {
+        private const val MASK_REGEX = "[^#]"
+        private const val DEFAULT_MASK = "#### #### #### #### ###"
+        private const val EMPTY_CHAR = ""
+        private const val SPACE = " "
+    }
+
     override var fieldType: FieldType = FieldType.CARD_NUMBER
 
-    private var divider:String? = " "
+    private var divider:String = SPACE
     private var iconGravity:Int = Gravity.NO_GRAVITY
     private var cardtype: CardType = CardType.NONE
 
+    private var cardNumberMask:String = DEFAULT_MASK
+
     private var iconAdapter = CardIconAdapter(context)
+    private var maskAdapter = CardMaskAdapter()
+    private var cardNumberFormatter: Formatter? = null
 
     private val userFilter: MutableCardFilter by lazy {
-        CardBrandFilter( this, divider)
+        CardBrandFilter(divider)
     }
 
     override fun applyFieldType() {
@@ -40,13 +56,13 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
         inputConnection = InputCardNumberConnection(id, validator, this, divider)
 
-        val defFilter = DefaultCardBrandFilter(CardType.values(), this, divider)
+        val defFilter = DefaultCardBrandFilter(CardType.values(), divider)
         inputConnection!!.addFilter(defFilter)
         inputConnection!!.addFilter(userFilter)
 
         val str = text.toString()
         val stateContent = FieldContent.CardNumberContent().apply {
-            rawData = str.replace(divider?:" ", "")
+            rawData = str.replace(divider, EMPTY_CHAR)
             cardtype = this@CardInputField.cardtype
             this.data = str
         }
@@ -54,9 +70,17 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
-        applyNewTextWatcher(CardNumberTextWatcher(divider))
 
+        applyFormatter()
         applyInputType()
+    }
+
+    private fun applyFormatter() {
+        cardNumberFormatter = with(CardNumberFormatter()) {
+            setMask(cardNumberMask)
+            applyNewTextWatcher(this)
+            this
+        }
     }
 
     private fun applyInputType() {
@@ -79,14 +103,14 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
             content = createCardNumberContent(str)
 
             handlerLooper.removeCallbacks(inputConnection)
-            handlerLooper.postDelayed(inputConnection, 200)
+            handlerLooper.postDelayed(inputConnection, REFRESH_DELAY)
         }
     }
 
     private fun createCardNumberContent(str: String): FieldContent.CardNumberContent {
         val c = FieldContent.CardNumberContent()
         c.cardtype = this@CardInputField.cardtype
-        c.rawData = str.replace(divider?:" ", "")
+        c.rawData = str.replace(divider, EMPTY_CHAR)
         c.data = str
         return c
     }
@@ -123,20 +147,25 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
     internal fun setNumberDivider(divider: String?) {
         when {
-            divider.isNullOrEmpty() -> this@CardInputField.divider = ""
-            divider.length == 1 -> this@CardInputField.divider = divider
-            else -> {
-                val message = String.format(
-                    context.getString(R.string.error_divider_card_number_field),
-                    divider
-                )
-                Logger.e(InputFieldView::class.java, message)
-            }
+            divider.isNullOrEmpty() -> this@CardInputField.divider = EMPTY_CHAR
+            divider.isNumeric() -> printErrorInLog(R.string.error_divider_card_number_field)
+            divider.length > 1 -> printErrorInLog(R.string.error_divider_count_card_number_field)
+            else -> this@CardInputField.divider = divider
         }
 
+        applyDividerOnMask()
+        setupKeyListener()
+        refreshInputConnection()
+    }
+
+    private fun printErrorInLog(resId: Int) {
+        val message = String.format(context.getString(resId), divider)
+        Logger.e(InputFieldView::class.java, message)
+    }
+
+    private fun setupKeyListener() {
         val digits = resources.getString(R.string.card_number_digits) + this@CardInputField.divider
         keyListener = DigitsKeyListener.getInstance(digits)
-        refreshInputConnection()
     }
 
     internal fun getNumberDivider() = divider
@@ -158,15 +187,25 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         }
     }
 
-    internal fun setCardBrandAdapter(adapter: CardIconAdapter) {
-        iconAdapter = adapter
+    internal fun setCardBrandAdapter(adapter: CardIconAdapter?) {
+        iconAdapter = adapter?:CardIconAdapter(context)
     }
 
-    override fun drawCardBrandPreview(cardType: CardType, name: String?, resId: Int) {
+    internal fun setCardBrandMaskAdapter(adapter: CardMaskAdapter?) {
+        maskAdapter = adapter?: CardMaskAdapter()
+    }
+
+    internal fun getState(): FieldState.CardNumberState? {
+        return inputConnection?.getOutput()?.mapToFieldState() as FieldState.CardNumberState?
+    }
+
+    override fun onCardBrandPreview(card: CardBrandPreview) {
+        updateMask(card)
+
         val r = Rect()
         getLocalVisibleRect(r)
 
-        val cardPreview = iconAdapter.getItem(cardType, name, resId, r)
+        val cardPreview = iconAdapter.getItem(card.cardType, card.name, card.resId, r)
 
         when (iconGravity) {
             Gravity.LEFT -> setCompoundDrawables(cardPreview,null,null,null)
@@ -176,16 +215,40 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         }
     }
 
+    private fun updateMask(
+        card: CardBrandPreview
+    ) {
+        if(!text.isNullOrEmpty()) {
+            val bin = (inputConnection?.getOutput()?.content as FieldContent.CardNumberContent).parseCardBin()
+            cardNumberMask = maskAdapter.getItem(
+                card.cardType,
+                card.name?:"",
+                bin,
+                card.currentMask)
+            applyDividerOnMask()
+        }
+    }
+
     override fun setCompoundDrawables(
         left: Drawable?,
         top: Drawable?,
         right: Drawable?,
         bottom: Drawable?
     ) {
-        if(hasRTL) {
+        if (hasRTL) {
             super.setCompoundDrawables(right, top, left, bottom)
         } else {
             super.setCompoundDrawables(left, top, right, bottom)
+        }
+    }
+
+    private fun applyDividerOnMask() {
+        cardNumberMask = with(cardNumberMask) {
+            this.replace(kotlin.text.Regex(MASK_REGEX), divider)
+        }
+        if(!text.isNullOrEmpty()) {
+            cardNumberFormatter?.setMask(cardNumberMask)
+            refreshInput()
         }
     }
 

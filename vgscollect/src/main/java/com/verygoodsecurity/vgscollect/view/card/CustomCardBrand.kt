@@ -15,5 +15,7 @@ data class CustomCardBrand(
     val cardBrandName:String,
 
     /** The drawable resource represents credit card logo. */
-    val drawableResId:Int = 0
+    val drawableResId:Int = 0,
+
+    val mask:String = "#### #### #### #### ###"
 )
