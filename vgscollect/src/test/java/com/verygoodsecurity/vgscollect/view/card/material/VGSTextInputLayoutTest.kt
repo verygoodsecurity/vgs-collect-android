@@ -15,6 +15,7 @@ import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
@@ -23,8 +24,9 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
 
+@Ignore
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [Build.VERSION_CODES.O_MR1], application = TestApplication::class)
+@Config(application = TestApplication::class)
 class VGSTextInputLayoutTest {
     private lateinit var activityController: ActivityController<Activity>
     private lateinit var activity: Activity

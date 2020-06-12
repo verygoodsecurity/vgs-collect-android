@@ -6,9 +6,12 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
+import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 
 /**
  * A user interface element that displays text to the user in card number format.
@@ -125,5 +128,33 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      */
     fun getDivider() : Char? {
         return getNumberDivider()
+    }
+
+    /**
+     * Sets the custom icons for Brand.
+     *
+     * @param adapter The adapter is responsible for maintaining the icons backing this view and
+     * for producing a drawable for preview.
+     */
+    fun setCardIconAdapter(adapter: CardIconAdapter?) {
+        setCardBrandIconAdapter(adapter)
+    }
+
+    /**
+     * Sets the custom mask for formatting card number.
+     *
+     * @param adapter The adapter is responsible for maintaining the format of the card number.
+     */
+    fun setCardMaskAdapter(adapter: CardMaskAdapter) {
+        setCardBrandMaskAdapter(adapter)
+    }
+
+    /**
+     * It return current state of the field.
+     *
+     * @return current state.
+     */
+    fun getState(): FieldState.CardNumberState? {
+        return getCardNumberState()
     }
 }

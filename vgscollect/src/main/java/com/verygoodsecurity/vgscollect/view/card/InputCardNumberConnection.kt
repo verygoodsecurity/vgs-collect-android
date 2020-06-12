@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandWrapper
+import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
@@ -13,12 +13,17 @@ import com.verygoodsecurity.vgscollect.view.card.validation.card.brand.*
 internal class InputCardNumberConnection(
     private val id:Int,
     private val validator: VGSValidator?,
-    private val IcardBrand: IdrawCardBrand? = null,
+    private val IcardBrand: IDrawCardBrand? = null,
     private val divider:String? = null
 ): BaseInputConnection() {
     private val cardFilters = mutableListOf<VGSCardFilter>()
     private val brandLuhnValidations by lazy {
         val set = HashMap<CardType, VGSValidator>()
+        set[CardType.ELO] = EloDelegate()
+        set[CardType.DANKORT] = DankortDelegate()
+        set[CardType.FORBRUGSFORENINGEN] = ForbrugsforeningenDelegate()
+        set[CardType.HIPERCARD] = HipercardDelegate()
+        set[CardType.MAESTRO] = MaestroDelegate()
         set[CardType.VISA] = VisaDelegate()
         set[CardType.VISA_ELECTRON] = VisaElectronDelegate()
         set[CardType.MASTERCARD] = MastercardDelegate()
@@ -59,7 +64,7 @@ internal class InputCardNumberConnection(
         val card = runFilters()
         mapValue(card)
 
-        IcardBrand?.drawCardBrandPreview()
+        IcardBrand?.onCardBrandPreview(card)
 
         applyNewRule(card.regex)
 
@@ -72,7 +77,7 @@ internal class InputCardNumberConnection(
         return output.isRequired && !output.content?.data.isNullOrEmpty() || !output.isRequired
     }
 
-    private fun isContentValid(card: CardBrandWrapper):Boolean {
+    private fun isContentValid(card: CardBrandPreview):Boolean {
         val content = output.content?.data
         return when {
             !output.isRequired && content.isNullOrEmpty() -> true
@@ -82,7 +87,7 @@ internal class InputCardNumberConnection(
     }
 
     private fun checkIsContentValid(
-        card: CardBrandWrapper
+        card: CardBrandPreview
     ): Boolean {
         val rawStr = output.content?.data?.replace(divider ?: " ", "") ?: ""
         val isStrValid = validator?.isValid(rawStr) ?: false
@@ -92,7 +97,7 @@ internal class InputCardNumberConnection(
         return isLuhnValid && isStrValid && isLengthAppropriate
     }
 
-    private fun mapValue(item: CardBrandWrapper) {
+    private fun mapValue(item: CardBrandPreview) {
         val card = (output.content as? FieldContent.CardNumberContent)
         card?.cardtype = item.cardType
         card?.cardBrandName = item.name
@@ -102,12 +107,12 @@ internal class InputCardNumberConnection(
     private fun applyNewRule(regex: String?) {
         if(validator is MuttableValidator &&
             !regex.isNullOrEmpty()) {
-                validator.clearRules()
-                validator.addRule(regex)
+            validator.clearRules()
+            validator.addRule(regex)
         }
     }
 
-    private fun runFilters(): CardBrandWrapper {
+    private fun runFilters(): CardBrandPreview {
         for(i in cardFilters.indices) {
             val filter = cardFilters[i]
             val brand = filter.detect(output.content?.data)
@@ -115,7 +120,7 @@ internal class InputCardNumberConnection(
                 return brand
             }
         }
-        return CardBrandWrapper()
+        return CardBrandPreview()
     }
 
     private fun checkLength(
@@ -125,7 +130,9 @@ internal class InputCardNumberConnection(
         return cardtype.rangeNumber.contains(length)
     }
 
-    interface IdrawCardBrand {
-        fun drawCardBrandPreview()
+    internal interface IDrawCardBrand {
+        fun onCardBrandPreview(
+            card: CardBrandPreview
+        )
     }
 }

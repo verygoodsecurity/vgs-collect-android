@@ -9,7 +9,8 @@
     <string name="error_file_size_validation">File %1$s is over 20Mb.</string>
     <string name="error_file_not_fount">File not found</string>
     <string name="error_file_not_support">File is not supported by SDK</string>
-    <string name="error_divider_card_number_field">Divider for number can\'t be greater than 1 symbol. (%1$s)</string>
+    <string name="error_divider_count_card_number_field">Divider for card number can\'t be greater than 1 symbol. (%1$s)</string>
+    <string name="error_divider_card_number_field">Divider for card number can\'t a digit. (%1$s)</string>
 
     <string name="card_number_digits">0123456789</string>
 </resources>

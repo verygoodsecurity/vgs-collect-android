@@ -1,11 +1,14 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
+import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
 import android.view.Gravity
 import android.view.View
+import android.view.autofill.AutofillValue
 import android.widget.DatePicker
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
@@ -24,7 +27,14 @@ import java.util.*
 /** @suppress */
 internal class DateInputField(context: Context): BaseInputField(context), View.OnClickListener {
 
-    private var datePattern:String = "MM/yyyy"
+    companion object {
+        private const val MM_YYYY = "MM/yyyy"
+        private const val MM_YY = "MM/yy"
+        private const val DD = "dd"
+        private const val SDF = "MM/dd/yyyy"
+    }
+
+    private var datePattern:String = MM_YYYY
     private var outputPattern:String = datePattern
 
     private var charLimit = datePattern.length
@@ -34,7 +44,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     private val selectedDate = Calendar.getInstance()
 
-    private val dateLimitationFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+    private val dateLimitationFormat = SimpleDateFormat(SDF, Locale.getDefault())
     private var fieldDateFormat:SimpleDateFormat? = null
     private var fieldDateOutPutFormat:SimpleDateFormat? = null
 
@@ -98,7 +108,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
 
         handlerLooper.removeCallbacks(inputConnection)
-        handlerLooper.postDelayed(inputConnection, 200)
+        handlerLooper.postDelayed(inputConnection, REFRESH_DELAY)
     }
 
     private fun createCreditCardExpDateContent(str: String): FieldContent? {
@@ -208,12 +218,12 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     internal fun setDatePattern(pattern:String?) {
         datePattern = when {
-            pattern.isNullOrEmpty() -> "MM/yyyy"
-            datePickerMode == DatePickerMode.INPUT && pattern.isInputDatePatternValid().not() -> "MM/yyyy"
+            pattern.isNullOrEmpty() -> MM_YYYY
+            datePickerMode == DatePickerMode.INPUT && pattern.isInputDatePatternValid().not() -> MM_YYYY
             else -> pattern
         }
 
-        isDaysVisible = datePattern.contains("dd")
+        isDaysVisible = datePattern.contains(DD)
         fieldDateFormat = SimpleDateFormat(datePattern, Locale.getDefault())
     }
 
@@ -300,4 +310,61 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         datePickerVisibilityChangeListener = listener
     }
 
+    override fun setupAutofill() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setAutofillHints(View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DATE,
+                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_MONTH,
+                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DAY,
+                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_YEAR)
+        }
+    }
+
+    override fun autofill(value: AutofillValue?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            when {
+                value == null -> {}
+                value.isDate -> selectedDate.time = Date(value.dateValue)
+                value.isText -> {
+                    val newValue = parseTextDate(value)
+                    super.autofill(newValue)
+                }
+                else -> {
+                    super.autofill(value)
+                }
+             }
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private fun parseTextDate(value: AutofillValue):AutofillValue {
+        val str = value.textValue.toString()
+        return if(str.length == datePattern.length) {
+            value
+        } else {
+            val newDateStr = value.textValue.toString().handleDate(MM_YY, datePattern)
+            if(newDateStr.isNullOrEmpty()) {
+                value
+            } else {
+                AutofillValue.forText(newDateStr)
+            }
+        }
+    }
+
+    private fun String.handleDate(incomePattern: String, outcomePattern: String):String? {
+        return try {
+            val income = SimpleDateFormat(incomePattern, Locale.getDefault())
+            val currentDate = income.parse(this)
+            val selectedDate = Calendar.getInstance()
+            selectedDate.time = currentDate
+            selectedDate.set(Calendar.DAY_OF_MONTH, selectedDate.getActualMaximum(Calendar.DATE))
+            selectedDate.set(Calendar.HOUR, 23)
+            selectedDate.set(Calendar.MINUTE, 59)
+            selectedDate.set(Calendar.SECOND, 59)
+            selectedDate.set(Calendar.MILLISECOND, 999)
+            val outcome = SimpleDateFormat(outcomePattern, Locale.getDefault())
+            outcome.format(selectedDate.time)
+        } catch (e: ParseException) {
+            null
+        }
+    }
 }
