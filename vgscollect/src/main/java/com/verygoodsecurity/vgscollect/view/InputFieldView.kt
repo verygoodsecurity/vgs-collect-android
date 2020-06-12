@@ -26,6 +26,7 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CardInputField
@@ -1014,6 +1015,12 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.setEditorActionListener(l)
     }
 
+    protected fun setCardBrandIconAdapter(adapter: CardIconAdapter) {
+        if(fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.setCardBrandAdapter(adapter)
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun setAutofillHints(vararg autofillHints: String?) {
         inputField.setAutofillHints(*autofillHints)
@@ -1028,5 +1035,4 @@ abstract class InputFieldView @JvmOverloads constructor(
     override fun setImportantForAutofill(mode: Int) {
         inputField.importantForAutofill = mode
     }
-
 }

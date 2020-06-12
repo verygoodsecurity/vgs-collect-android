@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.card.brand.*
 internal class InputCardNumberConnection(
     private val id:Int,
     private val validator: VGSValidator?,
-    private val IcardBrand: IdrawCardBrand? = null,
+    private val IcardBrand: IDrawCardBrand? = null,
     private val divider:String? = null
 ): BaseInputConnection() {
     private val cardFilters = mutableListOf<VGSCardFilter>()
@@ -59,7 +59,7 @@ internal class InputCardNumberConnection(
         val card = runFilters()
         mapValue(card)
 
-        IcardBrand?.drawCardBrandPreview()
+        IcardBrand?.drawCardBrandPreview(card.cardType, card.name, card.resId)
 
         applyNewRule(card.regex)
 
@@ -89,8 +89,8 @@ internal class InputCardNumberConnection(
     private fun applyNewRule(regex: String?) {
         if(validator is MuttableValidator &&
             !regex.isNullOrEmpty()) {
-                validator.clearRules()
-                validator.addRule(regex)
+            validator.clearRules()
+            validator.addRule(regex)
         }
     }
 
@@ -112,7 +112,11 @@ internal class InputCardNumberConnection(
         return cardtype.rangeNumber.contains(length)
     }
 
-    interface IdrawCardBrand {
-        fun drawCardBrandPreview()
+    internal interface IDrawCardBrand {
+        fun drawCardBrandPreview(
+            cardType: CardType,
+            name: String?,
+            resId: Int
+        )
     }
 }
