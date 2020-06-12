@@ -138,7 +138,7 @@
                                         android:layout_height="match_parent"
                                         app:fieldName="card_data.cardNumber"
                                         style="@style/AppTheme.PaymentField"
-                                        app:numberDivider=" "
+                                        app:numberDivider="-"
                                         app:enableValidation="false"
                                         app:isRequired="false"
                                         app:fontFamily="@font/robotomono_light"
@@ -170,8 +170,6 @@
                                         style="@style/AppTheme.PaymentField"
                                         android:nextFocusDown="@+id/cardExpDateField"
                                         app:imeOptions="actionNext"
-                                        app:enableValidation="false"
-                                        app:isRequired="false"
                                         app:fontFamily="@font/robotomono_light"
                                         app:fieldName="card_data.personal_data.cardHolder"
                                         app:text="John Galt"/>
@@ -226,8 +224,6 @@
                                         app:fieldName="card_data.cardCvc"
                                         app:fontFamily="@font/robotomono_light"
                                         app:imeOptions="actionDone"
-                                        app:enableValidation="false"
-                                        app:isRequired="false"
                                         app:text="123"/>
                                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
                             </LinearLayout>

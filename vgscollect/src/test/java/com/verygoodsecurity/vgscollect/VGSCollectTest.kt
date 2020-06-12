@@ -21,10 +21,10 @@ import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.widget.*
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
-import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
@@ -32,8 +32,9 @@ import org.robolectric.Shadows
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
 
+@Ignore
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [Build.VERSION_CODES.P], application = TestApplication::class)
+@Config(application = TestApplication::class)
 class VGSCollectTest {
     private lateinit var activityController: ActivityController<Activity>
     private lateinit var activity: Activity
@@ -269,21 +270,21 @@ class VGSCollectTest {
     }
 
     private fun applyResponseListener(): VgsCollectResponseListener {
-        val listener = mock(VgsCollectResponseListener::class.java)
+        val listener = Mockito.mock(VgsCollectResponseListener::class.java)
         collect.addOnResponseListeners(listener)
 
         return listener
     }
 
     private fun applyStateChangeListener(): OnFieldStateChangeListener {
-        val listener = mock(OnFieldStateChangeListener::class.java)
+        val listener = Mockito.mock(OnFieldStateChangeListener::class.java)
         collect.addOnFieldStateChangeListener(listener)
 
         return listener
     }
 
     private fun applyApiClient(): ApiClient {
-        val client = mock(ApiClient::class.java)
+        val client = Mockito.mock(ApiClient::class.java)
         Mockito.doReturn(VgsApiTemporaryStorageImpl())
             .`when`(client).getTemporaryStorage()
 

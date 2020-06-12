@@ -1,13 +1,12 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
-import android.graphics.drawable.Drawable
+import android.graphics.Rect
 import android.text.InputType
 import android.text.InputFilter
 import android.text.method.DigitsKeyListener
 import android.view.Gravity
 import android.view.View
-import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.*
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
@@ -15,10 +14,12 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
+import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
+import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
+import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
-import com.verygoodsecurity.vgscollect.view.card.text.CardNumberTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
@@ -26,7 +27,8 @@ import com.verygoodsecurity.vgscollect.view.card.validation.CardExpDateValidator
 
 /** @suppress */
 @Deprecated("This class is deprecated from 1.0.5")
-internal class InputField(context: Context): BaseInputField(context) {
+internal class InputField(context: Context): BaseInputField(context),
+    InputCardNumberConnection.IDrawCardBrand {
 
     companion object {
         fun getInputField(context: Context, parent: InputFieldView):BaseInputField {
@@ -36,11 +38,12 @@ internal class InputField(context: Context): BaseInputField(context) {
         }
     }
 
-
     private var cardtype: CardType = CardType.NONE
 
+    private var iconAdapter = CardIconAdapter(context)
+
     private val userFilter: MutableCardFilter by lazy {
-        CardBrandFilter( this, divider)
+        CardBrandFilter(divider)
     }
 
     override var fieldType: FieldType = FieldType.INFO
@@ -180,17 +183,9 @@ internal class InputField(context: Context): BaseInputField(context) {
 
         validator = CardNumberValidator(divider)
 
-        inputConnection = InputCardNumberConnection(id,
-                validator,
-                object :
-                    InputCardNumberConnection.IdrawCardBrand {
-                    override fun drawCardBrandPreview() {
-                        this@InputField.drawCardBrandPreview()
-                    }
-                },
-                divider)
+        inputConnection = InputCardNumberConnection(id, validator, this, divider)
 
-        val defFilter = DefaultCardBrandFilter(CardType.values(), this, divider)
+        val defFilter = DefaultCardBrandFilter(CardType.values(), divider)
         inputConnection!!.addFilter(defFilter)
         inputConnection!!.addFilter(userFilter)
 
@@ -203,49 +198,8 @@ internal class InputField(context: Context): BaseInputField(context) {
 
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
-        applyNewTextWatcher(CardNumberTextWatcher(divider))    //fixme needTo apply TextWatcher
+        applyNewTextWatcher(CardNumberFormatter())
         applyNumberInputType()
-    }
-
-    private fun drawCardBrandPreview() {
-        val state = inputConnection?.getOutput()
-
-        var l: Drawable? = null
-        var r: Drawable? = null
-
-        val privaryRes = (state?.content as? FieldContent.CardNumberContent)?.iconResId
-
-        when (iconGravity) {
-            Gravity.LEFT -> l = getDrawable(privaryRes)
-            Gravity.START -> l = getDrawable(privaryRes)
-            Gravity.RIGHT -> r = getDrawable(privaryRes)
-            Gravity.END -> r = getDrawable(privaryRes)
-        }
-
-        setCompoundDrawables(l,null,r,null)
-    }
-
-    private fun getDrawable(primaryRes:Int?): Drawable? {
-        return primaryRes?.run {
-            val cIconSizeW = resources.getDimension(R.dimen.c_icon_size_w).toInt()
-            val cIconSizeH = resources.getDimension(R.dimen.c_icon_size_h).toInt()
-            val drawable = ContextCompat.getDrawable(context, primaryRes)
-            drawable?.setBounds(0, 0, cIconSizeW, cIconSizeH)
-            return drawable
-        }
-    }
-
-    override fun setCompoundDrawables(
-        left: Drawable?,
-        top: Drawable?,
-        right: Drawable?,
-        bottom: Drawable?
-    ) {
-        if(hasRTL) {
-            super.setCompoundDrawables(right, top, left, bottom)
-        } else {
-            super.setCompoundDrawables(left, top, right, bottom)
-        }
     }
 
     override fun setTag(tag: Any?) {
@@ -356,6 +310,20 @@ internal class InputField(context: Context): BaseInputField(context) {
             InputType.TYPE_NUMBER_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
             InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> type
             else -> InputType.TYPE_CLASS_TEXT
+        }
+    }
+
+    override fun onCardBrandPreview(card: CardBrandPreview) {
+        val r = Rect()
+        getLocalVisibleRect(r)
+
+        val cardPreview = iconAdapter.getItem(card.cardType, card.name, card.resId, r)
+
+        when (iconGravity) {
+            Gravity.LEFT -> setCompoundDrawables(cardPreview,null,null,null)
+            Gravity.START -> setCompoundDrawables(cardPreview,null,null,null)
+            Gravity.RIGHT -> setCompoundDrawables(null,null,cardPreview,null)
+            Gravity.END -> setCompoundDrawables(null,null,cardPreview,null)
         }
     }
 }

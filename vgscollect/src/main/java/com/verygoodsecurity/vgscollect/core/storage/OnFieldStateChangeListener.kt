@@ -13,7 +13,7 @@ interface OnFieldStateChangeListener {
     /**
      * Called when new changes is detected
      *
-     * @param state current state of @VGSEditText
+     * @param state current state of input field
      */
     fun onStateChange(state:FieldState)
 }
