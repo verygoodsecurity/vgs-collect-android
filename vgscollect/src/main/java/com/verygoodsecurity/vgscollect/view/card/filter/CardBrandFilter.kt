@@ -1,23 +1,16 @@
 package com.verygoodsecurity.vgscollect.view.card.filter
 
-import android.text.InputFilter
-import android.widget.TextView
-import com.verygoodsecurity.vgscollect.R
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import java.util.regex.Pattern
 
 /** @suppress */
 class CardBrandFilter(
-    private val inputField: TextView? = null,
-    private val divider:String? = ""
+    private var divider:String? = ""
 ) : MutableCardFilter {
 
     private val userCustomCardBrands = mutableListOf<CustomCardBrand>()
 
-    companion object {
-        private const val MAX_LENGTH = 19
-        private const val MASK_COUNT = 3
-    }
 
     override fun add(item: CustomCardBrand?) {
         item?.let {
@@ -25,9 +18,9 @@ class CardBrandFilter(
         }
     }
 
-    override fun detect(str: String?): CardBrandWrapper? {
+    override fun detect(str: String?): CardBrandPreview? {
         if(str.isNullOrEmpty()) {
-            return CardBrandWrapper()
+            return CardBrandPreview()
         }
         val preparedStr = str.replace(divider?:" ", "")
 
@@ -35,12 +28,18 @@ class CardBrandFilter(
             val value = userCustomCardBrands[i]
             val m = Pattern.compile(value.regex).matcher(preparedStr)
             while (m.find()) {
-                inputField?.filters = arrayOf(InputFilter.LengthFilter(MAX_LENGTH + MASK_COUNT))
-                return CardBrandWrapper(regex = value.regex, name = value.cardBrandName, resId = value.drawableResId)
+                return CardBrandPreview(regex = value.regex,
+                    name = value.cardBrandName,
+                    resId = value.drawableResId,
+                    currentMask = value.mask)
             }
         }
 
-        inputField?.filters = arrayOf(InputFilter.LengthFilter(MAX_LENGTH + MASK_COUNT))
         return null
+    }
+
+    @VisibleForTesting
+    fun setDivider(divider:String) {
+        this.divider = divider
     }
 }

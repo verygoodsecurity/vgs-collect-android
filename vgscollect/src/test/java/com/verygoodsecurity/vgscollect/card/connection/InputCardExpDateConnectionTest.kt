@@ -1,51 +1,52 @@
-package com.verygoodsecurity.vgscollect.card
+package com.verygoodsecurity.vgscollect.card.connection
 
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.InputCardCVCConnection
+import com.verygoodsecurity.vgscollect.view.card.InputCardExpDateConnection
 import com.verygoodsecurity.vgscollect.view.card.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
+import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mockito
-import org.mockito.Mockito.*
 
-class InputCardCVCConnectionTest {
+class InputCardExpDateConnectionTest {
     val connection: InputRunnable by lazy {
-        val client = mock(VGSValidator::class.java)
-        doReturn(true).`when`(client).isValid(anyString())
-        InputCardCVCConnection(0, client)
+        val client = Mockito.mock(VGSValidator::class.java)
+        Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
+        InputCardExpDateConnection(0, client)
     }
 
     @Test
     fun setChangeListener() {
-        val listener = mock(OnVgsViewStateChangeListener::class.java)
+        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
-        verify(listener, times(1)).emit(anyInt(), any())
+        Mockito.verify(listener).emit(anyInt(), any())
     }
 
     @Test
     fun emitItem() {
-        val listener = mock(OnVgsViewStateChangeListener::class.java)
+        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
-        verify(listener, times(1)).emit(anyInt(), any())
+        Mockito.verify(listener).emit(anyInt(), any())
     }
 
     @Test
     fun setOutput() {
-        val listener = mock(OnVgsViewStateChangeListener::class.java)
+        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
         val textItem = VGSFieldState(fieldName = "fieldName")
         connection.setOutput(textItem)
 
         connection.run()
-        verify(listener).emit(0, VGSFieldState(fieldName = "fieldName"))
+        Mockito.verify(listener).emit(0, VGSFieldState(fieldName = "fieldName"))
     }
 
     @Test
     fun emitEmptyNotRequired() {
-        val listener = mock(OnVgsViewStateChangeListener::class.java)
+        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
         val content = FieldContent.InfoContent()
@@ -57,12 +58,14 @@ class InputCardCVCConnectionTest {
         connection.setOutput(textItem)
 
         connection.run()
-        verify(listener).emit(0, textItem)
+
+        assertTrue(connection.getOutput().isValid)
+        Mockito.verify(listener).emit(0, textItem)
     }
 
     @Test
     fun emitNotRequired() {
-        val listener = mock(OnVgsViewStateChangeListener::class.java)
+        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
         val content = FieldContent.InfoContent()
@@ -74,7 +77,9 @@ class InputCardCVCConnectionTest {
         connection.setOutput(textItem)
 
         connection.run()
-        verify(listener).emit(0, textItem)
+
+        assertTrue(connection.getOutput().isValid)
+        Mockito.verify(listener).emit(0, textItem)
     }
 
     private fun <T> any(): T = Mockito.any<T>()
