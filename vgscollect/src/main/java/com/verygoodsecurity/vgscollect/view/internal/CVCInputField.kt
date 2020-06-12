@@ -20,7 +20,7 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
     override var fieldType: FieldType = FieldType.CVC
 
     override fun applyFieldType() {
-        val validator = CardCVCCodeValidator()
+        val validator = CardCVCCodeValidator(minCodeLimit)
         inputConnection = InputCardCVCConnection(id, validator)
 
         val str = text.toString()
@@ -68,14 +68,20 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
     }
 
     private var maxCodeLimit:Int = 4
+    private var minCodeLimit:Int = 3
     override fun dispatchDependencySetting(dependency: Dependency) {
         if(dependency.dependencyType == DependencyType.LENGTH) {
-            if(maxCodeLimit != dependency.value as Int) {
-                maxCodeLimit = dependency.value
-                val filterLength = InputFilter.LengthFilter(dependency.value)
+            val range = dependency.value as Pair<Int, Int>
+
+            if(maxCodeLimit != range.second || minCodeLimit != range.first) {
+                minCodeLimit = range.first
+                maxCodeLimit = range.second
+                val filterLength = InputFilter.LengthFilter(maxCodeLimit)
                 filters = arrayOf(CVCValidateFilter(), filterLength)
+
                 (inputConnection as? InputCardCVCConnection)?.runtimeValidator =
-                    CardCVCCodeValidator(dependency.value)
+                    CardCVCCodeValidator(minCodeLimit)
+
                 text = text
             }
         } else {
