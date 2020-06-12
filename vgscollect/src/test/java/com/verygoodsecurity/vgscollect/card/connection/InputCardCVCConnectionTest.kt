@@ -40,7 +40,7 @@ class InputCardCVCConnectionTest {
         connection.setOutput(textItem)
 
         connection.run()
-        verify(listener).emit(0, VGSFieldState(fieldName = "fieldName"))
+        verify(listener).emit(0, textItem)
     }
 
     @Test
