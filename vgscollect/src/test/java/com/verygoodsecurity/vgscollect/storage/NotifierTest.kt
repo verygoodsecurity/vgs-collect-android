@@ -51,7 +51,7 @@ class NotifierTest {
         val state = createMASTERCARD()
         notifier.onRefreshState(state)
 
-        Mockito.verify(notifier).onDependencyDetected(FieldType.CVC, Dependency(DependencyType.LENGTH, 3))
+        Mockito.verify(notifier).onDependencyDetected(FieldType.CVC, Dependency(DependencyType.LENGTH, Pair(3,3)))
     }
 
     @Test
@@ -61,7 +61,7 @@ class NotifierTest {
         val state = createAmEx()
         notifier.onRefreshState(state)
 
-        Mockito.verify(notifier).onDependencyDetected(FieldType.CVC, Dependency(DependencyType.LENGTH, 4))
+        Mockito.verify(notifier).onDependencyDetected(FieldType.CVC, Dependency(DependencyType.LENGTH, Pair(4,4)))
     }
 
     @Test

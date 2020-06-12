@@ -200,6 +200,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
     }
 
     override fun onCardBrandPreview(card: CardBrandPreview) {
+        this.cardtype = card.cardType
         updateMask(card)
 
         val r = Rect()
