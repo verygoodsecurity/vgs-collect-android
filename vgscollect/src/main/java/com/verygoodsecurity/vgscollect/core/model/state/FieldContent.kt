@@ -52,6 +52,7 @@ internal fun FieldContent.CreditCardExpDateContent.handleOutputFormat(selectedDa
 
 /** @suppress */
 internal fun FieldContent.CardNumberContent.CVCMaxLength() =  cardtype.rangeCVV.last()
+internal fun FieldContent.CardNumberContent.CVCMinLength() =  cardtype.rangeCVV[0]
 
 /** @suppress */
 internal fun FieldContent.CardNumberContent.parseCardBin():String {

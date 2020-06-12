@@ -31,6 +31,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     DependencyListener, OnVgsViewStateChangeListener {
 
     companion object {
+         const val REFRESH_DELAY = 200L
+
         fun getInputField(context: Context, parent:InputFieldView):BaseInputField {
             val field = when(parent.getFieldType()) {
                 FieldType.CARD_NUMBER -> CardInputField(context)
@@ -54,6 +56,13 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         set(value) {
             field = value
             inputConnection?.getOutput()?.isRequired = value
+            inputConnection?.run()
+        }
+
+    internal var enableValidation:Boolean = true
+        set(value) {
+            field = value
+            inputConnection?.getOutput()?.enableValidation = value
             inputConnection?.run()
         }
 
@@ -85,7 +94,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         isListeningPermitted = false
 
         setupViewAttributes()
+        setupAutofill()
     }
+
+    internal open fun setupAutofill() {}
 
     private fun setupEditorActionListener() {
         setOnEditorActionListener { _, actionId, event ->
@@ -136,12 +148,13 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
 
         handlerLooper.removeCallbacks(inputConnection)
-        handlerLooper.postDelayed(inputConnection, 200)
+        handlerLooper.postDelayed(inputConnection, REFRESH_DELAY)
     }
 
     override fun onAttachedToWindow() {
         isListeningPermitted = true
         applyFieldType()
+        inputConnection?.getOutput()?.enableValidation = enableValidation
         super.onAttachedToWindow()
         applyInternalFieldStateChangeListener()
         isListeningPermitted = false

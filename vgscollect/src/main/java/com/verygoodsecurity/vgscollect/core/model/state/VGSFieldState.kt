@@ -5,6 +5,7 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 /** @suppress */
 data class VGSFieldState(var isFocusable:Boolean = false,
                          var isRequired:Boolean = true,
+                         var enableValidation:Boolean = true,
                          var isValid:Boolean = true,
                          var type: FieldType = FieldType.INFO,
                          var content:FieldContent? = null,
