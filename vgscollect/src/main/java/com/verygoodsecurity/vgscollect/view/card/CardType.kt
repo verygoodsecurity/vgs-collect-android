@@ -39,7 +39,7 @@ enum class CardType(val regex:String,
         "^(5018|5020|5038|6304|6390[0-9]{2}|67[0-9]{4})",
         R.drawable.ic_maestro_dark,
         "#### #### #### ####",
-        (13..16).toList().toTypedArray(),
+        (13..19).toList().toTypedArray(),
         arrayOf(3)
     ),
     /** Validation of this card brand includes the Luhn algorithm. */

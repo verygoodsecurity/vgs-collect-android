@@ -189,13 +189,6 @@ class DefaultCardBrandFilterTest {
     }
 
     @Test
-    fun test_mastercard_divider_false() {
-        (filter as DefaultCardBrandFilter).setDivider("-")
-        val brand = filter.detect("5555 5555 5555 5555")
-        assertNotEquals(brand?.name, CardType.MASTERCARD.name)
-    }
-
-    @Test
     fun test_american_express() {
         val brand = filter.detect("3782 822463 10005")
         assertEquals(brand?.name, CardType.AMERICAN_EXPRESS.name)
