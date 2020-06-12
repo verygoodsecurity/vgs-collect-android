@@ -323,6 +323,9 @@
 
 
     <declare-styleable name="InputFieldView">
+
+        <attr name="enableValidation" format="boolean"/>
+
         <attr name="imeOptions" />
         <!-- Font family (named by string or as a font resource reference) for the text. -->
         <attr name="fontFamily" format="string"/>
