@@ -30,7 +30,8 @@ internal class Notifier: DependencyDispatcher, FieldDependencyObserver {
 
     private fun notifyRelatedFields(state: VGSFieldState, onDependencyDetected: (FieldType, Dependency) -> Unit) {
         val maxCvcLength = (state.content as? FieldContent.CardNumberContent)?.CVCMaxLength()?:4
-        val dependency = Dependency(DependencyType.LENGTH, maxCvcLength)
+        val minCvcLength = (state.content as? FieldContent.CardNumberContent)?.CVCMinLength()?:3
+        val dependency = Dependency(DependencyType.LENGTH, Pair(minCvcLength, maxCvcLength))
 
         when {
             state.isCardNumberType() -> onDependencyDetected(FieldType.CVC, dependency)

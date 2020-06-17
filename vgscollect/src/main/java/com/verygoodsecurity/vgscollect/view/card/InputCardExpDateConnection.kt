@@ -23,22 +23,34 @@ internal class InputCardExpDateConnection(
     }
 
     override fun run() {
-        val str = output.content?.data
-        if(str.isNullOrEmpty() && !output.isRequired) {
-            output.isValid = true
-        } else {
-            val updatedStr = str?.trim()?:""
-
-            var isDateValid = true
-            validators.forEach {
-                if(isDateValid) {
-                    isDateValid = it.isValid(updatedStr)
-                }
-            }
-            output.isValid = isDateValid
-        }
+        output.isValid = isRequiredValid() && isContentValid()
 
         notifyAllListeners(id, output)
+    }
+
+    private fun isContentValid(): Boolean {
+        val content = output.content?.data
+        return when {
+            !output.isRequired && content.isNullOrEmpty() -> true
+            output.enableValidation -> checkIsContentValid(content)
+            else -> true
+        }
+    }
+
+    private fun checkIsContentValid(content:String?):Boolean {
+        val updatedStr = content?.trim() ?: ""
+
+        var isDateValid = true
+        validators.forEach {
+            if (isDateValid) {
+                isDateValid = it.isValid(updatedStr)
+            }
+        }
+        return isDateValid
+    }
+
+    private fun isRequiredValid():Boolean {
+        return output.isRequired && !output.content?.data.isNullOrEmpty() || !output.isRequired
     }
 
     override fun clearFilters() {}

@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/verygoodsecurity/vgs-collect-android/tree/master.svg?style=svg&circle-token=24087545f8aff3cee11ebe55330d2df778a7bb1f)](https://circleci.com/gh/verygoodsecurity/vgs-collect-android/tree/master)
+
 [![UT](https://img.shields.io/badge/Unit_Test-pass-green)]()
 [![license](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE)
 [ ![Download](https://api.bintray.com/packages/vg/vgs-collect-android/vgscollect/images/download.svg) ](https://bintray.com/vg/vgs-collect-android/vgscollect/_latestVersion)
@@ -38,7 +38,7 @@ Table of contents
 | androidx.appcompat:appcompat | 1.1.0 |
 | com.google.android.material:material | 1.1.0 |
 | androidx.core:core-ktx | 1.2.0 |
-| org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.71 |
+| org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.72 |
 
 ## Structure
 * **VGSCollect SDK** - provides an API for interacting with the VGS Vault
@@ -52,7 +52,7 @@ For integration you need to install the [Android Studio](http://developer.androi
 If you are using Maven, add the following to your `build.gradle` file:
 ```gradle
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:1.1.0’
+   implementation 'com.verygoodsecurity:vgscollect:1.1.9’
 }
 ```
 
@@ -66,7 +66,7 @@ Add VGSEditText to your layout file:
 <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
   	 android:id="@+id/your_field"
    	 android:layout_width="match_parent"
-  	 android:layout_height="match_parent" />
+  	 android:layout_height="wrap_content" />
 ```
 
 Add the following code to initialize the SDK to your Activity or Fragment class:
@@ -119,42 +119,6 @@ private void submitData() {
 }
 ```
 
-There is an option to send custom fields in the same request that the SDK CTA sends:
-```java
-private void submitData() {
-    //..
-    HashMap data = HashMap<String, String>();
-    data.put("key", "value");
-    vgsForm.setCustomData(data);
-
-    vgsForm.asyncSubmit("/path", HTTPMethod.POST);
-}
-```
-
-More to the point SDK allows send your custom headers:
-```java
-private void submitData() {
-    //..
-    HashMap headers = HashMap<String, String>();
-    headers.put("key", "value");
-    vgsForm.setCustomHeaders(headers);
-
-    vgsForm.asyncSubmit("/path", HTTPMethod.POST);
-}
-```
-
-To clear all custom headers use `resetCustomHeaders` or `resetCustomData` to clear custom fields added before.
-```java
-private void submitData() {
-    vgsForm.resetCustomHeaders();
-
-    HashMap headers = HashMap<String, String>();
-    headers.put("key", "value");
-    vgsForm.setCustomHeaders(headers);
-
-    vgsForm.asyncSubmit("/path", HTTPMethod.POST);
-}
-```
 
 #### Handle service response
 You need to implement `VgsCollectResponseListener` to read response:

@@ -59,6 +59,13 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             inputConnection?.run()
         }
 
+    internal var enableValidation:Boolean = true
+        set(value) {
+            field = value
+            inputConnection?.getOutput()?.enableValidation = value
+            inputConnection?.run()
+        }
+
     protected var isListeningPermitted = true
     private var isFocusListeningConfigured = false
     private var isEditorActionListenerConfigured = false
@@ -147,6 +154,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     override fun onAttachedToWindow() {
         isListeningPermitted = true
         applyFieldType()
+        inputConnection?.getOutput()?.enableValidation = enableValidation
         super.onAttachedToWindow()
         applyInternalFieldStateChangeListener()
         isListeningPermitted = false

@@ -41,7 +41,7 @@ class InputCardExpDateConnectionTest {
         connection.setOutput(textItem)
 
         connection.run()
-        Mockito.verify(listener).emit(0, VGSFieldState(fieldName = "fieldName"))
+        Mockito.verify(listener).emit(0, textItem)
     }
 
     @Test

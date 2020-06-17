@@ -1047,4 +1047,8 @@ abstract class InputFieldView @JvmOverloads constructor(
             null
         }
     }
+
+    fun enableValidation(isEnabled:Boolean) {
+        inputField.enableValidation = isEnabled
+    }
 }
