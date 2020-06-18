@@ -70,7 +70,7 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
     private var maxCodeLimit:Int = 4
     private var minCodeLimit:Int = 3
     override fun dispatchDependencySetting(dependency: Dependency) {
-        if(dependency.dependencyType == DependencyType.LENGTH) {
+        if(dependency.dependencyType == DependencyType.RANGE) {
             val range = dependency.value as Pair<Int, Int>
 
             if(maxCodeLimit != range.second || minCodeLimit != range.first) {
