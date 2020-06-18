@@ -15,9 +15,7 @@ import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscollect.core.model.state.Dependency
-import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
-import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
@@ -325,5 +323,9 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     fun setEditorActionListener(onEditorActionListener:InputFieldView.OnEditorActionListener?) {
         this.onEditorActionListener = onEditorActionListener
+    }
+
+    internal open fun getState(): FieldState? {
+        return  inputConnection?.getOutput()?.mapToFieldState()
     }
 }

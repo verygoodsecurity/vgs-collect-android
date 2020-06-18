@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card.icon
 import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import androidx.core.content.ContextCompat
+import androidx.appcompat.content.res.AppCompatResources
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.card.CardType
 
@@ -18,7 +18,7 @@ open class CardIconAdapter(
      * Returns a drawable object associated with a particular resource ID.
      */
     protected fun getDrawable(resId: Int): Drawable {
-        return ContextCompat.getDrawable(context, resId) ?: ContextCompat.getDrawable(context, R.drawable.ic_card_back_preview_dark)!!
+        return AppCompatResources.getDrawable(context, resId) ?: AppCompatResources.getDrawable(context, R.drawable.ic_card_back_preview_dark)!!
     }
 
     /**

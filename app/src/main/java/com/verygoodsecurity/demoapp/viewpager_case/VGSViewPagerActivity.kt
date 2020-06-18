@@ -2,11 +2,10 @@ package com.verygoodsecurity.demoapp.viewpager_case
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.appcompat.content.res.AppCompatResources
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.core.Environment
@@ -160,7 +159,7 @@ class VGSViewPagerActivity:AppCompatActivity(), VgsCollectResponseListener, View
         }
 
         nextBtn?.setText("Next")
-        nextBtn?.icon = ContextCompat.getDrawable(this, R.drawable.ic_arrow_right)
+        nextBtn?.icon = AppCompatResources.getDrawable(this, R.drawable.ic_arrow_right)
 
         backBtn?.visibility = if(position == 0) {
             View.INVISIBLE

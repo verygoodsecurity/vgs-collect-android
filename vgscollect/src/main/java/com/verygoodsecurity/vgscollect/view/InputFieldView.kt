@@ -30,12 +30,10 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
-import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
-import com.verygoodsecurity.vgscollect.view.internal.CardInputField
-import com.verygoodsecurity.vgscollect.view.internal.DateInputField
-import com.verygoodsecurity.vgscollect.view.internal.InputField
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
+import com.verygoodsecurity.vgscollect.view.internal.*
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
@@ -1040,12 +1038,36 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    fun getCardNumberState() :  FieldState.CardNumberState? {
+    protected fun getCardNumberState() :  FieldState.CardNumberState? {
         return if(fieldType == FieldType.CARD_NUMBER) {
-            (inputField as? CardInputField)?.getState()
+            (inputField as? CardInputField)?.getState() as? FieldState.CardNumberState
         } else {
             null
         }
+    }
+    protected fun getCVCState() :  FieldState.CVCState? {
+        return if(fieldType == FieldType.CVC) {
+            (inputField as? CVCInputField)?.getState() as? FieldState.CVCState
+        } else {
+            null
+        }
+    }
+    protected fun getCardHolderName() :  FieldState.CardHolderNameState? {
+        return if(fieldType == FieldType.CARD_HOLDER_NAME) {
+            (inputField as? PersonNameInputField)?.getState() as? FieldState.CardHolderNameState
+        } else {
+            null
+        }
+    }
+    protected fun getExpirationDate() :  FieldState.CardExpirationDateState? {
+        return if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.getState() as? FieldState.CardExpirationDateState
+        } else {
+            null
+        }
+    }
+    protected fun getInfoState() :  FieldState.InfoState? {
+        return (inputField as? DateInputField)?.getState() as? FieldState.InfoState
     }
 
     fun enableValidation(isEnabled:Boolean) {

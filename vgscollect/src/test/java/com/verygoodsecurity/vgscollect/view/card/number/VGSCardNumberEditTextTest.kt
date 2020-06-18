@@ -1,10 +1,11 @@
 package com.verygoodsecurity.vgscollect.view.card.number
 
 import android.app.Activity
-import android.os.Build
 import android.text.InputType
 import android.view.Gravity
 import android.view.View
+import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
@@ -22,8 +23,6 @@ import org.mockito.Mockito.mock
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
-import org.robolectric.annotation.Config
-
 
 @Ignore
 @RunWith(RobolectricTestRunner::class)
@@ -70,7 +69,7 @@ class VGSCardNumberEditTextTest {
     @Test
     fun test_field_type() {
         val type = view.getFieldType()
-        Assert.assertEquals(FieldType.CARD_NUMBER, type)
+        assertEquals(FieldType.CARD_NUMBER, type)
     }
 
 
@@ -179,7 +178,7 @@ class VGSCardNumberEditTextTest {
         val child = view.getView()
         Assert.assertTrue(child is BaseInputField)
 
-        val listener = Mockito.mock(OnFieldStateChangeListener::class.java)
+        val listener = mock(OnFieldStateChangeListener::class.java)
         view.setOnFieldStateChangeListener(listener)
         Mockito.verify(listener, Mockito.times(0)).onStateChange(any())
 
@@ -197,7 +196,7 @@ class VGSCardNumberEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val listener = Mockito.mock(OnFieldStateChangeListener::class.java)
+        val listener = mock(OnFieldStateChangeListener::class.java)
         view.setOnFieldStateChangeListener(listener)
 
         Mockito.verify(listener, Mockito.times(1)).onStateChange(any())
@@ -217,6 +216,48 @@ class VGSCardNumberEditTextTest {
 
         Mockito.verify(listener, Mockito.times(1)).onFocusChange(view, true)
     }
+
+    @Test
+    fun test_state() {
+        val text = "4111111111111111"
+        val stateResult = FieldState.CardNumberState()
+        stateResult.hasFocus = false
+        stateResult.isEmpty = false
+        stateResult.isValid = true
+        stateResult.isRequired = true
+        stateResult.contentLength = text.length
+        stateResult.fieldName = "number"
+        stateResult.fieldType = FieldType.CARD_NUMBER
+        stateResult.bin = "411111"
+        stateResult.last = "1111"
+        stateResult.number = "411111######1111"
+        stateResult.drawableBrandResId = R.drawable.ic_visa_dark
+
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+        view.setText(text)
+        view.setFieldName("number")
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+
+        val state = view.getState()
+        assertNotNull(state)
+        assertEquals(stateResult.hasFocus, state!!.hasFocus)
+        assertEquals(stateResult.isEmpty, state.isEmpty)
+        assertEquals(stateResult.isValid, state.isValid)
+        assertEquals(stateResult.isRequired, state.isRequired)
+        assertEquals(stateResult.contentLength, state.contentLength)
+        assertEquals(stateResult.fieldName, state.fieldName)
+        assertEquals(stateResult.fieldType, state.fieldType)
+
+        assertEquals(stateResult.bin, state.bin)
+        assertEquals(stateResult.last, state.last)
+        assertEquals(stateResult.number, state.number)
+        assertEquals(stateResult.drawableBrandResId, state.drawableBrandResId)
+    }
+
 
     private fun <T> any(): T = Mockito.any<T>()
 }
