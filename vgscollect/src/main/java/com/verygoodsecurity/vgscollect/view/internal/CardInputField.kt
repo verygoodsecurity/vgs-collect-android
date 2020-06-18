@@ -245,9 +245,9 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
     private fun applyDividerOnMask() {
         cardNumberMask = with(cardNumberMask) {
-            this.replace(kotlin.text.Regex(MASK_REGEX), divider)
+            this.replace(Regex(MASK_REGEX), divider)
         }
-        if(!text.isNullOrEmpty()) {
+        if(!text.isNullOrEmpty() && !cardNumberMask.contains(divider)) {
             cardNumberFormatter?.setMask(cardNumberMask)
             refreshInput()
         }
