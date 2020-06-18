@@ -10,7 +10,6 @@ import android.view.Gravity
 import android.view.View
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.*
-import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.isNumeric
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -195,10 +194,6 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         maskAdapter = adapter?: CardMaskAdapter()
     }
 
-    internal fun getState(): FieldState.CardNumberState? {
-        return inputConnection?.getOutput()?.mapToFieldState() as FieldState.CardNumberState?
-    }
-
     override fun onCardBrandPreview(card: CardBrandPreview) {
         this.cardtype = card.cardType
         updateMask(card)
@@ -245,9 +240,9 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
     private fun applyDividerOnMask() {
         cardNumberMask = with(cardNumberMask) {
-            this.replace(kotlin.text.Regex(MASK_REGEX), divider)
+            this.replace(Regex(MASK_REGEX), divider)
         }
-        if(!text.isNullOrEmpty()) {
+        if(!text.isNullOrEmpty() && !cardNumberMask.contains(divider)) {
             cardNumberFormatter?.setMask(cardNumberMask)
             refreshInput()
         }

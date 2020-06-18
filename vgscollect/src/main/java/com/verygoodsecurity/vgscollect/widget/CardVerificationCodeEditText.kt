@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
@@ -71,5 +72,14 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
                 recycle()
             }
         }
+    }
+
+    /**
+     * It return current state of the field.
+     *
+     * @return current state.
+     */
+    fun getState(): FieldState.CVCState? {
+        return getCVCState()
     }
 }

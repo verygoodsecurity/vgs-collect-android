@@ -43,6 +43,7 @@ sealed class FieldState {
         return "field name: $fieldName, \n" +
                 "field type: $fieldType \n" +
                 "isEmpty: $isEmpty \n" +
+                "contentLength: $contentLength \n" +
                 "hasFocus: $hasFocus \n" +
                 "isValid: $isValid \n" +
                 "isRequired: $isRequired \n"
@@ -76,16 +77,11 @@ sealed class FieldState {
             internal set
 
         override fun toString(): String {
-            return "field name: $fieldName \n" +
-                    "field type: $fieldType \n" +
+            return super.toString() +
                     "bin: $bin \n" +
                     "last: $last \n" +
                     "number: $number \n" +
-                    "card brand: $cardBrand \n" +
-                    "isEmpty: $isEmpty \n" +
-                    "hasFocus: $hasFocus \n" +
-                    "isValid: $isValid \n" +
-                    "isRequired: $isRequired "
+                    "card brand: $cardBrand \n"
         }
     }
 

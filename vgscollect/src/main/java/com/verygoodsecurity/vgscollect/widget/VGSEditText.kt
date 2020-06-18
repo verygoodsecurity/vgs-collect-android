@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -85,5 +86,14 @@ open class VGSEditText @JvmOverloads constructor(
      */
     fun setFieldType(type: FieldType) {
         applyFieldType(type)
+    }
+
+    /**
+     * It return current state of the field.
+     *
+     * @return current state.
+     */
+    fun getState(): FieldState.InfoState? {
+        return getInfoState()
     }
 }
