@@ -10,7 +10,6 @@ import android.view.Gravity
 import android.view.View
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.*
-import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.isNumeric
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -193,10 +192,6 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
     internal fun setCardBrandMaskAdapter(adapter: CardMaskAdapter?) {
         maskAdapter = adapter?: CardMaskAdapter()
-    }
-
-    internal fun getState(): FieldState.CardNumberState? {
-        return inputConnection?.getOutput()?.mapToFieldState() as FieldState.CardNumberState?
     }
 
     override fun onCardBrandPreview(card: CardBrandPreview) {
