@@ -1,14 +1,15 @@
 package com.verygoodsecurity.vgscollect.view.card.cvc
 
 import android.app.Activity
-import android.os.Build
 import android.text.InputType
 import android.view.View
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
 import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -17,7 +18,6 @@ import org.mockito.Mockito
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
-import org.robolectric.annotation.Config
 
 @Ignore
 @RunWith(RobolectricTestRunner::class)
@@ -46,7 +46,7 @@ class CardVerificationCodeEditTextTest {
     fun test_attach_view() {
         view.onAttachedToWindow()
 
-        Assert.assertEquals(1, view.childCount)
+        assertEquals(1, view.childCount)
     }
 
     @Test
@@ -55,30 +55,30 @@ class CardVerificationCodeEditTextTest {
         Assert.assertNotNull(internal)
 
         val child = view.getView()
-        Assert.assertTrue(child is CVCInputField)
+        assertTrue(child is CVCInputField)
     }
 
     @Test
     fun test_cvc() {
-        Assert.assertEquals(FieldType.CVC, view.getFieldType())
+        assertEquals(FieldType.CVC, view.getFieldType())
     }
 
     @Test
     fun test_set_text_true() {
         val child = view.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         view.setText("123")
-        Assert.assertEquals("123", (view.getView() as BaseInputField).text.toString())
+        assertEquals("123", (view.getView() as BaseInputField).text.toString())
     }
 
     @Test
     fun test_input_type_none() {
         val child = view.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         view.setInputType(InputType.TYPE_NULL)
-        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+        assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
     }
 
     @Test
@@ -86,7 +86,7 @@ class CardVerificationCodeEditTextTest {
         Assert.assertNotNull(view)
 
         view.setInputType(InputType.TYPE_CLASS_NUMBER)
-        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+        assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
     }
 
     @Test
@@ -95,10 +95,10 @@ class CardVerificationCodeEditTextTest {
 
         val passType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         view.setInputType(passType)
-        Assert.assertEquals(passType, view.getInputType())
+        assertEquals(passType, view.getInputType())
 
         view.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD)
-        Assert.assertEquals(passType, view.getInputType())
+        assertEquals(passType, view.getInputType())
     }
 
     @Test
@@ -110,7 +110,7 @@ class CardVerificationCodeEditTextTest {
 
         val correctType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         val it = view.getInputType()
-        Assert.assertEquals(correctType, it)
+        assertEquals(correctType, it)
     }
 
     @Test
@@ -118,16 +118,16 @@ class CardVerificationCodeEditTextTest {
         Assert.assertNotNull(view)
 
         view.setInputType(InputType.TYPE_CLASS_TEXT)
-        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+        assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
 
         view.setInputType(InputType.TYPE_CLASS_DATETIME)
-        Assert.assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
+        assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
     }
 
     @Test
     fun test_on_focus_change_listener() {
         val child = view.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
@@ -137,6 +137,39 @@ class CardVerificationCodeEditTextTest {
         view.requestFocus()
 
         Mockito.verify(listener, Mockito.times(1)).onFocusChange(view, true)
+    }
+
+    @Test
+    fun test_state() {
+        val text = "12"
+        val stateResult = FieldState.CVCState()
+        stateResult.hasFocus = false
+        stateResult.isEmpty = false
+        stateResult.isValid = false
+        stateResult.isRequired = true
+        stateResult.contentLength = text.length
+        stateResult.fieldName = "cvc"
+        stateResult.fieldType = FieldType.CVC
+
+        val child = view.getView()
+        assertTrue(child is BaseInputField)
+
+        view.setText(text)
+        view.setFieldName("cvc")
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+
+        val state = view.getState()
+        assertNotNull(state)
+        assertEquals(stateResult.hasFocus, state!!.hasFocus)
+        assertEquals(stateResult.isEmpty, state.isEmpty)
+        assertEquals(stateResult.isValid, state.isValid)
+        assertEquals(stateResult.isRequired, state.isRequired)
+        assertEquals(stateResult.contentLength, state.contentLength)
+        assertEquals(stateResult.fieldName, state.fieldName)
+        assertEquals(stateResult.fieldType, state.fieldType)
     }
 
 }
