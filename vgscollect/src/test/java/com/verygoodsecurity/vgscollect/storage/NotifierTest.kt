@@ -24,7 +24,7 @@ class NotifierTest {
         val notifier = Notifier()
         notifier.addDependencyListener(FieldType.CVC, listenerCVC)
 
-        val testDependency = Dependency(DependencyType.LENGTH, 3)
+        val testDependency = Dependency(DependencyType.RANGE, 3)
         notifier.onDependencyDetected(FieldType.CVC, testDependency)
 
         Mockito.verify(listener).dispatchDependencySetting(testDependency)
@@ -38,7 +38,7 @@ class NotifierTest {
         val notifier = Notifier()
         notifier.addDependencyListener(FieldType.CVC, listenerCVC)
 
-        val testDependency = Dependency(DependencyType.LENGTH, 4)
+        val testDependency = Dependency(DependencyType.RANGE, 4)
         notifier.onDependencyDetected(FieldType.CVC, testDependency)
 
         Mockito.verify(listener).dispatchDependencySetting(testDependency)
@@ -51,7 +51,7 @@ class NotifierTest {
         val state = createMASTERCARD()
         notifier.onRefreshState(state)
 
-        Mockito.verify(notifier).onDependencyDetected(FieldType.CVC, Dependency(DependencyType.LENGTH, Pair(3,3)))
+        Mockito.verify(notifier).onDependencyDetected(FieldType.CVC, Dependency(DependencyType.RANGE, Pair(3,3)))
     }
 
     @Test
@@ -61,7 +61,7 @@ class NotifierTest {
         val state = createAmEx()
         notifier.onRefreshState(state)
 
-        Mockito.verify(notifier).onDependencyDetected(FieldType.CVC, Dependency(DependencyType.LENGTH, Pair(4,4)))
+        Mockito.verify(notifier).onDependencyDetected(FieldType.CVC, Dependency(DependencyType.RANGE, Pair(4,4)))
     }
 
     @Test

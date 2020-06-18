@@ -211,7 +211,7 @@ internal class InputField(context: Context): BaseInputField(context),
 
     override fun dispatchDependencySetting(dependency: Dependency) {
         when(dependency.dependencyType) {
-            DependencyType.LENGTH -> manageLengthDependency(dependency)
+            DependencyType.RANGE -> manageLengthDependency(dependency)
             DependencyType.TEXT -> setText(dependency.value.toString())
         }
     }
