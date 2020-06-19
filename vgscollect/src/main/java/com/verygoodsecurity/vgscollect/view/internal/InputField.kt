@@ -13,6 +13,11 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.*
+import com.verygoodsecurity.vgscollect.view.card.conection.InputCardCVCConnection
+import com.verygoodsecurity.vgscollect.view.card.conection.InputCardExpDateConnection
+import com.verygoodsecurity.vgscollect.view.card.conection.InputCardHolderConnection
+import com.verygoodsecurity.vgscollect.view.card.conection.InputCardNumberConnection
+import com.verygoodsecurity.vgscollect.view.card.conection.InputInfoConnection
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
@@ -104,7 +109,11 @@ internal class InputField(context: Context): BaseInputField(context),
 
     private fun applyInfoFieldType() {
         validator = InfoValidator()
-        inputConnection = InputInfoConnection(id, validator)
+        inputConnection =
+            InputInfoConnection(
+                id,
+                validator
+            )
 
         val str = text.toString()
         val stateContent = FieldContent.InfoContent().apply {
@@ -122,7 +131,11 @@ internal class InputField(context: Context): BaseInputField(context),
 
     private fun applyCardExpDateFieldType() {
         validator = CardExpDateValidator()
-        inputConnection = InputCardExpDateConnection(id, validator as CardExpDateValidator)
+        inputConnection =
+            InputCardExpDateConnection(
+                id,
+                validator as CardExpDateValidator
+            )
 
         val str = text.toString()
         val stateContent = FieldContent.InfoContent().apply {
@@ -141,7 +154,11 @@ internal class InputField(context: Context): BaseInputField(context),
 
     private fun applyCardHolderFieldType() {
         validator = CardHolderValidator()
-        inputConnection = InputCardHolderConnection(id, validator)
+        inputConnection =
+            InputCardHolderConnection(
+                id,
+                validator
+            )
 
         val str = text.toString()
         val stateContent = FieldContent.InfoContent().apply {
@@ -160,7 +177,11 @@ internal class InputField(context: Context): BaseInputField(context),
 
     private fun applyCardCVCFieldType() {
         validator = CardCVCCodeValidator()
-        inputConnection = InputCardCVCConnection(id, validator)
+        inputConnection =
+            InputCardCVCConnection(
+                id,
+                validator
+            )
 
         val str = text.toString()
         val stateContent = FieldContent.InfoContent().apply {
@@ -183,7 +204,13 @@ internal class InputField(context: Context): BaseInputField(context),
 
         validator = CardNumberValidator(divider)
 
-        inputConnection = InputCardNumberConnection(id, validator, this, divider)
+        inputConnection =
+            InputCardNumberConnection(
+                id,
+                validator,
+                this,
+                divider
+            )
 
         val defFilter = DefaultCardBrandFilter(CardType.values(), divider)
         inputConnection!!.addFilter(defFilter)

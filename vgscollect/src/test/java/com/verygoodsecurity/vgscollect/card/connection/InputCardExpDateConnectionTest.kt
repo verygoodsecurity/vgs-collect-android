@@ -3,8 +3,8 @@ package com.verygoodsecurity.vgscollect.card.connection
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.InputCardExpDateConnection
-import com.verygoodsecurity.vgscollect.view.card.InputRunnable
+import com.verygoodsecurity.vgscollect.view.card.conection.InputCardExpDateConnection
+import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -15,7 +15,10 @@ class InputCardExpDateConnectionTest {
     val connection: InputRunnable by lazy {
         val client = Mockito.mock(VGSValidator::class.java)
         Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
-        InputCardExpDateConnection(0, client)
+        InputCardExpDateConnection(
+            0,
+            client
+        )
     }
 
     @Test

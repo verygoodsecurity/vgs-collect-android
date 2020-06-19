@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.InputCardCVCConnection
+import com.verygoodsecurity.vgscollect.view.card.conection.InputCardCVCConnection
 import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.CardCVCCodeValidator
 
@@ -21,7 +21,11 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
 
     override fun applyFieldType() {
         val validator = CardCVCCodeValidator(minCodeLimit)
-        inputConnection = InputCardCVCConnection(id, validator)
+        inputConnection =
+            InputCardCVCConnection(
+                id,
+                validator
+            )
 
         val str = text.toString()
         val stateContent = FieldContent.InfoContent().apply {

@@ -22,7 +22,7 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.InputRunnable
+import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),

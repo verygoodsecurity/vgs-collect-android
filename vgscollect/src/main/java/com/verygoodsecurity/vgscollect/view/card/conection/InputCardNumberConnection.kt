@@ -1,8 +1,9 @@
-package com.verygoodsecurity.vgscollect.view.card
+package com.verygoodsecurity.vgscollect.view.card.conection
 
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator

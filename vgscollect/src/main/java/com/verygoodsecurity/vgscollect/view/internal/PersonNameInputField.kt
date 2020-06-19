@@ -7,7 +7,7 @@ import android.text.InputType
 import android.view.View
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.InputCardHolderConnection
+import com.verygoodsecurity.vgscollect.view.card.conection.InputCardHolderConnection
 import com.verygoodsecurity.vgscollect.view.card.validation.CardHolderValidator
 
 /** @suppress */
@@ -17,7 +17,11 @@ internal class PersonNameInputField(context: Context): BaseInputField(context) {
 
     override fun applyFieldType() {
         val validator = CardHolderValidator()
-        inputConnection = InputCardHolderConnection(id, validator)
+        inputConnection =
+            InputCardHolderConnection(
+                id,
+                validator
+            )
 
         val str = text.toString()
         val stateContent = FieldContent.InfoContent().apply {

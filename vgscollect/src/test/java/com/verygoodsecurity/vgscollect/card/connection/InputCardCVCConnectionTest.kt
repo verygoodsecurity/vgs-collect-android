@@ -3,8 +3,8 @@ package com.verygoodsecurity.vgscollect.card.connection
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.InputCardCVCConnection
-import com.verygoodsecurity.vgscollect.view.card.InputRunnable
+import com.verygoodsecurity.vgscollect.view.card.conection.InputCardCVCConnection
+import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import org.junit.Test
 import org.mockito.Mockito
@@ -14,7 +14,10 @@ class InputCardCVCConnectionTest {
     val connection: InputRunnable by lazy {
         val client = mock(VGSValidator::class.java)
         doReturn(true).`when`(client).isValid(anyString())
-        InputCardCVCConnection(0, client)
+        InputCardCVCConnection(
+            0,
+            client
+        )
     }
 
     @Test
