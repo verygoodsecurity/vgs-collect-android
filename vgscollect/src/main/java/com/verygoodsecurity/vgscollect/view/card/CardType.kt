@@ -140,7 +140,7 @@ enum class CardType(val regex:String,
         R.drawable.ic_card_front_preview_dark,
         "#### #### #### #### ###",
         ChecksumAlgorithm.NONE,
-        (8..19).toList().toTypedArray(),
+        (13..19).toList().toTypedArray(),
         arrayOf(3,4)
     );
 }
