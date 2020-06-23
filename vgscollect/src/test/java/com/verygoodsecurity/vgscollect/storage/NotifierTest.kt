@@ -9,10 +9,17 @@ import com.verygoodsecurity.vgscollect.core.storage.Notifier
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import org.hamcrest.Matchers
+import org.junit.Assert
+import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertEquals
 import org.junit.Test
+import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.spy
+import org.mockito.hamcrest.MockitoHamcrest
+
 
 class NotifierTest {
 
@@ -44,6 +51,7 @@ class NotifierTest {
         Mockito.verify(listener).dispatchDependencySetting(testDependency)
     }
 
+
     @Test
     fun test_cvc_3_length_detect_after_set_State() {
         val notifier = spy(Notifier())
@@ -51,7 +59,16 @@ class NotifierTest {
         val state = createMASTERCARD()
         notifier.onRefreshState(state)
 
-        Mockito.verify(notifier).onDependencyDetected(FieldType.CVC, Dependency(DependencyType.RANGE, Pair(3,3)))
+        val argument_1: ArgumentCaptor<FieldType> = ArgumentCaptor.forClass(FieldType::class.java)
+        val argument_2: ArgumentCaptor<Dependency> = ArgumentCaptor.forClass(Dependency::class.java)
+        Mockito.verify(notifier).onDependencyDetected(capture(argument_1), capture(argument_2))
+
+        assertEquals(FieldType.CVC, argument_1.value)
+
+        assertEquals(DependencyType.RANGE, argument_2.value.dependencyType)
+
+        val cvcRange = (argument_2.value.value as Array<Int>)
+        assertArrayEquals(CardType.MASTERCARD.rangeCVV, cvcRange)
     }
 
     @Test
@@ -61,7 +78,16 @@ class NotifierTest {
         val state = createAmEx()
         notifier.onRefreshState(state)
 
-        Mockito.verify(notifier).onDependencyDetected(FieldType.CVC, Dependency(DependencyType.RANGE, Pair(4,4)))
+        val argument_1: ArgumentCaptor<FieldType> = ArgumentCaptor.forClass(FieldType::class.java)
+        val argument_2: ArgumentCaptor<Dependency> = ArgumentCaptor.forClass(Dependency::class.java)
+        Mockito.verify(notifier).onDependencyDetected(capture(argument_1), capture(argument_2))
+
+        assertEquals(FieldType.CVC, argument_1.value)
+
+        assertEquals(DependencyType.RANGE, argument_2.value.dependencyType)
+
+        val cvcRange = (argument_2.value.value as Array<Int>)
+        assertArrayEquals(CardType.AMERICAN_EXPRESS.rangeCVV, cvcRange)
     }
 
     @Test
@@ -86,6 +112,7 @@ class NotifierTest {
         val state = VGSFieldState(isFocusable = false, type = FieldType.CARD_NUMBER )
         val content = FieldContent.CardNumberContent()
         content.cardtype = CardType.AMERICAN_EXPRESS
+        content.rangeCVV = CardType.AMERICAN_EXPRESS.rangeCVV
         state.content = content
 
         return state
@@ -95,8 +122,12 @@ class NotifierTest {
         val state = VGSFieldState(isFocusable = false, type = FieldType.CARD_NUMBER )
         val content = FieldContent.CardNumberContent()
         content.cardtype = CardType.MASTERCARD
+        content.rangeCVV = CardType.MASTERCARD.rangeCVV
         state.content = content
 
         return state
     }
+
+    private fun <T> capture(argumentCaptor: ArgumentCaptor<T>): T = argumentCaptor.capture()
+
 }

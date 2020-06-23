@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.card.validator.luhn
 
-import com.verygoodsecurity.vgscollect.view.card.validation.card.brand.DankortDelegate
+import com.verygoodsecurity.vgscollect.view.card.validation.card.brand.CardBrandDelegate
 import org.junit.Assert
 import org.junit.Test
 
@@ -8,7 +8,7 @@ class DankoftDelegateTest {
 
     @Test
     fun detectDankoft1() {
-        val dank = DankortDelegate()
+        val dank = CardBrandDelegate()
 
         val state = dank.isValid("5019717010103742")
 
@@ -17,7 +17,7 @@ class DankoftDelegateTest {
 
     @Test
     fun detectDankoft2() {
-        val dank = DankortDelegate()
+        val dank = CardBrandDelegate()
 
         val state = dank.isValid("4444444444444000")
 
@@ -26,7 +26,7 @@ class DankoftDelegateTest {
 
     @Test
     fun detectDankoft3() {
-        val dank = DankortDelegate()
+        val dank = CardBrandDelegate()
 
         val state = dank.isValid("5019555544445555")
 
@@ -35,7 +35,7 @@ class DankoftDelegateTest {
 
     @Test
     fun detectDankoft4() {
-        val dank = DankortDelegate()
+        val dank = CardBrandDelegate()
 
         val state = dank.isValid("4571740000000002")
 
@@ -44,7 +44,7 @@ class DankoftDelegateTest {
 
     @Test
     fun detectDankoft5() {
-        val dank = DankortDelegate()
+        val dank = CardBrandDelegate()
 
         val state = dank.isValid("5019200000000004")
 
@@ -53,7 +53,7 @@ class DankoftDelegateTest {
 
     @Test
     fun detectDankoft6() {
-        val dank = DankortDelegate()
+        val dank = CardBrandDelegate()
 
         val state = dank.isValid("50194500000005")
 
