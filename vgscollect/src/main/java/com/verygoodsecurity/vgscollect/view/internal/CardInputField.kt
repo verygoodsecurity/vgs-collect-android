@@ -249,7 +249,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         cardNumberMask = with(cardNumberMask) {
             this.replace(Regex(MASK_REGEX), divider)
         }
-        if(!text.isNullOrEmpty() && !cardNumberMask.contains(divider)) {
+        if(!text.isNullOrEmpty() && cardNumberFormatter?.getMask() != cardNumberMask) {
             cardNumberFormatter?.setMask(cardNumberMask)
             refreshInput()
         }

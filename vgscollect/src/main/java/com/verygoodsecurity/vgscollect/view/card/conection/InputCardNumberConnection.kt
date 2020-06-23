@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card.conection
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.CardType
+import com.verygoodsecurity.vgscollect.view.card.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
@@ -18,23 +18,6 @@ internal class InputCardNumberConnection(
     private val divider:String? = null
 ): BaseInputConnection() {
     private val cardFilters = mutableListOf<VGSCardFilter>()
-    private val brandLuhnValidations by lazy {
-        val set = HashMap<CardType, VGSValidator>()
-        set[CardType.ELO] = EloDelegate()
-        set[CardType.DANKORT] = DankortDelegate()
-        set[CardType.FORBRUGSFORENINGEN] = ForbrugsforeningenDelegate()
-        set[CardType.HIPERCARD] = HipercardDelegate()
-        set[CardType.MAESTRO] = MaestroDelegate()
-        set[CardType.VISA] = VisaDelegate()
-        set[CardType.VISA_ELECTRON] = VisaElectronDelegate()
-        set[CardType.MASTERCARD] = MastercardDelegate()
-        set[CardType.AMERICAN_EXPRESS] = AmexDelegate()
-        set[CardType.DINCLUB] = DinersClubDelegate()
-        set[CardType.DISCOVER] = DiscoverDelegate()
-        set[CardType.JCB] = JcbDelegate()
-
-        set
-    }
 
 
     private var output = VGSFieldState()
@@ -62,16 +45,21 @@ internal class InputCardNumberConnection(
     }
 
     override fun run() {
-        val card = runFilters()
-        mapValue(card)
+        val brand = detectBrand()
+        mapValue(brand)
 
-        IcardBrand?.onCardBrandPreview(card)
+        IcardBrand?.onCardBrandPreview(brand)
 
-        applyNewRule(card.regex)
-
-        output.isValid = isRequiredValid() && isContentValid(card)
+        validate(brand)
 
         notifyAllListeners(id, output)
+    }
+
+    private fun validate(brand: CardBrandPreview) {
+        val isRequiredRuleValid = isRequiredValid()
+        val isContentRuleValid = isContentValid(brand)
+
+        output.isValid = isRequiredRuleValid && isContentRuleValid
     }
 
     private fun isRequiredValid():Boolean {
@@ -92,17 +80,34 @@ internal class InputCardNumberConnection(
     ): Boolean {
         val rawStr = output.content?.data?.replace(divider ?: " ", "") ?: ""
         val isStrValid = validator?.isValid(rawStr) ?: false
-        val isLuhnValid: Boolean = brandLuhnValidations[card.cardType]?.isValid(rawStr) ?: true
+        val isLuhnValid: Boolean = validateCheckSum(card.algorithm, rawStr)
 
-        val isLengthAppropriate = checkLength(card.cardType, rawStr.length)
+        val isLengthAppropriate = checkLength(card.numberLength, rawStr.length)
         return isLuhnValid && isStrValid && isLengthAppropriate
     }
 
+    private fun validateCheckSum(
+        algorithm: ChecksumAlgorithm,
+        cardNumber: String
+    ):Boolean {
+        return if(algorithm == ChecksumAlgorithm.LUHN) {
+            CardBrandDelegate().isValid(cardNumber)
+        } else {
+            false    // in the future will depends on RULE params
+        }
+//        val isLuhnValid: Boolean = brandLuhnValidations[card.cardType]?.isValid(rawStr) ?: true
+    }
+
     private fun mapValue(item: CardBrandPreview) {
-        val card = (output.content as? FieldContent.CardNumberContent)
-        card?.cardtype = item.cardType
-        card?.cardBrandName = item.name
-        card?.iconResId = item.resId
+        applyNewRule(item.regex)
+
+        with(output.content as? FieldContent.CardNumberContent) {
+            this?.cardtype = item.cardType
+            this?.cardBrandName = item.name
+            this?.iconResId = item.resId
+            this?.numberRange = item.numberLength
+            this?.rangeCVV = item.cvcLength
+        }
     }
 
     private fun applyNewRule(regex: String?) {
@@ -113,7 +118,7 @@ internal class InputCardNumberConnection(
         }
     }
 
-    private fun runFilters(): CardBrandPreview {
+    private fun detectBrand(): CardBrandPreview {
         for(i in cardFilters.indices) {
             val filter = cardFilters[i]
             val brand = filter.detect(output.content?.data)
@@ -125,10 +130,10 @@ internal class InputCardNumberConnection(
     }
 
     private fun checkLength(
-        cardtype: CardType,
+        rangeNumber: Array<Int>,
         length: Int?
     ): Boolean {
-        return cardtype.rangeNumber.contains(length)
+        return rangeNumber.contains(length)
     }
 
     internal interface IDrawCardBrand {

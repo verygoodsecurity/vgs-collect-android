@@ -70,8 +70,7 @@ class CardNumberFormatter: TextWatcher, Formatter {
         runtimeData = builder.toString()
     }
 
-    @VisibleForTesting
-    fun getMask():String = mask
+    override fun getMask():String = mask
 
     @VisibleForTesting
     fun getMaskLength():Int = maxLength
