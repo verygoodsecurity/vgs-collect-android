@@ -21,10 +21,13 @@ class DefaultCardBrandFilter(
             val m = Pattern.compile(value.regex).matcher(preparedStr)
             while (m.find()) {
                 return CardBrandPreview(value,
-                        value.regex,
-                        value.name,
-                        value.resId,
-                        value.mask)
+                            value.regex,
+                            value.name,
+                            value.resId,
+                            value.mask,
+                            value.algorithm,
+                            value.rangeNumber,
+                            value.rangeCVV)
             }
         }
 

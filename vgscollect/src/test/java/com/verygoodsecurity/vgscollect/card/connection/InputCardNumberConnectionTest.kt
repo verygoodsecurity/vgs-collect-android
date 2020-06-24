@@ -100,7 +100,15 @@ class InputCardNumberConnectionTest {
 
         connection.run()
 
-        Mockito.verify(iCardBrand).onCardBrandPreview(CardBrandPreview(CardType.VISA, CardType.VISA.regex, CardType.VISA.name, CardType.VISA.resId))
+        val c = CardBrandPreview(CardType.VISA,
+            CardType.VISA.regex,
+            CardType.VISA.name,
+            CardType.VISA.resId,
+            CardType.VISA.mask,
+            CardType.VISA.algorithm,
+            CardType.VISA.rangeNumber,
+            CardType.VISA.rangeCVV)
+        Mockito.verify(iCardBrand).onCardBrandPreview(c)
     }
 
     @Test
@@ -128,12 +136,12 @@ class InputCardNumberConnectionTest {
 
     @Test
     fun test_custom_filter() {
-        val customBrand = CustomCardBrand("^777", "VGS", drawableResId = R.drawable.ic_jcb_light)
+        val customBrand = CustomCardBrand("^777", "VGS", R.drawable.ic_jcb_light)
         val preview = CardBrandPreview(CardType.NONE,
             customBrand.regex,
             customBrand.cardBrandName,
             customBrand.drawableResId,
-            customBrand.mask)
+            customBrand.params.mask)
 
         val filter = mock(MutableCardFilter::class.java)
         Mockito.doReturn(preview).`when`(filter).detect(any())
