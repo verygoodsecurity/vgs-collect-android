@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.InputCardCVCConnection
+import com.verygoodsecurity.vgscollect.view.card.conection.InputCardCVCConnection
 import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.CardCVCCodeValidator
 
@@ -18,10 +18,15 @@ import com.verygoodsecurity.vgscollect.view.card.validation.CardCVCCodeValidator
 internal class CVCInputField(context: Context): BaseInputField(context) {
 
     override var fieldType: FieldType = FieldType.CVC
+    private var cvcLength:Array<Int> = arrayOf(3,4)
 
     override fun applyFieldType() {
-        val validator = CardCVCCodeValidator(minCodeLimit)
-        inputConnection = InputCardCVCConnection(id, validator)
+        val validator = CardCVCCodeValidator(cvcLength)
+        inputConnection =
+            InputCardCVCConnection(
+                id,
+                validator
+            )
 
         val str = text.toString()
         val stateContent = FieldContent.InfoContent().apply {
@@ -67,20 +72,16 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
         }
     }
 
-    private var maxCodeLimit:Int = 4
-    private var minCodeLimit:Int = 3
     override fun dispatchDependencySetting(dependency: Dependency) {
         if(dependency.dependencyType == DependencyType.RANGE) {
-            val range = dependency.value as Pair<Int, Int>
-
-            if(maxCodeLimit != range.second || minCodeLimit != range.first) {
-                minCodeLimit = range.first
-                maxCodeLimit = range.second
-                val filterLength = InputFilter.LengthFilter(maxCodeLimit)
+            val cvcLength = dependency.value as Array<Int>
+            if(!this.cvcLength.contentEquals(cvcLength)) {
+                this.cvcLength = cvcLength
+                val filterLength = InputFilter.LengthFilter(cvcLength.last())
                 filters = arrayOf(CVCValidateFilter(), filterLength)
 
                 (inputConnection as? InputCardCVCConnection)?.runtimeValidator =
-                    CardCVCCodeValidator(minCodeLimit)
+                    CardCVCCodeValidator(this.cvcLength)
 
                 text = text
             }

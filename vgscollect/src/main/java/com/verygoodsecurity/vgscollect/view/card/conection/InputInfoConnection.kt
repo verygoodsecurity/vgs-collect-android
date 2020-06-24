@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.card
+package com.verygoodsecurity.vgscollect.view.card.conection
 
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
@@ -6,9 +6,9 @@ import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 /** @suppress */
-internal class InputCardExpDateConnection(
+internal class InputInfoConnection(
     private val id:Int,
-    private vararg val validators: VGSValidator
+    private val validator: VGSValidator?
 ): BaseInputConnection() {
     private var output = VGSFieldState()
 
@@ -18,8 +18,8 @@ internal class InputCardExpDateConnection(
 
     override fun getOutput() = output
 
-    override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
-        listener?.let { addNewListener(it) }
+    override fun setOutputListener(l: OnVgsViewStateChangeListener?) {
+        l?.let { addNewListener(it) }
     }
 
     override fun run() {
@@ -37,22 +37,17 @@ internal class InputCardExpDateConnection(
         }
     }
 
-    private fun checkIsContentValid(content:String?):Boolean {
-        val updatedStr = content?.trim() ?: ""
+    private fun checkIsContentValid(content: String?): Boolean {
+        val updatedStr = content?.trim()?:""
 
-        var isDateValid = true
-        validators.forEach {
-            if (isDateValid) {
-                isDateValid = it.isValid(updatedStr)
-            }
-        }
-        return isDateValid
+        return validator?.isValid(updatedStr)?:false
     }
 
-    private fun isRequiredValid():Boolean {
+    private fun isRequiredValid(): Boolean {
         return output.isRequired && !output.content?.data.isNullOrEmpty() || !output.isRequired
     }
 
     override fun clearFilters() {}
     override fun addFilter(filter: VGSCardFilter?) {}
+
 }

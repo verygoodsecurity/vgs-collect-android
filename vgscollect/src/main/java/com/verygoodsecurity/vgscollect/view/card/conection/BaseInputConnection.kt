@@ -1,9 +1,10 @@
-package com.verygoodsecurity.vgscollect.view.card
+package com.verygoodsecurity.vgscollect.view.card.conection
 
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 
-internal abstract class BaseInputConnection: InputRunnable {
+internal abstract class BaseInputConnection:
+    InputRunnable {
     private var stateListeners = mutableListOf<OnVgsViewStateChangeListener>()
 
     protected fun addNewListener(listener: OnVgsViewStateChangeListener) {

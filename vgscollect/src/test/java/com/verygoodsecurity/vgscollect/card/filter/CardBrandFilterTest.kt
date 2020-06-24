@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.card.filter
 
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
@@ -48,9 +49,11 @@ class CardBrandFilterTest {
         val regex = "^12333"
         val name = "VG_Search"
         val resId = R.drawable.ic_card_front_preview_dark
-        val mask = "### ### ### #####"
 
-        val c1 = CustomCardBrand(regex, name, resId, mask)
+        val mask = "### ### ### #####"
+        val params = BrandParams(mask)
+
+        val c1 = CustomCardBrand(regex, name, resId, params)
 
         filter.add(c1)
 
@@ -85,9 +88,11 @@ class CardBrandFilterTest {
         val regex = "^12333"
         val name = "VG_Search"
         val resId = R.drawable.ic_card_front_preview_dark
-        val mask = "### ### ### #####"
 
-        val c1 = CustomCardBrand(regex, name, resId, mask)
+        val mask = "### ### ### #####"
+        val params = BrandParams(mask)
+
+        val c1 = CustomCardBrand(regex, name, resId, params)
 
         filter.add(c1)
 

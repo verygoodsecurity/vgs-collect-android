@@ -13,7 +13,7 @@ import android.widget.DatePicker
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.InputCardExpDateConnection
+import com.verygoodsecurity.vgscollect.view.card.conection.InputCardExpDateConnection
 import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
@@ -68,7 +68,11 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     override fun applyFieldType() {
         val timeGapsValidator = TimeGapsValidator(datePattern, minDate, maxDate)
 
-        inputConnection = InputCardExpDateConnection(id, timeGapsValidator)
+        inputConnection =
+            InputCardExpDateConnection(
+                id,
+                timeGapsValidator
+            )
 
         val stateContent = FieldContent.CreditCardExpDateContent().apply {
             if(!text.isNullOrEmpty() && handleInputMode(text.toString())) {

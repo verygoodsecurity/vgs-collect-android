@@ -28,10 +28,14 @@ class CardBrandFilter(
             val value = userCustomCardBrands[i]
             val m = Pattern.compile(value.regex).matcher(preparedStr)
             while (m.find()) {
-                return CardBrandPreview(regex = value.regex,
+                return CardBrandPreview(
+                    regex = value.regex,
                     name = value.cardBrandName,
                     resId = value.drawableResId,
-                    currentMask = value.mask)
+                    currentMask = value.params.mask,
+                    algorithm = value.params.algorithm,
+                    numberLength = value.params.rangeNumber,
+                    cvcLength =  value.params.rangeCVV)
             }
         }
 

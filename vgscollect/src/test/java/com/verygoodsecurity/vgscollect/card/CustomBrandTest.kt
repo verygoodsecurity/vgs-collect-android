@@ -1,25 +1,52 @@
 package com.verygoodsecurity.vgscollect.card
 
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.view.card.BrandParams
+import com.verygoodsecurity.vgscollect.view.card.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
-import org.junit.Assert
+import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class CustomBrandTest {
 
     @Test
+    fun test_custom_brand_params_full() {
+        val mask = "### ### ### #####"
+        val alg = ChecksumAlgorithm.LUHN
+        val rangeNumber = arrayOf(14,16,19)
+        val rangeCVC = arrayOf(3,5)
+
+        val params = BrandParams(mask, alg, rangeNumber, rangeCVC)
+
+        assertEquals(alg, params.algorithm)
+        assertEquals(mask, params.mask)
+        assertArrayEquals(rangeNumber, params.rangeNumber)
+        assertArrayEquals(rangeCVC, params.rangeCVV)
+    }
+
+    @Test
     fun test_custom_brand_full() {
+        val mask = "### ### ### #####"
+        val alg = ChecksumAlgorithm.LUHN
+        val rangeNumber = arrayOf(14,16,19)
+        val rangeCVC = arrayOf(3,5)
+        val params = BrandParams(mask, alg, rangeNumber, rangeCVC)
+
         val regex = "^12333"
         val name = "VG_Search"
         val resId = R.drawable.ic_card_front_preview_dark
-        val mask = "### ### ### #####"
 
-        val brand = CustomCardBrand(regex, name, resId, mask)
+        val brand = CustomCardBrand(regex, name, resId, params)
 
-        Assert.assertEquals(regex, brand.regex)
-        Assert.assertEquals(name, brand.cardBrandName)
-        Assert.assertEquals(mask, brand.mask)
-        Assert.assertEquals(resId, brand.drawableResId)
+        assertEquals(regex, brand.regex)
+        assertEquals(name, brand.cardBrandName)
+        assertEquals(resId, brand.drawableResId)
+
+        assertEquals(alg, brand.params.algorithm)
+        assertEquals(mask, brand.params.mask)
+        assertArrayEquals(rangeNumber, brand.params.rangeNumber)
+        assertArrayEquals(rangeCVC, brand.params.rangeCVV)
     }
 
     @Test
@@ -29,10 +56,10 @@ class CustomBrandTest {
 
         val brand = CustomCardBrand(regex, name)
 
-        Assert.assertEquals(regex, brand.regex)
-        Assert.assertEquals(name, brand.cardBrandName)
-        Assert.assertEquals("#### #### #### #### ###", brand.mask)
-        Assert.assertEquals(0, brand.drawableResId)
+        assertEquals(regex, brand.regex)
+        assertEquals(name, brand.cardBrandName)
+        assertEquals("#### #### #### #### ###", brand.params.mask)
+        assertEquals(0, brand.drawableResId)
     }
 
     @Test
@@ -41,12 +68,11 @@ class CustomBrandTest {
         val name = "VG_Search"
         val mask = "### ### ### #####"
 
-        val brand = CustomCardBrand(regex, name, mask = mask)
+        val brand = CustomCardBrand(regex, name)
 
-        Assert.assertEquals(regex, brand.regex)
-        Assert.assertEquals(name, brand.cardBrandName)
-        Assert.assertEquals(mask, brand.mask)
-        Assert.assertEquals(0, brand.drawableResId)
+        assertEquals(regex, brand.regex)
+        assertEquals(name, brand.cardBrandName)
+        assertEquals(0, brand.drawableResId)
     }
 
     @Test
@@ -57,9 +83,9 @@ class CustomBrandTest {
 
         val brand = CustomCardBrand(regex, name, resId)
 
-        Assert.assertEquals(regex, brand.regex)
-        Assert.assertEquals(name, brand.cardBrandName)
-        Assert.assertEquals("#### #### #### #### ###", brand.mask)
-        Assert.assertEquals(resId, brand.drawableResId)
+        assertEquals(regex, brand.regex)
+        assertEquals(name, brand.cardBrandName)
+        assertEquals("#### #### #### #### ###", brand.params.mask)
+        assertEquals(resId, brand.drawableResId)
     }
 }
