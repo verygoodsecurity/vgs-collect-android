@@ -7,9 +7,12 @@ import android.util.TypedValue
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.Rule
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 
@@ -108,7 +111,12 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      * @param c new card definition
      */
     fun addCardBrand(c: CustomCardBrand) {
-        applyCardBrand(c)
+        val digitCount = c.params.mask.replace("[^#]".toRegex(), "").length
+        if(c.params.rangeNumber.contains(digitCount)) {
+            applyCardBrand(c)
+        } else {
+            Logger.e(context, BrandParams::class.java, R.string.error_custom_brand_mask_length, c.cardBrandName)
+        }
     }
 
     /**
@@ -156,5 +164,10 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      */
     fun getState(): FieldState.CardNumberState? {
         return getCardNumberState()
+    }
+
+
+    fun addValidationRule(rule: Rule) {
+        applyValidationRule(rule)
     }
 }

@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.card.validator.luhn
 
-import com.verygoodsecurity.vgscollect.view.card.validation.card.brand.CardBrandDelegate
+import com.verygoodsecurity.vgscollect.view.card.validation.card.brand.LuhnCheckSumDelegate
 import org.junit.Assert
 import org.junit.Test
 
@@ -8,7 +8,7 @@ class MaestroDelegateTest {
 
     @Test
     fun detectMaestro1() {
-        val maestro = CardBrandDelegate()
+        val maestro = LuhnCheckSumDelegate()
 
         val state = maestro.isValid("6771798021000008")
 
@@ -17,7 +17,7 @@ class MaestroDelegateTest {
 
     @Test
     fun detectMaestro2() {
-        val maestro = CardBrandDelegate()
+        val maestro = LuhnCheckSumDelegate()
 
         val state = maestro.isValid("5000550000000029")
 
@@ -26,7 +26,7 @@ class MaestroDelegateTest {
 
     @Test
     fun detectMaestro3() {
-        val maestro = CardBrandDelegate()
+        val maestro = LuhnCheckSumDelegate()
 
         val state = maestro.isValid("6771830999991239")
 
@@ -35,7 +35,7 @@ class MaestroDelegateTest {
 
     @Test
     fun detectMaestro4() {
-        val maestro = CardBrandDelegate()
+        val maestro = LuhnCheckSumDelegate()
 
         val state = maestro.isValid("6771830000000000006")
 
@@ -44,7 +44,7 @@ class MaestroDelegateTest {
 
     @Test
     fun detectMaestro5() {
-        val maestro = CardBrandDelegate()
+        val maestro = LuhnCheckSumDelegate()
 
         val state = maestro.isValid("6759649826438453")
 
@@ -53,7 +53,7 @@ class MaestroDelegateTest {
 
     @Test
     fun detectMaestro6() {
-        val maestro = CardBrandDelegate()
+        val maestro = LuhnCheckSumDelegate()
 
         val state = maestro.isValid("6759000000000000005")
 
@@ -62,7 +62,7 @@ class MaestroDelegateTest {
 
     @Test
     fun detectMaestro7() {
-        val maestro = CardBrandDelegate()
+        val maestro = LuhnCheckSumDelegate()
 
         val state = maestro.isValid("6799990100000000019")
 
@@ -71,7 +71,7 @@ class MaestroDelegateTest {
 
     @Test
     fun detectMaestro8() {
-        val maestro = CardBrandDelegate()
+        val maestro = LuhnCheckSumDelegate()
 
         val state = maestro.isValid("5001630000000002")
 
@@ -80,7 +80,7 @@ class MaestroDelegateTest {
 
     @Test
     fun detectMaestro9() {
-        val maestro = CardBrandDelegate()
+        val maestro = LuhnCheckSumDelegate()
 
         val state = maestro.isValid("5016590000000001")
 
@@ -89,7 +89,7 @@ class MaestroDelegateTest {
 
     @Test
     fun detectMaestro10() {
-        val maestro = CardBrandDelegate()
+        val maestro = LuhnCheckSumDelegate()
 
         val state = maestro.isValid("5020620000000000")
 
@@ -98,7 +98,7 @@ class MaestroDelegateTest {
 
     @Test
     fun detectMaestro11() {
-        val maestro = CardBrandDelegate()
+        val maestro = LuhnCheckSumDelegate()
 
         val state = maestro.isValid("5612370000000006")
 

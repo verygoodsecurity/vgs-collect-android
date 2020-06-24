@@ -12,7 +12,8 @@ data class CardBrandPreview(
     var currentMask:String = CardType.NONE.mask,
     var algorithm: ChecksumAlgorithm = ChecksumAlgorithm.NONE,
     var numberLength: Array<Int> = CardType.NONE.rangeNumber,
-    var cvcLength: Array<Int> = CardType.NONE.rangeCVV
+    var cvcLength: Array<Int> = CardType.NONE.rangeCVV,
+    val successfullyDetected:Boolean = false
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

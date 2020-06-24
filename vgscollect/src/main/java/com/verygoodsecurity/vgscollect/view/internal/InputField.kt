@@ -202,7 +202,7 @@ internal class InputField(context: Context): BaseInputField(context),
         val digits = resources.getString(R.string.card_number_digits) + this.divider
         keyListener = DigitsKeyListener.getInstance(digits)
 
-        validator = CardNumberValidator(divider)
+        validator = CardNumberValidator()
 
         inputConnection =
             InputCardNumberConnection(

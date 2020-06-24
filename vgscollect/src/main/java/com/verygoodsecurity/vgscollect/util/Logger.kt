@@ -6,6 +6,19 @@ import com.verygoodsecurity.vgscollect.BuildConfig
 
 /** @suppress */
 internal object Logger {
+
+    fun e(
+        context: Context,
+        clazz: Class<*>,
+        resId: Int,
+        params: String
+    ) {
+        if (BuildConfig.DEBUG) {
+            val message = context.getString(resId, params)
+            Log.e(clazz.canonicalName, message)
+        }
+    }
+
     fun e(context: Context, clazz: Class<*>, resId:Int) {
         if (BuildConfig.DEBUG) {
             val message = context.getString(resId)

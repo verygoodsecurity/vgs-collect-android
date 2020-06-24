@@ -35,7 +35,8 @@ class CardBrandFilter(
                     currentMask = value.params.mask,
                     algorithm = value.params.algorithm,
                     numberLength = value.params.rangeNumber,
-                    cvcLength =  value.params.rangeCVV)
+                    cvcLength =  value.params.rangeCVV,
+                    successfullyDetected = true)
             }
         }
 

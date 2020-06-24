@@ -22,10 +22,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
-import com.verygoodsecurity.vgscollect.view.card.BrandParams
-import com.verygoodsecurity.vgscollect.view.card.CardType
-import com.verygoodsecurity.vgscollect.view.card.ChecksumAlgorithm
-import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
+import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import kotlinx.android.synthetic.main.activity_collect_demo.*
@@ -108,6 +105,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     private fun setupCardNumberField() {
         addCustomBrands()
+        setupDefaultBehaviour()
 
         vgsForm.bindView(cardNumberField)
 
@@ -148,9 +146,17 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         })
     }
 
+    private fun setupDefaultBehaviour() {
+        val rule = Rule.RuleBuilder()
+            .setAlgorithm(ChecksumAlgorithm.LUHN)
+            .setLength(arrayOf())
+            .build()
+        cardNumberField.addValidationRule(rule)
+    }
+
     private fun addCustomBrands() {
         val params = BrandParams(
-            "### ### ### ###",
+            "### ### ### ####",
             ChecksumAlgorithm.LUHN,
             arrayOf(4, 10, 12),
             arrayOf(3, 5)
@@ -165,7 +171,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
 
         val params2 = BrandParams(
-            "### ### ### ###",
+            "### ### ### ###### ###",
             ChecksumAlgorithm.LUHN,
             arrayOf(18),
             arrayOf(4)
@@ -343,3 +349,151 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         checkAttachedFiles()
     }
 }
+
+
+
+
+//        RulePARAMS {
+//        -  ChecksumAlgorithm.LUHN, arrayOf(12..19), eerorMesage
+//          - ignore
+//          - LUHN
+//
+//    }
+
+//        UNDEFINED == VISA
+
+//        customBrand
+//        customValidation
+//        ignore rules
+//
+
+//        defined ( default + custom )  -> ( length + brand ) + checkSUM
+//        undefined
+
+
+//        cardNumberField.addValidationRule(CardType.UNDEFINED, ChecksumAlgorithm.LUHN, arrayOf(10..19), eerorMesage)
+
+
+
+//        enum RUles {
+//            Luhn,
+//            Length
+//        }
+
+//        val arrayRules = { LuhnRule}
+//
+//
+//        CheckeSum ( aka Luhn + Some )
+//
+//
+
+
+//        enum CARDs {
+//                DEFINED,    // custom, default
+//                UNDEFINED  // unknown
+//        }
+
+//        UNDEFINED_CardNumberValidation_Luhn_LENGTH = ValidationBuilder().setGroup(CARDs.DEFINED)
+//                    .addRule(RUles.Luhn)
+//                    .addRule(RUles.Length(3..19))
+//                    .build()
+
+//        DATACALSS = ValidationBuilder().setGroup(CARDs.UNDEFINED)
+//                    .addRule(RUles.Luhn)
+//                    .addRule(RUles.Length(3..19))
+//                    .build()
+
+//        IOS
+//        cardNumberField.addValidationRule( UNDEFINED_CardNumberValidation_Luhn_LENGTH() )
+//        cardNumberField.addValidationRule( DEFINED_CardNumberValidation_NONE_CHECKSUM() )
+
+
+//        ANDROID
+//        cardNumberField.addValidationRule(CARDs.DEFINED, ChecksumAlgorithm.NONE )
+//        cardNumberField.addValidationRule(CARDs.UNDEFINED, arrayRules(  RUles.Length(4..19)   ))
+
+
+//   123 ##### 123
+//6 ..13
+//
+//> 11
+
+//        cardNumberField.addValidationRule(
+
+//              RUles.Length(4..19) ,
+
+//              ChecksumAlgorithm.ANY,
+//              ChecksumAlgorithm.Luhn,
+//              ChecksumAlgorithm.Some
+
+//        )
+
+
+
+//        cardNumberField.addValidationRule( ChecksumAlgorithm.Luhn, RUles.Length(16..19) )   - wolt case
+
+
+
+
+
+//        cardNumberField.setFlow_Unknown(CARDs.Flow_1)
+
+//        app:validation_1_for_default_card="checkSum"
+//
+//        app:validation_2="checkSum|Length"
+
+
+
+
+// UNDEFINED_CardNumberValidation_Luhn_SomeCheck
+// CardNumberValidationLuhn
+// CardNumberValidationSome
+
+// CardNumberValidationLength
+
+//    fun addValidationRule(type, array) {
+//        val list = List()
+//        when {
+//            array.idEmpty -> list.add(CardNumberValidationAllTrue)//none
+//            array == Luhn -> list.add(CardNumberValidationLuhn)
+//            array == Some -> list.add(CardNumberValidationSome)
+//            array == Length = list.add(CardNumberValidationLength)
+//        }
+//
+//        return list //CardNumberValidationLuhn, CardNumberValidationLength
+//    }
+//        val isLuhnValid: Boolean = validateCheckSum(card.algorithm, rawStr)
+//        val isLengthAppropriate = checkLength(card.numberLength, rawStr.length)
+
+
+
+//        cardNumberField.ignore(CardType.MAESTRO)
+
+
+
+//        cardNumberField.addValidationRule(CardType.ALL, ChecksumAlgorithm.LUHN)
+
+
+
+
+
+
+
+
+
+
+
+
+
+//              Brand                                    Unknown
+//        |                  |                              |
+//    Custom             Default                            |
+//
+// - Length(x)          - Length                     - Length (4..19)
+// - cvcLength(x)       - cvcLength                  - cvcLength (3, 4)
+// - algorithm          - algorithm                  - [ Luhn, Judas, ..., etc.]
+//
+//
+//
+
+

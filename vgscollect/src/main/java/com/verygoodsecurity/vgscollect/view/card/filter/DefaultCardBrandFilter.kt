@@ -27,7 +27,8 @@ class DefaultCardBrandFilter(
                             value.mask,
                             value.algorithm,
                             value.rangeNumber,
-                            value.rangeCVV)
+                            value.rangeCVV,
+                            value == CardType.NONE)
             }
         }
 
