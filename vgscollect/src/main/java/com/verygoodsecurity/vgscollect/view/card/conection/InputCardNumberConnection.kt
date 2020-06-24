@@ -6,7 +6,6 @@ import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
-import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.card.brand.*
 
@@ -79,42 +78,37 @@ internal class InputCardNumberConnection(
         card: CardBrandPreview
     ): Boolean {
         val rawStr = output.content?.data?.replace(divider ?: " ", "") ?: ""
-        val isStrValid = validator?.isValid(rawStr) ?: false
-        val isLuhnValid: Boolean = validateCheckSum(card.algorithm, rawStr)
 
-        val isLengthAppropriate = checkLength(card.numberLength, rawStr.length)
-        return isLuhnValid && isStrValid && isLengthAppropriate
+        val isValid = if(card.successfullyDetected) {
+            val isLengthAppropriate = checkLength(card.numberLength, rawStr.length)
+            val isLuhnValid: Boolean = validateCheckSum(card.algorithm, rawStr)
+
+            isLengthAppropriate && isLuhnValid
+        } else {
+            validator?.isValid(rawStr)?:false
+        }
+
+        return isValid
     }
 
     private fun validateCheckSum(
         algorithm: ChecksumAlgorithm,
         cardNumber: String
     ):Boolean {
-        return if(algorithm == ChecksumAlgorithm.LUHN) {
-            CardBrandDelegate().isValid(cardNumber)
-        } else {
-            false    // in the future will depends on RULE params
+        return when(algorithm) {
+            ChecksumAlgorithm.LUHN -> LuhnCheckSumDelegate().isValid(cardNumber)
+            ChecksumAlgorithm.NONE -> true
+            else -> false
         }
-//        val isLuhnValid: Boolean = brandLuhnValidations[card.cardType]?.isValid(rawStr) ?: true
     }
 
     private fun mapValue(item: CardBrandPreview) {
-        applyNewRule(item.regex)
-
         with(output.content as? FieldContent.CardNumberContent) {
             this?.cardtype = item.cardType
             this?.cardBrandName = item.name
             this?.iconResId = item.resId
             this?.numberRange = item.numberLength
             this?.rangeCVV = item.cvcLength
-        }
-    }
-
-    private fun applyNewRule(regex: String?) {
-        if(validator is MuttableValidator &&
-            !regex.isNullOrEmpty()) {
-            validator.clearRules()
-            validator.addRule(regex)
         }
     }
 

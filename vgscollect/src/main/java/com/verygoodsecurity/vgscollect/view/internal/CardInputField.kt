@@ -23,7 +23,10 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
+import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.card.brand.LuhnCheckSumDelegate
 
 /** @suppress */
 internal class CardInputField(context: Context): BaseInputField(context), InputCardNumberConnection.IDrawCardBrand {
@@ -52,15 +55,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
     }
 
     override fun applyFieldType() {
-        val validator = CardNumberValidator(divider)
-
-        inputConnection =
-            InputCardNumberConnection(
-                id,
-                validator,
-                this,
-                divider
-            )
+        inputConnection = InputCardNumberConnection(id, validator, this, divider)
 
         val defFilter = DefaultCardBrandFilter(CardType.values(), divider)
         inputConnection!!.addFilter(defFilter)
@@ -259,5 +254,42 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setAutofillHints(AUTOFILL_HINT_CREDIT_CARD_NUMBER )
         }
+    }
+
+    class LengthValidator(
+        private val length: Array<Int>
+    ) : VGSValidator {
+        override fun isValid(content: String?): Boolean {
+            return !content.isNullOrEmpty() && length.contains(content.length)
+        }
+    }
+
+    class CheckSumValidator(algorithm: ChecksumAlgorithm) : VGSValidator {
+        private val validationList:Array<VGSValidator> = when(algorithm) {
+            ChecksumAlgorithm.LUHN -> arrayOf(
+                LuhnCheckSumDelegate()
+            )
+            ChecksumAlgorithm.ANY -> arrayOf(
+                LuhnCheckSumDelegate()
+            )
+            else -> arrayOf()
+        }
+
+        override fun isValid(content: String?): Boolean {
+            var isValid = true
+            for(checkSumValidator in validationList) {
+                isValid =  checkSumValidator.isValid(content)
+                break
+            }
+           return isValid
+        }
+    }
+
+    private var validator: MuttableValidator = CardNumberValidator()
+
+    internal fun applyValidationRule(rule: Rule) {
+        validator.clearRules()
+        validator.addRule(LengthValidator(rule.length))
+        validator.addRule(CheckSumValidator(rule.algorithm))
     }
 }

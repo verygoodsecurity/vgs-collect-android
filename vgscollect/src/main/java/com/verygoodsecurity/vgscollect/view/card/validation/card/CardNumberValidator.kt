@@ -1,31 +1,25 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.card
 
 import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
-import java.util.regex.Pattern
+import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 /** @suppress */
-class CardNumberValidator(
-    private val divider:String? = " "
-) : MuttableValidator {
-    private val rules = ArrayList<String>()
+class CardNumberValidator() : MuttableValidator {
+    private val validators = mutableListOf<VGSValidator>()
 
     override fun clearRules() {
-        rules.clear()
+        validators.clear()
     }
 
-    override fun addRule(regex: String) {
-        rules.add(regex)
+    override fun addRule(validator: VGSValidator) {
+        validators.add(validator)
     }
 
     override fun isValid(content: String?): Boolean {
-        val preparedStr = content?.trim()?.replace(divider?:" ", "")
-        for(i in rules.indices) {
-            val rule = rules[i]
-            val m = Pattern.compile(rule).matcher(preparedStr)
-            while (m.find()) {
-                return true
-            }
+        var isValid = true
+        for(checkSumValidator in validators) {
+            isValid = isValid && checkSumValidator.isValid(content)
         }
-        return false
+        return isValid
     }
 }

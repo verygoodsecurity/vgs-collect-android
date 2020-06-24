@@ -27,6 +27,7 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.Rule
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
@@ -726,6 +727,12 @@ abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? CardInputField)?.getNumberDivider()?.first()
         } else {
             null
+        }
+    }
+
+    protected fun applyValidationRule(rule: Rule) {
+        if(fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.applyValidationRule(rule)
         }
     }
 

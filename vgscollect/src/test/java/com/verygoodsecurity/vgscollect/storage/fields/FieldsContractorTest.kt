@@ -15,7 +15,7 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-@Ignore
+//@Ignore
 @RunWith(RobolectricTestRunner::class)
 class FieldsContractorTest {
 
