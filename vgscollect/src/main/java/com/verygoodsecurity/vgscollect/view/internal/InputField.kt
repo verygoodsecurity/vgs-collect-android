@@ -27,7 +27,7 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
 import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.*
-import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.CardNumberValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.CardExpDateValidator
 
 /** @suppress */

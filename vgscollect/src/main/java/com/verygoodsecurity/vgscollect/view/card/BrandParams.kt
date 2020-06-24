@@ -1,8 +1,10 @@
 package com.verygoodsecurity.vgscollect.view.card
 
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
+
 data class BrandParams(
     val mask:String = "#### #### #### #### ###",
-    val algorithm:ChecksumAlgorithm = ChecksumAlgorithm.NONE,
+    val algorithm: ChecksumAlgorithm = ChecksumAlgorithm.NONE,
     val rangeNumber:Array<Int> = CardType.UNDEFINED.rangeNumber,
     val rangeCVV:Array<Int> = CardType.UNDEFINED.rangeCVV
 ) {

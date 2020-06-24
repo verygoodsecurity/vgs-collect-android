@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.card.validation.card
+package com.verygoodsecurity.vgscollect.view.card.validation.bank
 
 import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
@@ -16,10 +16,14 @@ class CardNumberValidator() : MuttableValidator {
     }
 
     override fun isValid(content: String?): Boolean {
-        var isValid = true
-        for(checkSumValidator in validators) {
-            isValid = isValid && checkSumValidator.isValid(content)
+        return if(validators.isEmpty()) {
+            false
+        } else {
+            var isValid = true
+            for (checkSumValidator in validators) {
+                isValid = isValid && checkSumValidator.isValid(content)
+            }
+            isValid
         }
-        return isValid
     }
 }

@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.card
 
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
 
 /**
  * Standard constants of credit card brands that are supported by SDK.

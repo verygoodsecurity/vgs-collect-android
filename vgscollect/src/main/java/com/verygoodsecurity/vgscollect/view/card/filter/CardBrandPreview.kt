@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.card.filter
 
 import com.verygoodsecurity.vgscollect.view.card.CardType
-import com.verygoodsecurity.vgscollect.view.card.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
 
 /** @suppress */
 data class CardBrandPreview(

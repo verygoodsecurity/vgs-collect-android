@@ -23,10 +23,11 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
+import com.verygoodsecurity.vgscollect.view.card.validation.CheckSumValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.card.brand.LuhnCheckSumDelegate
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.CardNumberValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.Rule
 
 /** @suppress */
 internal class CardInputField(context: Context): BaseInputField(context), InputCardNumberConnection.IDrawCardBrand {
@@ -256,40 +257,16 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         }
     }
 
-    class LengthValidator(
-        private val length: Array<Int>
-    ) : VGSValidator {
-        override fun isValid(content: String?): Boolean {
-            return !content.isNullOrEmpty() && length.contains(content.length)
-        }
-    }
-
-    class CheckSumValidator(algorithm: ChecksumAlgorithm) : VGSValidator {
-        private val validationList:Array<VGSValidator> = when(algorithm) {
-            ChecksumAlgorithm.LUHN -> arrayOf(
-                LuhnCheckSumDelegate()
-            )
-            ChecksumAlgorithm.ANY -> arrayOf(
-                LuhnCheckSumDelegate()
-            )
-            else -> arrayOf()
-        }
-
-        override fun isValid(content: String?): Boolean {
-            var isValid = true
-            for(checkSumValidator in validationList) {
-                isValid =  checkSumValidator.isValid(content)
-                break
-            }
-           return isValid
-        }
-    }
-
     private var validator: MuttableValidator = CardNumberValidator()
 
     internal fun applyValidationRule(rule: Rule) {
         validator.clearRules()
-        validator.addRule(LengthValidator(rule.length))
-        validator.addRule(CheckSumValidator(rule.algorithm))
+        rule.length?.let {
+            validator.addRule(LengthValidator(it))
+        }
+        rule.algorithm?.let {
+            validator.addRule(CheckSumValidator(rule.algorithm))
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.card.validation.card.brand
+package com.verygoodsecurity.vgscollect.view.card.validation.bank.brand
 
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import java.util.regex.Pattern
