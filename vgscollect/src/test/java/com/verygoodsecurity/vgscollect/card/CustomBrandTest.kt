@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscollect.card
 
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
-import com.verygoodsecurity.vgscollect.view.card.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
