@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.card.filter
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardType
-import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
+import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
 import org.junit.Assert.assertEquals
@@ -22,8 +22,8 @@ class CardBrandFilterTest {
 
     @Test
     fun test_detect_custom_brand() {
-        val c1 = CustomCardBrand("^123", "VG_Search", drawableResId = R.drawable.ic_card_front_preview_dark)
-        val c2 = CustomCardBrand("^777", "VGS", drawableResId = R.drawable.ic_jcb_light)
+        val c1 = CardBrand("^123", "VG_Search", drawableResId = R.drawable.ic_card_front_preview_dark)
+        val c2 = CardBrand("^777", "VGS", drawableResId = R.drawable.ic_jcb_light)
 
         filter.add(c1)
         filter.add(c2)
@@ -34,8 +34,8 @@ class CardBrandFilterTest {
 
     @Test
     fun test_detect_custom_brand_2() {
-        val c1 = CustomCardBrand("^123", "VG_Search", drawableResId = R.drawable.ic_card_front_preview_dark)
-        val c2 = CustomCardBrand("^777", "VGS", drawableResId = R.drawable.ic_jcb_light)
+        val c1 = CardBrand("^123", "VG_Search", drawableResId = R.drawable.ic_card_front_preview_dark)
+        val c2 = CardBrand("^777", "VGS", drawableResId = R.drawable.ic_jcb_light)
 
         filter.add(c1)
         filter.add(c2)
@@ -53,7 +53,7 @@ class CardBrandFilterTest {
         val mask = "### ### ### #####"
         val params = BrandParams(mask)
 
-        val c1 = CustomCardBrand(regex, name, resId, params)
+        val c1 = CardBrand(regex, name, resId, params)
 
         filter.add(c1)
 
@@ -71,8 +71,8 @@ class CardBrandFilterTest {
     fun test_detect_custom_brand_divider() {
         (filter as CardBrandFilter).setDivider("-")
 
-        val c1 = CustomCardBrand("^123", "VG_Search", drawableResId = R.drawable.ic_card_front_preview_dark)
-        val c2 = CustomCardBrand("^777", "VGS", drawableResId = R.drawable.ic_jcb_light)
+        val c1 = CardBrand("^123", "VG_Search", drawableResId = R.drawable.ic_card_front_preview_dark)
+        val c2 = CardBrand("^777", "VGS", drawableResId = R.drawable.ic_jcb_light)
 
         filter.add(c1)
         filter.add(c2)
@@ -92,7 +92,7 @@ class CardBrandFilterTest {
         val mask = "### ### ### #####"
         val params = BrandParams(mask)
 
-        val c1 = CustomCardBrand(regex, name, resId, params)
+        val c1 = CardBrand(regex, name, resId, params)
 
         filter.add(c1)
 

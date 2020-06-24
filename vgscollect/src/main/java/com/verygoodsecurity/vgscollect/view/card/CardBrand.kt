@@ -6,7 +6,7 @@ package com.verygoodsecurity.vgscollect.view.card
  *
  * @since 1.0.1
  */
-data class CustomCardBrand(
+data class CardBrand(
 
     /** The regex rules for detection card brand. */
     val regex:String,

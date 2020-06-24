@@ -131,7 +131,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         return iconGravity
     }
 
-    internal fun setCardBrand(c: CustomCardBrand) {
+    internal fun setCardBrand(c: CardBrand) {
         userFilter.add(c)
         inputConnection?.run()
     }

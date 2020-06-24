@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import com.verygoodsecurity.vgscollect.view.card.CardType
-import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
+import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
 import org.junit.Assert.*
@@ -136,7 +136,7 @@ class InputCardNumberConnectionTest {
 
     @Test
     fun test_custom_filter() {
-        val customBrand = CustomCardBrand("^777", "VGS", R.drawable.ic_jcb_light)
+        val customBrand = CardBrand("^777", "VGS", R.drawable.ic_jcb_light)
         val preview = CardBrandPreview(CardType.NONE,
             customBrand.regex,
             customBrand.cardBrandName,

@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
-import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
+import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.Rule
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
@@ -110,7 +110,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      *
      * @param c new card definition
      */
-    fun addCardBrand(c: CustomCardBrand) {
+    fun addCardBrand(c: CardBrand) {
         val digitCount = c.params.mask.replace("[^#]".toRegex(), "").length
         if(c.params.rangeNumber.contains(digitCount)) {
             applyCardBrand(c)

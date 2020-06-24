@@ -161,7 +161,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
             arrayOf(4, 10, 12),
             arrayOf(3, 5)
         )
-        val newBrand = CustomCardBrand(
+        val newBrand = CardBrand(
             "^777",
             "NEW BRAND",
             R.drawable.ic_cards,
@@ -176,7 +176,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
             arrayOf(18),
             arrayOf(4)
         )
-        val newBrand2 = CustomCardBrand(
+        val newBrand2 = CardBrand(
             "^878",
             "VGS Brand",
             CardType.MAESTRO.resId,

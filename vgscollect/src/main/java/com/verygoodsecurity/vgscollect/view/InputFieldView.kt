@@ -25,7 +25,7 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
-import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
+import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.Rule
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
@@ -710,7 +710,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    protected fun applyCardBrand(c: CustomCardBrand) {
+    protected fun applyCardBrand(c: CardBrand) {
         if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardBrand(c)
         }
