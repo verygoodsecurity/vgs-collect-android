@@ -135,7 +135,7 @@ enum class CardType(val regex:String,
         arrayOf(3)
     ),
 
-    NONE(
+    UNDEFINED(
         "^\$a",
         R.drawable.ic_card_front_preview_dark,
         "#### #### #### #### ###",

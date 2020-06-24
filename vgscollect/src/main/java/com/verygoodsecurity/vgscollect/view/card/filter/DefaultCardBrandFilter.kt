@@ -28,7 +28,7 @@ class DefaultCardBrandFilter(
                             value.algorithm,
                             value.rangeNumber,
                             value.rangeCVV,
-                            value == CardType.NONE)
+                            value == CardType.UNDEFINED)
             }
         }
 

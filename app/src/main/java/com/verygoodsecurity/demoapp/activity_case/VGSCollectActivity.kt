@@ -149,8 +149,9 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     private fun setupDefaultBehaviour() {
         val rule = Rule.RuleBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
-            .setLength(arrayOf())
+            .setMinLength(5)
             .build()
+
         cardNumberField.addValidationRule(rule)
     }
 

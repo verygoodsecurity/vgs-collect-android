@@ -13,9 +13,9 @@ sealed class FieldContent {
 
     class CardNumberContent:FieldContent() {
         var rawData:String? = null
-        var cardtype: CardType = CardType.NONE
-        var numberRange: Array<Int> = CardType.NONE.rangeNumber
-        var rangeCVV: Array<Int> = CardType.NONE.rangeCVV
+        var cardtype: CardType = CardType.UNDEFINED
+        var numberRange: Array<Int> = CardType.UNDEFINED.rangeNumber
+        var rangeCVV: Array<Int> = CardType.UNDEFINED.rangeCVV
         var iconResId:Int? = 0
             internal set
         var cardBrandName:String? = null

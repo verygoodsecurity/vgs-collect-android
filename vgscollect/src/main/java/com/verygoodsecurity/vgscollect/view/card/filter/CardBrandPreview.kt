@@ -5,14 +5,14 @@ import com.verygoodsecurity.vgscollect.view.card.ChecksumAlgorithm
 
 /** @suppress */
 data class CardBrandPreview(
-    val cardType: CardType = CardType.NONE,
-    val regex:String = CardType.NONE.regex,
-    val name:String? = CardType.NONE.name,
-    val resId:Int = CardType.NONE.resId,
-    var currentMask:String = CardType.NONE.mask,
+    val cardType: CardType = CardType.UNDEFINED,
+    val regex:String = CardType.UNDEFINED.regex,
+    val name:String? = CardType.UNDEFINED.name,
+    val resId:Int = CardType.UNDEFINED.resId,
+    var currentMask:String = CardType.UNDEFINED.mask,
     var algorithm: ChecksumAlgorithm = ChecksumAlgorithm.NONE,
-    var numberLength: Array<Int> = CardType.NONE.rangeNumber,
-    var cvcLength: Array<Int> = CardType.NONE.rangeCVV,
+    var numberLength: Array<Int> = CardType.UNDEFINED.rangeNumber,
+    var cvcLength: Array<Int> = CardType.UNDEFINED.rangeCVV,
     val successfullyDetected:Boolean = false
 ) {
     override fun equals(other: Any?): Boolean {

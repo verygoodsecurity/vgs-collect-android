@@ -3,8 +3,8 @@ package com.verygoodsecurity.vgscollect.view.card
 data class BrandParams(
     val mask:String = "#### #### #### #### ###",
     val algorithm:ChecksumAlgorithm = ChecksumAlgorithm.NONE,
-    val rangeNumber:Array<Int> = CardType.NONE.rangeNumber,
-    val rangeCVV:Array<Int> = CardType.NONE.rangeCVV
+    val rangeNumber:Array<Int> = CardType.UNDEFINED.rangeNumber,
+    val rangeCVV:Array<Int> = CardType.UNDEFINED.rangeCVV
 ) {
 
     override fun equals(other: Any?): Boolean {

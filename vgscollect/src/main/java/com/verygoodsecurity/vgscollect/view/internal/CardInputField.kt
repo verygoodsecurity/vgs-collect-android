@@ -42,7 +42,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
     private var divider:String = SPACE
     private var iconGravity:Int = Gravity.NO_GRAVITY
-    private var cardtype: CardType = CardType.NONE
+    private var cardtype: CardType = CardType.UNDEFINED
 
     private var cardNumberMask:String = DEFAULT_MASK
 

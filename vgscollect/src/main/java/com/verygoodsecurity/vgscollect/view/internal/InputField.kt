@@ -43,7 +43,7 @@ internal class InputField(context: Context): BaseInputField(context),
         }
     }
 
-    private var cardtype: CardType = CardType.NONE
+    private var cardtype: CardType = CardType.UNDEFINED
 
     private var iconAdapter = CardIconAdapter(context)
 
