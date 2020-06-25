@@ -5,23 +5,23 @@ data class Rule private constructor(
     val length:Array<Int>?
 ) {
 
-    class RuleBuilder {
+    class ValidationRuleBuilder {
         private var algorithm: ChecksumAlgorithm? = null
         private var length:Array<Int>? = null
         private var minLength = -1
         private var maxLength = -1
 
-        fun setAlgorithm(algorithm: ChecksumAlgorithm): RuleBuilder {
+        fun setAlgorithm(algorithm: ChecksumAlgorithm): ValidationRuleBuilder {
             this.algorithm = algorithm
             return this
         }
 
-        fun setLength(length:Array<Int>): RuleBuilder {
+        fun setLength(length:Array<Int>): ValidationRuleBuilder {
             this.length = length
             return this
         }
 
-        fun setMinLength(length:Int): RuleBuilder {
+        fun setMinLength(length:Int): ValidationRuleBuilder {
             if(maxLength == -1) {
                 maxLength = 19
             }
@@ -33,7 +33,7 @@ data class Rule private constructor(
             return this
         }
 
-        fun setMaxLength(length:Int): RuleBuilder {
+        fun setMaxLength(length:Int): ValidationRuleBuilder {
             if(minLength == -1) {
                 minLength = 13
             }

@@ -17,7 +17,6 @@ import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -268,7 +267,7 @@ class VGSCardNumberEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = Rule.RuleBuilder()
+        val rule = Rule.ValidationRuleBuilder()
             .setLength(arrayOf(12, 15))
             .build()
         view.addRule(rule)
@@ -308,7 +307,7 @@ class VGSCardNumberEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = Rule.RuleBuilder()
+        val rule = Rule.ValidationRuleBuilder()
             .setMinLength(7)
             .build()
         view.addRule(rule)
@@ -351,7 +350,7 @@ class VGSCardNumberEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = Rule.RuleBuilder()
+        val rule = Rule.ValidationRuleBuilder()
             .setMaxLength(17)
             .build()
         view.addRule(rule)
@@ -404,7 +403,7 @@ class VGSCardNumberEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = Rule.RuleBuilder()
+        val rule = Rule.ValidationRuleBuilder()
             .setMaxLength(17)
             .setMinLength(15)
             .build()
@@ -464,7 +463,7 @@ class VGSCardNumberEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = Rule.RuleBuilder()
+        val rule = Rule.ValidationRuleBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
             .build()
         view.addRule(rule)
@@ -506,7 +505,7 @@ class VGSCardNumberEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = Rule.RuleBuilder()
+        val rule = Rule.ValidationRuleBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
             .setLength(arrayOf(16))
             .build()

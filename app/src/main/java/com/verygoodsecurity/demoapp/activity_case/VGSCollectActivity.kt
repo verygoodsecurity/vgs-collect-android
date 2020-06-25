@@ -149,7 +149,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun setupDefaultBehaviour() {
-        val rule = Rule.RuleBuilder()
+        val rule = Rule.ValidationRuleBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
 //            .setLength(arrayOf(13,11,19,16))
 //            .setMinLength(5)
