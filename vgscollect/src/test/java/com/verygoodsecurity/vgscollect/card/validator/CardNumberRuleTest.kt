@@ -80,4 +80,56 @@ class CardNumberRuleTest {
         assertArrayEquals(arrayOf(16,17,18,19), rule.length)
     }
 
+    @Test
+    fun test_max_min_length_rule() {
+        val rule = Rule.RuleBuilder()
+            .setMaxLength(19)
+            .setMinLength(16)
+            .build()
+        assertEquals(null, rule.algorithm)
+        assertArrayEquals(arrayOf(16,17,18,19), rule.length)
+    }
+
+    @Test
+    fun test_2_rule() {
+        val rule = Rule.RuleBuilder()
+            .setMaxLength(19)
+            .setMinLength(16)
+            .setLength(arrayOf(12,15,19))
+            .build()
+        assertEquals(null, rule.algorithm)
+        assertArrayEquals(arrayOf(12,15,19), rule.length)
+    }
+
+    @Test
+    fun test_3_rule() {
+        val rule = Rule.RuleBuilder()
+            .setLength(arrayOf(12,15,19))
+            .setMaxLength(19)
+            .setMinLength(16)
+            .build()
+        assertEquals(null, rule.algorithm)
+        assertArrayEquals(arrayOf(12,15,19), rule.length)
+    }
+
+    @Test
+    fun test_4_rule() {
+        val rule = Rule.RuleBuilder()
+            .setMaxLength(13)
+            .setMinLength(16)
+            .build()
+        assertEquals(null, rule.algorithm)
+        assertArrayEquals(arrayOf(13), rule.length)
+    }
+
+    @Test
+    fun test_5_rule() {
+        val rule = Rule.RuleBuilder()
+            .setMinLength(16)
+            .setMaxLength(13)
+            .build()
+        assertEquals(null, rule.algorithm)
+        assertArrayEquals(arrayOf(13), rule.length)
+    }
+
 }

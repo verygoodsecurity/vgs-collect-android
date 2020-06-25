@@ -305,6 +305,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         applyFieldType()
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun refreshInternalState() {
+        inputConnection?.run()
+    }
+
+
     override fun setOnFocusChangeListener(l: OnFocusChangeListener?) {
         if(!isFocusListeningConfigured) {
             isFocusListeningConfigured = true

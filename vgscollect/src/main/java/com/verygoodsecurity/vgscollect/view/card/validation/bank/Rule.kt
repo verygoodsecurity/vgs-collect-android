@@ -37,11 +37,10 @@ data class Rule private constructor(
             if(minLength == -1) {
                 minLength = 13
             }
-            maxLength = if(length < minLength) {
-                minLength
-            } else {
-                length
+            if(length < minLength) {
+                minLength = length
             }
+            maxLength = length
             return this
         }
 
