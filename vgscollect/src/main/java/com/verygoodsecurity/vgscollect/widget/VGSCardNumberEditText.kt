@@ -167,7 +167,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
 
-    fun addValidationRule(rule: Rule) {
+    fun addRule(rule: Rule) {
         applyValidationRule(rule)
     }
 }
