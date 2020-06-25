@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.Rule
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.BankCardRule
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 
@@ -167,7 +167,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
 
-    fun addRule(rule: Rule) {
+    fun addRule(rule: BankCardRule) {
         applyValidationRule(rule)
     }
 }

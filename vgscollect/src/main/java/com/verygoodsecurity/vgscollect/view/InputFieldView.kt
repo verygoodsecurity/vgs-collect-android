@@ -27,7 +27,7 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.Rule
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.BankCardRule
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
@@ -730,7 +730,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    protected fun applyValidationRule(rule: Rule) {
+    protected fun applyValidationRule(rule: BankCardRule) {
         if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.applyValidationRule(rule)
         }

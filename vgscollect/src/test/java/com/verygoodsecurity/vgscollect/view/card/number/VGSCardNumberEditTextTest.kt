@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.Rule
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.BankCardRule
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CardInputField
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
@@ -267,7 +267,7 @@ class VGSCardNumberEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = Rule.ValidationRuleBuilder()
+        val rule = BankCardRule.ValidationRuleBuilder()
             .setLength(arrayOf(12, 15))
             .build()
         view.addRule(rule)
@@ -307,7 +307,7 @@ class VGSCardNumberEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = Rule.ValidationRuleBuilder()
+        val rule = BankCardRule.ValidationRuleBuilder()
             .setMinLength(7)
             .build()
         view.addRule(rule)
@@ -350,7 +350,7 @@ class VGSCardNumberEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = Rule.ValidationRuleBuilder()
+        val rule = BankCardRule.ValidationRuleBuilder()
             .setMaxLength(17)
             .build()
         view.addRule(rule)
@@ -403,7 +403,7 @@ class VGSCardNumberEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = Rule.ValidationRuleBuilder()
+        val rule = BankCardRule.ValidationRuleBuilder()
             .setMaxLength(17)
             .setMinLength(15)
             .build()
@@ -463,7 +463,7 @@ class VGSCardNumberEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = Rule.ValidationRuleBuilder()
+        val rule = BankCardRule.ValidationRuleBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
             .build()
         view.addRule(rule)
@@ -505,7 +505,7 @@ class VGSCardNumberEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = Rule.ValidationRuleBuilder()
+        val rule = BankCardRule.ValidationRuleBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
             .setLength(arrayOf(16))
             .build()
