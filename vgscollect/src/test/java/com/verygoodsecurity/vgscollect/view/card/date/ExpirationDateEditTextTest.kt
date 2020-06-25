@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.card.date
 
 import android.app.Activity
-import android.os.Build
 import android.text.InputType
 import android.view.View
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
@@ -20,9 +19,8 @@ import org.mockito.Mockito
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
-import org.robolectric.annotation.Config
 
-//@Ignore
+@Ignore
 @RunWith(RobolectricTestRunner::class)
 class ExpirationDateEditTextTest {
 

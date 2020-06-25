@@ -19,7 +19,7 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
 
-//@Ignore
+@Ignore
 @RunWith(RobolectricTestRunner::class)
 class CardVerificationCodeEditTextTest {
     private lateinit var activityController: ActivityController<Activity>

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.os.Build
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import org.junit.Assert
@@ -14,9 +13,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 
-//@Ignore
+@Ignore
 @RunWith(RobolectricTestRunner::class)
 class CardIconAdapterTest {
 
