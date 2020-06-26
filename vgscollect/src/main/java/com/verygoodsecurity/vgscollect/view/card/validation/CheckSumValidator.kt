@@ -1,15 +1,15 @@
 package com.verygoodsecurity.vgscollect.view.card.validation
 
 import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.brand.LuhnCheckSumDelegate
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.brand.LuhnCheckSumValidator
 
 class CheckSumValidator(algorithm: ChecksumAlgorithm) : VGSValidator {
     private val validationList:Array<VGSValidator> = when(algorithm) {
         ChecksumAlgorithm.LUHN -> arrayOf(
-            LuhnCheckSumDelegate()
+            LuhnCheckSumValidator()
         )
         ChecksumAlgorithm.ANY -> arrayOf(
-            LuhnCheckSumDelegate()
+            LuhnCheckSumValidator()
         )
         else -> arrayOf()
     }

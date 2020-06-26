@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.card.validator.luhn
 
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.brand.LuhnCheckSumDelegate
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.brand.LuhnCheckSumValidator
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -8,7 +8,7 @@ class CardBrandDelegateTest {
 
     @Test
     fun detectAmex1() {
-        val amex = LuhnCheckSumDelegate()
+        val amex = LuhnCheckSumValidator()
 
         val state = amex.isValid("370000000000002")
 
@@ -17,7 +17,7 @@ class CardBrandDelegateTest {
 
     @Test
     fun detectAmex2() {
-        val amex = LuhnCheckSumDelegate()
+        val amex = LuhnCheckSumValidator()
 
         val state = amex.isValid("378282246310005")
 
@@ -26,7 +26,7 @@ class CardBrandDelegateTest {
 
     @Test
     fun detectAmex3() {
-        val amex = LuhnCheckSumDelegate()
+        val amex = LuhnCheckSumValidator()
 
         val state = amex.isValid("371449635398431")
 
@@ -35,7 +35,7 @@ class CardBrandDelegateTest {
 
     @Test
     fun detectAmex4() {
-        val amex = LuhnCheckSumDelegate()
+        val amex = LuhnCheckSumValidator()
 
         val state = amex.isValid("378734493671000")
 
@@ -44,7 +44,7 @@ class CardBrandDelegateTest {
 
     @Test
     fun detectAmex5() {
-        val amex = LuhnCheckSumDelegate()
+        val amex = LuhnCheckSumValidator()
 
         val state = amex.isValid("374111111111111")
 
@@ -53,7 +53,7 @@ class CardBrandDelegateTest {
 
     @Test
     fun detectAmex6() {
-        val amex = LuhnCheckSumDelegate()
+        val amex = LuhnCheckSumValidator()
 
         val state = amex.isValid("373953192351004")
 
@@ -62,7 +62,7 @@ class CardBrandDelegateTest {
 
     @Test
     fun detectAmex7() {
-        val amex = LuhnCheckSumDelegate()
+        val amex = LuhnCheckSumValidator()
 
         val state = amex.isValid("346018484777573")
 
@@ -71,7 +71,7 @@ class CardBrandDelegateTest {
 
     @Test
     fun detectAmex8() {
-        val amex = LuhnCheckSumDelegate()
+        val amex = LuhnCheckSumValidator()
 
         val state = amex.isValid("374101000000608")
 
@@ -80,7 +80,7 @@ class CardBrandDelegateTest {
 
     @Test
     fun detectAmex9() {
-        val amex = LuhnCheckSumDelegate()
+        val amex = LuhnCheckSumValidator()
 
         val state = amex.isValid("376525000000010")
 
@@ -89,7 +89,7 @@ class CardBrandDelegateTest {
 
     @Test
     fun detectAmex10() {
-        val amex = LuhnCheckSumDelegate()
+        val amex = LuhnCheckSumValidator()
 
         val state = amex.isValid("375425000000907")
 
@@ -98,7 +98,7 @@ class CardBrandDelegateTest {
 
     @Test
     fun detectAmex11() {
-        val amex = LuhnCheckSumDelegate()
+        val amex = LuhnCheckSumValidator()
 
         val state = amex.isValid("343452000000306")
 
@@ -107,7 +107,7 @@ class CardBrandDelegateTest {
 
     @Test
     fun detectAmex12() {
-        val amex = LuhnCheckSumDelegate()
+        val amex = LuhnCheckSumValidator()
 
         val state = amex.isValid("372349000000852")
 

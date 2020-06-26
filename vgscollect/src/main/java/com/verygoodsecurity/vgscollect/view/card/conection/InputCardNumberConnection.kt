@@ -96,7 +96,7 @@ internal class InputCardNumberConnection(
         cardNumber: String
     ):Boolean {
         return when(algorithm) {
-            ChecksumAlgorithm.LUHN -> LuhnCheckSumDelegate().isValid(cardNumber)
+            ChecksumAlgorithm.LUHN -> LuhnCheckSumValidator().isValid(cardNumber)
             ChecksumAlgorithm.NONE -> true
             else -> false
         }

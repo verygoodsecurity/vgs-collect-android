@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.card.validator.luhn
 
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.brand.LuhnCheckSumDelegate
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.brand.LuhnCheckSumValidator
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -8,7 +8,7 @@ class DiscoverDelegateTest {
 
     @Test
     fun detectDiscover1() {
-        val discover = LuhnCheckSumDelegate()
+        val discover = LuhnCheckSumValidator()
 
         val state = discover.isValid("6011000000000004")
 
@@ -17,7 +17,7 @@ class DiscoverDelegateTest {
 
     @Test
     fun detectDiscover2() {
-        val discover = LuhnCheckSumDelegate()
+        val discover = LuhnCheckSumValidator()
 
         val state = discover.isValid("6011111111111117")
 
@@ -26,7 +26,7 @@ class DiscoverDelegateTest {
 
     @Test
     fun detectDiscover3() {
-        val discover = LuhnCheckSumDelegate()
+        val discover = LuhnCheckSumValidator()
 
         val state = discover.isValid("6011000990139424")
 
@@ -35,7 +35,7 @@ class DiscoverDelegateTest {
 
     @Test
     fun detectDiscover4() {
-        val discover = LuhnCheckSumDelegate()
+        val discover = LuhnCheckSumValidator()
 
         val state = discover.isValid("6011000400000000")
 
@@ -44,7 +44,7 @@ class DiscoverDelegateTest {
 
     @Test
     fun detectDiscover5() {
-        val discover = LuhnCheckSumDelegate()
+        val discover = LuhnCheckSumValidator()
 
         val state = discover.isValid("6011000000000087")
 
@@ -53,7 +53,7 @@ class DiscoverDelegateTest {
 
     @Test
     fun detectDiscover6() {
-        val discover = LuhnCheckSumDelegate()
+        val discover = LuhnCheckSumValidator()
 
         val state = discover.isValid("6011000000001010")
 
@@ -62,7 +62,7 @@ class DiscoverDelegateTest {
 
     @Test
     fun detectDiscover7() {
-        val discover = LuhnCheckSumDelegate()
+        val discover = LuhnCheckSumValidator()
 
         val state = discover.isValid("6011000000001028")
 
@@ -71,7 +71,7 @@ class DiscoverDelegateTest {
 
     @Test
     fun detectDiscover8() {
-        val discover = LuhnCheckSumDelegate()
+        val discover = LuhnCheckSumValidator()
 
         val state = discover.isValid("6011000000001036")
 
@@ -80,7 +80,7 @@ class DiscoverDelegateTest {
 
     @Test
     fun detectDiscover9() {
-        val discover = LuhnCheckSumDelegate()
+        val discover = LuhnCheckSumValidator()
 
         val state = discover.isValid("6011000000002000")
 
@@ -89,7 +89,7 @@ class DiscoverDelegateTest {
 
     @Test
     fun detectDiscover10() {
-        val discover = LuhnCheckSumDelegate()
+        val discover = LuhnCheckSumValidator()
 
         val state = discover.isValid("6011000000000012")
 

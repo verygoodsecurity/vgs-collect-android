@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card.validation.bank.brand
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 /** @suppress */
-class LuhnCheckSumDelegate : VGSValidator {
+class LuhnCheckSumValidator : VGSValidator {
 
     override fun isValid(content: String?): Boolean {
         return !content.isNullOrEmpty() && isLuhnCheckSumValid(content)

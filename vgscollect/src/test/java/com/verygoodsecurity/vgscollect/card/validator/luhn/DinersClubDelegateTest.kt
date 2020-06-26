@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.card.validator.luhn
 
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.brand.LuhnCheckSumDelegate
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.brand.LuhnCheckSumValidator
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -8,7 +8,7 @@ class DinersClubDelegateTest {
 
     @Test
     fun detectDinersClub_1() {
-        val dinClub = LuhnCheckSumDelegate()
+        val dinClub = LuhnCheckSumValidator()
 
         val state = dinClub.isValid("30569309025904")
 
@@ -17,7 +17,7 @@ class DinersClubDelegateTest {
 
     @Test
     fun detectDinersClub_2() {
-        val dinClub = LuhnCheckSumDelegate()
+        val dinClub = LuhnCheckSumValidator()
 
         val state = dinClub.isValid("38520000023237")
 
@@ -26,7 +26,7 @@ class DinersClubDelegateTest {
 
     @Test
     fun detectDinersClub_3() {
-        val dinClub = LuhnCheckSumDelegate()
+        val dinClub = LuhnCheckSumValidator()
 
         val state = dinClub.isValid("38000000000006")
 
@@ -35,7 +35,7 @@ class DinersClubDelegateTest {
 
     @Test
     fun detectDinersClub_4() {
-        val dinClub = LuhnCheckSumDelegate()
+        val dinClub = LuhnCheckSumValidator()
 
         val state = dinClub.isValid("36256000000725")
 
@@ -44,7 +44,7 @@ class DinersClubDelegateTest {
 
     @Test
     fun detectDinersClub_5() {
-        val dinClub = LuhnCheckSumDelegate()
+        val dinClub = LuhnCheckSumValidator()
 
         val state = dinClub.isValid("36256000000998")
 
@@ -53,7 +53,7 @@ class DinersClubDelegateTest {
 
     @Test
     fun detectDinersClub_6() {
-        val dinClub = LuhnCheckSumDelegate()
+        val dinClub = LuhnCheckSumValidator()
 
         val state = dinClub.isValid("36256000000634")
 
@@ -62,7 +62,7 @@ class DinersClubDelegateTest {
 
     @Test
     fun detectDinersClub_7() {
-        val dinClub = LuhnCheckSumDelegate()
+        val dinClub = LuhnCheckSumValidator()
 
         val state = dinClub.isValid("38865000000705")
 
@@ -71,7 +71,7 @@ class DinersClubDelegateTest {
 
     @Test
     fun detectDinersClub_8() {
-        val dinClub = LuhnCheckSumDelegate()
+        val dinClub = LuhnCheckSumValidator()
 
         val state = dinClub.isValid("30450000000985")
 
@@ -80,7 +80,7 @@ class DinersClubDelegateTest {
 
     @Test
     fun detectDinersClub_9() {
-        val dinClub = LuhnCheckSumDelegate()
+        val dinClub = LuhnCheckSumValidator()
 
         val state = dinClub.isValid("36700102000000")
 
@@ -89,7 +89,7 @@ class DinersClubDelegateTest {
 
     @Test
     fun detectDinersClub_10() {
-        val dinClub = LuhnCheckSumDelegate()
+        val dinClub = LuhnCheckSumValidator()
 
         val state = dinClub.isValid("36148900647913")
 

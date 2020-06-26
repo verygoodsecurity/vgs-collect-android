@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.card.validator.luhn
 
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.brand.LuhnCheckSumDelegate
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.brand.LuhnCheckSumValidator
 import org.junit.Assert
 import org.junit.Test
 
@@ -8,7 +8,7 @@ class EloDelegateTest {
 
     @Test
     fun detectElo1() {
-        val elo = LuhnCheckSumDelegate()
+        val elo = LuhnCheckSumValidator()
 
         val state = elo.isValid("5066991111111118")
 
@@ -17,7 +17,7 @@ class EloDelegateTest {
 
     @Test
     fun detectElo2() {
-        val elo = LuhnCheckSumDelegate()
+        val elo = LuhnCheckSumValidator()
 
         val state = elo.isValid("6362970000457013")
 
@@ -26,7 +26,7 @@ class EloDelegateTest {
 
     @Test
     fun detectElo3() {
-        val elo = LuhnCheckSumDelegate()
+        val elo = LuhnCheckSumValidator()
 
         val state = elo.isValid("5067310000000010")
 
@@ -35,7 +35,7 @@ class EloDelegateTest {
 
     @Test
     fun detectElo4() {
-        val elo = LuhnCheckSumDelegate()
+        val elo = LuhnCheckSumValidator()
 
         val state = elo.isValid("5067312520593847")
 
