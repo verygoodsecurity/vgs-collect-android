@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import java.util.regex.Pattern
 
 /** @suppress */
-class DefaultCardValidator(
+class RegexValidator(
     regex:String = ""
 ): VGSValidator {
     private val m = Pattern.compile(regex)
