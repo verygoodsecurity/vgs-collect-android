@@ -46,10 +46,8 @@ data class BankCardNumberRule private constructor(
 
         fun build(): BankCardNumberRule {
             val range = when {
-                length.isNullOrEmpty() &&
-                        minLength != -1 &&
-                        maxLength != -1 -> (minLength..maxLength).toList().toTypedArray()
                 !length.isNullOrEmpty() -> length
+                minLength != -1 && maxLength != -1 -> (minLength..maxLength).toList().toTypedArray()
                 else -> null
             }
 
