@@ -1082,6 +1082,7 @@ abstract class InputFieldView @JvmOverloads constructor(
             null
         }
     }
+
     protected fun getCVCState() :  FieldState.CVCState? {
         return if(fieldType == FieldType.CVC) {
             (inputField as? CVCInputField)?.getState() as? FieldState.CVCState
@@ -1089,6 +1090,7 @@ abstract class InputFieldView @JvmOverloads constructor(
             null
         }
     }
+
     protected fun getCardHolderName() :  FieldState.CardHolderNameState? {
         return if(fieldType == FieldType.CARD_HOLDER_NAME) {
             (inputField as? PersonNameInputField)?.getState() as? FieldState.CardHolderNameState
@@ -1096,6 +1098,7 @@ abstract class InputFieldView @JvmOverloads constructor(
             null
         }
     }
+
     protected fun getExpirationDate() :  FieldState.CardExpirationDateState? {
         return if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.getState() as? FieldState.CardExpirationDateState
@@ -1103,10 +1106,17 @@ abstract class InputFieldView @JvmOverloads constructor(
             null
         }
     }
+
     protected fun getInfoState() :  FieldState.InfoState? {
         return (inputField as? DateInputField)?.getState() as? FieldState.InfoState
     }
 
+    /**
+     * Set the validation state of this view.
+     *
+     * @param isEnabled True if this view has enabled validation, false otherwise.
+     *
+     */
     fun enableValidation(isEnabled:Boolean) {
         inputField.enableValidation = isEnabled
     }
@@ -1115,5 +1125,10 @@ abstract class InputFieldView @JvmOverloads constructor(
         return enableValidation != null
     }
 
+    /**
+     * Returns the validation status for this view.
+     *
+     * @return True if validation enabled for this View.
+     */
     fun isValidationEnabled():Boolean = inputField.enableValidation
 }

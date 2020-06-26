@@ -3,8 +3,6 @@ package com.verygoodsecurity.vgscollect.view.card
 /**
  * The data class definition for represent custom card brand.
  * It may be useful to add new brands in addition to already defined brands or override existing ones.
- *
- * @since 1.0.1
  */
 data class CardBrand(
 
@@ -17,6 +15,6 @@ data class CardBrand(
     /** The drawable resource represents credit card logo. */
     val drawableResId:Int = 0,
 
-
+    /** The set of parameters for card brand creation. */
     val params:BrandParams = BrandParams()
 )

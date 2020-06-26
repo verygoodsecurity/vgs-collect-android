@@ -1,26 +1,45 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.bank
 
+/**
+ * This rule provides a simplified mechanism to improve default behavior of the bank card number field.
+ */
 data class BankCardNumberRule private constructor(
     internal val algorithm: ChecksumAlgorithm?,
     internal val length:Array<Int>?
 ) {
 
+    /**
+     * This class provides an API for set up rules for validation unknown bank card brands.
+     *
+     * It is recommended if you may have a lot of local or special brands in you system.
+     */
     class ValidationRuleBuilder {
+
+        /** The algorithm for validation checkSum. */
         private var algorithm: ChecksumAlgorithm? = null
+
+        /** The array of the card's number which will support. */
         private var length:Array<Int>? = null
+
+        /** The minimum length of the card's number which will support. */
         private var minLength = -1
+
+        /** The maximum length of the card's number which will support. */
         private var maxLength = -1
 
+        /** Configure behavior for validation checkSum. */
         fun setAlgorithm(algorithm: ChecksumAlgorithm): ValidationRuleBuilder {
             this.algorithm = algorithm
             return this
         }
 
+        /** Configure the array of the card's number which will support. */
         fun setAllowableNumberLength(length:Array<Int>): ValidationRuleBuilder {
             this.length = length
             return this
         }
 
+        /** Configure minimum length of the card's number which will support. */
         fun setAllowableMinLength(length:Int): ValidationRuleBuilder {
             if(maxLength == -1) {
                 maxLength = 19
@@ -33,6 +52,7 @@ data class BankCardNumberRule private constructor(
             return this
         }
 
+        /** Configure maximum length of the card's number which will support. */
         fun setAllowableMaxLength(length:Int): ValidationRuleBuilder {
             if(minLength == -1) {
                 minLength = 13
@@ -44,6 +64,7 @@ data class BankCardNumberRule private constructor(
             return this
         }
 
+        /** Creates a rule. */
         fun build(): BankCardNumberRule {
             val range = when {
                 !length.isNullOrEmpty() -> length

@@ -18,7 +18,7 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
 
 /**
- * A user interface element that displays text to the user in card number format.
+ * A user interface element that displays text to the user in bank card number format.
  *
  * @since 1.0.2
  */
@@ -190,7 +190,9 @@ class VGSCardNumberEditText @JvmOverloads constructor(
         return getCardNumberState()
     }
 
-
+    /**
+     * Adds a behaviour rule for the field.
+     */
     fun addRule(rule: BankCardNumberRule) {
         applyValidationRule(rule)
     }
