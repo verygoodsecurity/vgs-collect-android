@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.bank
 
-data class BankCardRule private constructor(
+data class BankCardNumberRule private constructor(
     internal val algorithm: ChecksumAlgorithm?,
     internal val length:Array<Int>?
 ) {
@@ -44,7 +44,7 @@ data class BankCardRule private constructor(
             return this
         }
 
-        fun build(): BankCardRule {
+        fun build(): BankCardNumberRule {
             val range = when {
                 length.isNullOrEmpty() &&
                         minLength != -1 &&
@@ -53,7 +53,7 @@ data class BankCardRule private constructor(
                 else -> null
             }
 
-            return BankCardRule(
+            return BankCardNumberRule(
                 algorithm,
                 range
             )
@@ -64,7 +64,7 @@ data class BankCardRule private constructor(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as BankCardRule
+        other as BankCardNumberRule
 
         if (algorithm != other.algorithm) return false
         if (length != null) {

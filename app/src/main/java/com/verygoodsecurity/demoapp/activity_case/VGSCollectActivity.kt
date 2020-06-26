@@ -26,7 +26,7 @@ import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.BankCardRule
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.BankCardNumberRule
 import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener  {
@@ -149,7 +149,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun setupDefaultBehaviour() {
-        val rule = BankCardRule.ValidationRuleBuilder()
+        val rule = BankCardNumberRule.ValidationRuleBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
 //            .setLength(arrayOf(13,11,19,16))
 //            .setMinLength(5)
