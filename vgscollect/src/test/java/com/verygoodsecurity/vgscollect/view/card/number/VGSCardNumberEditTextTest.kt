@@ -269,7 +269,7 @@ class VGSCardNumberEditTextTest {
         child.applyInternalFieldStateChangeListener()
 
         val rule = BankCardNumberRule.ValidationRuleBuilder()
-            .setLength(arrayOf(12, 15))
+            .setAllowableNumberLength(arrayOf(12, 15))
             .build()
         view.addRule(rule)
         view.setText("12312312312")
@@ -309,7 +309,7 @@ class VGSCardNumberEditTextTest {
         child.applyInternalFieldStateChangeListener()
 
         val rule = BankCardNumberRule.ValidationRuleBuilder()
-            .setMinLength(7)
+            .setAllowableMinLength(7)
             .build()
         view.addRule(rule)
         view.setText("123123")
@@ -352,7 +352,7 @@ class VGSCardNumberEditTextTest {
         child.applyInternalFieldStateChangeListener()
 
         val rule = BankCardNumberRule.ValidationRuleBuilder()
-            .setMaxLength(17)
+            .setAllowableMaxLength(17)
             .build()
         view.addRule(rule)
         view.setText("1231231")
@@ -405,8 +405,8 @@ class VGSCardNumberEditTextTest {
         child.applyInternalFieldStateChangeListener()
 
         val rule = BankCardNumberRule.ValidationRuleBuilder()
-            .setMaxLength(17)
-            .setMinLength(15)
+            .setAllowableMaxLength(17)
+            .setAllowableMinLength(15)
             .build()
         view.addRule(rule)
 
@@ -508,7 +508,7 @@ class VGSCardNumberEditTextTest {
 
         val rule = BankCardNumberRule.ValidationRuleBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
-            .setLength(arrayOf(16))
+            .setAllowableNumberLength(arrayOf(16))
             .build()
         view.addRule(rule)
 

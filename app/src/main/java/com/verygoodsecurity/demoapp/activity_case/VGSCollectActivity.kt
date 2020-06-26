@@ -151,9 +151,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     private fun setupDefaultBehaviour() {
         val rule = BankCardNumberRule.ValidationRuleBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
-//            .setLength(arrayOf(13,11,19,16))
-//            .setMinLength(5)
-//            .setMaxLength(16)
             .build()
 
         cardNumberField.addRule(rule)

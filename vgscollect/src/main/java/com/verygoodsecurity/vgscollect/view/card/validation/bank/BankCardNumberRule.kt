@@ -16,12 +16,12 @@ data class BankCardNumberRule private constructor(
             return this
         }
 
-        fun setLength(length:Array<Int>): ValidationRuleBuilder {
+        fun setAllowableNumberLength(length:Array<Int>): ValidationRuleBuilder {
             this.length = length
             return this
         }
 
-        fun setMinLength(length:Int): ValidationRuleBuilder {
+        fun setAllowableMinLength(length:Int): ValidationRuleBuilder {
             if(maxLength == -1) {
                 maxLength = 19
             }
@@ -33,7 +33,7 @@ data class BankCardNumberRule private constructor(
             return this
         }
 
-        fun setMaxLength(length:Int): ValidationRuleBuilder {
+        fun setAllowableMaxLength(length:Int): ValidationRuleBuilder {
             if(minLength == -1) {
                 minLength = 13
             }
