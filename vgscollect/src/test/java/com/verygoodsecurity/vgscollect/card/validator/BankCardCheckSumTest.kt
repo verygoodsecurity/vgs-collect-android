@@ -28,7 +28,7 @@ class BankCardCheckSumTest {
 
     @Test
     fun test_luhn() {
-        val s = CheckSumValidator(ChecksumAlgorithm.ANY)
+        val s = CheckSumValidator(ChecksumAlgorithm.LUHN)
 
         assertFalse(s.isValid(""))
         assertTrue(s.isValid("4111111111111111"))
