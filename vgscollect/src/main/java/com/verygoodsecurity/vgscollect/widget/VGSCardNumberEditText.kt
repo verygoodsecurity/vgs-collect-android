@@ -15,6 +15,7 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.validation.bank.BankCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
+import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
 
 /**
  * A user interface element that displays text to the user in card number format.
@@ -56,6 +57,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
                 val minLines = getInt(R.styleable.VGSCardNumberEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.VGSCardNumberEditText_maxLines, 0)
+                val validationRule = getInt(R.styleable.VGSCardNumberEditText_validationRule, 0)
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -80,10 +82,32 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
                 setNumberDivider(divider)
                 applyCardIconGravity(previewGravity)
+
+                if(!isValidationPredefined()) {
+                    predefineValidationRule(validationRule)
+                }
             } finally {
                 recycle()
             }
         }
+    }
+
+    private fun predefineValidationRule(validationRule: Int) {
+        when(validationRule) {
+            0 -> enableValidation(true)
+            1 -> setupValidationRules()
+            2 -> enableValidation(false)
+        }
+    }
+
+    private fun setupValidationRules() {
+        val rule : BankCardNumberRule = BankCardNumberRule.ValidationRuleBuilder()
+            .setAlgorithm(ChecksumAlgorithm.LUHN)
+            .setAllowableMinLength(16)
+            .setAllowableMaxLength(19)
+            .build()
+
+        addRule(rule)
     }
 
     /**

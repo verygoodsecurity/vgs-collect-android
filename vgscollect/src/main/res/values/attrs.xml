@@ -426,6 +426,15 @@
     </declare-styleable>
 
     <declare-styleable name="VGSCardNumberEditText">
+
+        <attr name="validationRule">
+            <enum name="enable" value="0" />
+
+            <enum name="acceptUndefined" value="1" />   <!-- acceptUndefined [16..19 + Luhn] -->
+
+            <enum name="disable" value="2" />
+        </attr>
+
         <attr name="fieldName"/>
 
         <attr name="inputType"/>

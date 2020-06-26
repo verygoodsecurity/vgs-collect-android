@@ -105,6 +105,47 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         })
     }
 
+    private fun setupDefaultBehaviour() {
+        val rule : BankCardNumberRule = BankCardNumberRule.ValidationRuleBuilder()
+            .setAlgorithm(ChecksumAlgorithm.NONE)
+            .setAllowableMinLength(16)
+            .setAllowableMaxLength(19)
+            .build()
+
+        cardNumberField.addRule(rule)
+    }
+
+    private fun addCustomBrands() {
+        val params = BrandParams(
+            "### ### ### ####",
+            ChecksumAlgorithm.LUHN,
+            arrayOf(4, 10, 12),
+            arrayOf(3, 5)
+        )
+        val newBrand = CardBrand(
+            "^777",
+            "NEW BRAND",
+            R.drawable.ic_cards,
+            params
+        )
+        cardNumberField.addCardBrand(newBrand)
+
+
+        val params2 = BrandParams(
+            "### ### ### ###### ###",
+            ChecksumAlgorithm.LUHN,
+            arrayOf(18),
+            arrayOf(4)
+        )
+        val newBrand2 = CardBrand(
+            "^878",
+            "VGS Brand",
+            CardType.MAESTRO.resId,
+            params2
+        )
+        cardNumberField.addCardBrand(newBrand2)
+    }
+
     private fun setupCardNumberField() {
         addCustomBrands()
         setupDefaultBehaviour()
@@ -146,45 +187,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
                 Log.e("card_number", "$state \n\n ${cardNumberField.getState()} ")
             }
         })
-    }
-
-    private fun setupDefaultBehaviour() {
-        val rule = BankCardNumberRule.ValidationRuleBuilder()
-            .setAlgorithm(ChecksumAlgorithm.LUHN)
-            .build()
-
-        cardNumberField.addRule(rule)
-    }
-
-    private fun addCustomBrands() {
-        val params = BrandParams(
-            "### ### ### ####",
-            ChecksumAlgorithm.LUHN,
-            arrayOf(4, 10, 12),
-            arrayOf(3, 5)
-        )
-        val newBrand = CardBrand(
-            "^777",
-            "NEW BRAND",
-            R.drawable.ic_cards,
-            params
-        )
-        cardNumberField.addCardBrand(newBrand)
-
-
-        val params2 = BrandParams(
-            "### ### ### ###### ###",
-            ChecksumAlgorithm.LUHN,
-            arrayOf(18),
-            arrayOf(4)
-        )
-        val newBrand2 = CardBrand(
-            "^878",
-            "VGS Brand",
-            CardType.MAESTRO.resId,
-            params2
-        )
-        cardNumberField.addCardBrand(newBrand2)
     }
 
     private fun retrieveSettings() {

@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.Typeface
@@ -49,6 +50,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     private var imeOptions:Int = 0
     private var textAppearance:Int = 0
     private var fontFamily:Typeface? = null
+    private var enableValidation:Boolean? = null
 
     init {
         context.theme.obtainStyledAttributes(
@@ -57,17 +59,13 @@ abstract class InputFieldView @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
-                textAppearance = getResourceId(R.styleable.InputFieldView_textAppearance, 0)
-                imeOptions = getInt(R.styleable.InputFieldView_imeOptions, EditorInfo.IME_ACTION_DONE)
-
-                fontFamily = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    getFont(R.styleable.InputFieldView_fontFamily)
-                } else {
-                    val s = getString(R.styleable.InputFieldView_fontFamily)
-                    if(s.isNullOrEmpty()) {
-                        null
-                    } else {
-                        Typeface.create(s, Typeface.NORMAL)
+                for(i in 0 until indexCount) {
+                    val attr = getIndex(i);
+                    when(attr) {
+                        R.styleable.InputFieldView_textAppearance -> setupAppearance(this)
+                        R.styleable.InputFieldView_imeOptions -> setupImeOptions(this)
+                        R.styleable.InputFieldView_enableValidation -> setupEnableValidation(this)
+                        R.styleable.InputFieldView_fontFamily -> setupFont(this)
                     }
                 }
 
@@ -78,6 +76,34 @@ abstract class InputFieldView @JvmOverloads constructor(
                 setPadding(leftP, topP, rightP, bottomP)
             } finally {
                 recycle()
+            }
+        }
+    }
+
+    private fun setupImeOptions(typedArray: TypedArray) {
+        imeOptions =
+            typedArray.getInt(R.styleable.InputFieldView_imeOptions, EditorInfo.IME_ACTION_DONE)
+    }
+
+    private fun setupAppearance(typedArray: TypedArray) {
+        textAppearance =
+            typedArray.getResourceId(R.styleable.InputFieldView_textAppearance, 0)
+    }
+
+    private fun setupEnableValidation(typedArray: TypedArray) {
+        enableValidation =
+            typedArray.getBoolean(R.styleable.InputFieldView_enableValidation, false)
+    }
+
+    private fun setupFont(attrs: TypedArray) {
+        fontFamily = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            attrs.getFont(R.styleable.InputFieldView_fontFamily)
+        } else {
+            val s = attrs.getString(R.styleable.InputFieldView_fontFamily)
+            if(s.isNullOrEmpty()) {
+                null
+            } else {
+                Typeface.create(s, Typeface.NORMAL)
             }
         }
     }
@@ -676,6 +702,10 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.nextFocusLeftId = nextFocusLeftId
         inputField.nextFocusRightId = nextFocusRightId
         inputField.imeOptions = imeOptions
+        enableValidation?.let {
+            inputField.enableValidation = it
+        }
+
         if(fontFamily != null) {
             inputField.typeface = fontFamily
         }
@@ -1080,4 +1110,10 @@ abstract class InputFieldView @JvmOverloads constructor(
     fun enableValidation(isEnabled:Boolean) {
         inputField.enableValidation = isEnabled
     }
+
+    protected fun isValidationPredefined():Boolean {
+        return enableValidation != null
+    }
+
+    fun isValidationEnabled():Boolean = inputField.enableValidation
 }
