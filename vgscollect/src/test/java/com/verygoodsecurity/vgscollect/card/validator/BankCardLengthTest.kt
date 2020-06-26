@@ -15,6 +15,7 @@ class BankCardLengthTest {
         assertTrue(validator.isValid("123456789012"))
         assertTrue(validator.isValid("123456789012345"))
         assertTrue(validator.isValid("1234567890123456789"))
+        assertFalse(validator.isValid("1234567890123456"))
     }
 
     @Test
