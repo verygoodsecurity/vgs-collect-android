@@ -13,7 +13,7 @@ data class PersonNameRule(
      */
     class ValidationBuilder {
 
-        /** The algorithm for validation checkSum. */
+        /** The Regex for validation input. */
         private var regex: String? = null
 
         /** The minimum length of the person name which will support. */
