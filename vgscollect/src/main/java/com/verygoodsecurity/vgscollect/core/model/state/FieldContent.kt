@@ -68,12 +68,18 @@ internal fun FieldContent.CardNumberContent.parseCardBin():String {
 internal fun FieldContent.CardNumberContent.parseCardLast4Digits():String {
     return data?.run {
         val numberSTR = data!!.replace("\\D".toRegex(), "")
-        if(numberSTR.length > 10) {
+        if(cardtype == CardType.NONE) {
+            if(numberSTR.length > 12) {
+                val start = numberSTR.length - 4
+                val end = numberSTR.length
+                numberSTR.substring(start, end)
+            } else {
+                ""
+            }
+        } else {
             val start = numberSTR.length - 4
             val end = numberSTR.length
-            numberSTR.substring(start, end)
-        } else {
-            ""
+            return numberSTR.substring(start, end)
         }
     }?:""
 }
