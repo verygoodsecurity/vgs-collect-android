@@ -16,10 +16,10 @@ data class PersonNameRule(
         /** The algorithm for validation checkSum. */
         private var regex: String? = null
 
-        /** The minimum length of the card's number which will support. */
+        /** The minimum length of the person name which will support. */
         private var minLength = -1
 
-        /** The maximum length of the card's number which will support. */
+        /** The maximum length of the person name which will support. */
         private var maxLength = -1
 
         /** Configure Regex for validation input. */
