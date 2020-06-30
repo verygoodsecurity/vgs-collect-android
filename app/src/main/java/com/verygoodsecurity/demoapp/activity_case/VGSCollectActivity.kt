@@ -79,6 +79,8 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun setupCardHolderField() {
+        cardHolderField?.setRegex("^([a-zA-Z]{2,}\\s[a-zA-z]{1,})\$")
+
         vgsForm.bindView(cardHolderField)
         cardHolderField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {

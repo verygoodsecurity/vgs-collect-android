@@ -76,4 +76,11 @@ class PersonNameEditText @JvmOverloads constructor(
     fun getState(): FieldState.CardHolderNameState? {
         return getCardHolderName()
     }
+
+    /**
+     * Set regex for validation person.
+     */
+    fun setRegex(regex:String?) {
+        applyPersonNameValidationRegex(regex)
+    }
 }

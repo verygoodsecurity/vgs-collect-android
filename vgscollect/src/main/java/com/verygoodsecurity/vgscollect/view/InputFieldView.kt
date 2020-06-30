@@ -1073,4 +1073,10 @@ abstract class InputFieldView @JvmOverloads constructor(
     fun enableValidation(isEnabled:Boolean) {
         inputField.enableValidation = isEnabled
     }
+
+    protected fun applyPersonNameValidationRegex(regex:String?) {
+        if(fieldType == FieldType.CARD_HOLDER_NAME) {
+            (inputField as? PersonNameInputField)?.applyPersonNameValidationRegex(regex)
+        }
+    }
 }

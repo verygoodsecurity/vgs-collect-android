@@ -5,6 +5,7 @@ import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
 import android.view.View
+import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardHolderConnection
@@ -13,10 +14,12 @@ import com.verygoodsecurity.vgscollect.view.card.validation.CardHolderValidator
 /** @suppress */
 internal class PersonNameInputField(context: Context): BaseInputField(context) {
 
+    private val validator = CardHolderValidator()
+
     override var fieldType: FieldType = FieldType.CARD_HOLDER_NAME
 
     override fun applyFieldType() {
-        val validator = CardHolderValidator()
+        applyPersonNameValidationRegex()
         inputConnection =
             InputCardHolderConnection(
                 id,
@@ -52,6 +55,12 @@ internal class PersonNameInputField(context: Context): BaseInputField(context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setAutofillHints(View.AUTOFILL_HINT_NAME )
         }
+    }
+
+    internal fun applyPersonNameValidationRegex(regex:String? = null) {
+        val validationRegex = regex?:context.getString(R.string.validation_regex_person)
+        validator.setRegex(validationRegex)
+        refreshInput()
     }
 
 }
