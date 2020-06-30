@@ -4,8 +4,8 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.InputCardNumberConnection
-import com.verygoodsecurity.vgscollect.view.card.InputRunnable
+import com.verygoodsecurity.vgscollect.view.card.conection.InputCardNumberConnection
+import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import com.verygoodsecurity.vgscollect.view.card.CardType
@@ -30,7 +30,13 @@ class InputCardNumberConnectionTest {
         val client = getValidator()
 
         iCardBrand = getCardBrandPreviewListener()
-        connection = InputCardNumberConnection(0, client, iCardBrand, divider)
+        connection =
+            InputCardNumberConnection(
+                0,
+                client,
+                iCardBrand,
+                divider
+            )
 
         setupFilter(connection, divider)
         setupListener(connection)
@@ -39,7 +45,11 @@ class InputCardNumberConnectionTest {
     @Test
     fun test_connection() {
         val client = getValidator()
-        val connection: InputRunnable = InputCardNumberConnection(0, client)
+        val connection: InputRunnable =
+            InputCardNumberConnection(
+                0,
+                client
+            )
 
         setupFilter(connection, null)
         setupListener(connection)
@@ -59,7 +69,12 @@ class InputCardNumberConnectionTest {
         val divider = "-"
 
         val client = getValidator()
-        val connection: InputRunnable = InputCardNumberConnection(0, client, divider = divider)
+        val connection: InputRunnable =
+            InputCardNumberConnection(
+                0,
+                client,
+                divider = divider
+            )
 
         setupFilter(connection, divider)
         setupListener(connection)
@@ -85,7 +100,15 @@ class InputCardNumberConnectionTest {
 
         connection.run()
 
-        Mockito.verify(iCardBrand).onCardBrandPreview(CardBrandPreview(CardType.VISA, CardType.VISA.regex, CardType.VISA.name, CardType.VISA.resId))
+        val c = CardBrandPreview(CardType.VISA,
+            CardType.VISA.regex,
+            CardType.VISA.name,
+            CardType.VISA.resId,
+            CardType.VISA.mask,
+            CardType.VISA.algorithm,
+            CardType.VISA.rangeNumber,
+            CardType.VISA.rangeCVV)
+        Mockito.verify(iCardBrand).onCardBrandPreview(c)
     }
 
     @Test
@@ -113,12 +136,12 @@ class InputCardNumberConnectionTest {
 
     @Test
     fun test_custom_filter() {
-        val customBrand = CustomCardBrand("^777", "VGS", drawableResId = R.drawable.ic_jcb_light)
+        val customBrand = CustomCardBrand("^777", "VGS", R.drawable.ic_jcb_light)
         val preview = CardBrandPreview(CardType.NONE,
             customBrand.regex,
             customBrand.cardBrandName,
             customBrand.drawableResId,
-            customBrand.mask)
+            customBrand.params.mask)
 
         val filter = mock(MutableCardFilter::class.java)
         Mockito.doReturn(preview).`when`(filter).detect(any())
@@ -137,7 +160,7 @@ class InputCardNumberConnectionTest {
         Mockito.verify(stateListener).emit(0, state)
     }
 
-    private fun getCardBrandPreviewListener():InputCardNumberConnection.IDrawCardBrand {
+    private fun getCardBrandPreviewListener(): InputCardNumberConnection.IDrawCardBrand {
         return mock(InputCardNumberConnection.IDrawCardBrand::class.java)
     }
 

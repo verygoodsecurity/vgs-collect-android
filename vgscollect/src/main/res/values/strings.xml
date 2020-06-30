@@ -13,4 +13,5 @@
     <string name="error_divider_card_number_field">Divider for card number can\'t a digit. (%1$s)</string>
 
     <string name="card_number_digits">0123456789</string>
+    <string name="validation_regex_person">^[a-zA-Z0-9 ,\'.-]+$</string>
 </resources>

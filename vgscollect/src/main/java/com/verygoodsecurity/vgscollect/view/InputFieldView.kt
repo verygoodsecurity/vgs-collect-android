@@ -29,6 +29,7 @@ import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.PersonNameRule
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
@@ -1072,5 +1073,11 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     fun enableValidation(isEnabled:Boolean) {
         inputField.enableValidation = isEnabled
+    }
+
+    protected fun applyValidationRule(rule: PersonNameRule) {
+        if(fieldType == FieldType.CARD_HOLDER_NAME) {
+            (inputField as? PersonNameInputField)?.applyValidationRule(rule)
+        }
     }
 }

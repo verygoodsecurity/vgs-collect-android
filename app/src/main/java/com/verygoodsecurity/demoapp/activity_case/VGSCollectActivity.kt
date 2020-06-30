@@ -22,9 +22,13 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardType
+import com.verygoodsecurity.vgscollect.view.card.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.PersonNameRule
 import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener  {
@@ -76,6 +80,14 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun setupCardHolderField() {
+        val rule : PersonNameRule = PersonNameRule.ValidationBuilder()
+//            .setRegex("^([a-zA-Z]{2,}\\s[a-zA-z]{1,})\$")
+            .setAllowableMinLength(3)
+            .setAllowableMaxLength(7)
+            .build()
+
+        cardHolderField.addRule(rule)
+
         vgsForm.bindView(cardHolderField)
         cardHolderField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
@@ -104,6 +116,8 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun setupCardNumberField() {
+        addCustomBrands()
+
         vgsForm.bindView(cardNumberField)
 
         cardNumberField.setCardIconAdapter(object : CardIconAdapter(this) {
@@ -141,6 +155,37 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
                 Log.e("card_number", "$state \n\n ${cardNumberField.getState()} ")
             }
         })
+    }
+
+    private fun addCustomBrands() {
+        val params = BrandParams(
+            "### ### ### ###",
+            ChecksumAlgorithm.LUHN,
+            arrayOf(4, 10, 12),
+            arrayOf(3, 5)
+        )
+        val newBrand = CustomCardBrand(
+            "^777",
+            "NEW BRAND",
+            R.drawable.ic_cards,
+            params
+        )
+        cardNumberField.addCardBrand(newBrand)
+
+
+        val params2 = BrandParams(
+            "### ### ### ###",
+            ChecksumAlgorithm.LUHN,
+            arrayOf(18),
+            arrayOf(4)
+        )
+        val newBrand2 = CustomCardBrand(
+            "^878",
+            "VGS Brand",
+            CardType.MAESTRO.resId,
+            params2
+        )
+        cardNumberField.addCardBrand(newBrand2)
     }
 
     private fun retrieveSettings() {

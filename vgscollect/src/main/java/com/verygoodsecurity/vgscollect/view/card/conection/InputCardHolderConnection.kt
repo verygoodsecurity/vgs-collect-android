@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.card
+package com.verygoodsecurity.vgscollect.view.card.conection
 
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
@@ -6,10 +6,11 @@ import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 /** @suppress */
-internal class InputInfoConnection(
+internal class InputCardHolderConnection(
     private val id:Int,
     private val validator: VGSValidator?
 ): BaseInputConnection() {
+
     private var output = VGSFieldState()
 
     override fun setOutput(state: VGSFieldState) {
@@ -18,8 +19,8 @@ internal class InputInfoConnection(
 
     override fun getOutput() = output
 
-    override fun setOutputListener(l: OnVgsViewStateChangeListener?) {
-        l?.let { addNewListener(it) }
+    override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
+        listener?.let { addNewListener(it) }
     }
 
     override fun run() {
@@ -49,5 +50,4 @@ internal class InputInfoConnection(
 
     override fun clearFilters() {}
     override fun addFilter(filter: VGSCardFilter?) {}
-
 }

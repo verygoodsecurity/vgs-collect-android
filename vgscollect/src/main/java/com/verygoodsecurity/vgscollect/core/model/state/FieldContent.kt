@@ -14,6 +14,8 @@ sealed class FieldContent {
     class CardNumberContent:FieldContent() {
         var rawData:String? = null
         var cardtype: CardType = CardType.NONE
+        var numberRange: Array<Int> = CardType.NONE.rangeNumber
+        var rangeCVV: Array<Int> = CardType.NONE.rangeCVV
         var iconResId:Int? = 0
             internal set
         var cardBrandName:String? = null
@@ -42,17 +44,13 @@ sealed class FieldContent {
 /** @suppress */
 internal fun FieldContent.CreditCardExpDateContent.handleOutputFormat(selectedDate: Calendar, fieldDateFormat: SimpleDateFormat?, fieldDateOutPutFormat: SimpleDateFormat?) {
     if(fieldDateFormat != null && fieldDateFormat.toPattern() == fieldDateOutPutFormat?.toPattern()) {
-        data = fieldDateFormat?.format(selectedDate.time)
+        data = fieldDateFormat.format(selectedDate.time)
         rawData = data
     } else {
         data = fieldDateFormat?.format(selectedDate.time)
         rawData = fieldDateOutPutFormat?.format(selectedDate.time)
     }
 }
-
-/** @suppress */
-internal fun FieldContent.CardNumberContent.CVCMaxLength() =  cardtype.rangeCVV.last()
-internal fun FieldContent.CardNumberContent.CVCMinLength() =  cardtype.rangeCVV[0]
 
 /** @suppress */
 internal fun FieldContent.CardNumberContent.parseCardBin():String {
@@ -70,12 +68,18 @@ internal fun FieldContent.CardNumberContent.parseCardBin():String {
 internal fun FieldContent.CardNumberContent.parseCardLast4Digits():String {
     return data?.run {
         val numberSTR = data!!.replace("\\D".toRegex(), "")
-        if(numberSTR.length > 10) {
+        if(cardtype == CardType.NONE) {
+            if(numberSTR.length > 12) {
+                val start = numberSTR.length - 4
+                val end = numberSTR.length
+                numberSTR.substring(start, end)
+            } else {
+                ""
+            }
+        } else {
             val start = numberSTR.length - 4
             val end = numberSTR.length
-            numberSTR.substring(start, end)
-        } else {
-            ""
+            return numberSTR.substring(start, end)
         }
     }?:""
 }
