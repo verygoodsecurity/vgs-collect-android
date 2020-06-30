@@ -36,7 +36,7 @@ internal fun VGSFieldState.mapToFieldState():FieldState {
             val content = (content as? FieldContent.CardNumberContent)
             if(isValid) {
                 state.bin = content?.parseCardBin()
-                state.last = content?.parseRawCardLastDigits()
+                state.last = content?.parseCardLast4Digits()
             }
             state.number = content?.parseCardNumber()
             state.cardBrand = content?.cardBrandName?:""
