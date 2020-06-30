@@ -28,6 +28,7 @@ import com.verygoodsecurity.vgscollect.view.card.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.PersonNameRule
 import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener  {
@@ -79,7 +80,13 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun setupCardHolderField() {
-        cardHolderField?.setRegex("^([a-zA-Z]{2,}\\s[a-zA-z]{1,})\$")
+        val rule : PersonNameRule = PersonNameRule.ValidationBuilder()
+//            .setRegex("^([a-zA-Z]{2,}\\s[a-zA-z]{1,})\$")
+            .setAllowableMinLength(3)
+            .setAllowableMaxLength(7)
+            .build()
+
+        cardHolderField.addRule(rule)
 
         vgsForm.bindView(cardHolderField)
         cardHolderField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {

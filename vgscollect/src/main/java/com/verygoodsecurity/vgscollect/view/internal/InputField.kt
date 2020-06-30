@@ -153,7 +153,7 @@ internal class InputField(context: Context): BaseInputField(context),
     }
 
     private fun applyCardHolderFieldType() {
-        validator = CardHolderValidator("^[a-zA-Z0-9 ,'.-]+\$")
+        validator = RegexValidator("^[a-zA-Z0-9 ,'.-]+\$")
         inputConnection =
             InputCardHolderConnection(
                 id,

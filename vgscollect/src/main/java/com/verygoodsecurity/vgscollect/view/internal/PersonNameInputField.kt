@@ -9,17 +9,24 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardHolderConnection
-import com.verygoodsecurity.vgscollect.view.card.validation.CardHolderValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.LengthValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.PersonNameRule
 
 /** @suppress */
 internal class PersonNameInputField(context: Context): BaseInputField(context) {
 
-    private val validator = CardHolderValidator()
+    private val validator : MutableValidator by lazy {
+        val v = CompositeValidator()
+        v.addRule(RegexValidator(context.getString(R.string.validation_regex_person)))
+        v
+    }
 
     override var fieldType: FieldType = FieldType.CARD_HOLDER_NAME
 
     override fun applyFieldType() {
-        applyPersonNameValidationRegex()
         inputConnection =
             InputCardHolderConnection(
                 id,
@@ -57,10 +64,15 @@ internal class PersonNameInputField(context: Context): BaseInputField(context) {
         }
     }
 
-    internal fun applyPersonNameValidationRegex(regex:String? = null) {
-        val validationRegex = regex?:context.getString(R.string.validation_regex_person)
-        validator.setRegex(validationRegex)
-        refreshInput()
+    internal fun applyValidationRule(rule: PersonNameRule) {
+        validator.clearRules()
+        rule.length?.let {
+            validator.addRule(LengthValidator(it))
+        }
+
+        rule.regex?.let {
+            validator.addRule(RegexValidator(it))
+        }
     }
 
 }

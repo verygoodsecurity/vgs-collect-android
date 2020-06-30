@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card.validation
 import java.util.regex.Pattern
 
 /** @suppress */
-class CardHolderValidator(
+class RegexValidator(
     regex:String? = null
 ):VGSValidator {
     private var m:Pattern? = null

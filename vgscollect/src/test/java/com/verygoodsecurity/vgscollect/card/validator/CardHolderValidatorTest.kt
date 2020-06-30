@@ -1,17 +1,17 @@
 package com.verygoodsecurity.vgscollect.card.validator
 
-import com.verygoodsecurity.vgscollect.view.card.validation.CardHolderValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
 class CardHolderValidatorTest {
-    private lateinit var validator:CardHolderValidator
+    private lateinit var validator:RegexValidator
 
     @Before
     fun setupValidator() {
-        validator = CardHolderValidator("^[a-zA-Z0-9 ,'.-]+\$")
+        validator = RegexValidator("^[a-zA-Z0-9 ,'.-]+\$")
     }
 
     @Test
@@ -42,7 +42,7 @@ class CardHolderValidatorTest {
 
     @Test
     fun testEmptyValidator() {
-        val validator = CardHolderValidator()
+        val validator = RegexValidator()
 
         assertTrue(validator.isValid(""))
         assertTrue(validator.isValid(null))
