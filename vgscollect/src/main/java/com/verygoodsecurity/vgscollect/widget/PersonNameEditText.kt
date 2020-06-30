@@ -79,7 +79,7 @@ class PersonNameEditText @JvmOverloads constructor(
     }
 
     /**
-     * Set regex for validation person.
+     * Adds a behaviour rule for the field.
      */
     fun addRule(rule: PersonNameRule) {
         applyValidationRule(rule)
