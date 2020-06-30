@@ -93,7 +93,7 @@ class InputCardNumberConnectionTest {
     fun test_draw_card_icon() {
         connection.run()
 
-        Mockito.verify(iCardBrand, Mockito.times(2)).onCardBrandPreview(CardBrandPreview(CardType.UNDEFINED, CardType.UNDEFINED.regex, CardType.UNDEFINED.name, CardType.UNDEFINED.resId))
+        Mockito.verify(iCardBrand, Mockito.times(2)).onCardBrandPreview(CardBrandPreview(CardType.UNKNOWN, CardType.UNKNOWN.regex, CardType.UNKNOWN.name, CardType.UNKNOWN.resId))
 
         val state = createFieldStateVisa(" ")
         connection.setOutput(state)
@@ -137,7 +137,7 @@ class InputCardNumberConnectionTest {
     @Test
     fun test_custom_filter() {
         val customBrand = CardBrand("^777", "VGS", R.drawable.ic_jcb_light)
-        val preview = CardBrandPreview(CardType.UNDEFINED,
+        val preview = CardBrandPreview(CardType.UNKNOWN,
             customBrand.regex,
             customBrand.cardBrandName,
             customBrand.drawableResId,

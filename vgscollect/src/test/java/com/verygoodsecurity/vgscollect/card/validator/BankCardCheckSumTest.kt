@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.card.validator
 
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.validation.CheckSumValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

@@ -1,18 +1,18 @@
 package com.verygoodsecurity.vgscollect.view.card.filter
 
 import com.verygoodsecurity.vgscollect.view.card.CardType
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 
 /** @suppress */
 data class CardBrandPreview(
-    val cardType: CardType = CardType.UNDEFINED,
-    val regex:String = CardType.UNDEFINED.regex,
-    val name:String? = CardType.UNDEFINED.name,
-    val resId:Int = CardType.UNDEFINED.resId,
-    var currentMask:String = CardType.UNDEFINED.mask,
+    val cardType: CardType = CardType.UNKNOWN,
+    val regex:String = CardType.UNKNOWN.regex,
+    val name:String? = CardType.UNKNOWN.name,
+    val resId:Int = CardType.UNKNOWN.resId,
+    var currentMask:String = CardType.UNKNOWN.mask,
     var algorithm: ChecksumAlgorithm = ChecksumAlgorithm.NONE,
-    var numberLength: Array<Int> = CardType.UNDEFINED.rangeNumber,
-    var cvcLength: Array<Int> = CardType.UNDEFINED.rangeCVV,
+    var numberLength: Array<Int> = CardType.UNKNOWN.rangeNumber,
+    var cvcLength: Array<Int> = CardType.UNKNOWN.rangeCVV,
     val successfullyDetected:Boolean = false
 ) {
     override fun equals(other: Any?): Boolean {

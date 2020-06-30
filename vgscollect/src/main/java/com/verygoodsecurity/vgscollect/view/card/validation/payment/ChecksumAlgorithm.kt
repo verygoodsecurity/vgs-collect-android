@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.card.validation.bank
+package com.verygoodsecurity.vgscollect.view.card.validation.payment
 
 /**
  * The set of actions for checkSum validation.

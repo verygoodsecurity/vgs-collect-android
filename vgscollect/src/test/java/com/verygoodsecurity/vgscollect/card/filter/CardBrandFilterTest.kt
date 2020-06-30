@@ -60,7 +60,7 @@ class CardBrandFilterTest {
         val testItem1 = filter.detect("12333611123354")
 
         assertNotNull(testItem1)
-        assertEquals(CardType.UNDEFINED, testItem1!!.cardType)
+        assertEquals(CardType.UNKNOWN, testItem1!!.cardType)
         assertEquals(regex, testItem1.regex)
         assertEquals(name, testItem1.name)
         assertEquals(mask, testItem1.currentMask)
@@ -99,7 +99,7 @@ class CardBrandFilterTest {
         val testItem1 = filter.detect("123-336-111-23354")
 
         assertNotNull(testItem1)
-        assertEquals(CardType.UNDEFINED, testItem1!!.cardType)
+        assertEquals(CardType.UNKNOWN, testItem1!!.cardType)
         assertEquals(regex, testItem1.regex)
         assertEquals(name, testItem1.name)
         assertEquals(mask, testItem1.currentMask)

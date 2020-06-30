@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.card.validation.bank
+package com.verygoodsecurity.vgscollect.view.card.validation.payment
 
 import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator

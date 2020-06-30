@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.card.validator.luhn
 
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.brand.LuhnCheckSumValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.brand.LuhnCheckSumValidator
 import org.junit.Assert.assertTrue
 import org.junit.Test
 

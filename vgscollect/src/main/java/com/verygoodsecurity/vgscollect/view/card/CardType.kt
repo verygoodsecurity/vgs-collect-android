@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.card
 
 import com.verygoodsecurity.vgscollect.R
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 
 /**
  * Standard constants of credit card brands that are supported by SDK.
@@ -136,7 +136,7 @@ enum class CardType(val regex:String,
         arrayOf(3)
     ),
 
-    UNDEFINED(
+    UNKNOWN(
         "^\$a",
         R.drawable.ic_card_front_preview_dark,
         "#### #### #### #### ###",

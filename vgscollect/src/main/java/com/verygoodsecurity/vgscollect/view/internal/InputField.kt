@@ -27,7 +27,7 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
 import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.*
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.CardNumberValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.CardNumberValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.CardExpDateValidator
 
 /** @suppress */
@@ -43,7 +43,7 @@ internal class InputField(context: Context): BaseInputField(context),
         }
     }
 
-    private var cardtype: CardType = CardType.UNDEFINED
+    private var cardtype: CardType = CardType.UNKNOWN
 
     private var iconAdapter = CardIconAdapter(context)
 

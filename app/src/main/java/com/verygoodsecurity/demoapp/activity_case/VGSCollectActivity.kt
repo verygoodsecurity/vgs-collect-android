@@ -25,8 +25,8 @@ import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.BankCardNumberRule
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.PaymentCardNumberRule
 import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener  {
@@ -106,14 +106,31 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun setupDefaultBehaviour() {
-        val rule : BankCardNumberRule = BankCardNumberRule.ValidationRuleBuilder()
-            .setAlgorithm(ChecksumAlgorithm.NONE)
-            .setAllowableMinLength(16)
-            .setAllowableMaxLength(19)
+        val rule : PaymentCardNumberRule = PaymentCardNumberRule.ValidationBuilder()
+//            .setAlgorithm(ChecksumAlgorithm.NONE)
+
+            .setAllowableNumberLength(arrayOf(15, 13, 19))
+
+            .setAllowableMinLength(3)
+            .setAllowableMaxLength(7)
+
             .build()
 
         cardNumberField.addRule(rule)
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private fun addCustomBrands() {
         val params = BrandParams(
@@ -143,6 +160,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
             CardType.MAESTRO.resId,
             params2
         )
+
         cardNumberField.addCardBrand(newBrand2)
     }
 

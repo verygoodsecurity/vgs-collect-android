@@ -12,10 +12,10 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.BankCardNumberRule
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
-import com.verygoodsecurity.vgscollect.view.card.validation.bank.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 
 /**
  * A user interface element that displays text to the user in bank card number format.
@@ -101,7 +101,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     private fun setupValidationRules() {
-        val rule : BankCardNumberRule = BankCardNumberRule.ValidationRuleBuilder()
+        val rule : PaymentCardNumberRule = PaymentCardNumberRule.ValidationBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
             .setAllowableMinLength(16)
             .setAllowableMaxLength(19)
@@ -193,7 +193,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     /**
      * Adds a behaviour rule for the field.
      */
-    fun addRule(rule: BankCardNumberRule) {
+    fun addRule(rule: PaymentCardNumberRule) {
         applyValidationRule(rule)
     }
 }
