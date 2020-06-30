@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.card.validation.payment
 
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
+/** @suppress */
 class LengthValidator(
     private val length: Array<Int>
 ) : VGSValidator {

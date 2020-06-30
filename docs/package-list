@@ -9,6 +9,8 @@ com.verygoodsecurity.vgscollect.view
 com.verygoodsecurity.vgscollect.view.card
 com.verygoodsecurity.vgscollect.view.card.formatter
 com.verygoodsecurity.vgscollect.view.card.icon
+com.verygoodsecurity.vgscollect.view.card.validation
+com.verygoodsecurity.vgscollect.view.card.validation.payment
 com.verygoodsecurity.vgscollect.view.date
 com.verygoodsecurity.vgscollect.view.material
 com.verygoodsecurity.vgscollect.widget
