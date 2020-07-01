@@ -182,7 +182,7 @@
                                         app:imeOptions="actionNext"
                                         app:fontFamily="@font/robotomono_light"
                                         app:fieldName="card_data.personal_data.cardHolder"
-                                        app:text="John Galt"/>
+                                        app:text="John Galt I"/>
                                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
                             </FrameLayout>
 

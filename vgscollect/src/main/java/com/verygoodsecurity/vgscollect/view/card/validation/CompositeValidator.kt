@@ -1,10 +1,6 @@
-package com.verygoodsecurity.vgscollect.view.card.validation.payment
+package com.verygoodsecurity.vgscollect.view.card.validation
 
-import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
-
-/** @suppress */
-class CardNumberValidator() : MuttableValidator {
+class CompositeValidator : MutableValidator {
     private val validators = mutableListOf<VGSValidator>()
 
     override fun clearRules() {
@@ -20,8 +16,8 @@ class CardNumberValidator() : MuttableValidator {
             false
         } else {
             var isValid = true
-            for (checkSumValidator in validators) {
-                isValid = isValid && checkSumValidator.isValid(content)
+            for (validator in validators) {
+                isValid = isValid && validator.isValid(content)
             }
             isValid
         }

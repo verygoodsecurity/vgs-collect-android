@@ -22,11 +22,14 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
-import com.verygoodsecurity.vgscollect.view.card.*
+import com.verygoodsecurity.vgscollect.view.card.BrandParams
+import com.verygoodsecurity.vgscollect.view.card.CardBrand
+import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.PaymentCardNumberRule
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
 import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener  {
@@ -78,6 +81,14 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun setupCardHolderField() {
+        val rule : PersonNameRule = PersonNameRule.ValidationBuilder()
+//            .setRegex("^([a-zA-Z]{2,}\\s[a-zA-z]{1,})\$")
+            .setAllowableMinLength(3)
+            .setAllowableMaxLength(7)
+            .build()
+
+        cardHolderField.addRule(rule)
+
         vgsForm.bindView(cardHolderField)
         cardHolderField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
@@ -119,22 +130,9 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         cardNumberField.addRule(rule)
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     private fun addCustomBrands() {
         val params = BrandParams(
-            "### ### ### ####",
+            "### ### ### ###",
             ChecksumAlgorithm.LUHN,
             arrayOf(4, 10, 12),
             arrayOf(3, 5)
@@ -188,6 +186,13 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
                 mask: String
             ): String {
                 return when(cardType) {
+                    CardType.UNKNOWN -> {
+                        if (bin == "7771") {
+                            "# # # #"
+                        } else {
+                            mask
+                        }
+                    }
                     CardType.AMERICAN_EXPRESS -> {
                         if (bin.contains("371233")) {
                             "### # ###### ### ##"

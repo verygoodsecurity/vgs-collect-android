@@ -1,4 +1,6 @@
-package com.verygoodsecurity.vgscollect.view.card.validation.payment
+package com.verygoodsecurity.vgscollect.view.card.validation.rules
+
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 
 /**
  * This rule provides a simplified mechanism to improve default behavior of the bank card number field.

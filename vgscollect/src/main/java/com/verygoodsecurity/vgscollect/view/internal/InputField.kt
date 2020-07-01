@@ -27,7 +27,7 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
 import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
 import com.verygoodsecurity.vgscollect.view.card.validation.*
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.CardNumberValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.CardExpDateValidator
 
 /** @suppress */
@@ -153,7 +153,7 @@ internal class InputField(context: Context): BaseInputField(context),
     }
 
     private fun applyCardHolderFieldType() {
-        validator = CardHolderValidator()
+        validator = RegexValidator("^[a-zA-Z0-9 ,'.-]+\$")
         inputConnection =
             InputCardHolderConnection(
                 id,
@@ -202,7 +202,7 @@ internal class InputField(context: Context): BaseInputField(context),
         val digits = resources.getString(R.string.card_number_digits) + this.divider
         keyListener = DigitsKeyListener.getInstance(digits)
 
-        validator = CardNumberValidator()
+        validator = CompositeValidator()
 
         inputConnection =
             InputCardNumberConnection(

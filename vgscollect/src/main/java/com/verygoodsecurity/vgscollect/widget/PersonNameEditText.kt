@@ -9,6 +9,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
 
 class PersonNameEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -75,5 +76,12 @@ class PersonNameEditText @JvmOverloads constructor(
      */
     fun getState(): FieldState.CardHolderNameState? {
         return getCardHolderName()
+    }
+
+    /**
+     * Adds a behaviour rule for the field.
+     */
+    fun addRule(rule: PersonNameRule) {
+        applyValidationRule(rule)
     }
 }

@@ -2,15 +2,15 @@ package com.verygoodsecurity.vgscollect.card.validator
 
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.validation.CheckSumValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.CardNumberValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
 class CardNumberValidatorTest {
-    private val validator = CardNumberValidator()
+    private val validator = CompositeValidator()
 
     @Before
     fun clearAll() {

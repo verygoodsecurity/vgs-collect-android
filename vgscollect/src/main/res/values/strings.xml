@@ -14,4 +14,5 @@
     <string name="error_custom_brand_mask_length">The mask and card number maximum length are not equal for %1$s brand.</string>
 
     <string name="card_number_digits">0123456789</string>
+    <string name="validation_regex_person">^[a-zA-Z0-9 ,\'.-]+$</string>
 </resources>

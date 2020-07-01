@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.card.validator
 
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.PaymentCardNumberRule
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Test

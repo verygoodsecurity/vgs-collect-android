@@ -25,9 +25,9 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.CheckSumValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.MuttableValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.CardNumberValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.PaymentCardNumberRule
+import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 
 /** @suppress */
 internal class CardInputField(context: Context): BaseInputField(context), InputCardNumberConnection.IDrawCardBrand {
@@ -257,7 +257,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         }
     }
 
-    private var validator: MuttableValidator = CardNumberValidator()
+    private var validator: MutableValidator = CompositeValidator()
 
     internal fun applyValidationRule(rule: PaymentCardNumberRule) {
         validator.clearRules()

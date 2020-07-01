@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.card.validation
 
 /** @suppress */
-interface MuttableValidator:VGSValidator {
+interface MutableValidator:VGSValidator {
     fun clearRules()
-    fun addRule(validator:VGSValidator)
+    fun addRule(validator: VGSValidator)
 }
