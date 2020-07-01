@@ -147,19 +147,6 @@
                                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
                             </FrameLayout>
-
-
-
-
-
-
-
-<!--                            app:enableValidation="false"-->
-<!--                            app:validationRule="acceptUndefined"-->
-<!--                            app:isRequired="false"-->
-
-
-
                             <FrameLayout
                                 android:id="@+id/contHoldNum"
                                 android:layout_width="match_parent"
