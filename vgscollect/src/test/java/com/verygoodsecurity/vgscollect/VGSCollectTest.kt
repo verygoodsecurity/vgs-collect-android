@@ -40,8 +40,6 @@ class VGSCollectTest {
 
     private lateinit var collect: VGSCollect
 
-    private var testViewCounter = 0
-
     @Before
     fun setUp() {
         activityController = Robolectric.buildActivity(Activity::class.java)
