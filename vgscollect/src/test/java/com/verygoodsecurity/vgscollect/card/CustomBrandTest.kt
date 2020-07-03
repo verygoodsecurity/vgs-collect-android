@@ -2,8 +2,8 @@ package com.verygoodsecurity.vgscollect.card
 
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
-import com.verygoodsecurity.vgscollect.view.card.ChecksumAlgorithm
-import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -37,7 +37,7 @@ class CustomBrandTest {
         val name = "VG_Search"
         val resId = R.drawable.ic_card_front_preview_dark
 
-        val brand = CustomCardBrand(regex, name, resId, params)
+        val brand = CardBrand(regex, name, resId, params)
 
         assertEquals(regex, brand.regex)
         assertEquals(name, brand.cardBrandName)
@@ -54,7 +54,7 @@ class CustomBrandTest {
         val regex = "^12333"
         val name = "VG_Search"
 
-        val brand = CustomCardBrand(regex, name)
+        val brand = CardBrand(regex, name)
 
         assertEquals(regex, brand.regex)
         assertEquals(name, brand.cardBrandName)
@@ -68,7 +68,7 @@ class CustomBrandTest {
         val name = "VG_Search"
         val mask = "### ### ### #####"
 
-        val brand = CustomCardBrand(regex, name)
+        val brand = CardBrand(regex, name)
 
         assertEquals(regex, brand.regex)
         assertEquals(name, brand.cardBrandName)
@@ -81,7 +81,7 @@ class CustomBrandTest {
         val name = "VG_Search"
         val resId = R.drawable.ic_card_front_preview_dark
 
-        val brand = CustomCardBrand(regex, name, resId)
+        val brand = CardBrand(regex, name, resId)
 
         assertEquals(regex, brand.regex)
         assertEquals(name, brand.cardBrandName)

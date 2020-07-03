@@ -12,8 +12,8 @@ import com.verygoodsecurity.vgscollect.view.card.conection.InputCardHolderConnec
 import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.LengthValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
 
 /** @suppress */
 internal class PersonNameInputField(context: Context): BaseInputField(context) {

@@ -23,12 +23,13 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
+import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.CardType
-import com.verygoodsecurity.vgscollect.view.card.ChecksumAlgorithm
-import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
 import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener  {
@@ -115,8 +116,55 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         })
     }
 
+    private fun setupDefaultBehaviour() {
+        val rule : PaymentCardNumberRule = PaymentCardNumberRule.ValidationBuilder()
+//            .setAlgorithm(ChecksumAlgorithm.NONE)
+
+            .setAllowableNumberLength(arrayOf(15, 13, 19))
+
+            .setAllowableMinLength(3)
+            .setAllowableMaxLength(7)
+
+            .build()
+
+        cardNumberField.addRule(rule)
+    }
+
+    private fun addCustomBrands() {
+        val params = BrandParams(
+            "### ### ### ###",
+            ChecksumAlgorithm.LUHN,
+            arrayOf(4, 10, 12),
+            arrayOf(3, 5)
+        )
+        val newBrand = CardBrand(
+            "^777",
+            "NEW BRAND",
+            R.drawable.ic_cards,
+            params
+        )
+        cardNumberField.addCardBrand(newBrand)
+
+
+        val params2 = BrandParams(
+            "### ### ### ###### ###",
+            ChecksumAlgorithm.LUHN,
+            arrayOf(18),
+            arrayOf(4)
+        )
+        val newBrand2 = CardBrand(
+            "^878",
+            "VGS Brand",
+            CardType.MAESTRO.resId,
+            params2
+        )
+
+        cardNumberField.addCardBrand(newBrand2)
+    }
+
     private fun setupCardNumberField() {
         addCustomBrands()
+        setupDefaultBehaviour()
 
         vgsForm.bindView(cardNumberField)
 
@@ -138,6 +186,13 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
                 mask: String
             ): String {
                 return when(cardType) {
+                    CardType.UNKNOWN -> {
+                        if (bin == "7771") {
+                            "# # # #"
+                        } else {
+                            mask
+                        }
+                    }
                     CardType.AMERICAN_EXPRESS -> {
                         if (bin.contains("371233")) {
                             "### # ###### ### ##"
@@ -155,37 +210,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
                 Log.e("card_number", "$state \n\n ${cardNumberField.getState()} ")
             }
         })
-    }
-
-    private fun addCustomBrands() {
-        val params = BrandParams(
-            "### ### ### ###",
-            ChecksumAlgorithm.LUHN,
-            arrayOf(4, 10, 12),
-            arrayOf(3, 5)
-        )
-        val newBrand = CustomCardBrand(
-            "^777",
-            "NEW BRAND",
-            R.drawable.ic_cards,
-            params
-        )
-        cardNumberField.addCardBrand(newBrand)
-
-
-        val params2 = BrandParams(
-            "### ### ### ###",
-            ChecksumAlgorithm.LUHN,
-            arrayOf(18),
-            arrayOf(4)
-        )
-        val newBrand2 = CustomCardBrand(
-            "^878",
-            "VGS Brand",
-            CardType.MAESTRO.resId,
-            params2
-        )
-        cardNumberField.addCardBrand(newBrand2)
     }
 
     private fun retrieveSettings() {

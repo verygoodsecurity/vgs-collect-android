@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.card.filter
 
 import androidx.annotation.VisibleForTesting
-import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
+import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import java.util.regex.Pattern
 
 /** @suppress */
@@ -9,10 +9,10 @@ class CardBrandFilter(
     private var divider:String? = ""
 ) : MutableCardFilter {
 
-    private val userCustomCardBrands = mutableListOf<CustomCardBrand>()
+    private val userCustomCardBrands = mutableListOf<CardBrand>()
 
 
-    override fun add(item: CustomCardBrand?) {
+    override fun add(item: CardBrand?) {
         item?.let {
             userCustomCardBrands.add(item)
         }
@@ -35,7 +35,8 @@ class CardBrandFilter(
                     currentMask = value.params.mask,
                     algorithm = value.params.algorithm,
                     numberLength = value.params.rangeNumber,
-                    cvcLength =  value.params.rangeCVV)
+                    cvcLength =  value.params.rangeCVV,
+                    successfullyDetected = true)
             }
         }
 

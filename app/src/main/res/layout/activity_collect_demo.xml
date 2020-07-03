@@ -139,6 +139,7 @@
                                         app:fieldName="card_data.cardNumber"
                                         style="@style/AppTheme.PaymentField"
                                         app:numberDivider="-"
+                                        app:validationRule="acceptUnknown"
                                         app:fontFamily="@font/robotomono_light"
                                         android:nextFocusDown="@+id/cardHolderField"
                                         app:imeOptions="actionNext"
@@ -146,7 +147,6 @@
                                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
                             </FrameLayout>
-
 
                             <FrameLayout
                                 android:id="@+id/contHoldNum"
