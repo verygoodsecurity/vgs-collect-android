@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscollect.view.card
 
 import android.app.Activity
 import android.content.res.ColorStateList
-import android.os.Build
 import android.text.TextUtils
 import android.util.TypedValue
 import android.view.Gravity
@@ -22,8 +21,6 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
-import org.robolectric.annotation.Config
-
 
 @Ignore
 @RunWith(RobolectricTestRunner::class)

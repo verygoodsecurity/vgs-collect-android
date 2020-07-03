@@ -39,7 +39,7 @@
     public private protected *;
 }
 
--keep public class com.verygoodsecurity.vgscollect.view.card.CustomCardBrand  { *; }
+-keep public class com.verygoodsecurity.vgscollect.view.card.CardBrand  { *; }
 -keep public enum com.verygoodsecurity.vgscollect.view.card.CardType  { *; }
 -keep public enum com.verygoodsecurity.vgscollect.view.card.FieldType  { *; }
 -keep public enum com.verygoodsecurity.vgscollect.view.date.DatePickerMode { *; }

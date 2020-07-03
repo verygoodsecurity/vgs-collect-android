@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscollect.storage.file
 
 import android.app.Activity
 import android.net.Uri
-import android.os.Build
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
@@ -18,7 +17,6 @@ import org.mockito.Mockito.mock
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
-import org.robolectric.annotation.Config
 
 @Ignore
 @RunWith(RobolectricTestRunner::class)

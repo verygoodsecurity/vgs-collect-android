@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import com.verygoodsecurity.vgscollect.view.card.CardType
-import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
+import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
 import org.junit.Assert.*
@@ -93,7 +93,7 @@ class InputCardNumberConnectionTest {
     fun test_draw_card_icon() {
         connection.run()
 
-        Mockito.verify(iCardBrand, Mockito.times(2)).onCardBrandPreview(CardBrandPreview(CardType.NONE, CardType.NONE.regex, CardType.NONE.name, CardType.NONE.resId))
+        Mockito.verify(iCardBrand, Mockito.times(2)).onCardBrandPreview(CardBrandPreview(CardType.UNKNOWN, CardType.UNKNOWN.regex, CardType.UNKNOWN.name, CardType.UNKNOWN.resId))
 
         val state = createFieldStateVisa(" ")
         connection.setOutput(state)
@@ -136,8 +136,8 @@ class InputCardNumberConnectionTest {
 
     @Test
     fun test_custom_filter() {
-        val customBrand = CustomCardBrand("^777", "VGS", R.drawable.ic_jcb_light)
-        val preview = CardBrandPreview(CardType.NONE,
+        val customBrand = CardBrand("^777", "VGS", R.drawable.ic_jcb_light)
+        val preview = CardBrandPreview(CardType.UNKNOWN,
             customBrand.regex,
             customBrand.cardBrandName,
             customBrand.drawableResId,

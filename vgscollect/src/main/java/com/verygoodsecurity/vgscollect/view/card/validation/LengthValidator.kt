@@ -1,6 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.card.validation.payment
-
-import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
+package com.verygoodsecurity.vgscollect.view.card.validation
 
 class LengthValidator(
     private val length: Array<Int>

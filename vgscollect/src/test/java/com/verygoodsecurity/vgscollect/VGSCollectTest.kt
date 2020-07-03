@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgscollect
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
