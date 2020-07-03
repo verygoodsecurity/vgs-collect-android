@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
-import android.os.Build
 import android.view.View
 import android.widget.EditText
 import com.google.android.material.textfield.TextInputLayout

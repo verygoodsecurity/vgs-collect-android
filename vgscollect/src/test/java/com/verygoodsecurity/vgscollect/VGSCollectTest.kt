@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgscollect
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -40,8 +39,6 @@ class VGSCollectTest {
     private lateinit var activity: Activity
 
     private lateinit var collect: VGSCollect
-
-    private var testViewCounter = 0
 
     @Before
     fun setUp() {

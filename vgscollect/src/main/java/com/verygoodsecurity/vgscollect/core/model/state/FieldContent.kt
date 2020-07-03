@@ -13,9 +13,9 @@ sealed class FieldContent {
 
     class CardNumberContent:FieldContent() {
         var rawData:String? = null
-        var cardtype: CardType = CardType.NONE
-        var numberRange: Array<Int> = CardType.NONE.rangeNumber
-        var rangeCVV: Array<Int> = CardType.NONE.rangeCVV
+        var cardtype: CardType = CardType.UNKNOWN
+        var numberRange: Array<Int> = CardType.UNKNOWN.rangeNumber
+        var rangeCVV: Array<Int> = CardType.UNKNOWN.rangeCVV
         var iconResId:Int? = 0
             internal set
         var cardBrandName:String? = null
@@ -68,7 +68,7 @@ internal fun FieldContent.CardNumberContent.parseCardBin():String {
 internal fun FieldContent.CardNumberContent.parseCardLast4Digits():String {
     return data?.run {
         val numberSTR = data!!.replace("\\D".toRegex(), "")
-        if(cardtype == CardType.NONE) {
+        if(cardtype == CardType.UNKNOWN) {
             if(numberSTR.length > 12) {
                 val start = numberSTR.length - 4
                 val end = numberSTR.length

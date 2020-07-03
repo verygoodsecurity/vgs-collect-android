@@ -23,7 +23,11 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
-import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.CheckSumValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 
 /** @suppress */
 internal class CardInputField(context: Context): BaseInputField(context), InputCardNumberConnection.IDrawCardBrand {
@@ -39,7 +43,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
     private var divider:String = SPACE
     private var iconGravity:Int = Gravity.NO_GRAVITY
-    private var cardtype: CardType = CardType.NONE
+    private var cardtype: CardType = CardType.UNKNOWN
 
     private var cardNumberMask:String = DEFAULT_MASK
 
@@ -52,15 +56,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
     }
 
     override fun applyFieldType() {
-        val validator = CardNumberValidator(divider)
-
-        inputConnection =
-            InputCardNumberConnection(
-                id,
-                validator,
-                this,
-                divider
-            )
+        inputConnection = InputCardNumberConnection(id, validator, this, divider)
 
         val defFilter = DefaultCardBrandFilter(CardType.values(), divider)
         inputConnection!!.addFilter(defFilter)
@@ -136,7 +132,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         return iconGravity
     }
 
-    internal fun setCardBrand(c: CustomCardBrand) {
+    internal fun setCardBrand(c: CardBrand) {
         userFilter.add(c)
         inputConnection?.run()
     }
@@ -259,5 +255,18 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setAutofillHints(AUTOFILL_HINT_CREDIT_CARD_NUMBER )
         }
+    }
+
+    private var validator: MutableValidator = CompositeValidator()
+
+    internal fun applyValidationRule(rule: PaymentCardNumberRule) {
+        validator.clearRules()
+        rule.length?.let {
+            validator.addRule(LengthValidator(it))
+        }
+        rule.algorithm?.let {
+            validator.addRule(CheckSumValidator(rule.algorithm))
+        }
+
     }
 }

@@ -7,14 +7,18 @@ import android.util.TypedValue
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.view.InputFieldView
-import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
+import com.verygoodsecurity.vgscollect.view.card.BrandParams
+import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 
 /**
- * A user interface element that displays text to the user in card number format.
+ * A user interface element that displays text to the user in bank card number format.
  *
  * @since 1.0.2
  */
@@ -53,6 +57,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
                 val minLines = getInt(R.styleable.VGSCardNumberEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.VGSCardNumberEditText_maxLines, 0)
+                val validationRule = getInt(R.styleable.VGSCardNumberEditText_validationRule, 0)
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -77,10 +82,32 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
                 setNumberDivider(divider)
                 applyCardIconGravity(previewGravity)
+
+                if(!isValidationPredefined()) {
+                    predefineValidationRule(validationRule)
+                }
             } finally {
                 recycle()
             }
         }
+    }
+
+    private fun predefineValidationRule(validationRule: Int) {
+        when(validationRule) {
+            0 -> enableValidation(true)
+            1 -> setupValidationRules()
+            2 -> enableValidation(false)
+        }
+    }
+
+    private fun setupValidationRules() {
+        val rule : PaymentCardNumberRule = PaymentCardNumberRule.ValidationBuilder()
+            .setAlgorithm(ChecksumAlgorithm.LUHN)
+            .setAllowableMinLength(16)
+            .setAllowableMaxLength(19)
+            .build()
+
+        addRule(rule)
     }
 
     /**
@@ -107,8 +134,13 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      *
      * @param c new card definition
      */
-    fun addCardBrand(c: CustomCardBrand) {
-        applyCardBrand(c)
+    fun addCardBrand(c: CardBrand) {
+        val digitCount = c.params.mask.replace("[^#]".toRegex(), "").length
+        if(c.params.rangeNumber.contains(digitCount)) {
+            applyCardBrand(c)
+        } else {
+            Logger.e(context, BrandParams::class.java, R.string.error_custom_brand_mask_length, c.cardBrandName)
+        }
     }
 
     /**
@@ -156,5 +188,12 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      */
     fun getState(): FieldState.CardNumberState? {
         return getCardNumberState()
+    }
+
+    /**
+     * Adds a behaviour rule for the field.
+     */
+    fun addRule(rule: PaymentCardNumberRule) {
+        applyValidationRule(rule)
     }
 }

@@ -1,16 +1,17 @@
 package com.verygoodsecurity.vgscollect.view.card
 
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 
 /**
  * Standard constants of credit card brands that are supported by SDK.
  *
  * @param regex Regular expression rules for detection card's brand.
  * @param resId The drawable resource represents credit card logo.
- * @param rangeNumber The length of the card's number which a brand supported.
- * @param rangeCVV The length of the card's CVC number which a brand supported.
- *
- * @since 1.0.1
+ * @param mask Represents format of the current card's number.
+ * @param algorithm The algorithm for validation checkSum.
+ * @param rangeNumber The array of the card's number which a brand supported.
+ * @param rangeCVV The array of the card's CVC number which a brand supported.
  */
 enum class CardType(val regex:String,
                     val resId:Int,
@@ -135,7 +136,7 @@ enum class CardType(val regex:String,
         arrayOf(3)
     ),
 
-    NONE(
+    UNKNOWN(
         "^\$a",
         R.drawable.ic_card_front_preview_dark,
         "#### #### #### #### ###",

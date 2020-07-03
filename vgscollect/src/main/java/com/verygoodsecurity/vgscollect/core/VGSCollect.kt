@@ -37,33 +37,66 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
  *
  * @since 1.0.0
  */
-class VGSCollect(
-    /** Activity context */
-    private val context: Context,
-    /** Unique Vault id */
-    id: String,
-    /** Type of Vaults */
-    environment: Environment = Environment.SANDBOX
-) {
+class VGSCollect {
 
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
-    private var client: ApiClient
+    private lateinit var client: ApiClient
 
-    private var storage:InternalStorage
+    private lateinit var storage:InternalStorage
     private var storageErrorListener:StorageErrorListener
 
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
 
     private var currentTask:AsyncTask<Payload, Void, VGSResponse>? = null
 
-    private val baseURL:String = id.setupURL(environment.rawValue)
+    private val baseURL:String
+    private val context: Context
 
     private val isURLValid:Boolean
 
-    init {
-        isURLValid = baseURL.isURLValid()
+    constructor(
+        /** Activity context */
+        context: Context,
 
+        /** Unique Vault id */
+        id: String,
+
+        /** Type of Vault */
+        environment: Environment = Environment.SANDBOX
+    ) {
+        this.context = context
+
+        baseURL = id.setupURL(environment.rawValue)
+        isURLValid = baseURL.isURLValid()
+        initializeCollect(baseURL)
+    }
+
+    constructor(
+        /** Activity context */
+        context: Context,
+
+        /** Unique Vault id */
+        id: String,
+
+        /** Type of Vault */
+        environment: String
+    ) {
+        this.context = context
+
+        baseURL = id.setupURL(environment)
+        isURLValid = baseURL.isURLValid()
+        initializeCollect(baseURL)
+
+    }
+
+    private fun initializeCollect(baseURL: String) {
+        client = OkHttpClient.newInstance(context, baseURL)
+        storage = InternalStorage(context, storageErrorListener)
+    }
+
+
+    init {
         externalDependencyDispatcher = DependencyReceiver()
 
         storageErrorListener = object : StorageErrorListener {
@@ -71,9 +104,6 @@ class VGSCollect(
                 notifyErrorResponse(error)
             }
         }
-        storage = InternalStorage(context, storageErrorListener)
-
-        client = OkHttpClient.newInstance(context, baseURL)
     }
 
     /**

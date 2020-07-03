@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.card.validator
 
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.LengthValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
