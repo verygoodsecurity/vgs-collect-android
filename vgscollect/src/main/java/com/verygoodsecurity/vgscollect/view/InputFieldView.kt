@@ -703,6 +703,10 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.nextFocusLeftId = nextFocusLeftId
         inputField.nextFocusRightId = nextFocusRightId
         inputField.imeOptions = imeOptions
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            inputField.importantForAutofill = importantForAutofill
+        }
+
         enableValidation?.let {
             inputField.enableValidation = it
         }
@@ -721,6 +725,14 @@ abstract class InputFieldView @JvmOverloads constructor(
             inputField.background = bgDraw
         }
         setBackgroundColor(Color.TRANSPARENT)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun setImportantForAutofill(mode: Int) {
+        super.setImportantForAutofill(mode)
+        if(::inputField.isInitialized) {
+            inputField.importantForAutofill = mode
+        }
     }
 
     internal fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
@@ -1057,11 +1069,6 @@ abstract class InputFieldView @JvmOverloads constructor(
     @RequiresApi(Build.VERSION_CODES.P)
     override fun setAutofillId(id: AutofillId?) {
         inputField.autofillId = id
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override fun setImportantForAutofill(mode: Int) {
-        inputField.importantForAutofill = mode
     }
 
     protected fun setCardBrandIconAdapter(adapter: CardIconAdapter?) {
