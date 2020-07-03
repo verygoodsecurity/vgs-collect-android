@@ -1,13 +1,16 @@
 package com.verygoodsecurity.vgscollect.card.validator
 
-import com.verygoodsecurity.vgscollect.view.card.validation.card.CardNumberValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.validation.CheckSumValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
 class CardNumberValidatorTest {
-    private val validator = CardNumberValidator()
+    private val validator = CompositeValidator()
 
     @Before
     fun clearAll() {
@@ -15,33 +18,38 @@ class CardNumberValidatorTest {
     }
 
     @Test
-    fun customDivider() {
-        val validator = CardNumberValidator("-")
-        validator.addRule("^(5[1-5][0-9]{4}|677189)|^(222[1-9]|2[3-6]\\d{2}|27[0-1]\\d|2720)([0-9]{2})")
-        assertTrue(validator.isValid("5555-5555-5555-5555"))
+    fun test_without_rules() {
+        assertFalse(validator.isValid("1234567890"))
+        assertFalse(validator.isValid("1"))
+        assertFalse(validator.isValid(""))
+        assertFalse(validator.isValid("411111111111111"))
     }
 
     @Test
-    fun withoutRules() {
-        assertFalse(validator.isValid("1243 23"))
+    fun test_length_rule() {
+        validator.addRule(LengthValidator(arrayOf(16)))
+
+        assertFalse(validator.isValid("411111111111111"))
+        assertTrue(validator.isValid("4111111111111118"))
+        assertFalse(validator.isValid("4111111111111111110"))
     }
 
     @Test
-    fun valid1Rule() {
-        validator.addRule("^(5[1-5][0-9]{4}|677189)|^(222[1-9]|2[3-6]\\d{2}|27[0-1]\\d|2720)([0-9]{2})")
-
-        assertTrue(validator.isValid("5555 5555 5555 5555"))
+    fun test_luhn_rule() {
+        validator.addRule(CheckSumValidator(ChecksumAlgorithm.LUHN))
+        assertTrue(validator.isValid("4111111111111111"))
+        assertFalse(validator.isValid("4111111111111118"))
+        assertTrue(validator.isValid("4111111111111111110"))
     }
 
     @Test
-    fun validMultipleRules() {
-        validator.addRule("^123")
-        validator.addRule("^782")
-        validator.addRule("^(5[1-5][0-9]{4}|677189)|^(222[1-9]|2[3-6]\\d{2}|27[0-1]\\d|2720)([0-9]{2})")
+    fun test_multiple_rules() {
+        validator.addRule(LengthValidator(arrayOf(16)))
+        validator.addRule(CheckSumValidator(ChecksumAlgorithm.LUHN))
 
-        assertTrue(validator.isValid("123"))
-        assertTrue(validator.isValid("7822 3445 64"))
-        assertTrue(validator.isValid("5555 5555 5555 5555"))
+        assertTrue(validator.isValid("4111111111111111"))
+        assertFalse(validator.isValid("4111111111111118"))
+        assertFalse(validator.isValid("4111111111111111110"))
     }
 
 }

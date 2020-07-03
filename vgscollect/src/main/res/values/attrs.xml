@@ -324,6 +324,7 @@
 
     <declare-styleable name="InputFieldView">
 
+        <!-- Set the validation state of this view. Set true if this view has enabled validation, false otherwise. -->
         <attr name="enableValidation" format="boolean"/>
 
         <attr name="imeOptions" />
@@ -426,6 +427,20 @@
     </declare-styleable>
 
     <declare-styleable name="VGSCardNumberEditText">
+
+        <!-- Adds a default behaviour rule for the validation field. -->
+        <attr name="validationRule">
+
+            <!-- Enable default validation rules. The Unknown bank card brands won't valid. -->
+            <enum name="enable" value="0" />
+
+            <!-- Enable default validation rules. The Unknown payment card brands will be valid only if they have length from 16 to 19 and Luhn algorithm valid. -->
+            <enum name="acceptUnknown" value="1" />
+
+            <!-- Disable validation rules. All type of brands will be valid. -->
+            <enum name="disable" value="2" />
+        </attr>
+
         <attr name="fieldName"/>
 
         <attr name="inputType"/>

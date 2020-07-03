@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.card.validation.payment
+package com.verygoodsecurity.vgscollect.view.card.validation.rules
 
 /**
  * This rule provides a simplified mechanism to improve default behavior of field which include person name.

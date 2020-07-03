@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.Typeface
@@ -25,11 +26,12 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
-import com.verygoodsecurity.vgscollect.view.card.CustomCardBrand
+import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
@@ -49,6 +51,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     private var imeOptions:Int = 0
     private var textAppearance:Int = 0
     private var fontFamily:Typeface? = null
+    private var enableValidation:Boolean? = null
 
     init {
         context.theme.obtainStyledAttributes(
@@ -57,17 +60,13 @@ abstract class InputFieldView @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
-                textAppearance = getResourceId(R.styleable.InputFieldView_textAppearance, 0)
-                imeOptions = getInt(R.styleable.InputFieldView_imeOptions, EditorInfo.IME_ACTION_DONE)
-
-                fontFamily = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    getFont(R.styleable.InputFieldView_fontFamily)
-                } else {
-                    val s = getString(R.styleable.InputFieldView_fontFamily)
-                    if(s.isNullOrEmpty()) {
-                        null
-                    } else {
-                        Typeface.create(s, Typeface.NORMAL)
+                for(i in 0 until indexCount) {
+                    val attr = getIndex(i);
+                    when(attr) {
+                        R.styleable.InputFieldView_textAppearance -> setupAppearance(this)
+                        R.styleable.InputFieldView_imeOptions -> setupImeOptions(this)
+                        R.styleable.InputFieldView_enableValidation -> setupEnableValidation(this)
+                        R.styleable.InputFieldView_fontFamily -> setupFont(this)
                     }
                 }
 
@@ -78,6 +77,34 @@ abstract class InputFieldView @JvmOverloads constructor(
                 setPadding(leftP, topP, rightP, bottomP)
             } finally {
                 recycle()
+            }
+        }
+    }
+
+    private fun setupImeOptions(typedArray: TypedArray) {
+        imeOptions =
+            typedArray.getInt(R.styleable.InputFieldView_imeOptions, EditorInfo.IME_ACTION_DONE)
+    }
+
+    private fun setupAppearance(typedArray: TypedArray) {
+        textAppearance =
+            typedArray.getResourceId(R.styleable.InputFieldView_textAppearance, 0)
+    }
+
+    private fun setupEnableValidation(typedArray: TypedArray) {
+        enableValidation =
+            typedArray.getBoolean(R.styleable.InputFieldView_enableValidation, false)
+    }
+
+    private fun setupFont(attrs: TypedArray) {
+        fontFamily = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            attrs.getFont(R.styleable.InputFieldView_fontFamily)
+        } else {
+            val s = attrs.getString(R.styleable.InputFieldView_fontFamily)
+            if(s.isNullOrEmpty()) {
+                null
+            } else {
+                Typeface.create(s, Typeface.NORMAL)
             }
         }
     }
@@ -676,6 +703,10 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.nextFocusLeftId = nextFocusLeftId
         inputField.nextFocusRightId = nextFocusRightId
         inputField.imeOptions = imeOptions
+        enableValidation?.let {
+            inputField.enableValidation = it
+        }
+
         if(fontFamily != null) {
             inputField.typeface = fontFamily
         }
@@ -710,7 +741,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    protected fun applyCardBrand(c: CustomCardBrand) {
+    protected fun applyCardBrand(c: CardBrand) {
         if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardBrand(c)
         }
@@ -727,6 +758,12 @@ abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? CardInputField)?.getNumberDivider()?.first()
         } else {
             null
+        }
+    }
+
+    protected fun applyValidationRule(rule: PaymentCardNumberRule) {
+        if(fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.applyValidationRule(rule)
         }
     }
 
@@ -1046,6 +1083,7 @@ abstract class InputFieldView @JvmOverloads constructor(
             null
         }
     }
+
     protected fun getCVCState() :  FieldState.CVCState? {
         return if(fieldType == FieldType.CVC) {
             (inputField as? CVCInputField)?.getState() as? FieldState.CVCState
@@ -1053,6 +1091,7 @@ abstract class InputFieldView @JvmOverloads constructor(
             null
         }
     }
+
     protected fun getCardHolderName() :  FieldState.CardHolderNameState? {
         return if(fieldType == FieldType.CARD_HOLDER_NAME) {
             (inputField as? PersonNameInputField)?.getState() as? FieldState.CardHolderNameState
@@ -1060,6 +1099,7 @@ abstract class InputFieldView @JvmOverloads constructor(
             null
         }
     }
+
     protected fun getExpirationDate() :  FieldState.CardExpirationDateState? {
         return if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.getState() as? FieldState.CardExpirationDateState
@@ -1067,13 +1107,31 @@ abstract class InputFieldView @JvmOverloads constructor(
             null
         }
     }
+
     protected fun getInfoState() :  FieldState.InfoState? {
         return (inputField as? DateInputField)?.getState() as? FieldState.InfoState
     }
 
+    /**
+     * Set the validation state of this view.
+     *
+     * @param isEnabled True if this view has enabled validation, false otherwise.
+     *
+     */
     fun enableValidation(isEnabled:Boolean) {
         inputField.enableValidation = isEnabled
     }
+
+    protected fun isValidationPredefined():Boolean {
+        return enableValidation != null
+    }
+
+    /**
+     * Returns the validation status for this view.
+     *
+     * @return True if validation enabled for this View.
+     */
+    fun isValidationEnabled():Boolean = inputField.enableValidation
 
     protected fun applyValidationRule(rule: PersonNameRule) {
         if(fieldType == FieldType.CARD_HOLDER_NAME) {
