@@ -727,6 +727,14 @@ abstract class InputFieldView @JvmOverloads constructor(
         setBackgroundColor(Color.TRANSPARENT)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun setImportantForAutofill(mode: Int) {
+        super.setImportantForAutofill(mode)
+        if(::inputField.isInitialized) {
+            inputField.importantForAutofill = mode
+        }
+    }
+
     internal fun addStateListener(stateListener: OnVgsViewStateChangeListener) {
         inputField.stateListener = stateListener
     }
