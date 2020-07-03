@@ -1,15 +1,15 @@
 package com.verygoodsecurity.vgscollect
 
 import com.verygoodsecurity.vgscollect.core.Environment
-import com.verygoodsecurity.vgscollect.core.api.buildURL
-import com.verygoodsecurity.vgscollect.core.api.isTennantIdValid
-import com.verygoodsecurity.vgscollect.core.api.isURLValid
-import com.verygoodsecurity.vgscollect.core.api.setupURL
+import com.verygoodsecurity.vgscollect.core.api.*
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.regex.Pattern
 
 class UrlExtensionTest {
+    companion object {
+        private const val URL_REGEX = "^(https:\\/\\/)+[a-zA-Z0-9 ,]+[.]+((live|sandbox)+((-)+([a-zA-Z0-9]+)|)+)+[.](verygoodproxy.com)\$"
+    }
 
     @Test
     fun test_build_URL_fault() {
@@ -120,22 +120,18 @@ class UrlExtensionTest {
 
     @Test
     fun test_url_sandbox() {
-        val regex = "^(https:\\/\\/)+[a-zA-Z0-9 ,]+[.]+[live, sandbox]+[.](verygoodproxy.com)\$"
-
         val s = "tnt234mm"
         val url = s.setupURL(Environment.SANDBOX.rawValue)
 
-        assertTrue(Pattern.compile(regex).matcher(url).matches())
+        assertTrue(Pattern.compile(URL_REGEX).matcher(url).matches())
     }
 
     @Test
     fun test_url_live() {
-        val regex = "^(https:\\/\\/)+[a-zA-Z0-9 ,]+[.]+[live, sandbox]+[.](verygoodproxy.com)\$"
-
         val s = "1239f3hf"
         val url = s.setupURL(Environment.LIVE.rawValue)
 
-        assertTrue(Pattern.compile(regex).matcher(url).matches())
+        assertTrue(Pattern.compile(URL_REGEX).matcher(url).matches())
     }
 
     @Test
@@ -152,5 +148,66 @@ class UrlExtensionTest {
         val url = s.setupURL(Environment.LIVE.rawValue)
 
         assertTrue(url.isURLValid())
+    }
+
+    @Test
+    fun test_is_environment_valid() {
+        assertTrue("live".isEnvironmentValid())
+        assertFalse("live-".isEnvironmentValid())
+        assertTrue("live-12".isEnvironmentValid())
+        assertTrue("live-eu".isEnvironmentValid())
+        assertTrue("live-w".isEnvironmentValid())
+        assertFalse("live-w-".isEnvironmentValid())
+        assertTrue("live-w-12".isEnvironmentValid())
+        assertFalse("live-w-12-".isEnvironmentValid())
+        assertTrue("live-w-12-abba".isEnvironmentValid())
+
+        assertTrue("sandbox".isEnvironmentValid())
+        assertFalse("sandbox-".isEnvironmentValid())
+        assertTrue("sandbox-12".isEnvironmentValid())
+        assertTrue("sandbox-eu".isEnvironmentValid())
+        assertTrue("sandbox-w".isEnvironmentValid())
+        assertFalse("sandbox-w-".isEnvironmentValid())
+        assertTrue("sandbox-w-12".isEnvironmentValid())
+        assertFalse("sandbox-w-12-".isEnvironmentValid())
+        assertTrue("sandbox-w-12-abba".isEnvironmentValid())
+    }
+
+    @Test
+    fun test_full_live_url() {
+        val tennant = "acv12das"
+        val url0 = tennant.setupURL("live")
+        assertTrue(Pattern.compile(URL_REGEX).matcher(url0).matches())
+
+        val url1 = tennant.setupURL("live-")
+        assertFalse(Pattern.compile(URL_REGEX).matcher(url1).matches())
+
+        val url2 = tennant.setupURL("live-eu")
+        assertTrue(Pattern.compile(URL_REGEX).matcher(url2).matches())
+
+        val url3 = tennant.setupURL("live-eu-")
+        assertFalse(Pattern.compile(URL_REGEX).matcher(url3).matches())
+
+        val url4 = tennant.setupURL("live-eu-123")
+        assertTrue(Pattern.compile(URL_REGEX).matcher(url4).matches())
+    }
+
+    @Test
+    fun test_full_sandbox_url() {
+        val tennant = "acv12das"
+        val url0 = tennant.setupURL("sandbox")
+        assertTrue(Pattern.compile(URL_REGEX).matcher(url0).matches())
+
+        val url1 = tennant.setupURL("sandbox-")
+        assertFalse(Pattern.compile(URL_REGEX).matcher(url1).matches())
+
+        val url2 = tennant.setupURL("sandbox-eu")
+        assertTrue(Pattern.compile(URL_REGEX).matcher(url2).matches())
+
+        val url3 = tennant.setupURL("sandbox-eu-")
+        assertFalse(Pattern.compile(URL_REGEX).matcher(url3).matches())
+
+        val url4 = tennant.setupURL("sandbox-eu-123")
+        assertTrue(Pattern.compile(URL_REGEX).matcher(url4).matches())
     }
 }
