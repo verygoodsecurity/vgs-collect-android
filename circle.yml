@@ -105,7 +105,7 @@ aliases:
     docker:
       - image: circleci/android:api-29
     environment:
-      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx3200m -XX:+HeapDumpOnOutOfMemoryError"'
       TEST_FLAGS: "--configure-on-demand -PdisablePreDex"
   - &deploy_environment
     working_directory: ~/code
