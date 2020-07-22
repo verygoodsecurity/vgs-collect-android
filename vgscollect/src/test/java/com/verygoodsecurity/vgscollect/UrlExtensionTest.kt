@@ -8,7 +8,7 @@ import java.util.regex.Pattern
 
 class UrlExtensionTest {
     companion object {
-        private const val URL_REGEX = "^(https:\\/\\/)+[a-zA-Z0-9 ,]+[.]+((live|sandbox)+((-)+([a-zA-Z0-9]+)|)+)+[.](verygoodproxy.com)\$"
+        private const val URL_REGEX = "^(https:\\/\\/)+[a-zA-Z0-9]+[.]+((live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+)+[.](verygoodproxy.com)\$"
     }
 
     @Test
@@ -161,6 +161,7 @@ class UrlExtensionTest {
         assertTrue("live-w-12".isEnvironmentValid())
         assertFalse("live-w-12-".isEnvironmentValid())
         assertTrue("live-w-12-abba".isEnvironmentValid())
+        assertTrue("LIVE-UA-3".isEnvironmentValid())
 
         assertTrue("sandbox".isEnvironmentValid())
         assertFalse("sandbox-".isEnvironmentValid())
@@ -171,6 +172,7 @@ class UrlExtensionTest {
         assertTrue("sandbox-w-12".isEnvironmentValid())
         assertFalse("sandbox-w-12-".isEnvironmentValid())
         assertTrue("sandbox-w-12-abba".isEnvironmentValid())
+        assertTrue("SANDBOX-UA-7".isEnvironmentValid())
     }
 
     @Test
@@ -190,6 +192,9 @@ class UrlExtensionTest {
 
         val url4 = tennant.setupURL("live-eu-123")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url4).matches())
+
+        val url5 = tennant.setupURL("LIVE-UA-1")
+        assertTrue(Pattern.compile(URL_REGEX).matcher(url5).matches())
     }
 
     @Test
@@ -209,5 +214,8 @@ class UrlExtensionTest {
 
         val url4 = tennant.setupURL("sandbox-eu-123")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url4).matches())
+
+        val url5 = tennant.setupURL("SANDBOX-EU-1")
+        assertTrue(Pattern.compile(URL_REGEX).matcher(url5).matches())
     }
 }
