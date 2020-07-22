@@ -40,6 +40,7 @@ aliases:
         name: Run Unit Tests
         command: ./gradlew testDebugUnitTest
 
+
   - &assembleDebug
     - checkout
     - *attach_workspace
