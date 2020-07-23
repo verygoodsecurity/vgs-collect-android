@@ -9,10 +9,8 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.Intents.intending
-import androidx.test.espresso.intent.matcher.IntentMatchers.isInternal
-import androidx.test.espresso.intent.matcher.IntentMatchers.toPackage
+import androidx.test.espresso.intent.Intents.*
+import androidx.test.espresso.intent.matcher.IntentMatchers.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -21,6 +19,7 @@ import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject
 import androidx.test.uiautomator.UiObjectNotFoundException
 import androidx.test.uiautomator.UiSelector
+import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.actions.SetTextAction
 import com.verygoodsecurity.demoapp.matchers.withCardCVCState
 import com.verygoodsecurity.demoapp.matchers.withCardExpDateState
@@ -70,7 +69,8 @@ class ActivityCaseInstrumentedTest {
 
     @Test
     fun test_scan_card() {
-        Intents.init()
+        init()
+
         startMainScreen()
 
         onView(withId(R.id.scan_card))
@@ -78,19 +78,15 @@ class ActivityCaseInstrumentedTest {
 
         allowPermissionsIfNeeded()
 
-        pauseTestFor(500)
+        intended(hasComponent(ScanActivity::class.java.name))
 
-
-
-        val result = createSignInResult()
+        val resultData = Intent()
+        val result = ActivityResult(Activity.RESULT_OK, resultData)
         intending(toPackage(CardIOActivity::class.java.canonicalName)).respondWith(result)
-//        intending(not(isInternal()))
-//            .respondWith(ActivityResult(Activity.RESULT_OK, resultData))
-//        assertThat(rule.scenario.result, rule.scenario.(Activity.RESULT_OK));
-//        assertThat(rule.scenario.result, hasResultData(IntentMatchers.hasExtraWithKey(PickActivity.EXTRA_PICKED_NUMBER)));
+        intending(not(isInternal()))
+            .respondWith(ActivityResult(Activity.RESULT_OK, resultData))
 
-        pauseTestFor(4000)
-
+        release()
     }
 
     private fun createSignInResult(): ActivityResult? {
@@ -104,10 +100,16 @@ class ActivityCaseInstrumentedTest {
 
     private fun allowPermissionsIfNeeded() {
         if (Build.VERSION.SDK_INT >= 23) {
-            val allowPermissions: UiObject = device.findObject(UiSelector().text("Allow"))
-            if (allowPermissions.exists()) {
+            val allowPermissionsLowercase: UiObject = device.findObject(UiSelector().text("Allow"))
+            if (allowPermissionsLowercase.exists()) {
                 try {
-                    allowPermissions.click()
+                    allowPermissionsLowercase.click()
+                } catch (e: UiObjectNotFoundException) { }
+            }
+            val allowPermissionsUpercase: UiObject = device.findObject(UiSelector().text("ALLOW"))
+            if (allowPermissionsUpercase.exists()) {
+                try {
+                    allowPermissionsUpercase.click()
                 } catch (e: UiObjectNotFoundException) { }
             }
         }
