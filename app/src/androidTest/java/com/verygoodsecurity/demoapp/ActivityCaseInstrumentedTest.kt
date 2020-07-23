@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import android.os.Build
-import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
@@ -21,12 +20,15 @@ import androidx.test.uiautomator.UiObjectNotFoundException
 import androidx.test.uiautomator.UiSelector
 import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.actions.SetTextAction
+import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
 import com.verygoodsecurity.demoapp.matchers.withCardCVCState
 import com.verygoodsecurity.demoapp.matchers.withCardExpDateState
 import com.verygoodsecurity.demoapp.matchers.withCardHolderState
 import com.verygoodsecurity.demoapp.matchers.withCardNumberState
+import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import io.card.payment.CardIOActivity
-import org.hamcrest.Matchers
+import io.card.payment.CreditCard
+import kotlinx.android.synthetic.main.activity_collect_demo.*
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.notNullValue
 import org.hamcrest.core.StringContains.containsString
@@ -72,30 +74,33 @@ class ActivityCaseInstrumentedTest {
         init()
 
         startMainScreen()
+        intended(hasComponent(VGSCollectActivity::class.qualifiedName))
 
-        onView(withId(R.id.scan_card))
-            .perform(click())
+        interactWithScanner()
 
-        allowPermissionsIfNeeded()
+        val submitBtn  = interactWithSubmitButton()
+        submitBtn.perform(click())
 
-        intended(hasComponent(ScanActivity::class.java.name))
+        pauseTestFor(7000)
 
-        val resultData = Intent()
-        val result = ActivityResult(Activity.RESULT_OK, resultData)
-        intending(toPackage(CardIOActivity::class.java.canonicalName)).respondWith(result)
-        intending(not(isInternal()))
-            .respondWith(ActivityResult(Activity.RESULT_OK, resultData))
+        val responseContainer  = interactWithResponseContainer()
+        responseContainer.check(matches(withText(containsString(CODE_200))))
 
         release()
     }
 
-    private fun createSignInResult(): ActivityResult? {
-        val resultData = Intent()
-        val phoneNumber = "123-345-6789"
-        resultData.putExtra("phone", phoneNumber)
+
+    fun interactWithScanner() = apply {
+        val intent = Intent()
+        val card = CreditCard("4111111111111111", 5,2033, "123", null, "John B")
+        intent.putExtra(CardIOActivity.EXTRA_SCAN_RESULT, card)
 
 
-        return ActivityResult(0x7, resultData)
+        intending(hasComponent(CardIOActivity::class.qualifiedName))
+            .respondWith(ActivityResult(Activity.RESULT_OK, intent))
+
+        onView(withId(R.id.scan_card))
+            .perform(click())
     }
 
     private fun allowPermissionsIfNeeded() {
@@ -193,55 +198,55 @@ class ActivityCaseInstrumentedTest {
     }
 
     private fun interactWithResponseContainer(): ViewInteraction {
-        return Espresso.onView(withId(R.id.responseContainerView))
+        return onView(withId(R.id.responseContainerView))
             .check(matches(isDisplayed()))
     }
 
     private fun startMainScreen() {
-        val startWithActivityBtn = Espresso.onView(withId(R.id.startWithActivityBtn))
+        val startWithActivityBtn = onView(withId(R.id.startWithActivityBtn))
             .check(matches(isDisplayed()))
 
         startWithActivityBtn.perform(click())
     }
 
     private fun interactWithCardCVC(): ViewInteraction {
-        val cardCVCField = Espresso.onView(withId(R.id.cardCVCField))
-            .check(matches(Matchers.not(isDisplayed())))
-        Espresso.onView(withId(R.id.cardCVCFieldLay))
+        val cardCVCField = onView(withId(R.id.cardCVCField))
+            .check(matches(not(isDisplayed())))
+        onView(withId(R.id.cardCVCFieldLay))
             .check(matches(isDisplayed()))
 
         return cardCVCField
     }
 
     private fun interactWithCardExpDate(): ViewInteraction {
-        val cardExpDateField = Espresso.onView(withId(R.id.cardExpDateField))
-            .check(matches(Matchers.not(isDisplayed())))
-        Espresso.onView(withId(R.id.cardExpDateFieldLay))
+        val cardExpDateField = onView(withId(R.id.cardExpDateField))
+            .check(matches(not(isDisplayed())))
+        onView(withId(R.id.cardExpDateFieldLay))
             .check(matches(isDisplayed()))
 
         return cardExpDateField
     }
 
     private fun interactWithCardHolderName(): ViewInteraction {
-        val cardHolderField = Espresso.onView(withId(R.id.cardHolderField))
-            .check(matches(Matchers.not(isDisplayed())))
-        Espresso.onView(withId(R.id.cardHolderFieldLay))
+        val cardHolderField = onView(withId(R.id.cardHolderField))
+            .check(matches(not(isDisplayed())))
+        onView(withId(R.id.cardHolderFieldLay))
             .check(matches(isDisplayed()))
 
         return cardHolderField
     }
 
     private fun interactWithCardNumber(): ViewInteraction {
-        val cardInputField = Espresso.onView(withId(R.id.cardNumberField))
+        val cardInputField = onView(withId(R.id.cardNumberField))
             .check(matches(not(isDisplayed())))
-        Espresso.onView(withId(R.id.cardNumberFieldLay))
+        onView(withId(R.id.cardNumberFieldLay))
             .check(matches(isDisplayed()))
 
         return cardInputField
     }
 
     private fun interactWithSubmitButton(): ViewInteraction {
-        return Espresso.onView(withId(R.id.submitBtn))
+        return onView(withId(R.id.submitBtn))
             .check(matches(isDisplayed()))
     }
 
