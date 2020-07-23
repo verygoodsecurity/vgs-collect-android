@@ -41,7 +41,7 @@ internal fun String.isTennantIdValid():Boolean {
 }
 
 internal fun String.isEnvironmentValid():Boolean {
-    val m = Pattern.compile("^(live|sandbox)+((-)+([a-zA-Z0-9]+)|)+\$").matcher(this)
+    val m = Pattern.compile("^(live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+\$").matcher(this)
 
     return m.matches()
 }
