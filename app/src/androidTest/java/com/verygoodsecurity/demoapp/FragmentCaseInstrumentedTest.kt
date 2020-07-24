@@ -3,33 +3,27 @@ package com.verygoodsecurity.demoapp
 import android.app.Activity
 import android.app.Instrumentation
 import android.content.Intent
-import android.os.Build
-import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.intent.Intents
-import androidx.test.espresso.intent.matcher.IntentMatchers
-import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.intent.Intents.*
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.UiObject
-import androidx.test.uiautomator.UiObjectNotFoundException
-import androidx.test.uiautomator.UiSelector
-import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.actions.SetTextAction
-import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
 import io.card.payment.CardIOActivity
 import io.card.payment.CreditCard
-import org.hamcrest.Matchers
+import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.CoreMatchers.not
 import org.hamcrest.core.StringContains
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
 
 @RunWith(AndroidJUnit4::class)
 class FragmentCaseInstrumentedTest {
@@ -64,29 +58,21 @@ class FragmentCaseInstrumentedTest {
 
     @Test
     fun test_scan_card() {
-        Intents.init()
+        init()
 
         startMainScreen()
 
         interactWithScanner()
 
         val submitBtn  = interactWithSubmitButton()
-        submitBtn.perform(ViewActions.click())
+        performClick(submitBtn)
 
         pauseTestFor(7000)
 
         val responseContainer  = interactWithResponseContainer()
-        responseContainer.check(
-            ViewAssertions.matches(
-                ViewMatchers.withText(
-                    StringContains.containsString(
-                        ActivityCaseInstrumentedTest.CODE_200
-                    )
-                )
-            )
-        )
+        responseContainer.check(matches(withText(containsString(ActivityCaseInstrumentedTest.CODE_200))))
 
-        Intents.release()
+        release()
     }
 
     private fun interactWithScanner() = apply {
@@ -95,11 +81,10 @@ class FragmentCaseInstrumentedTest {
         intent.putExtra(CardIOActivity.EXTRA_SCAN_RESULT, card)
 
 
-        Intents.intending(IntentMatchers.hasComponent(CardIOActivity::class.qualifiedName))
+        intending(hasComponent(CardIOActivity::class.qualifiedName))
             .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, intent))
 
-        Espresso.onView(ViewMatchers.withId(R.id.scan_card))
-            .perform(ViewActions.click())
+        performClick(onView(withId(R.id.scan_card)))
     }
 
     @Test
@@ -119,59 +104,22 @@ class FragmentCaseInstrumentedTest {
         cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE))
         cardCVCInputField.perform(SetTextAction(CARD_CVC))
 
-        pauseTestFor(300)
-        submitBtn.perform(ViewActions.click())
+        performClick(submitBtn)
 
         pauseTestFor(7000)
-        responseContainer.check(
-            ViewAssertions.matches(
-                ViewMatchers.withText(
-                    StringContains.containsString(
-                        CODE_200
-                    )
-                )
-            )
-        )
+        responseContainer.check(matches(withText(containsString(CODE_200))))
 
-        Espresso.onView(ViewMatchers.withId(R.id.details_item))
-            .perform(ViewActions.click())
-
+        performClick(onView(withId(R.id.details_item)))
 
         pauseTestFor(500)
 
         device.pressBack()
 
-        pauseTestFor(300)
-        submitBtn.perform(ViewActions.click())
+        performClick(submitBtn)
 
         pauseTestFor(7000)
 
-        responseContainer.check(
-            ViewAssertions.matches(
-                ViewMatchers.withText(
-                    StringContains.containsString(
-                        CODE_200
-                    )
-                )
-            )
-        )
-    }
-
-    private fun allowPermissionsIfNeeded() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            val allowPermissionsLowercase: UiObject = device.findObject(UiSelector().text("Allow"))
-            if (allowPermissionsLowercase.exists()) {
-                try {
-                    allowPermissionsLowercase.click()
-                } catch (e: UiObjectNotFoundException) { }
-            }
-            val allowPermissionsUpercase: UiObject = device.findObject(UiSelector().text("ALLOW"))
-            if (allowPermissionsUpercase.exists()) {
-                try {
-                    allowPermissionsUpercase.click()
-                } catch (e: UiObjectNotFoundException) { }
-            }
-        }
+        responseContainer.check(matches(withText(containsString(CODE_200))))
     }
 
     @Test
@@ -191,126 +139,78 @@ class FragmentCaseInstrumentedTest {
         cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE_WRONG))
         cardCVCInputField.perform(SetTextAction(CARD_CVC_WRONG))
 
-
-        submitBtn.perform(ViewActions.click())
+        performClick(submitBtn)
 
         pauseTestFor(300)
-        responseContainer.check(
-            ViewAssertions.matches(
-                ViewMatchers.withText(
-                    StringContains.containsString(
-                        CODE_1001
-                    )
-                )
-            )
-        )
+        responseContainer.check(matches(withText(containsString(CODE_1001))))
+
         cardCVCInputField.perform(SetTextAction(CARD_CVC))
 
-        pauseTestFor(300)
-        submitBtn.perform(ViewActions.click())
-        responseContainer.check(
-            ViewAssertions.matches(
-                ViewMatchers.withText(
-                    StringContains.containsString(
-                        CODE_1001
-                    )
-                )
-            )
-        )
+        performClick(submitBtn)
+        responseContainer.check(matches(withText(containsString(CODE_1001))))
         cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE))
 
 
-        pauseTestFor(300)
-        submitBtn.perform(ViewActions.click())
-        responseContainer.check(
-            ViewAssertions.matches(
-                ViewMatchers.withText(
-                    StringContains.containsString(
-                        CODE_1001
-                    )
-                )
-            )
-        )
+        performClick(submitBtn)
+        responseContainer.check(matches(withText(containsString(CODE_1001))))
         cardInputField.perform(SetTextAction(CARD_NUMBER_WRONG_2))
-        submitBtn.perform(ViewActions.click())
-        responseContainer.check(
-            ViewAssertions.matches(
-                ViewMatchers.withText(
-                    StringContains.containsString(
-                        CODE_1001
-                    )
-                )
-            )
-        )
+        performClick(submitBtn)
+        responseContainer.check(matches(withText(StringContains.containsString(CODE_1001))))
         cardInputField.perform(SetTextAction(CARD_NUMBER))
-        pauseTestFor(300)
-        submitBtn.perform(ViewActions.click())
+        performClick(submitBtn)
 
         pauseTestFor(7000)
-        responseContainer.check(
-            ViewAssertions.matches(
-                ViewMatchers.withText(
-                    StringContains.containsString(
-                        CODE_200
-                    )
-                )
-            )
-        )
+        responseContainer.check(matches(withText(StringContains.containsString(CODE_200))))
     }
 
     private fun interactWithResponseContainer(): ViewInteraction {
-        return Espresso.onView(ViewMatchers.withId(R.id.responseContainerView))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        return onView(withId(R.id.responseContainerView))
+            .check(matches(isDisplayed()))
     }
 
     private fun startMainScreen() {
-        val startWithActivityBtn = Espresso.onView(ViewMatchers.withId(R.id.startWithFragmentBtn))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        val startWithActivityBtn = onView(withId(R.id.startWithFragmentBtn))
+            .check(matches(isDisplayed()))
 
-        startWithActivityBtn.perform(ViewActions.click())
+        startWithActivityBtn.perform(click())
     }
 
     private fun interactWithCardCVC(): ViewInteraction {
-        val cardCVCField = Espresso.onView(ViewMatchers.withId(R.id.cardCVCField))
-            .check(ViewAssertions.matches(Matchers.not(ViewMatchers.isDisplayed())))
-        Espresso.onView(ViewMatchers.withId(R.id.cardCVCFieldLay))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        val cardCVCField = onView(withId(R.id.cardCVCField)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.cardCVCFieldLay)).check(matches(isDisplayed()))
 
         return cardCVCField
     }
 
     private fun interactWithCardExpDate(): ViewInteraction {
-        val cardExpDateField = Espresso.onView(ViewMatchers.withId(R.id.cardExpDateField))
-            .check(ViewAssertions.matches(Matchers.not(ViewMatchers.isDisplayed())))
-        Espresso.onView(ViewMatchers.withId(R.id.cardExpDateFieldLay))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        val cardExpDateField = onView(withId(R.id.cardExpDateField)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.cardExpDateFieldLay)).check(matches(isDisplayed()))
 
         return cardExpDateField
     }
 
     private fun interactWithCardHolderName(): ViewInteraction {
-        val cardHolderField = Espresso.onView(ViewMatchers.withId(R.id.cardHolderField))
-            .check(ViewAssertions.matches(Matchers.not(ViewMatchers.isDisplayed())))
-        Espresso.onView(ViewMatchers.withId(R.id.cardHolderFieldLay))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        val cardHolderField = onView(withId(R.id.cardHolderField)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.cardHolderFieldLay)).check(matches(isDisplayed()))
 
         return cardHolderField
     }
 
     private fun interactWithCardNumber(): ViewInteraction {
-        val cardInputField = Espresso.onView(ViewMatchers.withId(R.id.cardNumberField))
-            .check(ViewAssertions.matches(Matchers.not(ViewMatchers.isDisplayed())))
-        Espresso.onView(ViewMatchers.withId(R.id.cardNumberFieldLay))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        val cardInputField = onView(withId(R.id.cardNumberField)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.cardNumberFieldLay)).check(matches(isDisplayed()))
 
         return cardInputField
     }
 
     private fun interactWithSubmitButton(): ViewInteraction {
-        return Espresso.onView(ViewMatchers.withId(R.id.submitBtn))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        return onView(withId(R.id.submitBtn)).check(matches(isDisplayed()))
     }
 
+    private fun performClick(interaction: ViewInteraction) {
+        pauseTestFor(200)
+        interaction.perform(click())
+    }
 
     private fun pauseTestFor(milliseconds: Long) {
         try {

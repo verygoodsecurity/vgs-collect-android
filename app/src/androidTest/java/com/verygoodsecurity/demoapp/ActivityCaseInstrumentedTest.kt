@@ -3,7 +3,6 @@ package com.verygoodsecurity.demoapp
 import android.app.Activity
 import android.app.Instrumentation.ActivityResult
 import android.content.Intent
-import android.os.Build
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
@@ -15,20 +14,14 @@ import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.UiObject
-import androidx.test.uiautomator.UiObjectNotFoundException
-import androidx.test.uiautomator.UiSelector
-import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.actions.SetTextAction
 import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
 import com.verygoodsecurity.demoapp.matchers.withCardCVCState
 import com.verygoodsecurity.demoapp.matchers.withCardExpDateState
 import com.verygoodsecurity.demoapp.matchers.withCardHolderState
 import com.verygoodsecurity.demoapp.matchers.withCardNumberState
-import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import io.card.payment.CardIOActivity
 import io.card.payment.CreditCard
-import kotlinx.android.synthetic.main.activity_collect_demo.*
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.notNullValue
 import org.hamcrest.core.StringContains.containsString
@@ -79,7 +72,7 @@ class ActivityCaseInstrumentedTest {
         interactWithScanner()
 
         val submitBtn  = interactWithSubmitButton()
-        submitBtn.perform(click())
+        performClick(submitBtn)
 
         pauseTestFor(7000)
 
@@ -99,25 +92,7 @@ class ActivityCaseInstrumentedTest {
         intending(hasComponent(CardIOActivity::class.qualifiedName))
             .respondWith(ActivityResult(Activity.RESULT_OK, intent))
 
-        onView(withId(R.id.scan_card))
-            .perform(click())
-    }
-
-    private fun allowPermissionsIfNeeded() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            val allowPermissionsLowercase: UiObject = device.findObject(UiSelector().text("Allow"))
-            if (allowPermissionsLowercase.exists()) {
-                try {
-                    allowPermissionsLowercase.click()
-                } catch (e: UiObjectNotFoundException) { }
-            }
-            val allowPermissionsUpercase: UiObject = device.findObject(UiSelector().text("ALLOW"))
-            if (allowPermissionsUpercase.exists()) {
-                try {
-                    allowPermissionsUpercase.click()
-                } catch (e: UiObjectNotFoundException) { }
-            }
-        }
+        performClick(onView(withId(R.id.scan_card)))
     }
 
     @Test
@@ -169,29 +144,29 @@ class ActivityCaseInstrumentedTest {
         cardCVCInputField.perform(SetTextAction(CARD_CVC_WRONG))
 
 
-        submitBtn.perform(click())
+        performClick(submitBtn)
         responseContainer.check(matches(withText(containsString(CODE_1001))))
         cardCVCInputField.perform(SetTextAction(CARD_CVC))
 
 
-        submitBtn.perform(click())
+        performClick(submitBtn)
         responseContainer.check(matches(withText(containsString(CODE_1001))))
         cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE))
 
 
-        submitBtn.perform(click())
+        performClick(submitBtn)
         responseContainer.check(matches(withText(containsString(CODE_1001))))
         cardHolderNameInputField.perform(SetTextAction(CARD_HOLDER))
 
 
-        submitBtn.perform(click())
+        performClick(submitBtn)
         responseContainer.check(matches(withText(containsString(CODE_1001))))
         cardInputField.perform(SetTextAction(CARD_NUMBER_WRONG_2))
-        submitBtn.perform(click())
+
+        performClick(submitBtn)
         responseContainer.check(matches(withText(containsString(CODE_1001))))
         cardInputField.perform(SetTextAction(CARD_NUMBER))
-        pauseTestFor(300)
-        submitBtn.perform(click())
+        performClick(submitBtn)
 
         pauseTestFor(7000)
         responseContainer.check(matches(withText(containsString(CODE_200))))
@@ -206,7 +181,7 @@ class ActivityCaseInstrumentedTest {
         val startWithActivityBtn = onView(withId(R.id.startWithActivityBtn))
             .check(matches(isDisplayed()))
 
-        startWithActivityBtn.perform(click())
+        performClick(startWithActivityBtn)
     }
 
     private fun interactWithCardCVC(): ViewInteraction {
@@ -250,6 +225,10 @@ class ActivityCaseInstrumentedTest {
             .check(matches(isDisplayed()))
     }
 
+    private fun performClick(interaction: ViewInteraction) {
+        pauseTestFor(200)
+        interaction.perform(click())
+    }
 
     private fun pauseTestFor(milliseconds: Long) {
         try {
