@@ -2,6 +2,7 @@ package com.verygoodsecurity.demoapp.viewpager_case
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -98,6 +99,7 @@ class VGSViewPagerActivity:AppCompatActivity(), VgsCollectResponseListener, View
                 } else {
                     previewCardBrand?.setImageResource(state.drawableBrandResId)
                 }
+                Log.e("test", "${state.isValid} ${state.fieldName}")
             }
         }
     }
@@ -106,6 +108,7 @@ class VGSViewPagerActivity:AppCompatActivity(), VgsCollectResponseListener, View
         return object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
                 cvcValid = state.isValid
+                Log.e("test", "${state.isValid} ${state.fieldName}")
             }
         }
     }
@@ -114,6 +117,7 @@ class VGSViewPagerActivity:AppCompatActivity(), VgsCollectResponseListener, View
         return object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
                 cardExpDateValid = state.isValid
+                Log.e("test", "${state.isValid} ${state.fieldName}")
             }
         }
     }
@@ -122,11 +126,13 @@ class VGSViewPagerActivity:AppCompatActivity(), VgsCollectResponseListener, View
         return object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
                 cardHolderValid = state.isValid
+                Log.e("test", "${state.isValid} ${state.fieldName}")
             }
         }
     }
 
     override fun onResponse(response: VGSResponse?) {
+        Log.e("test", "${response?.code}")
         when (response) {
             is VGSResponse.SuccessResponse -> Toast.makeText(this, "Success", Toast.LENGTH_LONG).show()//responseContainerView.text = response.toString()
             is VGSResponse.ErrorResponse -> Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()//responseContainerView.text = response.toString()
