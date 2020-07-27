@@ -15,6 +15,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.actions.SetTextAction
+import com.verygoodsecurity.demoapp.matchers.withCardCVCState
+import com.verygoodsecurity.demoapp.matchers.withCardExpDateState
+import com.verygoodsecurity.demoapp.matchers.withCardHolderState
+import com.verygoodsecurity.demoapp.matchers.withCardNumberState
 import io.card.payment.CardIOActivity
 import io.card.payment.CreditCard
 import org.hamcrest.CoreMatchers.containsString
@@ -31,6 +35,8 @@ class FragmentCaseInstrumentedTest {
     companion object {
         const val CARD_NUMBER = "4111111111111111"
         const val CARD_NUMBER_WRONG_1 = "41111111QW"
+        const val CARD_NUMBER_WRONG_BIN_CHECK = "411111"
+        const val CARD_NUMBER_WRONG_LAST_CHECK = "1111"
         const val CARD_NUMBER_WRONG_2 = "41111111111111112"
 
         const val CARD_HOLDER = "Gohn Galt"
@@ -104,6 +110,13 @@ class FragmentCaseInstrumentedTest {
         cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE))
         cardCVCInputField.perform(SetTextAction(CARD_CVC))
 
+
+        pauseTestFor(500)
+        cardInputField.check(matches(withCardNumberState(CARD_NUMBER)))
+        cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
+        cardExpDateInputField.check(matches(withCardExpDateState(CARD_EXP_DATE)))
+        cardCVCInputField.check(matches(withCardCVCState(CARD_CVC)))
+
         performClick(submitBtn)
 
         pauseTestFor(7000)
@@ -114,6 +127,13 @@ class FragmentCaseInstrumentedTest {
         pauseTestFor(500)
 
         device.pressBack()
+
+        pauseTestFor(500)
+        cardInputField.check(matches(withCardNumberState(CARD_NUMBER)))
+        cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
+        cardExpDateInputField.check(matches(withCardExpDateState(CARD_EXP_DATE)))
+        cardCVCInputField.check(matches(withCardCVCState(CARD_CVC)))
+
 
         performClick(submitBtn)
 
@@ -139,6 +159,15 @@ class FragmentCaseInstrumentedTest {
         cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE_WRONG))
         cardCVCInputField.perform(SetTextAction(CARD_CVC_WRONG))
 
+
+        pauseTestFor(500)
+        cardInputField.check(matches(withCardNumberState(
+            bin = CARD_NUMBER_WRONG_BIN_CHECK
+        )))
+        cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
+        cardExpDateInputField.check(matches(withCardExpDateState("99/")))
+        cardCVCInputField.check(matches(withCardCVCState(CARD_CVC_WRONG)))
+
         performClick(submitBtn)
 
         pauseTestFor(300)
@@ -157,6 +186,15 @@ class FragmentCaseInstrumentedTest {
         performClick(submitBtn)
         responseContainer.check(matches(withText(StringContains.containsString(CODE_1001))))
         cardInputField.perform(SetTextAction(CARD_NUMBER))
+
+
+        pauseTestFor(500)
+        cardInputField.check(matches(withCardNumberState(CARD_NUMBER)))
+        cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
+        cardExpDateInputField.check(matches(withCardExpDateState(CARD_EXP_DATE)))
+        cardCVCInputField.check(matches(withCardCVCState(CARD_CVC)))
+
+
         performClick(submitBtn)
 
         pauseTestFor(7000)
@@ -208,7 +246,7 @@ class FragmentCaseInstrumentedTest {
     }
 
     private fun performClick(interaction: ViewInteraction) {
-        pauseTestFor(200)
+        pauseTestFor(300)
         interaction.perform(click())
     }
 
