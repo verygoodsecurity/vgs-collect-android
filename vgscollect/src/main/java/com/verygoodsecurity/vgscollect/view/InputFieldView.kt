@@ -1145,4 +1145,8 @@ abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? PersonNameInputField)?.applyValidationRule(rule)
         }
     }
+
+    override fun performClick(): Boolean {
+        return inputField.performClick()
+    }
 }
