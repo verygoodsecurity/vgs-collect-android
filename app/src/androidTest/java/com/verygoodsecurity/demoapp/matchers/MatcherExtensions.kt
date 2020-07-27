@@ -1,7 +1,11 @@
 package com.verygoodsecurity.demoapp.matchers
 
-fun withCardNumberState(str:String):WithCardNumberStateMatcher {
-    return WithCardNumberStateMatcher(str)
+fun withCardNumberState(
+    str:String? = null,
+    bin:String? = null,
+    last:String? = null
+):WithCardNumberStateMatcher {
+    return WithCardNumberStateMatcher(str, bin, last)
 }
 
 fun withCardHolderState(str:String):WithCardHolderStateMatcher {
