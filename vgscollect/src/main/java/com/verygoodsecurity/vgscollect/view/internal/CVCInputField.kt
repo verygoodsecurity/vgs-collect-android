@@ -38,8 +38,7 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
         inputConnection?.setOutputListener(stateListener)
 
         applyNewTextWatcher(null)
-        val filterLength = InputFilter.LengthFilter(4)
-        filters = arrayOf(CVCValidateFilter(), filterLength)
+        applyLengthFilter(cvcLength.last())
         applyInputType()
     }
 
@@ -75,10 +74,9 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
     override fun dispatchDependencySetting(dependency: Dependency) {
         if(dependency.dependencyType == DependencyType.RANGE) {
             val cvcLength = dependency.value as Array<Int>
-            if(!this.cvcLength.contentEquals(cvcLength)) {
+            if(cvcLength.isNotEmpty() && !this.cvcLength.contentEquals(cvcLength)) {
                 this.cvcLength = cvcLength
-                val filterLength = InputFilter.LengthFilter(cvcLength.last())
-                filters = arrayOf(CVCValidateFilter(), filterLength)
+                applyLengthFilter(cvcLength.last())
 
                 (inputConnection as? InputCardCVCConnection)?.runtimeValidator =
                     CardCVCCodeValidator(this.cvcLength)
@@ -88,6 +86,11 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
         } else {
             super.dispatchDependencySetting(dependency)
         }
+    }
+
+    private fun applyLengthFilter(length:Int) {
+        val filterLength = InputFilter.LengthFilter(length)
+        filters = arrayOf(CVCValidateFilter(), filterLength)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
