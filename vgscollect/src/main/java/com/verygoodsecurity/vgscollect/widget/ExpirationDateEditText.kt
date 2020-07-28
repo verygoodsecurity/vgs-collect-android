@@ -69,8 +69,9 @@ class ExpirationDateEditText @JvmOverloads constructor(
 
                 setInputType(inputType)
 
-                setDatePattern(datePattern)
+//                setDatePattern(datePattern)
                 setDatePickerMode(datePickerMode)
+                setDatePattern(datePattern)
 
                 setOutputPattern(outputPattern)
             } finally {

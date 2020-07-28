@@ -14,7 +14,8 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardExpDateConnection
-import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.DateFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.DatePickerFormatter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
@@ -36,6 +37,8 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     private var datePattern:String = MM_YYYY
     private var outputPattern:String = datePattern
+
+    private var formatter: DatePickerFormatter? = null
 
     private var charLimit = datePattern.length
 
@@ -87,7 +90,17 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
 
+        applyFormatter()
         applyInputType()
+    }
+
+    private fun applyFormatter() {
+        formatter = with(DateFormatter()) {
+            setMask(datePattern)
+            setMode(datePickerMode)
+            applyNewTextWatcher(this)
+            this
+        }
     }
 
     private fun applyInputType() {
@@ -229,6 +242,11 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
         isDaysVisible = datePattern.contains(DD)
         fieldDateFormat = SimpleDateFormat(datePattern, Locale.getDefault())
+
+        isListeningPermitted = true
+
+        formatter?.setMask(datePattern)
+        isListeningPermitted = false
     }
 
     internal fun getDatePattern():String? = datePattern
@@ -242,6 +260,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             DatePickerMode.DEFAULT -> setupInputMode()
             DatePickerMode.INPUT -> setupInputMode()
         }
+        formatter?.setMode(datePickerMode)
     }
 
     private fun setupDialogMode(pickerMode: DatePickerMode) {
@@ -258,6 +277,68 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     internal fun getDatePickerMode() = datePickerMode
 
+
+//    class ExpirationDateTextWatcher_2(
+//        private val datePattern: String = "MM/yy",
+//        private val datePickerMode: DatePickerMode
+//    ): TextWatcher {
+//
+//        val pattern:String
+//
+//        val mounthIndex:Int
+//        val mounth:String?
+//        val yearIndex:Int
+//        val year:String
+//
+//        init {
+//            pattern = datePattern.replace("M", "#")
+//                .replace("y", "#")
+//
+//            datePattern.indexOf("MM")
+//
+//            mounth = when {
+//                datePattern.contains("MMMM") -> "MMMM"
+//                datePattern.contains("MMM") -> "MMM"
+//                datePattern.contains("MM") -> "MM"
+//                else -> null
+//            }
+//
+//            mounthIndex = mounth?.run { datePattern.indexOf(mounth) }?:-1
+//
+//            yearIndex = if(datePattern.contains("yyyy")) {
+//                year = "yyyy"
+//                datePattern.indexOf("yyyy")
+//            } else {
+//                year = "yy"
+//                datePattern.indexOf("yy")
+//            }
+//        }
+//
+//        private fun applyDatePickerInput(str: String) {
+//            Log.d("test", "${
+//                str.replace("/d".toRegex(), "#")
+//            }")
+//        }
+//
+//        override fun afterTextChanged(s: Editable?) {
+//            when(datePickerMode) {
+//                DatePickerMode.CALENDAR -> applyDatePickerInput(s.toString())
+//                DatePickerMode.SPINNER -> applyDatePickerInput(s.toString())
+//                DatePickerMode.INPUT -> {}
+//                DatePickerMode.DEFAULT -> {}
+//            }
+//
+//            Log.e("test", " \n $datePickerMode \n" +
+//                    "$datePattern   -> $pattern  ( $s ) \n " +
+//                    " $mounth, $mounthIndex \n "+
+//                    " $year, $yearIndex \n ")
+//        }
+//
+//        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//
+//        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+//    }
+
     private fun setIsActive(isActive:Boolean) {
         isCursorVisible = isActive
         isFocusable = isActive
@@ -267,7 +348,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             charLimit = datePattern.length
 
             setOnClickListener(null)
-            applyNewTextWatcher(ExpirationDateTextWatcher(datePattern))
+//            applyNewTextWatcher(ExpirationDateTextWatcher_2(datePattern, datePickerMode))
             val filterLength = InputFilter.LengthFilter(charLimit)
             filters = arrayOf(filterLength)
         } else {
@@ -275,8 +356,9 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
             setOnClickListener(this)
             filters = arrayOf()
-            applyNewTextWatcher(null)
+//            applyNewTextWatcher(null)
         }
+
         isListeningPermitted = false
     }
 

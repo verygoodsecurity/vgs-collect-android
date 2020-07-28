@@ -30,6 +30,7 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener  {
@@ -374,5 +375,11 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
             vgsForm.getFileProvider().detachAll()
         }
         checkAttachedFiles()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        cardExpDateField?.setText("99922")
+//        cardExpDateField.showDatePickerDialog(DatePickerMode.SPINNER, true)
     }
 }
