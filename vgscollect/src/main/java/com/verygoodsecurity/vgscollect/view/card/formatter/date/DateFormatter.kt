@@ -9,6 +9,9 @@ import java.util.regex.Pattern
 internal open class DateFormatter : TextWatcher, DatePickerFormatter {
 
     companion object {
+        private const val DATE_PATTERN = "MM/yyyy"
+        private const val DATE_FORMAT = "##/####"
+
         private const val YEAR_FULL_REGEX = "^((1|1[9]|1[9]\\d|1[9]\\d\\d)|(2|2[0]|2[0]\\d|2[0]\\d\\d))\$"
         private const val YEAR_REGEX = "^(\\d|\\d\\d)\$"
         private const val MONTH_REGEX = "^([10]|0[1-9]|1[012])\$"
@@ -42,7 +45,7 @@ internal open class DateFormatter : TextWatcher, DatePickerFormatter {
     private val patternMounts = Pattern.compile(MONTH_REGEX)
     private var patternYear:Pattern? = null
 
-    private var mask:String = ""
+    private var mask:String = DATE_FORMAT
     private var mode:DatePickerMode = DatePickerMode.INPUT
 
     var runtimeData:String = ""
@@ -51,6 +54,11 @@ internal open class DateFormatter : TextWatcher, DatePickerFormatter {
     var mounth:String? = null
     var yearIndex:Int = -1
     var year:String? = null
+
+    init {
+        calculateMounthLimitations(DATE_PATTERN)
+        calculateYearLimitations(DATE_PATTERN)
+    }
 
     override fun afterTextChanged(s: Editable?) {
         if(mode == DatePickerMode.INPUT) {
@@ -155,8 +163,8 @@ internal open class DateFormatter : TextWatcher, DatePickerFormatter {
 
     override fun setMask(mask: String) {
         this.mask = mask
-            .replace("M", "#")
-            .replace("y", "#")
+            .replace("M", "#", true)
+            .replace("y", "#", true)
 
         calculateMounthLimitations(mask)
         calculateYearLimitations(mask)
