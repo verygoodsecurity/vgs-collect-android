@@ -376,10 +376,4 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         }
         checkAttachedFiles()
     }
-
-    override fun onResume() {
-        super.onResume()
-        cardExpDateField?.setText("99922")
-//        cardExpDateField.showDatePickerDialog(DatePickerMode.SPINNER, true)
-    }
 }
