@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.autofill.AutofillValue
@@ -220,6 +221,18 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
         val strDate = fieldDateFormat?.format(selectedDate.time)?:""
         setText(strDate)
+    }
+
+    override fun setText(text: CharSequence?, type: BufferType?) {
+        if(datePickerMode == DatePickerMode.SPINNER ||
+            datePickerMode == DatePickerMode.CALENDAR) {
+            try {
+                fieldDateFormat?.parse(text.toString())
+                super.setText(text, type)
+            } catch (e: ParseException) { }
+        } else {
+            super.setText(text, type)
+        }
     }
 
     internal fun setOutputPattern(pattern:String?) {
