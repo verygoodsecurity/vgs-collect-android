@@ -5,6 +5,7 @@ import android.text.TextWatcher
 import java.util.regex.Pattern
 
 /** @suppress */
+@Deprecated("Use DateFormatter or ExpirationDateFormatter class")
 class ExpirationDateTextWatcher(
     private val datePattern:String = "MM/yy"
 ): TextWatcher {

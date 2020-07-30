@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.autofill.AutofillValue
@@ -14,7 +15,8 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardExpDateConnection
-import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.DatePickerFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.ExpirationDateFormatter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
@@ -36,6 +38,8 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     private var datePattern:String = MM_YYYY
     private var outputPattern:String = datePattern
+
+    private var formatter: DatePickerFormatter? = null
 
     private var charLimit = datePattern.length
 
@@ -87,7 +91,17 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
 
+        applyFormatter()
         applyInputType()
+    }
+
+    private fun applyFormatter() {
+        formatter = with(ExpirationDateFormatter()) {
+            setMask(datePattern)
+            setMode(datePickerMode)
+            applyNewTextWatcher(this)
+            this
+        }
     }
 
     private fun applyInputType() {
@@ -209,6 +223,18 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         setText(strDate)
     }
 
+    override fun setText(text: CharSequence?, type: BufferType?) {
+        if(datePickerMode == DatePickerMode.SPINNER ||
+            datePickerMode == DatePickerMode.CALENDAR) {
+            try {
+                fieldDateFormat?.parse(text.toString())
+                super.setText(text, type)
+            } catch (e: ParseException) { }
+        } else {
+            super.setText(text, type)
+        }
+    }
+
     internal fun setOutputPattern(pattern:String?) {
         outputPattern = if(pattern.isNullOrEmpty() ||
             (pattern.contains('T') && !pattern.contains("'T'"))) {
@@ -229,6 +255,11 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
         isDaysVisible = datePattern.contains(DD)
         fieldDateFormat = SimpleDateFormat(datePattern, Locale.getDefault())
+
+        isListeningPermitted = true
+
+        formatter?.setMask(datePattern)
+        isListeningPermitted = false
     }
 
     internal fun getDatePattern():String? = datePattern
@@ -242,6 +273,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             DatePickerMode.DEFAULT -> setupInputMode()
             DatePickerMode.INPUT -> setupInputMode()
         }
+        formatter?.setMode(datePickerMode)
     }
 
     private fun setupDialogMode(pickerMode: DatePickerMode) {
@@ -267,7 +299,6 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             charLimit = datePattern.length
 
             setOnClickListener(null)
-            applyNewTextWatcher(ExpirationDateTextWatcher(datePattern))
             val filterLength = InputFilter.LengthFilter(charLimit)
             filters = arrayOf(filterLength)
         } else {
@@ -275,8 +306,8 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
             setOnClickListener(this)
             filters = arrayOf()
-            applyNewTextWatcher(null)
         }
+
         isListeningPermitted = false
     }
 
