@@ -6,13 +6,14 @@ import android.content.DialogInterface
 import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.widget.DatePicker
+import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
+import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardExpDateConnection
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.DatePickerFormatter
@@ -309,6 +310,21 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
 
         isListeningPermitted = false
+    }
+
+    override fun dispatchDependencySetting(dependency: Dependency) {
+        if(dependency.dependencyType == DependencyType.TEXT) {
+            applyTextValue(dependency.value)
+        } else {
+            super.dispatchDependencySetting(dependency)
+        }
+    }
+
+    private fun applyTextValue(value: Any) {
+        when(value) {
+            is Long -> fieldDateFormat?.let{ setText(it.format(Date(value))) }
+            is String -> setText(value)
+        }
     }
 
     fun setMaxDate(date: String) {
