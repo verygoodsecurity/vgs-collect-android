@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.autofill.AutofillValue
@@ -16,7 +15,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardExpDateConnection
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.DatePickerFormatter
-import com.verygoodsecurity.vgscollect.view.card.formatter.date.ExpirationDateFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.StrictExpirationDateFormatter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
@@ -96,7 +95,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     private fun applyFormatter() {
-        formatter = with(ExpirationDateFormatter()) {
+        formatter = with(StrictExpirationDateFormatter()) {
             setMask(datePattern)
             setMode(datePickerMode)
             applyNewTextWatcher(this)

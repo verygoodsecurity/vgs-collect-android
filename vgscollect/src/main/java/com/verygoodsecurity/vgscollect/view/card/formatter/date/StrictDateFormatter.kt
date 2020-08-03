@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import java.lang.StringBuilder
 import java.util.regex.Pattern
 
-internal open class DateFormatter : TextWatcher, DatePickerFormatter {
+internal open class StrictDateFormatter : TextWatcher, DatePickerFormatter {
 
     companion object {
         private const val DATE_PATTERN = "MM/yyyy"

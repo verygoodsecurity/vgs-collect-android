@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.card.formatter
 import android.text.Editable
 import android.text.TextWatcher
 import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
-import com.verygoodsecurity.vgscollect.view.card.formatter.date.DateFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.StrictDateFormatter
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -23,7 +23,7 @@ class DateFormatterTest {
 
     @Before
     fun setupFormatter() {
-        with(DateFormatter()) {
+        with(StrictDateFormatter()) {
             formatter = this
             textWatcher = this
         }
@@ -31,7 +31,7 @@ class DateFormatterTest {
 
     @Test
     fun set_mask() {
-        val c = DateFormatter()
+        val c = StrictDateFormatter()
         assertEquals("##/####", c.getMask())
         c.setMask("yyyy MM")
         assertEquals("#### ##", c.getMask())
