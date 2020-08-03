@@ -5,6 +5,9 @@ import android.os.Bundle
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import io.card.payment.CardIOActivity
 import io.card.payment.CreditCard
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class ScanActivity: BaseTransmitActivity() {
 
@@ -59,9 +62,7 @@ class ScanActivity: BaseTransmitActivity() {
                         CARD_NUMBER -> mapData(it.key, scanResult.cardNumber)
                         CARD_CVC -> mapData(it.key, scanResult.cvv)
                         CARD_HOLDER -> mapData(it.key, scanResult.cardholderName)
-                        CARD_EXP_DATE -> if(scanResult.expiryMonth != 0 && scanResult.expiryYear != 0) {
-                            mapData(it.key, String.format("%02d/%02d", scanResult.expiryMonth, scanResult.expiryYear))
-                        }
+                        CARD_EXP_DATE -> mapData(it.key, retrieveDate(scanResult))
                         POSTAL_CODE -> mapData(it.key, scanResult.postalCode)
                     }
                 }
@@ -71,4 +72,22 @@ class ScanActivity: BaseTransmitActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         finish()
     }
+
+    private fun retrieveDate(scanResult: CreditCard): Long? {
+        return if(scanResult.expiryMonth != 0 && scanResult.expiryYear != 0) {
+            val yMask = scanResult.expiryYear.toString()
+                .replace("\\d".toRegex(), "y")
+            val mMask = String.format("%02d", scanResult.expiryMonth)
+                .replace("\\d".toRegex(), "M")
+
+            val mStr = String.format("%02d", scanResult.expiryMonth)
+            val yStr = scanResult.expiryYear.toString()
+            val date = SimpleDateFormat("$mMask/$yMask", Locale.getDefault())
+                .parse("$mStr/$yStr")
+            date?.time
+        } else {
+            null
+        }
+    }
+
 }

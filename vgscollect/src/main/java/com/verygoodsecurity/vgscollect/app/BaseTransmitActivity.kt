@@ -16,7 +16,7 @@ abstract class BaseTransmitActivity:AppCompatActivity() {
         const val RESULT_DATA = "vgs_result_settings"
     }
 
-    private val storage = VGSHashMapWrapper<String, String>()
+    private val storage = VGSHashMapWrapper<String, Any>()
 
     /**
      * The Intent that this activity will return to its caller.
@@ -30,8 +30,8 @@ abstract class BaseTransmitActivity:AppCompatActivity() {
      * @param key key with which the specified value is to be associated
      * @param value value to be associated with the specified key
      */
-    protected fun mapData(key: String?, value: String?) {
-        if(!key.isNullOrEmpty() && !value.isNullOrEmpty()) {
+    protected fun mapData(key: String?, value: Any?) {
+        if(!key.isNullOrEmpty() && value != null) {
             storage.put(key, value)
         }
     }
