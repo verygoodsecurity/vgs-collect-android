@@ -1,6 +1,7 @@
 package com.verygoodsecurity.demoapp.activity_case
 
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -250,6 +251,10 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         }
 
         intent.putExtra(ScanActivity.SCAN_CONFIGURATION, scanSettings)
+
+        intent.putExtra(ScanActivity.EXTRA_GUIDE_COLOR, Color.WHITE)
+        intent.putExtra(ScanActivity.EXTRA_LANGUAGE_OR_LOCALE, "en")
+        intent.putExtra(ScanActivity.EXTRA_SCAN_INSTRUCTIONS, "Scanning payment card")
 
         startActivityForResult(intent,
             USER_SCAN_REQUEST_CODE
