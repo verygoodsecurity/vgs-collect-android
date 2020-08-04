@@ -1145,4 +1145,18 @@ abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? PersonNameInputField)?.applyValidationRule(rule)
         }
     }
+
+    protected fun setFormatterMode(mode:Int) {
+        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setFormatterMode(mode)
+        }
+    }
+
+    internal fun getFormatterMode():Int {
+        return if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.getFormatterMode()?:-1
+        } else {
+            -1
+        }
+    }
 }

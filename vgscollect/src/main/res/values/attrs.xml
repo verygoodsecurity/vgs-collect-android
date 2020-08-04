@@ -431,13 +431,13 @@
         <!-- Adds a default behaviour rule for the validation field. -->
         <attr name="validationRule">
 
-            <!-- Enable default validation rules. The Unknown bank card brands won't valid. -->
+            <!-- Enable default validation rules. The Unknown payment card brands are not valid. -->
             <enum name="enable" value="0" />
 
-            <!-- Enable default validation rules. The Unknown payment card brands will be valid only if they have length from 16 to 19 and Luhn algorithm valid. -->
+            <!-- The Unknown payment card brands are valid only if they have a length from 16 to 19 and the Luhn algorithm is valid. -->
             <enum name="acceptUnknown" value="1" />
 
-            <!-- Disable validation rules. All type of brands will be valid. -->
+            <!-- Disable validation rules. All type of payment card brands are valid. -->
             <enum name="disable" value="2" />
         </attr>
 
@@ -511,6 +511,18 @@
     </declare-styleable>
 
     <declare-styleable name="ExpirationDateEditText">
+
+        <!-- Specifies rules on how to format the user input. Currently, it has an impact only on datePickerModes as input.
+             By default, field apply strict mode. -->
+        <attr name="formatterMode" format="enum">
+
+            <!-- Ignore any incorrect user input. -->
+            <enum name="strict" value="0"/>
+
+            <!-- Apply any digits in user input. -->
+            <enum name="flexible" value="1"/>
+        </attr>
+
         <attr name="fieldName"/>
 
         <attr name="inputType"/>
