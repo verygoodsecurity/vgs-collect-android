@@ -1,12 +1,11 @@
 package com.verygoodsecurity.vgscollect.view.card.formatter.date
 
 import android.text.Editable
-import android.text.TextWatcher
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import java.lang.StringBuilder
 import java.util.regex.Pattern
 
-internal open class StrictDateFormatter : TextWatcher, DatePickerFormatter {
+internal open class StrictDateFormatter : BaseDateFormatter() {
 
     companion object {
         private const val DATE_PATTERN = "MM/yyyy"
@@ -73,10 +72,13 @@ internal open class StrictDateFormatter : TextWatcher, DatePickerFormatter {
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
     override fun onTextChanged(str: CharSequence, start: Int, before: Int, count: Int) {
-        var formattedText = clearTextFromSymbols(str)
+        do {
+            val primaryStr = runtimeData
 
-        formattedText = formatYear(formattedText)
-        runtimeData = formatMonth(formattedText)
+            var formattedText = clearTextFromSymbols(str)
+            formattedText = formatYear(formattedText)
+            runtimeData = formatMonth(formattedText)
+        } while (primaryStr != runtimeData)
     }
 
     private fun clearTextFromSymbols(str: CharSequence): String {
