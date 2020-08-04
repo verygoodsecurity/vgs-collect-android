@@ -6,6 +6,7 @@ import android.view.View
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.DateInputField
@@ -273,10 +274,42 @@ class ExpirationDateEditTextTest {
         Mockito.verify(listener).onFocusChange(view, true)
     }
 
+    @Test
+    fun test_state_valid() {
+        val text = "12/2023"
+        val stateResult = FieldState.CardExpirationDateState()
+        stateResult.hasFocus = false
+        stateResult.isEmpty = false
+        stateResult.isValid = true
+        stateResult.isRequired = true
+        stateResult.contentLength = text.length
+        stateResult.fieldName = "date"
+        stateResult.fieldType = FieldType.CARD_EXPIRATION_DATE
+
+        val child = view.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        view.setText(text)
+        view.setFieldName("date")
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+
+        val state = view.getState()
+        Assert.assertNotNull(state)
+        Assert.assertEquals(stateResult.hasFocus, state!!.hasFocus)
+        Assert.assertEquals(stateResult.isEmpty, state.isEmpty)
+        Assert.assertEquals(stateResult.isValid, state.isValid)
+        Assert.assertEquals(stateResult.isRequired, state.isRequired)
+        Assert.assertEquals(stateResult.contentLength, state.contentLength)
+        Assert.assertEquals(stateResult.fieldName, state.fieldName)
+        Assert.assertEquals(stateResult.fieldType, state.fieldType)
+    }
 
     @Test
-    fun test_state() {
-        val text = "12/"
+    fun test_state_invalid() {
+        val text = "12/9999"
         val stateResult = FieldState.CardExpirationDateState()
         stateResult.hasFocus = false
         stateResult.isEmpty = false
@@ -305,6 +338,15 @@ class ExpirationDateEditTextTest {
         Assert.assertEquals(stateResult.contentLength, state.contentLength)
         Assert.assertEquals(stateResult.fieldName, state.fieldName)
         Assert.assertEquals(stateResult.fieldType, state.fieldType)
+    }
+
+    @Test
+    fun test_formatter_mode() {
+        view.setFormatterMode(FormatMode.FLEXIBLE.ordinal)
+        Assert.assertEquals(FormatMode.FLEXIBLE.ordinal, view.getFormatterMode())
+
+        view.setFormatterMode(FormatMode.STRICT.ordinal)
+        Assert.assertEquals(FormatMode.STRICT.ordinal, view.getFormatterMode())
     }
 
 
