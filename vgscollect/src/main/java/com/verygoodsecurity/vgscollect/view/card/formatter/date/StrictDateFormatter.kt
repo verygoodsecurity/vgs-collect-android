@@ -73,9 +73,13 @@ internal open class StrictDateFormatter : BaseDateFormatter() {
 
     override fun onTextChanged(str: CharSequence, start: Int, before: Int, count: Int) {
         do {
-            val primaryStr = runtimeData
+            val primaryStr = if(runtimeData.isEmpty()) {
+                str
+            } else {
+                runtimeData
+            }
 
-            var formattedText = clearTextFromSymbols(str)
+            var formattedText = clearTextFromSymbols(primaryStr)
             formattedText = formatYear(formattedText)
             runtimeData = formatMonth(formattedText)
         } while (primaryStr != runtimeData)
