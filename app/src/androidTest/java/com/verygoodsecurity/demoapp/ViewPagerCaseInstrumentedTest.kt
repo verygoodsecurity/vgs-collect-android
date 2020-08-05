@@ -132,33 +132,6 @@ class ViewPagerCaseInstrumentedTest {
         cvc.check(matches(withCardCVCState(CARD_CVC)))
 
         pauseTestFor(3000)
-
-
-
-
-//        val materialButton4 = onView(Matchers.allOf(withId(android.R.id.button1), withText("Done"),
-//            childAtPosition(childAtPosition(withClassName(Matchers.`is`("android.widget.ScrollView")), 0), 3)))
-
-//        onView(withId(R.id.backBtn)).check(matches(isDisplayed()))
-//
-//        next.check(matches(withText("Submit")))
-
-//        val expDate = interactWithCardExpDate()
-//        pauseTestFor(500)
-//        expDate.perform(FieldClickAction())
-
-
-
-
-
-
-//        performClick(expDate)
-//        expDate.perform(SetTextAction(CARD_EXP_DATE))
-//        val cvc = interactWithCardCVC()
-//        cvc.perform(SetTextAction(CARD_CVC_WRONG))
-//        cvc.check(matches(withCardCVCState(CARD_CVC)))
-//
-//        pauseTestFor(3000)
     }
 
     private fun performClick(interaction: ViewInteraction) {

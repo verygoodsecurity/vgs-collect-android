@@ -71,7 +71,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardExpDateField)
         cardExpDateField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                Log.e("card_exp", "$state \n\n ${cardExpDateField.getState()} ")
                 if(!state.isEmpty && !state.isValid && !state.hasFocus) {
                     cardExpDateFieldLay?.setError("fill it please")
                 } else {
@@ -93,7 +92,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardHolderField)
         cardHolderField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                Log.e("card_holder", "$state \n\n ${cardHolderField.getState()} ")
                 if(!state.isEmpty && !state.isValid && !state.hasFocus) {
                     cardHolderFieldLay?.setError("fill it please")
                 } else {
@@ -107,7 +105,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardCVCField)
         cardCVCField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                Log.e("card_cvc", "$state \n\n ${cardCVCField.getState()} ")
                 if(!state.isEmpty && !state.isValid && !state.hasFocus) {
                     cardCVCFieldLay?.setError("fill it please")
                 } else {
