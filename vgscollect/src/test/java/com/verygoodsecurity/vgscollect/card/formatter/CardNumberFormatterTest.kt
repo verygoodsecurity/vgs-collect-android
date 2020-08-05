@@ -29,7 +29,7 @@ class CardNumberFormatterTest {
     }
 
     @Test
-    fun set_mask() {
+    fun test_set_mask() {
         val c = CardNumberFormatter()
         assertEquals("#### #### #### #### ###" , c.getMask())
         assertEquals(23 , c.getMaskLength())
@@ -63,7 +63,7 @@ class CardNumberFormatterTest {
     }
 
     @Test
-    fun set_default_19_set_text_full_mask() {
+    fun test_set_default_19_set_text_full_mask() {
         val result = "4111-1111-1111-1111-110"
         formatter.setMask("####-####-####-####-###")
 

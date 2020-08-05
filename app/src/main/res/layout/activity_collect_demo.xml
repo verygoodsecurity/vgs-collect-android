@@ -197,8 +197,6 @@
                                         android:nextFocusDown="@+id/cardCVCField"
                                         app:imeOptions="actionNext"
                                         app:inputType="date"
-                                        app:enableValidation="false"
-                                        app:isRequired="false"
                                         app:fontFamily="@font/robotomono_light"
                                         app:datePickerModes="input"
                                         app:outputPattern="yyyy-MM-dd'T'HH:mm:ss.SSSSSSS"

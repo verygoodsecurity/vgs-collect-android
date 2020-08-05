@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
+import android.text.format.DateUtils
 import android.view.Gravity
 import android.view.View
 import android.view.autofill.AutofillValue
@@ -14,7 +15,11 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardExpDateConnection
-import com.verygoodsecurity.vgscollect.view.card.text.ExpirationDateTextWatcher
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.BaseDateFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.DatePickerFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.FlexibleDateFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.StrictExpirationDateFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
@@ -37,6 +42,9 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     private var datePattern:String = MM_YYYY
     private var outputPattern:String = datePattern
 
+    private var formatterMode = FormatMode.STRICT
+    private var formatter: DatePickerFormatter? = null
+
     private var charLimit = datePattern.length
 
     private var minDate:Long = 0
@@ -54,6 +62,11 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     private var datePickerVisibilityChangeListener:ExpirationDateEditText.OnDatePickerVisibilityChangeListener? = null
 
     override var fieldType: FieldType = FieldType.CARD_EXPIRATION_DATE
+
+    init {
+        minDate = System.currentTimeMillis()
+        maxDate = minDate + DateUtils.YEAR_IN_MILLIS * 20
+    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -87,7 +100,22 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         inputConnection?.setOutput(state)
         inputConnection?.setOutputListener(stateListener)
 
+        applyFormatter()
         applyInputType()
+    }
+
+    private fun applyFormatter() {
+        val baseFormatter: BaseDateFormatter = when(formatterMode) {
+            FormatMode.STRICT -> StrictExpirationDateFormatter()
+            FormatMode.FLEXIBLE -> FlexibleDateFormatter()
+        }
+
+        this.formatter = with(baseFormatter) {
+            setMask(datePattern)
+            setMode(datePickerMode)
+            applyNewTextWatcher(this)
+            this
+        }
     }
 
     private fun applyInputType() {
@@ -134,13 +162,17 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     private fun handleInputMode(str:String):Boolean {
         return try {
             val currentDate = fieldDateFormat!!.parse(str)
-            selectedDate.time = currentDate
-            selectedDate.set(Calendar.DAY_OF_MONTH, selectedDate.getActualMaximum(Calendar.DATE))
-            selectedDate.set(Calendar.HOUR, 23)
-            selectedDate.set(Calendar.MINUTE, 59)
-            selectedDate.set(Calendar.SECOND, 59)
-            selectedDate.set(Calendar.MILLISECOND, 999)
-            true
+            return if(fieldDateFormat!!.format(currentDate) == str) {
+                selectedDate.time = currentDate
+                selectedDate.set(Calendar.DAY_OF_MONTH, selectedDate.getActualMaximum(Calendar.DATE))
+                selectedDate.set(Calendar.HOUR, 23)
+                selectedDate.set(Calendar.MINUTE, 59)
+                selectedDate.set(Calendar.SECOND, 59)
+                selectedDate.set(Calendar.MILLISECOND, 999)
+                true
+            } else {
+                false
+            }
         } catch (e: ParseException) {
             false
         }
@@ -209,6 +241,18 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         setText(strDate)
     }
 
+    override fun setText(text: CharSequence?, type: BufferType?) {
+        if(datePickerMode == DatePickerMode.SPINNER ||
+            datePickerMode == DatePickerMode.CALENDAR) {
+            try {
+                fieldDateFormat?.parse(text.toString())
+                super.setText(text, type)
+            } catch (e: ParseException) { }
+        } else {
+            super.setText(text, type)
+        }
+    }
+
     internal fun setOutputPattern(pattern:String?) {
         outputPattern = if(pattern.isNullOrEmpty() ||
             (pattern.contains('T') && !pattern.contains("'T'"))) {
@@ -229,6 +273,11 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
         isDaysVisible = datePattern.contains(DD)
         fieldDateFormat = SimpleDateFormat(datePattern, Locale.getDefault())
+
+        isListeningPermitted = true
+
+        formatter?.setMask(datePattern)
+        isListeningPermitted = false
     }
 
     internal fun getDatePattern():String? = datePattern
@@ -242,6 +291,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             DatePickerMode.DEFAULT -> setupInputMode()
             DatePickerMode.INPUT -> setupInputMode()
         }
+        formatter?.setMode(datePickerMode)
     }
 
     private fun setupDialogMode(pickerMode: DatePickerMode) {
@@ -267,7 +317,6 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             charLimit = datePattern.length
 
             setOnClickListener(null)
-            applyNewTextWatcher(ExpirationDateTextWatcher(datePattern))
             val filterLength = InputFilter.LengthFilter(charLimit)
             filters = arrayOf(filterLength)
         } else {
@@ -275,8 +324,8 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
             setOnClickListener(this)
             filters = arrayOf()
-            applyNewTextWatcher(null)
         }
+
         isListeningPermitted = false
     }
 
@@ -371,4 +420,12 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             null
         }
     }
+
+    internal fun setFormatterMode(mode:Int) {
+        with(FormatMode.values()[mode]) {
+            formatterMode = this
+        }
+    }
+
+    internal fun getFormatterMode():Int = formatterMode.ordinal
 }
