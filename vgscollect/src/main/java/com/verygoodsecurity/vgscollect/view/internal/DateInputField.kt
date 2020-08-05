@@ -423,6 +423,21 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
     }
 
+    override fun dispatchDependencySetting(dependency: Dependency) {
+        if(dependency.dependencyType == DependencyType.TEXT) {
+            applyTextValue(dependency.value)
+        } else {
+            super.dispatchDependencySetting(dependency)
+        }
+    }
+
+    private fun applyTextValue(value: Any) {
+        when(value) {
+            is Long -> fieldDateFormat?.let{ setText(it.format(Date(value))) }
+            is String -> setText(value)
+        }
+    }
+
     internal fun setFormatterMode(mode:Int) {
         with(FormatMode.values()[mode]) {
             formatterMode = this

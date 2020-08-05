@@ -1147,6 +1147,10 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    override fun performClick(): Boolean {
+        return inputField.performClick()
+    }
+
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     internal fun setFormatterMode(mode:Int) {
         if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
