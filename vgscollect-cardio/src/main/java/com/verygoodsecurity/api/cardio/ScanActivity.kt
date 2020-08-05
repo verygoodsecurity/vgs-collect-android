@@ -74,7 +74,7 @@ class ScanActivity: BaseTransmitActivity() {
             .putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, true)
             .putExtra(CardIOActivity.EXTRA_SCAN_EXPIRY, true)
             .putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false)
-            .putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, false)
+            .putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, true)
             .putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, true)
 
         configuredScanInstructions?.let {
