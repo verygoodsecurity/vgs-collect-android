@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.card.formatter.date
 
-internal class ExpirationDateFormatter : DateFormatter() {
+internal class StrictExpirationDateFormatter : StrictDateFormatter() {
 
     companion object {
         private const val YEAR_FULL_REGEX = "^([2]|2[0]|20[23]|20[23][0123456789])\$"

@@ -21,6 +21,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
@@ -1146,7 +1147,18 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    override fun performClick(): Boolean {
-        return inputField.performClick()
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    internal fun setFormatterMode(mode:Int) {
+        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setFormatterMode(mode)
+        }
+    }
+
+    internal fun getFormatterMode():Int {
+        return if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.getFormatterMode()?:-1
+        } else {
+            -1
+        }
     }
 }

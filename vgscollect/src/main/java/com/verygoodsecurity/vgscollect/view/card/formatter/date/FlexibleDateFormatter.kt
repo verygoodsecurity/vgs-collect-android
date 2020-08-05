@@ -1,42 +1,40 @@
-package com.verygoodsecurity.vgscollect.view.card.formatter
+package com.verygoodsecurity.vgscollect.view.card.formatter.date
 
 import android.text.Editable
-import android.text.TextWatcher
-import androidx.annotation.VisibleForTesting
+import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import java.lang.StringBuilder
 
-class CardNumberFormatter: TextWatcher, Formatter {
+class FlexibleDateFormatter : BaseDateFormatter() {
 
     companion object {
-        private const val DEFAULT_MASK = "#### #### #### #### ###"
-        private const val DEFAULT_LENGTH = 23
+        private const val DATE_PATTERN = "MM/yyyy"
+        private const val DATE_FORMAT = "##/####"
 
         private const val NUMBER_REGEX = "[^\\d]"
-
         private const val MASK_ITEM = '#'
     }
 
-    private var mask:String = DEFAULT_MASK
-    private var maxLength = DEFAULT_LENGTH
+    private var mask:String = DATE_FORMAT
+    private var pattern:String = DATE_PATTERN
+    private var maxLength = DATE_FORMAT.length
 
     private var runtimeData = ""
 
-    override fun setMask(mask: String) {
-        this.mask = mask
-        maxLength = mask.length
-    }
+    private var mode:DatePickerMode = DatePickerMode.INPUT
 
     override fun afterTextChanged(s: Editable?) {
-        s?.apply {
-            if(s.toString() != runtimeData) {
-                replace(0, s.length, runtimeData)
+        if(mode == DatePickerMode.INPUT) {
+            s?.apply {
+                if(s.toString() != runtimeData) {
+                    replace(0, s.length, runtimeData)
+                }
             }
         }
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         do {
             val primaryStr = runtimeData
             formatString(s.toString())
@@ -77,8 +75,17 @@ class CardNumberFormatter: TextWatcher, Formatter {
         runtimeData = builder.toString()
     }
 
-    override fun getMask():String = mask
+    override fun setMode(mode: DatePickerMode) {
+        this.mode = mode
+    }
 
-    @VisibleForTesting
-    fun getMaskLength():Int = maxLength
+    override fun setMask(mask: String) {
+        this.mask = mask
+            .replace("M", "#", true)
+            .replace("y", "#", true)
+        this.pattern = mask
+    }
+
+    override fun getMask(): String = mask
+
 }
