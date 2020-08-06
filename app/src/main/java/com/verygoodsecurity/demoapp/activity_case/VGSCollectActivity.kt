@@ -1,6 +1,7 @@
 package com.verygoodsecurity.demoapp.activity_case
 
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -30,6 +31,7 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener  {
@@ -70,7 +72,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardExpDateField)
         cardExpDateField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                Log.e("card_exp", "$state \n\n ${cardExpDateField.getState()} ")
                 if(!state.isEmpty && !state.isValid && !state.hasFocus) {
                     cardExpDateFieldLay?.setError("fill it please")
                 } else {
@@ -92,7 +93,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardHolderField)
         cardHolderField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                Log.e("card_holder", "$state \n\n ${cardHolderField.getState()} ")
                 if(!state.isEmpty && !state.isValid && !state.hasFocus) {
                     cardHolderFieldLay?.setError("fill it please")
                 } else {
@@ -106,7 +106,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardCVCField)
         cardCVCField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                Log.e("card_cvc", "$state \n\n ${cardCVCField.getState()} ")
                 if(!state.isEmpty && !state.isValid && !state.hasFocus) {
                     cardCVCFieldLay?.setError("fill it please")
                 } else {
@@ -250,6 +249,10 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         }
 
         intent.putExtra(ScanActivity.SCAN_CONFIGURATION, scanSettings)
+
+        intent.putExtra(ScanActivity.EXTRA_GUIDE_COLOR, Color.WHITE)
+        intent.putExtra(ScanActivity.EXTRA_LANGUAGE_OR_LOCALE, "en")
+        intent.putExtra(ScanActivity.EXTRA_SCAN_INSTRUCTIONS, "Scanning payment card")
 
         startActivityForResult(intent,
             USER_SCAN_REQUEST_CODE
