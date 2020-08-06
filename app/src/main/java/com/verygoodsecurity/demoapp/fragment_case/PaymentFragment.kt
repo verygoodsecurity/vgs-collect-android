@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.api.cardio.ScanActivity
@@ -13,6 +14,7 @@ import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
@@ -22,6 +24,7 @@ import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class PaymentFragment: Fragment(), VgsCollectResponseListener, OnFieldStateChangeListener,
     View.OnClickListener {
@@ -152,6 +155,9 @@ class PaymentFragment: Fragment(), VgsCollectResponseListener, OnFieldStateChang
     }
 
     override fun onResponse(response: VGSResponse?) {
+        setEnabledResponseHeader(true)
+        setStateLoading(false)
+
         when (response) {
             is VGSResponse.SuccessResponse -> responseContainerView?.text = response.toString()
             is VGSResponse.ErrorResponse -> responseContainerView?.text = response.toString()
@@ -186,7 +192,54 @@ class PaymentFragment: Fragment(), VgsCollectResponseListener, OnFieldStateChang
     override fun onClick(v: View) {
         when(v.id) {
             R.id.attachBtn -> attachFile()
-            R.id.submitBtn -> vgsForm.asyncSubmit("/post", HTTPMethod.POST)
+            R.id.submitBtn -> submitData()
+        }
+    }
+
+    private fun submitData() {
+        setEnabledResponseHeader(false)
+        setStateLoading(true)
+
+        val customData = HashMap<String, Any>()
+        customData["nickname"] = "Taras"
+
+        val headers = HashMap<String, String>()
+        headers["some-headers"] = "dynamic-header"
+
+        val request: VGSRequest = VGSRequest.VGSRequestBuilder()
+            .setMethod(HTTPMethod.POST)
+            .setPath(path)
+            .setCustomHeader(headers)
+            .setCustomData(customData)
+            .build()
+
+        vgsForm.asyncSubmit(request)
+    }
+
+    private fun setEnabledResponseHeader(isEnabled:Boolean) {
+        if(isEnabled) {
+            attachBtn.setTextColor(
+                ContextCompat.getColor(activity!!,
+                R.color.state_active
+            ))
+        } else {
+            responseContainerView?.text = ""
+            attachBtn.setTextColor(
+                ContextCompat.getColor(activity!!,
+                R.color.state_unactive
+            ))
+        }
+    }
+
+    private fun setStateLoading(state:Boolean) {
+        if(state) {
+            progressBar?.visibility = View.VISIBLE
+            submitBtn?.isEnabled = false
+            attachBtn?.isEnabled = false
+        } else {
+            progressBar?.visibility = View.INVISIBLE
+            submitBtn?.isEnabled = true
+            attachBtn?.isEnabled = true
         }
     }
 

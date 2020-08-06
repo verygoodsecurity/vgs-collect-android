@@ -168,8 +168,7 @@
                                         android:nextFocusDown="@+id/cardExpDateField"
                                         app:imeOptions="actionNext"
                                         app:fontFamily="@font/robotomono_light"
-                                        app:fieldName="card_data.personal_data.cardHolder"
-                                        app:text="John Galt I"/>
+                                        app:fieldName="card_data.personal_data.cardHolder"/>
                                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
                             </FrameLayout>
 
@@ -218,8 +217,7 @@
                                         style="@style/AppTheme.PaymentField"
                                         app:fieldName="card_data.cardCvc"
                                         app:fontFamily="@font/robotomono_light"
-                                        app:imeOptions="actionDone"
-                                        app:text="123"/>
+                                        app:imeOptions="actionDone"/>
                                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
                             </LinearLayout>
 
