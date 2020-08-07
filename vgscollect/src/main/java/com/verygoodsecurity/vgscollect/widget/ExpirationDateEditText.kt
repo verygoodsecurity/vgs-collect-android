@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 
 /**
@@ -31,6 +32,7 @@ class ExpirationDateEditText @JvmOverloads constructor(
         ).apply {
 
             try {
+                val formatterMode = getInt(R.styleable.ExpirationDateEditText_formatterMode, FormatMode.STRICT.ordinal)
                 val datePattern = getString(R.styleable.ExpirationDateEditText_datePattern)
                 val outputPattern = getString(R.styleable.ExpirationDateEditText_outputPattern)
                 val datePickerMode = getInt(R.styleable.ExpirationDateEditText_datePickerModes, 1)
@@ -69,8 +71,9 @@ class ExpirationDateEditText @JvmOverloads constructor(
 
                 setInputType(inputType)
 
-                setDatePattern(datePattern)
+                setFormatterMode(formatterMode)
                 setDatePickerMode(datePickerMode)
+                setDatePattern(datePattern)
 
                 setOutputPattern(outputPattern)
             } finally {

@@ -37,7 +37,14 @@ class CardNumberFormatter: TextWatcher, Formatter {
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        val text = s.toString().replace(Regex(NUMBER_REGEX), "")
+        do {
+            val primaryStr = runtimeData
+            formatString(s.toString())
+        } while (primaryStr != runtimeData)
+    }
+
+    private fun formatString(str: String) {
+        val text = str.replace(Regex(NUMBER_REGEX), "")
 
         val textCount = if(maxLength < text.length) {
             maxLength
