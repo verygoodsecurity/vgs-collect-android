@@ -1024,7 +1024,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param l The callback that will run.
      */
     override fun setOnFocusChangeListener(l: OnFocusChangeListener?) {
-        inputField.onFocusChangeListener = l
+        inputField.setOnFocusChangeListener(l, true)
     }
 
     /**
