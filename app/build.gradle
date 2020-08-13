@@ -73,16 +73,15 @@ def getLocalProperty(String propName) {
 dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.0'
 
     implementation project(":vgscollect")
     implementation project(":vgscollect-cardio")
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.3.0'
+    implementation 'androidx.core:core-ktx:1.3.1'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    androidTestImplementation 'androidx.test:rules:1.3.0-rc01'
+    androidTestImplementation 'androidx.test:rules:1.3.0-rc03'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
 
