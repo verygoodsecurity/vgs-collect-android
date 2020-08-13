@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
@@ -52,7 +53,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                 val isRequired = getBoolean(R.styleable.VGSCardNumberEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.VGSCardNumberEditText_singleLine, true)
                 val scrollHorizontally = getBoolean(R.styleable.VGSCardNumberEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.VGSCardNumberEditText_gravity, -1)
+                val gravity = getInt(R.styleable.VGSCardNumberEditText_gravity, Gravity.START or Gravity.CENTER_VERTICAL)
                 val ellipsize = getInt(R.styleable.VGSCardNumberEditText_ellipsize, 0)
 
                 val minLines = getInt(R.styleable.VGSCardNumberEditText_minLines, 0)
