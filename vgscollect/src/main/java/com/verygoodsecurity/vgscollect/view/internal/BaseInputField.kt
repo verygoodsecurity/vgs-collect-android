@@ -312,7 +312,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     internal fun setOnFocusChangeListener(l: OnFocusChangeListener?, isUserListener:Boolean) {
         if(isUserListener) {
             userFocusChangeListener = l
-            onFocusChangeListener = l
         }
     }
 

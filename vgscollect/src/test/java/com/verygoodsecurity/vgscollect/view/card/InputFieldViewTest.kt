@@ -8,6 +8,7 @@ import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
@@ -21,9 +22,11 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
+import org.robolectric.annotation.Config
 
 @Ignore
 @RunWith(RobolectricTestRunner::class)
+@Config(application = TestApplication::class)
 class InputFieldViewTest {
     private lateinit var activityController: ActivityController<Activity>
     private lateinit var activity: Activity
