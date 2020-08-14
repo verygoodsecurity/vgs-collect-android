@@ -5,6 +5,7 @@ import android.text.InputType
 import android.view.Gravity
 import android.view.View
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
@@ -25,9 +26,11 @@ import org.mockito.Mockito.mock
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
+import org.robolectric.annotation.Config
 
 @Ignore
 @RunWith(RobolectricTestRunner::class)
+@Config(application = TestApplication::class)
 class VGSCardNumberEditTextTest {
 
     private lateinit var activityController: ActivityController<Activity>

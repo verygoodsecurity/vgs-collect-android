@@ -134,15 +134,17 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     override fun updateTextChanged(str: String) {
-        inputConnection?.getOutput()?.apply {
-            if(str.isNotEmpty()) {
-                hasUserInteraction = true
+        inputConnection?.also {
+            with(it.getOutput()) {
+                if (str.isNotEmpty()) {
+                    hasUserInteraction = true
+                }
+                content = createCreditCardExpDateContent(str)
             }
-            content = createCreditCardExpDateContent(str)
+        }?.also {
+            handlerLooper.removeCallbacks(it)
+            handlerLooper.postDelayed(it, REFRESH_DELAY)
         }
-
-        handlerLooper.removeCallbacks(inputConnection)
-        handlerLooper.postDelayed(inputConnection, REFRESH_DELAY)
     }
 
     private fun createCreditCardExpDateContent(str: String): FieldContent? {

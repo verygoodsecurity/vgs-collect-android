@@ -34,9 +34,9 @@ Table of contents
 | Dependency | Version |
 | :--- | :---: |
 | Min SDK | 19 |
-| Target SDK | 29 |
-| androidx.appcompat:appcompat | 1.1.0 |
-| com.google.android.material:material | 1.1.0 |
+| Target SDK | 30 |
+| androidx.appcompat:appcompat | 1.2.0 |
+| com.google.android.material:material | 1.2.0 |
 | androidx.core:core-ktx | 1.3.1 |
 | org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.72 |
 
@@ -52,7 +52,7 @@ For integration you need to install the [Android Studio](http://developer.androi
 If you are using Maven, add the following to your `build.gradle` file:
 ```gradle
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:1.2.3’
+   implementation 'com.verygoodsecurity:vgscollect:1.2.4’
 }
 ```
 
