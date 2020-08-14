@@ -147,6 +147,7 @@
                                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
                             </FrameLayout>
+
                             <FrameLayout
                                 android:id="@+id/contHoldNum"
                                 android:layout_width="match_parent"
