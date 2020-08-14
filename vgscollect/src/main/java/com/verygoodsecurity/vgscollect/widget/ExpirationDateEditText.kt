@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.Gravity
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
@@ -49,7 +50,7 @@ class ExpirationDateEditText @JvmOverloads constructor(
                 val isRequired = getBoolean(R.styleable.ExpirationDateEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.ExpirationDateEditText_singleLine, true)
                 val scrollHorizontally = getBoolean(R.styleable.ExpirationDateEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.ExpirationDateEditText_gravity, -1)
+                val gravity = getInt(R.styleable.ExpirationDateEditText_gravity, Gravity.START or Gravity.CENTER_VERTICAL)
                 val ellipsize = getInt(R.styleable.ExpirationDateEditText_ellipsize, 0)
 
                 setFieldName(fieldName)
