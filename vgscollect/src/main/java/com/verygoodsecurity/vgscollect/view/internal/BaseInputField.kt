@@ -137,15 +137,17 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     protected val handlerLooper = Handler(Looper.getMainLooper())
     protected open fun updateTextChanged(str: String) {
-        inputConnection?.getOutput()?.apply {
-            if(str.isNotEmpty()) {
-                hasUserInteraction = true
+        inputConnection?.also {
+            with(it.getOutput()) {
+                if (str.isNotEmpty()) {
+                    hasUserInteraction = true
+                }
+                content?.data = str
             }
-            content?.data = str
+        }?.also {
+            handlerLooper.removeCallbacks(it)
+            handlerLooper.postDelayed(it, REFRESH_DELAY)
         }
-
-        handlerLooper.removeCallbacks(inputConnection)
-        handlerLooper.postDelayed(inputConnection, REFRESH_DELAY)
     }
 
     override fun onAttachedToWindow() {
