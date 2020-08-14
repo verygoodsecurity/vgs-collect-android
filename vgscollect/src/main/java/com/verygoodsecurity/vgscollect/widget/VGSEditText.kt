@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.Gravity
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
@@ -41,7 +42,7 @@ open class VGSEditText @JvmOverloads constructor(
                 val isRequired = getBoolean(R.styleable.VGSEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.VGSEditText_singleLine, true)
                 val scrollHorizontally = getBoolean(R.styleable.VGSEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.VGSEditText_gravity, -1)
+                val gravity = getInt(R.styleable.VGSEditText_gravity, Gravity.START or Gravity.CENTER_VERTICAL)
                 val ellipsize = getInt(R.styleable.VGSEditText_ellipsize, 0)
 
                 val minLines = getInt(R.styleable.VGSEditText_minLines, 0)

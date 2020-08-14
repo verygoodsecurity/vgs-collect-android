@@ -188,7 +188,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_height="wrap_content"
             app:hintEnabled="true"
             app:endIconTint="@color/colorAccent"
-            app:hint="padding right"
+            app:hint="padding top"
             app:boxBackgroundModes="outline"
             app:boxStrokeColor="@color/colorAccent">
             <com.verygoodsecurity.vgscollect.widget.PersonNameEditText

@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card.name
 import android.app.Activity
 import android.text.InputType
 import android.view.View
+import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
@@ -17,9 +18,11 @@ import org.mockito.Mockito
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
+import org.robolectric.annotation.Config
 
 @Ignore
 @RunWith(RobolectricTestRunner::class)
+@Config(application = TestApplication::class)
 class PersonNameEditTextTest {
     private lateinit var activityController: ActivityController<Activity>
     private lateinit var activity: Activity

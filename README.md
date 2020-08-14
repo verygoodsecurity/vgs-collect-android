@@ -34,9 +34,9 @@ Table of contents
 | Dependency | Version |
 | :--- | :---: |
 | Min SDK | 19 |
-| Target SDK | 29 |
-| androidx.appcompat:appcompat | 1.1.0 |
-| com.google.android.material:material | 1.1.0 |
+| Target SDK | 30 |
+| androidx.appcompat:appcompat | 1.2.0 |
+| com.google.android.material:material | 1.2.0 |
 | androidx.core:core-ktx | 1.3.1 |
 | org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.72 |
 

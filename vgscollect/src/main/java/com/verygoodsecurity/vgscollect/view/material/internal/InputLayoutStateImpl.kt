@@ -405,8 +405,11 @@ internal class InputLayoutStateImpl(
 
             setBackgroundResource(0)
 
-            textInputLayout.addView(this)
+            if(this@InputLayoutStateImpl.hint.isNullOrEmpty() && !hint.isNullOrEmpty()) {
+                this@InputLayoutStateImpl.hint = hint
+            }
 
+            textInputLayout.addView(this)
         }
     }
 
