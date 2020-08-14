@@ -98,14 +98,16 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
     }
 
     override fun updateTextChanged(str: String) {
-        inputConnection?.getOutput()?.apply {
-            if(str.isNotEmpty()) {
-                hasUserInteraction = true
+        inputConnection?.also {
+            with(it.getOutput()) {
+                if (str.isNotEmpty()) {
+                    hasUserInteraction = true
+                }
+                content = createCardNumberContent(str)
             }
-            content = createCardNumberContent(str)
-
-            handlerLooper.removeCallbacks(inputConnection)
-            handlerLooper.postDelayed(inputConnection, REFRESH_DELAY)
+        }?.also {
+            handlerLooper.removeCallbacks(it)
+            handlerLooper.postDelayed(it, REFRESH_DELAY)
         }
     }
 
