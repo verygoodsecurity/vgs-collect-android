@@ -1,7 +1,6 @@
 package com.verygoodsecurity.demoapp.activity_case
 
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -12,7 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.verygoodsecurity.api.cardio.ScanActivity
+import com.verygoodsecurity.api.bouncer.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.core.Environment
@@ -239,24 +238,29 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun scanCard() {
-        val intent = Intent(this, ScanActivity::class.java)
+        val bndl = with(Bundle()) {
+            val scanSettings = hashMapOf<String?, Int>().apply {
+                this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
+                this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
+                this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
+                this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
+            }
 
-        val scanSettings = hashMapOf<String?, Int>().apply {
-            this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
-            this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
-            this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
-            this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
+            putSerializable(ScanActivity.SCAN_CONFIGURATION, scanSettings)
+
+            putString(ScanActivity.API_KEY, "<user_bouncer_key>")
+
+            putBoolean(ScanActivity.ENABLE_EXPIRY_EXTRACTION, true)
+            putBoolean(ScanActivity.ENABLE_NAME_EXTRACTION, true)
+            putBoolean(ScanActivity.DISPLAY_CARD_PAN, true)
+            putBoolean(ScanActivity.DISPLAY_CARD_HOLDER_NAME, true)
+            putBoolean(ScanActivity.DISPLAY_CARD_SCAN_LOGO, true)
+            putBoolean(ScanActivity.ENABLE_DEBUG, true)
+
+            this
         }
 
-        intent.putExtra(ScanActivity.SCAN_CONFIGURATION, scanSettings)
-
-        intent.putExtra(ScanActivity.EXTRA_GUIDE_COLOR, Color.WHITE)
-        intent.putExtra(ScanActivity.EXTRA_LANGUAGE_OR_LOCALE, "en")
-        intent.putExtra(ScanActivity.EXTRA_SCAN_INSTRUCTIONS, "Scanning payment card")
-
-        startActivityForResult(intent,
-            USER_SCAN_REQUEST_CODE
-        )
+        ScanActivity.scan(this, USER_SCAN_REQUEST_CODE, bndl)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
