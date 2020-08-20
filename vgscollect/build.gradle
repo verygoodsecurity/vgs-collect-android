@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: "org.jetbrains.dokka"
 
 android {
     compileSdkVersion 30
@@ -48,6 +49,17 @@ android {
             returnDefaultValues = true
         }
     }
+    dokkaHtml {
+        outputDirectory = "${project.rootDir}/docs/"
+        dokkaSourceSets {
+            configureEach {
+                includeNonPublic = false
+                skipDeprecated = false
+                reportUndocumented = true
+                skipEmptyPackages = true
+            }
+        }
+    }
 }
 
 tasks.withType(Javadoc).all {
@@ -69,6 +81,9 @@ dependencies {
     testImplementation "org.robolectric:robolectric:4.3.1"
     testImplementation "io.mockk:mockk:1.10.0"
     androidTestImplementation 'androidx.test:runner:1.2.0'
+
+
+    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
 }
 
 apply from: rootProject.file('release-bintray.gradle')
