@@ -16,19 +16,6 @@ if (project.hasProperty("android")) {
         classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     }
 
-    apply plugin: 'org.jetbrains.dokka'
-    task dokkaJavadoc(type: dokka.getClass()) {
-        outputFormat = 'javadoc'
-        outputDirectory = "../docs"
-
-        configuration {
-            includeNonPublic = false
-            skipDeprecated = false
-            reportUndocumented = true
-            skipEmptyPackages = true
-        }
-    }
-
     task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
         classifier = 'javadoc'
         from "../docs"
@@ -39,18 +26,6 @@ if (project.hasProperty("android")) {
         from sourceSets.main.allSource
     }
 
-    apply plugin: 'org.jetbrains.dokka'
-    task dokkaJavadoc(type: dokka.getClass()) {
-        outputFormat = 'javadoc'
-        outputDirectory = "../docs"
-
-        configuration {
-            includeNonPublic = false
-            skipDeprecated = false
-            reportUndocumented = true
-            skipEmptyPackages = true
-        }
-    }
     tasks.withType(Javadoc).all {
         enabled = false
     }
@@ -59,8 +34,6 @@ if (project.hasProperty("android")) {
         from "../docs"
     }
 }
-
-
 
 bintrayUpload.dependsOn assemble
 bintrayUpload.dependsOn sourcesJar
