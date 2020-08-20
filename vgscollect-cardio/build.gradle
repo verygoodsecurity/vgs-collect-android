@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: "org.jetbrains.dokka"
 
 android {
     compileSdkVersion 30
@@ -8,7 +9,7 @@ android {
 
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode CODE_VERSION.toInteger()
         versionName POM_VERSION
@@ -23,12 +24,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    dokkaHtml {
+        outputDirectory = "${project.rootDir}/docs/"
+        dokkaSourceSets {
+            configureEach {
+                includeNonPublic = false
+                skipDeprecated = false
+                reportUndocumented = true
+                skipEmptyPackages = true
+            }
+        }
+    }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.appcompat:appcompat:$android_support_libraries"
     implementation 'androidx.core:core-ktx:1.3.1'
+
+    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
 
     api project(':vgscollect')
     implementation 'io.card:android-sdk:5.5.1'
