@@ -6,6 +6,7 @@ buildscript {
         google()
         jcenter()
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -17,7 +18,7 @@ buildscript {
 }
 
 ext {
-    mockito_version = '3.4.6'
+    mockito_version = '3.5.0'
     android_support_libraries = '1.2.0'
 }
 
