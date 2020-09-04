@@ -53,8 +53,6 @@ internal fun String.isURLValid():Boolean {
     } catch (e:Exception) {
         false
     }
-//    val s = Patterns.WEB_URL.matcher(this).matches()
-//    val s = URLUtil.isValidUrl(this)
 }
 
 internal fun String.buildURL(path: String, vararg getQuery:String):URL? {
