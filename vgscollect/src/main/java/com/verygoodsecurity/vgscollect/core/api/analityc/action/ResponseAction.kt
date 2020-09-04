@@ -15,6 +15,6 @@ class ResponseAction(
 
     companion object {
         private const val EVENT = "type"
-        private const val SCAN = "Response"
+        private const val SCAN = "Submit"
     }
 }

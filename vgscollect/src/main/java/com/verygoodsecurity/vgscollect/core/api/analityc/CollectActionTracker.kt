@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.core.api.analityc
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.AnalyticClient
@@ -77,7 +78,8 @@ internal class CollectActionTracker(
             val headers = mutableMapOf<String, String>()
             headers[HEADER_ORIGIN] = ORIGIN
 
-            client.call(ENDPOINT, HTTPMethod.POST, headers, map)
+            Log.e("test_analytic", "$headers, $map")
+//            client.call(ENDPOINT, HTTPMethod.POST, headers, map)
         }
 
         companion object {

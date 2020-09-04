@@ -363,8 +363,8 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         val request: VGSRequest = VGSRequest.VGSRequestBuilder()
             .setMethod(HTTPMethod.POST)
             .setPath(path)
-            .setCustomHeader(headers)
-            .setCustomData(customData)
+//            .setCustomHeader(headers)
+//            .setCustomData(customData)
             .build()
 
         vgsForm.asyncSubmit(request)

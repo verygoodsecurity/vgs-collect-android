@@ -15,6 +15,6 @@ class SubmitAction(
 
     companion object {
         private const val EVENT = "type"
-        private const val INIT = "Submit"
+        private const val INIT = "BeforeSubmit"
     }
 }
