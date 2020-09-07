@@ -78,6 +78,7 @@ internal class CollectActionTracker(
             val headers = mutableMapOf<String, String>()
             headers[HEADER_ORIGIN] = ORIGIN
 
+            Log.i("test_analytic", "-----------------")
             Log.e("test_analytic", "$headers, $map")
 //            client.call(ENDPOINT, HTTPMethod.POST, headers, map)
         }
