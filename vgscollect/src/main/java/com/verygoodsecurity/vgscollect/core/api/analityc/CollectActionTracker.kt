@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import com.verygoodsecurity.vgscollect.BuildConfig
-import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.AnalyticClient
 import com.verygoodsecurity.vgscollect.core.api.AnalyticURLConnectionClient
 import com.verygoodsecurity.vgscollect.core.api.ApiClient
@@ -35,7 +34,7 @@ internal class CollectActionTracker(
 
     override fun logEvent(action: Action) {
         val event = action.run {
-            val sender = Event(client, tnt, environment, formId)
+            val sender = Event(tnt, environment, formId)
             sender.map = getAttributes()
             sender
         }
@@ -44,7 +43,6 @@ internal class CollectActionTracker(
     }
 
     private class Event(
-        private val client:ApiClient,
         private val tnt: String,
         private val environment: String,
         private val formId: String
@@ -53,16 +51,18 @@ internal class CollectActionTracker(
         var map:MutableMap<String, Any> = mutableMapOf()
             set(value) {
                 field = value
-                field.putAll(attachDefaultInfo())
+                field.putAll(attachDefaultInfo(value))
             }
 
-        private fun attachDefaultInfo():Map<String, Any> {
-            return with(mutableMapOf<String, Any>()) {
+        private fun attachDefaultInfo(map: MutableMap<String, Any>):Map<String, Any> {
+            return with(map) {
                 this[FORM_ID] = formId
                 this[TNT] = tnt
                 this[ENVIRONMENT] = environment
                 this[VERSION] = BuildConfig.VERSION_NAME
-                this[STATUS] = STATUS_OK
+                if(!this.containsKey(STATUS)) {
+                    this[STATUS] = STATUS_OK
+                }
 
                 val deviceInfo = mutableMapOf<String, String>()
                 deviceInfo[PLATFORM] = PLATFORM_TAG
@@ -79,7 +79,7 @@ internal class CollectActionTracker(
             headers[HEADER_ORIGIN] = ORIGIN
 
             Log.i("test_analytic", "-----------------")
-            Log.e("test_analytic", "$headers, $map")
+            Log.e("test_analytic", "$headers, \n $map")
 //            client.call(ENDPOINT, HTTPMethod.POST, headers, map)
         }
 

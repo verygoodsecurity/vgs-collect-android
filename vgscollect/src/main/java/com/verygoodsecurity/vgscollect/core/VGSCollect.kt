@@ -428,6 +428,8 @@ class VGSCollect {
      *               (various data can be attached to Intent "extras").
      */
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        mapAnalyticEvent(data)
+
         if(resultCode == Activity.RESULT_OK) {
             val map: VGSHashMapWrapper<String, Any?>? = data?.extras?.getParcelable(
                 BaseTransmitActivity.RESULT_DATA
@@ -435,15 +437,33 @@ class VGSCollect {
 
             if(requestCode == TemporaryFileStorage.REQUEST_CODE) {
                 map?.run {
-                    attachFileEvent("MIME", "Ok")
                     storage.getFileStorage().dispatch(mapOf())
                 }
             } else {
                 map?.run {
-                    scanEvent("success", "Bouncer", 327)
                     externalDependencyDispatcher.dispatch(mapOf())
                 }
             }
+        }
+    }
+
+    private fun mapAnalyticEvent(data: Intent?) {
+        data?.let {
+            val map: VGSHashMapWrapper<String, Any?> = it.extras?.getParcelable(
+                BaseTransmitActivity.RESULT_DATA
+            )?: VGSHashMapWrapper()
+
+            when(map.get(BaseTransmitActivity.RESULT_TYPE)) {
+                BaseTransmitActivity.SCAN -> scanEvent(
+                    map.get(BaseTransmitActivity.RESULT_STATUS).toString(),
+                    map.get(BaseTransmitActivity.RESULT_NAME).toString(),
+                    map.get(BaseTransmitActivity.RESULT_ID).toString()
+                )
+                BaseTransmitActivity.ATTACH -> attachFileEvent(
+                    map.get(BaseTransmitActivity.RESULT_STATUS).toString()
+                )
+            }
+
         }
     }
 
@@ -507,12 +527,6 @@ class VGSCollect {
         client = c
     }
 
-
-
-
-
-
-
     private fun initField(view: InputFieldView?) {
         val m = with(mutableMapOf<String, String>()) {
             put("field", view?.getFieldType()?.name?:"")
@@ -524,11 +538,11 @@ class VGSCollect {
         )
     }
 
-    private fun scanEvent(status:String, type:String, id:Int) {
+    private fun scanEvent(status:String, type:String, id:String) {
         val m = with(mutableMapOf<String, String>()) {
-            put("status", status)
-            put("type", type)
-            put("scanId", id.toString())
+            put("status", status)//ok, failed, cancel
+            put("type", type)//bouncer, cardio
+            put("scanId", id.toString())//123
 
             this
         }
@@ -580,9 +594,8 @@ class VGSCollect {
 //        autocomplete
     }
 
-    private fun attachFileEvent(type:String, status:String) {//MIME, success
+    private fun attachFileEvent(status:String) {//MIME, success
         val m = with(mutableMapOf<String, Any>()) {
-            put("mimeType", type)
             put("status", status)
 
             this

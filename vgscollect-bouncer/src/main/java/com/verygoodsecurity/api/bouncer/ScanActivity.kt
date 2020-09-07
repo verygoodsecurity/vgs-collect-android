@@ -67,18 +67,31 @@ class ScanActivity: BaseTransmitActivity(), CardScanActivityResultHandler {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
         CardScanActivity.parseScanResult(resultCode, data, this)
+        super.onActivityResult(requestCode, resultCode, data)
         finish()
     }
 
-    override fun analyzerFailure(scanId: String?) {}
+    override fun analyzerFailure(scanId: String?) {
+        configureInternalSettings(scanId, Status.FAILED.raw)
+    }
 
-    override fun cameraError(scanId: String?) {}
+    override fun cameraError(scanId: String?) {
+        configureInternalSettings(scanId, Status.FAILED.raw)
+    }
 
-    override fun canceledUnknown(scanId: String?) {}
+    override fun canceledUnknown(scanId: String?) {
+        configureInternalSettings(scanId, Status.FAILED.raw)
+    }
+
+    override fun enterManually(scanId: String?) {}
+
+    override fun userCanceled(scanId: String?) {
+        configureInternalSettings(scanId, Status.CANCEL.raw)
+    }
 
     override fun cardScanned(scanId: String?, scanResult: CardScanActivityResult) {
+        configureInternalSettings(scanId, Status.SUCCESS.raw)
         settings.forEach {
             when(it.value) {
                 CARD_NUMBER -> mapData(it.key, scanResult.pan)
@@ -87,6 +100,13 @@ class ScanActivity: BaseTransmitActivity(), CardScanActivityResultHandler {
                 CARD_EXP_DATE -> mapData(it.key, retrieveDate(scanResult))
             }
         }
+    }
+
+    private fun configureInternalSettings(scanId:String?, status:String) {
+        mapData(RESULT_TYPE, SCAN)
+        mapData(RESULT_NAME, NAME)
+        mapData(RESULT_STATUS, status)
+        mapData(RESULT_ID, scanId)
     }
 
     private fun retrieveDate(scanResult: CardScanActivityResult): Long? {
@@ -130,12 +150,9 @@ class ScanActivity: BaseTransmitActivity(), CardScanActivityResultHandler {
         }
     }
 
-    override fun enterManually(scanId: String?) {}
-
-    override fun userCanceled(scanId: String?) {}
-
     companion object {
         const val SCAN_CONFIGURATION = "vgs_scan_settings"
+        private const val NAME = "bouncer"
 
         const val CARD_NUMBER = 0x71
         const val CARD_CVC = 0x72
