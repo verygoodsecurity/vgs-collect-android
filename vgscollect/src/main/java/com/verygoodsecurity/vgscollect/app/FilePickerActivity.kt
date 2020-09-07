@@ -36,7 +36,7 @@ internal class FilePickerActivity :BaseTransmitActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+        configureInternalSettings(data)
         if(requestCode == PICK_FILE_REQUEST_CODE) {
             configKey?.let { key->
                 mapData(key, data?.data.toString())
@@ -44,5 +44,14 @@ internal class FilePickerActivity :BaseTransmitActivity() {
         }
         super.onActivityResult(requestCode, resultCode, data)
         finish()
+    }
+
+    private fun configureInternalSettings(data: Intent?) {
+        mapData(RESULT_TYPE, ATTACH)
+        if(data?.data?.toString().isNullOrEmpty()) {
+            mapData(RESULT_STATUS, Status.CANCEL.raw)
+        } else {
+            mapData(RESULT_STATUS, Status.SUCCESS.raw)
+        }
     }
 }
