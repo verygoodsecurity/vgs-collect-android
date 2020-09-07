@@ -541,8 +541,8 @@ class VGSCollect {
     private fun scanEvent(status:String, type:String, id:String) {
         val m = with(mutableMapOf<String, String>()) {
             put("status", status)//ok, failed, cancel
-            put("type", type)//bouncer, cardio
-            put("scanId", id.toString())//123
+            put("scannerType", type)//bouncer, cardio
+            put("scanId", id)//123
 
             this
         }
