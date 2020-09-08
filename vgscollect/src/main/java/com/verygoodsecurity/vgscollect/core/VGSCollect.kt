@@ -29,7 +29,6 @@ import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.deepMerge
 import com.verygoodsecurity.vgscollect.util.mapToMap
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
-import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import java.util.*
 import kotlin.collections.HashMap
@@ -147,11 +146,13 @@ class VGSCollect {
      * @param view base class for VGS secure fields.
      */
     fun bindView(view: InputFieldView?) {
-        if(view is AccessibilityStatePreparer) {
-            externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.getDependencyListener())
-        }
-        storage.performSubscription(view)
+        view?.statePreparer?.let {
+            externalDependencyDispatcher.addDependencyListener(view.getFieldName(), it.getDependencyListener())
 
+            it.setAnalyticTracker(tracker)
+        }
+
+        storage.performSubscription(view)
 
         initField(view)
     }
@@ -527,6 +528,11 @@ class VGSCollect {
         client = c
     }
 
+
+
+
+
+
     private fun initField(view: InputFieldView?) {
         val m = with(mutableMapOf<String, String>()) {
             put("field", view?.getFieldType()?.name?:"")
@@ -542,7 +548,7 @@ class VGSCollect {
         val m = with(mutableMapOf<String, String>()) {
             put("status", status)//ok, failed, cancel
             put("scannerType", type)//bouncer, cardio
-            put("scanId", id)//123
+            put("scanId", id.toString())//123
 
             this
         }

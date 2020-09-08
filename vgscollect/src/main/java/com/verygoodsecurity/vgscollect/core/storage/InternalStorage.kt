@@ -10,7 +10,6 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileSt
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.util.merge
 import com.verygoodsecurity.vgscollect.util.toAssociatedList
-import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 
 /** @suppress */
@@ -75,12 +74,13 @@ internal class InternalStorage(
     }
 
     fun performSubscription(view: InputFieldView?) {
-        if(view is AccessibilityStatePreparer) {
+        view?.statePreparer?.let {
             fieldsDependencyDispatcher.addDependencyListener(
                 view.getFieldType(),
-                view.getDependencyListener()
+                it.getDependencyListener()
             )
         }
+
         view?.addStateListener(emitter.performSubscription())
     }
 
