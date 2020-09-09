@@ -87,7 +87,7 @@ class ScanActivity: BaseTransmitActivity(), CardScanActivityResultHandler {
     override fun enterManually(scanId: String?) {}
 
     override fun userCanceled(scanId: String?) {
-        configureInternalSettings(scanId, Status.CANCEL.raw)
+        configureInternalSettings(scanId, Status.CLOSE.raw)
     }
 
     override fun cardScanned(scanId: String?, scanResult: CardScanActivityResult) {
@@ -152,7 +152,7 @@ class ScanActivity: BaseTransmitActivity(), CardScanActivityResultHandler {
 
     companion object {
         const val SCAN_CONFIGURATION = "vgs_scan_settings"
-        private const val NAME = "bouncer"
+        private const val NAME = "Bouncer"
 
         const val CARD_NUMBER = 0x71
         const val CARD_CVC = 0x72

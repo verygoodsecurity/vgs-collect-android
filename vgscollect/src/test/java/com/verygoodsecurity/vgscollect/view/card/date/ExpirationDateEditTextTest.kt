@@ -44,7 +44,7 @@ class ExpirationDateEditTextTest {
     @Test
     fun test_view() {
         view.onAttachedToWindow()
-        val internal = view.getView()
+        val internal = view.statePreparer.getView()
         Assert.assertNotNull(internal)
     }
 
@@ -57,10 +57,10 @@ class ExpirationDateEditTextTest {
 
     @Test
     fun test_check_internal_view() {
-        val internal = view.getView()
+        val internal = view.statePreparer.getView()
         Assert.assertNotNull(internal)
 
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is DateInputField)
     }
 
@@ -234,7 +234,7 @@ class ExpirationDateEditTextTest {
 
     @Test
     fun test_field_state_change_listener_first() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
 
         val listener = Mockito.mock(OnFieldStateChangeListener::class.java)
@@ -249,7 +249,7 @@ class ExpirationDateEditTextTest {
 
     @Test
     fun test_field_state_change_listener_last() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
@@ -263,7 +263,7 @@ class ExpirationDateEditTextTest {
 
     @Test
     fun test_on_focus_change_listener() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         view.setDatePickerMode(DatePickerMode.INPUT)
         Assert.assertTrue(child is BaseInputField)
 
@@ -289,7 +289,7 @@ class ExpirationDateEditTextTest {
         stateResult.fieldName = "date"
         stateResult.fieldType = FieldType.CARD_EXPIRATION_DATE
 
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
 
         view.setText(text)
@@ -322,7 +322,7 @@ class ExpirationDateEditTextTest {
         stateResult.fieldName = "date"
         stateResult.fieldType = FieldType.CARD_EXPIRATION_DATE
 
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
 
         view.setText(text)

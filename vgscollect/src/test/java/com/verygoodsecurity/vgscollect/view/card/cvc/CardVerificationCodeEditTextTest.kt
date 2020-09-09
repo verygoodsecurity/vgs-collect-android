@@ -41,7 +41,7 @@ class CardVerificationCodeEditTextTest {
     @Test
     fun test_view() {
         view.onAttachedToWindow()
-        val internal = view.getView()
+        val internal = view.statePreparer.getView()
         Assert.assertNotNull(internal)
     }
 
@@ -54,10 +54,10 @@ class CardVerificationCodeEditTextTest {
 
     @Test
     fun test_check_internal_view() {
-        val internal = view.getView()
+        val internal = view.statePreparer.getView()
         Assert.assertNotNull(internal)
 
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is CVCInputField)
     }
 
@@ -68,16 +68,16 @@ class CardVerificationCodeEditTextTest {
 
     @Test
     fun test_set_text_true() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         view.setText("123")
-        assertEquals("123", (view.getView() as BaseInputField).text.toString())
+        assertEquals("123", (view.statePreparer.getView() as BaseInputField).text.toString())
     }
 
     @Test
     fun test_input_type_none() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         view.setInputType(InputType.TYPE_NULL)
@@ -129,7 +129,7 @@ class CardVerificationCodeEditTextTest {
 
     @Test
     fun test_on_focus_change_listener() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
@@ -154,7 +154,7 @@ class CardVerificationCodeEditTextTest {
         stateResult.fieldName = "cvc"
         stateResult.fieldType = FieldType.CVC
 
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         view.setText(text)

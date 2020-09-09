@@ -144,7 +144,7 @@ class ScanActivity: BaseTransmitActivity() {
         const val CARD_EXP_DATE = 0x74
         const val POSTAL_CODE = 0x75
         private const val CARD_IO_REQUEST_CODE = 0x7
-        private const val NAME = "cardio"
+        private const val NAME = "CardIO"
 
         fun scan(context: Activity, code:Int, bndl:Bundle = Bundle.EMPTY) {
             val intent = Intent(context, ScanActivity::class.java)

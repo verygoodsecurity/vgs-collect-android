@@ -57,7 +57,7 @@ class VGSCollectTest {
         applyResponseListener()
         applyResponseListener()
 
-        assertEquals(2, collect.getResponseListeners().size)
+        assertEquals(3, collect.getResponseListeners().size) // + analytic listener
     }
 
     @Test
@@ -74,7 +74,7 @@ class VGSCollectTest {
     fun test_bind_view() {
         val view = applyEditText(FieldType.INFO)
 
-        Mockito.verify(view).getFieldType()
+        Mockito.verify(view, Mockito.times(2)).getFieldType() //default init + analytics,
         Mockito.verify(view).getFieldName()
         Mockito.verify(view).addStateListener(any())
     }
@@ -230,11 +230,14 @@ class VGSCollectTest {
         val view = when(typeField) {
             FieldType.CARD_NUMBER -> createCardNumber()
             FieldType.CVC -> createCardCVC()
-            FieldType.CARD_EXPIRATION_DATE -> createCardHolder()
-            else -> createCardExpDate()
+            FieldType.CARD_EXPIRATION_DATE -> createCardExpDate()
+            FieldType.CARD_HOLDER_NAME -> createCardHolder()
+            else -> spy( VGSEditText(activity) ).apply {
+                setFieldName("createInfoField")
+            }
         }
 
-        (view.getView() as? BaseInputField)?.prepareFieldTypeConnection()
+        (view.statePreparer.getView() as? BaseInputField)?.prepareFieldTypeConnection()
 
         collect.bindView(view)
 
