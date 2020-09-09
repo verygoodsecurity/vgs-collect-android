@@ -588,6 +588,11 @@ class VGSCollect {
     private fun responseEvent(code: Int) {
         val m = with(mutableMapOf<String, Any>()) {
             put("code", code)
+            if(code in 200..300) {
+                put("status", BaseTransmitActivity.Status.SUCCESS.raw)
+            } else {
+                put("status", BaseTransmitActivity.Status.FAILED.raw)
+            }
 
             this
         }

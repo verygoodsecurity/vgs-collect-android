@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import com.verygoodsecurity.vgscollect.BuildConfig
+import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.AnalyticClient
 import com.verygoodsecurity.vgscollect.core.api.AnalyticURLConnectionClient
 import com.verygoodsecurity.vgscollect.core.api.ApiClient
@@ -34,7 +35,7 @@ internal class CollectActionTracker(
 
     override fun logEvent(action: Action) {
         val event = action.run {
-            val sender = Event(tnt, environment, formId)
+            val sender = Event(client, tnt, environment, formId)
             sender.map = getAttributes()
             sender
         }
@@ -43,6 +44,7 @@ internal class CollectActionTracker(
     }
 
     private class Event(
+        private val client:ApiClient,
         private val tnt: String,
         private val environment: String,
         private val formId: String
@@ -80,7 +82,7 @@ internal class CollectActionTracker(
 
             Log.i("test_analytic", "-----------------")
             Log.e("test_analytic", "$headers, \n $map")
-//            client.call(ENDPOINT, HTTPMethod.POST, headers, map)
+            client.call(ENDPOINT, HTTPMethod.POST, headers, map)
         }
 
         companion object {

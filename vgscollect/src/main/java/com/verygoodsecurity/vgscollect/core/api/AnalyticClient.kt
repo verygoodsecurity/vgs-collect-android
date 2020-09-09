@@ -90,7 +90,7 @@ internal class AnalyticClient(
 
     private fun addRequestBody(requestBuilder: Request.Builder, data: Map<String, Any>?) {
         val content = data?.mapToJSON().toString().toByteArray()
-        val bodyStr = Base64.encodeToString(content, Base64.NO_PADDING)
+        val bodyStr = Base64.encodeToString(content, Base64.NO_WRAP)
         val body = bodyStr.toRequestBody(CONTENT_TYPE.toMediaTypeOrNull())
         requestBuilder.post(body)
     }
