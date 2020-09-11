@@ -24,6 +24,7 @@ import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
+import org.mockito.Mockito.after
 import org.mockito.Mockito.spy
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
@@ -31,7 +32,6 @@ import org.robolectric.Shadows
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
 
-@Ignore
 @RunWith(RobolectricTestRunner::class)
 @Config(application = TestApplication::class)
 class VGSCollectTest {
@@ -137,7 +137,7 @@ class VGSCollectTest {
 
         collect.asyncSubmit("/path", HTTPMethod.POST)
 
-        Mockito.verify(client).call(any(), any(), any(), any())
+        Mockito.verify(client, after(500)).call(any(), any(), any(), any())
     }
 
     @Test
@@ -150,7 +150,7 @@ class VGSCollectTest {
             .build()
         collect.asyncSubmit(request)
 
-        Mockito.verify(client).call(any(), any(), any(), any())
+        Mockito.verify(client, after(500)).call(any(), any(), any(), any())
     }
 
     @Test
