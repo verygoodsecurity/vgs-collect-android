@@ -3,9 +3,12 @@ package com.verygoodsecurity.api.bouncer
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.getbouncer.cardscan.ui.CardScanActivity
 import com.getbouncer.cardscan.ui.CardScanActivityResult
 import com.getbouncer.cardscan.ui.CardScanActivityResultHandler
+import com.getbouncer.scan.framework.exception.InvalidBouncerApiKeyException
+import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,7 +32,13 @@ class ScanActivity: BaseTransmitActivity(), CardScanActivityResultHandler {
 
         saveSettings()
 
-        CardScanActivity.warmUp(this, key, true)
+        try {
+            val initializeNameAndExpiryExtraction = enableNameExtraction || enableExpiryExtraction
+            CardScanActivity.warmUp(this, key, initializeNameAndExpiryExtraction)
+        } catch (e: InvalidBouncerApiKeyException) {
+            printLog(e)
+            finish()
+        }
     }
 
     override fun onStart() {
@@ -135,6 +144,7 @@ class ScanActivity: BaseTransmitActivity(), CardScanActivityResultHandler {
     override fun userCanceled(scanId: String?) {}
 
     companion object {
+        private const val NAME = "ScanActivity"
         const val SCAN_CONFIGURATION = "vgs_scan_settings"
 
         const val CARD_NUMBER = 0x71
@@ -157,4 +167,9 @@ class ScanActivity: BaseTransmitActivity(), CardScanActivityResultHandler {
         }
     }
 
+    private fun printLog(e: Exception) {
+        if (BuildConfig.DEBUG) {
+            Log.e(NAME, e.message?:"", e)
+        }
+    }
 }
