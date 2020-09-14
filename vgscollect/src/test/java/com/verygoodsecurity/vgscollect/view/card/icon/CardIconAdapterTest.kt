@@ -14,7 +14,6 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 
-@Ignore
 @RunWith(RobolectricTestRunner::class)
 class CardIconAdapterTest {
 
