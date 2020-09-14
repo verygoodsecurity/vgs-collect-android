@@ -17,8 +17,8 @@ Table of contents
 | Dependency | Version |
 | :--- | :---: |
 | Min SDK | 21 |
-| androidx.appcompat:appcompat | 1.2.0 |
-| androidx.core:core-ktx | 1.2.0 |
+| androidx.appcompat:appcompat | 1.2.1 |
+| androidx.core:core-ktx | 1.2.1 |
 
 ## Integration 
 For integration you need to install the [Android Studio](http://developer.android.com/sdk/index.html) and a [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) on your machine.
