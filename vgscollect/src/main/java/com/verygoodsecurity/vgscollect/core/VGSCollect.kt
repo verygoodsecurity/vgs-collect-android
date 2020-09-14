@@ -206,10 +206,6 @@ class VGSCollect {
             submitEvent(true, !request.fileIgnore, !request.fieldsIgnore,
                 request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
             )
-        } else {
-            submitEvent(false, !request.fileIgnore, !request.fieldsIgnore,
-                request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
-            )
         }
     }
 
@@ -224,23 +220,13 @@ class VGSCollect {
     fun submit(request: VGSRequest) {
         if(isUrlValid() && checkInternetPermission()) {
             if(!request.fieldsIgnore && !validateFields()) {
-                submitEvent(false, !request.fileIgnore, !request.fieldsIgnore,
-                    request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
-                )
                 return
             }
             if(!request.fileIgnore&& !validateFiles()) {
-                submitEvent(false, !request.fileIgnore, !request.fieldsIgnore,
-                    request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
-                )
                 return
             }
             doRequest(request)
             submitEvent(true, !request.fileIgnore, !request.fieldsIgnore,
-                request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
-            )
-        } else {
-            submitEvent(false, !request.fileIgnore, !request.fieldsIgnore,
                 request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
             )
         }
@@ -266,10 +252,6 @@ class VGSCollect {
             submitEvent(true, !request.fileIgnore, !request.fieldsIgnore,
                 request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
             )
-        } else {
-            submitEvent(false, !request.fileIgnore, !request.fieldsIgnore,
-                request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
-            )
         }
     }
 
@@ -281,24 +263,14 @@ class VGSCollect {
     fun asyncSubmit(request: VGSRequest) {
         if(isUrlValid() && checkInternetPermission()) {
             if(!request.fieldsIgnore && !validateFields()) {
-                submitEvent(false, !request.fileIgnore, !request.fieldsIgnore,
-                    request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
-                )
                 return
             }
             if(!request.fileIgnore && !validateFiles()) {
-                submitEvent(false, !request.fileIgnore, !request.fieldsIgnore,
-                    request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
-                )
                 return
             }
             doAsyncRequest(request)
 
             submitEvent(true, !request.fileIgnore, !request.fieldsIgnore,
-                request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
-            )
-        } else {
-            submitEvent(false, !request.fileIgnore, !request.fieldsIgnore,
                 request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
             )
         }
@@ -344,7 +316,7 @@ class VGSCollect {
             if(it.isValid.not()) {
                 notifyErrorResponse(VGSError.INPUT_DATA_NOT_VALID, it.fieldName)
                 isValid = false
-                return@forEach
+                return isValid
             }
         }
         return isValid
@@ -363,6 +335,7 @@ class VGSCollect {
             it.onResponse(VGSResponse.ErrorResponse(message, error.code))
         }
         Logger.e(VGSCollect::class.java, message)
+        submitEvent(false, code = error.code)
     }
 
     private fun doRequest(
@@ -535,7 +508,7 @@ class VGSCollect {
 
     private fun initField(view: InputFieldView?) {
         val m = with(mutableMapOf<String, String>()) {
-            put("field", view?.getFieldType()?.name?:"")
+            put("field", view?.getFieldType()?.raw?:"")
             this
         }
 
@@ -562,47 +535,47 @@ class VGSCollect {
         hasFiles: Boolean = true,
         hasFields: Boolean = true,
         hasCustomHeader: Boolean = true,
-        hasCustomData: Boolean = true
+        hasCustomData: Boolean = true,
+        code:Int? = null
     ) {
-        val m = with(mutableMapOf<String, Any>()) {
-            if(isSuccess) put("status", "Ok") else put("status", "Failed")
+        if(code == null || code >= 1000) {
+            val m = with(mutableMapOf<String, Any>()) {
+                if (isSuccess) put("status", "Ok") else put("status", "Failed")
 
-            val arr = with(mutableListOf<String>()) {
-                if(hasFiles) add("file")
-                if(hasFields) add("fields")
-                if(hasCustomHeader) add("customHeaders")
-                if(hasCustomData) add("customData")
+                code?.let { put("errorCode", it) }
+
+                val arr = with(mutableListOf<String>()) {
+                    if (hasFiles) add("file")
+                    if (hasFields) add("fields")
+                    if (hasCustomHeader) add("customHeaders")
+                    if (hasCustomData) add("customData")
+                    this
+                }
+
+                put("content", arr)
+
                 this
             }
 
-            put("content", arr)
-
-            this
+            tracker.logEvent(
+                SubmitAction(m)
+            )
         }
-
-        tracker.logEvent(
-            SubmitAction(m)
-        )
     }
 
     private fun responseEvent(code: Int) {
-        val m = with(mutableMapOf<String, Any>()) {
-            put("code", code)
-            if(code in 200..300) {
+        if(code in 200..999) {
+            val m = with(mutableMapOf<String, Any>()) {
+                put("errorCode", code)
+                put("error", "code-message descr")
                 put("status", BaseTransmitActivity.Status.SUCCESS.raw)
-            } else {
-                put("status", BaseTransmitActivity.Status.FAILED.raw)
+
+                this
             }
-
-            this
+            tracker.logEvent(
+                ResponseAction(m)
+            )
         }
-        tracker.logEvent(
-            ResponseAction(m)
-        )
-    }
-
-    private fun autoCompleteEvent(field_type:String) {
-//        autocomplete
     }
 
     private fun attachFileEvent(status:String) {//MIME, success

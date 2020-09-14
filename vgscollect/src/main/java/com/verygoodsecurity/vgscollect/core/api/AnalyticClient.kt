@@ -12,6 +12,8 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.parseVGSResponse
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.mapToJSON
+import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -62,7 +64,9 @@ internal class AnalyticClient(
     private fun postRequest(path: String, headers: Map<String, String>?, data: Map<String, Any>?): VGSResponse {
         val url = baseURL.buildURL(path = path)
             ?: return notifyErrorResponse(VGSError.URL_NOT_VALID)
+
         val requestBuilder = Request.Builder().url(url)
+//        val requestBuilder = Request.Builder().url("http://10.0.2.2:5000/vgs")
 
         addHeaders(requestBuilder, headers)
         addRequestBody(requestBuilder, data)

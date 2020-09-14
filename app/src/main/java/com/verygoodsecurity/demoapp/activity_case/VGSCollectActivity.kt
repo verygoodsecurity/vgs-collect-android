@@ -5,10 +5,7 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.api.bouncer.ScanActivity
@@ -64,7 +61,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
         val staticData = mutableMapOf<String, String>()
         staticData["static_data"] = "static custom data"
-        vgsForm.setCustomData(staticData)
+//        vgsForm.setCustomData(staticData)
     }
 
     private fun setupCardExpDateField() {

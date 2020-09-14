@@ -86,7 +86,7 @@ internal class CollectActionTracker(
         }
 
         companion object {
-            private const val FORM_ID = "form_id"
+            private const val FORM_ID = "formId"
             private const val TNT = "tnt"
             private const val ENVIRONMENT = "env"
             private const val VERSION = "version"
