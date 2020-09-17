@@ -204,7 +204,7 @@ class VGSCollect {
         if(checkInternetPermission() && isUrlValid() && validateFields() && validateFiles()) {
             doRequest(request)
             submitEvent(true, !request.fileIgnore, !request.fieldsIgnore,
-                request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
+                request.customHeader.isNotEmpty(), request.customData.isNotEmpty()
             )
         }
     }
@@ -227,7 +227,7 @@ class VGSCollect {
             }
             doRequest(request)
             submitEvent(true, !request.fileIgnore, !request.fieldsIgnore,
-                request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
+                request.customHeader.isNotEmpty(), request.customData.isNotEmpty()
             )
         }
     }
@@ -250,7 +250,7 @@ class VGSCollect {
             doAsyncRequest(request)
 
             submitEvent(true, !request.fileIgnore, !request.fieldsIgnore,
-                request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
+                request.customHeader.isNotEmpty(), request.customData.isNotEmpty()
             )
         }
     }
@@ -271,7 +271,7 @@ class VGSCollect {
             doAsyncRequest(request)
 
             submitEvent(true, !request.fileIgnore, !request.fieldsIgnore,
-                request.customData.isNotEmpty(), request.customHeader.isNotEmpty()
+                request.customHeader.isNotEmpty(), request.customData.isNotEmpty()
             )
         }
     }
@@ -532,10 +532,10 @@ class VGSCollect {
 
     private fun submitEvent(
         isSuccess: Boolean,
-        hasFiles: Boolean = true,
-        hasFields: Boolean = true,
-        hasCustomHeader: Boolean = true,
-        hasCustomData: Boolean = true,
+        hasFiles: Boolean = false,
+        hasFields: Boolean = false,
+        hasCustomHeader: Boolean = false,
+        hasCustomData: Boolean = false,
         code:Int? = null
     ) {
         if(code == null || code >= 1000) {
@@ -547,8 +547,8 @@ class VGSCollect {
                 val arr = with(mutableListOf<String>()) {
                     if (hasFiles) add("file")
                     if (hasFields) add("fields")
-                    if (hasCustomHeader) add("customHeaders")
-                    if (hasCustomData) add("customData")
+                    if (hasCustomHeader || client.getTemporaryStorage().getCustomHeaders().isNotEmpty()) add("customHeaders")
+                    if (hasCustomData || client.getTemporaryStorage().getCustomData().isNotEmpty()) add("customData")
                     this
                 }
 
