@@ -9,6 +9,9 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
+import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
+import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
+import com.verygoodsecurity.vgscollect.core.api.analityc.action.*
 import com.verygoodsecurity.vgscollect.core.model.*
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
@@ -26,8 +29,9 @@ import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.deepMerge
 import com.verygoodsecurity.vgscollect.util.mapToMap
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
-import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
 import com.verygoodsecurity.vgscollect.view.InputFieldView
+import java.util.*
+import kotlin.collections.HashMap
 
 
 /**
@@ -40,6 +44,8 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 class VGSCollect {
 
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
+
+    private val tracker:AnalyticTracker
 
     private lateinit var client: ApiClient
 
@@ -67,6 +73,13 @@ class VGSCollect {
     ) {
         this.context = context
 
+        tracker = CollectActionTracker(
+            context,
+            id,
+            environment.rawValue,
+            UUID.randomUUID().toString())
+
+
         baseURL = id.setupURL(environment.rawValue)
         isURLValid = baseURL.isURLValid()
         initializeCollect(baseURL)
@@ -83,6 +96,11 @@ class VGSCollect {
         environment: String
     ) {
         this.context = context
+        tracker = CollectActionTracker(
+            context,
+            id,
+            environment,
+            UUID.randomUUID().toString())
 
         baseURL = id.setupURL(environment)
         isURLValid = baseURL.isURLValid()
@@ -104,6 +122,11 @@ class VGSCollect {
                 notifyErrorResponse(error)
             }
         }
+        addOnResponseListeners(object :VgsCollectResponseListener {
+            override fun onResponse(response: VGSResponse?) {
+                responseEvent(response?.code?:-1)
+            }
+        })
     }
 
     /**
@@ -123,10 +146,15 @@ class VGSCollect {
      * @param view base class for VGS secure fields.
      */
     fun bindView(view: InputFieldView?) {
-        if(view is AccessibilityStatePreparer) {
-            externalDependencyDispatcher.addDependencyListener(view.getFieldName(), view.getDependencyListener())
+        view?.statePreparer?.let {
+            externalDependencyDispatcher.addDependencyListener(view.getFieldName(), it.getDependencyListener())
+
+            it.setAnalyticTracker(tracker)
         }
+
         storage.performSubscription(view)
+
+        initField(view)
     }
 
     /**
@@ -175,6 +203,9 @@ class VGSCollect {
 
         if(checkInternetPermission() && isUrlValid() && validateFields() && validateFiles()) {
             doRequest(request)
+            submitEvent(true, !request.fileIgnore, !request.fieldsIgnore,
+                request.customHeader.isNotEmpty(), request.customData.isNotEmpty()
+            )
         }
     }
 
@@ -195,6 +226,9 @@ class VGSCollect {
                 return
             }
             doRequest(request)
+            submitEvent(true, !request.fileIgnore, !request.fieldsIgnore,
+                request.customHeader.isNotEmpty(), request.customData.isNotEmpty()
+            )
         }
     }
 
@@ -214,6 +248,10 @@ class VGSCollect {
 
         if(checkInternetPermission() && isUrlValid() && validateFields() && validateFiles()) {
             doAsyncRequest(request)
+
+            submitEvent(true, !request.fileIgnore, !request.fieldsIgnore,
+                request.customHeader.isNotEmpty(), request.customData.isNotEmpty()
+            )
         }
     }
 
@@ -227,10 +265,14 @@ class VGSCollect {
             if(!request.fieldsIgnore && !validateFields()) {
                 return
             }
-            if(!request.fileIgnore&& !validateFiles()) {
+            if(!request.fileIgnore && !validateFiles()) {
                 return
             }
             doAsyncRequest(request)
+
+            submitEvent(true, !request.fileIgnore, !request.fieldsIgnore,
+                request.customHeader.isNotEmpty(), request.customData.isNotEmpty()
+            )
         }
     }
 
@@ -274,7 +316,7 @@ class VGSCollect {
             if(it.isValid.not()) {
                 notifyErrorResponse(VGSError.INPUT_DATA_NOT_VALID, it.fieldName)
                 isValid = false
-                return@forEach
+                return isValid
             }
         }
         return isValid
@@ -293,6 +335,7 @@ class VGSCollect {
             it.onResponse(VGSResponse.ErrorResponse(message, error.code))
         }
         Logger.e(VGSCollect::class.java, message)
+        submitEvent(false, code = error.code)
     }
 
     private fun doRequest(
@@ -359,6 +402,8 @@ class VGSCollect {
      *               (various data can be attached to Intent "extras").
      */
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        mapAnalyticEvent(data)
+
         if(resultCode == Activity.RESULT_OK) {
             val map: VGSHashMapWrapper<String, Any?>? = data?.extras?.getParcelable(
                 BaseTransmitActivity.RESULT_DATA
@@ -373,6 +418,26 @@ class VGSCollect {
                     externalDependencyDispatcher.dispatch(mapOf())
                 }
             }
+        }
+    }
+
+    private fun mapAnalyticEvent(data: Intent?) {
+        data?.let {
+            val map: VGSHashMapWrapper<String, Any?> = it.extras?.getParcelable(
+                BaseTransmitActivity.RESULT_DATA
+            )?: VGSHashMapWrapper()
+
+            when(map.get(BaseTransmitActivity.RESULT_TYPE)) {
+                BaseTransmitActivity.SCAN -> scanEvent(
+                    map.get(BaseTransmitActivity.RESULT_STATUS).toString(),
+                    map.get(BaseTransmitActivity.RESULT_NAME).toString(),
+                    map.get(BaseTransmitActivity.RESULT_ID) as? String
+                )
+                BaseTransmitActivity.ATTACH -> attachFileEvent(
+                    map.get(BaseTransmitActivity.RESULT_STATUS).toString()
+                )
+            }
+
         }
     }
 
@@ -434,5 +499,93 @@ class VGSCollect {
     @VisibleForTesting
     internal fun setClient(c: ApiClient) {
         client = c
+    }
+
+
+
+
+
+
+    private fun initField(view: InputFieldView?) {
+        val m = with(mutableMapOf<String, String>()) {
+            put("field", view?.getFieldType()?.raw?:"")
+            this
+        }
+
+        tracker.logEvent(
+            InitAction(m)
+        )
+    }
+
+    private fun scanEvent(status:String, type:String, id:String?) {
+        val m = with(mutableMapOf<String, String>()) {
+            put("status", status)
+            put("scannerType", type)
+            if(!id.isNullOrEmpty()) put("scanId", id.toString())
+
+            this
+        }
+        tracker.logEvent(
+            ScanAction(m)
+        )
+    }
+
+    private fun submitEvent(
+        isSuccess: Boolean,
+        hasFiles: Boolean = false,
+        hasFields: Boolean = false,
+        hasCustomHeader: Boolean = false,
+        hasCustomData: Boolean = false,
+        code:Int? = null
+    ) {
+        if(code == null || code >= 1000) {
+            val m = with(mutableMapOf<String, Any>()) {
+                if (isSuccess) put("status", "Ok") else put("status", "Failed")
+
+                code?.let { put("errorCode", it) }
+
+                val arr = with(mutableListOf<String>()) {
+                    if (hasFiles) add("file")
+                    if (hasFields) add("fields")
+                    if (hasCustomHeader || client.getTemporaryStorage().getCustomHeaders().isNotEmpty()) add("customHeaders")
+                    if (hasCustomData || client.getTemporaryStorage().getCustomData().isNotEmpty()) add("customData")
+                    this
+                }
+
+                put("content", arr)
+
+                this
+            }
+
+            tracker.logEvent(
+                SubmitAction(m)
+            )
+        }
+    }
+
+    private fun responseEvent(code: Int) {
+        if(code in 200..999) {
+            val m = with(mutableMapOf<String, Any>()) {
+                put("errorCode", code)
+                put("error", "code-message descr")
+                put("status", BaseTransmitActivity.Status.SUCCESS.raw)
+
+                this
+            }
+            tracker.logEvent(
+                ResponseAction(m)
+            )
+        }
+    }
+
+    private fun attachFileEvent(status:String) {//MIME, success
+        val m = with(mutableMapOf<String, Any>()) {
+            put("status", status)
+
+            this
+        }
+        tracker.logEvent(
+            AttachFileAction(m)
+        )
     }
 }

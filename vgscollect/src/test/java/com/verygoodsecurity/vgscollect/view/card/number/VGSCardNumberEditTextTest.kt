@@ -49,16 +49,16 @@ class VGSCardNumberEditTextTest {
     @Test
     fun test_view() {
         view.onAttachedToWindow()
-        val internal = view.getView()
+        val internal = view.statePreparer.getView()
         assertNotNull(internal)
     }
 
     @Test
     fun test_check_internal_view() {
-        val internal = view.getView()
+        val internal = view.statePreparer.getView()
         assertNotNull(internal)
 
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is CardInputField)
     }
 
@@ -179,7 +179,7 @@ class VGSCardNumberEditTextTest {
 
     @Test
     fun test_field_state_change_listener_first() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
 
         val listener = mock(OnFieldStateChangeListener::class.java)
@@ -194,7 +194,7 @@ class VGSCardNumberEditTextTest {
 
     @Test
     fun test_field_state_change_listener_last() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
@@ -208,7 +208,7 @@ class VGSCardNumberEditTextTest {
 
     @Test
     fun test_on_focus_change_listener() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
@@ -237,7 +237,7 @@ class VGSCardNumberEditTextTest {
         stateResult.number = "411111######1111"
         stateResult.drawableBrandResId = R.drawable.ic_visa_dark
 
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
         view.setText(text)
         view.setFieldName("number")
@@ -264,7 +264,7 @@ class VGSCardNumberEditTextTest {
 
     @Test
     fun test_length() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
@@ -304,7 +304,7 @@ class VGSCardNumberEditTextTest {
 
     @Test
     fun test_length_min() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
@@ -347,7 +347,7 @@ class VGSCardNumberEditTextTest {
 
     @Test
     fun test_length_max() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
@@ -400,7 +400,7 @@ class VGSCardNumberEditTextTest {
 
     @Test
     fun test_length_min_max() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
@@ -460,7 +460,7 @@ class VGSCardNumberEditTextTest {
 
     @Test
     fun test_luhn() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
@@ -502,7 +502,7 @@ class VGSCardNumberEditTextTest {
 
     @Test
     fun test_length_luhn() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()

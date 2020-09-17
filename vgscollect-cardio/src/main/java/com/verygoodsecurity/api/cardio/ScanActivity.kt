@@ -1,5 +1,6 @@
 package com.verygoodsecurity.api.cardio
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
@@ -10,35 +11,6 @@ import java.util.*
 import kotlin.collections.HashMap
 
 class ScanActivity: BaseTransmitActivity() {
-
-    companion object {
-        const val SCAN_CONFIGURATION = "vgs_scan_settings"
-
-        /**
-         * Integer extra. Optional. Defaults to {@link Color#GREEN}. Changes the color of the guide overlay on the
-         * camera.
-         */
-        const val EXTRA_GUIDE_COLOR = CardIOActivity.EXTRA_GUIDE_COLOR
-
-        /**
-         * String extra. Optional. The preferred language for all strings appearing in the user
-         * interface. If not set, or if set to null, defaults to the device's current language setting.
-         **/
-        const val EXTRA_LANGUAGE_OR_LOCALE = CardIOActivity.EXTRA_LANGUAGE_OR_LOCALE
-
-        /**
-         * String extra. Optional. Used to display instructions to the user while they are scanning
-         * their card.
-         */
-        const val EXTRA_SCAN_INSTRUCTIONS = CardIOActivity.EXTRA_SCAN_INSTRUCTIONS
-
-        const val CARD_NUMBER = 0x71
-        const val CARD_CVC = 0x72
-        const val CARD_HOLDER = 0x73
-        const val CARD_EXP_DATE = 0x74
-        const val POSTAL_CODE = 0x75
-        private const val CARD_IO_REQUEST_CODE = 0x7
-    }
 
     private lateinit var settings:Map<String, Int>
 
@@ -97,6 +69,7 @@ class ScanActivity: BaseTransmitActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        configureInternalSettings(resultCode,data)
         if(requestCode == CARD_IO_REQUEST_CODE) {
             val scanResult: CreditCard? = data?.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT)
             scanResult?.run {
@@ -116,6 +89,16 @@ class ScanActivity: BaseTransmitActivity() {
         finish()
     }
 
+    private fun configureInternalSettings(resultCode: Int, data: Intent?) {
+        mapData(RESULT_TYPE, SCAN)
+        mapData(RESULT_NAME, NAME)
+        if(data?.extras?.containsKey(CardIOActivity.EXTRA_SCAN_RESULT) == true) {
+            mapData(RESULT_STATUS, Status.SUCCESS.raw)
+        } else {
+            mapData(RESULT_STATUS, Status.FAILED.raw)
+        }
+    }
+
     private fun retrieveDate(scanResult: CreditCard): Long? {
         return if(scanResult.expiryMonth != 0 && scanResult.expiryYear != 0) {
             val yMask = scanResult.expiryYear.toString()
@@ -130,6 +113,43 @@ class ScanActivity: BaseTransmitActivity() {
             date?.time
         } else {
             null
+        }
+    }
+
+
+    companion object {
+        const val SCAN_CONFIGURATION = "vgs_scan_settings"
+
+        /**
+         * Integer extra. Optional. Defaults to {@link Color#GREEN}. Changes the color of the guide overlay on the
+         * camera.
+         */
+        const val EXTRA_GUIDE_COLOR = CardIOActivity.EXTRA_GUIDE_COLOR
+
+        /**
+         * String extra. Optional. The preferred language for all strings appearing in the user
+         * interface. If not set, or if set to null, defaults to the device's current language setting.
+         **/
+        const val EXTRA_LANGUAGE_OR_LOCALE = CardIOActivity.EXTRA_LANGUAGE_OR_LOCALE
+
+        /**
+         * String extra. Optional. Used to display instructions to the user while they are scanning
+         * their card.
+         */
+        const val EXTRA_SCAN_INSTRUCTIONS = CardIOActivity.EXTRA_SCAN_INSTRUCTIONS
+
+        const val CARD_NUMBER = 0x71
+        const val CARD_CVC = 0x72
+        const val CARD_HOLDER = 0x73
+        const val CARD_EXP_DATE = 0x74
+        const val POSTAL_CODE = 0x75
+        private const val CARD_IO_REQUEST_CODE = 0x7
+        private const val NAME = "CardIO"
+
+        fun scan(context: Activity, code:Int, bndl:Bundle = Bundle.EMPTY) {
+            val intent = Intent(context, ScanActivity::class.java)
+            intent.putExtras(bndl)
+            context.startActivityForResult(intent, code)
         }
     }
 
