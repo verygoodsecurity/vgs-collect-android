@@ -18,7 +18,6 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
 
-@Ignore
 @RunWith(RobolectricTestRunner::class)
 class FileStorageTest {
     private lateinit var activityController: ActivityController<Activity>
