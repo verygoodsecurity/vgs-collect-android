@@ -77,12 +77,8 @@ internal class CollectActionTracker(
         }
 
         override fun run() {
-            val headers = mutableMapOf<String, String>()
-            headers[HEADER_ORIGIN] = ORIGIN
-
-            Log.i("test_analytic", "-----------------")
-            Log.e("test_analytic", "$headers, \n $map")
-            client.call(ENDPOINT, HTTPMethod.POST, headers, map)
+            Log.e("test_analytic", "  $map")
+            client.call(ENDPOINT, HTTPMethod.POST, null, map)
         }
 
         companion object {
@@ -102,7 +98,5 @@ internal class CollectActionTracker(
 
     companion object {
         private const val  ENDPOINT = "/vgs"
-        private const val  HEADER_ORIGIN = "Origin"
-        private const val  ORIGIN = "https://js.verygoodvault.io"
     }
 }

@@ -26,7 +26,7 @@ abstract class BaseTransmitActivity:AppCompatActivity() {
     enum class Status(val raw:String) {
         SUCCESS("Ok"),
         FAILED("Failed"),
-        CLOSE("Close")
+        CLOSE("Cancel")
     }
 
     private val storage = VGSHashMapWrapper<String, Any>()
