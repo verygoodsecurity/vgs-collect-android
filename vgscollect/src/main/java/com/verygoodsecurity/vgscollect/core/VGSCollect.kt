@@ -431,7 +431,7 @@ class VGSCollect {
                 BaseTransmitActivity.SCAN -> scanEvent(
                     map.get(BaseTransmitActivity.RESULT_STATUS).toString(),
                     map.get(BaseTransmitActivity.RESULT_NAME).toString(),
-                    map.get(BaseTransmitActivity.RESULT_ID).toString()
+                    map.get(BaseTransmitActivity.RESULT_ID) as? String
                 )
                 BaseTransmitActivity.ATTACH -> attachFileEvent(
                     map.get(BaseTransmitActivity.RESULT_STATUS).toString()
@@ -517,11 +517,11 @@ class VGSCollect {
         )
     }
 
-    private fun scanEvent(status:String, type:String, id:String) {
+    private fun scanEvent(status:String, type:String, id:String?) {
         val m = with(mutableMapOf<String, String>()) {
-            put("status", status)//ok, failed, cancel
-            put("scannerType", type)//bouncer, cardio
-            put("scanId", id.toString())//123
+            put("status", status)
+            put("scannerType", type)
+            if(!id.isNullOrEmpty()) put("scanId", id.toString())
 
             this
         }

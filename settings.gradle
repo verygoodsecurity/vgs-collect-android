@@ -1,1 +1,1 @@
-include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-bouncer'
+include ':app', ':vgscollect', ':vgscollect-cardio'
