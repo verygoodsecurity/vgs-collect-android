@@ -570,7 +570,6 @@ class VGSCollect {
         if(code in 200..999) {
             val m = with(mutableMapOf<String, Any>()) {
                 put("errorCode", code)
-                put("error", "code-message descr")
                 put("status", BaseTransmitActivity.Status.SUCCESS.raw)
 
                 this

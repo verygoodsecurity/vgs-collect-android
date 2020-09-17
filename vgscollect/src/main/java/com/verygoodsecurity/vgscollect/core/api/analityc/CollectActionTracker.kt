@@ -65,6 +65,7 @@ internal class CollectActionTracker(
             return with(map) {
                 this[SESSION_ID] = Sid.id
                 this[FORM_ID] = formId
+                this[TIMESTAMP] = System.currentTimeMillis()
                 this[TNT] = tnt
                 this[ENVIRONMENT] = environment
                 this[VERSION] = BuildConfig.VERSION_NAME
@@ -91,6 +92,7 @@ internal class CollectActionTracker(
         companion object {
             private const val FORM_ID = "formId"
             private const val SESSION_ID = "sessionId"
+            private const val TIMESTAMP = "localTimestamp"
             private const val TNT = "tnt"
             private const val ENVIRONMENT = "env"
             private const val VERSION = "version"
