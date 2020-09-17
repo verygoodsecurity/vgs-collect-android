@@ -10,6 +10,7 @@ import com.verygoodsecurity.vgscollect.core.api.AnalyticURLConnectionClient
 import com.verygoodsecurity.vgscollect.core.api.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.Action
 import com.verygoodsecurity.vgscollect.core.isLive
+import java.util.*
 import java.util.concurrent.Executors
 
 internal class CollectActionTracker(
@@ -18,6 +19,10 @@ internal class CollectActionTracker(
     val environment: String,
     val formId: String
 ) : AnalyticTracker {
+
+    private object Sid {
+        val id =  "form-${UUID.randomUUID()}"
+    }
 
     private val client:ApiClient by lazy {
         val url = if(environment.isLive()) {
@@ -58,6 +63,7 @@ internal class CollectActionTracker(
 
         private fun attachDefaultInfo(map: MutableMap<String, Any>):Map<String, Any> {
             return with(map) {
+                this[SESSION_ID] = Sid.id
                 this[FORM_ID] = formId
                 this[TNT] = tnt
                 this[ENVIRONMENT] = environment
@@ -68,7 +74,8 @@ internal class CollectActionTracker(
 
                 val deviceInfo = mutableMapOf<String, String>()
                 deviceInfo[PLATFORM] = PLATFORM_TAG
-                deviceInfo[DEVICE] = Build.MODEL
+                deviceInfo[DEVICE] = Build.BRAND
+                deviceInfo[DEVICE_MODEL] = Build.MODEL
                 deviceInfo[OS] = Build.VERSION.SDK_INT.toString()
                 this[USER_AGENT] = deviceInfo
 
@@ -83,13 +90,15 @@ internal class CollectActionTracker(
 
         companion object {
             private const val FORM_ID = "formId"
+            private const val SESSION_ID = "sessionId"
             private const val TNT = "tnt"
             private const val ENVIRONMENT = "env"
             private const val VERSION = "version"
-            private const val PLATFORM = "platform"
+            private const val PLATFORM = "source"
             private const val PLATFORM_TAG = "android"
             private const val DEVICE = "device"
-            private const val OS = "os"
+            private const val DEVICE_MODEL = "deviceModel"
+            private const val OS = "osVersion"
             private const val STATUS = "status"
             private const val STATUS_OK = "Ok"
             private const val USER_AGENT = "ua"

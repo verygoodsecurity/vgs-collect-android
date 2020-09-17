@@ -35,3 +35,13 @@ enum class FieldType(
     /** The input field has no limitations.  */
     INFO("info")
 }
+
+fun FieldType.getAnalyticName():String {
+    return when(this) {
+        FieldType.CARD_NUMBER -> "card-number"
+        FieldType.CVC -> "card-security-code"
+        FieldType.CARD_EXPIRATION_DATE -> "card-expiration-date"
+        FieldType.CARD_HOLDER_NAME -> "card-holder-name"
+        FieldType.INFO -> "text"
+    }
+}

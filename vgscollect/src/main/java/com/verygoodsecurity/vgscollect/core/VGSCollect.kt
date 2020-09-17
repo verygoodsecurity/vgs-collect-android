@@ -30,6 +30,7 @@ import com.verygoodsecurity.vgscollect.util.deepMerge
 import com.verygoodsecurity.vgscollect.util.mapToMap
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -507,10 +508,12 @@ class VGSCollect {
 
 
     private fun initField(view: InputFieldView?) {
-        val m = with(mutableMapOf<String, String>()) {
-            put("field", view?.getFieldType()?.raw?:"")
-            this
-        }
+        val m = view?.getFieldType()?.getAnalyticName()?.run {
+            with(mutableMapOf<String, String>()) {
+                put("field", this@run)
+                this
+            }
+        }?: mutableMapOf()
 
         tracker.logEvent(
             InitAction(m)
