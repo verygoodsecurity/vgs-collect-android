@@ -14,6 +14,7 @@ class ScanActivity: BaseTransmitActivity() {
 
     private lateinit var settings:Map<String, Int>
 
+    private var suppressManualEnter:Boolean = true
     private var configuredScanInstructions:String? = null
     private var configuredLocale:String? = null
     private var configuredColor:Int? = null
@@ -32,6 +33,7 @@ class ScanActivity: BaseTransmitActivity() {
                 this as HashMap<String, Int>
             }?:HashMap()
 
+            suppressManualEnter = it.getBoolean(EXTRA_SUPPRESS_MANUAL_ENTRY, true)
             configuredScanInstructions = it.getString(EXTRA_SCAN_INSTRUCTIONS, null)
             configuredLocale = it.getString(EXTRA_LANGUAGE_OR_LOCALE, null)
             configuredColor = if(it.containsKey(EXTRA_GUIDE_COLOR)) {
@@ -49,8 +51,13 @@ class ScanActivity: BaseTransmitActivity() {
             .putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, true)
             .putExtra(CardIOActivity.EXTRA_SCAN_EXPIRY, true)
             .putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false)
-            .putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, true)
             .putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, true)
+
+
+        suppressManualEnter?.let {
+            scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, !it)
+            scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, it)
+        }
 
         configuredScanInstructions?.let {
             scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_INSTRUCTIONS, it)
@@ -137,6 +144,7 @@ class ScanActivity: BaseTransmitActivity() {
          * their card.
          */
         const val EXTRA_SCAN_INSTRUCTIONS = CardIOActivity.EXTRA_SCAN_INSTRUCTIONS
+        const val EXTRA_SUPPRESS_MANUAL_ENTRY = CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY
 
         const val CARD_NUMBER = 0x71
         const val CARD_CVC = 0x72

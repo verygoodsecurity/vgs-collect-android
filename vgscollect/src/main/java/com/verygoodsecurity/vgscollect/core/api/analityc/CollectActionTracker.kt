@@ -20,8 +20,8 @@ internal class CollectActionTracker(
     val formId: String
 ) : AnalyticTracker {
 
-    private object Sid {
-        val id =  "form-${UUID.randomUUID()}"
+    internal object Sid {
+        val id =  "${UUID.randomUUID()}"
     }
 
     private val client:ApiClient by lazy {
@@ -63,8 +63,9 @@ internal class CollectActionTracker(
 
         private fun attachDefaultInfo(map: MutableMap<String, Any>):Map<String, Any> {
             return with(map) {
-                this[SESSION_ID] = Sid.id
+                this[VG_SESSION_ID] = Sid.id
                 this[FORM_ID] = formId
+                this[SOURCE] = SOURCE_TAG
                 this[TIMESTAMP] = System.currentTimeMillis()
                 this[TNT] = tnt
                 this[ENVIRONMENT] = environment
@@ -85,19 +86,21 @@ internal class CollectActionTracker(
         }
 
         override fun run() {
-            Log.e("test_analytic", "  $map")
             client.call(ENDPOINT, HTTPMethod.POST, null, map)
         }
 
         companion object {
             private const val FORM_ID = "formId"
             private const val SESSION_ID = "sessionId"
+            private const val VG_SESSION_ID = "vgsCollectSessionId"
             private const val TIMESTAMP = "localTimestamp"
             private const val TNT = "tnt"
             private const val ENVIRONMENT = "env"
             private const val VERSION = "version"
-            private const val PLATFORM = "source"
+            private const val PLATFORM = "platform"
+            private const val SOURCE = "source"
             private const val PLATFORM_TAG = "android"
+            private const val SOURCE_TAG = "androidSDK"
             private const val DEVICE = "device"
             private const val DEVICE_MODEL = "deviceModel"
             private const val OS = "osVersion"
