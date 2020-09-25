@@ -4,6 +4,7 @@ import android.content.Context
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
+import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.parseVGSResponse
 import com.verygoodsecurity.vgscollect.util.Logger
@@ -131,7 +132,7 @@ internal class URLConnectionClient(
 
     private fun addHeaders(connection: HttpURLConnection, headers: Map<String, String>?) {
         connection.setRequestProperty( CONTENT_TYPE, APPLICATION_JSON )
-        connection.setRequestProperty( AGENT, TEMPORARY_STR_AGENT )
+        connection.setRequestProperty( AGENT, TEMPORARY_STR_AGENT+"&vgsCollectSessionId=${CollectActionTracker.Sid.id}" )
         headers?.forEach {
             connection.setRequestProperty( it.key.toUpperCase(), it.value)
         }

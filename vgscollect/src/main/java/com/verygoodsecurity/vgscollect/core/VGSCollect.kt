@@ -25,12 +25,12 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
+import com.verygoodsecurity.vgscollect.util.*
 import com.verygoodsecurity.vgscollect.util.Logger
-import com.verygoodsecurity.vgscollect.util.deepMerge
-import com.verygoodsecurity.vgscollect.util.mapToMap
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
+import java.security.MessageDigest
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -342,19 +342,7 @@ class VGSCollect {
     private fun doRequest(
         request: VGSRequest
     ) {
-        val requestBodyMap = request.customData.run {
-            val map = HashMap<String, Any>()
-            val customData = client.getTemporaryStorage().getCustomData()
-            val newDynamicData = this.mapToMap()
-            val newStaticData = customData.mapToMap()
-            val mergedMap = newStaticData.deepMerge(newDynamicData)
-
-            map.putAll(mergedMap)
-            map
-        }
-
-        val data = storage.getAssociatedList(request.fieldsIgnore, request.fileIgnore)
-            .mapUsefulPayloads(requestBodyMap)
+        val data = retrieveData(request.customData, request.fieldsIgnore, request.fileIgnore)
         val r = client.call(request.path, request.method, request.customHeader, data)
         responseListeners.forEach { it.onResponse(r) }
     }
@@ -367,18 +355,7 @@ class VGSCollect {
         }
         currentTask = doAsync(responseListeners) {
             it?.run {
-                val requestBodyMap = request.customData.run {
-                    val map = HashMap<String, Any>()
-                    val customData = client.getTemporaryStorage().getCustomData()
-                    val newDynamicData = this.mapToMap()
-                    val newStaticData = customData.mapToMap()
-                    val mergedMap = newStaticData.deepMerge(newDynamicData)
-
-                    map.putAll(mergedMap)
-                    map
-                }
-
-                val data = storage.getAssociatedList(request.fieldsIgnore, request.fileIgnore).mapUsefulPayloads(requestBodyMap)
+                val data = retrieveData(request.customData, request.fieldsIgnore, request.fileIgnore)
                 val r = client.call(this.path, this.method, this.headers, data)
                 r
             } ?: VGSResponse.ErrorResponse()
@@ -386,6 +363,25 @@ class VGSCollect {
 
         val p = Payload(request.path, request.method, request.customHeader, request.customData)
         currentTask!!.execute(p)
+    }
+
+    private fun retrieveData(customData: HashMap<String, Any> = HashMap(),
+                             fieldsIgnore:Boolean = false,
+                             fileIgnore:Boolean = false
+    ): Map<String, Any>? {
+        val requestBodyMap = customData.run {
+            val map = HashMap<String, Any>()
+            val customDataTmp = client.getTemporaryStorage().getCustomData()
+            val newDynamicData = this.mapToMap()
+            val newStaticData = customDataTmp.mapToMap()
+            val mergedMap = newStaticData.deepMerge(newDynamicData)
+
+            map.putAll(mergedMap)
+            map
+        }
+
+        return storage.getAssociatedList(fieldsIgnore, fileIgnore)
+            .mapUsefulPayloads(requestBodyMap)
     }
 
     /**
@@ -533,19 +529,30 @@ class VGSCollect {
         )
     }
 
+    private fun String.toMD5(): String {
+        val bytes = MessageDigest.getInstance("MD5").digest(this.toByteArray())
+        return bytes.joinToString("") { "%02x".format(it) }
+    }
+
+    private fun calculateCheckSum(): String {
+        return retrieveData()?.mapToJSON().toString().toMD5()
+    }
+
     private fun submitEvent(
         isSuccess: Boolean,
         hasFiles: Boolean = false,
         hasFields: Boolean = false,
         hasCustomHeader: Boolean = false,
         hasCustomData: Boolean = false,
-        code:Int? = null
+        code:Int = 200
     ) {
-        if(code == null || code >= 1000) {
+        if(code >= 1000 || code == 200) {
             val m = with(mutableMapOf<String, Any>()) {
                 if (isSuccess) put("status", "Ok") else put("status", "Failed")
 
-                code?.let { put("errorCode", it) }
+                put("statusCode", code)
+
+                put("checkSum", calculateCheckSum())
 
                 val arr = with(mutableListOf<String>()) {
                     if (hasFiles) add("file")
@@ -569,8 +576,9 @@ class VGSCollect {
     private fun responseEvent(code: Int) {
         if(code in 200..999) {
             val m = with(mutableMapOf<String, Any>()) {
-                put("errorCode", code)
+                put("statusCode", code)
                 put("status", BaseTransmitActivity.Status.SUCCESS.raw)
+                put("checkSum", calculateCheckSum())
 
                 this
             }

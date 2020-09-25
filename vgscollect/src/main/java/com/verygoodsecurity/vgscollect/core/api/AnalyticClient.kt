@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Base64
 import okhttp3.OkHttpClient
-import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
@@ -12,8 +11,6 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.parseVGSResponse
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.mapToJSON
-import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -66,7 +63,6 @@ internal class AnalyticClient(
             ?: return notifyErrorResponse(VGSError.URL_NOT_VALID)
 
         val requestBuilder = Request.Builder().url(url)
-//        val requestBuilder = Request.Builder().url("http://10.0.2.2:5000/vgs")
 
         addHeaders(requestBuilder, headers)
         addRequestBody(requestBuilder, data)
