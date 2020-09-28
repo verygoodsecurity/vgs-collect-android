@@ -23,7 +23,7 @@ internal class Notifier: DependencyDispatcher, FieldDependencyObserver {
     }
 
     override fun onStateUpdate(state: VGSFieldState) {
-        notifyRelatedFields(state, this::onDependencyDetected)
+        notifyRelatedFields(state, ::onDependencyDetected)
     }
 
     override fun onRefreshState(state: VGSFieldState) {
