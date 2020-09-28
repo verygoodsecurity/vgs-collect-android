@@ -125,7 +125,10 @@ class VGSCollect {
         }
         addOnResponseListeners(object :VgsCollectResponseListener {
             override fun onResponse(response: VGSResponse?) {
-                responseEvent(response?.code?:-1)
+                when(response) {
+                    is VGSResponse.ErrorResponse -> responseEvent(response.code, response.localizeMessage)
+                    is VGSResponse.SuccessResponse -> responseEvent(response.code)
+                }
             }
         })
     }
@@ -573,12 +576,13 @@ class VGSCollect {
         }
     }
 
-    private fun responseEvent(code: Int) {
+    private fun responseEvent(code: Int, message:String? = null) {
         if(code in 200..999) {
             val m = with(mutableMapOf<String, Any>()) {
                 put("statusCode", code)
                 put("status", BaseTransmitActivity.Status.SUCCESS.raw)
                 put("checkSum", calculateCheckSum())
+                if(!message.isNullOrEmpty()) put("error", message)
 
                 this
             }
