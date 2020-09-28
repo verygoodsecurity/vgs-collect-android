@@ -3,6 +3,8 @@ package com.verygoodsecurity.vgscollect.core.storage
 import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
+typealias DependencyHandler = (FieldType, Dependency) -> Unit
+
 /** @suppress */
 internal class Notifier: DependencyDispatcher, FieldDependencyObserver {
 
@@ -21,15 +23,14 @@ internal class Notifier: DependencyDispatcher, FieldDependencyObserver {
     }
 
     override fun onStateUpdate(state: VGSFieldState) {
-        notifyRelatedFields(state, ::onDependencyDetected)
+        notifyRelatedFields(state, this::onDependencyDetected)
     }
 
     override fun onRefreshState(state: VGSFieldState) {
         notifyRelatedFields(state, ::onDependencyDetected)
     }
 
-    private fun notifyRelatedFields(state: VGSFieldState, onDependencyDetected: (FieldType, Dependency) -> Unit) {
-
+    private fun notifyRelatedFields(state: VGSFieldState, onDependencyDetected: DependencyHandler) {
         when {
             state.isCardNumberType() -> {
                 val r:Array<Int> = (state.content as? FieldContent.CardNumberContent)?.rangeCVV?.sortedArray()?: arrayOf(3,4)
