@@ -7,8 +7,13 @@ package com.verygoodsecurity.vgscollect.view.card
  */
 enum class FieldType {
 
+    /** Represents field with Social Security Number (SSN) consists of nine digits,
+     * commonly written as three fields separated by hyphens: ###-##-####.
+     */
+    SSN,
+
     /**
-     * Represents field with card number input in '0000 0000 0000 0000' format.
+     * Represents field with card number input in '####-####-####-####' format.
      * The field supports smart detection of different card brands. Some available brands support
      * Luhn algorithm during validation.
      *

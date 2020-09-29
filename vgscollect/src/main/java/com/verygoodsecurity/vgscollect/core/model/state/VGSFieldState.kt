@@ -32,7 +32,7 @@ internal fun VGSFieldState.mapToFieldState():FieldState {
         FieldType.CARD_EXPIRATION_DATE -> FieldState.CardExpirationDateState()
         FieldType.CARD_NUMBER -> {
             val state = FieldState.CardNumberState()
-            
+
             val content = (content as? FieldContent.CardNumberContent)
             if(isValid) {
                 state.bin = content?.parseCardBin()
@@ -41,6 +41,15 @@ internal fun VGSFieldState.mapToFieldState():FieldState {
             state.number = content?.parseCardNumber()
             state.cardBrand = content?.cardBrandName?:""
             state.drawableBrandResId = content?.iconResId?:0
+
+            state
+        }
+        FieldType.SSN -> {
+            val state = FieldState.SSNNumberState()
+            val content = (content as? FieldContent.SSNContent)
+            if(isValid) {
+                state.last = content?.parseCardLast4Digits()
+            }
 
             state
         }
