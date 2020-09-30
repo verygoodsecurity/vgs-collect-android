@@ -124,7 +124,7 @@ internal class SSNInputField(context: Context): BaseInputField(context) {
     companion object {
         private const val MASK = "###-##-####"
         private const val MAX_LENGTH = 11
-        private const val VALIDATION_REGEX =  "^(?!\\b(\\d)\\1+\\b)(?!(123456789|219099999|078051120|457555462))(?!(000|666|9))(\\d{3}\\D?(?!(00))\\d{2}\\D?(?!(0000))\\d{4})\$"
+        internal const val VALIDATION_REGEX =  "^(?!\\b(\\d)\\1+\\b)(?!(123456789|219099999|078051120|457555462))(?!(000|666|9))(\\d{3}\\D?(?!(00))\\d{2}\\D?(?!(0000))\\d{4})\$"
         private const val SPACE =  "-"
         private const val EMPTY_CHAR =  ""
     }

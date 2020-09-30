@@ -7,6 +7,7 @@ import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.SSNInputField
 import com.verygoodsecurity.vgscollect.widget.SSNEditText
@@ -228,6 +229,40 @@ class SSNEditTextTest {
         Assert.assertEquals(false, state3!!.isValid)
         Assert.assertEquals(10, state3.contentLength)
         Assert.assertEquals("", state3.last)
+    }
+
+    @Test
+    fun test_not_valid_ssn() {
+        val validator = RegexValidator(SSNInputField.VALIDATION_REGEX)
+        getNotValidSSNs().forEach {
+            val s = validator.isValid(it)
+            Assert.assertFalse(validator.isValid(it))
+        }
+    }
+
+    @Test
+    fun test_valid_ssn() {
+        val validator = RegexValidator(SSNInputField.VALIDATION_REGEX)
+        getValidSSNs().forEach {
+            Assert.assertTrue(validator.isValid(it))
+        }
+    }
+
+    private fun getNotValidSSNs(): Array<String> {
+        return arrayOf("111-11-1111", "222-22-2222", "555-55-5555",
+            "666-66-6666", "999-99-9999", "000-00-0000",
+            "000-12-3456", "143-00-4563", "235-23-0000",
+            "923-42-3423", "666-12-3456", "111-45-6789",
+            "222-09-9999", "555-05-1120", "000-55-5462",
+            "223-34-455",  "343-43-43", "111-11-111222")
+    }
+
+    private fun getValidSSNs(): Array<String> {
+        return arrayOf("112-11-1112", "221-23-2222", "455-55-5555",
+            "166-66-6666", "899-99-9999", "001-01-0001",
+            "100-12-3456", "143-10-4563", "235-23-1000",
+            "823-42-3423", "665-12-3455", "123-45-6780",
+            "219-09-9998", "078-05-1125", "457-55-5465")
     }
 
 
