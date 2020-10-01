@@ -5,7 +5,9 @@ package com.verygoodsecurity.vgscollect.view.card
  *
  * @since 1.0.1
  */
-enum class FieldType {
+enum class FieldType(
+    val raw:String
+) {
 
     /**
      * Represents field with card number input in '0000 0000 0000 0000' format.
@@ -14,7 +16,7 @@ enum class FieldType {
      *
      * @see CardType
      */
-    CARD_NUMBER,
+    CARD_NUMBER("cardNumber"),
 
     /**
      * Represents field with CVC number. CVC input field depends on CARD_NUMBER field.
@@ -22,14 +24,24 @@ enum class FieldType {
      *
      * @see CardType
      */
-    CVC,
+    CVC("cvc"),
 
     /** The input field provides date limitations with format MM/yy . */
-    CARD_EXPIRATION_DATE,
+    CARD_EXPIRATION_DATE("expDate"),
 
     /** The input field applies any characters, digits, and space. */
-    CARD_HOLDER_NAME,
+    CARD_HOLDER_NAME("cardHolderName"),
 
     /** The input field has no limitations.  */
-    INFO
+    INFO("info")
+}
+
+fun FieldType.getAnalyticName():String {
+    return when(this) {
+        FieldType.CARD_NUMBER -> "card-number"
+        FieldType.CVC -> "card-security-code"
+        FieldType.CARD_EXPIRATION_DATE -> "card-expiration-date"
+        FieldType.CARD_HOLDER_NAME -> "card-holder-name"
+        FieldType.INFO -> "text"
+    }
 }

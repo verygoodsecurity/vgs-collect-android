@@ -23,3 +23,11 @@ enum class Environment(val rawValue:String) {
      */
     LIVE("live")
 }
+
+internal fun String.isLive():Boolean {
+    return this.contains("live")
+}
+
+internal fun String.isSandbox():Boolean {
+    return this.contains("sandbox")
+}

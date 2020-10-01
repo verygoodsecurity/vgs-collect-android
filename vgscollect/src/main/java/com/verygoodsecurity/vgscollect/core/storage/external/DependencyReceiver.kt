@@ -12,8 +12,8 @@ internal class DependencyReceiver:ExternalDependencyDispatcher {
         fieldName: String?,
         notifier: DependencyListener
     ) {
-        fieldName?.run {
-            views[this] = notifier
+        fieldName?.let {
+            views[it] = notifier
         }
     }
 
