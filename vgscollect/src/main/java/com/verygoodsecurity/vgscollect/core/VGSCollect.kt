@@ -140,8 +140,24 @@ class VGSCollect {
      */
     fun addOnResponseListeners(onResponseListener:VgsCollectResponseListener?) {
         onResponseListener?.let {
-            responseListeners.add(it)
+            if(!responseListeners.contains(it)) responseListeners.add(it)
         }
+    }
+
+    /**
+     * Clear all response listeners attached before.
+     */
+    fun clearResponseListeners() {
+        responseListeners.clear()
+    }
+
+    /**
+     * Clear specific listener attached before.
+     *
+     * @param onResponseListener Interface definition for a receiving callback.
+     */
+    fun removeOnResponseListeners(onResponseListener:VgsCollectResponseListener) {
+        if(!responseListeners.contains(onResponseListener)) responseListeners.remove(onResponseListener)
     }
 
     /**
