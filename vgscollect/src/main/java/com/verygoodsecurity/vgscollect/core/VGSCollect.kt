@@ -54,6 +54,14 @@ class VGSCollect {
     private var storageErrorListener:StorageErrorListener
 
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
+    private val analyticListener = object :VgsCollectResponseListener {
+        override fun onResponse(response: VGSResponse?) {
+            when(response) {
+                is VGSResponse.ErrorResponse -> responseEvent(response.code, response.localizeMessage)
+                is VGSResponse.SuccessResponse -> responseEvent(response.code)
+            }
+        }
+    }
 
     private var currentTask:AsyncTask<Payload, Void, VGSResponse>? = null
 
@@ -123,14 +131,7 @@ class VGSCollect {
                 notifyErrorResponse(error)
             }
         }
-        addOnResponseListeners(object :VgsCollectResponseListener {
-            override fun onResponse(response: VGSResponse?) {
-                when(response) {
-                    is VGSResponse.ErrorResponse -> responseEvent(response.code, response.localizeMessage)
-                    is VGSResponse.SuccessResponse -> responseEvent(response.code)
-                }
-            }
-        })
+        addOnResponseListeners(analyticListener)
     }
 
     /**
@@ -149,6 +150,7 @@ class VGSCollect {
      */
     fun clearResponseListeners() {
         responseListeners.clear()
+        responseListeners.add(analyticListener)
     }
 
     /**
@@ -157,7 +159,7 @@ class VGSCollect {
      * @param onResponseListener Interface definition for a receiving callback.
      */
     fun removeOnResponseListeners(onResponseListener:VgsCollectResponseListener) {
-        if(!responseListeners.contains(onResponseListener)) responseListeners.remove(onResponseListener)
+        if(responseListeners.contains(onResponseListener)) responseListeners.remove(onResponseListener)
     }
 
     /**
