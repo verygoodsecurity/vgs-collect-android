@@ -67,10 +67,10 @@ class VGSCollectTest {
         assertEquals(2, collect.getResponseListeners().size) // + analytic listener
 
         val listener2 = Mockito.mock(VgsCollectResponseListener::class.java)
-        collect.removeOnResponseListeners(listener2)
+        collect.removeOnResponseListener(listener2)
         assertEquals(2, collect.getResponseListeners().size) // + analytic listener
 
-        collect.removeOnResponseListeners(listener1)
+        collect.removeOnResponseListener(listener1)
         assertEquals(1, collect.getResponseListeners().size) // + analytic listener
     }
 

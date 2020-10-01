@@ -158,7 +158,7 @@ class VGSCollect {
      *
      * @param onResponseListener Interface definition for a receiving callback.
      */
-    fun removeOnResponseListeners(onResponseListener:VgsCollectResponseListener) {
+    fun removeOnResponseListener(onResponseListener:VgsCollectResponseListener) {
         if(responseListeners.contains(onResponseListener)) responseListeners.remove(onResponseListener)
     }
 
