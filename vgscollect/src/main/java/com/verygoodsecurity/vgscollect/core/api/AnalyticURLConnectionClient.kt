@@ -1,13 +1,8 @@
 package com.verygoodsecurity.vgscollect.core.api
 
-import android.content.Context
-import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
-import com.verygoodsecurity.vgscollect.core.VGSCollect
-import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.parseVGSResponse
-import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.mapToJSON
 import java.io.*
 import java.net.HttpURLConnection
@@ -16,62 +11,16 @@ import java.net.URL
 import java.nio.charset.Charset
 import javax.net.ssl.HttpsURLConnection
 
-
 @Deprecated("from 1.1.0")
-internal class URLConnectionClient(
-    private val context: Context
-):ApiClient {
+internal class AnalyticURLConnectionClient : ApiClient {
     private var baseURL:String = ""
 
     private val tempStore:VgsApiTemporaryStorage by lazy {
         VgsApiTemporaryStorageImpl()
     }
 
-    companion object {
-        private const val CHARSET = "UTF-8"
-
-        private const val CONNECTION_TIME_OUT = 30000
-
-        private const val CONTENT_LENGTH = "Content-Length"
-        private const val CONTENT_TYPE = "Content-type"
-        private const val APPLICATION_JSON = "application/json"
-
-        private const val AGENT = "vgs-client"
-        private const val TEMPORARY_STR_AGENT = "source=androidSDK&medium=vgs-collect&content=${BuildConfig.VERSION_NAME}"
-
-        fun newInstance(context:Context, baseURL:String):ApiClient {
-            val client = URLConnectionClient(context)
-            client.baseURL = baseURL
-            return client
-        }
-
-        private fun buildRequestLog(connection: HttpURLConnection):String {
-            val builder = StringBuilder("Request")
-                .append("{")
-                .append("method=")
-                .append(connection.requestMethod)
-                .append("}")
-
-            return builder.toString()
-        }
-
-        private fun buildResponseLog(connection: HttpURLConnection):String {
-            val builder = StringBuilder("Response")
-                .append("{")
-                .append("code=")
-                .append(connection.responseCode.toString())
-                .append(", ")
-                .append("message=")
-                .append(connection.responseMessage)
-                .append("}")
-
-            return builder.toString()
-        }
-    }
-
     override fun call(path: String, method: HTTPMethod, headers: Map<String, String>?, data: Map<String, Any>?): VGSResponse {
         return when(method.ordinal) {
-//            HTTPMethod.GET.ordinal -> getRequest(path, headers, data)
             HTTPMethod.POST.ordinal -> postRequest(path, headers, data)
             else -> VGSResponse.ErrorResponse()
         }
@@ -93,12 +42,9 @@ internal class URLConnectionClient(
 
             writeOutput(connection, data)
 
-            Logger.i(VGSCollect::class.java.simpleName, buildRequestLog(connection))
-
             response = handleResponse(connection)
         } catch (e: IOException) {
             response = VGSResponse.ErrorResponse(e.localizedMessage)
-            Logger.e(VGSCollect::class.java, e.localizedMessage)
         } finally {
             connection?.disconnect()
         }
@@ -109,15 +55,12 @@ internal class URLConnectionClient(
     private fun handleResponse(connection: HttpURLConnection): VGSResponse {
         val responseCode = connection.responseCode
 
-        Logger.i(VGSCollect::class.java.simpleName, buildResponseLog(connection))
-
         return if (responseCode == HTTP_OK) {
             val rawResponse = connection.inputStream?.bufferedReader()?.use { it.readText() }
             val responsePayload:Map<String, Any>? = rawResponse?.parseVGSResponse()
             VGSResponse.SuccessResponse(responsePayload, rawResponse, responseCode)
         } else {
             val responseStr = connection.errorStream?.bufferedReader()?.use { it.readText() }
-            Logger.e(VGSCollect::class.java, responseStr.toString())
             VGSResponse.ErrorResponse(responseStr, responseCode)
         }
     }
@@ -131,8 +74,7 @@ internal class URLConnectionClient(
     }
 
     private fun addHeaders(connection: HttpURLConnection, headers: Map<String, String>?) {
-        connection.setRequestProperty( CONTENT_TYPE, APPLICATION_JSON )
-        connection.setRequestProperty( AGENT, TEMPORARY_STR_AGENT+"&vgsCollectSessionId=${CollectActionTracker.Sid.id}" )
+        connection.setRequestProperty( CONTENT_TYPE, CONTENT_TYPE_VALUE )
         headers?.forEach {
             connection.setRequestProperty( it.key.toUpperCase(), it.value)
         }
@@ -151,5 +93,20 @@ internal class URLConnectionClient(
         connection.instanceFollowRedirects = false
 
         return connection
+    }
+
+    companion object {
+        private const val CHARSET = "UTF-8"
+
+        private const val CONNECTION_TIME_OUT = 30000
+
+        private const val CONTENT_TYPE = "Content-type"
+        private const val CONTENT_TYPE_VALUE = "application/x-www-form-urlencoded"
+
+        fun newInstance(baseURL:String):ApiClient {
+            val client = AnalyticURLConnectionClient()
+            client.baseURL = baseURL
+            return client
+        }
     }
 }

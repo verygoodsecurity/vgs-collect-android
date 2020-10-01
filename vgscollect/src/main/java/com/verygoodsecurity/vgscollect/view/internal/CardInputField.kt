@@ -128,6 +128,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
             Gravity.END -> gravity
             else -> Gravity.END
         }
+        refreshIconPreview()
     }
 
     internal fun getCardPreviewIconGravity():Int {
@@ -199,6 +200,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         maskAdapter = adapter?: CardMaskAdapter()
     }
 
+    private var lastCardIconPreview:Drawable? = null
     override fun onCardBrandPreview(card: CardBrandPreview) {
         this.cardtype = card.cardType
         updateMask(card)
@@ -206,13 +208,18 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         val r = Rect()
         getLocalVisibleRect(r)
 
-        val cardPreview = iconAdapter.getItem(card.cardType, card.name, card.resId, r)
+        lastCardIconPreview = iconAdapter.getItem(card.cardType, card.name, card.resId, r)
 
+        refreshIconPreview()
+    }
+
+    private fun refreshIconPreview() {
         when (iconGravity) {
-            Gravity.LEFT -> setCompoundDrawables(cardPreview,null,null,null)
-            Gravity.START -> setCompoundDrawables(cardPreview,null,null,null)
-            Gravity.RIGHT -> setCompoundDrawables(null,null,cardPreview,null)
-            Gravity.END -> setCompoundDrawables(null,null,cardPreview,null)
+            Gravity.LEFT -> setCompoundDrawables(lastCardIconPreview,null,null,null)
+            Gravity.START -> setCompoundDrawables(lastCardIconPreview,null,null,null)
+            Gravity.RIGHT -> setCompoundDrawables(null,null,lastCardIconPreview,null)
+            Gravity.END -> setCompoundDrawables(null,null,lastCardIconPreview,null)
+            Gravity.NO_GRAVITY -> setCompoundDrawables(null,null,null,null)
         }
     }
 

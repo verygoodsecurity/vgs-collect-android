@@ -49,6 +49,18 @@ sealed class FieldState {
                 "isRequired: $isRequired \n"
     }
 
+    class SSNNumberState:FieldState() {
+
+        /** The last numbers on card. */
+        var last:String? = ""
+            internal set
+
+        override fun toString(): String {
+            return super.toString() +
+                    "last: $last \n"
+        }
+    }
+
     /**
      * Class definition for a CardNumber field state.
      *

@@ -24,6 +24,7 @@ import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
+import org.mockito.Mockito.after
 import org.mockito.Mockito.spy
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
@@ -31,7 +32,6 @@ import org.robolectric.Shadows
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
 
-@Ignore
 @RunWith(RobolectricTestRunner::class)
 @Config(application = TestApplication::class)
 class VGSCollectTest {
@@ -57,7 +57,34 @@ class VGSCollectTest {
         applyResponseListener()
         applyResponseListener()
 
-        assertEquals(2, collect.getResponseListeners().size)
+        assertEquals(3, collect.getResponseListeners().size) // + analytic listener
+    }
+
+    @Test
+    fun test_remove_response_listener() {
+        val listener1 = Mockito.mock(VgsCollectResponseListener::class.java)
+        collect.addOnResponseListeners(listener1)
+        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
+
+        val listener2 = Mockito.mock(VgsCollectResponseListener::class.java)
+        collect.removeOnResponseListener(listener2)
+        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
+
+        collect.removeOnResponseListener(listener1)
+        assertEquals(1, collect.getResponseListeners().size) // + analytic listener
+    }
+
+    @Test
+    fun test_remove_all_response_listeners() {
+        val listener1 = Mockito.mock(VgsCollectResponseListener::class.java)
+        collect.addOnResponseListeners(listener1)
+        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
+        val listener2 = Mockito.mock(VgsCollectResponseListener::class.java)
+        collect.addOnResponseListeners(listener2)
+        assertEquals(3, collect.getResponseListeners().size) // + analytic listener
+
+        collect.clearResponseListeners()
+        assertEquals(1, collect.getResponseListeners().size) // + analytic listener
     }
 
     @Test
@@ -74,7 +101,7 @@ class VGSCollectTest {
     fun test_bind_view() {
         val view = applyEditText(FieldType.INFO)
 
-        Mockito.verify(view).getFieldType()
+        Mockito.verify(view, Mockito.times(2)).getFieldType() //default init + analytics,
         Mockito.verify(view).getFieldName()
         Mockito.verify(view).addStateListener(any())
     }
@@ -137,7 +164,7 @@ class VGSCollectTest {
 
         collect.asyncSubmit("/path", HTTPMethod.POST)
 
-        Mockito.verify(client).call(any(), any(), any(), any())
+        Mockito.verify(client, after(500)).call(any(), any(), any(), any())
     }
 
     @Test
@@ -150,7 +177,7 @@ class VGSCollectTest {
             .build()
         collect.asyncSubmit(request)
 
-        Mockito.verify(client).call(any(), any(), any(), any())
+        Mockito.verify(client, after(500)).call(any(), any(), any(), any())
     }
 
     @Test
@@ -230,11 +257,14 @@ class VGSCollectTest {
         val view = when(typeField) {
             FieldType.CARD_NUMBER -> createCardNumber()
             FieldType.CVC -> createCardCVC()
-            FieldType.CARD_EXPIRATION_DATE -> createCardHolder()
-            else -> createCardExpDate()
+            FieldType.CARD_EXPIRATION_DATE -> createCardExpDate()
+            FieldType.CARD_HOLDER_NAME -> createCardHolder()
+            else -> spy( VGSEditText(activity) ).apply {
+                setFieldName("createInfoField")
+            }
         }
 
-        (view.getView() as? BaseInputField)?.prepareFieldTypeConnection()
+        (view.statePreparer.getView() as? BaseInputField)?.prepareFieldTypeConnection()
 
         collect.bindView(view)
 
