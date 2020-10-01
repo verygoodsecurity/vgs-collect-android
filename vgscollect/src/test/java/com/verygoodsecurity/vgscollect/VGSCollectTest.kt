@@ -61,6 +61,33 @@ class VGSCollectTest {
     }
 
     @Test
+    fun test_remove_response_listener() {
+        val listener1 = Mockito.mock(VgsCollectResponseListener::class.java)
+        collect.addOnResponseListeners(listener1)
+        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
+
+        val listener2 = Mockito.mock(VgsCollectResponseListener::class.java)
+        collect.removeOnResponseListener(listener2)
+        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
+
+        collect.removeOnResponseListener(listener1)
+        assertEquals(1, collect.getResponseListeners().size) // + analytic listener
+    }
+
+    @Test
+    fun test_remove_all_response_listeners() {
+        val listener1 = Mockito.mock(VgsCollectResponseListener::class.java)
+        collect.addOnResponseListeners(listener1)
+        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
+        val listener2 = Mockito.mock(VgsCollectResponseListener::class.java)
+        collect.addOnResponseListeners(listener2)
+        assertEquals(3, collect.getResponseListeners().size) // + analytic listener
+
+        collect.clearResponseListeners()
+        assertEquals(1, collect.getResponseListeners().size) // + analytic listener
+    }
+
+    @Test
     fun test_add_state_change_listener() {
         val storage = applyStorage()
 
