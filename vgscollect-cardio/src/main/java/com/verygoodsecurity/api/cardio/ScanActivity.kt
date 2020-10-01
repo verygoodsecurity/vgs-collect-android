@@ -13,7 +13,8 @@ import kotlin.collections.HashMap
 class ScanActivity: BaseTransmitActivity() {
 
     private lateinit var settings:Map<String, Int>
-
+    private var requirePostalCode:Boolean = false
+    private var suppressConfirmation:Boolean = true
     private var suppressManualEnter:Boolean = true
     private var configuredScanInstructions:String? = null
     private var configuredLocale:String? = null
@@ -33,6 +34,8 @@ class ScanActivity: BaseTransmitActivity() {
                 this as HashMap<String, Int>
             }?:HashMap()
 
+            requirePostalCode = it.getBoolean(EXTRA_REQUIRE_POSTAL_CODE, false)
+            suppressConfirmation = it.getBoolean(EXTRA_SUPPRESS_CONFIRMATION, true)
             suppressManualEnter = it.getBoolean(EXTRA_SUPPRESS_MANUAL_ENTRY, true)
             configuredScanInstructions = it.getString(EXTRA_SCAN_INSTRUCTIONS, null)
             configuredLocale = it.getString(EXTRA_LANGUAGE_OR_LOCALE, null)
@@ -48,15 +51,16 @@ class ScanActivity: BaseTransmitActivity() {
         val scanIntent = Intent(this, CardIOActivity::class.java)
             .putExtra(CardIOActivity.EXTRA_HIDE_CARDIO_LOGO, true)
             .putExtra(CardIOActivity.EXTRA_USE_PAYPAL_ACTIONBAR_ICON, true)
-            .putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, true)
             .putExtra(CardIOActivity.EXTRA_SCAN_EXPIRY, true)
             .putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false)
-            .putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, true)
+            .putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, requirePostalCode)
 
 
         suppressManualEnter?.let {
-            scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, !it)
             scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, it)
+        }
+        suppressConfirmation?.let {
+            scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, it)
         }
 
         configuredScanInstructions?.let {
@@ -145,6 +149,8 @@ class ScanActivity: BaseTransmitActivity() {
          */
         const val EXTRA_SCAN_INSTRUCTIONS = CardIOActivity.EXTRA_SCAN_INSTRUCTIONS
         const val EXTRA_SUPPRESS_MANUAL_ENTRY = CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY
+        const val EXTRA_SUPPRESS_CONFIRMATION = CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION
+        const val EXTRA_REQUIRE_POSTAL_CODE = CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE
 
         const val CARD_NUMBER = 0x71
         const val CARD_CVC = 0x72

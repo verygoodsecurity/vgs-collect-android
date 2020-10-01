@@ -245,6 +245,9 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
             }
             putSerializable(ScanActivity.SCAN_CONFIGURATION, scanSettings)
             putInt(ScanActivity.EXTRA_GUIDE_COLOR, Color.WHITE)
+            putBoolean(ScanActivity.EXTRA_REQUIRE_POSTAL_CODE, true)
+            putBoolean(ScanActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, false)
+            putBoolean(ScanActivity.EXTRA_SUPPRESS_CONFIRMATION, false)
             putString(ScanActivity.EXTRA_LANGUAGE_OR_LOCALE, "en")
             putString(ScanActivity.EXTRA_SCAN_INSTRUCTIONS, "Scanning payment card")
             this
