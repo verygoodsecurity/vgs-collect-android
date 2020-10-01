@@ -2,62 +2,40 @@ package com.verygoodsecurity.vgscollect.core.api
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.os.Build
-import com.verygoodsecurity.vgscollect.BuildConfig
+import android.util.Base64
+import okhttp3.OkHttpClient
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
-import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.parseVGSResponse
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.mapToJSON
-import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.Response
 import java.io.IOException
 import java.io.InterruptedIOException
-import java.lang.StringBuilder
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
-internal class OkHttpClient(
+internal class AnalyticClient(
     private val context: Context
-):ApiClient {
+) : ApiClient {
     private var baseURL:String = ""
-
-    companion object {
-        private const val APPLICATION_JSON = "application/json; charset=utf-8"
-        private const val CONNECTION_TIME_OUT = 60000L
-
-        private const val AGENT = "VGS-CLIENT"
-        private const val TEMPORARY_STR_AGENT = "source=androidSDK&medium=vgs-collect&content=${BuildConfig.VERSION_NAME}"
-
-        fun newInstance(context: Context, baseURL:String):ApiClient {
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val c = OkHttpClient(context)
-                c.baseURL = baseURL
-                c
-            } else {
-                URLConnectionClient.newInstance(context, baseURL)
-            }
-        }
-    }
 
     private val client:OkHttpClient by lazy {
         OkHttpClient().newBuilder()
-            .addInterceptor(HttpLoggingInterceptor())
             .callTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .readTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .writeTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .build()
     }
 
-    private val tempStore:VgsApiTemporaryStorage by lazy {
-        VgsApiTemporaryStorageImpl()
+    private fun hasNetworkAvailable(): Boolean {
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val network = manager?.activeNetworkInfo
+        return (network != null)
     }
 
     override fun call(
@@ -71,19 +49,19 @@ internal class OkHttpClient(
         }
 
         return when(method.ordinal) {
-//            HTTPMethod.GET.ordinal -> getRequest(path, headers, data)
             HTTPMethod.POST.ordinal -> postRequest(path, headers, data)
             else -> VGSResponse.ErrorResponse()
         }
     }
 
-    private fun postRequest(
-        path: String,
-        headers: Map<String, String>?,
-        data: Map<String, Any>?
-    ): VGSResponse {
+    override fun getTemporaryStorage(): VgsApiTemporaryStorage {
+        return VgsApiTemporaryStorageImpl()
+    }
+
+    private fun postRequest(path: String, headers: Map<String, String>?, data: Map<String, Any>?): VGSResponse {
         val url = baseURL.buildURL(path = path)
             ?: return notifyErrorResponse(VGSError.URL_NOT_VALID)
+
         val requestBuilder = Request.Builder().url(url)
 
         addHeaders(requestBuilder, headers)
@@ -111,26 +89,18 @@ internal class OkHttpClient(
     }
 
     private fun addRequestBody(requestBuilder: Request.Builder, data: Map<String, Any>?) {
-        val content = data?.mapToJSON().toString()
-        val body = content.toRequestBody(APPLICATION_JSON.toMediaTypeOrNull())
+        val content = data?.mapToJSON().toString().toByteArray()
+        val bodyStr = Base64.encodeToString(content, Base64.NO_WRAP)
+        val body = bodyStr.toRequestBody(CONTENT_TYPE.toMediaTypeOrNull())
         requestBuilder.post(body)
     }
 
     private fun addHeaders(requestBuilder: Request.Builder, headers: Map<String, String>?) {
-        val storedHeaders = tempStore.getCustomHeaders()
-        storedHeaders[AGENT] = TEMPORARY_STR_AGENT+"&vgsCollectSessionId=${CollectActionTracker.Sid.id}"
+        val storedHeaders = mutableMapOf<String, String>()
         headers?.let { storedHeaders.putAll(headers) }
         storedHeaders.forEach {
             requestBuilder.addHeader(it.key, it.value)
         }
-    }
-
-    override fun getTemporaryStorage(): VgsApiTemporaryStorage = tempStore
-
-    private fun hasNetworkAvailable(): Boolean {
-        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-        val network = manager?.activeNetworkInfo
-        return (network != null)
     }
 
     private fun notifyErrorResponse(error: VGSError, vararg params:String?): VGSResponse.ErrorResponse {
@@ -146,42 +116,14 @@ internal class OkHttpClient(
         return VGSResponse.ErrorResponse(message, error.code)
     }
 
+    companion object {
+        private const val CONTENT_TYPE = "application/x-www-form-urlencoded"
+        private const val CONNECTION_TIME_OUT = 60000L
 
-    class HttpLoggingInterceptor: Interceptor {
-
-        companion object {
-            private fun buildRequestLog(request: Request):String {
-                val builder = StringBuilder("Request")
-                    .append("{")
-                    .append("method=")
-                    .append(request.method)
-                    .append("}")
-
-                return builder.toString()
-            }
-
-            private fun buildResponseLog(response: Response):String {
-                val builder = StringBuilder("Response")
-                    .append("{")
-                    .append("code=")
-                    .append(response.code.toString())
-                    .append(", ")
-                    .append("message=")
-                    .append(response.message)
-                    .append("}")
-
-                return builder.toString()
-            }
-        }
-
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val request = chain.request()
-            Logger.i(VGSCollect::class.java.simpleName, buildRequestLog(request))
-
-            val response = chain.proceed(request)
-            Logger.i(VGSCollect::class.java.simpleName, buildResponseLog(response))
-
-            return response
+        fun newInstance(context: Context, baseURL:String):AnalyticClient {
+            val c = AnalyticClient(context)
+            c.baseURL = baseURL
+            return c
         }
     }
 }

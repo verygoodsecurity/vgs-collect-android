@@ -43,7 +43,7 @@ class InputFieldViewTest {
     @Test
     fun test_view() {
         view.onAttachedToWindow()
-        val internal = view.getView()
+        val internal = view.statePreparer.getView()
         Assert.assertNotNull(internal)
     }
 
@@ -56,7 +56,7 @@ class InputFieldViewTest {
 
     @Test
     fun test_field_name() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         val FIELD_NAME = "card"
@@ -75,9 +75,9 @@ class InputFieldViewTest {
     fun test_enabled() {
         view.isEnabled = false
 
-        Assert.assertEquals(false, view.getView().isEnabled)
+        Assert.assertEquals(false, view.statePreparer.getView().isEnabled)
 
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         assertFalse((child as BaseInputField).isEnabled)
@@ -85,7 +85,7 @@ class InputFieldViewTest {
 
     @Test
     fun test_text_size() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         view.setTextSize(12f)
@@ -102,7 +102,7 @@ class InputFieldViewTest {
         val HINT = "hint"
         view.setHint(HINT)
 
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         Assert.assertEquals(HINT, (child as BaseInputField).hint)
@@ -110,7 +110,7 @@ class InputFieldViewTest {
 
     @Test
     fun test_text() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         var TEXT1 = "text"
@@ -132,7 +132,7 @@ class InputFieldViewTest {
 
     @Test
     fun test_set_hint_text_color() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         val myList =  ColorStateList(arrayOf(intArrayOf()), intArrayOf(android.R.color.black))
@@ -147,7 +147,7 @@ class InputFieldViewTest {
 
     @Test
     fun test_text_color() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         val COLOR = android.R.color.black
@@ -157,7 +157,7 @@ class InputFieldViewTest {
 
     @Test
     fun test_max_lines() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         val MAX_LINES = 12
@@ -167,7 +167,7 @@ class InputFieldViewTest {
 
     @Test
     fun test_min_lines() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         val MIN_LINES = 12
@@ -177,7 +177,7 @@ class InputFieldViewTest {
 
     @Test
     fun test_ellipsize() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         val ELLIPSIZE_1 = TextUtils.TruncateAt.END
@@ -192,7 +192,7 @@ class InputFieldViewTest {
 
     @Test
     fun test_gravity() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         val GRAVITY = Gravity.CENTER
@@ -203,7 +203,7 @@ class InputFieldViewTest {
 
     @Test
     fun test_set_cursor_visible() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         val VISIBILITY = false
@@ -213,7 +213,7 @@ class InputFieldViewTest {
 
     @Test
     fun test_set_is_required() {
-        val child = view.getView()
+        val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         val VISIBILITY = true
@@ -226,7 +226,7 @@ class InputFieldViewTest {
     fun test_next_focus_down_id() {
         val id = 19011918
         view.nextFocusDownId = id
-        val internal = view.getView()
+        val internal = view.statePreparer.getView()
 
         Assert.assertEquals(view.nextFocusDownId, id)
         Assert.assertEquals(internal.nextFocusDownId, id)
@@ -236,7 +236,7 @@ class InputFieldViewTest {
     fun test_next_focus_forward_id() {
         val id = 19011918
         view.nextFocusForwardId = id
-        val internal = view.getView()
+        val internal = view.statePreparer.getView()
 
         Assert.assertEquals(view.nextFocusForwardId, id)
         Assert.assertEquals(internal.nextFocusForwardId, id)
@@ -246,7 +246,7 @@ class InputFieldViewTest {
     fun test_next_focus_left_id() {
         val id = 19011918
         view.nextFocusLeftId = id
-        val internal = view.getView()
+        val internal = view.statePreparer.getView()
 
         Assert.assertEquals(view.nextFocusLeftId, id)
         Assert.assertEquals(internal.nextFocusLeftId, id)
@@ -256,7 +256,7 @@ class InputFieldViewTest {
     fun test_next_focus_right_id() {
         val id = 19011918
         view.nextFocusRightId = id
-        val internal = view.getView()
+        val internal = view.statePreparer.getView()
 
         Assert.assertEquals(view.nextFocusRightId, id)
         Assert.assertEquals(internal.nextFocusRightId, id)
@@ -266,7 +266,7 @@ class InputFieldViewTest {
     fun test_next_focus_up_id() {
         val id = 19011918
         view.nextFocusUpId = id
-        val internal = view.getView()
+        val internal = view.statePreparer.getView()
 
         Assert.assertEquals(view.nextFocusUpId, id)
         Assert.assertEquals(internal.nextFocusUpId, id)
