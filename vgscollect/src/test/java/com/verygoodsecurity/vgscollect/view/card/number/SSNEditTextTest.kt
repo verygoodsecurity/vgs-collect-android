@@ -159,7 +159,7 @@ class SSNEditTextTest {
 
     @Test
     fun test_state() {
-        val text = "123-45-6789"
+        val text = "195-75-6789"
         val stateResult = FieldState.SSNNumberState()
         stateResult.hasFocus = false
         stateResult.isEmpty = false
@@ -253,7 +253,8 @@ class SSNEditTextTest {
             "000-12-3456", "143-00-4563", "235-23-0000",
             "923-42-3423", "666-12-3456", "111-45-6789",
             "222-09-9999", "555-05-1120", "000-55-5462",
-            "223-34-455",  "343-43-43", "111-11-111222")
+            "123-45-6789", "219-09-9999", "219-09-9999",
+            "457-55-5462",  "343-43-43", "111-11-111222")
     }
 
     private fun getValidSSNs(): Array<String> {
