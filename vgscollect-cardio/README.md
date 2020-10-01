@@ -39,11 +39,12 @@ dependencies {
 
 Before scanning you have to setup which information you need to retrieve and final destination VGS secure field:
 ```
-HashMap<String, Integer> scanSettings = new HashMap<>();
-scanSettings.put(cardNumberField.getFieldName(), ScanActivity.CARD_NUMBER);
-scanSettings.put(cardCvcield.getFieldName(), ScanActivity.CARD_CVC);
-scanSettings.put(cardHolderField.getFieldName(), ScanActivity.CARD_HOLDER);
-scanSettings.put(cardExpDateField.getFieldName(), ScanActivity.CARD_EXP_DATE);
+val scanSettings = hashMapOf<String?, Int>().apply {
+    this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
+    this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
+    this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
+    this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
+}
 ```
 
 To start scanning you need to attach a Map with settings to Intent and start ScanActivity.
