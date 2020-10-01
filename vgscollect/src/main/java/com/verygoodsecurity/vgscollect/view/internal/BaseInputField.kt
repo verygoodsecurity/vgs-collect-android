@@ -40,6 +40,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
                 FieldType.CVC -> CVCInputField(context)
                 FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
                 FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
+                FieldType.SSN -> SSNInputField(context)
                 FieldType.INFO -> InfoInputField(context)
             }
             field.vgsParent = parent

@@ -286,6 +286,7 @@ internal class InputField(context: Context): BaseInputField(context),
             FieldType.CARD_HOLDER_NAME -> validateTextFieldType(type)
             FieldType.CVC -> validateNumberFieldType(type)
             FieldType.INFO -> validateTextFieldType(type)
+            FieldType.SSN -> validateTextFieldType(type)
         }
         super.setInputType(validType)
         refreshInput()

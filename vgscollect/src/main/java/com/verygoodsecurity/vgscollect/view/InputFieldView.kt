@@ -1099,6 +1099,14 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    protected fun getSSNState() :  FieldState.SSNNumberState? {
+        return if(fieldType == FieldType.SSN) {
+            (inputField as? SSNInputField)?.getState() as? FieldState.SSNNumberState
+        } else {
+            null
+        }
+    }
+
     protected fun getCVCState() :  FieldState.CVCState? {
         return if(fieldType == FieldType.CVC) {
             (inputField as? CVCInputField)?.getState() as? FieldState.CVCState
