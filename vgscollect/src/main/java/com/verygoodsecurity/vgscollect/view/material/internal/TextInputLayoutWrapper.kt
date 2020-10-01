@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.vgscollect.util.Logger
-import com.verygoodsecurity.vgscollect.view.AccessibilityStatePreparer
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
@@ -109,8 +109,8 @@ internal class TextInputLayoutWrapper @JvmOverloads constructor(
                     applyLayoutParams(this)
                     this
                 }
-                is AccessibilityStatePreparer -> {
-                    val v = (this as? AccessibilityStatePreparer)?.getView()
+                is InputFieldView -> this.statePreparer.let{
+                    val v = it.getView()
                     return applyAndReturnDefaultLayoutParams(child, v)
                 }
                 is ViewGroup -> this

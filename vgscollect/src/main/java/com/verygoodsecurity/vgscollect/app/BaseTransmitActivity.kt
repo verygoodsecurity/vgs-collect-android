@@ -14,6 +14,19 @@ import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 abstract class BaseTransmitActivity:AppCompatActivity() {
     companion object {
         const val RESULT_DATA = "vgs_result_settings"
+        const val RESULT_STATUS = "com.vgs.collect.status"
+        const val RESULT_TYPE = "com.vgs.collect.type"
+        const val RESULT_NAME = "com.vgs.collect.sw"
+        const val RESULT_ID = "com.vgs.collect.id"
+
+        const val SCAN = "com.vgs.scan_type"
+        const val ATTACH = "com.vgs.attach_f_type"
+    }
+
+    enum class Status(val raw:String) {
+        SUCCESS("Ok"),
+        FAILED("Failed"),
+        CLOSE("Cancel")
     }
 
     private val storage = VGSHashMapWrapper<String, Any>()
@@ -43,7 +56,7 @@ abstract class BaseTransmitActivity:AppCompatActivity() {
         if(resultCode != Activity.RESULT_CANCELED) {
             setResult(Activity.RESULT_OK, resultIntent)
         } else {
-            setResult(Activity.RESULT_CANCELED)
+            setResult(Activity.RESULT_CANCELED, resultIntent)
         }
     }
 }

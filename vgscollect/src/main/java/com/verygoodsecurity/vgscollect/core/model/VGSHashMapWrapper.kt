@@ -17,4 +17,6 @@ internal class VGSHashMapWrapper<K,V>(
     internal fun get(key: K)= hashMap[key]
 
     internal fun mapOf() = hashMap
+
+    internal fun isEmpty():Boolean = hashMap.isEmpty()
 }

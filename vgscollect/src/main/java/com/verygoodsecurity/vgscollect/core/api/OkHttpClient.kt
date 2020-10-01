@@ -6,6 +6,7 @@ import android.os.Build
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
+import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.parseVGSResponse
@@ -81,7 +82,6 @@ internal class OkHttpClient(
         headers: Map<String, String>?,
         data: Map<String, Any>?
     ): VGSResponse {
-
         val url = baseURL.buildURL(path = path)
             ?: return notifyErrorResponse(VGSError.URL_NOT_VALID)
         val requestBuilder = Request.Builder().url(url)
@@ -118,7 +118,7 @@ internal class OkHttpClient(
 
     private fun addHeaders(requestBuilder: Request.Builder, headers: Map<String, String>?) {
         val storedHeaders = tempStore.getCustomHeaders()
-        storedHeaders[AGENT] = TEMPORARY_STR_AGENT
+        storedHeaders[AGENT] = TEMPORARY_STR_AGENT+"&vgsCollectSessionId=${CollectActionTracker.Sid.id}"
         headers?.let { storedHeaders.putAll(headers) }
         storedHeaders.forEach {
             requestBuilder.addHeader(it.key, it.value)

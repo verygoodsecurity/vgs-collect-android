@@ -20,7 +20,6 @@ Table of contents
 | io.card:android-sdk | 5.5.1 |
 | androidx.appcompat:appcompat | 1.2.0 |
 | androidx.core:core-ktx | 1.2.0 |
-| org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.72 |
 
 ## Integration 
 For integration you need to install the [Android Studio](http://developer.android.com/sdk/index.html) and a [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) on your machine.

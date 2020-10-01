@@ -38,7 +38,6 @@ Table of contents
 | androidx.appcompat:appcompat | 1.2.0 |
 | com.google.android.material:material | 1.2.0 |
 | androidx.core:core-ktx | 1.3.1 |
-| org.jetbrains.kotlin:kotlin-stdlib-jdk7 | 1.3.72 |
 
 ## Structure
 * **VGSCollect SDK** - provides an API for interacting with the VGS Vault

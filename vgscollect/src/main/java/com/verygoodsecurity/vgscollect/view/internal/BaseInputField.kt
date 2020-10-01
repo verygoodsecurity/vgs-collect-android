@@ -8,6 +8,7 @@ import android.os.Looper
 import android.text.TextWatcher
 import android.view.View
 import android.view.View.OnFocusChangeListener
+import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.ViewCompat
@@ -15,6 +16,8 @@ import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
+import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
+import com.verygoodsecurity.vgscollect.core.api.analityc.action.AutofillAction
 import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
@@ -37,6 +40,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
                 FieldType.CVC -> CVCInputField(context)
                 FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
                 FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
+                FieldType.SSN -> SSNInputField(context)
                 FieldType.INFO -> InfoInputField(context)
             }
             field.vgsParent = parent
@@ -270,7 +274,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
         when (nextView) {
             null -> return
-            is InputFieldView -> nextView.getView().requestFocus()
+            is InputFieldView -> nextView.statePreparer.getView().requestFocus()
             is BaseInputField -> nextView.requestFocus()
             else -> nextView.requestFocus()
         }
@@ -330,5 +334,25 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     internal open fun getState(): FieldState? {
         return  inputConnection?.getOutput()?.mapToFieldState()
+    }
+
+    internal var tracker: AnalyticTracker? = null
+
+    override fun autofill(value: AutofillValue?) {
+        super.autofill(value)
+        logAutofillAction()
+
+
+    }
+
+    private fun logAutofillAction() {
+        val m = with(mutableMapOf<String, String>()) {
+            put("field", fieldType.raw)
+            this
+        }
+
+        tracker?.logEvent(
+            AutofillAction(m)
+        )
     }
 }
