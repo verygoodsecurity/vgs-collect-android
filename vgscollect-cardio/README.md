@@ -29,7 +29,7 @@ To use the SDK in project you just simply need to add the following line of depe
 ```
 dependencies {
    implementation 'com.verygoodsecurity:vgscollect:1.2.5’ //required version 1.2.5 or above
-   implementation 'com.verygoodsecurity.api:adapter-cardio:1.0.2’
+   implementation 'com.verygoodsecurity.api:adapter-cardio:<latest-version>’
 }
 ```
 
