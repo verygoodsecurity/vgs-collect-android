@@ -24,6 +24,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
+import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
@@ -44,7 +45,7 @@ import com.verygoodsecurity.vgscollect.view.internal.*
  */
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), AccessibilityStatePreparer {
+) : FrameLayout(context, attrs, defStyleAttr) {
 
     private var isAttachPermitted = true
 
@@ -130,11 +131,17 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    override fun getView():View {
-        return inputField
-    }
+    internal val statePreparer = StatePreparer()
 
-    override fun getDependencyListener(): DependencyListener = notifier
+    internal inner class StatePreparer:AccessibilityStatePreparer {
+        override fun getView():View {
+            return inputField
+        }
+        override fun getDependencyListener(): DependencyListener = notifier
+        override fun setAnalyticTracker(tr: AnalyticTracker) {
+            inputField.tracker = tr
+        }
+    }
 
     override fun onDetachedFromWindow() {
         if(childCount > 0) removeAllViews()
@@ -1087,6 +1094,14 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun getCardNumberState() :  FieldState.CardNumberState? {
         return if(fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.getState() as? FieldState.CardNumberState
+        } else {
+            null
+        }
+    }
+
+    protected fun getSSNState() :  FieldState.SSNNumberState? {
+        return if(fieldType == FieldType.SSN) {
+            (inputField as? SSNInputField)?.getState() as? FieldState.SSNNumberState
         } else {
             null
         }

@@ -11,6 +11,10 @@ sealed class FieldContent {
     var data:String? = null
         internal set
 
+    class SSNContent:FieldContent() {
+        var rawData:String? = null
+    }
+
     class CardNumberContent:FieldContent() {
         var rawData:String? = null
         var cardtype: CardType = CardType.UNKNOWN
@@ -63,6 +67,24 @@ internal fun FieldContent.CardNumberContent.parseCardBin():String {
         }
     }?:""
 }
+
+
+
+/** @suppress */
+internal fun FieldContent.SSNContent.parseCardLast4Digits():String {
+    return data?.run {
+        val numberSTR = data!!.replace("\\D".toRegex(), "")
+
+        return if(numberSTR.length > 5) {
+            val start = 5
+            val end = numberSTR.length
+            numberSTR.substring(start, end)
+        } else {
+            ""
+        }
+    }?:""
+}
+
 
 /** @suppress */
 internal fun FieldContent.CardNumberContent.parseCardLast4Digits():String {
