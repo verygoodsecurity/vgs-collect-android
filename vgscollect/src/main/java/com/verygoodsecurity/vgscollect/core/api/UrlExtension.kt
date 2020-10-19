@@ -9,7 +9,7 @@ import java.util.regex.Pattern
 
 /**
  *  10.0.2.2 is special alias to your host loopback interface (i.e., 127.0.0.1 on your development machine)
- *  @see [Emulator networking documentation](https://developer.android.com/studio/run/emulator-networking.html)
+ *  More read here @see [Documentation](https://developer.android.com/studio/run/emulator-networking)
  */
 private const val LOCAL_SANDBOX_URL = "http://10.0.2.2:9098"
 
