@@ -29,7 +29,7 @@ class VGSCollectFragmentActivity: AppCompatActivity() {
             val bndl = Bundle()
             bndl.putString(PaymentFragment.VAULT_ID, vault_id)
             bndl.putString(PaymentFragment.PATH, path)
-            bndl.putString(PaymentFragment.VAULT_ID, vault_id)
+            bndl.putInt(PaymentFragment.ENVIROMENT, envId)
 
             arguments = bndl
         }
