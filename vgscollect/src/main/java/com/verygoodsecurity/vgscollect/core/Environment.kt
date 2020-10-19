@@ -9,7 +9,7 @@ package com.verygoodsecurity.vgscollect.core
  *
  * @param rawValue Unique identifier.
  *
- * @version 1.0.2
+ * @version 1.1.0
  */
 enum class Environment(val rawValue: String) {
 
@@ -38,6 +38,4 @@ internal fun String.isSandbox(): Boolean {
     return this.contains("sandbox")
 }
 
-internal fun String.isLocalSandbox(): Boolean {
-    return this.contains("local_sandbox")
-}
+internal fun String.isLocalSandbox() = this == Environment.LOCAL_SANDBOX.rawValue
