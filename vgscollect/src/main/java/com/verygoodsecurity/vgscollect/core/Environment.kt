@@ -9,9 +9,15 @@ package com.verygoodsecurity.vgscollect.core
  *
  * @param rawValue Unique identifier.
  *
- * @version 1.0.1
+ * @version 1.0.2
  */
-enum class Environment(val rawValue:String) {
+enum class Environment(val rawValue: String) {
+
+    /**
+     *  Local Sandbox Environment using for local testing using locally running
+     *  VGS server @see [VGS-satellite](https://github.com/verygoodsecurity/vgs-satellite)
+     */
+    LOCAL_SANDBOX("local_sandbox"),
 
     /**
      *  Sandbox Environment using sandbox Test Vault
@@ -24,10 +30,14 @@ enum class Environment(val rawValue:String) {
     LIVE("live")
 }
 
-internal fun String.isLive():Boolean {
+internal fun String.isLive(): Boolean {
     return this.contains("live")
 }
 
-internal fun String.isSandbox():Boolean {
+internal fun String.isSandbox(): Boolean {
     return this.contains("sandbox")
+}
+
+internal fun String.isLocalSandbox(): Boolean {
+    return this.contains("local_sandbox")
 }

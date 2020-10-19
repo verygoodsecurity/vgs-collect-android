@@ -22,6 +22,7 @@ class StartActivity:AppCompatActivity(), View.OnClickListener {
 
     private val spinnerAdapter:ArrayAdapter<String> by lazy {
         val envArr = arrayOf(
+            Environment.LOCAL_SANDBOX.rawValue.toUpperCase(),
             Environment.SANDBOX.rawValue.toUpperCase(),
             Environment.LIVE.rawValue.toUpperCase()
         )
