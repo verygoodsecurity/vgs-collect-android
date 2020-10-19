@@ -1,21 +1,26 @@
 package com.verygoodsecurity.vgscollect.core.api
 
 import com.verygoodsecurity.vgscollect.core.VGSCollect
+import com.verygoodsecurity.vgscollect.core.isLocalSandbox
 import com.verygoodsecurity.vgscollect.util.Logger
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.regex.Pattern
 
+private const val LOCAL_SANDBOX_URL = "http://10.0.2.2:9098"
+
 /** @suppress */
-internal fun String.setupURL(rawValue:String):String {
-    return when {
+internal fun String.setupURL(rawValue: String) = if (rawValue.isLocalSandbox()) {
+    LOCAL_SANDBOX_URL
+} else {
+    when {
         this.isEmpty() || !isTennantIdValid() -> {
             Logger.e(VGSCollect::class.java, "tennantId is not valid")
-            return ""
+            ""
         }
         rawValue.isEmpty() || !rawValue.isEnvironmentValid() -> {
             Logger.e(VGSCollect::class.java, "Environment is not valid")
-            return ""
+            ""
         }
         else -> this.buildURL(rawValue)
     }
@@ -41,7 +46,7 @@ internal fun String.isTennantIdValid():Boolean {
 }
 
 internal fun String.isEnvironmentValid():Boolean {
-    val m = Pattern.compile("^(live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+\$").matcher(this)
+    val m = Pattern.compile("^(live|sandbox|local_sandbox|LIVE|SANDBOX|LOCAL_SANDBOX)+((-)+([a-zA-Z0-9]+)|)+\$").matcher(this)
 
     return m.matches()
 }
