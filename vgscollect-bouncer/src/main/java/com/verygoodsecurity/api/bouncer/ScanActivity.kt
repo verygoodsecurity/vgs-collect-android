@@ -152,14 +152,44 @@ class ScanActivity: BaseTransmitActivity(), CardScanActivityResultHandler {
         const val CARD_HOLDER = 0x73
         const val CARD_EXP_DATE = 0x74
 
+        /**
+        The bouncer API key used to run scanning.
+         */
         const val API_KEY = "apikey"
+
+        /**
+        If true, attempt to extract the card expiry.
+         */
         const val ENABLE_EXPIRY_EXTRACTION = "enableExpiryExtraction"
+
+        /**
+        If true, attempt to extract the cardholder name.
+         */
         const val ENABLE_NAME_EXTRACTION = "enableNameExtraction"
+
+        /**
+        If true, display the card pan once the card has started to scan.
+         */
         const val DISPLAY_CARD_PAN = "displayCardPan"
+
+        /**
+        If true, display the name of the card owner if extracted.
+         */
         const val DISPLAY_CARD_HOLDER_NAME = "displayCardholderName"
+
+        /**
+        If true, display the cardscan.io logo at the top of the screen.
+         */
         const val DISPLAY_CARD_SCAN_LOGO = "displayCardScanLogo"
+
+        /**
+        If true, enable debug views in card scan.
+         */
         const val ENABLE_DEBUG = "enableDebug"
 
+        /**
+        Start the card scanner activity.
+         */
         fun scan(context:Activity, code:Int, bndl:Bundle = Bundle.EMPTY) {
             val intent = Intent(context, ScanActivity::class.java)
             intent.putExtras(bndl)

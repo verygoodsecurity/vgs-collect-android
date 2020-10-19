@@ -12,7 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.verygoodsecurity.api.cardio.ScanActivity
+import com.verygoodsecurity.api.bouncer.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.core.Environment
@@ -251,12 +251,12 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
             putString(ScanActivity.API_KEY, "<user_bouncer_key>")
 
-            putBoolean(ScanActivity.ENABLE_EXPIRY_EXTRACTION, true)
-            putBoolean(ScanActivity.ENABLE_NAME_EXTRACTION, true)
-            putBoolean(ScanActivity.DISPLAY_CARD_PAN, true)
-            putBoolean(ScanActivity.DISPLAY_CARD_HOLDER_NAME, true)
-            putBoolean(ScanActivity.DISPLAY_CARD_SCAN_LOGO, true)
-            putBoolean(ScanActivity.ENABLE_DEBUG, true)
+            putBoolean(ScanActivity.ENABLE_EXPIRY_EXTRACTION, false)
+            putBoolean(ScanActivity.ENABLE_NAME_EXTRACTION, false)
+            putBoolean(ScanActivity.DISPLAY_CARD_PAN, false)
+            putBoolean(ScanActivity.DISPLAY_CARD_HOLDER_NAME, false)
+            putBoolean(ScanActivity.DISPLAY_CARD_SCAN_LOGO, false)
+            putBoolean(ScanActivity.ENABLE_DEBUG, false)
 
             this
         }
