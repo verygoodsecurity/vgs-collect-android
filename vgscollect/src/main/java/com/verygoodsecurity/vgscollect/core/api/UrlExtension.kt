@@ -11,7 +11,7 @@ import java.util.regex.Pattern
  *  10.0.2.2 is special alias to your host loopback interface (i.e., 127.0.0.1 on your development machine)
  *  More read here @see [Documentation](https://developer.android.com/studio/run/emulator-networking)
  */
-private const val LOCAL_HOST_ALIAS = "http://192.168.0.138"
+private const val LOCAL_HOST_ALIAS = "http://10.0.2.2"
 
 /**
  * Default port for @see [VGS-satellite](https://github.com/verygoodsecurity/vgs-satellite)
