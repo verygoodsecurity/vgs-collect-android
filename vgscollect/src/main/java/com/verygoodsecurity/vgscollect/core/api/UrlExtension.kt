@@ -11,36 +11,41 @@ import java.util.regex.Pattern
  *  10.0.2.2 is special alias to your host loopback interface (i.e., 127.0.0.1 on your development machine)
  *  More read here @see [Documentation](https://developer.android.com/studio/run/emulator-networking)
  */
-private const val LOCAL_SANDBOX_URL = "http://10.0.2.2:9098"
+private const val LOCAL_HOST_ALIAS = "http://192.168.0.138"
+
+/**
+ * Default port for @see [VGS-satellite](https://github.com/verygoodsecurity/vgs-satellite)
+ */
+private const val DEFAULT_LOCAL_HOST_PORT = "9098"
 
 /** @suppress */
-internal fun String.setupURL(rawValue: String) = if (rawValue.isLocalSandbox()) {
-    LOCAL_SANDBOX_URL
-} else {
-    when {
-        this.isEmpty() || !isTennantIdValid() -> {
-            Logger.e(VGSCollect::class.java, "tennantId is not valid")
-            ""
-        }
-        rawValue.isEmpty() || !rawValue.isEnvironmentValid() -> {
-            Logger.e(VGSCollect::class.java, "Environment is not valid")
-            ""
-        }
-        else -> this.buildURL(rawValue)
+internal fun String.setupURL(rawValue: String, port: String? = null): String =
+    if (rawValue.isLocalSandbox()) buildLocalUrl(port) else this.buildRemoteUrl(rawValue)
+
+private fun buildLocalUrl(port: String?): String =
+     "$LOCAL_HOST_ALIAS:${port.takeIf { !it.isNullOrEmpty() } ?: DEFAULT_LOCAL_HOST_PORT}"
+
+private fun String.buildRemoteUrl(env: String): String = when {
+    this.isEmpty() || !this.isTennantIdValid() -> {
+        Logger.e(VGSCollect::class.java, "tennantId is not valid")
+        ""
     }
-}
+    env.isEmpty() || !env.isEnvironmentValid() -> {
+        Logger.e(VGSCollect::class.java, "Environment is not valid")
+        ""
+    }
+    else -> {
+        val DOMEN = "verygoodproxy.com"
+        val DIVIDER = "."
+        val SCHEME = "https://"
 
-private fun String.buildURL(env:String):String {
-    val DOMEN = "verygoodproxy.com"
-    val DIVIDER = "."
-    val SCHEME  = "https://"
+        val builder = StringBuilder(SCHEME)
+            .append(this).append(DIVIDER)
+            .append(env).append(DIVIDER)
+            .append(DOMEN)
 
-    val builder = StringBuilder(SCHEME)
-        .append(this).append(DIVIDER)
-        .append(env).append(DIVIDER)
-        .append(DOMEN)
-
-    return builder.toString()
+        builder.toString()
+    }
 }
 
 internal fun String.isTennantIdValid():Boolean {

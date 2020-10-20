@@ -135,6 +135,12 @@ class UrlExtensionTest {
     }
 
     @Test
+    fun test_setup_url_local_sandbox() {
+        val url = "".setupURL(Environment.LOCAL_SANDBOX.rawValue)
+        assertTrue(url.isURLValid())
+    }
+
+    @Test
     fun test_setup_url_sandbox() {
         val s = "tnt234mm"
         val url = s.setupURL(Environment.SANDBOX.rawValue)
@@ -173,6 +179,9 @@ class UrlExtensionTest {
         assertFalse("sandbox-w-12-".isEnvironmentValid())
         assertTrue("sandbox-w-12-abba".isEnvironmentValid())
         assertTrue("SANDBOX-UA-7".isEnvironmentValid())
+
+        assertTrue("local_sandbox".isEnvironmentValid())
+        assertTrue("LOCAL_SANDBOX".isEnvironmentValid())
     }
 
     @Test
@@ -217,5 +226,17 @@ class UrlExtensionTest {
 
         val url5 = tennant.setupURL("SANDBOX-EU-1")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url5).matches())
+    }
+
+    @Test
+    fun test_full_local_sandbox_url() {
+        val tennant = ""
+
+        val url0 = tennant.setupURL("local_sandbox")
+        assertTrue(url0.contains("9098"))
+
+        val url1 = tennant.setupURL("local_sandbox", "1024")
+        assertFalse(url1.contains("9098"))
+        assertTrue(url1.contains("1024"))
     }
 }

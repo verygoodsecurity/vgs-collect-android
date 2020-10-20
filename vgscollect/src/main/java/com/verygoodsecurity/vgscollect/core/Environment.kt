@@ -38,4 +38,4 @@ internal fun String.isSandbox(): Boolean {
     return this.contains("sandbox")
 }
 
-internal fun String.isLocalSandbox() = this == Environment.LOCAL_SANDBOX.rawValue
+internal fun String.isLocalSandbox() = this.equals(Environment.LOCAL_SANDBOX.rawValue, true)

@@ -34,13 +34,12 @@ import java.security.MessageDigest
 import java.util.*
 import kotlin.collections.HashMap
 
-
 /**
  * VGS Collect allows you to securely collect data and files from your users without having
  * to have them pass through your systems.
  * Entry-point to the Collect SDK.
  *
- * @since 1.0.0
+ * @since 1.0.1
  */
 class VGSCollect {
 
@@ -48,9 +47,9 @@ class VGSCollect {
 
     private val tracker:AnalyticTracker
 
-    private lateinit var client: ApiClient
+    private var client: ApiClient
 
-    private lateinit var storage:InternalStorage
+    private var storage:InternalStorage
     private var storageErrorListener:StorageErrorListener
 
     private val responseListeners = mutableListOf<VgsCollectResponseListener>()
@@ -70,58 +69,39 @@ class VGSCollect {
 
     private val isURLValid:Boolean
 
+    /**
+     * @param id Unique Vault id
+     * @param environment Type of Vault
+     */
     constructor(
-        /** Activity context */
         context: Context,
-
-        /** Unique Vault id */
         id: String,
-
-        /** Type of Vault */
         environment: Environment = Environment.SANDBOX
-    ) {
-        this.context = context
+    ): this(context, id, environment.rawValue, null)
 
-        tracker = CollectActionTracker(
-            context,
-            id,
-            environment.rawValue,
-            UUID.randomUUID().toString())
-
-
-        baseURL = id.setupURL(environment.rawValue)
-        isURLValid = baseURL.isURLValid()
-        initializeCollect(baseURL)
-    }
-
+    /**
+     * @param id Unique Vault id
+     * @param environment Type of Vault
+     */
     constructor(
-        /** Activity context */
         context: Context,
-
-        /** Unique Vault id */
         id: String,
-
-        /** Type of Vault */
         environment: String
-    ) {
+    ) : this(context, id, environment, null)
+
+    /**
+     * @param id Unique Vault id
+     * @param environment Type of Vault
+     * @param port Optional endpoint port number
+     */
+    constructor(context: Context, id: String, environment: String, port: String?) {
         this.context = context
-        tracker = CollectActionTracker(
-            context,
-            id,
-            environment,
-            UUID.randomUUID().toString())
-
-        baseURL = id.setupURL(environment)
+        tracker = CollectActionTracker(context, id, environment, UUID.randomUUID().toString())
+        baseURL = id.setupURL(environment, port)
         isURLValid = baseURL.isURLValid()
-        initializeCollect(baseURL)
-
-    }
-
-    private fun initializeCollect(baseURL: String) {
         client = OkHttpClient.newInstance(context, baseURL)
         storage = InternalStorage(context, storageErrorListener)
     }
-
 
     init {
         externalDependencyDispatcher = DependencyReceiver()
