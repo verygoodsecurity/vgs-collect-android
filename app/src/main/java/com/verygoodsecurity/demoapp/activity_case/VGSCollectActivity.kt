@@ -1,15 +1,17 @@
 package com.verygoodsecurity.demoapp.activity_case
 
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.verygoodsecurity.api.cardio.ScanActivity
+import com.verygoodsecurity.api.bouncer.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.core.Environment
@@ -62,7 +64,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
         val staticData = mutableMapOf<String, String>()
         staticData["static_data"] = "static custom data"
-//        vgsForm.setCustomData(staticData)
+        vgsForm.setCustomData(staticData)
     }
 
     private fun setupCardExpDateField() {
@@ -243,13 +245,18 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
                 this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
                 this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
             }
+
             putSerializable(ScanActivity.SCAN_CONFIGURATION, scanSettings)
-            putInt(ScanActivity.EXTRA_GUIDE_COLOR, Color.WHITE)
-            putBoolean(ScanActivity.EXTRA_REQUIRE_POSTAL_CODE, true)
-            putBoolean(ScanActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, false)
-            putBoolean(ScanActivity.EXTRA_SUPPRESS_CONFIRMATION, false)
-            putString(ScanActivity.EXTRA_LANGUAGE_OR_LOCALE, "en")
-            putString(ScanActivity.EXTRA_SCAN_INSTRUCTIONS, "Scanning payment card")
+
+            putString(ScanActivity.API_KEY, "<user_bouncer_key>")
+
+            putBoolean(ScanActivity.ENABLE_EXPIRY_EXTRACTION, false)
+            putBoolean(ScanActivity.ENABLE_NAME_EXTRACTION, false)
+            putBoolean(ScanActivity.DISPLAY_CARD_PAN, false)
+            putBoolean(ScanActivity.DISPLAY_CARD_HOLDER_NAME, false)
+            putBoolean(ScanActivity.DISPLAY_CARD_SCAN_LOGO, false)
+            putBoolean(ScanActivity.ENABLE_DEBUG, false)
+
             this
         }
 
@@ -360,8 +367,8 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         val request: VGSRequest = VGSRequest.VGSRequestBuilder()
             .setMethod(HTTPMethod.POST)
             .setPath(path)
-//            .setCustomHeader(headers)
-//            .setCustomData(customData)
+            .setCustomHeader(headers)
+            .setCustomData(customData)
             .build()
 
         vgsForm.asyncSubmit(request)
