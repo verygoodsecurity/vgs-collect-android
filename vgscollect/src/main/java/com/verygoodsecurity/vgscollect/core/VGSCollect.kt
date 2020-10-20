@@ -93,7 +93,8 @@ class VGSCollect {
     /**
      * @param id Unique Vault id
      * @param environment Type of Vault
-     * @param port Optional endpoint port number (min = [PORT_MIN_VALUE], max = [PORT_MAX_VALUE])
+     * @param port Optional endpoint port number (min = [PORT_MIN_VALUE], max = [PORT_MAX_VALUE]),
+     * used only with Environment.LOCAL_SANDBOX
      */
     constructor(
         context: Context,
