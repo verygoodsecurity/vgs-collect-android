@@ -16,14 +16,17 @@ private const val LOCAL_HOST_ALIAS = "http://10.0.2.2"
 /**
  * Default port for @see [VGS-satellite](https://github.com/verygoodsecurity/vgs-satellite)
  */
-private const val DEFAULT_LOCAL_HOST_PORT = "9098"
+private const val DEFAULT_LOCAL_HOST_PORT = 9098
+
+const val PORT_MIN_VALUE = 1L
+const val PORT_MAX_VALUE = 65535L
 
 /** @suppress */
-internal fun String.setupURL(rawValue: String, port: String? = null): String =
+internal fun String.setupURL(rawValue: String, port: Int? = null): String =
     if (rawValue.isLocalSandbox()) buildLocalUrl(port) else this.buildRemoteUrl(rawValue)
 
-private fun buildLocalUrl(port: String?): String =
-     "$LOCAL_HOST_ALIAS:${port.takeIf { !it.isNullOrEmpty() } ?: DEFAULT_LOCAL_HOST_PORT}"
+private fun buildLocalUrl(port: Int?): String =
+    "$LOCAL_HOST_ALIAS:${port?.takeIf { it.isValidPort()} ?: DEFAULT_LOCAL_HOST_PORT}"
 
 private fun String.buildRemoteUrl(env: String): String = when {
     this.isEmpty() || !this.isTennantIdValid() -> {
@@ -47,6 +50,8 @@ private fun String.buildRemoteUrl(env: String): String = when {
         builder.toString()
     }
 }
+
+internal fun Int.isValidPort() = this in (PORT_MIN_VALUE..PORT_MAX_VALUE)
 
 internal fun String.isTennantIdValid():Boolean {
     val m = Pattern.compile("^[a-zA-Z0-9]*\$").matcher(this)

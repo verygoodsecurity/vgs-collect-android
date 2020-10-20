@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.AsyncTask
+import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
@@ -92,9 +93,14 @@ class VGSCollect {
     /**
      * @param id Unique Vault id
      * @param environment Type of Vault
-     * @param port Optional endpoint port number
+     * @param port Optional endpoint port number (min = [PORT_MIN_VALUE], max = [PORT_MAX_VALUE])
      */
-    constructor(context: Context, id: String, environment: String, port: String?) {
+    constructor(
+        context: Context,
+        id: String,
+        environment: String,
+        @IntRange(from = PORT_MIN_VALUE, to = PORT_MAX_VALUE) port: Int?
+    ) {
         this.context = context
         tracker = CollectActionTracker(context, id, environment, UUID.randomUUID().toString())
         baseURL = id.setupURL(environment, port)
