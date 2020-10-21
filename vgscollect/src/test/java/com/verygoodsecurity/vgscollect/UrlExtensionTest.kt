@@ -235,7 +235,7 @@ class UrlExtensionTest {
         val url0 = tennant.setupURL("local_sandbox")
         assertTrue(url0.contains("9098"))
 
-        val url1 = tennant.setupURL("local_sandbox", "1024")
+        val url1 = tennant.setupURL("local_sandbox", 1024)
         assertFalse(url1.contains("9098"))
         assertTrue(url1.contains("1024"))
     }
