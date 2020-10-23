@@ -14,19 +14,12 @@ Table of contents
    * [Dependencies](#dependencies)
    * [Structure](#structure)
    * [Integration](#integration)
-      * [Add the SDK to your project](#add-the-sdk-to-your-project)
-   * [Usage](#usage)
-      * [Session initialization](#session-initialization)
-      * [Submit information](#submit-information)
-      * [Fields state tracking](#fields-state-tracking)
-      * [Handle service response](#handle-service-response)
-      * [End session](#end-session)
    * [Next steps](#next-steps)
    * [License](#license)
 <!--te-->
 
 <p align="center">
-<img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/master/vgs-collect-android-state.png" width="200" alt="VGS Collect Android SDK States" hspace="20"><img src="https://github.com/verygoodsecurity/vgs-collect-android/blob/master/vgs-collect-android-response.png" width="200" alt="VGS Collect Android SDK Response" hspace="20">
+<img src="/img/vgs-collect-android-state.png" width="200" alt="VGS Collect Android SDK States" hspace="20"><img src="/img/vgs-collect-android-response.png" width="200" alt="VGS Collect Android SDK Response" hspace="20">
 </p>
 
 ## Dependencies
@@ -37,7 +30,6 @@ Table of contents
 | Target SDK | 30 |
 | androidx.appcompat:appcompat | 1.2.0 |
 | com.google.android.material:material | 1.2.0 |
-| androidx.core:core-ktx | 1.3.1 |
 
 ## Structure
 * **VGSCollect SDK** - provides an API for interacting with the VGS Vault
@@ -47,98 +39,209 @@ Table of contents
 ## Integration
 For integration you need to install the [Android Studio](http://developer.android.com/sdk/index.html) and a [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) on your machine.
 
-#### Add the SDK to your project
-If you are using Maven, add the following to your `build.gradle` file:
+
+<table>
+  <tr>
+    <td colspan="2">
+      <b>Integrate the VGS Collect SDK to your project</b>. <br/>
+      If you are using Maven, add the following to your <code>build.gradle</code> file.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+
 ```gradle
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:1.2.4’
+    implementation "androidx.appcompat:appcompat:<version>"
+    implementation "com.google.android.material:material:<version>"
+
+    implementation "com.verygoodsecurity:vgscollect:<latest-version>"
 }
 ```
+  </td>
+  </tr>
 
-## Usage
 
-#### Session initialization
-Add VGSEditText to your layout file:
+  <tr>
+    <td> <b>Add input fields to <code>R.layout.activity_main </code> layout file </b>. </td>
+     <th rowspan="2" width="33%" ><img src="/img/vgs-layout-config.png"></th>
+  </tr>
+  <tr>
+    <td >
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
-  	 android:id="@+id/your_field"
-   	 android:layout_width="match_parent"
-  	 android:layout_height="wrap_content" />
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hint="Card number"
+        app:boxCornerRadius="8dp"
+        app:boxBackgroundModes="outline">
+
+        <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+            android:id="@+id/cardNumberField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            app:fieldName="cardNumber"
+            app:numberDivider="-"
+            app:cardBrandIconGravity="end"/>
+
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+//Other fields..
+
+</LinearLayout>
 ```
+  </td>
+  </tr>
 
-Add the following code to initialize the SDK to your Activity or Fragment class:
-```java
-public class ExampleActivity extends Activity {
-   private VGSCollect vgsForm;
+  <tr>
+    <td>
+      <b> To initialize VGSCollect you have to set your <a href="https://www.verygoodsecurity.com/docs/terminology/nomenclature#vault">vault id</a> and <a href="https://www.verygoodsecurity.com/docs/getting-started/going-live#sandbox-vs-live">Environment</a> type.</b> </br>You can find more information at the following <a href="https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk/submit-data#start-session">section</a>.
+    </td>
+     <th rowspan="2"><img src="/img/vgs-field-setup-state.gif"></th>
+  </tr>
+  <tr>
+    <td>
 
-   @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.example_layout);
+```kotlin
+import com.verygoodsecurity.vgscollect.core.Environment
+import com.verygoodsecurity.vgscollect.core.VGSCollect
 
-        vgsForm = new VGSCollect( this, user_key, Environment.SANDBOX);
+class MainActivity : AppCompatActivity() {
+  private lateinit var vgsForm:VGSCollect
 
-        vgsForm.addOnFieldStateChangeListener(...);
-        vgsForm.setOnResponseListener(...);
+  override fun onCreate(savedInstanceState: Bundle?) {
+     super.onCreate(savedInstanceState)
+     setContentView(R.layout.activity_main)
 
-        VGSCardNumberEditText yourField = findViewById(R.id.your_field);
-        vgsForm.bindView(yourField);
-    }
+     vgsForm = VGSCollect(this, "<vauilt_id>", Environment.SANDBOX)
 
-    private void submitData() {
-        //...
-    }
+     val view = findViewById<VGSCardNumberEditText>(R.id.cardNumberField)
+     vgsForm.bindView(view)
+    // Bind other fields
 
-    @Override
-    protected void onDestroy() {
-        //...
-    }
+  }
+
+  override fun onDestroy() {
+      vgsForm.onDestroy()
+      super.onDestroy()
+  }
 }
 ```
+  </td>
+  </tr>
 
-#### Fields state tracking
-Whenever an EditText changes, **VGSCollect** can notify user about it. Implement `OnFieldStateChangeListener` to observe changes:
-```java
-  vgsForm.addOnFieldStateChangeListener(new OnFieldStateChangeListener() {
-            @Override
-            public void onStateChange(FieldState state) {
-                //...
-            }
-        });
-```
 
-#### Submit information
-Call `asyncSubmit` or `submit` to execute and send data on VGS Server if you want to handle multithreading by yourself:
-```java
-private void submitData() {
-    //..
-    vgsForm.asyncSubmit("/path", HTTPMethod.POST);
+  <tr>
+    <td>
+      <b>Fields state tracking</b>. </br> When an object of this type is attached to a VGS secure field, its methods will be called when the text or focus is changed.
+    </td>
+     <th rowspan="2"><img src="/img/vgs-field-states.gif"></th>
+  </tr>
+  <tr>
+    <td>
+
+```kotlin
+import com.verygoodsecurity.vgscollect.core.Environment
+import com.verygoodsecurity.vgscollect.core.VGSCollect
+
+class MainActivity : AppCompatActivity() {
+  private lateinit var vgsForm:VGSCollect
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+     super.onCreate(savedInstanceState)
+     setContentView(R.layout.activity_main)
+
+     vgsForm = VGSCollect(this, "<vauilt_id>", Environment.SANDBOX)
+     vgsForm.addOnFieldStateChangeListener(
+     	object : OnFieldStateChangeListener {
+         override fun onStateChange(state: FieldState) {
+            // Handle input fields states
+         }
+     })
+
+     val view = findViewById<VGSCardNumberEditText>(R.id.cardNumberField)
+     view?.setOnFieldStateChangeListener(
+     	object : OnFieldStateChangeListener {
+         override fun onStateChange(state: FieldState) {
+            // Handle single field states
+         }
+     })
+     vgsForm.bindView(cardNumberField)
+    // Bind other fields
+
+  }
+
+  override fun onDestroy() {
+     vgsForm.onDestroy()
+     super.onDestroy()
+  }
 }
 ```
+  </td>
+  </tr>
 
 
-#### Handle service response
-You need to implement `VgsCollectResponseListener` to read response:
-```java
-  vgsForm.setOnResponseListener(new VgsCollectResponseListener() {
-            @Override
-            public void onResponse(@org.jetbrains.annotations.Nullable VGSResponse response) {
-                //...
-            }
-        });
-```
+  <tr>
+    <td> <b>Send a simple request. Receive responses. </b> </br> Call <code>asyncSubmit</code> to execute and send data on VGS Server. </br> To retrieve response you need to implement <code>VgsCollectResponseListener </code>. </td>
+     <th rowspan="2"><img src="/img/vgs-response-state.gif"></th>
+  </tr>
+  <tr>
+    <td>
 
-#### End session
-Finish work with **VGSCollect** by calling `onDestroy` inside android onDestroy callback:
-```java
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        vgsForm.onDestroy();
+```kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+
+    vgsForm = VGSCollect(this, "<vauilt_id>", Environment.SANDBOX)
+
+    val submitBtn = findViewById<Button>(R.id.submitBtn)
+    submitBtn?.setOnClickListener {
+        submitData()
     }
- ```
+
+    val view = findViewById<VGSCardNumberEditText>(R.id.cardNumberField)
+    view.bindView(cardNumberField)
+    // Bind other fields
+
+    val submitBtn = findViewById<Button>(R.id.submitBtn)
+    submitBtn?.setOnClickListener {
+        vgsForm.asyncSubmit("/post", HTTPMethod.POST)
+    }
+
+    vgsForm.addOnResponseListeners(
+    	object : VgsCollectResponseListener {
+        override fun onResponse(response: VGSResponse?) {
+            when(response) {
+                is VGSResponse.SuccessResponse -> {
+                    val successCode = response.successCode
+                    val rawResponse = response.rawResponse
+                }
+                is VGSResponse.ErrorResponse -> {
+                    val errorCode = response.errorCode
+                    val localizeMessage = response.localizeMessage
+                }
+            }
+        }
+    })
+}
+```
+  </td>
+  </tr>
+
+</table>
+
 
 ## Next steps
 Check out documentation guides:
