@@ -28,8 +28,8 @@ For integration you need to install the [Android Studio](http://developer.androi
 To use the SDK in project you just simply need to add the following line of dependency in your module `gradle.gradle` file:
 ```
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:1.0.2’ //required version 1.0.2 or above
-   implementation 'com.verygoodsecurity.api:adapter-cardio:1.0.0’
+   implementation 'com.verygoodsecurity:vgscollect:1.2.5’ //required version 1.2.5 or above
+   implementation 'com.verygoodsecurity.api:adapter-cardio:<latest-version>’
 }
 ```
 
@@ -39,25 +39,36 @@ dependencies {
 
 Before scanning you have to setup which information you need to retrieve and final destination VGS secure field:
 ```
-HashMap<String, Integer> scanSettings = new HashMap<>();
-scanSettings.put(cardNumberField.getFieldName(), ScanActivity.CARD_NUMBER);
-scanSettings.put(cardCvcield.getFieldName(), ScanActivity.CARD_CVC);
-scanSettings.put(cardHolderField.getFieldName(), ScanActivity.CARD_HOLDER);
-scanSettings.put(cardExpDateField.getFieldName(), ScanActivity.CARD_EXP_DATE);
-scanSettings.put(cardPostalCodeField.getFieldName(), ScanActivity.POSTAL_CODE);
+val scanSettings = hashMapOf<String?, Int>().apply {
+    this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
+    this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
+    this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
+    this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
+}
 ```
 
 To start scanning you need to attach a Map with settings to Intent and start ScanActivity.
 ```
 public void scanCard() {
-   Intent intent = new Intent(this, ScanActivity.class);
- 
-   HashMap<String, Integer> scanSettings = new HashMap<>();
-   scanSettings.put(cardNumberField.getFieldName(), ScanActivity.CARD_NUMBER);
- 
-   intent.putExtra(ScanActivity.SCAN_CONFIGURATION, scanSettings);
- 
-   startActivityForResult(intent, USER_SCAN_REQUEST_CODE);
+    val bndl = with(Bundle()) {
+        val scanSettings = hashMapOf<String?, Int>().apply {
+            this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
+            this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
+            this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
+            this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
+        }
+        putSerializable(ScanActivity.SCAN_CONFIGURATION, scanSettings)
+
+        putInt(ScanActivity.EXTRA_GUIDE_COLOR, Color.WHITE)
+        putBoolean(ScanActivity.EXTRA_REQUIRE_POSTAL_CODE, true)
+        putBoolean(ScanActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, false)
+        putBoolean(ScanActivity.EXTRA_SUPPRESS_CONFIRMATION, false)
+        putString(ScanActivity.EXTRA_LANGUAGE_OR_LOCALE, "en")
+        putString(ScanActivity.EXTRA_SCAN_INSTRUCTIONS, "Scanning payment card")
+        this
+    }
+
+    ScanActivity.scan(this, USER_SCAN_REQUEST_CODE, bndl)
 }
 ```
 
