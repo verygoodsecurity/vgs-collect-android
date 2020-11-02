@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect
 
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.api.*
+import com.verygoodsecurity.vgscollect.util.with
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.regex.Pattern
@@ -217,5 +218,14 @@ class UrlExtensionTest {
 
         val url5 = tennant.setupURL("SANDBOX-EU-1")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url5).matches())
+    }
+
+    @Test
+    fun test_environment_concatenation() {
+        assertEquals("sandbox-eu-1", "sandbox" with "eu-1")
+        assertEquals("sandbox-eu-1", "sandbox" with "-eu-1")
+        assertEquals("live-eu-", "live" with "-eu-")
+        assertEquals("live-eu", "live" with "eu")
+        assertEquals("live", "live" with "")
     }
 }
