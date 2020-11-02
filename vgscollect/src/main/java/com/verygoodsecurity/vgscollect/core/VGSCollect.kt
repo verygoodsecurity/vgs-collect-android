@@ -101,6 +101,20 @@ class VGSCollect {
         /** Unique Vault id */
         id: String,
 
+        /** Type of Environment */
+        environmentType: String,
+
+        /** Region identifier */
+        suffix: String
+    ): this(context, id, environmentType with suffix)
+
+    constructor(
+        /** Activity context */
+        context: Context,
+
+        /** Unique Vault id */
+        id: String,
+
         /** Type of Vault */
         environment: String
     ) {

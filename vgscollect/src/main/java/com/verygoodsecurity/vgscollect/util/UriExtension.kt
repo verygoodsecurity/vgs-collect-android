@@ -29,3 +29,11 @@ internal fun Uri.parseFile(context: Context, fieldName:String): FileState? {
         fieldName
     )
 }
+
+infix fun String.with(suffix: String): String {
+    return when {
+        suffix.isEmpty() -> this
+        suffix[0] == '-' -> this+suffix
+        else -> "$this-$suffix"
+    }
+}
