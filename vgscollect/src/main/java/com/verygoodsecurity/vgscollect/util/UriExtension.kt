@@ -6,7 +6,7 @@ import android.provider.OpenableColumns
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
 
 /** @suppress */
-internal fun Uri.parseFile(context: Context, fieldName:String): FileState? {
+internal fun Uri.parseFile(context: Context, fieldName: String): FileState? {
     val mimeType: String? = this.let { returnUri ->
         context.contentResolver.getType(returnUri)
     }
@@ -28,4 +28,12 @@ internal fun Uri.parseFile(context: Context, fieldName:String): FileState? {
         mimeType,
         fieldName
     )
+}
+
+internal infix fun String.with(suffix: String): String {
+    return when {
+        suffix.isEmpty() -> this
+        suffix[0] == '-' -> this + suffix
+        else -> "$this-$suffix"
+    }
 }
