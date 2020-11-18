@@ -9,7 +9,7 @@ import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.app.FilePickerActivity
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
-import com.verygoodsecurity.vgscollect.util.parseFile
+import com.verygoodsecurity.vgscollect.util.extension.parseFile
 import java.util.HashMap
 
 internal class TemporaryFileStorage(

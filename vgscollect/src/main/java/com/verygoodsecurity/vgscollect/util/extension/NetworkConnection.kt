@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.util
+package com.verygoodsecurity.vgscollect.util.extension
 
 import android.content.Context
 import android.net.ConnectivityManager
