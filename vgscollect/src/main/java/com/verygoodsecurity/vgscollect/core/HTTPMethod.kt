@@ -8,11 +8,6 @@ package com.verygoodsecurity.vgscollect.core
 enum class HTTPMethod {
 
     /**
-     *  HTTP GET method
-     */
-    GET,
-
-    /**
      *  HTTP POST method
      */
     POST

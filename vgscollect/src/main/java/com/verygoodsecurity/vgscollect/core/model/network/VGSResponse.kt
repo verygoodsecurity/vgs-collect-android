@@ -7,7 +7,7 @@ package com.verygoodsecurity.vgscollect.core.model.network
  *
  * @version 1.0.1
  */
-sealed class VGSResponse(val code:Int = -1) {
+sealed class VGSResponse(val code: Int = -1) {
 
     /**
      * The class definition for a success response state.
@@ -17,10 +17,11 @@ sealed class VGSResponse(val code:Int = -1) {
      * @param successCode The response code from server.
      */
     class SuccessResponse(
-        val response:Map<String, Any>? = null,
-        val rawResponse:String? = null,
-        val successCode:Int = -1
-    ): VGSResponse(successCode) {
+        @Deprecated("rawResponse attribute better to use for response parsing")
+        val response: Map<String, Any>? = null,
+        val rawResponse: String? = null,
+        val successCode: Int = -1
+    ) : VGSResponse(successCode) {
         override fun toString(): String {
             return "Code: $successCode \n $rawResponse"
         }
@@ -33,12 +34,11 @@ sealed class VGSResponse(val code:Int = -1) {
      * @param errorCode The response code from server.
      */
     class ErrorResponse(
-        val localizeMessage:String? = "Can't connect to server",
-        val errorCode:Int = -1
-    ): VGSResponse(errorCode) {
+        val localizeMessage: String = "Can't connect to server",
+        val errorCode: Int = -1,
+    ) : VGSResponse(errorCode) {
         override fun toString(): String {
             return "Code: $errorCode \n $localizeMessage"
         }
     }
-
 }

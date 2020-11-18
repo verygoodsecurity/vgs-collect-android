@@ -30,10 +30,16 @@ internal fun Uri.parseFile(context: Context, fieldName: String): FileState? {
     )
 }
 
-internal infix fun String.with(suffix: String): String {
+internal infix fun String.concatWithDash(suffix: String): String {
     return when {
         suffix.isEmpty() -> this
         suffix[0] == '-' -> this + suffix
         else -> "$this-$suffix"
     }
+}
+
+internal infix fun String.concatWithSlash(suffix: String): String = when {
+    suffix.isEmpty() -> this
+    suffix.startsWith("/") -> this + suffix
+    else -> "$this/$suffix"
 }

@@ -54,30 +54,3 @@ internal fun String.isURLValid():Boolean {
         false
     }
 }
-
-internal fun String.buildURL(path: String, vararg getQuery:String):URL? {
-    val builder = StringBuilder(this)
-
-    when {
-        path.isEmpty() -> {}
-        path.length > 1 && path.first().toString() == "/" -> builder.append(path)
-        else -> builder.append("/").append(path)
-    }
-
-    if(getQuery.isNotEmpty()) {
-        builder.append("?")
-        getQuery.forEach {
-            if(builder.last() != '?') {
-                builder.append("&")
-            }
-            builder.append(it)
-        }
-    }
-
-    var url:URL? = null
-    try {
-        url = URL(builder.toString())
-    } catch (e: MalformedURLException) { }
-
-    return url
-}
