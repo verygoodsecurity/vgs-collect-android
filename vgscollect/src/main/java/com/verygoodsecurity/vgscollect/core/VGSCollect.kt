@@ -3,11 +3,9 @@ package com.verygoodsecurity.vgscollect.core
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.VisibleForTesting
-import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
@@ -28,6 +26,8 @@ import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyD
 import com.verygoodsecurity.vgscollect.util.*
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
+import com.verygoodsecurity.vgscollect.util.extension.hasAccessNetworkStatePermission
+import com.verygoodsecurity.vgscollect.util.extension.hasInternetPermission
 import com.verygoodsecurity.vgscollect.util.extension.isConnectionAvailable
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -238,33 +238,14 @@ class VGSCollect {
      * @param path path for a request
      * @param method HTTP method
      */
-    fun submit(path: String, method: HTTPMethod = HTTPMethod.POST) {
-        when {
-            !context.isConnectionAvailable() -> notifyAllListeners(
-                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(
-                    context
-                )
-            )
-            checkInternetPermission() && isUrlValid() && validateFields() && validateFiles() -> {
-                val request = VGSRequest.VGSRequestBuilder()
-                    .setPath(path)
-                    .setMethod(method)
-                    .build()
+    fun submit(path: String, method: HTTPMethod = HTTPMethod.POST): VGSResponse {
+        val request = VGSRequest.VGSRequestBuilder()
+            .setPath(path)
+            .setMethod(method)
+            .build()
 
-                mergeData(request.customData, request.fieldsIgnore, request.fileIgnore)
-
-                submitEvent(
-                    true, !request.fileIgnore, !request.fieldsIgnore,
-                    request.customHeader.isNotEmpty(), request.customData.isNotEmpty()
-                )
-
-                val r = client.execute(request)
-
-                notifyAllListeners(r.toVGSResponse(context))
-            }
-        }
+        return submit(request)
     }
-
 
     /**
      * This method executes and send data on VGS Server. It could be useful if you want to handle
@@ -273,28 +254,14 @@ class VGSCollect {
      *
      * @param request data class with attributes for submit.
      */
-    fun submit(request: VGSRequest) {
-        when {
-            !context.isConnectionAvailable() -> notifyAllListeners(
-                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(
-                    context
-                )
-            )
-            checkInternetPermission() && isUrlValid() ||
-                    !((request.fieldsIgnore || validateFields()) && (request.fileIgnore || validateFiles())) -> {
+    fun submit(request: VGSRequest): VGSResponse {
+        var response: VGSResponse = VGSResponse.ErrorResponse()
 
-                mergeData(request.customData, request.fieldsIgnore, request.fileIgnore)
-
-                submitEvent(
-                    true, !request.fileIgnore, !request.fieldsIgnore,
-                    request.customHeader.isNotEmpty(), request.customData.isNotEmpty()
-                )
-
-                val r = client.execute(request)
-
-                notifyAllListeners(r.toVGSResponse(context))
-            }
+        collectUserData(request) {
+            response = client.execute(request).toVGSResponse(context)
         }
+
+        return response
     }
 
     /**
@@ -306,33 +273,12 @@ class VGSCollect {
     fun asyncSubmit(
         path: String, method: HTTPMethod
     ) {
-        when {
-            !context.isConnectionAvailable() -> notifyAllListeners(
-                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(
-                    context
-                )
-            )
-            checkInternetPermission() && isUrlValid() && validateFields() && validateFiles() -> {
-                val request = VGSRequest.VGSRequestBuilder()
-                    .setPath(path)
-                    .setMethod(method)
-                    .build()
+        val request = VGSRequest.VGSRequestBuilder()
+            .setPath(path)
+            .setMethod(method)
+            .build()
 
-                mergeData(request.customData, request.fieldsIgnore, request.fileIgnore)
-
-                submitEvent(
-                    true,
-                    !request.fileIgnore,
-                    !request.fieldsIgnore,
-                    request.customHeader.isNotEmpty(),
-                    request.customData.isNotEmpty()
-                )
-
-                client.enqueue(request) { r ->
-                    notifyAllListeners(r.toVGSResponse(context))
-                }
-            }
-        }
+        asyncSubmit(request)
     }
 
     /**
@@ -341,17 +287,26 @@ class VGSCollect {
      * @param request data class with attributes for submit
      */
     fun asyncSubmit(request: VGSRequest) {
+        collectUserData(request) {
+            client.enqueue(request) { r ->
+                mainHandler.post { notifyAllListeners(r.toVGSResponse()) }
+            }
+        }
+    }
+
+    private fun collectUserData(request: VGSRequest, submitRequest: () -> Unit) {
         when {
             !request.fieldsIgnore && !validateFields() -> return
             !request.fileIgnore && !validateFiles() -> return
-            !context.isConnectionAvailable() -> notifyAllListeners(
-                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(
-                    context
-                )
-            )
-            checkInternetPermission() && isUrlValid() -> {
+            !isURLValid -> notifyAllListeners(VGSError.URL_NOT_VALID.toVGSResponse(context))
+            !context.hasInternetPermission() ->
+                notifyAllListeners(VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse(context))
+            !context.hasAccessNetworkStatePermission() ->
+                notifyAllListeners(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(context))
+            !context.isConnectionAvailable() ->
+                notifyAllListeners(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(context))
+            else -> {
                 mergeData(request.customData, request.fieldsIgnore, request.fileIgnore)
-
                 submitEvent(
                     true,
                     !request.fileIgnore,
@@ -359,40 +314,13 @@ class VGSCollect {
                     request.customHeader.isNotEmpty(),
                     request.customData.isNotEmpty()
                 )
-
-                client.enqueue(request) { r ->
-                    mainHandler.post { notifyAllListeners(r.toVGSResponse()) }
-                }
+                submitRequest()
             }
-            else -> notifyAllListeners(VGSResponse.ErrorResponse())
         }
     }
 
     private fun notifyAllListeners(r: VGSResponse) {
         responseListeners.forEach { it.onResponse(r) }
-    }
-
-    private fun checkInternetPermission(): Boolean {
-        return with(
-            ContextCompat.checkSelfPermission(
-                context,
-                android.Manifest.permission.INTERNET
-            ) != PackageManager.PERMISSION_DENIED
-        ) {
-            if (this.not()) {
-                notifyAllListeners(VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse(context))
-            }
-            this
-        }
-    }
-
-    private fun isUrlValid(): Boolean {
-        return with(isURLValid) {
-            if (this.not()) {
-                notifyAllListeners(VGSError.URL_NOT_VALID.toVGSResponse(context))
-            }
-            this
-        }
     }
 
     private fun validateFiles(): Boolean {
@@ -662,12 +590,5 @@ class VGSCollect {
         tracker.logEvent(
             AttachFileAction(m)
         )
-    }
-
-    private var cname: String = ""
-    fun setCname(url: String?) {
-        cname = url ?: baseURL
-//        val CNameClient = OkHttpClient.newInstance(context, cname)
-//        CNameClient.call("/post", HTTPMethod.POST, null, null)
     }
 }
