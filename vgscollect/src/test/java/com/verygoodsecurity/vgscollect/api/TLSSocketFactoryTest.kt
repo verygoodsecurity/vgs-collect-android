@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.api
 
-import com.verygoodsecurity.vgscollect.core.api.TLSSocketFactory
+import com.verygoodsecurity.vgscollect.core.api.client.ssl.TLSSocketFactory
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
