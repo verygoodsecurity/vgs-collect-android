@@ -517,15 +517,6 @@ class VGSCollect {
         )
     }
 
-    private fun String.toMD5(): String {
-        val bytes = MessageDigest.getInstance("MD5").digest(this.toByteArray())
-        return bytes.joinToString("") { "%02x".format(it) }
-    }
-
-    private fun calculateCheckSum(): String {
-        return mergeData()?.mapToJSON().toString().toMD5()
-    }
-
     private fun submitEvent(
         isSuccess: Boolean,
         hasFiles: Boolean = false,
@@ -539,8 +530,6 @@ class VGSCollect {
                 if (isSuccess) put("status", "Ok") else put("status", "Failed")
 
                 put("statusCode", code)
-
-                put("checkSum", calculateCheckSum())
 
                 val arr = with(mutableListOf<String>()) {
                     if (hasFiles) add("file")
@@ -570,7 +559,6 @@ class VGSCollect {
             val m = with(mutableMapOf<String, Any>()) {
                 put("statusCode", code)
                 put("status", BaseTransmitActivity.Status.SUCCESS.raw)
-                put("checkSum", calculateCheckSum())
                 if (!message.isNullOrEmpty()) put("error", message)
 
                 this
