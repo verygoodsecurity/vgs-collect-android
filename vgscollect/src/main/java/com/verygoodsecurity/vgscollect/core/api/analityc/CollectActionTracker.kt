@@ -5,7 +5,6 @@ import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.Action
-import com.verygoodsecurity.vgscollect.core.isLive
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import java.util.*
 import java.util.concurrent.Executors
@@ -21,13 +20,7 @@ internal class CollectActionTracker(
     }
 
     private val client: ApiClient by lazy {
-        val url = if (environment.isLive()) {
-            "https://vgs-collect-keeper.apps.verygood.systems"
-        } else {
-            "https://vgs-collect-keeper.verygoodsecurity.io"
-        }
-
-        return@lazy ApiClient.newHttpClient(url)
+        return@lazy ApiClient.newHttpClient(URL)
     }
 
     override fun logEvent(action: Action) {
@@ -110,5 +103,6 @@ internal class CollectActionTracker(
 
     companion object {
         private const val ENDPOINT = "/vgs"
+        private const val URL = "https://vgs-collect-keeper.apps.verygood.systems"
     }
 }
