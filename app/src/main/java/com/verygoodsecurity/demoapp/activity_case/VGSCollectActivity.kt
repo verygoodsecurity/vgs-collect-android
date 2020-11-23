@@ -11,7 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.verygoodsecurity.api.bouncer.ScanActivity
+import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.core.Environment
@@ -238,29 +238,18 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun scanCard() {
-        val bndl = with(Bundle()) {
-            val scanSettings = hashMapOf<String?, Int>().apply {
-                this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
-                this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
-                this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
-                this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
-            }
+        val intent = Intent(this, ScanActivity::class.java)
 
-            putSerializable(ScanActivity.SCAN_CONFIGURATION, scanSettings)
-
-            putString(ScanActivity.API_KEY, "<user_bouncer_key>")
-
-            putBoolean(ScanActivity.ENABLE_EXPIRY_EXTRACTION, false)
-            putBoolean(ScanActivity.ENABLE_NAME_EXTRACTION, false)
-            putBoolean(ScanActivity.DISPLAY_CARD_PAN, false)
-            putBoolean(ScanActivity.DISPLAY_CARD_HOLDER_NAME, false)
-            putBoolean(ScanActivity.DISPLAY_CARD_SCAN_LOGO, false)
-            putBoolean(ScanActivity.ENABLE_DEBUG, false)
-
-            this
+        val scanSettings = hashMapOf<String?, Int>().apply {
+            this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
+            this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
+            this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
+            this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
         }
 
-        ScanActivity.scan(this, USER_SCAN_REQUEST_CODE, bndl)
+        intent.putExtra(ScanActivity.SCAN_CONFIGURATION, scanSettings)
+
+        startActivityForResult(intent, USER_SCAN_REQUEST_CODE)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {

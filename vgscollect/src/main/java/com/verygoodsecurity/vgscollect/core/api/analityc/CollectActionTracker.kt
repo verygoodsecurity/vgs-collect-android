@@ -1,41 +1,26 @@
 package com.verygoodsecurity.vgscollect.core.api.analityc
 
-import android.content.Context
 import android.os.Build
-import android.util.Log
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
-import com.verygoodsecurity.vgscollect.core.api.AnalyticClient
-import com.verygoodsecurity.vgscollect.core.api.AnalyticURLConnectionClient
-import com.verygoodsecurity.vgscollect.core.api.ApiClient
+import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.Action
-import com.verygoodsecurity.vgscollect.core.isLive
+import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import java.util.*
 import java.util.concurrent.Executors
 
 internal class CollectActionTracker(
-    context: Context,
     val tnt: String,
     val environment: String,
     val formId: String
 ) : AnalyticTracker {
 
     internal object Sid {
-        val id =  "${UUID.randomUUID()}"
+        val id = "${UUID.randomUUID()}"
     }
 
-    private val client:ApiClient by lazy {
-        val url = if(environment.isLive()) {
-            "https://vgs-collect-keeper.apps.verygood.systems"
-        } else {
-            "https://vgs-collect-keeper.verygoodsecurity.io"
-        }
-
-        return@lazy if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AnalyticClient.newInstance(context, url)
-        } else {
-            AnalyticURLConnectionClient.newInstance(url)
-        }
+    private val client: ApiClient by lazy {
+        return@lazy ApiClient.newHttpClient(URL)
     }
 
     override fun logEvent(action: Action) {
@@ -49,19 +34,19 @@ internal class CollectActionTracker(
     }
 
     private class Event(
-        private val client:ApiClient,
+        private val client: ApiClient,
         private val tnt: String,
         private val environment: String,
         private val formId: String
-    ):Runnable {
+    ) : Runnable {
 
-        var map:MutableMap<String, Any> = mutableMapOf()
+        var map: MutableMap<String, Any> = mutableMapOf()
             set(value) {
                 field = value
                 field.putAll(attachDefaultInfo(value))
             }
 
-        private fun attachDefaultInfo(map: MutableMap<String, Any>):Map<String, Any> {
+        private fun attachDefaultInfo(map: MutableMap<String, Any>): Map<String, Any> {
             return with(map) {
                 this[VG_SESSION_ID] = Sid.id
                 this[FORM_ID] = formId
@@ -70,7 +55,7 @@ internal class CollectActionTracker(
                 this[TNT] = tnt
                 this[ENVIRONMENT] = environment
                 this[VERSION] = BuildConfig.VERSION_NAME
-                if(!this.containsKey(STATUS)) {
+                if (!this.containsKey(STATUS)) {
                     this[STATUS] = STATUS_OK
                 }
 
@@ -86,7 +71,13 @@ internal class CollectActionTracker(
         }
 
         override fun run() {
-            client.call(ENDPOINT, HTTPMethod.POST, null, map)
+            val r = VGSRequest.VGSRequestBuilder()
+                .setPath(ENDPOINT)
+                .setMethod(HTTPMethod.POST)
+                .setCustomData(map)
+                .build()
+
+            client.enqueue(r)
         }
 
         companion object {
@@ -111,6 +102,7 @@ internal class CollectActionTracker(
     }
 
     companion object {
-        private const val  ENDPOINT = "/vgs"
+        private const val ENDPOINT = "/vgs"
+        private const val URL = "https://vgs-collect-keeper.apps.verygood.systems"
     }
 }

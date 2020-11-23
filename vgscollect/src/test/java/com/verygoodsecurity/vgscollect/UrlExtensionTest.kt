@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscollect
 
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.api.*
-import com.verygoodsecurity.vgscollect.util.with
 import org.junit.Assert.*
 import org.junit.Test
 import java.util.regex.Pattern
@@ -10,42 +9,6 @@ import java.util.regex.Pattern
 class UrlExtensionTest {
     companion object {
         private const val URL_REGEX = "^(https:\\/\\/)+[a-zA-Z0-9]+[.]+((live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+)+[.](verygoodproxy.com)\$"
-    }
-
-    @Test
-    fun test_build_URL_fault() {
-        val url1 = "a".buildURL("path")
-        assertEquals(null, url1)
-
-        val url2 = "".buildURL("path")
-        assertEquals(null, url2)
-
-        val url3 = "a.a".buildURL("path")
-        assertEquals(null, url3)
-    }
-
-    @Test
-    fun test_build_URL_path_right() {
-        val url1 = "http://a.a".buildURL("path")
-        assertEquals("http://a.a/path", url1.toString())
-
-        val url2 = "http://a.a".buildURL("")
-        assertEquals("http://a.a", url2.toString())
-
-        val url3 = "http://a.a".buildURL("/path")
-        assertEquals("http://a.a/path", url3.toString())
-    }
-
-    @Test
-    fun test_build_URL_path_query_right() {
-        val url1 = "http://a.a".buildURL("path", "method=EMPTY", "class=android", "param3")
-        assertEquals("http://a.a/path?method=EMPTY&class=android&param3", url1.toString())
-
-        val url2 = "http://a.a".buildURL("","method=EMPTY", "class=android", "param3")
-        assertEquals("http://a.a?method=EMPTY&class=android&param3", url2.toString())
-
-        val url3 = "http://a.a".buildURL("")
-        assertEquals("http://a.a", url3.toString())
     }
 
     @Test
@@ -218,14 +181,5 @@ class UrlExtensionTest {
 
         val url5 = tennant.setupURL("SANDBOX-EU-1")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url5).matches())
-    }
-
-    @Test
-    fun test_environment_concatenation() {
-        assertEquals("sandbox-eu-1", "sandbox" with "eu-1")
-        assertEquals("sandbox-eu-1", "sandbox" with "-eu-1")
-        assertEquals("live-eu-", "live" with "-eu-")
-        assertEquals("live-eu", "live" with "eu")
-        assertEquals("live", "live" with "")
     }
 }

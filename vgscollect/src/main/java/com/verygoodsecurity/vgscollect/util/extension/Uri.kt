@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.util
+package com.verygoodsecurity.vgscollect.util.extension
 
 import android.content.Context
 import android.net.Uri
@@ -28,12 +28,4 @@ internal fun Uri.parseFile(context: Context, fieldName: String): FileState? {
         mimeType,
         fieldName
     )
-}
-
-internal infix fun String.with(suffix: String): String {
-    return when {
-        suffix.isEmpty() -> this
-        suffix[0] == '-' -> this + suffix
-        else -> "$this-$suffix"
-    }
 }

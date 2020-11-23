@@ -8,7 +8,7 @@ import org.junit.Test
 class RequestTest {
 
     @Test
-    fun test_create_default_VGSRequest() {
+    fun test_create_default_request() {
         val r = VGSRequest.VGSRequestBuilder().build()
         assertEquals("/post", r.path)
         assertEquals(HTTPMethod.POST, r.method)
@@ -17,8 +17,8 @@ class RequestTest {
     }
 
     @Test
-    fun test_create_VGSRequest_with_custom_data() {
-        val METHOD = HTTPMethod.GET
+    fun test_create_request_with_custom_data() {
+        val METHOD = HTTPMethod.POST
         val PATH = "/some/path"
         val headers = HashMap<String, String>()
         headers["HEADER-S"] = "some-data"
@@ -39,8 +39,8 @@ class RequestTest {
     }
 
     @Test
-    fun test_create_VGSRequest_without_custom_data() {
-        val METHOD = HTTPMethod.GET
+    fun test_create_request_without_custom_data() {
+        val METHOD = HTTPMethod.POST
         val PATH = "/some/path"
         val r = VGSRequest.VGSRequestBuilder()
             .setMethod(METHOD)

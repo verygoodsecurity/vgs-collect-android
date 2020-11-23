@@ -138,6 +138,7 @@
                                         android:layout_height="match_parent"
                                         app:fieldName="card_data.cardNumber"
                                         style="@style/AppTheme.PaymentField"
+                                        app:text="4111-1111-1111-1111"
                                         app:numberDivider="-"
                                         app:validationRule="acceptUnknown"
                                         app:fontFamily="@font/robotomono_light"
@@ -166,6 +167,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         style="@style/AppTheme.PaymentField"
+                                        app:text="John G"
                                         android:nextFocusDown="@+id/cardExpDateField"
                                         app:imeOptions="actionNext"
                                         app:fontFamily="@font/robotomono_light"
@@ -197,6 +199,7 @@
                                         android:nextFocusDown="@+id/cardCVCField"
                                         app:imeOptions="actionNext"
                                         app:inputType="date"
+                                        app:text="09/2025"
                                         app:fontFamily="@font/robotomono_light"
                                         app:datePickerModes="input"
                                         app:outputPattern="yyyy-MM-dd'T'HH:mm:ss.SSSSSSS"
@@ -217,6 +220,7 @@
                                         android:layout_height="match_parent"
                                         style="@style/AppTheme.PaymentField"
                                         app:fieldName="card_data.cardCvc"
+                                        app:text="123"
                                         app:fontFamily="@font/robotomono_light"
                                         app:imeOptions="actionDone"/>
                                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
