@@ -6,8 +6,8 @@ import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 data class NetworkRequest(
     val method: HTTPMethod,
     var url: String,
-    val customHeader: HashMap<String, String>,
-    val customData: HashMap<String, Any>,
+    val customHeader: MutableMap<String, String> = mutableMapOf(),
+    val customData: MutableMap<String, Any> = mutableMapOf(),
     val fieldsIgnore: Boolean = false,
     val fileIgnore: Boolean = false,
     val format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON,

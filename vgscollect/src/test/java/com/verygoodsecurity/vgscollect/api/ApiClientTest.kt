@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.api
 
 import com.verygoodsecurity.vgscollect.core.*
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
+import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import org.junit.Test
 import org.mockito.Mockito
@@ -17,12 +18,12 @@ class ApiClientTest {
         val data = HashMap<String, Any>()
         data.put("customData", "dataset")
 
-        val r = VGSRequest.VGSRequestBuilder()
-            .setPath("/post")
-            .setMethod(HTTPMethod.POST)
-            .setCustomData(data)
-            .setCustomHeader(headers)
-            .build()
+        val r = NetworkRequest(
+            HTTPMethod.POST,
+            "https://www.test.com/post",
+            headers,
+            data
+        )
 
         client.execute(r)
 
@@ -38,12 +39,12 @@ class ApiClientTest {
         val data = HashMap<String, Any>()
         data.put("customData", "dataset")
 
-        val r = VGSRequest.VGSRequestBuilder()
-            .setPath("/post")
-            .setMethod(HTTPMethod.POST)
-            .setCustomData(data)
-            .setCustomHeader(headers)
-            .build()
+        val r = NetworkRequest(
+            HTTPMethod.POST,
+            "https://www.test.com/post",
+            headers,
+            data
+        )
 
         client.enqueue(r)
 
