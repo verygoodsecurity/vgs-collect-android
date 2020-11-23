@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.VisibleForTesting
+import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
@@ -32,7 +33,6 @@ import com.verygoodsecurity.vgscollect.util.extension.isConnectionAvailable
 import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
-import java.security.MessageDigest
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -76,10 +76,8 @@ class VGSCollect {
         }
     }
 
-    private val baseURL: String
+    private var baseURL: String
     private val context: Context
-
-    private val isURLValid: Boolean
 
     constructor(
         /** Activity context */
@@ -100,8 +98,7 @@ class VGSCollect {
         )
 
         baseURL = id.setupURL(environment.rawValue)
-        isURLValid = baseURL.isURLValid()
-        initializeCollect(baseURL)
+        initializeCollect()
     }
 
     constructor(
@@ -136,13 +133,11 @@ class VGSCollect {
         )
 
         baseURL = id.setupURL(environment)
-        isURLValid = baseURL.isURLValid()
-        initializeCollect(baseURL)
+        initializeCollect()
     }
 
-    private fun initializeCollect(baseURL: String) {
+    private fun initializeCollect() {
         client = ApiClient.newHttpClient()
-        client.setURL(baseURL)
         storage = InternalStorage(context, storageErrorListener)
     }
 
@@ -258,7 +253,9 @@ class VGSCollect {
         var response: VGSResponse = VGSResponse.ErrorResponse()
 
         collectUserData(request) {
-            response = client.execute(request).toVGSResponse(context)
+            response = client.execute(
+                request.toNetworkRequest(baseURL)
+            ).toVGSResponse(context)
         }
 
         return response
@@ -288,7 +285,7 @@ class VGSCollect {
      */
     fun asyncSubmit(request: VGSRequest) {
         collectUserData(request) {
-            client.enqueue(request) { r ->
+            client.enqueue(request.toNetworkRequest(baseURL)) { r ->
                 mainHandler.post { notifyAllListeners(r.toVGSResponse()) }
             }
         }
@@ -298,7 +295,7 @@ class VGSCollect {
         when {
             !request.fieldsIgnore && !validateFields() -> return
             !request.fileIgnore && !validateFiles() -> return
-            !isURLValid -> notifyAllListeners(VGSError.URL_NOT_VALID.toVGSResponse(context))
+            !baseURL.isURLValid() -> notifyAllListeners(VGSError.URL_NOT_VALID.toVGSResponse(context))
             !context.hasInternetPermission() ->
                 notifyAllListeners(VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse(context))
             !context.hasAccessNetworkStatePermission() ->
@@ -578,5 +575,63 @@ class VGSCollect {
         tracker.logEvent(
             AttachFileAction(m)
         )
+    }
+
+    private fun configureHostname(host: String?, tnt: String) {
+        if (!host.isNullOrBlank()) {
+            val r = VGSRequest.VGSRequestBuilder()
+                .setMethod(HTTPMethod.GET)
+                .setFormat(VGSHttpBodyFormat.PLAIN_TEXT)
+                .build()
+                .toNetworkRequest(
+                    host.toHostnameValidationUrl(tnt)
+                )
+            client.enqueue(r) {
+                if (it.isSuccessful && host likeUrl it.body) {
+                    client.setHost(host)
+                } else {
+                    Logger.e(context, VGSCollect::class.java, R.string.error_custom_host_wrong)
+                }
+            }
+        }
+    }
+
+    class Builder(
+
+        /**  */
+        private val context: Context,
+
+        /**  */
+        private val id: String
+    ) {
+
+        /** Type of Vault */
+        private var environment: String = Environment.SANDBOX.rawValue
+
+        /**  */
+        private var host: String? = null
+
+        /**  */
+        fun setEnvironment(env: Environment, region: String = ""): Builder = this.apply {
+            environment = env.rawValue concatWithDash region
+        }
+
+        /**  */
+        fun setEnvironment(env: String): Builder = this.apply { environment = env }
+
+        /**  */
+        fun setHostname(cname: String): Builder {
+            if (cname.isURLValid()) {
+                host = cname
+            }
+            return this
+        }
+
+        /**  */
+        fun create(): VGSCollect {
+            return VGSCollect(context, id, environment).apply {
+                configureHostname(host, id)
+            }
+        }
     }
 }

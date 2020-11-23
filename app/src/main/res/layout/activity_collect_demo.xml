@@ -136,7 +136,7 @@
                                         android:id="@+id/cardNumberField"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        app:fieldName="card_data.cardNumber"
+                                        app:fieldName="cardNumber"
                                         style="@style/AppTheme.PaymentField"
                                         app:text="4111-1111-1111-1111"
                                         app:numberDivider="-"

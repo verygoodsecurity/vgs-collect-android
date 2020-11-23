@@ -30,7 +30,6 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
-import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener  {
@@ -219,7 +218,11 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         val envId = bndl?.getInt(StartActivity.ENVIROMENT, 0)?:0
         env = Environment.values()[envId]
 
-        vgsForm = VGSCollect(this, vault_id, env)
+        vgsForm = VGSCollect.Builder(this, vault_id)
+            .setEnvironment(env)
+            .setHostname("collect-android-testing.verygoodsecurity.io")
+//            .setHostname("collect-android-testing.verygoodsecurty_wrong.io")
+            .create()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -1,27 +1,26 @@
 package com.verygoodsecurity.vgscollect.core.api.client
 
 import com.verygoodsecurity.vgscollect.BuildConfig
+import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.api.*
-import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.AGENT
-import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONNECTION_TIME_OUT
-import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONTENT_TYPE
-import com.verygoodsecurity.vgscollect.core.api.client.ssl.TLSSocketFactory
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorage
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
 import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
+import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.AGENT
+import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONNECTION_TIME_OUT
+import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONTENT_TYPE
 import com.verygoodsecurity.vgscollect.core.api.client.extension.*
-import com.verygoodsecurity.vgscollect.core.api.client.extension.callTimeout
-import com.verygoodsecurity.vgscollect.core.api.client.extension.openConnection
-import com.verygoodsecurity.vgscollect.core.api.client.extension.readTimeout
-import com.verygoodsecurity.vgscollect.core.api.client.extension.setSSLSocketFactory
+import com.verygoodsecurity.vgscollect.core.api.isURLValid
+import com.verygoodsecurity.vgscollect.core.api.toContentType
+import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
-import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscollect.util.mapToJSON
 import java.net.HttpURLConnection
+import java.net.URL
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
@@ -32,17 +31,16 @@ internal class URLConnectionClient : ApiClient {
         Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
     }
 
-    private var baseURL:String = ""
-
     private val tempStore: VgsApiTemporaryStorage by lazy {
         VgsApiTemporaryStorageImpl()
     }
 
-    override fun setURL(url: String) {
-        baseURL = url
+    private var host: String? = null
+    override fun setHost(url: String?) {
+        host = url
     }
 
-    override fun enqueue(request: VGSRequest, callback: ((NetworkResponse) -> Unit)?) {
+    override fun enqueue(request: NetworkRequest, callback: ((NetworkResponse) -> Unit)?) {
         var task: Future<*>? = null
         task = executor.submit {
             try {
@@ -55,23 +53,58 @@ internal class URLConnectionClient : ApiClient {
         submittedTasks.add(task)
     }
 
-    override fun execute(request: VGSRequest): NetworkResponse {
-        val url = (baseURL concatWithSlash request.path)
-        if(!url.isURLValid()) {
-            return NetworkResponse(error = VGSError.URL_NOT_VALID)
+    override fun execute(request: NetworkRequest): NetworkResponse {
+        return if (!request.url.isURLValid()) {
+            NetworkResponse(error = VGSError.URL_NOT_VALID)
+        } else {
+            makeRequest(request)
         }
+    }
 
+    @Synchronized
+    private fun makeRequest(request: NetworkRequest): NetworkResponse {
+        return when (request.method) {
+            HTTPMethod.GET -> get(request)
+            HTTPMethod.POST -> post(request)
+        }
+    }
+
+    private fun get(request: NetworkRequest): NetworkResponse {
+        val conn = generateURL(request).openConnection()
+        conn.requestMethod = request.method.toString()
+        conn.useCaches = false
+
+        return handleResponse(conn)
+    }
+
+    private fun generateURL(request: NetworkRequest): String {
+        return with(URL(request.url)) {
+            if (this@URLConnectionClient.host.isNullOrBlank() || this@URLConnectionClient.host == host) {
+                (host concatWithSlash path).toHttps()
+            } else {
+                (this@URLConnectionClient.host!! concatWithSlash path).toHttps()
+            }
+        }
+    }
+
+    private fun post(request: NetworkRequest): NetworkResponse {
         var connection: HttpURLConnection? = null
         return try {
-            connection = url.openConnection()
-                .setSSLSocketFactory(TLSSocketFactory())
+            connection = generateURL(request).openConnection()
                 .callTimeout(CONNECTION_TIME_OUT)
                 .readTimeout(CONNECTION_TIME_OUT)
                 .setInstanceFollowRedirectEnabled(false)
                 .setIsUserInteractionEnabled(false)
                 .setCacheEnabled(false)
                 .addHeader(CONTENT_TYPE, request.format.toContentType())
-                .addHeader(AGENT, String.format(ApiClient.TEMPORARY_AGENT_TEMPLATE, BuildConfig.VERSION_NAME, CollectActionTracker.Sid.id))
+                .addHeader(
+                    AGENT,
+                    String.format(
+                        ApiClient.TEMPORARY_AGENT_TEMPLATE,
+                        BuildConfig.VERSION_NAME,
+                        CollectActionTracker.Sid.id
+                    )
+                )
                 .addHeaders(request.customHeader)
                 .setMethod(request.method)
 
@@ -80,7 +113,7 @@ internal class URLConnectionClient : ApiClient {
 
             handleResponse(connection)
         } catch (e: Exception) {
-            Logger.e(VGSCollect::class.java, e.localizedMessage?:"")
+            Logger.e(VGSCollect::class.java, e.localizedMessage ?: "")
             NetworkResponse(message = e.localizedMessage)
         } finally {
             connection?.disconnect()
@@ -124,7 +157,7 @@ internal class URLConnectionClient : ApiClient {
             return URLConnectionClient()
         }
 
-        private fun buildRequestLog(connection: HttpURLConnection):String {
+        private fun buildRequestLog(connection: HttpURLConnection): String {
             val builder = StringBuilder("Request")
                 .append("{")
                 .append("method=")
@@ -134,7 +167,7 @@ internal class URLConnectionClient : ApiClient {
             return builder.toString()
         }
 
-        private fun buildResponseLog(connection: HttpURLConnection):String {
+        private fun buildResponseLog(connection: HttpURLConnection): String {
             val builder = StringBuilder("Response")
                 .append("{")
                 .append("code=")

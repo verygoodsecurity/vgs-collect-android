@@ -2,16 +2,15 @@ package com.verygoodsecurity.vgscollect.core.api.client
 
 import android.os.Build
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorage
+import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
-import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
-import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 
 internal interface ApiClient {
 
-    fun setURL(url: String)
+    fun setHost(url: String?)
 
-    fun enqueue(request: VGSRequest, callback: ((NetworkResponse) -> Unit)? = null)
-    fun execute(request: VGSRequest): NetworkResponse
+    fun enqueue(request: NetworkRequest, callback: ((NetworkResponse) -> Unit)? = null)
+    fun execute(request: NetworkRequest): NetworkResponse
     fun cancelAll()
 
     fun getTemporaryStorage(): VgsApiTemporaryStorage
@@ -24,9 +23,9 @@ internal interface ApiClient {
 
         fun newHttpClient(url: String): ApiClient {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                OkHttpClient().apply { setURL(url) }
+                OkHttpClient().apply { setHost(url) }
             } else {
-                URLConnectionClient.newInstance().apply { setURL(url) }
+                URLConnectionClient.newInstance().apply { setHost(url) }
             }
         }
 

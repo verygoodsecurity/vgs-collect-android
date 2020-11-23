@@ -4,38 +4,38 @@ import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.api.*
+import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.AGENT
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.TEMPORARY_AGENT_TEMPLATE
-import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorage
-import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
-import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isCodeSuccessful
 import com.verygoodsecurity.vgscollect.core.api.client.extension.setMethod
+import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
-import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.util.Logger
-import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscollect.util.mapToJSON
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
-import okio.Buffer
 import java.io.IOException
 import java.io.InterruptedIOException
-import java.lang.StringBuilder
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 internal class OkHttpClient : ApiClient {
 
+    private val hostInterceptor: HostInterceptor = HostInterceptor()
+
     private val client: OkHttpClient by lazy {
         OkHttpClient().newBuilder()
             .addInterceptor(HttpLoggingInterceptor())
+            .addInterceptor(hostInterceptor)
             .callTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .readTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .writeTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
+            .dispatcher(Dispatcher(Executors.newSingleThreadExecutor()))
             .build()
     }
 
@@ -43,40 +43,23 @@ internal class OkHttpClient : ApiClient {
         VgsApiTemporaryStorageImpl()
     }
 
-    private var baseUrl: String = ""
-    override fun setURL(url: String) {
-        baseUrl = url
+    override fun setHost(url: String?) {
+        hostInterceptor.host = url?.toHost()
     }
 
-    private fun printBody(okHttpRequest: Request) { //todo remove after implementation CNAme
-        try {
-            val copy: RequestBody = okHttpRequest.body!!
-            val buffer = Buffer()
-            copy.writeTo(buffer)
-
-            Logger.i(OkHttpClient::class.java.canonicalName, "${buffer.readUtf8()}")
-        } catch (e: IOException) {
-            Logger.i(OkHttpClient::class.java.canonicalName, "no body")
-        }
-    }
-
-    override fun enqueue(request: VGSRequest, callback: ((NetworkResponse) -> Unit)?) {
-        val url = (baseUrl concatWithSlash request.path)
-
-        if (!url.isURLValid()) {
+    override fun enqueue(request: NetworkRequest, callback: ((NetworkResponse) -> Unit)?) {
+        if (!request.url.isURLValid()) {
             callback?.invoke(NetworkResponse(error = VGSError.URL_NOT_VALID))
             return
         }
 
         val okHttpRequest = buildRequest(
-            url,
+            request.url,
             request.method,
             request.customHeader,
             request.customData,
             request.format
         )
-
-        printBody(okHttpRequest)
 
         try {
             client.newCall(okHttpRequest).enqueue(object : Callback {
@@ -103,15 +86,13 @@ internal class OkHttpClient : ApiClient {
         }
     }
 
-    override fun execute(request: VGSRequest): NetworkResponse {
-        val url = (baseUrl concatWithSlash request.path)
-
-        if (!url.isURLValid()) {
+    override fun execute(request: NetworkRequest): NetworkResponse {
+        if (!request.url.isURLValid()) {
             return NetworkResponse(error = VGSError.URL_NOT_VALID)
         }
 
         val okHttpRequest = buildRequest(
-            url,
+            request.url,
             request.method,
             request.customHeader,
             request.customData,
@@ -168,7 +149,29 @@ internal class OkHttpClient : ApiClient {
         return this
     }
 
-    class HttpLoggingInterceptor : Interceptor {
+    private class HostInterceptor : Interceptor {
+        var host: String? = null
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val r = with(chain.request()) {
+                if (!host.isNullOrBlank() && host != url.host) {
+                    val newUrl = chain.request().url.newBuilder()
+                        .scheme(url.scheme)
+                        .host(host!!)
+                        .build()
+
+                    chain.request().newBuilder()
+                        .url(newUrl)
+                        .build()
+                } else {
+                    this
+                }
+            }
+
+            return chain.proceed(r)
+        }
+    }
+
+    private class HttpLoggingInterceptor : Interceptor {
 
         companion object {
             private fun buildRequestLog(request: Request): String {

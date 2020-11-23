@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.core.model.network
 
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
+import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
 
 /**
  * Class to collect data before submit.
@@ -31,7 +32,7 @@ data class VGSRequest private constructor(
      */
     class VGSRequestBuilder {
         private var method: HTTPMethod = HTTPMethod.POST
-        private var path: String = "/post"
+        private var path: String = ""
         private val customHeader: HashMap<String, String> = HashMap()
         private val customData: HashMap<String, Any> = HashMap()
         private var fieldsIgnore: Boolean = false
@@ -103,7 +104,8 @@ data class VGSRequest private constructor(
         }
 
         internal fun setFormat(format: VGSHttpBodyFormat): VGSRequestBuilder {
-            return this.apply { this.format = format }
+            this.format = format
+            return this
         }
 
         /**
@@ -129,8 +131,21 @@ data class VGSRequest private constructor(
                 customHeader,
                 customData,
                 fieldsIgnore,
-                fileIgnore
+                fileIgnore,
+                format
             )
         }
     }
+}
+
+fun VGSRequest.toNetworkRequest(url: String): NetworkRequest {
+    return NetworkRequest(
+        method,
+        url concatWithSlash path,
+        customHeader,
+        customData,
+        fieldsIgnore,
+        fileIgnore,
+        format
+    )
 }
