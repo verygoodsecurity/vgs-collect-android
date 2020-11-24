@@ -625,28 +625,29 @@ class VGSCollect {
 
     class Builder(
 
-        /**  */
+        /** Activity context */
         private val context: Context,
 
-        /**  */
+        /** Specific Vault ID  */
         private val id: String
     ) {
 
-        /** Type of Vault */
         private var environment: String = Environment.SANDBOX.rawValue
 
-        /**  */
         private var host: String? = null
 
-        /**  */
+        /** Specify Environment for the VGSCollect instance. */
         fun setEnvironment(env: Environment, region: String = ""): Builder = this.apply {
             environment = env.rawValue concatWithDash region
         }
 
-        /**  */
+        /**
+         * Specify Environment for the VGSCollect instance.
+         * Also, Environment could be used with region prefix ( sandbox-eu-0 ).
+         */
         fun setEnvironment(env: String): Builder = this.apply { environment = env }
 
-        /**  */
+        /** Sets the VGSCollect instance to use the custom hostname. */
         fun setHostname(cname: String): Builder {
             if (cname.isURLValid()) {
                 host = cname.toHost()
@@ -660,7 +661,10 @@ class VGSCollect {
             return this
         }
 
-        /**  */
+        /**
+         * Creates an VGSCollect with the arguments supplied to this
+         * builder.
+         */
         fun create(): VGSCollect {
             return VGSCollect(context, id, environment).apply {
                 configureHostname(host, id)
