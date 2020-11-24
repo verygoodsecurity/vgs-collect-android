@@ -38,6 +38,12 @@ internal object Logger {
         }
     }
 
+    fun w(clazz: Class<*>, message:String) {
+        if (BuildConfig.DEBUG) {
+            Log.w(clazz.canonicalName, message)
+        }
+    }
+
     fun i(tag:String, message:String) {
         if(BuildConfig.DEBUG) {
             Log.i(tag, message)

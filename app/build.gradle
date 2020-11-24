@@ -7,7 +7,7 @@ android {
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.verygoodsecurity.demoapp"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -76,7 +76,9 @@ dependencies {
 
     implementation project(":vgscollect")
     implementation project(":vgscollect-cardio")
-    implementation project(":vgscollect-bouncer")
+//    implementation project(":vgscollect-bouncer")
+
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
     implementation 'androidx.core:core-ktx:1.3.1'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

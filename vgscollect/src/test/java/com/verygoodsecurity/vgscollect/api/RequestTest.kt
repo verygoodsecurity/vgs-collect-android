@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.api
 
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
-import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
+import com.verygoodsecurity.vgscollect.core.model.network.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -10,7 +10,7 @@ class RequestTest {
     @Test
     fun test_create_default_request() {
         val r = VGSRequest.VGSRequestBuilder().build()
-        assertEquals("/post", r.path)
+        assertEquals("", r.path)
         assertEquals(HTTPMethod.POST, r.method)
         assertEquals(HashMap<String, String>(), r.customData)
         assertEquals(HashMap<String, String>(), r.customHeader)
@@ -49,6 +49,64 @@ class RequestTest {
 
         assertEquals(PATH, r.path)
         assertEquals(METHOD, r.method)
+    }
+
+    @Test
+    fun test_to_network_request() {
+        val BASE_URL = "base.url"
+        val METHOD = HTTPMethod.POST
+        val PATH = "/some/path"
+
+        val exampleRequest = NetworkRequest(
+            METHOD,
+            BASE_URL+PATH
+        )
+
+        val r = VGSRequest.VGSRequestBuilder()
+            .setMethod(METHOD)
+            .setPath(PATH)
+            .build().toNetworkRequest(BASE_URL)
+
+        assertEquals(exampleRequest, r)
+    }
+
+    @Test
+    fun test_to_response_success() {
+        val BODY = "data"
+        val CODE = 200
+
+        val exampleRequest = VGSResponse.SuccessResponse(
+            rawResponse = BODY,
+            successCode = CODE
+        )
+
+        val r = NetworkResponse(
+            true,
+            BODY,
+            CODE
+        ).toVGSResponse() as VGSResponse.SuccessResponse
+
+        assertEquals(exampleRequest.rawResponse, r.rawResponse)
+        assertEquals(exampleRequest.successCode, r.successCode)
+    }
+
+    @Test
+    fun test_to_response_failed() {
+        val MESSAGE = "error text"
+        val CODE = 401
+
+        val exampleRequest = VGSResponse.ErrorResponse(
+            MESSAGE,
+            CODE
+        )
+
+        val r = NetworkResponse(
+            code = CODE,
+            message = MESSAGE
+        ).toVGSResponse() as VGSResponse.ErrorResponse
+
+        assertEquals(exampleRequest.localizeMessage, r.localizeMessage)
+        assertEquals(exampleRequest.code, r.code)
     }
 
 }

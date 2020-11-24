@@ -1,8 +1,12 @@
 package com.verygoodsecurity.vgscollect
 
 import com.verygoodsecurity.vgscollect.core.Environment
-import com.verygoodsecurity.vgscollect.core.api.*
-import org.junit.Assert.*
+import com.verygoodsecurity.vgscollect.core.api.isEnvironmentValid
+import com.verygoodsecurity.vgscollect.core.api.isTennantIdValid
+import com.verygoodsecurity.vgscollect.core.api.isURLValid
+import com.verygoodsecurity.vgscollect.core.api.setupURL
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.util.regex.Pattern
 
@@ -21,19 +25,19 @@ class UrlExtensionTest {
         assertFalse(testUrl2.isTennantIdValid())
 
         val testUrl3 = "tnt com"
-        assertFalse( testUrl3.isTennantIdValid() )
+        assertFalse(testUrl3.isTennantIdValid())
 
         val testUrl4 = "2tnt/com"
-        assertFalse( testUrl4.isTennantIdValid() )
+        assertFalse(testUrl4.isTennantIdValid())
 
         val testUrl5 = "tnt:com"
-        assertFalse( testUrl5.isTennantIdValid() )
+        assertFalse(testUrl5.isTennantIdValid())
 
         val testUrl6 = "tnt*com"
-        assertFalse( testUrl6.isTennantIdValid() )
+        assertFalse(testUrl6.isTennantIdValid())
 
         val testUrl7 = "tnt?com"
-        assertFalse( testUrl7.isTennantIdValid() )
+        assertFalse(testUrl7.isTennantIdValid())
     }
     @Test
     fun test_is_tennantId_valid() {
@@ -45,7 +49,7 @@ class UrlExtensionTest {
 
     @Test
     fun test_is_URL_valid() {
-        val url1 = "http://www.bla"
+        val url1 = "google.com"
         assertTrue(url1.isURLValid())
 
         val url2 = "https://www.bla"
@@ -53,18 +57,16 @@ class UrlExtensionTest {
 
         val url3 = "https://www.bla-one.com"
         assertTrue(url3.isURLValid())
-
-        val url4 = "http://www.example.com:8800"
-        assertTrue(url4.isURLValid())
     }
 
-    @Test
+    @Test(expected = RuntimeException::class)
     fun test_is_url_not_valid() {
-        val url1 = "www.bla.com"
+        val url1 = "http://www.bla"
         assertFalse(url1.isURLValid())
 
-        val url2 = "google.com"
-        assertFalse(url2.isURLValid())
+        val url4 = "http://www.example.com:8800"
+        assertFalse(url4.isURLValid())
+
 
         val url3 = "http://www.ex ample.com:8800"
         assertFalse(url3.isURLValid())

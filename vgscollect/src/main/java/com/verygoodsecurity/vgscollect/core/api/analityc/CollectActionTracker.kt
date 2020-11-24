@@ -6,6 +6,7 @@ import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.Action
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
+import com.verygoodsecurity.vgscollect.core.model.network.toNetworkRequest
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -20,7 +21,7 @@ internal class CollectActionTracker(
     }
 
     private val client: ApiClient by lazy {
-        return@lazy ApiClient.newHttpClient(URL)
+        return@lazy ApiClient.newHttpClient(false)
     }
 
     override fun logEvent(action: Action) {
@@ -77,7 +78,7 @@ internal class CollectActionTracker(
                 .setCustomData(map)
                 .build()
 
-            client.enqueue(r)
+            client.enqueue(r.toNetworkRequest(URL))
         }
 
         companion object {
