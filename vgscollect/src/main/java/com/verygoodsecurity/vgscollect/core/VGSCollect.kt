@@ -594,14 +594,14 @@ class VGSCollect {
                 )
 
             client.enqueue(r) {
-                val status = it.isSuccessful && host equalsUrl it.body
-                if (status) {
+                hasCustomHostname = it.isSuccessful && host equalsUrl it.body
+                if (hasCustomHostname) {
                     client.setHost(it.body)
                 } else {
                     Logger.e(context, VGSCollect::class.java, R.string.error_custom_host_wrong)
                 }
 
-                hostnameValidationEvent(status, host)
+                hostnameValidationEvent(hasCustomHostname, host)
             }
         }
     }
@@ -610,7 +610,6 @@ class VGSCollect {
         isSuccess: Boolean,
         hostname: String = ""
     ) {
-        hasCustomHostname = isSuccess
         val m = with(mutableMapOf<String, Any>()) {
             put("status", isSuccess.toAnalyticStatus())
             put("hostname", hostname)
