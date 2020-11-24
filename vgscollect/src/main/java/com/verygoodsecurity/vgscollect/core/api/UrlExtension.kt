@@ -2,7 +2,8 @@ package com.verygoodsecurity.vgscollect.core.api
 
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.util.Logger
-import java.lang.RuntimeException
+import java.net.MalformedURLException
+import java.net.URL
 import java.util.regex.Pattern
 
 /** @suppress */
@@ -57,7 +58,7 @@ internal fun String.toHostnameValidationUrl(tnt: String): String {
     )
 }
 
-internal infix fun String.likeUrl(name: String?): Boolean {
+internal infix fun String.equalsUrl(name: String?): Boolean {
     return toHost() == name?.toHost()
 }
 
@@ -69,4 +70,10 @@ internal fun String.toHttps(): String {
     }
 }
 
-internal fun String.toHost(): String = replace("https://", "").replace("http://", "")
+internal fun String.toHost(): String {
+    return try {
+        URL(this.toHttps()).host
+    } catch (e: MalformedURLException) {
+        ""
+    }
+}

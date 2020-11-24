@@ -12,7 +12,7 @@
     <string name="error_divider_count_card_number_field">Divider for card number can\'t be greater than 1 symbol. (%1$s)</string>
     <string name="error_divider_card_number_field">Divider for card number can\'t a digit. (%1$s)</string>
     <string name="error_custom_brand_mask_length">The mask and card number maximum length are not equal for %1$s brand.</string>
-    <string name="error_custom_host_wrong">"A specified host was not correct."</string>
+    <string name="error_custom_host_wrong">A specified host was not correct.</string>
 
     <string name="card_number_digits">0123456789</string>
     <string name="validation_regex_person">^[a-zA-Z0-9 ,\'.-]+$</string>

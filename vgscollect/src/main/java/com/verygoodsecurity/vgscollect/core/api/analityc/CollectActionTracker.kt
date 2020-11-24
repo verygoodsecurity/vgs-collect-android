@@ -21,7 +21,7 @@ internal class CollectActionTracker(
     }
 
     private val client: ApiClient by lazy {
-        return@lazy ApiClient.newHttpClient()
+        return@lazy ApiClient.newHttpClient(false)
     }
 
     override fun logEvent(action: Action) {

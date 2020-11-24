@@ -24,13 +24,15 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
-internal class OkHttpClient : ApiClient {
+internal class OkHttpClient(
+    private val isLogsVisible: Boolean = BuildConfig.DEBUG
+) : ApiClient {
 
     private val hostInterceptor: HostInterceptor = HostInterceptor()
 
     private val client: OkHttpClient by lazy {
         OkHttpClient().newBuilder()
-            .addInterceptor(HttpLoggingInterceptor())
+            .addInterceptor(HttpLoggingInterceptor(isLogsVisible))
             .addInterceptor(hostInterceptor)
             .callTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .readTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
@@ -171,7 +173,9 @@ internal class OkHttpClient : ApiClient {
         }
     }
 
-    private class HttpLoggingInterceptor : Interceptor {
+    private class HttpLoggingInterceptor(
+        private val isLogsVisible: Boolean = BuildConfig.DEBUG
+    ) : Interceptor {
 
         companion object {
             private fun buildRequestLog(request: Request): String {
@@ -200,10 +204,10 @@ internal class OkHttpClient : ApiClient {
 
         override fun intercept(chain: Interceptor.Chain): Response {
             val request = chain.request()
-            Logger.i(VGSCollect::class.java.simpleName, buildRequestLog(request))
+            if(isLogsVisible) Logger.i(VGSCollect::class.java.simpleName, buildRequestLog(request))
 
             val response = chain.proceed(request)
-            Logger.i(VGSCollect::class.java.simpleName, buildResponseLog(response))
+            if(isLogsVisible) Logger.i(VGSCollect::class.java.simpleName, buildResponseLog(response))
 
             return response
         }

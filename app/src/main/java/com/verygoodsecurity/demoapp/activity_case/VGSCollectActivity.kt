@@ -220,9 +220,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
         vgsForm = VGSCollect.Builder(this, vault_id)
             .setEnvironment(env)
-            .setHostname("collect-android-testing.verygoodsecurity.io")
-            .setHostname("www.facebook.com")
-//            .setHostname("collect-android-testing.verygoodsecurty_wrong.io")
+//            .setHostname("collect-android-testing.verygoodsecurity.io/test")
             .create()
     }
 

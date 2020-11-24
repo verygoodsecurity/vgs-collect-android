@@ -25,7 +25,9 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
-internal class URLConnectionClient : ApiClient {
+internal class URLConnectionClient(
+    private val enableLogs: Boolean = BuildConfig.DEBUG
+) : ApiClient {
     private val submittedTasks = mutableListOf<Future<*>>()
     private val executor: ExecutorService by lazy {
         Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
@@ -108,12 +110,12 @@ internal class URLConnectionClient : ApiClient {
                 .addHeaders(request.customHeader)
                 .setMethod(request.method)
 
-            Logger.i(VGSCollect::class.java.simpleName, buildRequestLog(connection))
+            if (enableLogs) Logger.i(VGSCollect::class.java.simpleName, buildRequestLog(connection))
             writeOutput(connection, request.customData)
 
             handleResponse(connection)
         } catch (e: Exception) {
-            Logger.e(VGSCollect::class.java, e.localizedMessage ?: "")
+            if (enableLogs) Logger.e(VGSCollect::class.java, e.localizedMessage ?: "")
             NetworkResponse(message = e.localizedMessage)
         } finally {
             connection?.disconnect()
@@ -132,14 +134,14 @@ internal class URLConnectionClient : ApiClient {
     private fun handleResponse(connection: HttpURLConnection): NetworkResponse {
         val responseCode = connection.responseCode
 
-        Logger.i(VGSCollect::class.java.simpleName, buildResponseLog(connection))
+        if (enableLogs) Logger.i(VGSCollect::class.java.simpleName, buildResponseLog(connection))
 
         return if (responseCode.isCodeSuccessful()) {
             val rawResponse = connection.inputStream?.bufferedReader()?.use { it.readText() }
             NetworkResponse(true, rawResponse, responseCode)
         } else {
             val responseStr = connection.errorStream?.bufferedReader()?.use { it.readText() }
-            Logger.e(VGSCollect::class.java, responseStr.toString())
+            if (enableLogs) Logger.e(VGSCollect::class.java, responseStr.toString())
             NetworkResponse(message = responseStr, code = responseCode)
         }
     }
@@ -153,8 +155,8 @@ internal class URLConnectionClient : ApiClient {
     }
 
     companion object {
-        fun newInstance(): ApiClient {
-            return URLConnectionClient()
+        fun newInstance(isLogsVisible: Boolean = BuildConfig.DEBUG): ApiClient {
+            return URLConnectionClient(isLogsVisible)
         }
 
         private fun buildRequestLog(connection: HttpURLConnection): String {

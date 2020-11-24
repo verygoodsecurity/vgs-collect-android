@@ -12,6 +12,7 @@ import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.*
+import com.verygoodsecurity.vgscollect.core.api.analityc.utils.toAnalyticStatus
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isHttpStatusCode
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
@@ -309,7 +310,8 @@ class VGSCollect {
                     !request.fileIgnore,
                     !request.fieldsIgnore,
                     request.customHeader.isNotEmpty(),
-                    request.customData.isNotEmpty()
+                    request.customData.isNotEmpty(),
+                    hasCustomHostname
                 )
                 submitRequest()
             }
@@ -520,15 +522,17 @@ class VGSCollect {
         hasFields: Boolean = false,
         hasCustomHeader: Boolean = false,
         hasCustomData: Boolean = false,
+        hasCustomHostname: Boolean = false,
         code: Int = 200
     ) {
         if (code.isHttpStatusCode()) {
             val m = with(mutableMapOf<String, Any>()) {
-                if (isSuccess) put("status", "Ok") else put("status", "Failed")
+                put("status", isSuccess.toAnalyticStatus())
 
                 put("statusCode", code)
 
                 val arr = with(mutableListOf<String>()) {
+                    if (hasCustomHostname) add("customHostName")
                     if (hasFiles) add("file")
                     if (hasFields) add("fields")
                     if (hasCustomHeader ||
@@ -577,6 +581,8 @@ class VGSCollect {
         )
     }
 
+    private var hasCustomHostname = false
+
     private fun configureHostname(host: String?, tnt: String) {
         if (!host.isNullOrBlank()) {
             val r = VGSRequest.VGSRequestBuilder()
@@ -586,14 +592,35 @@ class VGSCollect {
                 .toNetworkRequest(
                     host.toHostnameValidationUrl(tnt)
                 )
+
             client.enqueue(r) {
-                if (it.isSuccessful && host likeUrl it.body) {
-                    client.setHost(host)
+                val status = it.isSuccessful && host equalsUrl it.body
+                if (status) {
+                    client.setHost(it.body)
                 } else {
                     Logger.e(context, VGSCollect::class.java, R.string.error_custom_host_wrong)
                 }
+
+                hostnameValidationEvent(status, host)
             }
         }
+    }
+
+    private fun hostnameValidationEvent(
+        isSuccess: Boolean,
+        hostname: String = ""
+    ) {
+        hasCustomHostname = isSuccess
+        val m = with(mutableMapOf<String, Any>()) {
+            put("status", isSuccess.toAnalyticStatus())
+            put("hostname", hostname)
+
+            this
+        }
+
+        tracker.logEvent(
+            HostNameValidationAction(m)
+        )
     }
 
     class Builder(
@@ -622,8 +649,14 @@ class VGSCollect {
         /**  */
         fun setHostname(cname: String): Builder {
             if (cname.isURLValid()) {
-                host = cname
+                host = cname.toHost()
             }
+
+            if (host != cname) Logger.w(
+                VGSCollect::class.java,
+                "Hostname will be normalized to the $host"
+            )
+
             return this
         }
 
