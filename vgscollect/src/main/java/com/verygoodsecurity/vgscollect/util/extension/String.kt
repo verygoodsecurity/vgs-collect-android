@@ -4,7 +4,7 @@ package com.verygoodsecurity.vgscollect.util.extension
 internal infix fun String.concatWithDash(suffix: String): String {
     return when {
         suffix.isEmpty() -> this
-        suffix[0] == '-' -> this + suffix
+        suffix.startsWith('-') -> this + suffix
         else -> "$this-$suffix"
     }
 }
