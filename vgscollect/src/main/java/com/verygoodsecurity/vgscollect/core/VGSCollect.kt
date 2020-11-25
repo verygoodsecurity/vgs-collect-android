@@ -640,6 +640,11 @@ class VGSCollect {
             environment = env.rawValue concatWithDash region
         }
 
+        /** Specify Environment for the VGSCollect instance. */
+        fun setEnvironment(env: Environment): Builder = this.apply {
+            environment = env.rawValue
+        }
+
         /**
          * Specify Environment for the VGSCollect instance.
          * Also, Environment could be used with region prefix ( sandbox-eu-0 ).
