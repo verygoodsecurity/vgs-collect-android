@@ -70,7 +70,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardExpDateField)
         cardExpDateField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
+                if (!state.isEmpty && !state.isValid && !state.hasFocus) {
                     cardExpDateFieldLay?.setError("fill it please")
                 } else {
                     cardExpDateFieldLay?.setError(null)
@@ -91,7 +91,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardHolderField)
         cardHolderField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
+                if (!state.isEmpty && !state.isValid && !state.hasFocus) {
                     cardHolderFieldLay?.setError("fill it please")
                 } else {
                     cardHolderFieldLay?.setError(null)
@@ -104,7 +104,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardCVCField)
         cardCVCField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
+                if (!state.isEmpty && !state.isValid && !state.hasFocus) {
                     cardCVCFieldLay?.setError("fill it please")
                 } else {
                     cardCVCFieldLay?.setError(null)
@@ -167,7 +167,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
         cardNumberField.setCardIconAdapter(object : CardIconAdapter(this) {
             override fun getIcon(cardType: CardType, name: String?, resId: Int, r: Rect): Drawable {
-                return if(cardType == CardType.VISA) {
+                return if (cardType == CardType.VISA) {
                     getDrawable(R.drawable.ic_visa_light)
                 } else {
                     super.getIcon(cardType, name, resId, r)
@@ -182,7 +182,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
                 bin: String,
                 mask: String
             ): String {
-                return when(cardType) {
+                return when (cardType) {
                     CardType.UNKNOWN -> {
                         if (bin == "7771") {
                             "# # # #"
@@ -213,7 +213,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         val bndl = intent?.extras
 
         vault_id = bndl?.getString(StartActivity.VAULT_ID, "")?:""
-        path = bndl?.getString(StartActivity.PATH,"/")?:""
+        path = bndl?.getString(StartActivity.PATH, "/")?:""
 
         val envId = bndl?.getInt(StartActivity.ENVIROMENT, 0)?:0
         env = Environment.values()[envId]
@@ -222,6 +222,9 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
             .setEnvironment(env)
             .setHostname("collect-android-testing.verygoodsecurity.io/test")
             .create()
+
+        val cacheSize = 10 * 1024 * 1024 // 10MB
+        vgsForm.getFileProvider().resize(cacheSize)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -308,12 +311,12 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         setStateLoading(false)
 
         when (response) {
-            is VGSResponse.SuccessResponse -> responseContainerView.text = response.toString()
-            is VGSResponse.ErrorResponse -> responseContainerView.text = response.toString()
+            is VGSResponse.SuccessResponse -> responseContainerView.text = "Code: ${response.successCode}"
+            is VGSResponse.ErrorResponse -> responseContainerView.text = "Code: ${response.errorCode}"
         }
     }
 
-    private fun setStateLoading(state:Boolean) {
+    private fun setStateLoading(state: Boolean) {
         if(state) {
             progressBar?.visibility = View.VISIBLE
             submitBtn?.isEnabled = false
@@ -325,16 +328,16 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         }
     }
 
-    private fun setEnabledResponseHeader(isEnabled:Boolean) {
+    private fun setEnabledResponseHeader(isEnabled: Boolean) {
         if(isEnabled) {
-            attachBtn.setTextColor(ContextCompat.getColor(this,
-                R.color.state_active
-            ))
+            attachBtn.setTextColor(
+                ContextCompat.getColor(this, R.color.state_active)
+            )
         } else {
             responseContainerView.text = ""
-            attachBtn.setTextColor(ContextCompat.getColor(this,
-                R.color.state_unactive
-            ))
+            attachBtn.setTextColor(
+                ContextCompat.getColor(this, R.color.state_unactive)
+            )
         }
     }
 

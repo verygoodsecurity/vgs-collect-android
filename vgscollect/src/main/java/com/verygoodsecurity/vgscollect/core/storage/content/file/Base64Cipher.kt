@@ -8,10 +8,7 @@ import android.provider.BaseColumns
 import android.provider.DocumentsContract
 import android.util.Base64
 import androidx.annotation.VisibleForTesting
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 import java.util.*
 
 internal class Base64Cipher(val context: Context):VgsFileCipher {
@@ -47,13 +44,18 @@ internal class Base64Cipher(val context: Context):VgsFileCipher {
         return result
     }
     override fun retrieve(map: HashMap<String, Any?>):Pair<String, String>? {
-        val uri = map[submitCode.toString()]?.toString()
+        val uri = map[submitCode.toString()]?.toString().run {
+            if(isNullOrEmpty()) {
+                null
+            } else {
+                Uri.parse(this)
+            }
+        }
 
         val pair = when {
-            uri.isNullOrEmpty() -> null
-            DocumentsContract.isDocumentUri(context, Uri.parse(uri)) &&
-                    documentUriExists(Uri.parse(uri)) -> uri to fieldName
-            contentUriExists(Uri.parse(uri)) -> uri to fieldName
+            uri == null -> null
+            DocumentsContract.isDocumentUri(context, uri) && documentUriExists(uri) -> fieldName to uri.toString()
+            contentUriExists(uri) -> fieldName to uri.toString()
             else -> null
         }
         reset()

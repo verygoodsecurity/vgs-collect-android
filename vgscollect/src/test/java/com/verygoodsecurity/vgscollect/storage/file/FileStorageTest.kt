@@ -7,13 +7,13 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VgsFileCipher
+import io.mockk.spyk
 import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
-import org.mockito.Mockito.mock
+import org.mockito.Mockito.*
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
@@ -29,11 +29,9 @@ class FileStorageTest {
         activity = activityController.get()
     }
 
-    private fun <T> any(): T = Mockito.any<T>()
-
     @Test
     fun test_add_item() {
-        val store:VgsStore<String, String> = TemporaryFileStorage(activity)
+        val store: VgsStore<String, String> = TemporaryFileStorage(activity)
 
         store.addItem("userData.response", "file:///tmp/user.txt")
         assertEquals(1, store.getItems().size)
@@ -50,7 +48,7 @@ class FileStorageTest {
 
     @Test
     fun test_clear() {
-        val store:VgsStore<String, String> = TemporaryFileStorage(activity)
+        val store: VgsStore<String, String> = TemporaryFileStorage(activity)
         store.addItem("userData.response", "file:///tmp/user.txt")
 
         assertEquals(1, store.getItems().size)
@@ -61,7 +59,7 @@ class FileStorageTest {
 
     @Test
     fun test_get_items() {
-        val store:VgsStore<String, String> = TemporaryFileStorage(activity)
+        val store: VgsStore<String, String> = TemporaryFileStorage(activity)
 
         store.addItem("userData.response", "file:///tmp/user.txt")
 
@@ -71,43 +69,22 @@ class FileStorageTest {
     @Test
     fun test_get_associated_list() {
         val c = mock(VgsFileCipher::class.java)
-        val fieldName = "userData.response"
+
         val base64Str = "base64Str"
-        val filePath = "file:///tmp/user.txt"
-        val uri = Uri.parse(filePath)
-
-        Mockito.doReturn(base64Str)
-            .`when`(c).getBase64(uri)
-
-        val store: FileStorage = with(TemporaryFileStorage(activity)) {
-            this.setCipher(c)
-
-            this
-        }
-        store.addItem(fieldName, filePath)
-
-        val list = store.getAssociatedList()
-
-        assertEquals(1, list.size)
-        Mockito.verify(c).getBase64(uri)
-
-        val p: Pair<String, String> = list.toMutableList()[0]
-        assertEquals(fieldName, p.first)
-        assertEquals(base64Str, p.second)
-    }
-    
-    @Test
-    fun test_dispatch() {
-        val c = mock(VgsFileCipher::class.java)
-
         val fieldName = "userData.response"
         val filePath = "file:///tmp/user.txt"
         val retMap = HashMap<String, Any?>()
         retMap[fieldName] = filePath
 
+        val uri = Uri.parse(filePath)
+
+        doReturn(base64Str)
+            .`when`(c).getBase64(uri)
+
+
         val response = fieldName to filePath
 
-        Mockito.doReturn(response)
+        doReturn(response)
             .`when`(c).retrieve(retMap)
 
         val store: FileStorage = with(TemporaryFileStorage(activity)) {
@@ -119,6 +96,46 @@ class FileStorageTest {
         val map = HashMap<String, Any?>()
         map[fieldName] = filePath
         store.dispatch(map)
+
+
+        val p = store.getAssociatedList().toMutableList()[0]
+        assertEquals(fieldName, p.first)
+        assertEquals(base64Str, p.second)
+    }
+
+    @Test
+    fun test_dispatch() {
+        val c = mock(VgsFileCipher::class.java)
+
+        val base64Str = "base64Str"
+        val fieldName = "userData.response"
+        val filePath = "file:///tmp/user.txt"
+        val retMap = HashMap<String, Any?>()
+        retMap[fieldName] = filePath
+
+        val uri = Uri.parse(filePath)
+
+        doReturn(base64Str)
+            .`when`(c).getBase64(uri)
+
+
+        val response = fieldName to filePath
+
+        doReturn(response)
+            .`when`(c).retrieve(retMap)
+
+        val store: FileStorage = with(TemporaryFileStorage(activity)) {
+            this.setCipher(c)
+
+            this
+        }
+
+        val map = HashMap<String, Any?>()
+        map[fieldName] = filePath
+        store.dispatch(map)
+
+
+        verify(c).getBase64(uri)
 
         assertEquals(1, store.getItems().size)
     }
@@ -137,7 +154,7 @@ class FileStorageTest {
 
         provider.attachFile(fieldName)
 
-        Mockito.verify(c).save(fieldName)
+        verify(c).save(fieldName)
     }
 
     @Test
