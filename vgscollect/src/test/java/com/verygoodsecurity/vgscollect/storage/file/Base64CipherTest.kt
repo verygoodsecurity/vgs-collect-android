@@ -64,7 +64,7 @@ class Base64CipherTest {
 
         val p = cipher.retrieve(map)
 
-        assertEquals(fieldName, p?.second)
-        assertEquals(uri, p?.first)
+        assertEquals(fieldName, p?.first)
+        assertEquals(uri, p?.second)
     }
 }
