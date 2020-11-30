@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.model.network
 
+import android.content.Context
 import com.verygoodsecurity.vgscollect.R
 
 enum class VGSError(val code:Int, val messageResId:Int) {
@@ -30,4 +31,14 @@ enum class VGSError(val code:Int, val messageResId:Int) {
     FILE_SIZE_OVER_LIMIT(1103,
         R.string.error_file_size_validation
     )
+}
+
+fun VGSError.toVGSResponse(context: Context, vararg params: String?): VGSResponse.ErrorResponse {
+    val message = if (params.isEmpty()) {
+        context.getString(this.messageResId)
+    } else {
+        String.format(context.getString(this.messageResId), *params)
+    }
+
+    return VGSResponse.ErrorResponse(localizeMessage = message, errorCode = this.code)
 }

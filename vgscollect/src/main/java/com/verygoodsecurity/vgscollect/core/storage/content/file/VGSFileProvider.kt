@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.storage.content.file
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
 
 /**
@@ -7,6 +9,14 @@ import com.verygoodsecurity.vgscollect.core.model.state.FileState
  * It allows managing files inside SDK by attach/detach/get file general info methods.
  */
 interface VGSFileProvider {
+
+    /**
+     * Specify the maximum size of the cache for file stored before submit to the Proxy Server.
+     *
+     * @param cacheSize The new maximum size.
+     */
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    fun resize(cacheSize: Int)
 
     /**
      * Mentioned below method allows to attach file to the temporary local file storage before

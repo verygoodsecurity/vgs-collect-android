@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.util
+package com.verygoodsecurity.vgscollect.util.extension
 
 import android.content.Context
 import android.net.Uri
@@ -6,7 +6,7 @@ import android.provider.OpenableColumns
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
 
 /** @suppress */
-internal fun Uri.parseFile(context: Context, fieldName:String): FileState? {
+internal fun Uri.parseFile(context: Context, fieldName: String): FileState? {
     val mimeType: String? = this.let { returnUri ->
         context.contentResolver.getType(returnUri)
     }

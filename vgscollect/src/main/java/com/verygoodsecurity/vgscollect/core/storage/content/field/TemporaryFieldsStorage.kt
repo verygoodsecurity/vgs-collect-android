@@ -30,6 +30,10 @@ internal class TemporaryFieldsStorage(
         store.clear()
     }
 
+    override fun remove(id: Int) {
+        store.remove(id)
+    }
+
     override fun getItems(): MutableCollection<VGSFieldState> {
         return store.values
     }

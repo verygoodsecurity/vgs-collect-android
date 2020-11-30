@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.core.api
+package com.verygoodsecurity.vgscollect.core.api.client.ssl
 
 import androidx.annotation.VisibleForTesting
 import java.io.IOException

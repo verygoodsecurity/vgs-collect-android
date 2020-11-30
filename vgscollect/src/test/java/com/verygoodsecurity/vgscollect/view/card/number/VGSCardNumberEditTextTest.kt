@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.view.View
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.TestApplication
+import com.verygoodsecurity.vgscollect.any
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
@@ -18,7 +19,6 @@ import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -540,7 +540,4 @@ class VGSCardNumberEditTextTest {
         assertEquals(false, state3!!.isValid)
         assertEquals(19, state3.contentLength)
     }
-
-
-    private fun <T> any(): T = Mockito.any<T>()
 }

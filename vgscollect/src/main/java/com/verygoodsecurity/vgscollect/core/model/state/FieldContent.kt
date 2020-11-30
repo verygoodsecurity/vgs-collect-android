@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
-import com.verygoodsecurity.vgscollect.util.isNumeric
+import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat

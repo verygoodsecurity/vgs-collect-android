@@ -11,11 +11,11 @@ import com.verygoodsecurity.vgscollect.view.card.validation.payment.brand.*
 
 /** @suppress */
 internal class InputCardNumberConnection(
-    private val id:Int,
+    private val id: Int,
     private val validator: VGSValidator?,
     private val IcardBrand: IDrawCardBrand? = null,
-    private val divider:String? = null
-): BaseInputConnection() {
+    private val divider: String? = null
+) : BaseInputConnection() {
     private val cardFilters = mutableListOf<VGSCardFilter>()
 
 
@@ -30,7 +30,7 @@ internal class InputCardNumberConnection(
     override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
         listener?.let {
             addNewListener(it)
-        }
+        } ?: clearAllListeners()
     }
 
     override fun clearFilters() {
@@ -61,11 +61,11 @@ internal class InputCardNumberConnection(
         output.isValid = isRequiredRuleValid && isContentRuleValid
     }
 
-    private fun isRequiredValid():Boolean {
+    private fun isRequiredValid(): Boolean {
         return output.isRequired && !output.content?.data.isNullOrEmpty() || !output.isRequired
     }
 
-    private fun isContentValid(card: CardBrandPreview):Boolean {
+    private fun isContentValid(card: CardBrandPreview): Boolean {
         val content = output.content?.data
         return when {
             !output.isRequired && content.isNullOrEmpty() -> true
@@ -79,13 +79,13 @@ internal class InputCardNumberConnection(
     ): Boolean {
         val rawStr = output.content?.data?.replace(divider ?: " ", "") ?: ""
 
-        val isValid = if(card.successfullyDetected) {
+        val isValid = if (card.successfullyDetected) {
             val isLengthAppropriate = checkLength(card.numberLength, rawStr.length)
             val isLuhnValid: Boolean = validateCheckSum(card.algorithm, rawStr)
 
             isLengthAppropriate && isLuhnValid
         } else {
-            validator?.isValid(rawStr)?:false
+            validator?.isValid(rawStr) ?: false
         }
 
         return isValid
@@ -94,8 +94,8 @@ internal class InputCardNumberConnection(
     private fun validateCheckSum(
         algorithm: ChecksumAlgorithm,
         cardNumber: String
-    ):Boolean {
-        return when(algorithm) {
+    ): Boolean {
+        return when (algorithm) {
             ChecksumAlgorithm.LUHN -> LuhnCheckSumValidator().isValid(cardNumber)
             ChecksumAlgorithm.NONE -> true
             else -> false
@@ -113,10 +113,10 @@ internal class InputCardNumberConnection(
     }
 
     private fun detectBrand(): CardBrandPreview {
-        for(i in cardFilters.indices) {
+        for (i in cardFilters.indices) {
             val filter = cardFilters[i]
             val brand = filter.detect(output.content?.data)
-            if(brand != null) {
+            if (brand != null) {
                 return brand
             }
         }

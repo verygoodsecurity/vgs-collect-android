@@ -131,15 +131,24 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    internal val statePreparer = StatePreparer()
+    internal val statePreparer:AccessibilityStatePreparer = StatePreparer()
 
     internal inner class StatePreparer:AccessibilityStatePreparer {
+
+        override fun getId(): Int = inputField.id
+
         override fun getView():View {
             return inputField
         }
+
         override fun getDependencyListener(): DependencyListener = notifier
+
         override fun setAnalyticTracker(tr: AnalyticTracker) {
             inputField.tracker = tr
+        }
+
+        override fun unsubscribe() {
+            inputField.stateListener = null
         }
     }
 

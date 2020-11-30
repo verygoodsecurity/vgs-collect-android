@@ -7,10 +7,10 @@ import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
-import com.verygoodsecurity.vgscollect.core.api.ApiClient
+import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
-import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
+import com.verygoodsecurity.vgscollect.core.model.network.*
 import com.verygoodsecurity.vgscollect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
@@ -18,14 +18,12 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.widget.*
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.mockito.Mockito.after
-import org.mockito.Mockito.spy
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.*
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
@@ -45,11 +43,6 @@ class VGSCollectTest {
         activityController = Robolectric.buildActivity(Activity::class.java)
         activity = activityController.get()
         collect = VGSCollect(activity, "tnts")
-
-        val activityShadow = Shadows.shadowOf(activity)
-        activityShadow.grantPermissions(
-            Manifest.permission.INTERNET
-        )
     }
 
     @Test
@@ -62,11 +55,11 @@ class VGSCollectTest {
 
     @Test
     fun test_remove_response_listener() {
-        val listener1 = Mockito.mock(VgsCollectResponseListener::class.java)
+        val listener1 = mock(VgsCollectResponseListener::class.java)
         collect.addOnResponseListeners(listener1)
         assertEquals(2, collect.getResponseListeners().size) // + analytic listener
 
-        val listener2 = Mockito.mock(VgsCollectResponseListener::class.java)
+        val listener2 = mock(VgsCollectResponseListener::class.java)
         collect.removeOnResponseListener(listener2)
         assertEquals(2, collect.getResponseListeners().size) // + analytic listener
 
@@ -76,10 +69,10 @@ class VGSCollectTest {
 
     @Test
     fun test_remove_all_response_listeners() {
-        val listener1 = Mockito.mock(VgsCollectResponseListener::class.java)
+        val listener1 = mock(VgsCollectResponseListener::class.java)
         collect.addOnResponseListeners(listener1)
         assertEquals(2, collect.getResponseListeners().size) // + analytic listener
-        val listener2 = Mockito.mock(VgsCollectResponseListener::class.java)
+        val listener2 = mock(VgsCollectResponseListener::class.java)
         collect.addOnResponseListeners(listener2)
         assertEquals(3, collect.getResponseListeners().size) // + analytic listener
 
@@ -94,28 +87,47 @@ class VGSCollectTest {
         applyStateChangeListener()
         applyStateChangeListener()
 
-        Mockito.verify(storage, Mockito.times(2)).attachStateChangeListener(any())
+        verify(storage, times(2)).attachStateChangeListener(any())
     }
 
     @Test
     fun test_bind_view() {
         val view = applyEditText(FieldType.INFO)
 
-        Mockito.verify(view, Mockito.times(2)).getFieldType() //default init + analytics,
-        Mockito.verify(view).getFieldName()
-        Mockito.verify(view).addStateListener(any())
+        verify(view, times(2)).getFieldType() //default init + analytics,
+        verify(view).getFieldName()
+        verify(view).addStateListener(any())
+    }
+
+    @Test
+    fun test_unbind_view() {
+        val view = applyEditText(FieldType.INFO)
+        assertEquals(1, collect.getAllStates().size)
+        assertTrue(view.statePreparer.getView() is BaseInputField)
+        assertNotNull((view.statePreparer.getView() as BaseInputField).stateListener)
+
+        collect.unbindView(view)
+        assertEquals(0, collect.getAllStates().size)
+        assertNull((view.statePreparer.getView() as BaseInputField).stateListener)
+
+        view.setText("SDS")
+        assertEquals(0, collect.getAllStates().size)
+        assertNull((view.statePreparer.getView() as BaseInputField).stateListener)
     }
 
     @Test
     fun test_on_destroy() {
         applyResponseListener()
 
+        val client = applyApiClient()
         val storage = applyStorage()
 
         collect.onDestroy()
 
         assertEquals(0, collect.getResponseListeners().size)
-        Mockito.verify(storage).clear()
+        verify(storage).clear()
+
+        verify(client, after(500)).cancelAll()
     }
 
     @Test
@@ -137,17 +149,102 @@ class VGSCollectTest {
     }
 
     @Test
-    fun test_submit_path_method() {
-        val client = applyApiClient()
+    fun test_sync_path_method_no_internet_permission() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
+        val listener = applyResponseListener()
 
         collect.submit("/path", HTTPMethod.POST)
 
-        Mockito.verify(client).call(any(), any(), any(), any())
+        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
-    fun test_submit_request_builder() {
+    fun test_sync_path_method_no_access_network_state_permission() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET
+        )
+
+        val listener = applyResponseListener()
+
+        collect.submit("/path", HTTPMethod.POST)
+
+        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+    }
+
+    @Test
+    fun test_sync_path_method() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
         val client = applyApiClient()
+
+        doReturn(NetworkResponse())
+            .`when`(client).execute(any())
+
+        collect.submit("/path", HTTPMethod.POST)
+
+        verify(client).execute(any())
+    }
+
+    @Test
+    fun test_async_path_method_no_internet_permission() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
+        val listener = applyResponseListener()
+
+        collect.asyncSubmit("/path", HTTPMethod.POST)
+
+        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+    }
+
+    @Test
+    fun test_async_path_method_no_access_network_state_permission() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET
+        )
+
+        val listener = applyResponseListener()
+
+        collect.asyncSubmit("/path", HTTPMethod.POST)
+
+        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+    }
+
+    @Test
+    fun test_async_path_method() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
+        val client = applyApiClient()
+
+        collect.asyncSubmit("/path", HTTPMethod.POST)
+
+        verify(client, after(500)).enqueue(any(), any())
+    }
+
+    @Test
+    fun test_sync_request_builder_no_internet_permission() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
+        val listener = applyResponseListener()
 
         val request = VGSRequest.VGSRequestBuilder()
             .setPath("/path")
@@ -155,20 +252,94 @@ class VGSCollectTest {
             .build()
         collect.submit(request)
 
-        Mockito.verify(client).call(any(), any(), any(), any())
+        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
-    fun test_asyncsubmit_path_method() {
+    fun test_sync_request_builder_no_access_network_state_permission() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET
+        )
+
+        val listener = applyResponseListener()
+
+        val request = VGSRequest.VGSRequestBuilder()
+            .setPath("/path")
+            .setMethod(HTTPMethod.POST)
+            .build()
+        collect.submit(request)
+
+        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+    }
+
+    @Test
+    fun test_sync_request_builder() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
         val client = applyApiClient()
 
-        collect.asyncSubmit("/path", HTTPMethod.POST)
+        doReturn(NetworkResponse())
+            .`when`(client).execute(any())
 
-        Mockito.verify(client, after(500)).call(any(), any(), any(), any())
+        val request = VGSRequest.VGSRequestBuilder()
+            .setPath("/path")
+            .setMethod(HTTPMethod.POST)
+            .build()
+        collect.submit(request)
+
+        verify(client).execute(any())
+    }
+
+
+    @Test
+    fun test_async_request_builder_no_internet_permission() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
+        val listener = applyResponseListener()
+
+        val request = VGSRequest.VGSRequestBuilder()
+            .setPath("/path")
+            .setMethod(HTTPMethod.POST)
+            .build()
+        collect.asyncSubmit(request)
+
+        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
-    fun test_asyncsubmit_request_builder() {
+    fun test_async_request_builder_no_access_network_state_permission() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET
+        )
+
+        val listener = applyResponseListener()
+
+        val request = VGSRequest.VGSRequestBuilder()
+            .setPath("/path")
+            .setMethod(HTTPMethod.POST)
+            .build()
+        collect.asyncSubmit(request)
+
+        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+    }
+
+    @Test
+    fun test_async_request_builder() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
         val client = applyApiClient()
 
         val request = VGSRequest.VGSRequestBuilder()
@@ -177,7 +348,7 @@ class VGSCollectTest {
             .build()
         collect.asyncSubmit(request)
 
-        Mockito.verify(client, after(500)).call(any(), any(), any(), any())
+        verify(client, after(500)).enqueue(any(), any())
     }
 
     @Test
@@ -190,7 +361,7 @@ class VGSCollectTest {
 
         collect.onActivityResult(TemporaryFileStorage.REQUEST_CODE, Activity.RESULT_OK, intent)
 
-        Mockito.verify(storage).getFileStorage()
+        verify(storage).getFileStorage()
     }
 
     @Test
@@ -201,7 +372,7 @@ class VGSCollectTest {
         data["key"] = "value"
         collect.setCustomHeaders(data)
 
-        Mockito.verify(client).getTemporaryStorage()
+        verify(client).getTemporaryStorage()
         assertEquals(1, client.getTemporaryStorage().getCustomHeaders().size)
     }
 
@@ -211,7 +382,7 @@ class VGSCollectTest {
 
         collect.resetCustomHeaders()
 
-        Mockito.verify(client).getTemporaryStorage()
+        verify(client).getTemporaryStorage()
         assertEquals(0, client.getTemporaryStorage().getCustomHeaders().size)
     }
 
@@ -223,7 +394,7 @@ class VGSCollectTest {
         data["key"] = "value"
         collect.setCustomData(data)
 
-        Mockito.verify(client).getTemporaryStorage()
+        verify(client).getTemporaryStorage()
         assertEquals(1, client.getTemporaryStorage().getCustomData().size)
     }
 
@@ -233,7 +404,7 @@ class VGSCollectTest {
 
         collect.resetCustomData()
 
-        Mockito.verify(client).getTemporaryStorage()
+        verify(client).getTemporaryStorage()
         assertEquals(0, client.getTemporaryStorage().getCustomData().size)
     }
 
@@ -241,10 +412,8 @@ class VGSCollectTest {
     fun test_get_file_provider() {
         val storage = applyStorage()
         collect.getFileProvider()
-        Mockito.verify(storage).getFileProvider()
+        verify(storage).getFileProvider()
     }
-
-    private fun <T> any(): T = Mockito.any<T>()
 
     private fun applyStorage(): InternalStorage {
         val storage = spy( InternalStorage(activity) )
@@ -297,22 +466,22 @@ class VGSCollectTest {
     }
 
     private fun applyResponseListener(): VgsCollectResponseListener {
-        val listener = Mockito.mock(VgsCollectResponseListener::class.java)
+        val listener = mock(VgsCollectResponseListener::class.java)
         collect.addOnResponseListeners(listener)
 
         return listener
     }
 
     private fun applyStateChangeListener(): OnFieldStateChangeListener {
-        val listener = Mockito.mock(OnFieldStateChangeListener::class.java)
+        val listener = mock(OnFieldStateChangeListener::class.java)
         collect.addOnFieldStateChangeListener(listener)
 
         return listener
     }
 
     private fun applyApiClient(): ApiClient {
-        val client = Mockito.mock(ApiClient::class.java)
-        Mockito.doReturn(VgsApiTemporaryStorageImpl())
+        val client = mock(ApiClient::class.java)
+        doReturn(VgsApiTemporaryStorageImpl())
             .`when`(client).getTemporaryStorage()
 
         collect.setClient(client)

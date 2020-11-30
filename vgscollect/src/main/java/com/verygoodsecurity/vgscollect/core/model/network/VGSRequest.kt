@@ -1,6 +1,8 @@
 package com.verygoodsecurity.vgscollect.core.model.network
 
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
+import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
+import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
 
 /**
  * Class to collect data before submit.
@@ -16,11 +18,12 @@ import com.verygoodsecurity.vgscollect.core.HTTPMethod
  */
 data class VGSRequest private constructor(
     val method: HTTPMethod,
-    val path:String,
-    val customHeader:HashMap<String, String>,
-    val customData:HashMap<String, Any>,
-    val fieldsIgnore:Boolean = false,
-    val fileIgnore:Boolean = false
+    val path: String,
+    val customHeader: HashMap<String, String>,
+    val customData: HashMap<String, Any>,
+    val fieldsIgnore: Boolean = false,
+    val fileIgnore: Boolean = false,
+    val format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
 ) {
 
     /**
@@ -29,11 +32,12 @@ data class VGSRequest private constructor(
      */
     class VGSRequestBuilder {
         private var method: HTTPMethod = HTTPMethod.POST
-        private var path:String = "/post"
-        private val customHeader:HashMap<String, String> = HashMap()
-        private val customData:HashMap<String, Any> = HashMap()
-        private var fieldsIgnore:Boolean = false
-        private var fileIgnore:Boolean = false
+        private var path: String = ""
+        private val customHeader: HashMap<String, String> = HashMap()
+        private val customData: HashMap<String, Any> = HashMap()
+        private var fieldsIgnore: Boolean = false
+        private var format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
+        private var fileIgnore: Boolean = false
 
         /**
          * It collect custom data which will be send to the server.
@@ -41,7 +45,7 @@ data class VGSRequest private constructor(
          * @param customData The Map to save for request.
          * @return current builder instance
          */
-        fun setCustomData(customData:Map<String, Any>): VGSRequestBuilder {
+        fun setCustomData(customData: Map<String, Any>): VGSRequestBuilder {
             this.customData.putAll(customData)
             return this
         }
@@ -52,7 +56,7 @@ data class VGSRequest private constructor(
          * @param customHeader The headers to save for request.
          * @return current builder instance
          */
-        fun setCustomHeader(customHeader:Map<String, String>): VGSRequestBuilder {
+        fun setCustomHeader(customHeader: Map<String, String>): VGSRequestBuilder {
             this.customHeader.putAll(customHeader)
             return this
         }
@@ -63,12 +67,12 @@ data class VGSRequest private constructor(
          * @param path path for a request
          * @return current builder instance
          */
-        fun setPath(path:String): VGSRequestBuilder {
+        fun setPath(path: String): VGSRequestBuilder {
             this.path = path.run {
                 val p = when {
                     length == 0 -> "/"
                     first() == '/' -> this
-                    else ->  "/$this"
+                    else -> "/$this"
                 }
                 p
             }
@@ -99,6 +103,11 @@ data class VGSRequest private constructor(
             return this
         }
 
+        internal fun setFormat(format: VGSHttpBodyFormat): VGSRequestBuilder {
+            this.format = format
+            return this
+        }
+
         /**
          * Ignore files in a request to the server.
          *
@@ -106,7 +115,7 @@ data class VGSRequest private constructor(
          * @since 1.0.10
          */
         fun ignoreFiles(): VGSRequestBuilder {
-            fieldsIgnore = true
+            fileIgnore = true
             return this
         }
 
@@ -122,8 +131,21 @@ data class VGSRequest private constructor(
                 customHeader,
                 customData,
                 fieldsIgnore,
-                fileIgnore
+                fileIgnore,
+                format
             )
         }
     }
+}
+
+fun VGSRequest.toNetworkRequest(url: String): NetworkRequest {
+    return NetworkRequest(
+        method,
+        url concatWithSlash path,
+        customHeader,
+        customData,
+        fieldsIgnore,
+        fileIgnore,
+        format
+    )
 }

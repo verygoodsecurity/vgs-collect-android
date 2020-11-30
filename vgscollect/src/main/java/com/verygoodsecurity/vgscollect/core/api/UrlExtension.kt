@@ -7,7 +7,7 @@ import java.net.URL
 import java.util.regex.Pattern
 
 /** @suppress */
-internal fun String.setupURL(rawValue:String):String {
+internal fun String.setupURL(rawValue: String): String {
     return when {
         this.isEmpty() || !isTennantIdValid() -> {
             Logger.e(VGSCollect::class.java, "tennantId is not valid")
@@ -21,10 +21,10 @@ internal fun String.setupURL(rawValue:String):String {
     }
 }
 
-private fun String.buildURL(env:String):String {
+private fun String.buildURL(env: String): String {
     val DOMEN = "verygoodproxy.com"
     val DIVIDER = "."
-    val SCHEME  = "https://"
+    val SCHEME = "https://"
 
     val builder = StringBuilder(SCHEME)
         .append(this).append(DIVIDER)
@@ -34,50 +34,46 @@ private fun String.buildURL(env:String):String {
     return builder.toString()
 }
 
-internal fun String.isTennantIdValid():Boolean {
-    val m = Pattern.compile("^[a-zA-Z0-9]*\$").matcher(this)
+internal fun String.isTennantIdValid(): Boolean =
+    Pattern.compile("^[a-zA-Z0-9]*\$").matcher(this).matches()
 
-    return m.matches()
+internal fun String.isEnvironmentValid(): Boolean =
+    Pattern.compile("^(live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+\$").matcher(this).matches()
+
+internal fun String.isURLValid(): Boolean {
+    return when {
+        isNullOrBlank() -> false
+        startsWith("http://") -> throw RuntimeException("Cleartext HTTP traffic to * not permitted")
+        else -> Pattern.compile(
+            "^(?:https?:\\/\\/)?[\\w.-]+(?:\\.[\\w\\/.-]+)+[\\w\\:]+\$"
+        ).matcher(this).matches()
+    }
 }
 
-internal fun String.isEnvironmentValid():Boolean {
-    val m = Pattern.compile("^(live|sandbox|LIVE|SANDBOX)+((-)+([a-zA-Z0-9]+)|)+\$").matcher(this)
-
-    return m.matches()
+internal fun String.toHostnameValidationUrl(tnt: String): String {
+    return String.format(
+        "https://js.verygoodvault.com/collect-configs/%s__%s.txt",
+        this.toHost(),
+        tnt
+    )
 }
 
-internal fun String.isURLValid():Boolean {
+internal infix fun String.equalsUrl(name: String?): Boolean {
+    return toHost() == name?.toHost()
+}
+
+internal fun String.toHttps(): String {
+    return when {
+        startsWith("http://") -> this
+        startsWith("https://") -> this
+        else -> "https://$this"
+    }
+}
+
+internal fun String.toHost(): String {
     return try {
-        URL(this).toURI()
-        true
-    } catch (e:Exception) {
-        false
+        URL(this.toHttps()).host
+    } catch (e: MalformedURLException) {
+        ""
     }
-}
-
-internal fun String.buildURL(path: String, vararg getQuery:String):URL? {
-    val builder = StringBuilder(this)
-
-    when {
-        path.isEmpty() -> {}
-        path.length > 1 && path.first().toString() == "/" -> builder.append(path)
-        else -> builder.append("/").append(path)
-    }
-
-    if(getQuery.isNotEmpty()) {
-        builder.append("?")
-        getQuery.forEach {
-            if(builder.last() != '?') {
-                builder.append("&")
-            }
-            builder.append(it)
-        }
-    }
-
-    var url:URL? = null
-    try {
-        url = URL(builder.toString())
-    } catch (e: MalformedURLException) { }
-
-    return url
 }
