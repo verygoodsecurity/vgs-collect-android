@@ -18,7 +18,7 @@ internal class InputSSNConnection(
     override fun getOutput() = output
 
     override fun setOutputListener(l: OnVgsViewStateChangeListener?) {
-        l?.let { addNewListener(it) }
+        l?.let { addNewListener(it) }?:clearAllListeners()
     }
 
     override fun run() {

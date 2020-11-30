@@ -84,6 +84,11 @@ internal class TemporaryFileStorage(
         memoryCache.evictAll()
     }
 
+    override fun remove(key: String) {
+        memoryCache.remove(key)
+        store.remove(key)
+    }
+
     override fun addItem(fieldName: String, uriStr: String) {
         val fileInfo = Uri.parse(uriStr).parseFile(context, fieldName)
         fileInfo?.let {

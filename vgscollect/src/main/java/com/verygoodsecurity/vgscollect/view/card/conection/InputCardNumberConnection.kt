@@ -30,7 +30,7 @@ internal class InputCardNumberConnection(
     override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
         listener?.let {
             addNewListener(it)
-        }
+        }?:clearAllListeners()
     }
 
     override fun clearFilters() {

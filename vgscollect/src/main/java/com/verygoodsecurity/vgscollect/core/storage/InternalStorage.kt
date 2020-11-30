@@ -21,7 +21,7 @@ internal class InternalStorage(
 
     private val fileProvider: VGSFileProvider
     private val fileStorage: FileStorage
-    private val fieldsStorage:VgsStore<Int, VGSFieldState>
+    private val fieldsStorage: VgsStore<Int, VGSFieldState>
     private val emitter: IStateEmitter
 
     init {
@@ -42,22 +42,22 @@ internal class InternalStorage(
     }
 
     fun getFileProvider() = fileProvider
-    fun getAttachedFiles() =  fileProvider.getAttachedFiles()
+    fun getAttachedFiles() = fileProvider.getAttachedFiles()
     fun getFileStorage() = fileStorage
     fun getFieldsStorage() = fieldsStorage
 
-    fun getFieldsStates():MutableCollection<VGSFieldState> = fieldsStorage.getItems()
+    fun getFieldsStates(): MutableCollection<VGSFieldState> = fieldsStorage.getItems()
 
     fun getAssociatedList(
         fieldsIgnore: Boolean = false, fileIgnore: Boolean = false
-    ):MutableCollection<Pair<String, String>> {
+    ): MutableCollection<Pair<String, String>> {
         val list = mutableListOf<Pair<String, String>>()
 
-        if(fieldsIgnore.not()) {
+        if (fieldsIgnore.not()) {
             list.addAll(fieldsStorage.getItems().toAssociatedList())
         }
 
-        if(fileIgnore.not()) {
+        if (fileIgnore.not()) {
             list.merge(fileStorage.getAssociatedList())
         }
 
@@ -74,14 +74,20 @@ internal class InternalStorage(
     }
 
     fun performSubscription(view: InputFieldView?) {
-        view?.statePreparer?.let {
+        view?.let {
             fieldsDependencyDispatcher.addDependencyListener(
-                view.getFieldType(),
-                it.getDependencyListener()
+                it.getFieldType(),
+                it.statePreparer.getDependencyListener()
             )
+            it.addStateListener(emitter.performSubscription())
         }
+    }
 
-        view?.addStateListener(emitter.performSubscription())
+    fun unsubscribe(view: InputFieldView?) {
+        view?.let {
+            it.statePreparer.unsubscribe()
+            fieldsStorage.remove(it.statePreparer.getView().id)
+        }
     }
 
     fun getFileSizeLimit(): Int {

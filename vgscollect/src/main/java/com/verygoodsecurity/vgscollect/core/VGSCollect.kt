@@ -198,6 +198,12 @@ class VGSCollect {
         initField(view)
     }
 
+    fun unbindView(view: InputFieldView?) {
+        view?.let {
+            storage.unsubscribe(view)
+        }
+    }
+
     /**
      * This method adds a listener whose methods are called whenever VGS secure fields state changes.
      *
