@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.storage.content.file
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
 
 /**
@@ -13,6 +15,7 @@ interface VGSFileProvider {
      *
      * @param cacheSize The new maximum size.
      */
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun resize(cacheSize: Int)
 
     /**
