@@ -63,6 +63,17 @@ class FieldsStorageTest {
     }
 
     @Test
+    fun test_remove_item() {
+        store.addItem(0, VGSFieldState(isFocusable = false, fieldName = "n1"))
+
+        assertEquals(1, store.getItems().size)
+
+        store.remove(0)
+
+        assertEquals(0, store.getItems().size)
+    }
+
+    @Test
     fun test_perform_subscription() {
         val listener = store.performSubscription()
 

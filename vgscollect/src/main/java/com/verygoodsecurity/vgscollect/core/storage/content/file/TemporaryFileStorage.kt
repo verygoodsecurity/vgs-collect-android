@@ -31,7 +31,7 @@ internal class TemporaryFileStorage(
         object : LruCache<String, String>(cacheSize) {}
     }
 
-    private val store = mutableMapOf<FileState, String>()
+    private val store = mutableMapOf<String, FileState>()
 
     override fun detachAll() {
         store.clear()
@@ -57,10 +57,10 @@ internal class TemporaryFileStorage(
         )
     }
 
-    override fun getAttachedFiles(): List<FileState> = store.keys.toList()
+    override fun getAttachedFiles(): List<FileState> = store.values.toList()
 
     override fun detachFile(file: FileState) {
-        store.remove(file)
+        store.remove(file.fieldName)
         memoryCache.remove(file.fieldName)
     }
 
@@ -93,17 +93,16 @@ internal class TemporaryFileStorage(
         val fileInfo = Uri.parse(uriStr).parseFile(context, fieldName)
         fileInfo?.let {
             store.clear()
-            store[fileInfo] = it.fieldName
+            store[it.fieldName] = fileInfo
         }
     }
 
     override fun getItems(): MutableCollection<String> {
-        return store.values
+        return store.keys
     }
 
     override fun getAssociatedList(): MutableCollection<Pair<String, String>> {
-        return store.values.map {
-            val s = memoryCache.get(it)
+        return store.keys.map {
             it to memoryCache.get(it)
         }.toMutableList()
     }

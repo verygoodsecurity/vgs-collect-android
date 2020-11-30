@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.storage.file
 
 import android.app.Activity
 import android.net.Uri
+import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
@@ -44,6 +45,20 @@ class FileStorageTest {
 
         store.addItem("userData.response3", "file:///tmp/user.txt")
         assertEquals(1, store.getItems().size)
+    }
+
+    @Test
+    fun test_remove_item() {
+        val KEY = "file"
+        val store: VgsStore<String, String> = TemporaryFileStorage(activity)
+
+        store.addItem(KEY, "file:///tmp/user.txt")
+
+        assertEquals(1, store.getItems().size)
+
+        store.remove(KEY)
+
+        assertEquals(0, store.getItems().size)
     }
 
     @Test

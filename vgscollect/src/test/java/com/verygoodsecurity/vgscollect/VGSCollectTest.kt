@@ -18,7 +18,7 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.widget.*
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -97,6 +97,22 @@ class VGSCollectTest {
         verify(view, times(2)).getFieldType() //default init + analytics,
         verify(view).getFieldName()
         verify(view).addStateListener(any())
+    }
+
+    @Test
+    fun test_unbind_view() {
+        val view = applyEditText(FieldType.INFO)
+        assertEquals(1, collect.getAllStates().size)
+        assertTrue(view.statePreparer.getView() is BaseInputField)
+        assertNotNull((view.statePreparer.getView() as BaseInputField).stateListener)
+
+        collect.unbindView(view)
+        assertEquals(0, collect.getAllStates().size)
+        assertNull((view.statePreparer.getView() as BaseInputField).stateListener)
+
+        view.setText("SDS")
+        assertEquals(0, collect.getAllStates().size)
+        assertNull((view.statePreparer.getView() as BaseInputField).stateListener)
     }
 
     @Test
