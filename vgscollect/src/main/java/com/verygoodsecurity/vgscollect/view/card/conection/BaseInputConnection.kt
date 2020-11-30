@@ -7,6 +7,10 @@ internal abstract class BaseInputConnection:
     InputRunnable {
     private var stateListeners = mutableListOf<OnVgsViewStateChangeListener>()
 
+    protected fun clearAllListeners() {
+        stateListeners.clear()
+    }
+
     protected fun addNewListener(listener: OnVgsViewStateChangeListener) {
         if(!stateListeners.contains(listener)) {
             stateListeners.add(listener)

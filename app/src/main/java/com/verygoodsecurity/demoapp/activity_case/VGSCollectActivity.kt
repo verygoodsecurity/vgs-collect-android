@@ -11,7 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.verygoodsecurity.api.bouncer.ScanActivity
+import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.core.Environment
@@ -30,7 +30,6 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
-import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener  {
@@ -71,7 +70,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardExpDateField)
         cardExpDateField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
+                if (!state.isEmpty && !state.isValid && !state.hasFocus) {
                     cardExpDateFieldLay?.setError("fill it please")
                 } else {
                     cardExpDateFieldLay?.setError(null)
@@ -92,7 +91,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardHolderField)
         cardHolderField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
+                if (!state.isEmpty && !state.isValid && !state.hasFocus) {
                     cardHolderFieldLay?.setError("fill it please")
                 } else {
                     cardHolderFieldLay?.setError(null)
@@ -105,7 +104,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         vgsForm.bindView(cardCVCField)
         cardCVCField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                if(!state.isEmpty && !state.isValid && !state.hasFocus) {
+                if (!state.isEmpty && !state.isValid && !state.hasFocus) {
                     cardCVCFieldLay?.setError("fill it please")
                 } else {
                     cardCVCFieldLay?.setError(null)
@@ -168,7 +167,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
         cardNumberField.setCardIconAdapter(object : CardIconAdapter(this) {
             override fun getIcon(cardType: CardType, name: String?, resId: Int, r: Rect): Drawable {
-                return if(cardType == CardType.VISA) {
+                return if (cardType == CardType.VISA) {
                     getDrawable(R.drawable.ic_visa_light)
                 } else {
                     super.getIcon(cardType, name, resId, r)
@@ -183,7 +182,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
                 bin: String,
                 mask: String
             ): String {
-                return when(cardType) {
+                return when (cardType) {
                     CardType.UNKNOWN -> {
                         if (bin == "7771") {
                             "# # # #"
@@ -214,12 +213,18 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         val bndl = intent?.extras
 
         vault_id = bndl?.getString(StartActivity.VAULT_ID, "")?:""
-        path = bndl?.getString(StartActivity.PATH,"/")?:""
+        path = bndl?.getString(StartActivity.PATH, "/")?:""
 
         val envId = bndl?.getInt(StartActivity.ENVIROMENT, 0)?:0
         env = Environment.values()[envId]
 
-        vgsForm = VGSCollect(this, vault_id, env)
+        vgsForm = VGSCollect.Builder(this, vault_id)
+            .setEnvironment(env)
+            .setHostname("collect-android-testing.verygoodsecurity.io/test")
+            .create()
+
+        val cacheSize = 10 * 1024 * 1024 // 10MB
+        vgsForm.getFileProvider().resize(cacheSize)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -238,29 +243,18 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun scanCard() {
-        val bndl = with(Bundle()) {
-            val scanSettings = hashMapOf<String?, Int>().apply {
-                this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
-                this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
-                this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
-                this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
-            }
+        val intent = Intent(this, ScanActivity::class.java)
 
-            putSerializable(ScanActivity.SCAN_CONFIGURATION, scanSettings)
-
-            putString(ScanActivity.API_KEY, "<user_bouncer_key>")
-
-            putBoolean(ScanActivity.ENABLE_EXPIRY_EXTRACTION, false)
-            putBoolean(ScanActivity.ENABLE_NAME_EXTRACTION, false)
-            putBoolean(ScanActivity.DISPLAY_CARD_PAN, false)
-            putBoolean(ScanActivity.DISPLAY_CARD_HOLDER_NAME, false)
-            putBoolean(ScanActivity.DISPLAY_CARD_SCAN_LOGO, false)
-            putBoolean(ScanActivity.ENABLE_DEBUG, false)
-
-            this
+        val scanSettings = hashMapOf<String?, Int>().apply {
+            this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
+            this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
+            this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
+            this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
         }
 
-        ScanActivity.scan(this, USER_SCAN_REQUEST_CODE, bndl)
+        intent.putExtra(ScanActivity.SCAN_CONFIGURATION, scanSettings)
+
+        startActivityForResult(intent, USER_SCAN_REQUEST_CODE)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
@@ -294,6 +288,11 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     override fun onDestroy() {
+        vgsForm.unbindView(cardNumberField)
+        vgsForm.unbindView(cardCVCField)
+        vgsForm.unbindView(cardExpDateField)
+        vgsForm.unbindView(cardHolderField)
+
         vgsForm.onDestroy()
         super.onDestroy()
     }
@@ -317,12 +316,12 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         setStateLoading(false)
 
         when (response) {
-            is VGSResponse.SuccessResponse -> responseContainerView.text = response.toString()
+            is VGSResponse.SuccessResponse -> responseContainerView.text = "Code: ${response.successCode}"
             is VGSResponse.ErrorResponse -> responseContainerView.text = response.toString()
         }
     }
 
-    private fun setStateLoading(state:Boolean) {
+    private fun setStateLoading(state: Boolean) {
         if(state) {
             progressBar?.visibility = View.VISIBLE
             submitBtn?.isEnabled = false
@@ -334,16 +333,16 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         }
     }
 
-    private fun setEnabledResponseHeader(isEnabled:Boolean) {
+    private fun setEnabledResponseHeader(isEnabled: Boolean) {
         if(isEnabled) {
-            attachBtn.setTextColor(ContextCompat.getColor(this,
-                R.color.state_active
-            ))
+            attachBtn.setTextColor(
+                ContextCompat.getColor(this, R.color.state_active)
+            )
         } else {
             responseContainerView.text = ""
-            attachBtn.setTextColor(ContextCompat.getColor(this,
-                R.color.state_unactive
-            ))
+            attachBtn.setTextColor(
+                ContextCompat.getColor(this, R.color.state_unactive)
+            )
         }
     }
 

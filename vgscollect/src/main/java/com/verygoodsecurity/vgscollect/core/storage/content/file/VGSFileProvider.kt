@@ -9,6 +9,13 @@ import com.verygoodsecurity.vgscollect.core.model.state.FileState
 interface VGSFileProvider {
 
     /**
+     * Specify the maximum size of the cache for file stored before submit to the Proxy Server.
+     *
+     * @param cacheSize The new maximum size.
+     */
+    fun resize(cacheSize: Int)
+
+    /**
      * Mentioned below method allows to attach file to the temporary local file storage before
      * its sending to the Server.
      *

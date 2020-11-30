@@ -69,4 +69,22 @@ class MaestroTest {
         val brand = filter.detect("50201232")
         Assert.assertEquals(brand?.name, CardType.MAESTRO.name)
     }
+
+    @Test
+    fun test_10() {
+        val brand = filter.detect("56111111")
+        Assert.assertEquals(brand?.name, CardType.MAESTRO.name)
+    }
+
+    @Test
+    fun test_11() {
+        val brand = filter.detect("57111111")
+        Assert.assertEquals(brand?.name, CardType.MAESTRO.name)
+    }
+
+    @Test
+    fun test_12() {
+        val brand = filter.detect("58111111")
+        Assert.assertEquals(brand?.name, CardType.MAESTRO.name)
+    }
 }

@@ -7,9 +7,9 @@ import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 /** @suppress */
 internal class InputCardExpDateConnection(
-    private val id:Int,
+    private val id: Int,
     private vararg val validators: VGSValidator
-): BaseInputConnection() {
+) : BaseInputConnection() {
     private var output = VGSFieldState()
 
     override fun setOutput(state: VGSFieldState) {
@@ -19,7 +19,7 @@ internal class InputCardExpDateConnection(
     override fun getOutput() = output
 
     override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
-        listener?.let { addNewListener(it) }
+        listener?.let { addNewListener(it) } ?: clearAllListeners()
     }
 
     override fun run() {
@@ -37,7 +37,7 @@ internal class InputCardExpDateConnection(
         }
     }
 
-    private fun checkIsContentValid(content:String?):Boolean {
+    private fun checkIsContentValid(content: String?): Boolean {
         val updatedStr = content?.trim() ?: ""
 
         var isDateValid = true
@@ -49,7 +49,7 @@ internal class InputCardExpDateConnection(
         return isDateValid
     }
 
-    private fun isRequiredValid():Boolean {
+    private fun isRequiredValid(): Boolean {
         return output.isRequired && !output.content?.data.isNullOrEmpty() || !output.isRequired
     }
 

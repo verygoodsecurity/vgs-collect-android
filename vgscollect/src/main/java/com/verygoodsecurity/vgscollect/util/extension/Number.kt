@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.util
+package com.verygoodsecurity.vgscollect.util.extension
 
 /** @suppress */
 internal fun String.isNumeric():Boolean {

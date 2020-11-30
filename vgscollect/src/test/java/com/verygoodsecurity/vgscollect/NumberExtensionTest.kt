@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect
 
-import com.verygoodsecurity.vgscollect.util.isNumeric
+import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

@@ -67,11 +67,7 @@ class ScanActivity: BaseTransmitActivity(), CardScanActivityResultHandler {
             key,
             enableEnterCardManually,
             enableExpiryExtraction,
-            enableNameExtraction,
-            displayCardPan,
-            displayCardholderName,
-            displayCardScanLogo,
-            enableDebug
+            enableNameExtraction
         )
     }
 
@@ -170,22 +166,22 @@ class ScanActivity: BaseTransmitActivity(), CardScanActivityResultHandler {
         /**
         If true, display the card pan once the card has started to scan.
          */
-        const val DISPLAY_CARD_PAN = "displayCardPan"
+        private const val DISPLAY_CARD_PAN = "displayCardPan"
 
         /**
         If true, display the name of the card owner if extracted.
          */
-        const val DISPLAY_CARD_HOLDER_NAME = "displayCardholderName"
+        private const val DISPLAY_CARD_HOLDER_NAME = "displayCardholderName"
 
         /**
         If true, display the cardscan.io logo at the top of the screen.
          */
-        const val DISPLAY_CARD_SCAN_LOGO = "displayCardScanLogo"
+        private const val DISPLAY_CARD_SCAN_LOGO = "displayCardScanLogo"
 
         /**
         If true, enable debug views in card scan.
          */
-        const val ENABLE_DEBUG = "enableDebug"
+        private const val ENABLE_DEBUG = "enableDebug"
 
         /**
         Start the card scanner activity.
