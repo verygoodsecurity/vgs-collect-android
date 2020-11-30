@@ -288,6 +288,11 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     override fun onDestroy() {
+        vgsForm.unbindView(cardNumberField)
+        vgsForm.unbindView(cardCVCField)
+        vgsForm.unbindView(cardExpDateField)
+        vgsForm.unbindView(cardHolderField)
+
         vgsForm.onDestroy()
         super.onDestroy()
     }
@@ -312,7 +317,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
         when (response) {
             is VGSResponse.SuccessResponse -> responseContainerView.text = "Code: ${response.successCode}"
-            is VGSResponse.ErrorResponse -> responseContainerView.text = "Code: ${response.errorCode}"
+            is VGSResponse.ErrorResponse -> responseContainerView.text = response.toString()
         }
     }
 

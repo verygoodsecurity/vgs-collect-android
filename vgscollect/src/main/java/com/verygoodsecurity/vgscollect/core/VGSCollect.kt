@@ -199,6 +199,17 @@ class VGSCollect {
     }
 
     /**
+     * Allows to unsubscribe from a View updates.
+     *
+     * @param view base class for VGS secure fields.
+     */
+    fun unbindView(view: InputFieldView?) {
+        view?.let {
+            storage.unsubscribe(view)
+        }
+    }
+
+    /**
      * This method adds a listener whose methods are called whenever VGS secure fields state changes.
      *
      * @param fieldStateListener listener which will notify about changes inside input fields.
