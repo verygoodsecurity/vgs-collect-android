@@ -223,8 +223,10 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
             .setHostname("collect-android-testing.verygoodsecurity.io/test")
             .create()
 
-        val cacheSize = 10 * 1024 * 1024 // 10MB
-        vgsForm.getFileProvider().resize(cacheSize)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            val cacheSize = 10 * 1024 * 1024 // 10MB
+            vgsForm.getFileProvider().resize(cacheSize)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
