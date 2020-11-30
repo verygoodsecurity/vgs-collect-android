@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.LruCache
+import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.app.FilePickerActivity
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
@@ -38,6 +40,7 @@ internal class TemporaryFileStorage(
         memoryCache.evictAll()
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun resize(size: Int) {
         memoryCache.resize(size)
     }
