@@ -337,6 +337,9 @@ internal class InputLayoutStateImpl(
                 this@InputLayoutStateImpl.bottom
             )
 
+            if (this@InputLayoutStateImpl.hintTextAppearance != 0) {
+                this.setHintTextAppearance(this@InputLayoutStateImpl.hintTextAppearance)
+            }
             if(this@InputLayoutStateImpl.hintTextColor != null) {
                 hintTextColor = this@InputLayoutStateImpl.hintTextColor
             }
@@ -388,7 +391,6 @@ internal class InputLayoutStateImpl(
                 this.setCounterTextAppearance(this@InputLayoutStateImpl.counterTextAppearance)
                 this.setHelperTextTextAppearance(this@InputLayoutStateImpl.helperTextTextAppearance)
                 this.setErrorTextAppearance(this@InputLayoutStateImpl.errorTextAppearance)
-                this.setHintTextAppearance(this@InputLayoutStateImpl.hintTextAppearance)
             }
         }
     }
