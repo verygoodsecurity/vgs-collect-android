@@ -337,10 +337,8 @@ internal class InputLayoutStateImpl(
                 this@InputLayoutStateImpl.bottom
             )
 
-            if (this@InputLayoutStateImpl.hintTextAppearance != 0) {
-                this.setHintTextAppearance(this@InputLayoutStateImpl.hintTextAppearance)
-            }
-            if(this@InputLayoutStateImpl.hintTextColor != null) {
+            this.setHintTextAppearance(this@InputLayoutStateImpl.hintTextAppearance)
+            if (this@InputLayoutStateImpl.hintTextColor != null) {
                 hintTextColor = this@InputLayoutStateImpl.hintTextColor
             }
 
