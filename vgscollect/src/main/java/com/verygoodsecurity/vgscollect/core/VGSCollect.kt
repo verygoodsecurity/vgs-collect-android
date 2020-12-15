@@ -595,7 +595,7 @@ class VGSCollect {
     private var hasCustomHostname = false
 
     private fun configureHostname(host: String?, tnt: String) {
-        if (!host.isNullOrBlank()) {
+        if (!host.isNullOrBlank() && baseURL.isNotEmpty()) {
             val r = VGSRequest.VGSRequestBuilder()
                 .setMethod(HTTPMethod.GET)
                 .setFormat(VGSHttpBodyFormat.PLAIN_TEXT)
