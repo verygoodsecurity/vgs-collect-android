@@ -688,7 +688,9 @@ class VGSCollect {
     }
 
     /**
-     * If you want to temporarily disable collecting analytics from VGS Collect SDK, you can set the value to false.
+     * If you want to disable collecting analytics from VGS Collect SDK, you can set the value to false.
+     * This helps us to understand which areas require improvements.
+     * No personal information is tracked.
      *
      * Warning: if this option is set to false, it will increase resolving time for possible incidents.
      */
