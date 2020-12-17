@@ -23,18 +23,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    dokkaHtml {
-        outputDirectory = "${project.rootDir}/docs/"
-        dokkaSourceSets {
-            configureEach {
-                includeNonPublic = false
-                skipDeprecated = false
-                reportUndocumented = true
-                skipEmptyPackages = true
-            }
-        }
-    }
 }
 
 dependencies {
