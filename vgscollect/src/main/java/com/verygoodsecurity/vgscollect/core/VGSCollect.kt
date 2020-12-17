@@ -686,4 +686,13 @@ class VGSCollect {
             }
         }
     }
+
+    /**
+     * If you want to temporarily disable collecting analytics from VGS Collect SDK, you can set the value to false.
+     *
+     * Warning: if this option is set to false, it will increase debugging and resolving time for possible incidents.
+     */
+    fun setAnalyticsEnabled(isEnabled: Boolean) {
+        tracker.setAnalyticsEnabled(isEnabled)
+    }
 }
