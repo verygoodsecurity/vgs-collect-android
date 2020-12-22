@@ -51,17 +51,6 @@ android {
             returnDefaultValues = true
         }
     }
-    dokkaHtml {
-        outputDirectory = "${project.rootDir}/docs/"
-        dokkaSourceSets {
-            configureEach {
-                includeNonPublic = false
-                skipDeprecated = false
-                reportUndocumented = true
-                skipEmptyPackages = true
-            }
-        }
-    }
 }
 
 tasks.withType(Javadoc).all {
