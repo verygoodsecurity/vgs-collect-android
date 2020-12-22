@@ -609,7 +609,12 @@ class VGSCollect {
                 if (hasCustomHostname) {
                     client.setHost(it.body)
                 } else {
-                    Logger.e(context, VGSCollect::class.java, R.string.error_custom_host_wrong)
+                    context.run {
+                        Logger.e(
+                            VGSCollect::class.java,
+                            String.format(getString(R.string.error_custom_host_wrong), host)
+                        )
+                    }
                 }
 
                 hostnameValidationEvent(hasCustomHostname, host)
