@@ -595,7 +595,7 @@ class VGSCollect {
     private var hasCustomHostname = false
 
     private fun configureHostname(host: String?, tnt: String) {
-        if (!host.isNullOrBlank()) {
+        if (!host.isNullOrBlank() && baseURL.isNotEmpty()) {
             val r = VGSRequest.VGSRequestBuilder()
                 .setMethod(HTTPMethod.GET)
                 .setFormat(VGSHttpBodyFormat.PLAIN_TEXT)
@@ -609,7 +609,12 @@ class VGSCollect {
                 if (hasCustomHostname) {
                     client.setHost(it.body)
                 } else {
-                    Logger.e(context, VGSCollect::class.java, R.string.error_custom_host_wrong)
+                    context.run {
+                        Logger.e(
+                            VGSCollect::class.java,
+                            String.format(getString(R.string.error_custom_host_wrong), host)
+                        )
+                    }
                 }
 
                 hostnameValidationEvent(hasCustomHostname, host)
@@ -685,5 +690,16 @@ class VGSCollect {
                 configureHostname(host, id)
             }
         }
+    }
+
+    /**
+     * If you want to disable collecting analytics from VGS Collect SDK, you can set the value to false.
+     * This helps us to understand which areas require improvements.
+     * No personal information is tracked.
+     *
+     * Warning: if this option is set to false, it will increase resolving time for possible incidents.
+     */
+    fun setAnalyticsEnabled(isEnabled: Boolean) {
+        tracker.setAnalyticsEnabled(isEnabled)
     }
 }
