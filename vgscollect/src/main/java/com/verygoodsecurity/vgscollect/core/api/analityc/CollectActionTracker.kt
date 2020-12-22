@@ -24,14 +24,22 @@ internal class CollectActionTracker(
         return@lazy ApiClient.newHttpClient(false)
     }
 
-    override fun logEvent(action: Action) {
-        val event = action.run {
-            val sender = Event(client, tnt, environment, formId)
-            sender.map = getAttributes()
-            sender
-        }
+    private var isAnalyticEnabled = true
 
-        Executors.newSingleThreadExecutor().submit(event)
+    override fun setAnalyticsEnabled(isEnabled: Boolean) {
+        isAnalyticEnabled = isEnabled
+    }
+
+    override fun logEvent(action: Action) {
+        if(isAnalyticEnabled) {
+            val event = action.run {
+                val sender = Event(client, tnt, environment, formId)
+                sender.map = getAttributes()
+                sender
+            }
+
+            Executors.newSingleThreadExecutor().submit(event)
+        }
     }
 
     private class Event(
