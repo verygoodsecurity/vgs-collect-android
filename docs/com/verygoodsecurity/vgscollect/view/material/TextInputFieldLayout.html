@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <!-- NewPage -->
 <html lang="en"><head>
-    <title>TextInputFieldLayout 1.2.5 API </title>
+    <title>TextInputFieldLayout 1.3.1 API </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="dc.created" content="2020-03-25">
     <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
@@ -880,7 +880,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setError</h4>
                                         <pre class="methodSignature"> <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setError(CharSequence)>setError</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/CharSequence.html>CharSequence</a> errorText)</pre>
-                                        <div class="block"><p><p>Sets an error message that will be displayed below our EditText. If the error is null, the error message will be cleared.</p><p>&lt;p&gt;If the error functionality has not been enabled via setErrorEnabled(), then it will be automatically enabled if {@code error} is not empty.</p></p></div>
+                                        <div class="block"><p>Sets an error message that will be displayed below our EditText. If the error is null, the error message will be cleared.</p><p>&lt;p&gt;If the error functionality has not been enabled via setErrorEnabled(), then it will be automatically enabled if {@code error} is not empty.</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
@@ -904,7 +904,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setError</h4>
                                         <pre class="methodSignature"> <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setError(Integer)>setError</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> resId)</pre>
-                                        <div class="block"><p><p>Sets an error message that will be displayed below our EditText. If the error is null, the error message will be cleared.</p><p>&lt;p&gt;If the error functionality has not been enabled via setErrorEnabled(), then it will be automatically enabled if {@code error} is not empty.</p></p></div>
+                                        <div class="block"><p>Sets an error message that will be displayed below our EditText. If the error is null, the error message will be cleared.</p><p>&lt;p&gt;If the error functionality has not been enabled via setErrorEnabled(), then it will be automatically enabled if {@code error} is not empty.</p></div>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>
@@ -979,7 +979,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setPasswordToggleEnabled</h4>
                                         <pre class="methodSignature">@<a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-deprecated/index.html>Deprecated</a>(message = "Use #setEndIconMode(int) instead.") <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setPasswordToggleEnabled(Boolean)>setPasswordToggleEnabled</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Boolean.html>Boolean</a> isEnabled)</pre>
-                                        <div class="block"><p><p>Enables or disable the password visibility toggle functionality.</p><p>&lt;p&gt;When enabled, a button is placed at the end of the EditText which enables the user to switch between the field's input being visibly disguised or not.</p></p></div>
+                                        <div class="block"><p>Enables or disable the password visibility toggle functionality.</p><p>&lt;p&gt;When enabled, a button is placed at the end of the EditText which enables the user to switch between the field's input being visibly disguised or not.</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1003,7 +1003,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setPasswordVisibilityToggleDrawable</h4>
                                         <pre class="methodSignature">@<a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-deprecated/index.html>Deprecated</a>(message = "Use #setEndIconDrawable(int) instead.") <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setPasswordVisibilityToggleDrawable(Integer)>setPasswordVisibilityToggleDrawable</a>(@<a href=https://developer.android.com/reference/kotlin/androidx/annotation/DrawableRes.html>DrawableRes</a>() <a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> resId)</pre>
-                                        <div class="block"><p><p>Set the icon to use for the password visibility toggle button.</p><p>&lt;p&gt;If you use an icon you should also set a description for its action using setPasswordVisibilityToggleContentDescription(CharSequence). This is used for accessibility.</p></p></div>
+                                        <div class="block"><p>Set the icon to use for the password visibility toggle button.</p><p>&lt;p&gt;If you use an icon you should also set a description for its action using setPasswordVisibilityToggleContentDescription(CharSequence). This is used for accessibility.</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1027,7 +1027,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setPasswordVisibilityToggleTintList</h4>
                                         <pre class="methodSignature"> <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setPasswordVisibilityToggleTintList(ColorStateList)>setPasswordVisibilityToggleTintList</a>(<a href=https://developer.android.com/reference/kotlin/android/content/res/ColorStateList.html>ColorStateList</a> tintList)</pre>
-                                        <div class="block"><p><p>Applies a tint to the password visibility toggle drawable. Does not modify the current tint mode, which is PorterDuff.Mode#SRC_IN by default.</p><p>&lt;p&gt;Subsequent calls to setPasswordVisibilityToggleDrawable(Drawable) will automatically mutate the drawable and apply the specified tint and tint mode using DrawableCompat.setTintList(Drawable, ColorStateList).</p></p></div>
+                                        <div class="block"><p>Applies a tint to the password visibility toggle drawable. Does not modify the current tint mode, which is PorterDuff.Mode#SRC_IN by default.</p><p>&lt;p&gt;Subsequent calls to setPasswordVisibilityToggleDrawable(Drawable) will automatically mutate the drawable and apply the specified tint and tint mode using DrawableCompat.setTintList(Drawable, ColorStateList).</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1087,7 +1087,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setBoxBackgroundMode</h4>
                                         <pre class="methodSignature"> <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setBoxBackgroundMode(Integer)>setBoxBackgroundMode</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> boxBackgroundMode)</pre>
-                                        <div class="block"><p><p>Set the box background mode (filled, outline, or none).</p><p>&lt;p&gt;May be one of BOX_BACKGROUND_NONE, BOX_BACKGROUND_FILLED, or BOX_BACKGROUND_OUTLINE.</p><p>&lt;p&gt;Note: This method defines TextInputLayout's internal behavior (for example, it allows the hint to be displayed inline with the stroke in a cutout), but doesn't set all attributes that are set in the styles provided for the box background modes. To achieve the look of an outlined or filled text field, supplement this method with other methods that modify the box, such as setBoxStrokeColor(int) and setBoxBackgroundColor(int).</p></p></div>
+                                        <div class="block"><p>Set the box background mode (filled, outline, or none).</p><p>&lt;p&gt;May be one of BOX_BACKGROUND_NONE, BOX_BACKGROUND_FILLED, or BOX_BACKGROUND_OUTLINE.</p><p>&lt;p&gt;Note: This method defines TextInputLayout's internal behavior (for example, it allows the hint to be displayed inline with the stroke in a cutout), but doesn't set all attributes that are set in the styles provided for the box background modes. To achieve the look of an outlined or filled text field, supplement this method with other methods that modify the box, such as setBoxStrokeColor(int) and setBoxBackgroundColor(int).</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1111,7 +1111,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setBoxBackgroundColor</h4>
                                         <pre class="methodSignature"> <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setBoxBackgroundColor(Integer)>setBoxBackgroundColor</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> boxBackgroundColor)</pre>
-                                        <div class="block"><p><p>Set the filled box's background color.</p><p>&lt;p&gt;Note: The background color is only supported for filled boxes. When used with box variants other than BoxBackgroundMode.BOX_BACKGROUND_FILLED, the box background color may not work as intended.</p></p></div>
+                                        <div class="block"><p>Set the filled box's background color.</p><p>&lt;p&gt;Note: The background color is only supported for filled boxes. When used with box variants other than BoxBackgroundMode.BOX_BACKGROUND_FILLED, the box background color may not work as intended.</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1135,7 +1135,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setBoxStrokeColor</h4>
                                         <pre class="methodSignature"> <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setBoxStrokeColor(Integer)>setBoxStrokeColor</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> boxStrokeColor)</pre>
-                                        <div class="block"><p><p>Set the outline box's stroke color.</p><p>&lt;p&gt;Calling this method when not in outline box mode will do nothing.</p></p></div>
+                                        <div class="block"><p>Set the outline box's stroke color.</p><p>&lt;p&gt;Calling this method when not in outline box mode will do nothing.</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1159,7 +1159,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setHintEnabled</h4>
                                         <pre class="methodSignature"> <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setHintEnabled(Boolean)>setHintEnabled</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Boolean.html>Boolean</a> state)</pre>
-                                        <div class="block"><p><p>Sets whether the floating label functionality is enabled or not in this layout.</p><p>&lt;p&gt;If enabled, any non-empty hint in the child EditText will be moved into the floating hint, and its existing hint will be cleared. If disabled, then any non-empty floating hint in this layout will be moved into the EditText, and this layout's hint will be cleared.</p></p></div>
+                                        <div class="block"><p>Sets whether the floating label functionality is enabled or not in this layout.</p><p>&lt;p&gt;If enabled, any non-empty hint in the child EditText will be moved into the floating hint, and its existing hint will be cleared. If disabled, then any non-empty floating hint in this layout will be moved into the EditText, and this layout's hint will be cleared.</p></div>
                                         
                                         <!-- TODO missing return annotation -->
                                     </li>
@@ -1228,7 +1228,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setStartIconDrawable</h4>
                                         <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setStartIconDrawable(Integer)>setStartIconDrawable</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> resId)</pre>
-                                        <div class="block"><p><p>Sets the start icon.</p><p>&lt;p&gt;If you use an icon you should also set a description for its action using setStartIconContentDescription(CharSequence). This is used for accessibility.</p></p></div>
+                                        <div class="block"><p>Sets the start icon.</p><p>&lt;p&gt;If you use an icon you should also set a description for its action using setStartIconContentDescription(CharSequence). This is used for accessibility.</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1252,7 +1252,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setStartIconDrawableTintList</h4>
                                         <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setStartIconDrawableTintList(ColorStateList)>setStartIconDrawableTintList</a>(<a href=https://developer.android.com/reference/kotlin/android/content/res/ColorStateList.html>ColorStateList</a> startIconTintList)</pre>
-                                        <div class="block"><p><p>Applies a tint to the start icon drawable. Does not modify the current tint mode, which is {@link PorterDuff.Mode#SRC_IN} by default.</p><p>&lt;p&gt;Subsequent calls to setStartIconDrawable(Drawable) will automatically mutate the drawable and apply the specified tint and tint mode using DrawableCompat.setTintList(Drawable, ColorStateList).</p></p></div>
+                                        <div class="block"><p>Applies a tint to the start icon drawable. Does not modify the current tint mode, which is {@link PorterDuff.Mode#SRC_IN} by default.</p><p>&lt;p&gt;Subsequent calls to setStartIconDrawable(Drawable) will automatically mutate the drawable and apply the specified tint and tint mode using DrawableCompat.setTintList(Drawable, ColorStateList).</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1300,7 +1300,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setEndIconDrawable</h4>
                                         <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setEndIconDrawable(Integer)>setEndIconDrawable</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> resId)</pre>
-                                        <div class="block"><p><p>Set the icon to use for the end icon.</p><p>&lt;p&gt;If you use an icon you should also set a description for its action using setEndIconContentDescription(CharSequence). This is used for accessibility.</p></p></div>
+                                        <div class="block"><p>Set the icon to use for the end icon.</p><p>&lt;p&gt;If you use an icon you should also set a description for its action using setEndIconContentDescription(CharSequence). This is used for accessibility.</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1324,7 +1324,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setEndIconDrawableTintList</h4>
                                         <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setEndIconDrawableTintList(ColorStateList)>setEndIconDrawableTintList</a>(<a href=https://developer.android.com/reference/kotlin/android/content/res/ColorStateList.html>ColorStateList</a> endIconTintList)</pre>
-                                        <div class="block"><p><p>Applies a tint to the end icon drawable. Does not modify the current tint mode, which is PorterDuff.Mode#SRC_IN by default.</p><p>&lt;p&gt;Subsequent calls to setEndIconDrawable(Drawable) will automatically mutate the drawable and apply the specified tint and tint mode using DrawableCompat#setTintList(Drawable, ColorStateList).</p></p></div>
+                                        <div class="block"><p>Applies a tint to the end icon drawable. Does not modify the current tint mode, which is PorterDuff.Mode#SRC_IN by default.</p><p>&lt;p&gt;Subsequent calls to setEndIconDrawable(Drawable) will automatically mutate the drawable and apply the specified tint and tint mode using DrawableCompat#setTintList(Drawable, ColorStateList).</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
@@ -1546,7 +1546,7 @@ extends <a href=https://developer.android.com/reference/kotlin/android/widget/Fr
                                     <li class="blockList">
                                         <h4>setHelperText</h4>
                                         <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=../com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.html#setHelperText(String)>setHelperText</a>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> helperText)</pre>
-                                        <div class="block"><p><p>Sets a helper message that will be displayed below the {@link EditText}. If the helperText is null, the helper text functionality will be disabled and the helper message will be hidden.</p><p>If the helper text functionality has not been enabled via setHelperTextEnabled(boolean), then it will be automatically enabled if helperText is not empty.</p></p></div>
+                                        <div class="block"><p>Sets a helper message that will be displayed below the {@link EditText}. If the helperText is null, the helper text functionality will be disabled and the helper message will be hidden.</p><p>If the helper text functionality has not been enabled via setHelperTextEnabled(boolean), then it will be automatically enabled if helperText is not empty.</p></div>
                                         
                                         <dl>
                                             <dt><span class="paramLabel">Parameters:</span></dt>
