@@ -1,7 +1,10 @@
 package com.verygoodsecurity.vgscollect.core.api.client
 
 import android.os.Build
+import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorage
+import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
+import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 
@@ -24,22 +27,50 @@ internal interface ApiClient {
 
         fun newHttpClient(
             url: String,
-            isLogsVisible: Boolean = true
+            isLogsVisible: Boolean = true,
+            storage: VgsApiTemporaryStorage? = null
         ): ApiClient {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                OkHttpClient(isLogsVisible).apply { setHost(url) }
+                OkHttpClient(
+                    isLogsVisible,
+                    storage?:getInternalStorage()
+                ).apply { setHost(url) }
             } else {
-                URLConnectionClient.newInstance(isLogsVisible).apply { setHost(url) }
+                URLConnectionClient.newInstance(
+                    isLogsVisible,
+                    storage?:getInternalStorage()
+                ).apply { setHost(url) }
             }
         }
 
         fun newHttpClient(
-            isLogsVisible: Boolean = true
+            isLogsVisible: Boolean = true,
+            storage: VgsApiTemporaryStorage? = null
         ): ApiClient {
+
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                OkHttpClient(isLogsVisible)
+                OkHttpClient(
+                    isLogsVisible,
+                    storage?:getInternalStorage()
+                )
             } else {
-                URLConnectionClient.newInstance(isLogsVisible)
+                URLConnectionClient.newInstance(
+                    isLogsVisible,
+                    storage?:getInternalStorage())
+            }
+        }
+
+        private fun getInternalStorage(): VgsApiTemporaryStorage {
+            return VgsApiTemporaryStorageImpl().apply {
+                setCustomHeaders(
+                    mapOf(
+                        AGENT to String.format(
+                            TEMPORARY_AGENT_TEMPLATE,
+                            BuildConfig.VERSION_NAME,
+                            CollectActionTracker.Sid.id
+                        )
+                    )
+                )
             }
         }
     }
