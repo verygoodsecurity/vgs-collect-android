@@ -138,7 +138,7 @@ class VGSCollect {
     }
 
     private fun initializeCollect() {
-        client = ApiClient.newHttpClient().apply {  }
+        client = ApiClient.newHttpClient()
         storage = InternalStorage(context, storageErrorListener)
     }
 
