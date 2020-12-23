@@ -97,14 +97,7 @@ internal class URLConnectionClient(
                 .setIsUserInteractionEnabled(false)
                 .setCacheEnabled(false)
                 .addHeader(CONTENT_TYPE, request.format.toContentType())
-                .addHeader(
-                    AGENT,
-                    String.format(
-                        ApiClient.TEMPORARY_AGENT_TEMPLATE,
-                        BuildConfig.VERSION_NAME,
-                        CollectActionTracker.Sid.id
-                    )
-                )
+                .addHeaders(tempStore.getCustomHeaders())
                 .addHeaders(request.customHeader)
                 .setMethod(request.method)
 

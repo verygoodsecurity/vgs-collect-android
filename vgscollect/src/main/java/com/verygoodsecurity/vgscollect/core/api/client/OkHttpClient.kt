@@ -134,14 +134,10 @@ internal class OkHttpClient(
     }
 
     private fun Request.Builder.addHeaders(headers: Map<String, String>?): Request.Builder {
-        val storedHeaders = tempStore.getCustomHeaders()
-//        storedHeaders[AGENT] = String.format(
-//            TEMPORARY_AGENT_TEMPLATE,
-//            BuildConfig.VERSION_NAME,
-//            CollectActionTracker.Sid.id
-//        )
-        headers?.let { storedHeaders.putAll(headers) }
-        storedHeaders.forEach {
+        headers?.forEach {
+            this.addHeader(it.key, it.value)
+        }
+        tempStore.getCustomHeaders().forEach {
             this.addHeader(it.key, it.value)
         }
 
