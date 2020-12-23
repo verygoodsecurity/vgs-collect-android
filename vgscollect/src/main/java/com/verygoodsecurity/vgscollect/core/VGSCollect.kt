@@ -138,7 +138,7 @@ class VGSCollect {
     }
 
     private fun initializeCollect() {
-        client = ApiClient.newHttpClient()
+        client = ApiClient.newHttpClient().apply {  }
         storage = InternalStorage(context, storageErrorListener)
     }
 
@@ -671,12 +671,17 @@ class VGSCollect {
         fun setHostname(cname: String): Builder {
             if (cname.isURLValid()) {
                 host = cname.toHost()
-            }
 
-            if (host != cname) Logger.w(
-                VGSCollect::class.java,
-                "Hostname will be normalized to the $host"
-            )
+                if (host != cname) Logger.w(
+                    VGSCollect::class.java,
+                    "Hostname will be normalized to the $host"
+                )
+            } else {
+                Logger.e(context,
+                    VGSCollect::class.java,
+                    R.string.error_custom_host_wrong_short
+                )
+            }
 
             return this
         }

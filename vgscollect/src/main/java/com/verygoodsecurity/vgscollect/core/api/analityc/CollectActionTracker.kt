@@ -3,6 +3,8 @@ package com.verygoodsecurity.vgscollect.core.api.analityc
 import android.os.Build
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
+import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
+import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.Action
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
@@ -21,7 +23,7 @@ internal class CollectActionTracker(
     }
 
     private val client: ApiClient by lazy {
-        return@lazy ApiClient.newHttpClient(false)
+        return@lazy ApiClient.newHttpClient(false, VgsApiTemporaryStorageImpl())
     }
 
     private var isAnalyticEnabled = true
@@ -84,6 +86,7 @@ internal class CollectActionTracker(
                 .setPath(ENDPOINT)
                 .setMethod(HTTPMethod.POST)
                 .setCustomData(map)
+                .setFormat(VGSHttpBodyFormat.X_WWW_FORM_URLENCODED)
                 .build()
 
             client.enqueue(r.toNetworkRequest(URL))

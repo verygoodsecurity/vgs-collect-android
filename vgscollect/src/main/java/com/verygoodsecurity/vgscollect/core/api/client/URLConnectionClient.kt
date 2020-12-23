@@ -26,16 +26,14 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
 internal class URLConnectionClient(
-    private val enableLogs: Boolean = BuildConfig.DEBUG
+    private val enableLogs: Boolean = BuildConfig.DEBUG,
+    private val tempStore: VgsApiTemporaryStorage
 ) : ApiClient {
     private val submittedTasks = mutableListOf<Future<*>>()
     private val executor: ExecutorService by lazy {
         Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
     }
 
-    private val tempStore: VgsApiTemporaryStorage by lazy {
-        VgsApiTemporaryStorageImpl()
-    }
 
     private var host: String? = null
     override fun setHost(url: String?) {
@@ -155,8 +153,11 @@ internal class URLConnectionClient(
     }
 
     companion object {
-        fun newInstance(isLogsVisible: Boolean = BuildConfig.DEBUG): ApiClient {
-            return URLConnectionClient(isLogsVisible)
+        fun newInstance(
+            isLogsVisible: Boolean = BuildConfig.DEBUG,
+            storage: VgsApiTemporaryStorage
+        ): ApiClient {
+            return URLConnectionClient(isLogsVisible, storage)
         }
 
         private fun buildRequestLog(connection: HttpURLConnection): String {

@@ -25,7 +25,8 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 internal class OkHttpClient(
-    private val isLogsVisible: Boolean = BuildConfig.DEBUG
+    private val isLogsVisible: Boolean = BuildConfig.DEBUG,
+    private val tempStore: VgsApiTemporaryStorage
 ) : ApiClient {
 
     private val hostInterceptor: HostInterceptor = HostInterceptor()
@@ -39,10 +40,6 @@ internal class OkHttpClient(
             .writeTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .dispatcher(Dispatcher(Executors.newSingleThreadExecutor()))
             .build()
-    }
-
-    private val tempStore: VgsApiTemporaryStorage by lazy {
-        VgsApiTemporaryStorageImpl()
     }
 
     override fun setHost(url: String?) {
@@ -138,11 +135,11 @@ internal class OkHttpClient(
 
     private fun Request.Builder.addHeaders(headers: Map<String, String>?): Request.Builder {
         val storedHeaders = tempStore.getCustomHeaders()
-        storedHeaders[AGENT] = String.format(
-            TEMPORARY_AGENT_TEMPLATE,
-            BuildConfig.VERSION_NAME,
-            CollectActionTracker.Sid.id
-        )
+//        storedHeaders[AGENT] = String.format(
+//            TEMPORARY_AGENT_TEMPLATE,
+//            BuildConfig.VERSION_NAME,
+//            CollectActionTracker.Sid.id
+//        )
         headers?.let { storedHeaders.putAll(headers) }
         storedHeaders.forEach {
             this.addHeader(it.key, it.value)
@@ -204,10 +201,13 @@ internal class OkHttpClient(
 
         override fun intercept(chain: Interceptor.Chain): Response {
             val request = chain.request()
-            if(isLogsVisible) Logger.i(VGSCollect::class.java.simpleName, buildRequestLog(request))
+            if (isLogsVisible) Logger.i(VGSCollect::class.java.simpleName, buildRequestLog(request))
 
             val response = chain.proceed(request)
-            if(isLogsVisible) Logger.i(VGSCollect::class.java.simpleName, buildResponseLog(response))
+            if (isLogsVisible) Logger.i(
+                VGSCollect::class.java.simpleName,
+                buildResponseLog(response)
+            )
 
             return response
         }
