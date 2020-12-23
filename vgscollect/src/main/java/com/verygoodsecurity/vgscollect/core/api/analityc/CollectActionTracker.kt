@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.Action
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
-import com.verygoodsecurity.vgscollect.core.model.network.toNetworkRequest
+import com.verygoodsecurity.vgscollect.core.model.network.toAnalyticRequest
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -89,7 +89,7 @@ internal class CollectActionTracker(
                 .setFormat(VGSHttpBodyFormat.X_WWW_FORM_URLENCODED)
                 .build()
 
-            client.enqueue(r.toNetworkRequest(URL))
+            client.enqueue(r.toAnalyticRequest(URL))
         }
 
         companion object {

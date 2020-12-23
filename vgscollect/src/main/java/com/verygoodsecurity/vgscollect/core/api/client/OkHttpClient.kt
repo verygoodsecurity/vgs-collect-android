@@ -121,12 +121,12 @@ internal class OkHttpClient(
         url: String,
         method: HTTPMethod,
         headers: Map<String, String>?,
-        data: Map<String, Any>?,
+        data: Any?,
         contentType: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
     ): Request {
         return Request.Builder().url(url).setMethod(
             method,
-            data?.mapToJSON().toString(),
+            data?.toString(),
             contentType.toContentType().toMediaTypeOrNull()
         )
             .addHeaders(headers)

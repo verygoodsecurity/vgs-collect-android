@@ -7,7 +7,7 @@ data class NetworkRequest(
     val method: HTTPMethod,
     var url: String,
     val customHeader: MutableMap<String, String> = mutableMapOf(),
-    val customData: MutableMap<String, Any> = mutableMapOf(),
+    val customData: Any = "",
     val fieldsIgnore: Boolean = false,
     val fileIgnore: Boolean = false,
     val format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON,

@@ -1,8 +1,11 @@
 package com.verygoodsecurity.vgscollect.core.model.network
 
+import android.util.Base64
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
+import com.verygoodsecurity.vgscollect.util.extension.toBase64
+import com.verygoodsecurity.vgscollect.util.mapToJSON
 
 /**
  * Class to collect data before submit.
@@ -138,12 +141,24 @@ data class VGSRequest private constructor(
     }
 }
 
+fun VGSRequest.toAnalyticRequest(url: String): NetworkRequest {
+    return NetworkRequest(
+        method,
+        url concatWithSlash path,
+        customHeader,
+        customData.mapToJSON().toString().toBase64(),
+        fieldsIgnore,
+        fileIgnore,
+        format
+    )
+}
+
 fun VGSRequest.toNetworkRequest(url: String): NetworkRequest {
     return NetworkRequest(
         method,
         url concatWithSlash path,
         customHeader,
-        customData,
+        customData.mapToJSON().toString(),
         fieldsIgnore,
         fileIgnore,
         format

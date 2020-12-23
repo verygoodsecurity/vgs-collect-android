@@ -137,8 +137,8 @@ internal class URLConnectionClient(
         }
     }
 
-    private fun writeOutput(connection: HttpURLConnection, data: Map<String, Any>?) {
-        data?.mapToJSON().toString().toByteArray(Charsets.UTF_8).let {
+    private fun writeOutput(connection: HttpURLConnection, data: Any?) {
+        data?.toString()?.toByteArray(Charsets.UTF_8).let {
             connection.outputStream.use { os ->
                 os.write(it)
             }
