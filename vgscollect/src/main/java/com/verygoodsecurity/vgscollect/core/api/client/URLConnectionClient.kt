@@ -26,16 +26,14 @@ import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
 internal class URLConnectionClient(
-    private val enableLogs: Boolean = BuildConfig.DEBUG
+    private val enableLogs: Boolean = BuildConfig.DEBUG,
+    private val tempStore: VgsApiTemporaryStorage
 ) : ApiClient {
     private val submittedTasks = mutableListOf<Future<*>>()
     private val executor: ExecutorService by lazy {
         Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
     }
 
-    private val tempStore: VgsApiTemporaryStorage by lazy {
-        VgsApiTemporaryStorageImpl()
-    }
 
     private var host: String? = null
     override fun setHost(url: String?) {
@@ -99,14 +97,7 @@ internal class URLConnectionClient(
                 .setIsUserInteractionEnabled(false)
                 .setCacheEnabled(false)
                 .addHeader(CONTENT_TYPE, request.format.toContentType())
-                .addHeader(
-                    AGENT,
-                    String.format(
-                        ApiClient.TEMPORARY_AGENT_TEMPLATE,
-                        BuildConfig.VERSION_NAME,
-                        CollectActionTracker.Sid.id
-                    )
-                )
+                .addHeaders(tempStore.getCustomHeaders())
                 .addHeaders(request.customHeader)
                 .setMethod(request.method)
 
@@ -146,8 +137,8 @@ internal class URLConnectionClient(
         }
     }
 
-    private fun writeOutput(connection: HttpURLConnection, data: Map<String, Any>?) {
-        data?.mapToJSON().toString().toByteArray(Charsets.UTF_8).let {
+    private fun writeOutput(connection: HttpURLConnection, data: Any?) {
+        data?.toString()?.toByteArray(Charsets.UTF_8).let {
             connection.outputStream.use { os ->
                 os.write(it)
             }
@@ -155,8 +146,11 @@ internal class URLConnectionClient(
     }
 
     companion object {
-        fun newInstance(isLogsVisible: Boolean = BuildConfig.DEBUG): ApiClient {
-            return URLConnectionClient(isLogsVisible)
+        fun newInstance(
+            isLogsVisible: Boolean = BuildConfig.DEBUG,
+            storage: VgsApiTemporaryStorage
+        ): ApiClient {
+            return URLConnectionClient(isLogsVisible, storage)
         }
 
         private fun buildRequestLog(connection: HttpURLConnection): String {
