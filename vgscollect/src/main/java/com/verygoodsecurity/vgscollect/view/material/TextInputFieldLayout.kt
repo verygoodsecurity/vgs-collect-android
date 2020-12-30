@@ -197,7 +197,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
      *
      * @param isEnabled true if layout should reserve place for error message, false otherwise.
      */
-    fun setErrorEnabled(isEnabled: Boolean) {
+    open fun setErrorEnabled(isEnabled: Boolean) {
         fieldState.isErrorEnabled = isEnabled
     }
 
