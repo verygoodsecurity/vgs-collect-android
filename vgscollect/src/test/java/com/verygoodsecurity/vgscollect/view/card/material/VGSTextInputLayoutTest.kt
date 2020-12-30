@@ -80,6 +80,17 @@ class VGSTextInputLayoutTest {
     }
 
     @Test
+    fun test_attach_first_set_error_enabled() {
+        attachView()
+
+        textInputLayout.setErrorEnabled(true)
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(true, state.isErrorEnabled)
+        assertEquals(true, state.getInternalView().isErrorEnabled)
+    }
+
+    @Test
     fun test_attach_first_set_error_string() {
         attachView()
 
@@ -313,7 +324,16 @@ class VGSTextInputLayoutTest {
 
 
 
+    @Test
+    fun test_attach_last_set_error_enabled() {
+        textInputLayout.setErrorEnabled(true)
+        attachView()
 
+        val state = textInputLayout.getFieldState()
+
+        assertEquals(true, state.isErrorEnabled)
+        assertEquals(true, state.getInternalView().isErrorEnabled)
+    }
 
     @Test
     fun test_attach_last_set_error_string() {
