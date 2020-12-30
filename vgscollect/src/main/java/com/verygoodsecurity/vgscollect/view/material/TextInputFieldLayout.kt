@@ -191,6 +191,13 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     }
 
     /**
+     * Sets the text color and size for the error message from the specified TextAppearance resource.
+     */
+    fun setErrorEnabled(isEnabled: Boolean) {
+        fieldState.isErrorEnabled = isEnabled
+    }
+
+    /**
      * Sets an error message that will be displayed below our EditText. If the error
      * is null, the error message will be cleared.
      *

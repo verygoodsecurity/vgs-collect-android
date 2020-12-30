@@ -65,6 +65,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 val counterOverflowTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_counterOverflowTextAppearance, 0)
                 val counterTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_counterTextAppearance, 0)
                 val helperTextTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_helperTextTextAppearance, 0)
+                val isErrorEnabled = getBoolean(R.styleable.VGSTextInputLayout_errorEnabled, false)
                 val errorTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_errorTextAppearance, 0)
                 val helperText = getString(R.styleable.VGSTextInputLayout_helperText)
 
@@ -148,6 +149,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 if(errorTextAppearance != 0) {
                     setErrorTextAppearance(errorTextAppearance)
                 }
+                setErrorEnabled(isErrorEnabled)
 
 
             } finally {

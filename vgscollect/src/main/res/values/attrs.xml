@@ -639,6 +639,9 @@
             <enum name="clear_text" value="2"/>
         </attr>
 
+        <!-- Whether the layout is laid out as if an error will be displayed. -->
+        <attr name="errorEnabled" format="boolean"/>
+
         <!-- Sets the text color and size for the error message from the specified TextAppearance resource.-->
         <attr name="errorTextAppearance" format="reference"/>
 
