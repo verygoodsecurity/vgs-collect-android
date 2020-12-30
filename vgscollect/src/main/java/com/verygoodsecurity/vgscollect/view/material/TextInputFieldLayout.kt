@@ -191,7 +191,11 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     }
 
     /**
-     * Sets the text color and size for the error message from the specified TextAppearance resource.
+     * Whether the error functionality is enabled or not in this layout. Enabling this functionality
+     * before setting an error message via {@link #setError(CharSequence)}, will mean that this layout
+     * will not change size when an error is displayed.
+     *
+     * @param isEnabled true if layout should reserve place for error message, false otherwise.
      */
     fun setErrorEnabled(isEnabled: Boolean) {
         fieldState.isErrorEnabled = isEnabled
