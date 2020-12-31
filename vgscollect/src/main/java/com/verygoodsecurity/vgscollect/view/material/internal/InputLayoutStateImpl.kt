@@ -168,6 +168,13 @@ internal class InputLayoutStateImpl(
                 textInputLayout.isHintEnabled = value
             }
         }
+    internal var isErrorEnabled: Boolean = false
+        set(value) {
+            field = value
+            if(isReady()) {
+                textInputLayout.isErrorEnabled = value
+            }
+        }
     internal var error: CharSequence? = null
         set(value) {
             field = value
@@ -353,6 +360,7 @@ internal class InputLayoutStateImpl(
                 val ts = this@InputLayoutStateImpl.boxCornerRadiusTopStart
                 textInputLayout.setBoxCornerRadii(ts, te, bs, be)
             }
+            this.isErrorEnabled = this@InputLayoutStateImpl.isErrorEnabled
             this.error = this@InputLayoutStateImpl.error
             this.isPasswordVisibilityToggleEnabled = this@InputLayoutStateImpl.isPasswordVisibilityToggleEnabled
 

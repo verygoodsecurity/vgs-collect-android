@@ -191,6 +191,17 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     }
 
     /**
+     * Whether the error functionality is enabled or not in this layout. Enabling this functionality
+     * before setting an error message via {@link #setError(CharSequence)}, will mean that this layout
+     * will not change size when an error is displayed.
+     *
+     * @param isEnabled true if layout should reserve place for error message, false otherwise.
+     */
+    open fun setErrorEnabled(isEnabled: Boolean) {
+        fieldState.isErrorEnabled = isEnabled
+    }
+
+    /**
      * Sets an error message that will be displayed below our EditText. If the error
      * is null, the error message will be cleared.
      *
