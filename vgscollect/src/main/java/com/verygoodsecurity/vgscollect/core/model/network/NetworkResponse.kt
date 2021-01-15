@@ -15,16 +15,18 @@ fun NetworkResponse.toVGSResponse(
 ): VGSResponse {
     return when {
         this.isSuccessful -> VGSResponse.SuccessResponse(
-            rawResponse = this.body,
-            successCode = this.code
+            successCode = this.code,
+            rawResponse = this.body
         )
         this.error != null -> VGSResponse.ErrorResponse(
             localizeMessage = context?.getString(error.messageResId) ?: "",
-            errorCode = error.code
+            errorCode = error.code,
+            rawResponse = this.body
         )
         else -> VGSResponse.ErrorResponse(
             localizeMessage = this.message ?: "",
-            errorCode = this.code
+            errorCode = this.code,
+            rawResponse = this.body
         )
     }
 }
