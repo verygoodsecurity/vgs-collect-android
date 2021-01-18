@@ -32,7 +32,7 @@ dependencies {
     dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
 
     api project(':vgscollect')
-    implementation 'com.getbouncer:cardscan-ui:2.0.0055'
+    implementation 'com.getbouncer:cardscan-ui:2.0.0068'
 }
 
 apply from: rootProject.file('release-bintray.gradle')
