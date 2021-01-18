@@ -87,6 +87,7 @@ class RequestTest {
         ).toVGSResponse() as VGSResponse.SuccessResponse
 
         assertEquals(exampleRequest.rawResponse, r.rawResponse)
+        assertEquals(exampleRequest.body, r.body)
         assertEquals(exampleRequest.successCode, r.successCode)
     }
 
@@ -107,6 +108,7 @@ class RequestTest {
 
         assertEquals(exampleRequest.localizeMessage, r.localizeMessage)
         assertEquals(exampleRequest.code, r.code)
+        assertEquals(exampleRequest.body, r.body)
     }
 
 }
