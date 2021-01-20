@@ -1,0 +1,65 @@
+$dokka.format:javadoc-v1
+$dokka.linkExtension:html
+$dokka.location:com.verygoodsecurity.vgscollect.app/BaseTransmitActivity.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/app/BaseTransmitActivity.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.app/BaseTransmitActivity.Status///PointingToDeclaration/com/verygoodsecurity/vgscollect/app/BaseTransmitActivity.Status.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/AttachFileAction.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/api/analityc/action/AttachFileAction.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/AutofillAction.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/api/analityc/action/AutofillAction.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/HostNameValidationAction.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/api/analityc/action/HostNameValidationAction.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/InitAction.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/api/analityc/action/InitAction.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ResponseAction.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/api/analityc/action/ResponseAction.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ScanAction.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/api/analityc/action/ScanAction.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/SubmitAction.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/api/analityc/action/SubmitAction.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.network/VGSRequest.VGSRequestBuilder///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/network/VGSRequest.VGSRequestBuilder.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.network/VGSResponse.ErrorResponse///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/network/VGSResponse.ErrorResponse.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.network/VGSResponse.SuccessResponse///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/network/VGSResponse.SuccessResponse.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.state/FieldContent.CardNumberContent///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/FieldContent.CardNumberContent.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.state/FieldContent.CreditCardExpDateContent///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/FieldContent.CreditCardExpDateContent.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.state/FieldContent.InfoContent///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/FieldContent.InfoContent.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.state/FieldContent.SSNContent///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/FieldContent.SSNContent.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.state/FieldState.CVCState///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/FieldState.CVCState.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.state/FieldState.CardExpirationDateState///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/FieldState.CardExpirationDateState.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.state/FieldState.CardHolderNameState///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/FieldState.CardHolderNameState.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.state/FieldState.CardNumberState///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/FieldState.CardNumberState.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.state/FieldState.InfoState///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/FieldState.InfoState.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.state/FieldState.SSNNumberState///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/FieldState.SSNNumberState.html
+$dokka.location:com.verygoodsecurity.vgscollect.core/VGSCollect.Builder///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/VGSCollect.Builder.html
+$dokka.location:com.verygoodsecurity.vgscollect.view.card.formatter.date/FlexibleDateFormatter.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/formatter/date/FlexibleDateFormatter.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.view.card.formatter/CardNumberFormatter.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/formatter/CardNumberFormatter.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.view.card.formatter/SSNumberFormatter.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/formatter/SSNumberFormatter.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.view.card.text/ExpirationDateTextWatcher.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/text/ExpirationDateTextWatcher.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.view.card.validation.rules/PaymentCardNumberRule.ValidationBuilder///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/validation/rules/PaymentCardNumberRule.ValidationBuilder.html
+$dokka.location:com.verygoodsecurity.vgscollect.view.card.validation.rules/PersonNameRule.ValidationBuilder///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/validation/rules/PersonNameRule.ValidationBuilder.html
+$dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.OnEditorActionListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.OnEditorActionListener.html
+$dokka.location:com.verygoodsecurity.vgscollect.widget/ExpirationDateEditText.OnDatePickerVisibilityChangeListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/widget/ExpirationDateEditText.OnDatePickerVisibilityChangeListener.html
+$dokka.location:com.verygoodsecurity.vgscollect.widget/VGSTextInputLayout.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.Companion.html
+com.verygoodsecurity.vgscollect.app
+com.verygoodsecurity.vgscollect.core
+com.verygoodsecurity.vgscollect.core.api
+com.verygoodsecurity.vgscollect.core.api.analityc
+com.verygoodsecurity.vgscollect.core.api.analityc.action
+com.verygoodsecurity.vgscollect.core.api.analityc.utils
+com.verygoodsecurity.vgscollect.core.api.client.extension
+com.verygoodsecurity.vgscollect.core.model.network
+com.verygoodsecurity.vgscollect.core.model.state
+com.verygoodsecurity.vgscollect.core.storage
+com.verygoodsecurity.vgscollect.core.storage.content.field
+com.verygoodsecurity.vgscollect.core.storage.content.file
+com.verygoodsecurity.vgscollect.util
+com.verygoodsecurity.vgscollect.util.extension
+com.verygoodsecurity.vgscollect.view
+com.verygoodsecurity.vgscollect.view.card
+com.verygoodsecurity.vgscollect.view.card.conection
+com.verygoodsecurity.vgscollect.view.card.filter
+com.verygoodsecurity.vgscollect.view.card.formatter
+com.verygoodsecurity.vgscollect.view.card.formatter.date
+com.verygoodsecurity.vgscollect.view.card.formatter.rules
+com.verygoodsecurity.vgscollect.view.card.icon
+com.verygoodsecurity.vgscollect.view.card.text
+com.verygoodsecurity.vgscollect.view.card.validation
+com.verygoodsecurity.vgscollect.view.card.validation.payment
+com.verygoodsecurity.vgscollect.view.card.validation.payment.brand
+com.verygoodsecurity.vgscollect.view.card.validation.rules
+com.verygoodsecurity.vgscollect.view.date
+com.verygoodsecurity.vgscollect.view.material
+com.verygoodsecurity.vgscollect.widget
+
