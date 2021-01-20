@@ -1,4 +1,4 @@
-## Feature [chXXXX]
+## Feature [ANDROIDSDK-###]
 
 ## Description of changes
 (insert text here)
