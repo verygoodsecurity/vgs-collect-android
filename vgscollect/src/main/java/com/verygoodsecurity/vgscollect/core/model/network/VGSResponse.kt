@@ -4,10 +4,12 @@ package com.verygoodsecurity.vgscollect.core.model.network
  * The base class definition for a VGSCollect response states.
  *
  * @param code The response code from server.
- *
- * @version 1.0.1
+ * @param body The response string.
  */
-sealed class VGSResponse(val code: Int = -1) {
+sealed class VGSResponse(
+    val code: Int = -1,
+    val body: String? = null
+) {
 
     /**
      * The class definition for a success response state.
@@ -16,12 +18,14 @@ sealed class VGSResponse(val code: Int = -1) {
      * @param rawResponse The response string.
      * @param successCode The response code from server.
      */
-    class SuccessResponse(
-        @Deprecated("rawResponse attribute better to use for response parsing")
+    data class SuccessResponse(
+        @Deprecated("body attribute better to use for response parsing")
         val response: Map<String, Any>? = null,
-        val rawResponse: String? = null,
-        val successCode: Int = -1
-    ) : VGSResponse(successCode) {
+        val successCode: Int = -1,
+        @Deprecated("body attribute better to use for response parsing")
+        val rawResponse: String? = null
+    ) : VGSResponse(successCode, rawResponse) {
+
         override fun toString(): String {
             return "Code: $successCode \n $rawResponse"
         }
@@ -33,10 +37,11 @@ sealed class VGSResponse(val code: Int = -1) {
      * @param localizeMessage The message of the error.
      * @param errorCode The response code from server.
      */
-    class ErrorResponse(
+    data class ErrorResponse(
         val localizeMessage: String = "Can't connect to server",
         val errorCode: Int = -1,
-    ) : VGSResponse(errorCode) {
+        private val rawResponse: String? = null
+    ) : VGSResponse(errorCode, rawResponse) {
         override fun toString(): String {
             return "Code: $errorCode \n $localizeMessage"
         }
