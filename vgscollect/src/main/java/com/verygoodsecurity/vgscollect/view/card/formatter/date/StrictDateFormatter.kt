@@ -1,11 +1,13 @@
 package com.verygoodsecurity.vgscollect.view.card.formatter.date
 
 import android.text.Editable
+import android.widget.EditText
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
-import java.lang.StringBuilder
 import java.util.regex.Pattern
 
-internal open class StrictDateFormatter : BaseDateFormatter() {
+internal open class StrictDateFormatter(
+        private val source: EditText? = null
+) : BaseDateFormatter() {
 
     companion object {
         private const val DATE_PATTERN = "MM/yyyy"
@@ -15,11 +17,8 @@ internal open class StrictDateFormatter : BaseDateFormatter() {
         private const val YEAR_REGEX = "^(\\d|\\d\\d)\$"
         private const val MONTH_REGEX = "^([10]|0[1-9]|1[012])\$"
 
-        private const val NUMBER_REGEX = "[^\\d]"
-        private const val MASK_ITEM = '#'
-
-        private fun validateMonth(m:String):String {
-            return when(m) {
+        private fun validateMonth(m: String): String? {
+            return when (m) {
                 "2" -> "02"
                 "3" -> "03"
                 "4" -> "04"
@@ -31,7 +30,7 @@ internal open class StrictDateFormatter : BaseDateFormatter() {
                 "10" -> "10"
                 "11" -> "11"
                 "12" -> "12"
-                else -> m
+                else -> null
             }
         }
     }
@@ -42,17 +41,23 @@ internal open class StrictDateFormatter : BaseDateFormatter() {
         get() = YEAR_REGEX
 
     private val patternMounts = Pattern.compile(MONTH_REGEX)
-    private var patternYear:Pattern? = null
+    private var patternYear: Pattern? = null
 
-    private var mask:String = DATE_FORMAT
-    private var mode:DatePickerMode = DatePickerMode.INPUT
+    private var mask: String = DATE_FORMAT
+    private var mode: DatePickerMode = DatePickerMode.INPUT
 
-    var runtimeData:String = ""
+    private var divider = "/"
 
-    var mounthIndex:Int = -1
-    var mounth:String? = null
-    var yearIndex:Int = -1
-    var year:String? = null
+    private var runtimeData: String = ""
+
+    private var mounthIndex: Int = -1
+    private var yearIndex: Int = -1
+    private var year: String? = null
+
+    private var isDeleteAction = false
+
+    private var cacheMonth = ""
+    private var cacheYear = ""
 
     init {
         calculateMounthLimitations(DATE_PATTERN)
@@ -60,112 +65,109 @@ internal open class StrictDateFormatter : BaseDateFormatter() {
     }
 
     override fun afterTextChanged(s: Editable?) {
-        if(mode == DatePickerMode.INPUT) {
+        if (mode == DatePickerMode.INPUT) {
             s?.apply {
-                if(s.toString() != runtimeData) {
+                if (s.toString() != runtimeData) {
                     replace(0, s.length, runtimeData)
                 }
             }
         }
     }
 
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        isDeleteAction = after < count
+    }
 
     override fun onTextChanged(str: CharSequence, start: Int, before: Int, count: Int) {
-        if(str.isEmpty() && runtimeData.isEmpty()) {
+        if (str.isEmpty() && runtimeData.isEmpty()) {
+            cacheMonth = ""
+            cacheYear = ""
             return
         }
 
-        var formattedText = str.toString()
-        var notReady:Boolean
-
-        do {
-            val temp = formattedText
-            formattedText = clearTextFromSymbols(temp)
-            formattedText = formatYear(formattedText)
-            formattedText = formatMonth(formattedText)
-
-            notReady = formattedText != temp
-
-        } while (notReady)
-
-        runtimeData = formattedText
-    }
-
-    private fun clearTextFromSymbols(str: CharSequence): String {
-        val text = str.toString().replace(Regex(NUMBER_REGEX), "")
-        val textCount = text.length
-
-        val builder = StringBuilder()
-        var indexSpace = 0
-
-        repeat(textCount) { charIndex ->
-            val maskIndex = charIndex+indexSpace
-
-            if(maskIndex < mask.length) {
-                val maskChar = mask[maskIndex]
-                val char = text[charIndex]
-
-                if (maskChar == MASK_ITEM) {
-                    builder.append(char)
-                } else {
-                    indexSpace += 1
-                    builder.append(maskChar)
-                    if (char.isDigit()) {
-                        builder.append(char)
-                    }
-                }
-            }
-        }
-
-        return builder.toString()
-    }
-
-    private fun substringDateBlock(indexStart:Int, indexEnd:Int, runtimeData: String):String {
-        val count = runtimeData.length
-
-        return when {
-            count in (indexStart + 1) until indexEnd -> runtimeData.substring(indexStart, count)
-            indexStart in 0 until count -> runtimeData.substring(indexStart, indexEnd)
+        runtimeData = when {
+            str.isEmpty() -> ""
+            mounthIndex > yearIndex -> generateYYMM(str)
+            yearIndex > mounthIndex -> generateMMYY(str)
             else -> ""
         }
     }
 
-    private fun formatMonth(runtimeData: String): String {
-        val month = substringDateBlock(mounthIndex, mounthIndex+mounth!!.length, runtimeData)
+    private fun generateMMYY(str: CharSequence): String {
+        val splittedTime = str.split("\\D".toRegex())
+        val formattedMonth = formatMonth(splittedTime.getOrNull(0) ?: "")
 
-        if(month.isEmpty()) return runtimeData
+        return if (splittedTime.size == 1) {
+            cacheYear = ""
+            when {
+                isDeleteAction -> formattedMonth
+                formattedMonth == "1" -> formattedMonth
+                formattedMonth == "0" -> formattedMonth
+                else -> formattedMonth + divider
+            }
+        } else {
+            val formattedYear = formatYear(splittedTime.getOrNull(1) ?: "")
+            if (formattedYear.isEmpty() && formattedMonth.isEmpty()) "" else formattedMonth + divider + formattedYear
+        }
+    }
 
+    private fun generateYYMM(str: CharSequence): String {
+        val splittedTime = str.split("\\D".toRegex())
+        val formattedYear = formatYear(splittedTime.getOrNull(0) ?: "")
+
+        return if (splittedTime.size == 1) {
+            cacheMonth = ""
+            when {
+                isDeleteAction -> formattedYear
+                formattedYear.length < year!!.length -> formattedYear
+                else -> formattedYear + divider
+            }
+        } else {
+            val formattedMonth = formatMonth(splittedTime.getOrNull(1) ?: "")
+            if (formattedYear.isEmpty() && formattedMonth.isEmpty()) "" else formattedYear + divider + formattedMonth
+        }
+    }
+
+    private fun formatYear(year: String): String {
+        val isValid = patternYear?.matcher(year)?.matches() ?: true
+
+        val newM = when {
+            year.isEmpty() -> "".also { cacheYear = "" }
+            isValid -> year.also { cacheYear = it }
+            isDeleteAction -> "".also { moveCursorToEnd_Year() }
+            else -> cacheYear
+        }
+
+        return newM
+    }
+
+    private fun moveCursorToEnd_Year() {
+        if (yearIndex > mounthIndex) {
+            source?.setSelection(runtimeData.length - 1)
+        } else {
+            source?.setSelection(0)
+        }
+    }
+
+    private fun moveCursorToEnd_M() {
+        if (yearIndex < mounthIndex) {
+            source?.setSelection(runtimeData.length - 1)
+        } else {
+            source?.setSelection(0)
+        }
+    }
+
+    private fun formatMonth(month: String): String {
         val isValid = patternMounts.matcher(month).matches()
-        return if(isValid) {
-            return runtimeData
-        } else {
-            handleMonths(month, runtimeData)
+        val newM = when {
+            month.isEmpty() -> "".also { cacheMonth = "" }
+            isValid -> month.also { cacheMonth = it }
+            isDeleteAction -> "".also { moveCursorToEnd_M() }
+            !isDeleteAction -> validateMonth(month) ?: cacheMonth
+            else -> cacheMonth
         }
-    }
 
-    private fun handleMonths(month: String, runtimeData: String): String {
-        val formattedMonth = validateMonth(month)
-
-        val isValid = patternMounts.matcher(formattedMonth).matches()
-        return if(isValid) {
-            runtimeData.substring(0, runtimeData.length-1) + formattedMonth
-        } else {
-            runtimeData.substring(0, runtimeData.length-1)
-        }
-    }
-
-    private fun formatYear(runtimeData: String): String {
-        val year = substringDateBlock(yearIndex, yearIndex+year!!.length, runtimeData)
-
-        if(year.isEmpty()) return runtimeData
-
-        val isValid = patternYear?.matcher(year)?.matches()?:true
-        return if(isValid) {
-            return runtimeData
-        } else {
-            runtimeData.substring(0, runtimeData.length-1)
-        }
+        return newM
     }
 
     override fun setMode(mode: DatePickerMode) {
@@ -176,15 +178,17 @@ internal open class StrictDateFormatter : BaseDateFormatter() {
 
     override fun setMask(mask: String) {
         this.mask = mask
-            .replace("M", "#", true)
-            .replace("y", "#", true)
-
+                .replace("M", "#", true)
+                .replace("y", "#", true)
+                .also {
+                    divider = it.replace("#", "")
+                }
         calculateMounthLimitations(mask)
         calculateYearLimitations(mask)
     }
 
     private fun calculateYearLimitations(datePattern: String) {
-        yearIndex = if(datePattern.contains("yyyy")) {
+        yearIndex = if (datePattern.contains("yyyy")) {
             year = "yyyy"
             patternYear = Pattern.compile(yearLongRegex)
             datePattern.indexOf("yyyy")
@@ -196,7 +200,7 @@ internal open class StrictDateFormatter : BaseDateFormatter() {
     }
 
     private fun calculateMounthLimitations(datePattern: String) {
-        mounth = when {
+        val mounth = when {
             datePattern.contains("MMMM") -> "MM"
             datePattern.contains("MMM") -> "MM"
             datePattern.contains("MM") -> "MM"
@@ -204,6 +208,6 @@ internal open class StrictDateFormatter : BaseDateFormatter() {
             else -> null
         }
 
-        mounthIndex = mounth?.run { datePattern.indexOf(this) }?:-1
+        mounthIndex = mounth?.run { datePattern.indexOf(this) } ?: -1
     }
 }
