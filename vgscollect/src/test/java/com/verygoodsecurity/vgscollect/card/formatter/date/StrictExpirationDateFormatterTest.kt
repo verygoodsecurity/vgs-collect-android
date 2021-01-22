@@ -19,7 +19,7 @@ class StrictExpirationDateFormatterTest {
 
         private const val TEST_NEGATIVE_VALUE_1 = "12-1990"
         private const val TEST_NEGATIVE_VALUE_2 = "13-1390"
-        private const val TEST_NEGATIVE_VALUE_3 = "07-2044"
+        private const val TEST_NEGATIVE_VALUE_3 = "07-2054"
     }
 
     private lateinit var formatter: Formatter
