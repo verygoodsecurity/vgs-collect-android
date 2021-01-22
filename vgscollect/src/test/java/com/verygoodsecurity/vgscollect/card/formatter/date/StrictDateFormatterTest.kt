@@ -97,7 +97,7 @@ class StrictDateFormatterTest {
         textWatcher.afterTextChanged(e)
 
         verify(e).replace(0, 0,
-            "09"
+            ""
         )
     }
 
@@ -109,7 +109,7 @@ class StrictDateFormatterTest {
         textWatcher.afterTextChanged(e)
 
         verify(e).replace(0, 0,
-            "09"
+            ""
         )
     }
 
@@ -121,7 +121,7 @@ class StrictDateFormatterTest {
         textWatcher.afterTextChanged(e)
 
         verify(e).replace(0, 0,
-            "1"
+            ""
         )
     }
 
@@ -133,7 +133,7 @@ class StrictDateFormatterTest {
         textWatcher.afterTextChanged(e)
 
         verify(e).replace(0, 0,
-            "07/2"
+            "07/"
         )
     }
 }
