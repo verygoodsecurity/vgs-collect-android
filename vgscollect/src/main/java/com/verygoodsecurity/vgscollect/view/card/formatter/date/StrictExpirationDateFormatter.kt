@@ -7,8 +7,8 @@ internal class StrictExpirationDateFormatter(
 ) : StrictDateFormatter(source) {
 
     companion object {
-        private const val YEAR_FULL_REGEX = "^([2]|2[0]|20[23]|20[23][0123456789])\$"
-        private const val YEAR_REGEX = "^([23]|[123]\\d)\$"
+        private const val YEAR_FULL_REGEX = "^([2]|2[0]|20[234]|20[2][123456789]|20[34][0123456789])\$"
+        private const val YEAR_REGEX = "^([234]|2[123456789]|[34]\\d)\$"
     }
 
     override val yearLongRegex: String
