@@ -74,24 +74,48 @@ internal open class StrictDateFormatter(
         }
     }
 
+    private var skipStep = false
+    private var tempString: CharSequence = ""
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
         isDeleteAction = after < count
+
+        if (isDeleteAction) {
+            s?.substring(                                       // detect string which will be removed
+                    start + after,
+                    start + count
+            )?.also {
+                skipStep = it.contains(divider) &&              // skip deleting if divider will be removed
+                        s.lastIndexOf(divider) + 1 != s.length  // and divider not the last character
+            }?.also {
+                tempString = when {                                // handle String state before removing
+                    !skipStep -> s
+                    s.toString() == it -> ""
+                    else -> it.replace("/", "").run {
+                        s.replace(this.toRegex(), "")
+                    }
+                }
+            }
+        } else {
+            tempString = s ?: ""
+            skipStep = false
+        }
     }
 
     override fun onTextChanged(str: CharSequence, start: Int, before: Int, count: Int) {
-        if (str.isEmpty() && runtimeData.isEmpty()) {
-            cacheMonth = ""
-            cacheYear = ""
-            return
-        }
+        val changedStr = if (skipStep) tempString else str
 
         runtimeData = when {
-            str.isEmpty() -> "".also {
+            changedStr.isEmpty() && runtimeData.isEmpty() -> {
+                cacheMonth = ""
+                cacheYear = ""
+                ""
+            }
+            changedStr.isEmpty() -> "".also {
                 cacheMonth = it
                 cacheYear = it
             }
-            mounthIndex > yearIndex -> generateYYMM(str)
-            yearIndex > mounthIndex -> generateMMYY(str)
+            mounthIndex > yearIndex -> generateYYMM(changedStr)
+            yearIndex > mounthIndex -> generateMMYY(changedStr)
             else -> "".also {
                 cacheMonth = it
                 cacheYear = it
@@ -169,8 +193,7 @@ internal open class StrictDateFormatter(
             month.isEmpty() -> "".also { cacheMonth = "" }
             isValid -> month.also { cacheMonth = it }
             isDeleteAction -> "".also { moveCursorToEnd_M() }
-            !isDeleteAction -> validateMonth(month) ?: cacheMonth
-            else -> cacheMonth
+            else -> validateMonth(month) ?: cacheMonth
         }
 
         return newM
