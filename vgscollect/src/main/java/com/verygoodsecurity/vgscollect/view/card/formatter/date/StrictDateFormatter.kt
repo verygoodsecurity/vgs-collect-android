@@ -86,10 +86,16 @@ internal open class StrictDateFormatter(
         }
 
         runtimeData = when {
-            str.isEmpty() -> ""
+            str.isEmpty() -> "".also {
+                cacheMonth = it
+                cacheYear = it
+            }
             mounthIndex > yearIndex -> generateYYMM(str)
             yearIndex > mounthIndex -> generateMMYY(str)
-            else -> ""
+            else -> "".also {
+                cacheMonth = it
+                cacheYear = it
+            }
         }
     }
 
