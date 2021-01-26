@@ -23,10 +23,9 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Check if release branch
+          name: TAG
           command: |
             echo "TAG", $CIRCLE_TAG;
-            fi
 #      - run:
 #          name: Run Lint
 #          command: ./gradlew lintDebug
