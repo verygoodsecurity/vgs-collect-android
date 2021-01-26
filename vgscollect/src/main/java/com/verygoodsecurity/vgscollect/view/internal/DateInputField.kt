@@ -108,7 +108,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     private fun applyFormatter() {
         val baseFormatter: BaseDateFormatter = when(formatterMode) {
-            FormatMode.STRICT -> StrictExpirationDateFormatter()
+            FormatMode.STRICT -> StrictExpirationDateFormatter(this)
             FormatMode.FLEXIBLE -> FlexibleDateFormatter()
         }
 
