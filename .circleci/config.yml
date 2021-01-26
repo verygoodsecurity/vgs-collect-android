@@ -23,11 +23,16 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Run Lint
-          command: ./gradlew lintDebug
-      - run:
-          name: Run Unit tests
-          command: ./gradlew testDebugUnitTest
+          name: Check if release branch
+          command: |
+            echo "TAG", $CIRCLE_TAG;
+            fi
+#      - run:
+#          name: Run Lint
+#          command: ./gradlew lintDebug
+#      - run:
+#          name: Run Unit tests
+#          command: ./gradlew testDebugUnitTest
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
