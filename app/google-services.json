@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "841477298379",
+    "project_id": "vgs-collect-test-lab",
+    "storage_bucket": "vgs-collect-test-lab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841477298379:android:57fff8e6d4a760e18fe34e",
+        "android_client_info": {
+          "package_name": "com.verygoodsecurity.demoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841477298379-eq2qv68jm4008758v43ljfqmjom5uqe7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmJHAFmrL2BpbyBxjPhSfSKakFPrrD_jI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841477298379-eq2qv68jm4008758v43ljfqmjom5uqe7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
