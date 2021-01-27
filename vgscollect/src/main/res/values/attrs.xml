@@ -480,10 +480,15 @@
             <enum name="end" value="8388613" />
         </attr>
 
-        <attr name="previewIconVisibility">
+        <!-- Specifies visibility for card brand preview icon. -->
+        <attr name="brandIconVisibility">
+            <!-- Preview icon is visible all the time. -->
             <enum name="always" value="0"/>
+            <!-- Preview icon is visible only when card brand is detected. -->
             <enum name="ifDetected" value="1"/>
+            <!-- Preview icon is visible when some input exists. -->
             <enum name="hasContent" value="2"/>
+            <!-- Preview icon is never visible. -->
             <enum name="never" value="3"/>
         </attr>
     </declare-styleable>
