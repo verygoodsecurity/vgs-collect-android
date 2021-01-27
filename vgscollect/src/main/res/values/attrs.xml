@@ -479,6 +479,13 @@
             <enum name="start" value="8388611" />
             <enum name="end" value="8388613" />
         </attr>
+
+        <attr name="previewIconVisibility">
+            <enum name="always" value="0"/>
+            <enum name="ifDetected" value="1"/>
+            <enum name="hasContent" value="2"/>
+            <enum name="never" value="3"/>
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="SSNEditText">

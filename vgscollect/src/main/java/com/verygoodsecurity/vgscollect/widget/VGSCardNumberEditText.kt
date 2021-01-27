@@ -39,6 +39,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
             try {
                 val previewGravity = getInt(R.styleable.VGSCardNumberEditText_cardBrandIconGravity, 0)
+                val previewIconVisibility = getInt(R.styleable.VGSCardNumberEditText_previewIconVisibility, 0)
                 val divider:String? = getString(R.styleable.VGSCardNumberEditText_numberDivider)?:null
 
                 val inputType = getInt(R.styleable.VGSCardNumberEditText_inputType, EditorInfo.TYPE_NULL)
@@ -83,6 +84,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
                 setNumberDivider(divider)
                 applyCardIconGravity(previewGravity)
+                applyPreviewIconMode(previewIconVisibility)
 
                 if(!isValidationPredefined()) {
                     predefineValidationRule(validationRule)
