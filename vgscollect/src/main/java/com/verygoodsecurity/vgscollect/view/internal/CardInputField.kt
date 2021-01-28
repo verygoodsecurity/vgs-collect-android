@@ -30,7 +30,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 
 /** @suppress */
-internal class CardInputField(context: Context): BaseInputField(context), InputCardNumberConnection.IDrawCardBrand {
+internal class CardInputField(context: Context) : BaseInputField(context), InputCardNumberConnection.IDrawCardBrand {
 
     companion object {
         private const val MASK_REGEX = "[^#]"
@@ -41,18 +41,27 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
     override var fieldType: FieldType = FieldType.CARD_NUMBER
 
-    private var divider:String = SPACE
-    private var iconGravity:Int = Gravity.NO_GRAVITY
+    private var divider: String = SPACE
+    private var iconGravity: Int = Gravity.NO_GRAVITY
     private var cardtype: CardType = CardType.UNKNOWN
 
-    private var cardNumberMask:String = DEFAULT_MASK
+    private var cardNumberMask: String = DEFAULT_MASK
 
     private var iconAdapter = CardIconAdapter(context)
+    private var previewIconMode: PreviewIconMode = PreviewIconMode.ALWAYS
+
     private var maskAdapter = CardMaskAdapter()
     private var cardNumberFormatter: Formatter? = null
 
     private val userFilter: MutableCardFilter by lazy {
         CardBrandFilter(divider)
+    }
+
+    enum class PreviewIconMode {
+        ALWAYS,
+        IF_DETECTED,
+        HAS_CONTENT,
+        NEVER
     }
 
     override fun applyFieldType() {
@@ -86,13 +95,13 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
     }
 
     private fun applyInputType() {
-        if(!isValidInputType(inputType)) {
+        if (!isValidInputType(inputType)) {
             inputType = InputType.TYPE_CLASS_NUMBER
         }
         refreshInput()
     }
 
-    private fun isValidInputType(type: Int):Boolean {
+    private fun isValidInputType(type: Int): Boolean {
         return type == InputType.TYPE_CLASS_NUMBER ||
                 type == InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
     }
@@ -119,8 +128,13 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         return c
     }
 
-    internal fun setCardPreviewIconGravity(gravity:Int) {
-        iconGravity = when(gravity) {
+    internal fun setPreviewIconMode(mode: Int) {
+        previewIconMode = PreviewIconMode.values()[mode]
+        refreshIconPreview()
+    }
+
+    internal fun setCardPreviewIconGravity(gravity: Int) {
+        iconGravity = when (gravity) {
             0 -> gravity
             Gravity.RIGHT -> gravity
             Gravity.LEFT -> gravity
@@ -131,7 +145,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         refreshIconPreview()
     }
 
-    internal fun getCardPreviewIconGravity():Int {
+    internal fun getCardPreviewIconGravity(): Int {
         return iconGravity
     }
 
@@ -142,7 +156,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        if(isRTL()) {
+        if (isRTL()) {
             hasRTL = true
             layoutDirection = View.LAYOUT_DIRECTION_LTR
             textDirection = View.TEXT_DIRECTION_LTR
@@ -181,8 +195,8 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         refreshInput()
     }
 
-    private fun validateInputType(type: Int):Int {
-        return when(type) {
+    private fun validateInputType(type: Int): Int {
+        return when (type) {
             InputType.TYPE_CLASS_NUMBER -> type
             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
             InputType.TYPE_CLASS_TEXT or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
@@ -193,14 +207,14 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
     }
 
     internal fun setCardBrandAdapter(adapter: CardIconAdapter?) {
-        iconAdapter = adapter?:CardIconAdapter(context)
+        iconAdapter = adapter ?: CardIconAdapter(context)
     }
 
     internal fun setCardBrandMaskAdapter(adapter: CardMaskAdapter?) {
-        maskAdapter = adapter?: CardMaskAdapter()
+        maskAdapter = adapter ?: CardMaskAdapter()
     }
 
-    private var lastCardIconPreview:Drawable? = null
+    private var lastCardIconPreview: Drawable? = null
     override fun onCardBrandPreview(card: CardBrandPreview) {
         this.cardtype = card.cardType
         updateMask(card)
@@ -210,38 +224,51 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
         lastCardIconPreview = iconAdapter.getItem(card.cardType, card.name, card.resId, r)
 
-        refreshIconPreview()
+        when(previewIconMode) {
+            PreviewIconMode.ALWAYS -> refreshIconPreview()
+            PreviewIconMode.IF_DETECTED -> if(card.successfullyDetected) {
+                refreshIconPreview()
+            } else {
+                setCompoundDrawables(null, null, null, null)
+            }
+            PreviewIconMode.HAS_CONTENT -> if(!text.isNullOrEmpty()) {
+                refreshIconPreview()
+            } else {
+                setCompoundDrawables(null, null, null, null)
+            }
+            PreviewIconMode.NEVER -> setCompoundDrawables(null, null, null, null)
+        }
     }
 
     private fun refreshIconPreview() {
         when (iconGravity) {
-            Gravity.LEFT -> setCompoundDrawables(lastCardIconPreview,null,null,null)
-            Gravity.START -> setCompoundDrawables(lastCardIconPreview,null,null,null)
-            Gravity.RIGHT -> setCompoundDrawables(null,null,lastCardIconPreview,null)
-            Gravity.END -> setCompoundDrawables(null,null,lastCardIconPreview,null)
-            Gravity.NO_GRAVITY -> setCompoundDrawables(null,null,null,null)
+            Gravity.LEFT -> setCompoundDrawables(lastCardIconPreview, null, null, null)
+            Gravity.START -> setCompoundDrawables(lastCardIconPreview, null, null, null)
+            Gravity.RIGHT -> setCompoundDrawables(null, null, lastCardIconPreview, null)
+            Gravity.END -> setCompoundDrawables(null, null, lastCardIconPreview, null)
+            Gravity.NO_GRAVITY -> setCompoundDrawables(null, null, null, null)
         }
     }
 
     private fun updateMask(
-        card: CardBrandPreview
+            card: CardBrandPreview
     ) {
-        if(!text.isNullOrEmpty()) {
+        if (!text.isNullOrEmpty()) {
             val bin = (inputConnection?.getOutput()?.content as FieldContent.CardNumberContent).parseCardBin()
             cardNumberMask = maskAdapter.getItem(
-                card.cardType,
-                card.name?:"",
-                bin,
-                card.currentMask)
+                    card.cardType,
+                    card.name ?: "",
+                    bin,
+                    card.currentMask)
             applyDividerOnMask()
         }
     }
 
     override fun setCompoundDrawables(
-        left: Drawable?,
-        top: Drawable?,
-        right: Drawable?,
-        bottom: Drawable?
+            left: Drawable?,
+            top: Drawable?,
+            right: Drawable?,
+            bottom: Drawable?
     ) {
         if (hasRTL) {
             super.setCompoundDrawables(right, top, left, bottom)
@@ -254,7 +281,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
         cardNumberMask = with(cardNumberMask) {
             this.replace(Regex(MASK_REGEX), divider)
         }
-        if(!text.isNullOrEmpty() && cardNumberFormatter?.getMask() != cardNumberMask) {
+        if (!text.isNullOrEmpty() && cardNumberFormatter?.getMask() != cardNumberMask) {
             cardNumberFormatter?.setMask(cardNumberMask)
             refreshInput()
         }
@@ -262,7 +289,7 @@ internal class CardInputField(context: Context): BaseInputField(context), InputC
 
     override fun setupAutofill() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setAutofillHints(AUTOFILL_HINT_CREDIT_CARD_NUMBER )
+            setAutofillHints(AUTOFILL_HINT_CREDIT_CARD_NUMBER)
         }
     }
 

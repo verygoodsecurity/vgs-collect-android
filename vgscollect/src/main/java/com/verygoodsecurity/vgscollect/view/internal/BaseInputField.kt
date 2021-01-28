@@ -214,7 +214,13 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     protected fun refreshInput() {
+        val currentSelection = selectionStart
         setText(text)
+
+        when {
+            selectionStart > currentSelection -> setSelection(selectionStart)
+            selectionStart < currentSelection -> setSelection(currentSelection)
+        }
     }
 
     override fun setTag(tag: Any?) {
