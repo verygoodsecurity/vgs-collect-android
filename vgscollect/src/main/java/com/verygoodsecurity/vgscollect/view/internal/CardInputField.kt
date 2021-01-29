@@ -10,7 +10,8 @@ import android.view.Gravity
 import android.view.View
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.*
-import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.VGSLogger
+import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.*
@@ -33,6 +34,8 @@ import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNum
 internal class CardInputField(context: Context) : BaseInputField(context), InputCardNumberConnection.IDrawCardBrand {
 
     companion object {
+        internal val TAG: String = VGSCollect::class.qualifiedName.toString()
+
         private const val MASK_REGEX = "[^#]"
         private const val DEFAULT_MASK = "#### #### #### #### ###"
         private const val EMPTY_CHAR = ""
@@ -178,8 +181,7 @@ internal class CardInputField(context: Context) : BaseInputField(context), Input
     }
 
     private fun printErrorInLog(resId: Int) {
-        val message = String.format(context.getString(resId), divider)
-        Logger.e(InputFieldView::class.java, message)
+        VGSLogger.warn(TAG, String.format(context.getString(resId), divider))
     }
 
     private fun setupKeyListener() {
@@ -303,6 +305,5 @@ internal class CardInputField(context: Context) : BaseInputField(context), Input
         rule.algorithm?.let {
             validator.addRule(CheckSumValidator(rule.algorithm))
         }
-
     }
 }
