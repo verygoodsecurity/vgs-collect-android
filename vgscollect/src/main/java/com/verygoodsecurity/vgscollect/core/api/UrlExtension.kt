@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.api
 
 import com.verygoodsecurity.vgscollect.core.VGSCollect
-import com.verygoodsecurity.vgscollect.VGSLogger
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.regex.Pattern
@@ -10,11 +10,11 @@ import java.util.regex.Pattern
 internal fun String.setupURL(rawValue: String): String {
     return when {
         this.isEmpty() || !isTennantIdValid() -> {
-            VGSLogger.warn(VGSCollect.TAG, "tennantId is not valid")
+            VGSCollectLogger.warn(VGSCollect.TAG, "tennantId is not valid")
             return ""
         }
         rawValue.isEmpty() || !rawValue.isEnvironmentValid() -> {
-            VGSLogger.warn(VGSCollect.TAG, "Environment is not valid")
+            VGSCollectLogger.warn(VGSCollect.TAG, "Environment is not valid")
             return ""
         }
         else -> this.buildURL(rawValue)

@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
-import com.verygoodsecurity.vgscollect.VGSLogger
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -211,7 +211,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun retrieveSettings() {
-        VGSLogger.logLevel = VGSLogger.Level.NONE
+        VGSCollectLogger.logLevel = VGSCollectLogger.Level.WARN
 
         val bndl = intent?.extras
 

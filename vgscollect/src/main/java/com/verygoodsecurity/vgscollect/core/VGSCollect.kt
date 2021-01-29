@@ -26,7 +26,7 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileSt
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.*
-import com.verygoodsecurity.vgscollect.VGSLogger
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscollect.util.extension.hasAccessNetworkStatePermission
 import com.verygoodsecurity.vgscollect.util.extension.hasInternetPermission
@@ -58,7 +58,7 @@ class VGSCollect {
         override fun onStorageError(error: VGSError) {
             VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context).also { r ->
                 notifyAllListeners(r)
-                VGSLogger.warn(TAG, r.localizeMessage)
+                VGSCollectLogger.warn(TAG, r.localizeMessage)
                 submitEvent(false, code = r.errorCode)
             }
         }
@@ -355,7 +355,7 @@ class VGSCollect {
             if (it.isValid.not()) {
                 VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context, it.fieldName).also { r ->
                     notifyAllListeners(r)
-                    VGSLogger.warn(TAG, r.localizeMessage)
+                    VGSCollectLogger.warn(TAG, r.localizeMessage)
                     submitEvent(false, code = r.errorCode)
                 }
 
@@ -610,7 +610,7 @@ class VGSCollect {
                     client.setHost(it.body)
                 } else {
                     context.run {
-                        VGSLogger.warn(
+                        VGSCollectLogger.warn(
                             TAG,
                             String.format(getString(R.string.error_custom_host_wrong), host)
                         )
@@ -672,10 +672,10 @@ class VGSCollect {
             if (cname.isURLValid()) {
                 host = cname.toHost()
 
-                if (host != cname) VGSLogger.debug(TAG, "Hostname will be normalized to the $host")
+                if (host != cname) VGSCollectLogger.debug(TAG, "Hostname will be normalized to the $host")
 
             } else {
-                VGSLogger.warn(TAG, context.getString(R.string.error_custom_host_wrong_short))
+                VGSCollectLogger.warn(TAG, context.getString(R.string.error_custom_host_wrong_short))
             }
 
             return this

@@ -13,7 +13,7 @@ import com.verygoodsecurity.vgscollect.core.api.toContentType
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
-import com.verygoodsecurity.vgscollect.VGSLogger
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
 import java.net.HttpURLConnection
 import java.net.URL
@@ -97,12 +97,12 @@ internal class URLConnectionClient(
                 .addHeaders(request.customHeader)
                 .setMethod(request.method)
 
-            if (enableLogs) VGSLogger.debug(VGSCollect.TAG, buildRequestLog(connection))
+            if (enableLogs) VGSCollectLogger.debug(VGSCollect.TAG, buildRequestLog(connection))
             writeOutput(connection, request.customData)
 
             handleResponse(connection)
         } catch (e: Exception) {
-            if (enableLogs) VGSLogger.debug(VGSCollect.TAG, e.localizedMessage ?: "")
+            if (enableLogs) VGSCollectLogger.debug(VGSCollect.TAG, e.localizedMessage ?: "")
             NetworkResponse(message = e.localizedMessage)
         } finally {
             connection?.disconnect()
@@ -121,14 +121,14 @@ internal class URLConnectionClient(
     private fun handleResponse(connection: HttpURLConnection): NetworkResponse {
         val responseCode = connection.responseCode
 
-        if (enableLogs) VGSLogger.debug(VGSCollect.TAG, buildResponseLog(connection))
+        if (enableLogs) VGSCollectLogger.debug(VGSCollect.TAG, buildResponseLog(connection))
 
         return if (responseCode.isCodeSuccessful()) {
             val rawResponse = connection.inputStream?.bufferedReader()?.use { it.readText() }
             NetworkResponse(true, rawResponse, responseCode)
         } else {
             val responseStr = connection.errorStream?.bufferedReader()?.use { it.readText() }
-            if (enableLogs) VGSLogger.debug(VGSCollect.TAG, responseStr.toString())
+            if (enableLogs) VGSCollectLogger.debug(VGSCollect.TAG, responseStr.toString())
             NetworkResponse(message = responseStr, code = responseCode)
         }
     }

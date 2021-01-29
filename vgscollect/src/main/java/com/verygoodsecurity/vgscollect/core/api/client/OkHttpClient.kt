@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscollect.core.api.client.extension.setMethod
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
-import com.verygoodsecurity.vgscollect.VGSLogger
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -193,10 +193,10 @@ internal class OkHttpClient(
 
         override fun intercept(chain: Interceptor.Chain): Response {
             val request = chain.request()
-            if (isLogsVisible) VGSLogger.debug(VGSCollect.TAG, buildRequestLog(request))
+            if (isLogsVisible) VGSCollectLogger.debug(VGSCollect.TAG, buildRequestLog(request))
 
             val response = chain.proceed(request)
-            if (isLogsVisible) VGSLogger.debug(VGSCollect.TAG, buildResponseLog(response))
+            if (isLogsVisible) VGSCollectLogger.debug(VGSCollect.TAG, buildResponseLog(response))
 
             return response
         }

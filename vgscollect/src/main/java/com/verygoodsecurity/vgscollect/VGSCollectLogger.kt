@@ -6,7 +6,7 @@ import java.util.*
 
 
 /**  */
-object VGSLogger {
+object VGSCollectLogger {
 
     var logLevel: Level = Level.DEBUG
         @JvmName("setLogLevel") set
