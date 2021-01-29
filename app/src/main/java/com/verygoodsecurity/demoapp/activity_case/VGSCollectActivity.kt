@@ -211,6 +211,8 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun retrieveSettings() {
+        VGSLogger.logLevel = VGSLogger.Level.NONE
+
         val bndl = intent?.extras
 
         vault_id = bndl?.getString(StartActivity.VAULT_ID, "")?:""
@@ -224,7 +226,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
             .setHostname("collect-android-testing.verygoodsecurity.io/test")
             .create()
 
-        VGSLogger.logLevel = VGSLogger.Level.DEBUG
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             val cacheSize = 10 * 1024 * 1024 // 10MB
