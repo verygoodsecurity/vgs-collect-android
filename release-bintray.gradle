@@ -14,9 +14,14 @@ ext {
 
     libraryVersion = POM_VERSION
 
-    developerId = 'dmytro'
-    developerName = 'Dmytro'
-    developerEmail = 'dmitriy.kosolapenko@vgs.io'
+    Properties properties = new Properties()
+    if (rootProject.file("local.properties").exists()) {
+        properties.load(rootProject.file("local.properties").newDataInputStream())
+    }
+
+    developerId = properties.getProperty("BINTRAY_USERNAME", "")
+    developerName = properties.getProperty("DEVELOPER_NAME", "")
+    developerEmail = properties.getProperty("DEVELOPER_EMAIL", "")
 
     licenseName = 'MIT License'
     licenseUrl = 'https://opensource.org/licenses/MIT'
