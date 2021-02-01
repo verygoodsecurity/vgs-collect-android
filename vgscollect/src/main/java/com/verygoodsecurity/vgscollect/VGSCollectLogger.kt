@@ -9,8 +9,6 @@ object VGSCollectLogger {
 
     /** Current priority level for filtering debugging logs */
     var logLevel: Level = if(BuildConfig.DEBUG) Level.DEBUG else Level.NONE
-        @JvmName("setLogLevel") set
-        @JvmName("getLogLevel") get
 
 
     /**
@@ -55,7 +53,7 @@ object VGSCollectLogger {
      * @param tag Used to identify the source of a log message.
      * @param message The message you would like logged.
      */
-    fun warn(tag: String, message: String) {
+    internal fun warn(tag: String, message: String) {
         printLog(Level.WARN, tag, message)
     }
 
@@ -65,7 +63,7 @@ object VGSCollectLogger {
      * @param tag Used to identify the source of a log message.
      * @param message The message you would like logged.
      */
-    fun debug(tag: String, message: String) {
+    internal fun debug(tag: String, message: String) {
         printLog(Level.DEBUG, tag, message)
     }
 }
