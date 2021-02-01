@@ -10,11 +10,11 @@ import java.util.regex.Pattern
 internal fun String.setupURL(rawValue: String): String {
     return when {
         this.isEmpty() || !isTennantIdValid() -> {
-            VGSCollectLogger.warn(VGSCollect.TAG, "tennantId is not valid")
+            VGSCollectLogger.warn(message = "Vault ID is not valid")
             return ""
         }
         rawValue.isEmpty() || !rawValue.isEnvironmentValid() -> {
-            VGSCollectLogger.warn(VGSCollect.TAG, "Environment is not valid")
+            VGSCollectLogger.warn(message = "Environment is not valid")
             return ""
         }
         else -> this.buildURL(rawValue)

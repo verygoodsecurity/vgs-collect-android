@@ -1,14 +1,17 @@
 package com.verygoodsecurity.vgscollect
 
 import android.util.Log
+import com.verygoodsecurity.vgscollect.VGSCollectLogger.Level.*
 
 /**
  * This object is used to log messages in VGS Collect SDK.
  */
 object VGSCollectLogger {
 
+    private const val TAG = "VGSCollect"
+
     /** Current priority level for filtering debugging logs */
-    var logLevel: Level = if(BuildConfig.DEBUG) Level.DEBUG else Level.NONE
+    var logLevel: Level = if(BuildConfig.DEBUG) DEBUG else NONE
 
     /** Allows enable and disable debug-log printing. */
     var isEnabled = BuildConfig.DEBUG
@@ -38,13 +41,15 @@ object VGSCollectLogger {
     /**
      * Returns true if the logger print log messages.
      */
-    fun isDebugEnabled(): Boolean = logLevel.ordinal != Level.NONE.ordinal
+    fun isDebugEnabled(): Boolean = logLevel.ordinal != NONE.ordinal
 
-    private fun printLog(level: Level, tag: String, message: String) {
+    private fun printLog(level: Level, tag: String?, message: String) {
         if(isEnabled && level.ordinal >= logLevel.ordinal) {
+            val log:String = if(tag.isNullOrEmpty()) message else "$tag: $message"
+
             when (level) {
-                Level.DEBUG -> Log.d(tag, message)
-                Level.WARN -> Log.w(tag, message)
+                DEBUG -> Log.d(TAG, log)
+                WARN -> Log.w(TAG, log)
             }
         }
     }
@@ -55,8 +60,8 @@ object VGSCollectLogger {
      * @param tag Used to identify the source of a log message.
      * @param message The message you would like logged.
      */
-    internal fun warn(tag: String, message: String) {
-        printLog(Level.WARN, tag, message)
+    internal fun warn(tag: String? = null, message: String) {
+        printLog(WARN, tag, message)
     }
 
     /**
@@ -65,7 +70,7 @@ object VGSCollectLogger {
      * @param tag Used to identify the source of a log message.
      * @param message The message you would like logged.
      */
-    internal fun debug(tag: String, message: String) {
-        printLog(Level.DEBUG, tag, message)
+    internal fun debug(tag: String? = null, message: String) {
+        printLog(DEBUG, tag, message)
     }
 }

@@ -193,10 +193,10 @@ internal class OkHttpClient(
 
         override fun intercept(chain: Interceptor.Chain): Response {
             val request = chain.request()
-            if (isLogsVisible) VGSCollectLogger.debug(VGSCollect.TAG, buildRequestLog(request))
+            if (isLogsVisible) VGSCollectLogger.debug(message = buildRequestLog(request))
 
             val response = chain.proceed(request)
-            if (isLogsVisible) VGSCollectLogger.debug(VGSCollect.TAG, buildResponseLog(response))
+            if (isLogsVisible) VGSCollectLogger.debug(message = buildResponseLog(response))
 
             return response
         }

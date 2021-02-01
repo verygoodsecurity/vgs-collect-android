@@ -28,13 +28,12 @@ import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
+import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 
 /** @suppress */
 internal class CardInputField(context: Context) : BaseInputField(context), InputCardNumberConnection.IDrawCardBrand {
 
     companion object {
-        internal val TAG: String = VGSCollect::class.qualifiedName.toString()
-
         private const val MASK_REGEX = "[^#]"
         private const val DEFAULT_MASK = "#### #### #### #### ###"
         private const val EMPTY_CHAR = ""
@@ -180,7 +179,7 @@ internal class CardInputField(context: Context) : BaseInputField(context), Input
     }
 
     private fun printErrorInLog(resId: Int) {
-        VGSCollectLogger.warn(TAG, String.format(context.getString(resId), divider))
+        VGSCollectLogger.warn(VGSCardNumberEditText.TAG, context.getString(resId))
     }
 
     private fun setupKeyListener() {

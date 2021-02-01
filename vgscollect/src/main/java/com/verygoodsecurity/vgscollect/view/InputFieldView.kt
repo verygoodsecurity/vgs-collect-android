@@ -1199,6 +1199,6 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     companion object {
-        internal val TAG: String = InputFieldView::class.qualifiedName.toString()
+        internal val TAG: String = InputFieldView::class.simpleName.toString()
     }
 }

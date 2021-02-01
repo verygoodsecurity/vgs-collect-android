@@ -97,12 +97,12 @@ internal class URLConnectionClient(
                 .addHeaders(request.customHeader)
                 .setMethod(request.method)
 
-            if (enableLogs) VGSCollectLogger.debug(VGSCollect.TAG, buildRequestLog(connection))
+            if (enableLogs) VGSCollectLogger.debug(message = buildRequestLog(connection))
             writeOutput(connection, request.customData)
 
             handleResponse(connection)
         } catch (e: Exception) {
-            if (enableLogs) VGSCollectLogger.debug(VGSCollect.TAG, e.localizedMessage ?: "")
+            if (enableLogs) VGSCollectLogger.debug(message = e.localizedMessage ?: "")
             NetworkResponse(message = e.localizedMessage)
         } finally {
             connection?.disconnect()
@@ -121,14 +121,14 @@ internal class URLConnectionClient(
     private fun handleResponse(connection: HttpURLConnection): NetworkResponse {
         val responseCode = connection.responseCode
 
-        if (enableLogs) VGSCollectLogger.debug(VGSCollect.TAG, buildResponseLog(connection))
+        if (enableLogs) VGSCollectLogger.debug(message = buildResponseLog(connection))
 
         return if (responseCode.isCodeSuccessful()) {
             val rawResponse = connection.inputStream?.bufferedReader()?.use { it.readText() }
             NetworkResponse(true, rawResponse, responseCode)
         } else {
             val responseStr = connection.errorStream?.bufferedReader()?.use { it.readText() }
-            if (enableLogs) VGSCollectLogger.debug(VGSCollect.TAG, responseStr.toString())
+            if (enableLogs) VGSCollectLogger.debug(message = responseStr.toString())
             NetworkResponse(message = responseStr, code = responseCode)
         }
     }

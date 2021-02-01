@@ -211,4 +211,8 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     fun addRule(rule: PaymentCardNumberRule) {
         applyValidationRule(rule)
     }
+
+    companion object {
+        internal val TAG: String = VGSCardNumberEditText::class.simpleName.toString()
+    }
 }
