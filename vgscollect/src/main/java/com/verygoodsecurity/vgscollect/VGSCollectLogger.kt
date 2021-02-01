@@ -10,6 +10,8 @@ object VGSCollectLogger {
     /** Current priority level for filtering debugging logs */
     var logLevel: Level = if(BuildConfig.DEBUG) Level.DEBUG else Level.NONE
 
+    /** Allows enable and disable debug-log printing. */
+    var isEnabled = BuildConfig.DEBUG
 
     /**
      * Priority constant for the printing debug-logs.
@@ -39,7 +41,7 @@ object VGSCollectLogger {
     fun isDebugEnabled(): Boolean = logLevel.ordinal != Level.NONE.ordinal
 
     private fun printLog(level: Level, tag: String, message: String) {
-        if(level.ordinal >= logLevel.ordinal) {
+        if(isEnabled && level.ordinal >= logLevel.ordinal) {
             when (level) {
                 Level.DEBUG -> Log.d(tag, message)
                 Level.WARN -> Log.w(tag, message)
