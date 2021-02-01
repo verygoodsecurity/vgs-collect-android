@@ -1,23 +1,43 @@
 package com.verygoodsecurity.vgscollect
 
-import android.content.Context
 import android.util.Log
-import java.util.*
 
-
-/**  */
+/**
+ * This object is used to log messages in VGS Collect SDK.
+ */
 object VGSCollectLogger {
 
-    var logLevel: Level = Level.DEBUG
+    /** Current priority level for filtering debugging logs */
+    var logLevel: Level = if(BuildConfig.DEBUG) Level.DEBUG else Level.NONE
         @JvmName("setLogLevel") set
         @JvmName("getLogLevel") get
 
+
+    /**
+     * Priority constant for the printing debug-logs.
+     */
     enum class Level {
+
+        /**
+         * Default setting. We print all information about processing.
+         * It includes errors, warnings, notifications, debug messages, requests and responses.
+         */
         DEBUG,
+
+        /**
+         * This setting allows you to minimize information and print only errors, warnings.
+         */
         WARN,
+
+        /**
+         * Disable debug-logs.
+         */
         NONE
     }
 
+    /**
+     * Returns true if the logger print log messages.
+     */
     fun isDebugEnabled(): Boolean = logLevel.ordinal != Level.NONE.ordinal
 
     private fun printLog(level: Level, tag: String, message: String) {
@@ -29,10 +49,22 @@ object VGSCollectLogger {
         }
     }
 
+    /**
+     * Print a WARN log message.
+     *
+     * @param tag Used to identify the source of a log message.
+     * @param message The message you would like logged.
+     */
     fun warn(tag: String, message: String) {
         printLog(Level.WARN, tag, message)
     }
 
+    /**
+     * Print a DEBUG log message.
+     *
+     * @param tag Used to identify the source of a log message.
+     * @param message The message you would like logged.
+     */
     fun debug(tag: String, message: String) {
         printLog(Level.DEBUG, tag, message)
     }
