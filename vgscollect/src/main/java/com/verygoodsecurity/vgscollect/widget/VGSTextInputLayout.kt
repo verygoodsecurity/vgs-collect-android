@@ -18,6 +18,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
 ) : TextInputFieldLayout(context, attrs, defStyleAttr) {
 
     companion object {
+        internal val TAG = VGSTextInputLayout::class.simpleName.toString()
 
         /**
          * The TextInputLayout will show a custom icon specified by the user.
