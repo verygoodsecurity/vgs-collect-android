@@ -26,7 +26,7 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileSt
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.*
-import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscollect.util.extension.hasAccessNetworkStatePermission
 import com.verygoodsecurity.vgscollect.util.extension.hasInternetPermission
@@ -58,7 +58,7 @@ class VGSCollect {
         override fun onStorageError(error: VGSError) {
             VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context).also { r ->
                 notifyAllListeners(r)
-                Logger.e(VGSCollect::class.java, r.localizeMessage)
+                VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
                 submitEvent(false, code = r.errorCode)
             }
         }
@@ -355,7 +355,7 @@ class VGSCollect {
             if (it.isValid.not()) {
                 VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context, it.fieldName).also { r ->
                     notifyAllListeners(r)
-                    Logger.e(VGSCollect::class.java, r.localizeMessage)
+                    VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
                     submitEvent(false, code = r.errorCode)
                 }
 
@@ -610,9 +610,11 @@ class VGSCollect {
                     client.setHost(it.body)
                 } else {
                     context.run {
-                        Logger.e(
-                            VGSCollect::class.java,
-                            String.format(getString(R.string.error_custom_host_wrong), host)
+                        VGSCollectLogger.warn(
+                            message = String.format(
+                                getString(R.string.error_custom_host_wrong),
+                                host
+                            )
                         )
                     }
                 }
@@ -672,15 +674,10 @@ class VGSCollect {
             if (cname.isURLValid()) {
                 host = cname.toHost()
 
-                if (host != cname) Logger.w(
-                    VGSCollect::class.java,
-                    "Hostname will be normalized to the $host"
-                )
+                if (host != cname) VGSCollectLogger.debug(message = "Hostname will be normalized to the $host")
+
             } else {
-                Logger.e(context,
-                    VGSCollect::class.java,
-                    R.string.error_custom_host_wrong_short
-                )
+                VGSCollectLogger.warn(message = context.getString(R.string.error_custom_host_wrong_short))
             }
 
             return this
@@ -707,4 +704,5 @@ class VGSCollect {
     fun setAnalyticsEnabled(isEnabled: Boolean) {
         tracker.setAnalyticsEnabled(isEnabled)
     }
+
 }

@@ -13,13 +13,13 @@ import org.mockito.Mockito
 class StrictExpirationDateFormatterTest {
 
     companion object {
-        private const val TEST_POSITIVE_VALUE_1 =  "03/23"
-        private const val TEST_POSITIVE_VALUE_2 =  "12/2030"
-        private const val TEST_POSITIVE_VALUE_3 =  "12-2034"
+        private const val TEST_POSITIVE_VALUE_1 = "03/23"
+        private const val TEST_POSITIVE_VALUE_2 = "12/2030"
+        private const val TEST_POSITIVE_VALUE_3 = "12-2034"
 
-        private const val TEST_NEGATIVE_VALUE_1 =  "12-1990"
-        private const val TEST_NEGATIVE_VALUE_2 =  "13-1390"
-        private const val TEST_NEGATIVE_VALUE_3 =  "07-2044"
+        private const val TEST_NEGATIVE_VALUE_1 = "12-1990"
+        private const val TEST_NEGATIVE_VALUE_2 = "13-1390"
+        private const val TEST_NEGATIVE_VALUE_3 = "07-2054"
     }
 
     private lateinit var formatter: Formatter
@@ -49,13 +49,13 @@ class StrictExpirationDateFormatterTest {
 
     @Test
     fun test_default_text_full() {
-        textWatcher.onTextChanged(TEST_POSITIVE_VALUE_2, 0,0,7)
+        textWatcher.onTextChanged(TEST_POSITIVE_VALUE_2, 0, 0, 7)
 
         val e = Mockito.mock(Editable::class.java)
         textWatcher.afterTextChanged(e)
 
         Mockito.verify(e).replace(0, 0,
-            TEST_POSITIVE_VALUE_2
+                TEST_POSITIVE_VALUE_2
         )
     }
 
@@ -63,13 +63,13 @@ class StrictExpirationDateFormatterTest {
     fun test_default_set_mask_text_full() {
         formatter.setMask("MM-yyyy")
 
-        textWatcher.onTextChanged(TEST_POSITIVE_VALUE_3, 0,0,7)
+        textWatcher.onTextChanged(TEST_POSITIVE_VALUE_3, 0, 0, 7)
 
         val e = Mockito.mock(Editable::class.java)
         textWatcher.afterTextChanged(e)
 
         Mockito.verify(e).replace(0, 0,
-            TEST_POSITIVE_VALUE_3
+                TEST_POSITIVE_VALUE_3
         )
     }
 
@@ -77,13 +77,13 @@ class StrictExpirationDateFormatterTest {
     fun test_set_default_short() {
         formatter.setMask("MM/yy")
 
-        textWatcher.onTextChanged(TEST_POSITIVE_VALUE_1, 0,0,5)
+        textWatcher.onTextChanged(TEST_POSITIVE_VALUE_1, 0, 0, 5)
 
         val e = Mockito.mock(Editable::class.java)
         textWatcher.afterTextChanged(e)
 
         Mockito.verify(e).replace(0, 0,
-            TEST_POSITIVE_VALUE_1
+                TEST_POSITIVE_VALUE_1
         )
     }
 
@@ -91,49 +91,49 @@ class StrictExpirationDateFormatterTest {
     fun test_set_custom_mask_negative() {
         formatter.setMask("MM/yy")
 
-        textWatcher.onTextChanged(TEST_NEGATIVE_VALUE_1, 0,0,5)
+        textWatcher.onTextChanged(TEST_NEGATIVE_VALUE_1, 0, 0, 5)
 
         val e = Mockito.mock(Editable::class.java)
         textWatcher.afterTextChanged(e)
 
         Mockito.verify(e).replace(0, 0,
-            "12/19"
+                "12/"
         )
     }
 
     @Test
     fun test_set_negative() {
-        textWatcher.onTextChanged(TEST_NEGATIVE_VALUE_1, 0,0,5)
+        textWatcher.onTextChanged(TEST_NEGATIVE_VALUE_1, 0, 0, 5)
 
         val e = Mockito.mock(Editable::class.java)
         textWatcher.afterTextChanged(e)
 
         Mockito.verify(e).replace(0, 0,
-            "12"
+                "12/"
         )
     }
 
     @Test
     fun test_2_negative() {
-        textWatcher.onTextChanged(TEST_NEGATIVE_VALUE_2, 0,0,5)
+        textWatcher.onTextChanged(TEST_NEGATIVE_VALUE_2, 0, 0, 5)
 
         val e = Mockito.mock(Editable::class.java)
         textWatcher.afterTextChanged(e)
 
         Mockito.verify(e).replace(0, 0,
-            "1"
+                ""
         )
     }
 
     @Test
     fun test_3_negative() {
-        textWatcher.onTextChanged(TEST_NEGATIVE_VALUE_3, 0,0,5)
+        textWatcher.onTextChanged(TEST_NEGATIVE_VALUE_3, 0, 0, 5)
 
         val e = Mockito.mock(Editable::class.java)
         textWatcher.afterTextChanged(e)
 
         Mockito.verify(e).replace(0, 0,
-            "07/20"
+                "07/"
         )
     }
 }

@@ -29,9 +29,13 @@ $dokka.location:com.verygoodsecurity.vgscollect.view.card.formatter/SSNumberForm
 $dokka.location:com.verygoodsecurity.vgscollect.view.card.text/ExpirationDateTextWatcher.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/text/ExpirationDateTextWatcher.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.view.card.validation.rules/PaymentCardNumberRule.ValidationBuilder///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/validation/rules/PaymentCardNumberRule.ValidationBuilder.html
 $dokka.location:com.verygoodsecurity.vgscollect.view.card.validation.rules/PersonNameRule.ValidationBuilder///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/validation/rules/PersonNameRule.ValidationBuilder.html
+$dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.OnEditorActionListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.OnEditorActionListener.html
 $dokka.location:com.verygoodsecurity.vgscollect.widget/ExpirationDateEditText.OnDatePickerVisibilityChangeListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/widget/ExpirationDateEditText.OnDatePickerVisibilityChangeListener.html
+$dokka.location:com.verygoodsecurity.vgscollect.widget/VGSCardNumberEditText.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/widget/VGSCardNumberEditText.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.widget/VGSTextInputLayout.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect/VGSCollectLogger.Level///PointingToDeclaration/com/verygoodsecurity/vgscollect/VGSCollectLogger.Level.html
+com.verygoodsecurity.vgscollect
 com.verygoodsecurity.vgscollect.app
 com.verygoodsecurity.vgscollect.core
 com.verygoodsecurity.vgscollect.core.api
@@ -42,7 +46,6 @@ com.verygoodsecurity.vgscollect.core.api.client.extension
 com.verygoodsecurity.vgscollect.core.model.network
 com.verygoodsecurity.vgscollect.core.model.state
 com.verygoodsecurity.vgscollect.core.storage
-com.verygoodsecurity.vgscollect.core.storage.content.field
 com.verygoodsecurity.vgscollect.core.storage.content.file
 com.verygoodsecurity.vgscollect.util
 com.verygoodsecurity.vgscollect.util.extension
