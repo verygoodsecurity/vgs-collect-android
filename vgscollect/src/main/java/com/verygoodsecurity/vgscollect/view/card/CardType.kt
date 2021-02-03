@@ -85,7 +85,7 @@ enum class CardType(val regex:String,
 
     AMERICAN_EXPRESS(
         "^3[47]",
-        R.drawable.ic_amex_lite,
+        R.drawable.ic_amex_dark,
         "#### ###### #####",
         ChecksumAlgorithm.LUHN,
         arrayOf(15),
@@ -112,7 +112,7 @@ enum class CardType(val regex:String,
 
     DISCOVER(
         "^(6011|65|64[4-9]|622)",
-        R.drawable.ic_discover_light,
+        R.drawable.ic_discover_dark,
         "#### #### #### ####",
         ChecksumAlgorithm.LUHN,
         arrayOf(16),
@@ -120,7 +120,7 @@ enum class CardType(val regex:String,
     ),
     UNIONPAY(
         "^(62)",
-        R.drawable.ic_union_pay,
+        R.drawable.ic_union_pay_dark,
         "#### #### #### #### ###",
         ChecksumAlgorithm.NONE,
         (16..19).toList().toTypedArray(),
@@ -129,7 +129,7 @@ enum class CardType(val regex:String,
 
     JCB(
         "^35",
-        R.drawable.ic_jcb_light,
+        R.drawable.ic_jcb_dark,
         "#### #### #### #### ###",
         ChecksumAlgorithm.LUHN,
         (16..19).toList().toTypedArray(),
@@ -138,7 +138,7 @@ enum class CardType(val regex:String,
 
     UNKNOWN(
         "^\$a",
-        R.drawable.ic_card_front_preview_dark,
+        R.drawable.ic_card_front_preview_light,
         "#### #### #### #### ###",
         ChecksumAlgorithm.NONE,
         (13..19).toList().toTypedArray(),
