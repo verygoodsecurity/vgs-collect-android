@@ -197,11 +197,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
-        super.onSelectionChanged(selStart, selEnd)
-        setSelection(text?.length?:0)
-    }
-
     protected fun isRTL():Boolean {
         val direction = getResolvedLayoutDirection()
         return direction == View.LAYOUT_DIRECTION_RTL
@@ -219,7 +214,13 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     protected fun refreshInput() {
+        val currentSelection = selectionStart
         setText(text)
+
+        when {
+            selectionStart > currentSelection -> setSelection(selectionStart)
+            selectionStart < currentSelection -> setSelection(currentSelection)
+        }
     }
 
     override fun setTag(tag: Any?) {

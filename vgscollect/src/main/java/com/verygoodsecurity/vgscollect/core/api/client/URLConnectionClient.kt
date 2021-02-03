@@ -5,9 +5,6 @@ import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorage
-import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
-import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
-import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.AGENT
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONTENT_TYPE
 import com.verygoodsecurity.vgscollect.core.api.client.extension.*
@@ -16,9 +13,8 @@ import com.verygoodsecurity.vgscollect.core.api.toContentType
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
-import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
-import com.verygoodsecurity.vgscollect.util.mapToJSON
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.ExecutorService
@@ -101,12 +97,12 @@ internal class URLConnectionClient(
                 .addHeaders(request.customHeader)
                 .setMethod(request.method)
 
-            if (enableLogs) Logger.i(VGSCollect::class.java.simpleName, buildRequestLog(connection))
+            if (enableLogs) VGSCollectLogger.debug(message = buildRequestLog(connection))
             writeOutput(connection, request.customData)
 
             handleResponse(connection)
         } catch (e: Exception) {
-            if (enableLogs) Logger.e(VGSCollect::class.java, e.localizedMessage ?: "")
+            if (enableLogs) VGSCollectLogger.debug(message = e.localizedMessage ?: "")
             NetworkResponse(message = e.localizedMessage)
         } finally {
             connection?.disconnect()
@@ -125,14 +121,14 @@ internal class URLConnectionClient(
     private fun handleResponse(connection: HttpURLConnection): NetworkResponse {
         val responseCode = connection.responseCode
 
-        if (enableLogs) Logger.i(VGSCollect::class.java.simpleName, buildResponseLog(connection))
+        if (enableLogs) VGSCollectLogger.debug(message = buildResponseLog(connection))
 
         return if (responseCode.isCodeSuccessful()) {
             val rawResponse = connection.inputStream?.bufferedReader()?.use { it.readText() }
             NetworkResponse(true, rawResponse, responseCode)
         } else {
             val responseStr = connection.errorStream?.bufferedReader()?.use { it.readText() }
-            if (enableLogs) Logger.e(VGSCollect::class.java, responseStr.toString())
+            if (enableLogs) VGSCollectLogger.debug(message = responseStr.toString())
             NetworkResponse(message = responseStr, code = responseCode)
         }
     }

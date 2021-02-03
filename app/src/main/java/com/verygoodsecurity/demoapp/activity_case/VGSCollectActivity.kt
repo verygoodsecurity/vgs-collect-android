@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -210,6 +211,8 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun retrieveSettings() {
+        VGSCollectLogger.logLevel = VGSCollectLogger.Level.WARN
+
         val bndl = intent?.extras
 
         vault_id = bndl?.getString(StartActivity.VAULT_ID, "")?:""
@@ -222,6 +225,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
             .setEnvironment(env)
             .setHostname("collect-android-testing.verygoodsecurity.io/test")
             .create()
+
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             val cacheSize = 10 * 1024 * 1024 // 10MB

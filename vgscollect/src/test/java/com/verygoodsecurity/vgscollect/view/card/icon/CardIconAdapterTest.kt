@@ -66,7 +66,7 @@ class CardIconAdapterTest {
 
         val cb = adapter.getCardBrand()
         Assert.assertNotEquals(cardType.resId, cb!!.resId)
-        Assert.assertEquals(R.drawable.ic_amex_dark, cb.resId)
+        Assert.assertEquals(R.drawable.ic_amex_light, cb.resId)
         Assert.assertEquals(cardType.name, cb.name)
 
         Assert.assertEquals(0, bounds.left)
@@ -106,7 +106,7 @@ class CardIconAdapterTest {
         override fun getIcon(cardType: CardType, name: String?, resId: Int, r:Rect): Drawable {
             return when(cardType) {
                 CardType.AMERICAN_EXPRESS -> {
-                    brand = CardBrand(name, R.drawable.ic_amex_dark)
+                    brand = CardBrand(name, R.drawable.ic_amex_light)
                     handleAmex()
                 }
                 CardType.VISA -> {

@@ -8,7 +8,7 @@ import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
-import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
@@ -38,22 +38,32 @@ class VGSCardNumberEditText @JvmOverloads constructor(
         ).apply {
 
             try {
-                val previewGravity = getInt(R.styleable.VGSCardNumberEditText_cardBrandIconGravity, 0)
-                val divider:String? = getString(R.styleable.VGSCardNumberEditText_numberDivider)?:null
+                val previewGravity =
+                    getInt(R.styleable.VGSCardNumberEditText_cardBrandIconGravity, 0)
+                val brandIconVisibility =
+                    getInt(R.styleable.VGSCardNumberEditText_brandIconVisibility, 0)
+                val divider: String? =
+                    getString(R.styleable.VGSCardNumberEditText_numberDivider) ?: null
 
-                val inputType = getInt(R.styleable.VGSCardNumberEditText_inputType, EditorInfo.TYPE_NULL)
+                val inputType =
+                    getInt(R.styleable.VGSCardNumberEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.VGSCardNumberEditText_fieldName)
                 val hint = getString(R.styleable.VGSCardNumberEditText_hint)
                 val textSize = getDimension(R.styleable.VGSCardNumberEditText_textSize, -1f)
                 val textColor = getColor(R.styleable.VGSCardNumberEditText_textColor, Color.BLACK)
                 val text = getString(R.styleable.VGSCardNumberEditText_text)
                 val textStyle = getInt(R.styleable.VGSCardNumberEditText_textStyle, -1)
-                val cursorVisible = getBoolean(R.styleable.VGSCardNumberEditText_cursorVisible, true)
+                val cursorVisible =
+                    getBoolean(R.styleable.VGSCardNumberEditText_cursorVisible, true)
                 val enabled = getBoolean(R.styleable.VGSCardNumberEditText_enabled, true)
                 val isRequired = getBoolean(R.styleable.VGSCardNumberEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.VGSCardNumberEditText_singleLine, true)
-                val scrollHorizontally = getBoolean(R.styleable.VGSCardNumberEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.VGSCardNumberEditText_gravity, Gravity.START or Gravity.CENTER_VERTICAL)
+                val scrollHorizontally =
+                    getBoolean(R.styleable.VGSCardNumberEditText_scrollHorizontally, true)
+                val gravity = getInt(
+                    R.styleable.VGSCardNumberEditText_gravity,
+                    Gravity.START or Gravity.CENTER_VERTICAL
+                )
                 val ellipsize = getInt(R.styleable.VGSCardNumberEditText_ellipsize, 0)
 
                 val minLines = getInt(R.styleable.VGSCardNumberEditText_minLines, 0)
@@ -83,8 +93,9 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
                 setNumberDivider(divider)
                 applyCardIconGravity(previewGravity)
+                applyPreviewIconMode(brandIconVisibility)
 
-                if(!isValidationPredefined()) {
+                if (!isValidationPredefined()) {
                     predefineValidationRule(validationRule)
                 }
             } finally {
@@ -94,7 +105,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     private fun predefineValidationRule(validationRule: Int) {
-        when(validationRule) {
+        when (validationRule) {
             0 -> enableValidation(true)
             1 -> setupValidationRules()
             2 -> enableValidation(false)
@@ -102,7 +113,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     private fun setupValidationRules() {
-        val rule : PaymentCardNumberRule = PaymentCardNumberRule.ValidationBuilder()
+        val rule: PaymentCardNumberRule = PaymentCardNumberRule.ValidationBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
             .setAllowableMinLength(16)
             .setAllowableMaxLength(19)
@@ -117,7 +128,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      *
      * @param gravity Specifies how to align the icon by the view’s x-axis.
      */
-    fun setCardBrandIconGravity(gravity:Int) {
+    fun setCardBrandIconGravity(gravity: Int) {
         applyCardIconGravity(gravity)
     }
 
@@ -126,7 +137,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      *
      * @return the icon gravity value.
      */
-    fun getCardPreviewIconGravity():Int {
+    fun getCardPreviewIconGravity(): Int {
         return getCardIconGravity()
     }
 
@@ -137,10 +148,13 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      */
     fun addCardBrand(c: CardBrand) {
         val digitCount = c.params.mask.replace("[^#]".toRegex(), "").length
-        if(c.params.rangeNumber.contains(digitCount)) {
+        if (c.params.rangeNumber.contains(digitCount)) {
             applyCardBrand(c)
         } else {
-            Logger.e(context, BrandParams::class.java, R.string.error_custom_brand_mask_length, c.cardBrandName)
+            VGSCollectLogger.warn(
+                BrandParams::class.qualifiedName.toString(),
+                context.getString(R.string.error_custom_brand_mask_length, c.cardBrandName)
+            )
         }
     }
 
@@ -150,7 +164,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      *
      * @param char The divider symbol.
      */
-    fun setDivider(char:Char) {
+    fun setDivider(char: Char) {
         setNumberDivider(char.toString())
     }
 
@@ -159,7 +173,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      *
      * @return divider symbol
      */
-    fun getDivider() : Char? {
+    fun getDivider(): Char? {
         return getNumberDivider()
     }
 
@@ -196,5 +210,9 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      */
     fun addRule(rule: PaymentCardNumberRule) {
         applyValidationRule(rule)
+    }
+
+    companion object {
+        internal val TAG: String = VGSCardNumberEditText::class.simpleName.toString()
     }
 }
