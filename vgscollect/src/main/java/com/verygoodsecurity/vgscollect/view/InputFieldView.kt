@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
 import android.text.TextPaint
+import android.text.InputFilter
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
@@ -706,6 +707,10 @@ abstract class InputFieldView @JvmOverloads constructor(
             syncInputState()
         }
         (inputField as? InputField)?.setType(type)
+    }
+
+    protected fun applyMaxLength(length: Int) {
+        (inputField as? InputField)?.filters = arrayOf(InputFilter.LengthFilter(length))
     }
 
     internal fun getFontFamily(): Typeface? {
