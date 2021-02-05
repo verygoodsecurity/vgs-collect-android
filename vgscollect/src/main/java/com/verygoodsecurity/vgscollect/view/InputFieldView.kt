@@ -1052,6 +1052,15 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
+     * Moves the cursor to the specified offset position in text
+     *
+     * @param index specific position for the cursor.
+     */
+    fun setSelection(index: Int) {
+        inputField.setSelection(index)
+    }
+
+    /**
      * Called when this view wants to give up focus. If focus is cleared
      * onFocusChanged(boolean, int, android.graphics.Rect) is called.
      * <p>
