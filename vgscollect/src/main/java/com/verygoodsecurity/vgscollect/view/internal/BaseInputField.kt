@@ -135,8 +135,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private fun setupInputConnectionListener() {
         addTextChangedListener {
-            vgsParent?.notifyOnTextChanged(it.isNullOrEmpty())
             updateTextChanged(it.toString())
+            vgsParent?.notifyOnTextChanged(it.isNullOrEmpty())
         }
     }
 
