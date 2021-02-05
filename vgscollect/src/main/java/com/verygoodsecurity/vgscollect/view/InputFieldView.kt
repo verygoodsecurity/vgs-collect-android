@@ -64,7 +64,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         ).apply {
             try {
                 for (i in 0 until indexCount) {
-                    val attr = getIndex(i);
+                    val attr = getIndex(i)
                     when (attr) {
                         R.styleable.InputFieldView_textAppearance -> setupAppearance(this)
                         R.styleable.InputFieldView_imeOptions -> setupImeOptions(this)
@@ -86,17 +86,17 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     private fun setupImeOptions(typedArray: TypedArray) {
         imeOptions =
-                typedArray.getInt(R.styleable.InputFieldView_imeOptions, EditorInfo.IME_ACTION_DONE)
+            typedArray.getInt(R.styleable.InputFieldView_imeOptions, EditorInfo.IME_ACTION_DONE)
     }
 
     private fun setupAppearance(typedArray: TypedArray) {
         textAppearance =
-                typedArray.getResourceId(R.styleable.InputFieldView_textAppearance, 0)
+            typedArray.getResourceId(R.styleable.InputFieldView_textAppearance, 0)
     }
 
     private fun setupEnableValidation(typedArray: TypedArray) {
         enableValidation =
-                typedArray.getBoolean(R.styleable.InputFieldView_enableValidation, false)
+            typedArray.getBoolean(R.styleable.InputFieldView_enableValidation, false)
     }
 
     private fun setupFont(attrs: TypedArray) {
@@ -451,6 +451,55 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     open fun setSingleLine(singleLine: Boolean) {
         inputField.isSingleLine = singleLine
+    }
+
+    /**
+     * Returns true if this view has focus
+     *
+     * @return True if this view has focus, false otherwise.
+     */
+    override fun isFocused(): Boolean {
+        return inputField.isFocused
+    }
+
+    /**
+     * Find the view in the hierarchy rooted at this view that currently has focus.
+     *
+     * @return The view that currently has focus, or null if no focused view can be found.
+     */
+    override fun findFocus(): View? {
+        return inputField.findFocus()?.run {
+            this@InputFieldView
+        }
+    }
+
+    /**
+     * Set whether this view can receive the focus.
+     *
+     * Setting this to false will also ensure that this view is not focusable in touch mode.
+     *
+     * @param focusable If true, this view can receive the focus.
+     */
+    override fun setFocusable(focusable: Boolean) {
+        inputField.isFocusable = focusable
+    }
+
+    /**
+     * Set whether this view can receive the focus.
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun setFocusable(focusable: Int) {
+        inputField.focusable = focusable
+    }
+
+    /**
+     * Returns true if this view has focus itself, or is the ancestor of the
+     * view that has focus.
+     *
+     * @return True if this view has or contains focus, false otherwise.
+     */
+    override fun hasFocus(): Boolean {
+        return inputField.hasFocus()
     }
 
     /**
@@ -1011,6 +1060,15 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     override fun requestFocus(direction: Int, previouslyFocusedRect: Rect?): Boolean {
         return inputField.requestFocus(direction, previouslyFocusedRect)
+    }
+
+    /**
+     * Moves the cursor to the specified offset position in text
+     *
+     * @param index specific position for the cursor.
+     */
+    fun setSelection(index: Int) {
+        inputField.setSelection(index)
     }
 
     /**
