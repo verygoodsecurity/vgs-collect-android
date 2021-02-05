@@ -9,6 +9,7 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import android.text.TextPaint
 import android.text.InputFilter
 import android.text.TextUtils
 import android.util.AttributeSet
@@ -800,6 +801,12 @@ abstract class InputFieldView @JvmOverloads constructor(
             null
         }
     }
+
+    /**
+     * @return the base paint used for the text.  Please use this only to
+     * consult the Paint's properties and not to change them.
+     */
+    fun getPaint(): TextPaint? = inputField.paint
 
     protected fun applyValidationRule(rule: PaymentCardNumberRule) {
         if (fieldType == FieldType.CARD_NUMBER) {
