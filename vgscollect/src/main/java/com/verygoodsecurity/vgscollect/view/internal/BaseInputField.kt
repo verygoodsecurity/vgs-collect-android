@@ -135,6 +135,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private fun setupInputConnectionListener() {
         addTextChangedListener {
+            vgsParent?.notifyOnTextChanged(it.isNullOrEmpty())
             updateTextChanged(it.toString())
         }
     }
@@ -342,8 +343,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     override fun autofill(value: AutofillValue?) {
         super.autofill(value)
         logAutofillAction()
-
-
     }
 
     private fun logAutofillAction() {
