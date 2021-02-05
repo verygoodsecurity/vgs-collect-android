@@ -53,12 +53,14 @@ class VGSFieldStateTest {
     fun test_map_to_field_state_card_number() {
         val content = FieldContent.CardNumberContent()
         content.data = "5555 5555 1234 5678"
-        val oldState = VGSFieldState(isFocusable = true,
+        val oldState = VGSFieldState(
+            isFocusable = true,
             isRequired = true,
             isValid = true,
             type = FieldType.INFO,
             content = content,
-            fieldName = "fn")
+            fieldName = "fn"
+        )
 
         val newState = oldState.mapToFieldState()
 
@@ -74,12 +76,15 @@ class VGSFieldStateTest {
     fun test_map_to_field_state_card_number_info() {
         val content = FieldContent.CardNumberContent()
         content.data = "5555 5555 1234 5678"
-        val oldState = VGSFieldState(isFocusable = true,
+        content.rawData = "5555555512345678"
+        val oldState = VGSFieldState(
+            isFocusable = true,
             isRequired = true,
             isValid = true,
             type = FieldType.CARD_NUMBER,
             content = content,
-            fieldName = "fn")
+            fieldName = "fn"
+        )
 
         val newState = oldState.mapToFieldState()
 
@@ -89,18 +94,21 @@ class VGSFieldStateTest {
 
         assertTrue(c.number == "5555 55## #### 5678")
         assertTrue(c.contentLength == 19)
+        assertTrue(c.contentLengthRaw == 16)
     }
 
     @Test
     fun mapBin() {
         val content = FieldContent.CardNumberContent()
         content.data = "5512 3455 1234 5"
-        val oldState = VGSFieldState(isFocusable = true,
+        val oldState = VGSFieldState(
+            isFocusable = true,
             isRequired = true,
             isValid = true,
             type = FieldType.CARD_NUMBER,
             content = content,
-            fieldName = "fn")
+            fieldName = "fn"
+        )
 
         val newState = oldState.mapToFieldState()
 
@@ -115,12 +123,14 @@ class VGSFieldStateTest {
     fun mapLast4() {
         val content = FieldContent.CardNumberContent()
         content.data = "5555 5555 1234 5"
-        val oldState = VGSFieldState(isFocusable = true,
+        val oldState = VGSFieldState(
+            isFocusable = true,
             isRequired = true,
             isValid = true,
             type = FieldType.CARD_NUMBER,
             content = content,
-            fieldName = "fn")
+            fieldName = "fn"
+        )
 
         val newState = oldState.mapToFieldState()
 
@@ -135,7 +145,8 @@ class VGSFieldStateTest {
     fun test_map_date_mm_yy() {
         val date = "12/24"
         val fieldDateFormat: SimpleDateFormat = SimpleDateFormat("MM/yy", Locale.getDefault())
-        val fieldDateOutPutFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val fieldDateOutPutFormat: SimpleDateFormat =
+            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
         val content = FieldContent.CreditCardExpDateContent()
         content.data = date
@@ -169,12 +180,14 @@ class VGSFieldStateTest {
     fun test_map_to_field_state_cvc() {
         val content = FieldContent.InfoContent()
         content.data = "1223"
-        val oldState = VGSFieldState(isFocusable = true,
+        val oldState = VGSFieldState(
+            isFocusable = true,
             isRequired = true,
             isValid = true,
             type = FieldType.CVC,
             content = content,
-            fieldName = "cvc_field")
+            fieldName = "cvc_field"
+        )
 
         val newState = oldState.mapToFieldState()
 
@@ -190,12 +203,14 @@ class VGSFieldStateTest {
     fun test_map_to_field_state_person_name() {
         val content = FieldContent.InfoContent()
         content.data = "Peter"
-        val oldState = VGSFieldState(isFocusable = true,
+        val oldState = VGSFieldState(
+            isFocusable = true,
             isRequired = true,
             isValid = true,
             type = FieldType.CARD_HOLDER_NAME,
             content = content,
-            fieldName = "name_field")
+            fieldName = "name_field"
+        )
 
         val newState = oldState.mapToFieldState()
 
@@ -211,12 +226,14 @@ class VGSFieldStateTest {
     fun test_map_to_field_state_exp_date() {
         val content = FieldContent.InfoContent()
         content.data = "12/1990"
-        val oldState = VGSFieldState(isFocusable = true,
+        val oldState = VGSFieldState(
+            isFocusable = true,
             isRequired = true,
             isValid = true,
             type = FieldType.CARD_EXPIRATION_DATE,
             content = content,
-            fieldName = "exp_date")
+            fieldName = "exp_date"
+        )
 
         val newState = oldState.mapToFieldState()
 
