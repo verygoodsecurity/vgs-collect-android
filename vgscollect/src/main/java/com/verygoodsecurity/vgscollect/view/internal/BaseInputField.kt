@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
@@ -281,6 +282,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
+    override fun requestFocus(direction: Int, previouslyFocusedRect: Rect?): Boolean {
+        return super.requestFocus(direction, previouslyFocusedRect).also {
+            setSelection(text?.length?:0)
+        }
+    }
+
     override fun onEditorAction(actionCode: Int) {
         when {
             actionCode == EditorInfo.IME_ACTION_NEXT
@@ -342,8 +349,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     override fun autofill(value: AutofillValue?) {
         super.autofill(value)
         logAutofillAction()
-
-
     }
 
     private fun logAutofillAction() {
