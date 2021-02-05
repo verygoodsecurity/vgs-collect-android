@@ -9,8 +9,8 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
-import android.text.TextPaint
 import android.text.InputFilter
+import android.text.TextPaint
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
@@ -32,21 +32,20 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
+import com.verygoodsecurity.vgscollect.view.internal.*
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
-import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
-import com.verygoodsecurity.vgscollect.view.internal.*
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
  */
 abstract class InputFieldView @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private var isAttachPermitted = true
@@ -59,9 +58,9 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     init {
         context.theme.obtainStyledAttributes(
-                attrs,
-                R.styleable.InputFieldView,
-                0, 0
+            attrs,
+            R.styleable.InputFieldView,
+            0, 0
         ).apply {
             try {
                 for (i in 0 until indexCount) {
@@ -316,8 +315,8 @@ abstract class InputFieldView @JvmOverloads constructor(
             if (parent !is TextInputFieldLayout) {
                 setAddStatesFromChildren(true)
                 inputField.setMinimumPaddingLimitations(
-                        resources.getDimension(R.dimen.default_horizontal_field).toInt(),
-                        resources.getDimension(R.dimen.default_vertical_field).toInt()
+                    resources.getDimension(R.dimen.default_horizontal_field).toInt(),
+                    resources.getDimension(R.dimen.default_vertical_field).toInt()
                 )
                 applyLayoutParams(inputField)
                 addView(inputField)
@@ -340,8 +339,8 @@ abstract class InputFieldView @JvmOverloads constructor(
             }
 
             val LP = LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
             )
             LP.weight = 1.0f
             LP.setMargins(0, 0, 0, 0)
@@ -921,8 +920,8 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     protected fun showPickerDialog(
-            dialogMode: DatePickerMode,
-            ignoreFieldMode: Boolean
+        dialogMode: DatePickerMode,
+        ignoreFieldMode: Boolean
     ) {
         if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.showDatePickerDialog(dialogMode, ignoreFieldMode)
@@ -1080,9 +1079,9 @@ abstract class InputFieldView @JvmOverloads constructor(
          * @return Return true if you have consumed the action, else false.
          */
         fun onEditorAction(
-                v: View?,
-                actionId: Int,
-                event: KeyEvent?
+            v: View?,
+            actionId: Int,
+            event: KeyEvent?
         ): Boolean
     }
 
@@ -1208,6 +1207,14 @@ abstract class InputFieldView @JvmOverloads constructor(
         } else {
             -1
         }
+    }
+
+    /**
+     * Register a callback to be invoked when a key is pressed in this view.
+     * @param l the key listener to attach to this view
+     */
+    override fun setOnKeyListener(l: OnKeyListener?) {
+        inputField.setOnKeyListener(l)
     }
 
     companion object {
