@@ -71,6 +71,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     protected var isListeningPermitted = true
     private var isEditorActionListenerConfigured = false
+    private var isKeyListenerConfigured = false
     protected var hasRTL = false
 
     protected abstract var fieldType: FieldType
@@ -83,6 +84,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private var userFocusChangeListener:OnFocusChangeListener? = null
     private var onEditorActionListener:InputFieldView.OnEditorActionListener? = null
+    private var userKeyListener: OnKeyListener? = null
 
     private var isBackgroundVisible = true
 
@@ -93,6 +95,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         setupFocusChangeListener()
         setupInputConnectionListener()
         setupEditorActionListener()
+        setupOnKeyListener()
         isListeningPermitted = false
 
         setupViewAttributes()
@@ -162,6 +165,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         super.onAttachedToWindow()
         applyInternalFieldStateChangeListener()
         isListeningPermitted = false
+    }
+
+    private fun setupOnKeyListener() {
+        setOnKeyListener { view, i, keyEvent ->
+            userKeyListener?.onKey(vgsParent, i, keyEvent) ?: false
+        }
     }
 
     protected fun refreshInputConnection() {
@@ -282,6 +291,15 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
+    override fun setOnKeyListener(l: OnKeyListener?) {
+        if (!isKeyListenerConfigured) {
+            isKeyListenerConfigured = true
+            super.setOnKeyListener(l)
+        } else {
+            userKeyListener = l
+        }
+    }
+      
     override fun requestFocus(direction: Int, previouslyFocusedRect: Rect?): Boolean {
         return super.requestFocus(direction, previouslyFocusedRect).also {
             setSelection(text?.length?:0)

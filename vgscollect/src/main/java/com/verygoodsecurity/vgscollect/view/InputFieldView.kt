@@ -9,8 +9,8 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
-import android.text.TextPaint
 import android.text.InputFilter
+import android.text.TextPaint
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
@@ -32,15 +32,14 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
+import com.verygoodsecurity.vgscollect.view.internal.*
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
-import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
-import com.verygoodsecurity.vgscollect.view.internal.*
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
@@ -1266,6 +1265,14 @@ abstract class InputFieldView @JvmOverloads constructor(
         } else {
             -1
         }
+    }
+
+    /**
+     * Register a callback to be invoked when a key is pressed in this view.
+     * @param l the key listener to attach to this view
+     */
+    override fun setOnKeyListener(l: OnKeyListener?) {
+        inputField.setOnKeyListener(l)
     }
 
     companion object {
