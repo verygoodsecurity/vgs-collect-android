@@ -1268,7 +1268,45 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
+     * When an object of this type is attached to an [InputFieldView], its method will
+     * be called when the text is changed.
+     */
+    interface OnTextChangedListener {
+
+        /**
+         * This method is called to notify you that the text has been changed.
+         *
+         * @param view The view that was clicked.
+         * @param isEmpty If true, then field is have no revealed data.
+         */
+        fun onTextChange(view: InputFieldView, isEmpty: Boolean)
+    }
+
+    private val textChangeListeners = mutableListOf<OnTextChangedListener>()
+
+    internal fun notifyOnTextChanged(isEmpty: Boolean) {
+        textChangeListeners.forEach { it.onTextChange(this, isEmpty) }
+    }
+
+    /**
+     * Adds a OnTextChangedListener to the list of those whose methods are called
+     * whenever this field text changes.
+     */
+    fun addOnTextChangeListener(listener: OnTextChangedListener?) {
+        listener?.let { textChangeListeners.add(listener) }
+    }
+
+    /**
+     * Removes the specified OnTextChangedListener from the list of those whose methods are called
+     * whenever this field text changes.
+     */
+    fun removeTextChangedListener(listener: OnTextChangedListener?) {
+        listener?.let { textChangeListeners.remove(listener) }
+    }
+
+     /** 
      * Register a callback to be invoked when a key is pressed in this view.
+     *
      * @param l the key listener to attach to this view
      */
     override fun setOnKeyListener(l: OnKeyListener?) {
