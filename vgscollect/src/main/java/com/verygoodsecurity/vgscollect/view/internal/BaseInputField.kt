@@ -33,8 +33,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     DependencyListener, OnVgsViewStateChangeListener {
 
     companion object {
-         const val REFRESH_DELAY = 200L
-
         fun getInputField(context: Context, parent:InputFieldView):BaseInputField {
             val field = when(parent.getFieldType()) {
                 FieldType.CARD_NUMBER -> CardInputField(context)
@@ -144,7 +142,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    protected val handlerLooper = Handler(Looper.getMainLooper())
     protected open fun updateTextChanged(str: String) {
         inputConnection?.also {
             with(it.getOutput()) {
@@ -153,9 +150,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
                 }
                 content?.data = str
             }
-        }?.also {
-            handlerLooper.removeCallbacks(it)
-            handlerLooper.postDelayed(it, REFRESH_DELAY)
+            it.run()
         }
     }
 
