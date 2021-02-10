@@ -138,9 +138,8 @@ class VGSCollect {
     }
 
     private fun initializeCollect() {
-        client = ApiClient.newHttpClient().also {
-            it.getTemporaryStorage().setCustomHeaders(mapOf(generateAgentHeader(tracker.isEnabled)))
-        }
+        client = ApiClient.newHttpClient()
+        updateAgentHeader()
         storage = InternalStorage(context, storageErrorListener)
     }
 
@@ -642,6 +641,10 @@ class VGSCollect {
         )
     }
 
+    private fun updateAgentHeader() {
+        client.getTemporaryStorage().setCustomHeaders(mapOf(generateAgentHeader(tracker.isEnabled)))
+    }
+
     class Builder(
 
         /** Activity context */
@@ -705,7 +708,7 @@ class VGSCollect {
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
         tracker.isEnabled = isEnabled
-        client.getTemporaryStorage().setCustomHeaders(mapOf(generateAgentHeader(isEnabled)))
+        updateAgentHeader()
     }
 
 }
