@@ -80,6 +80,29 @@ class VGSCollect {
     private var baseURL: String
     private val context: Context
 
+    private constructor(context: Context, id: String, environment: String, url: String?, port: Int?) {
+        this.context = context
+        tracker = CollectActionTracker(
+            id,
+            environment,
+            UUID.randomUUID().toString()
+        )
+
+        baseURL = id.setupURL(environment)
+        initializeCollect()
+    }
+
+    constructor(
+        /** Activity context */
+        context: Context,
+
+        /** Unique Vault id */
+        id: String,
+
+        /** Type of Vault */
+        environment: String
+    ) : this(context, id, environment, null, null)
+
     constructor(
         /** Activity context */
         context: Context,
@@ -89,18 +112,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: Environment = Environment.SANDBOX
-    ) {
-        this.context = context
-
-        tracker = CollectActionTracker(
-            id,
-            environment.rawValue,
-            UUID.randomUUID().toString()
-        )
-
-        baseURL = id.setupURL(environment.rawValue)
-        initializeCollect()
-    }
+    ) : this(context, id, environment.rawValue)
 
     constructor(
         /** Activity context */
@@ -115,27 +127,6 @@ class VGSCollect {
         /** Region identifier */
         suffix: String
     ) : this(context, id, environmentType concatWithDash suffix)
-
-    constructor(
-        /** Activity context */
-        context: Context,
-
-        /** Unique Vault id */
-        id: String,
-
-        /** Type of Vault */
-        environment: String
-    ) {
-        this.context = context
-        tracker = CollectActionTracker(
-            id,
-            environment,
-            UUID.randomUUID().toString()
-        )
-
-        baseURL = id.setupURL(environment)
-        initializeCollect()
-    }
 
     private fun initializeCollect() {
         client = ApiClient.newHttpClient()
