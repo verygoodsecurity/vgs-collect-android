@@ -499,7 +499,9 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @return True if this view has or contains focus, false otherwise.
      */
     override fun hasFocus(): Boolean {
-        return super.hasFocus().takeIf { !hasChildren() } ?: inputField.hasFocus()
+        return super.hasFocus().takeIf {
+            ::inputField.isInitialized.not()
+        } ?: inputField.hasFocus()
     }
 
     /**
