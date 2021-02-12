@@ -120,7 +120,6 @@ internal class InputField(context: Context): BaseInputField(context),
         inputConnection?.setOutputListener(stateListener)
 
         applyNewTextWatcher(null)
-        filters = arrayOf()
         applyTextInputType()
     }
 

@@ -115,9 +115,7 @@ internal class CardInputField(context: Context) : BaseInputField(context), Input
                 }
                 content = createCardNumberContent(str)
             }
-        }?.also {
-            handlerLooper.removeCallbacks(it)
-            handlerLooper.postDelayed(it, REFRESH_DELAY)
+            it.run()
         }
     }
 

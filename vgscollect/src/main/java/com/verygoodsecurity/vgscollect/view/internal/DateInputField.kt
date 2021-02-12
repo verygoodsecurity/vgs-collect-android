@@ -141,9 +141,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
                 }
                 content = createCreditCardExpDateContent(str)
             }
-        }?.also {
-            handlerLooper.removeCallbacks(it)
-            handlerLooper.postDelayed(it, REFRESH_DELAY)
+            it.run()
         }
     }
 

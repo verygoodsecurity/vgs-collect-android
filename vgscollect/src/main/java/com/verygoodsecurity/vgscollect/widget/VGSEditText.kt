@@ -70,7 +70,6 @@ open class VGSEditText @JvmOverloads constructor(
                 setEnabled(enabled)
 
                 setInputType(inputType)
-                setFieldType(FieldType.values()[fieldType])
             } finally {
                 recycle()
             }
@@ -96,5 +95,10 @@ open class VGSEditText @JvmOverloads constructor(
      */
     fun getState(): FieldState.InfoState? {
         return getInfoState()
+    }
+
+    /** The max text length to display. */
+    fun setMaxLength(length: Int) {
+        applyMaxLength(length)
     }
 }
