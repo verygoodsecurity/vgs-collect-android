@@ -3,18 +3,19 @@ package com.verygoodsecurity.vgscollect.core.model.state
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 /** @suppress */
-data class VGSFieldState(var isFocusable:Boolean = false,
-                         var isRequired:Boolean = true,
-                         var enableValidation:Boolean = true,
-                         var isValid:Boolean = true,
-                         var type: FieldType = FieldType.INFO,
-                         var content:FieldContent? = null,
-                         var fieldName:String? = null,
-                         var hasUserInteraction:Boolean = false
+data class VGSFieldState(
+    var isFocusable: Boolean = false,
+    var isRequired: Boolean = true,
+    var enableValidation: Boolean = true,
+    var isValid: Boolean = true,
+    var type: FieldType = FieldType.INFO,
+    var content: FieldContent? = null,
+    var fieldName: String? = null,
+    var hasUserInteraction: Boolean = false
 ) {
 
     override fun toString(): String {
-        return "isFocusable: $isFocusable\n"+
+        return "isFocusable: $isFocusable\n" +
                 "isRequired: $isRequired\n" +
                 "isValid: $isValid\n" +
                 "type: $type\n" +
@@ -24,8 +25,8 @@ data class VGSFieldState(var isFocusable:Boolean = false,
 }
 
 /** @suppress */
-internal fun VGSFieldState.mapToFieldState():FieldState {
-    val f = when(type) {
+internal fun VGSFieldState.mapToFieldState(): FieldState {
+    val f = when (type) {
         FieldType.INFO -> FieldState.InfoState()
         FieldType.CVC -> FieldState.CVCState()
         FieldType.CARD_HOLDER_NAME -> FieldState.CardHolderNameState()
@@ -34,22 +35,24 @@ internal fun VGSFieldState.mapToFieldState():FieldState {
             val state = FieldState.CardNumberState()
 
             val content = (content as? FieldContent.CardNumberContent)
-            if(isValid) {
+            if (isValid) {
                 state.bin = content?.parseCardBin()
                 state.last = content?.parseCardLast4Digits()
             }
+            state.contentLengthRaw = content?.rawData?.length ?: 0
             state.number = content?.parseCardNumber()
-            state.cardBrand = content?.cardBrandName?:""
-            state.drawableBrandResId = content?.iconResId?:0
+            state.cardBrand = content?.cardBrandName ?: ""
+            state.drawableBrandResId = content?.iconResId ?: 0
 
             state
         }
         FieldType.SSN -> {
             val state = FieldState.SSNNumberState()
             val content = (content as? FieldContent.SSNContent)
-            if(isValid) {
+            if (isValid) {
                 state.last = content?.parseCardLast4Digits()
             }
+            state.contentLengthRaw = content?.rawData?.length ?: 0
 
             state
         }
@@ -58,11 +61,11 @@ internal fun VGSFieldState.mapToFieldState():FieldState {
     f.fieldType = type
     f.isValid = isValid
 
-    f.contentLength = content?.data?.length?:0
+    f.contentLength = content?.data?.length ?: 0
     f.isEmpty = f.contentLength == 0
 
     f.isRequired = isRequired
-    f.fieldName = fieldName?:""
+    f.fieldName = fieldName ?: ""
     f.hasFocus = isFocusable
     return f
 }

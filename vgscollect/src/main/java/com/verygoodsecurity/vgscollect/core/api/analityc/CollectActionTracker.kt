@@ -18,6 +18,8 @@ internal class CollectActionTracker(
     val formId: String
 ) : AnalyticTracker {
 
+    override var isEnabled: Boolean = true
+
     internal object Sid {
         val id = "${UUID.randomUUID()}"
     }
@@ -26,14 +28,8 @@ internal class CollectActionTracker(
         return@lazy ApiClient.newHttpClient(false, VgsApiTemporaryStorageImpl())
     }
 
-    private var isAnalyticEnabled = true
-
-    override fun setAnalyticsEnabled(isEnabled: Boolean) {
-        isAnalyticEnabled = isEnabled
-    }
-
     override fun logEvent(action: Action) {
-        if(isAnalyticEnabled) {
+        if(isEnabled) {
             val event = action.run {
                 val sender = Event(client, tnt, environment, formId)
                 sender.map = getAttributes()

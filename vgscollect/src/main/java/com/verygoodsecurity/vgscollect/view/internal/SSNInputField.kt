@@ -69,9 +69,7 @@ internal class SSNInputField(context: Context): BaseInputField(context) {
                 }
                 content = createCardNumberContent(str)
             }
-        }?.also {
-            handlerLooper.removeCallbacks(it)
-            handlerLooper.postDelayed(it, REFRESH_DELAY)
+            it.run()
         }
     }
 
