@@ -57,16 +57,18 @@ class UrlExtensionTest {
 
         val url3 = "https://www.bla-one.com"
         assertTrue(url3.isURLValid())
+
+        val url4 = "https://www.bla-one.com/post"
+        assertTrue(url4.isURLValid())
     }
 
-    @Test(expected = RuntimeException::class)
+    @Test
     fun test_is_url_not_valid() {
-        val url1 = "http://www.bla"
+        val url1 = "htt://www.bla"
         assertFalse(url1.isURLValid())
 
-        val url4 = "http://www.example.com:8800"
-        assertFalse(url4.isURLValid())
-
+        val url2 = "http:/www.bla"
+        assertFalse(url2.isURLValid())
 
         val url3 = "http://www.ex ample.com:8800"
         assertFalse(url3.isURLValid())
