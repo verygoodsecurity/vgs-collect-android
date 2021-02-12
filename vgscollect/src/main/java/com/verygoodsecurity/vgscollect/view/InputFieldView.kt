@@ -154,12 +154,12 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        if (childCount > 0) removeAllViews()
+        if (hasChildren()) removeAllViews()
         super.onDetachedFromWindow()
     }
 
     override fun addView(child: View?) {
-        if (childCount == 0 && child is BaseInputField) {
+        if (!hasChildren() && child is BaseInputField) {
             super.addView(child)
         }
     }
@@ -499,7 +499,9 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @return True if this view has or contains focus, false otherwise.
      */
     override fun hasFocus(): Boolean {
-        return inputField.hasFocus()
+        return super.hasFocus().takeIf {
+            ::inputField.isInitialized.not()
+        } ?: inputField.hasFocus()
     }
 
     /**
@@ -764,6 +766,8 @@ abstract class InputFieldView @JvmOverloads constructor(
     internal fun getFontFamily(): Typeface? {
         return fontFamily
     }
+
+    protected fun hasChildren(): Boolean = childCount > 0
 
     private fun syncInputState() {
         notifier = DependencyNotifier(inputField)
@@ -1304,7 +1308,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         listener?.let { textChangeListeners.remove(listener) }
     }
 
-     /** 
+    /**
      * Register a callback to be invoked when a key is pressed in this view.
      *
      * @param l the key listener to attach to this view

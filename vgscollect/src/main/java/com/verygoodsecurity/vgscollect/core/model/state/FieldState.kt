@@ -56,6 +56,12 @@ sealed class FieldState {
         var last: String? = ""
             internal set
 
+        /** The length of this character sequence inside input.
+         * Comparing with contentLength, the contentLengthRaw doesn't count divider symbol.
+         */
+        var contentLengthRaw: Int = 0
+
+
         override fun toString(): String {
             return super.toString() +
                     "last: $last \n"

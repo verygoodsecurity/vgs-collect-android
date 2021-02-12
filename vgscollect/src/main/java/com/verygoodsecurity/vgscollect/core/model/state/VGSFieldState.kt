@@ -52,6 +52,7 @@ internal fun VGSFieldState.mapToFieldState(): FieldState {
             if (isValid) {
                 state.last = content?.parseCardLast4Digits()
             }
+            state.contentLengthRaw = content?.rawData?.length ?: 0
 
             state
         }
