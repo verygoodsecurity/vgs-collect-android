@@ -15,10 +15,10 @@ internal fun String.setupLocalhostURL(port: Int?): String {
         VGSCollectLogger.warn(message = "Port is not specified")
         ""
     } else {
-        port
+        DIVIDER + port
     }
     return StringBuilder(SCHEME)
-        .append(this).append(DIVIDER)
+        .append(this)
         .append(prt)
         .toString()
 }
