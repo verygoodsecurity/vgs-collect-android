@@ -78,8 +78,11 @@ class VGSCollect {
         }
     }
 
-    private lateinit var baseURL: String
+    private val baseURL: String
     private val context: Context
+
+    private var cname: String? = null
+    private var isSatelliteMode: Boolean = false
 
     private constructor(
         context: Context,
@@ -89,16 +92,14 @@ class VGSCollect {
         port: Int?
     ) {
         this.context = context
-        this.tracker = CollectActionTracker(id, environment, UUID.randomUUID().toString())
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
+        this.baseURL = generateBaseUrl(id, environment, url, port)
+        this.tracker = CollectActionTracker(id, environment, UUID.randomUUID().toString(), isSatelliteMode)
+        cname?.let { configureHostname(it, id) }
         updateAgentHeader()
         addOnResponseListeners(analyticListener)
-        generateBaseUrl(id, environment, url, port) { baseUrl, cname ->
-            this.baseURL = baseUrl
-            cname?.let { configureHostname(it, id) }
-        }
     }
 
     constructor(
@@ -595,13 +596,7 @@ class VGSCollect {
 
     private var hasCustomHostname = false
 
-    private fun generateBaseUrl(
-        id: String,
-        environment: String,
-        url: String?,
-        port: Int?,
-        onComplete: (baseUrl: String, cname: String?) -> Unit
-    ) {
+    private fun generateBaseUrl(id: String, environment: String, url: String?, port: Int?): String {
 
         fun printPortDenied() {
             if (port.isValidPort()) {
@@ -614,22 +609,22 @@ class VGSCollect {
             if (host.isValidIp()) {
                 if (!host.isIpAllowed()) {
                     VGSCollectLogger.warn(message = context.getString(R.string.error_custom_ip_is_not_allowed))
-                    onComplete.invoke(id.setupURL(environment), null)
-                    return
+                    return id.setupURL(environment)
                 }
                 if (!environment.isSandbox()) {
                     VGSCollectLogger.warn(message = context.getString(R.string.error_env_incorrect))
-                    onComplete.invoke(id.setupURL(environment), null)
-                    return
+                    return id.setupURL(environment)
                 }
-                onComplete.invoke(host.setupLocalhostURL(port), null)
+                isSatelliteMode = true
+                return host.setupLocalhostURL(port)
             } else {
                 printPortDenied()
-                onComplete.invoke(id.setupURL(environment), host)
+                cname = host
+                return id.setupURL(environment)
             }
         } else {
             printPortDenied()
-            onComplete.invoke(id.setupURL(environment), null)
+            return id.setupURL(environment)
         }
     }
 
