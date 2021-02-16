@@ -617,6 +617,11 @@ class VGSCollect {
                     onComplete.invoke(id.setupURL(environment), null)
                     return
                 }
+                if (!environment.isSandbox()) {
+                    VGSCollectLogger.warn(message = context.getString(R.string.error_env_incorrect))
+                    onComplete.invoke(id.setupURL(environment), null)
+                    return
+                }
                 onComplete.invoke(host.setupLocalhostURL(port), null)
             } else {
                 printPortDenied()

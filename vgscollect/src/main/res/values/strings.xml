@@ -16,6 +16,7 @@
     <string name="error_custom_host_wrong_short">A specified host is not correct.</string>
     <string name="error_custom_port_is_not_allowed">To protect your device we allow to use PORT only on localhost. PORT will be ignored.</string>
     <string name="error_custom_ip_is_not_allowed">Current IP is not allowed, use localhost or private network IP.</string>
+    <string name="error_env_incorrect">Custom local IP and PORT can be used only in a sandbox environment.</string>
 
     <string name="card_number_digits">0123456789</string>
     <string name="validation_regex_person">^[a-zA-Z0-9 ,\'.-]+$</string>
