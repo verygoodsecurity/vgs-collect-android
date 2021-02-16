@@ -64,11 +64,6 @@ internal class InputField(context: Context): BaseInputField(context),
 
     private var iconGravity:Int = Gravity.NO_GRAVITY
 
-    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
-        super.onSelectionChanged(selStart, selEnd)
-        setSelection(text?.length?:0)
-    }
-
     override fun onAttachedToWindow() {
         isListeningPermitted = true
         applyFieldTypeConfigurations()
@@ -125,7 +120,6 @@ internal class InputField(context: Context): BaseInputField(context),
         inputConnection?.setOutputListener(stateListener)
 
         applyNewTextWatcher(null)
-        filters = arrayOf()
         applyTextInputType()
     }
 

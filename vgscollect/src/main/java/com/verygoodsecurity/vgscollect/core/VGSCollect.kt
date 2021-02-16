@@ -7,13 +7,15 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
-import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
+import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.*
 import com.verygoodsecurity.vgscollect.core.api.analityc.utils.toAnalyticStatus
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
+import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.generateAgentHeader
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isHttpStatusCode
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.network.*
@@ -21,17 +23,15 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.*
 import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageErrorListener
-import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
+import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.*
-import com.verygoodsecurity.vgscollect.util.Logger
 import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscollect.util.extension.hasAccessNetworkStatePermission
 import com.verygoodsecurity.vgscollect.util.extension.hasInternetPermission
 import com.verygoodsecurity.vgscollect.util.extension.isConnectionAvailable
-import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import java.util.*
@@ -58,7 +58,7 @@ class VGSCollect {
         override fun onStorageError(error: VGSError) {
             VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context).also { r ->
                 notifyAllListeners(r)
-                Logger.e(VGSCollect::class.java, r.localizeMessage)
+                VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
                 submitEvent(false, code = r.errorCode)
             }
         }
@@ -139,6 +139,7 @@ class VGSCollect {
 
     private fun initializeCollect() {
         client = ApiClient.newHttpClient()
+        updateAgentHeader()
         storage = InternalStorage(context, storageErrorListener)
     }
 
@@ -355,7 +356,7 @@ class VGSCollect {
             if (it.isValid.not()) {
                 VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context, it.fieldName).also { r ->
                     notifyAllListeners(r)
-                    Logger.e(VGSCollect::class.java, r.localizeMessage)
+                    VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
                     submitEvent(false, code = r.errorCode)
                 }
 
@@ -610,9 +611,11 @@ class VGSCollect {
                     client.setHost(it.body)
                 } else {
                     context.run {
-                        Logger.e(
-                            VGSCollect::class.java,
-                            String.format(getString(R.string.error_custom_host_wrong), host)
+                        VGSCollectLogger.warn(
+                            message = String.format(
+                                getString(R.string.error_custom_host_wrong),
+                                host
+                            )
                         )
                     }
                 }
@@ -636,6 +639,10 @@ class VGSCollect {
         tracker.logEvent(
             HostNameValidationAction(m)
         )
+    }
+
+    private fun updateAgentHeader() {
+        client.getTemporaryStorage().setCustomHeaders(mapOf(generateAgentHeader(tracker.isEnabled)))
     }
 
     class Builder(
@@ -672,15 +679,10 @@ class VGSCollect {
             if (cname.isURLValid()) {
                 host = cname.toHost()
 
-                if (host != cname) Logger.w(
-                    VGSCollect::class.java,
-                    "Hostname will be normalized to the $host"
-                )
+                if (host != cname) VGSCollectLogger.debug(message = "Hostname will be normalized to the $host")
+
             } else {
-                Logger.e(context,
-                    VGSCollect::class.java,
-                    R.string.error_custom_host_wrong_short
-                )
+                VGSCollectLogger.warn(message = context.getString(R.string.error_custom_host_wrong_short))
             }
 
             return this
@@ -705,6 +707,8 @@ class VGSCollect {
      * Warning: if this option is set to false, it will increase resolving time for possible incidents.
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
-        tracker.setAnalyticsEnabled(isEnabled)
+        tracker.isEnabled = isEnabled
+        updateAgentHeader()
     }
+
 }

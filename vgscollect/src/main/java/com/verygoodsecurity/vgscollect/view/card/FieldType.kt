@@ -9,11 +9,6 @@ enum class FieldType(
     val raw:String
 ) {
 
-    /** Represents field with Social Security Number (SSN) consists of nine digits,
-     * commonly written as three fields separated by hyphens: ###-##-####.
-     */
-    SSN("ssn"),
-
     /**
      * Represents field with card number input in '####-####-####-####' format.
      * The field supports smart detection of different card brands. Some available brands support
@@ -38,7 +33,13 @@ enum class FieldType(
     CARD_HOLDER_NAME("cardHolderName"),
 
     /** The input field has no limitations.  */
-    INFO("info")
+    INFO("info"),
+
+    /** Represents field with Social Security Number (SSN) consists of nine digits,
+     * commonly written as three fields separated by hyphens: ###-##-####.
+     */
+    SSN("ssn"),
+
 }
 
 fun FieldType.getAnalyticName():String {

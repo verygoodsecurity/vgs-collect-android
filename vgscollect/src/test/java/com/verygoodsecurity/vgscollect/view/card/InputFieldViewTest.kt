@@ -18,6 +18,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.*
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
@@ -91,7 +92,7 @@ class InputFieldViewTest {
 
         Assert.assertEquals(12f, (child as BaseInputField).textSize)
 
-        view.setTextSize(TypedValue.COMPLEX_UNIT_PX,12f)
+        view.setTextSize(TypedValue.COMPLEX_UNIT_PX, 12f)
 
         Assert.assertEquals(12f, child.textSize)
     }
@@ -134,7 +135,7 @@ class InputFieldViewTest {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
-        val myList =  ColorStateList(arrayOf(intArrayOf()), intArrayOf(android.R.color.black))
+        val myList = ColorStateList(arrayOf(intArrayOf()), intArrayOf(android.R.color.black))
         val COLOR = android.R.color.black
         view.setHintTextColor(myList)
         Assert.assertEquals(COLOR, (child as BaseInputField).hintTextColors.defaultColor)
@@ -276,5 +277,39 @@ class InputFieldViewTest {
         view.setImeOptions(EditorInfo.IME_ACTION_NEXT)
 
         Assert.assertEquals(view.getImeOptions(), EditorInfo.IME_ACTION_NEXT)
+    }
+
+    @Test
+    fun test_add_on_text_change_listener() {
+        val listener = mock(InputFieldView.OnTextChangedListener::class.java)
+        view.addOnTextChangeListener(listener)
+        view.setText("test")
+
+        verify(listener).onTextChange(view, false)
+    }
+
+    @Test
+    fun test_remove_on_text_change_listener() {
+        val listener = mock(InputFieldView.OnTextChangedListener::class.java)
+        view.addOnTextChangeListener(listener)
+        view.removeTextChangedListener(listener)
+        view.setText("test")
+
+        verify(listener, times(0)).onTextChange(view, false)
+    }
+  
+    @Test
+    fun test_set_is_focusable() {
+        view.isFocusable = false
+
+        Assert.assertEquals(view.isFocusable, false)
+    }
+
+    @Test
+    fun tests_request_focus() {
+        view.requestFocus()
+
+        Assert.assertEquals(view.hasFocus(), true)
+        Assert.assertEquals(view.isFocused, true)
     }
 }

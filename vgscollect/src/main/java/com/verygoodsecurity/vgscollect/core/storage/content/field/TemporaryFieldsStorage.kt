@@ -86,6 +86,7 @@ internal class TemporaryFieldsStorage(
             store.forEach {
                 if(it.value.type == FieldType.CARD_NUMBER) {
                     refreshDependenciesOnNewField(it.value)
+                    return
                 }
             }
         }

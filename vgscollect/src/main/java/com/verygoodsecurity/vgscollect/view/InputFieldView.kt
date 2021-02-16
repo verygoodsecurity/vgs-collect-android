@@ -9,6 +9,8 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import android.text.InputFilter
+import android.text.TextPaint
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
@@ -30,15 +32,14 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
+import com.verygoodsecurity.vgscollect.view.internal.*
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
-import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
-import com.verygoodsecurity.vgscollect.view.internal.*
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
@@ -49,11 +50,11 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     private var isAttachPermitted = true
 
-    private lateinit var notifier:DependencyNotifier
-    private var imeOptions:Int = 0
-    private var textAppearance:Int = 0
-    private var fontFamily:Typeface? = null
-    private var enableValidation:Boolean? = null
+    private lateinit var notifier: DependencyNotifier
+    private var imeOptions: Int = 0
+    private var textAppearance: Int = 0
+    private var fontFamily: Typeface? = null
+    private var enableValidation: Boolean? = null
 
     init {
         context.theme.obtainStyledAttributes(
@@ -62,9 +63,9 @@ abstract class InputFieldView @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
-                for(i in 0 until indexCount) {
-                    val attr = getIndex(i);
-                    when(attr) {
+                for (i in 0 until indexCount) {
+                    val attr = getIndex(i)
+                    when (attr) {
                         R.styleable.InputFieldView_textAppearance -> setupAppearance(this)
                         R.styleable.InputFieldView_imeOptions -> setupImeOptions(this)
                         R.styleable.InputFieldView_enableValidation -> setupEnableValidation(this)
@@ -103,7 +104,7 @@ abstract class InputFieldView @JvmOverloads constructor(
             attrs.getFont(R.styleable.InputFieldView_fontFamily)
         } else {
             val s = attrs.getString(R.styleable.InputFieldView_fontFamily)
-            if(s.isNullOrEmpty()) {
+            if (s.isNullOrEmpty()) {
                 null
             } else {
                 Typeface.create(s, Typeface.NORMAL)
@@ -118,11 +119,11 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     internal class DependencyNotifier(notifier: DependencyListener) : DependencyListener by notifier
 
-    private lateinit var fieldType:FieldType
+    private lateinit var fieldType: FieldType
 
     private lateinit var inputField: BaseInputField
 
-    protected fun setupViewType(type:FieldType) {
+    protected fun setupViewType(type: FieldType) {
         with(type) {
             fieldType = this
             inputField = BaseInputField.getInputField(context, this@InputFieldView)
@@ -131,13 +132,13 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    internal val statePreparer:AccessibilityStatePreparer = StatePreparer()
+    internal val statePreparer: AccessibilityStatePreparer = StatePreparer()
 
-    internal inner class StatePreparer:AccessibilityStatePreparer {
+    internal inner class StatePreparer : AccessibilityStatePreparer {
 
         override fun getId(): Int = inputField.id
 
-        override fun getView():View {
+        override fun getView(): View {
             return inputField
         }
 
@@ -153,48 +154,48 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        if(childCount > 0) removeAllViews()
+        if (hasChildren()) removeAllViews()
         super.onDetachedFromWindow()
     }
 
     override fun addView(child: View?) {
-        if(childCount == 0 && child is BaseInputField) {
+        if (!hasChildren() && child is BaseInputField) {
             super.addView(child)
         }
     }
 
     override fun addView(child: View?, params: ViewGroup.LayoutParams?) {
-        if(isAttachPermitted) {
+        if (isAttachPermitted) {
             super.addView(child, params)
         }
     }
 
     override fun addView(child: View?, index: Int) {
-        if(isAttachPermitted) {
+        if (isAttachPermitted) {
             super.addView(child, index)
         }
     }
 
     override fun addView(child: View?, width: Int, height: Int) {
-        if(isAttachPermitted) {
+        if (isAttachPermitted) {
             super.addView(child, width, height)
         }
     }
 
     override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
-        if(isAttachPermitted) {
+        if (isAttachPermitted) {
             super.addView(child, index, params)
         }
     }
 
     override fun attachViewToParent(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
-        if(isAttachPermitted) {
+        if (isAttachPermitted) {
             super.attachViewToParent(child, index, params)
         }
     }
 
     override fun addOnAttachStateChangeListener(listener: OnAttachStateChangeListener?) {
-        if(isAttachPermitted) {
+        if (isAttachPermitted) {
             super.addOnAttachStateChangeListener(listener)
         }
     }
@@ -225,7 +226,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @return the bottom padding in pixels
      */
     override fun getPaddingBottom(): Int {
-        return if(isAttachPermitted) {
+        return if (isAttachPermitted) {
             super.getPaddingBottom()
         } else {
             inputField.paddingBottom
@@ -240,7 +241,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingEnd(): Int {
-        return if(isAttachPermitted) {
+        return if (isAttachPermitted) {
             super.getPaddingEnd()
         } else {
             inputField.paddingEnd
@@ -254,7 +255,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @return the left padding in pixels
      */
     override fun getPaddingLeft(): Int {
-        return if(isAttachPermitted) {
+        return if (isAttachPermitted) {
             super.getPaddingLeft()
         } else {
             inputField.paddingLeft
@@ -268,7 +269,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @return the right padding in pixels
      */
     override fun getPaddingRight(): Int {
-        return if(isAttachPermitted) {
+        return if (isAttachPermitted) {
             super.getPaddingRight()
         } else {
             inputField.paddingRight
@@ -283,7 +284,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingStart(): Int {
-        return if(isAttachPermitted) {
+        return if (isAttachPermitted) {
             super.getPaddingStart()
         } else {
             inputField.paddingStart
@@ -296,20 +297,20 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @return the top padding in pixels
      */
     override fun getPaddingTop(): Int {
-        return if(isAttachPermitted) {
+        return if (isAttachPermitted) {
             super.getPaddingTop()
         } else {
             inputField.paddingTop
         }
     }
 
-    private var leftP:Int = 0
-    private var topP:Int = 0
-    private var rightP:Int = 0
-    private var bottomP:Int = 0
+    private var leftP: Int = 0
+    private var topP: Int = 0
+    private var rightP: Int = 0
+    private var bottomP: Int = 0
 
     public override fun onAttachedToWindow() {
-        if(isAttachPermitted) {
+        if (isAttachPermitted) {
             super.onAttachedToWindow()
             if (parent !is TextInputFieldLayout) {
                 setAddStatesFromChildren(true)
@@ -342,8 +343,8 @@ abstract class InputFieldView @JvmOverloads constructor(
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
             LP.weight = 1.0f
-            LP.setMargins(0,0,0,0)
-            if(LP.gravity == -1) {
+            LP.setMargins(0, 0, 0, 0)
+            if (LP.gravity == -1) {
                 LP.gravity = Gravity.CENTER_VERTICAL
             }
             layoutParams = LP
@@ -376,7 +377,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param fieldName the name of the field
      */
-    open fun setFieldName(fieldName:String?) {
+    open fun setFieldName(fieldName: String?) {
         inputField.tag = fieldName
     }
 
@@ -385,7 +386,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @return The text used by the field.
      */
-    open fun getFieldName():String? = inputField.tag as String?
+    open fun getFieldName(): String? = inputField.tag as String?
 
     /**
      * Sets the text to be used for data transfer to VGS proxy. Usually,
@@ -393,7 +394,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param resId the resource identifier of the field name
      */
-    open fun setFieldName(resId:Int) {
+    open fun setFieldName(resId: Int) {
         inputField.tag = resources.getString(resId, "")
     }
 
@@ -404,7 +405,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param type integer value of TextUtils.TruncateAt
      */
     open fun setEllipsize(type: Int) {
-        val ellipsize = when(type) {
+        val ellipsize = when (type) {
             1 -> TextUtils.TruncateAt.START
             2 -> TextUtils.TruncateAt.MIDDLE
             3 -> TextUtils.TruncateAt.END
@@ -429,7 +430,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param lines the minimum height of TextView in terms of number of lines
      */
-    open fun setMinLines(lines:Int) {
+    open fun setMinLines(lines: Int) {
         inputField.minLines = lines
     }
 
@@ -438,7 +439,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param lines the maximum height of TextView in terms of number of lines.
      */
-    open fun setMaxLines(lines:Int) {
+    open fun setMaxLines(lines: Int) {
         inputField.maxLines = lines
     }
 
@@ -448,8 +449,59 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param singleLine
      */
-    open fun setSingleLine(singleLine:Boolean) {
+    open fun setSingleLine(singleLine: Boolean) {
         inputField.isSingleLine = singleLine
+    }
+
+    /**
+     * Returns true if this view has focus
+     *
+     * @return True if this view has focus, false otherwise.
+     */
+    override fun isFocused(): Boolean {
+        return inputField.isFocused
+    }
+
+    /**
+     * Find the view in the hierarchy rooted at this view that currently has focus.
+     *
+     * @return The view that currently has focus, or null if no focused view can be found.
+     */
+    override fun findFocus(): View? {
+        return inputField.findFocus()?.run {
+            this@InputFieldView
+        }
+    }
+
+    /**
+     * Set whether this view can receive the focus.
+     *
+     * Setting this to false will also ensure that this view is not focusable in touch mode.
+     *
+     * @param focusable If true, this view can receive the focus.
+     */
+    override fun setFocusable(focusable: Boolean) {
+        inputField.isFocusable = focusable
+    }
+
+    /**
+     * Set whether this view can receive the focus.
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun setFocusable(focusable: Int) {
+        inputField.focusable = focusable
+    }
+
+    /**
+     * Returns true if this view has focus itself, or is the ancestor of the
+     * view that has focus.
+     *
+     * @return True if this view has or contains focus, false otherwise.
+     */
+    override fun hasFocus(): Boolean {
+        return super.hasFocus().takeIf {
+            ::inputField.isInitialized.not()
+        } ?: inputField.hasFocus()
     }
 
     /**
@@ -472,7 +524,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param text
      */
-    open fun setHint(text:String?) {
+    open fun setHint(text: String?) {
         inputField.hint = text
     }
 
@@ -491,7 +543,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param color
      */
-    open fun setHintTextColor(color:Int) {
+    open fun setHintTextColor(color: Int) {
         inputField.setHintTextColor(color)
     }
 
@@ -501,7 +553,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param canScroll
      */
-    open fun canScrollHorizontally(canScroll:Boolean) {
+    open fun canScrollHorizontally(canScroll: Boolean) {
         inputField.setHorizontallyScrolling(canScroll)
     }
 
@@ -511,7 +563,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param gravity
      */
-    open fun setGravity(gravity:Int) {
+    open fun setGravity(gravity: Int) {
         inputField.gravity = gravity
     }
 
@@ -527,7 +579,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param isVisible
      */
-    open fun setCursorVisible(isVisible:Boolean) {
+    open fun setCursorVisible(isVisible: Boolean) {
         inputField.isCursorVisible = isVisible
     }
 
@@ -539,7 +591,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param resId the resource identifier of the style to apply
      */
     @Deprecated("deprecated")
-    open fun setTextAppearance( context: Context, resId:Int) {
+    open fun setTextAppearance(context: Context, resId: Int) {
         inputField.setTextAppearance(context, resId)
     }
 
@@ -549,7 +601,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param resId the resource identifier of the style to apply
      */
     @RequiresApi(Build.VERSION_CODES.M)
-    open fun setTextAppearance(resId:Int) {
+    open fun setTextAppearance(resId: Int) {
         inputField.setTextAppearance(resId)
     }
 
@@ -558,7 +610,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @return The current Typeface.
      */
-    open fun getTypeface():Typeface? {
+    open fun getTypeface(): Typeface? {
         return inputField.typeface
     }
 
@@ -579,8 +631,8 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param tf This value may be null.
      * @param style Value is Typeface.NORMAL, Typeface.BOLD, Typeface.ITALIC, or Typeface.BOLD_ITALIC
      */
-    open fun setTypeface(tf: Typeface, style:Int) {
-        when(style) {
+    open fun setTypeface(tf: Typeface, style: Int) {
+        when (style) {
             0 -> inputField.typeface = Typeface.DEFAULT_BOLD
             1 -> inputField.setTypeface(tf, Typeface.BOLD)
             2 -> inputField.setTypeface(tf, Typeface.ITALIC)
@@ -592,7 +644,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param resId the resource identifier of the string resource to be displayed
      */
-    open fun setText( resId:Int) {
+    open fun setText(resId: Int) {
         inputField.setText(resId)
     }
 
@@ -603,7 +655,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param type a TextView.BufferType which defines whether the text is stored as a static text,
      * styleable/spannable text, or editable text
      */
-    open fun setText( resId:Int, type: TextView.BufferType) {
+    open fun setText(resId: Int, type: TextView.BufferType) {
         inputField.setText(resId, type)
     }
 
@@ -612,7 +664,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param text text to be displayed
      */
-    open fun setText(text:CharSequence?) {
+    open fun setText(text: CharSequence?) {
         inputField.setText(text)
     }
 
@@ -625,7 +677,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @see TextView.BufferType
      */
-    open fun setText( text:CharSequence?, type: TextView.BufferType) {
+    open fun setText(text: CharSequence?, type: TextView.BufferType) {
         inputField.setText(text, type)
     }
 
@@ -635,7 +687,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param size The scaled pixel size.
      */
-    open fun setTextSize( size:Float ) {
+    open fun setTextSize(size: Float) {
         inputField.textSize = size
     }
 
@@ -646,7 +698,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param unit The desired dimension unit.
      * @param size The desired size in the given units.
      */
-    open fun setTextSize( unit:Int, size:Float) {
+    open fun setTextSize(unit: Int, size: Float) {
         inputField.setTextSize(unit, size)
     }
 
@@ -655,7 +707,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param color A color value that will be applied
      */
-    open fun setTextColor(color:Int) {
+    open fun setTextColor(color: Int) {
         inputField.setTextColor(color)
     }
 
@@ -664,7 +716,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param state Set true if the input required.
      */
-    open fun setIsRequired(state:Boolean) {
+    open fun setIsRequired(state: Boolean) {
         inputField.isRequired = state
     }
 
@@ -674,7 +726,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @return true if the input required.
      */
-    open fun isRequired():Boolean {
+    open fun isRequired(): Boolean {
         return inputField.isRequired
     }
 
@@ -685,7 +737,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @see FieldType
      */
-    fun getFieldType():FieldType {
+    fun getFieldType(): FieldType {
         return fieldType
     }
 
@@ -700,16 +752,22 @@ abstract class InputFieldView @JvmOverloads constructor(
     @Deprecated("deprecated from 1.0.5")
     protected fun applyFieldType(type: FieldType) {
         fieldType = type
-        if(::notifier.isInitialized.not()) {
+        if (::notifier.isInitialized.not()) {
             inputField = InputField.getInputField(context, this@InputFieldView)
             syncInputState()
         }
         (inputField as? InputField)?.setType(type)
     }
 
-    internal fun getFontFamily() : Typeface? {
+    protected fun applyMaxLength(length: Int) {
+        (inputField as? InputField)?.filters = arrayOf(InputFilter.LengthFilter(length))
+    }
+
+    internal fun getFontFamily(): Typeface? {
         return fontFamily
     }
+
+    protected fun hasChildren(): Boolean = childCount > 0
 
     private fun syncInputState() {
         notifier = DependencyNotifier(inputField)
@@ -728,7 +786,7 @@ abstract class InputFieldView @JvmOverloads constructor(
             inputField.enableValidation = it
         }
 
-        if(fontFamily != null) {
+        if (fontFamily != null) {
             inputField.typeface = fontFamily
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -738,7 +796,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
 
         val bgDraw = background?.constantState?.newDrawable()
-        if(bgDraw != null) {
+        if (bgDraw != null) {
             inputField.background = bgDraw
         }
         setBackgroundColor(Color.TRANSPARENT)
@@ -747,7 +805,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun setImportantForAutofill(mode: Int) {
         super.setImportantForAutofill(mode)
-        if(::inputField.isInitialized) {
+        if (::inputField.isInitialized) {
             inputField.importantForAutofill = mode
         }
     }
@@ -756,42 +814,54 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.stateListener = stateListener
     }
 
-    protected fun applyCardIconGravity(gravity:Int) {
-        if(fieldType == FieldType.CARD_NUMBER) {
+    protected fun applyCardIconGravity(gravity: Int) {
+        if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardPreviewIconGravity(gravity)
         }
     }
 
-    protected fun getCardIconGravity():Int {
-        return if(fieldType == FieldType.CARD_NUMBER) {
-            (inputField as? CardInputField)?.getCardPreviewIconGravity()?:-1
+    protected fun applyPreviewIconMode(mode: Int) {
+        if (fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.setPreviewIconMode(mode)
+        }
+    }
+
+    protected fun getCardIconGravity(): Int {
+        return if (fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.getCardPreviewIconGravity() ?: -1
         } else {
             -1
         }
     }
 
     protected fun applyCardBrand(c: CardBrand) {
-        if(fieldType == FieldType.CARD_NUMBER) {
+        if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardBrand(c)
         }
     }
 
-    protected fun setNumberDivider(divider:String?) {
-        if(fieldType == FieldType.CARD_NUMBER) {
+    protected fun setNumberDivider(divider: String?) {
+        if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setNumberDivider(divider)
         }
     }
 
     protected fun getNumberDivider(): Char? {
-        return if(fieldType == FieldType.CARD_NUMBER) {
+        return if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.getNumberDivider()?.first()
         } else {
             null
         }
     }
 
+    /**
+     * @return the base paint used for the text.  Please use this only to
+     * consult the Paint's properties and not to change them.
+     */
+    fun getPaint(): TextPaint? = inputField.paint
+
     protected fun applyValidationRule(rule: PaymentCardNumberRule) {
-        if(fieldType == FieldType.CARD_NUMBER) {
+        if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.applyValidationRule(rule)
         }
     }
@@ -858,24 +928,24 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.isEnabled = enabled
     }
 
-    protected fun setOutputPattern(pattern:String?) {
-        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+    protected fun setOutputPattern(pattern: String?) {
+        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setOutputPattern(pattern)
         }
     }
 
-    protected fun setDatePattern(pattern:String?) {
-        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+    protected fun setDatePattern(pattern: String?) {
+        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setDatePattern(pattern)
         }
     }
 
-    protected fun getDatePattern():String? {
+    protected fun getDatePattern(): String? {
         return (inputField as? DateInputField)?.getDatePattern()
     }
 
-    protected fun setDatePickerMode(type:Int) {
-        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+    protected fun setDatePickerMode(type: Int) {
+        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setDatePickerMode(type)
         }
     }
@@ -884,18 +954,20 @@ abstract class InputFieldView @JvmOverloads constructor(
         return (inputField as? DateInputField)?.getDatePickerMode()
     }
 
-    protected fun maxDate(date:String) {
-        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+    protected fun maxDate(date: String) {
+        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setMaxDate(date)
         }
     }
-    protected fun minDate(date:String) {
-        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+
+    protected fun minDate(date: String) {
+        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setMinDate(date)
         }
     }
-    protected fun setMinDate(date:Long) {
-        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+
+    protected fun setMinDate(date: Long) {
+        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setMinDate(date)
         }
     }
@@ -904,13 +976,13 @@ abstract class InputFieldView @JvmOverloads constructor(
         dialogMode: DatePickerMode,
         ignoreFieldMode: Boolean
     ) {
-        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.showDatePickerDialog(dialogMode, ignoreFieldMode)
         }
     }
 
     protected fun setDatePickerVisibilityListener(l: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
-        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setDatePickerVisibilityListener(l)
         }
     }
@@ -995,6 +1067,15 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
+     * Moves the cursor to the specified offset position in text
+     *
+     * @param index specific position for the cursor.
+     */
+    fun setSelection(index: Int) {
+        inputField.setSelection(index)
+    }
+
+    /**
      * Called when this view wants to give up focus. If focus is cleared
      * onFocusChanged(boolean, int, android.graphics.Rect) is called.
      * <p>
@@ -1013,7 +1094,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * Change the editor type integer associated with the text view, which
      * is reported to an Input Method Editor when it has focus.
      */
-    fun setImeOptions(imeOptions:Int) {
+    fun setImeOptions(imeOptions: Int) {
         inputField.imeOptions = imeOptions
     }
 
@@ -1021,7 +1102,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * Get the type of the Input Method Editor (IME).
      * @return the type of the IME
      */
-    fun getImeOptions():Int {
+    fun getImeOptions(): Int {
         return inputField.imeOptions
     }
 
@@ -1089,58 +1170,58 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     protected fun setCardBrandIconAdapter(adapter: CardIconAdapter?) {
-        if(fieldType == FieldType.CARD_NUMBER) {
+        if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardBrandAdapter(adapter)
         }
     }
 
     protected fun setCardBrandMaskAdapter(adapter: CardMaskAdapter) {
-        if(fieldType == FieldType.CARD_NUMBER) {
+        if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardBrandMaskAdapter(adapter)
         }
     }
 
-    protected fun getCardNumberState() :  FieldState.CardNumberState? {
-        return if(fieldType == FieldType.CARD_NUMBER) {
+    protected fun getCardNumberState(): FieldState.CardNumberState? {
+        return if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.getState() as? FieldState.CardNumberState
         } else {
             null
         }
     }
 
-    protected fun getSSNState() :  FieldState.SSNNumberState? {
-        return if(fieldType == FieldType.SSN) {
+    protected fun getSSNState(): FieldState.SSNNumberState? {
+        return if (fieldType == FieldType.SSN) {
             (inputField as? SSNInputField)?.getState() as? FieldState.SSNNumberState
         } else {
             null
         }
     }
 
-    protected fun getCVCState() :  FieldState.CVCState? {
-        return if(fieldType == FieldType.CVC) {
+    protected fun getCVCState(): FieldState.CVCState? {
+        return if (fieldType == FieldType.CVC) {
             (inputField as? CVCInputField)?.getState() as? FieldState.CVCState
         } else {
             null
         }
     }
 
-    protected fun getCardHolderName() :  FieldState.CardHolderNameState? {
-        return if(fieldType == FieldType.CARD_HOLDER_NAME) {
+    protected fun getCardHolderName(): FieldState.CardHolderNameState? {
+        return if (fieldType == FieldType.CARD_HOLDER_NAME) {
             (inputField as? PersonNameInputField)?.getState() as? FieldState.CardHolderNameState
         } else {
             null
         }
     }
 
-    protected fun getExpirationDate() :  FieldState.CardExpirationDateState? {
-        return if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+    protected fun getExpirationDate(): FieldState.CardExpirationDateState? {
+        return if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.getState() as? FieldState.CardExpirationDateState
         } else {
             null
         }
     }
 
-    protected fun getInfoState() :  FieldState.InfoState? {
+    protected fun getInfoState(): FieldState.InfoState? {
         return (inputField as? DateInputField)?.getState() as? FieldState.InfoState
     }
 
@@ -1150,11 +1231,11 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param isEnabled True if this view has enabled validation, false otherwise.
      *
      */
-    fun enableValidation(isEnabled:Boolean) {
+    fun enableValidation(isEnabled: Boolean) {
         inputField.enableValidation = isEnabled
     }
 
-    protected fun isValidationPredefined():Boolean {
+    protected fun isValidationPredefined(): Boolean {
         return enableValidation != null
     }
 
@@ -1163,10 +1244,10 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @return True if validation enabled for this View.
      */
-    fun isValidationEnabled():Boolean = inputField.enableValidation
+    fun isValidationEnabled(): Boolean = inputField.enableValidation
 
     protected fun applyValidationRule(rule: PersonNameRule) {
-        if(fieldType == FieldType.CARD_HOLDER_NAME) {
+        if (fieldType == FieldType.CARD_HOLDER_NAME) {
             (inputField as? PersonNameInputField)?.applyValidationRule(rule)
         }
     }
@@ -1176,17 +1257,67 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    internal fun setFormatterMode(mode:Int) {
-        if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
+    internal fun setFormatterMode(mode: Int) {
+        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setFormatterMode(mode)
         }
     }
 
-    internal fun getFormatterMode():Int {
-        return if(fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.getFormatterMode()?:-1
+    internal fun getFormatterMode(): Int {
+        return if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.getFormatterMode() ?: -1
         } else {
             -1
         }
+    }
+
+    /**
+     * When an object of this type is attached to an [InputFieldView], its method will
+     * be called when the text is changed.
+     */
+    interface OnTextChangedListener {
+
+        /**
+         * This method is called to notify you that the text has been changed.
+         *
+         * @param view The view that was clicked.
+         * @param isEmpty If true, then field is have no revealed data.
+         */
+        fun onTextChange(view: InputFieldView, isEmpty: Boolean)
+    }
+
+    private val textChangeListeners = mutableListOf<OnTextChangedListener>()
+
+    internal fun notifyOnTextChanged(isEmpty: Boolean) {
+        textChangeListeners.forEach { it.onTextChange(this, isEmpty) }
+    }
+
+    /**
+     * Adds a OnTextChangedListener to the list of those whose methods are called
+     * whenever this field text changes.
+     */
+    fun addOnTextChangeListener(listener: OnTextChangedListener?) {
+        listener?.let { textChangeListeners.add(listener) }
+    }
+
+    /**
+     * Removes the specified OnTextChangedListener from the list of those whose methods are called
+     * whenever this field text changes.
+     */
+    fun removeTextChangedListener(listener: OnTextChangedListener?) {
+        listener?.let { textChangeListeners.remove(listener) }
+    }
+
+    /**
+     * Register a callback to be invoked when a key is pressed in this view.
+     *
+     * @param l the key listener to attach to this view
+     */
+    override fun setOnKeyListener(l: OnKeyListener?) {
+        inputField.setOnKeyListener(l)
+    }
+
+    companion object {
+        internal val TAG: String = InputFieldView::class.simpleName.toString()
     }
 }

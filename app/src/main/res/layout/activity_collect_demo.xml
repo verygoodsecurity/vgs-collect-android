@@ -199,11 +199,11 @@
                                         android:nextFocusDown="@+id/cardCVCField"
                                         app:imeOptions="actionNext"
                                         app:inputType="date"
-                                        app:text="09/2025"
+                                        app:text="09/25"
                                         app:fontFamily="@font/robotomono_light"
                                         app:datePickerModes="input"
                                         app:outputPattern="yyyy-MM-dd'T'HH:mm:ss.SSSSSSS"
-                                        app:datePattern="MM/yyyy"/>
+                                        app:datePattern="MM/yy"/>
                                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
                                 <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout

@@ -4,17 +4,13 @@ import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.api.*
-import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
-import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.AGENT
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONNECTION_TIME_OUT
-import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.TEMPORARY_AGENT_TEMPLATE
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isCodeSuccessful
 import com.verygoodsecurity.vgscollect.core.api.client.extension.setMethod
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
-import com.verygoodsecurity.vgscollect.util.Logger
-import com.verygoodsecurity.vgscollect.util.mapToJSON
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -197,13 +193,10 @@ internal class OkHttpClient(
 
         override fun intercept(chain: Interceptor.Chain): Response {
             val request = chain.request()
-            if (isLogsVisible) Logger.i(VGSCollect::class.java.simpleName, buildRequestLog(request))
+            if (isLogsVisible) VGSCollectLogger.debug(message = buildRequestLog(request))
 
             val response = chain.proceed(request)
-            if (isLogsVisible) Logger.i(
-                VGSCollect::class.java.simpleName,
-                buildResponseLog(response)
-            )
+            if (isLogsVisible) VGSCollectLogger.debug(message = buildResponseLog(response))
 
             return response
         }

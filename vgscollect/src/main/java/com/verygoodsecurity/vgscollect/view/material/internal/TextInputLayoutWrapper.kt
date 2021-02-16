@@ -8,9 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputLayout
-import com.verygoodsecurity.vgscollect.util.Logger
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
+import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 
@@ -115,7 +116,7 @@ internal class TextInputLayoutWrapper @JvmOverloads constructor(
                 }
                 is ViewGroup -> this
                 else -> {
-                    Logger.i("VGSTextInputLayout", "${this::class.java.name} is not VGSEditText")
+                    VGSCollectLogger.warn(VGSTextInputLayout.TAG, "${this::class.java.name} is not VGS EditText")
                     null
                 }
             }
