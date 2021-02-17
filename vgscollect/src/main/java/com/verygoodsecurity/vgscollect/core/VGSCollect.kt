@@ -713,7 +713,12 @@ class VGSCollect {
          */
         fun setEnvironment(env: String): Builder = this.apply { environment = env }
 
-        /** Sets the VGSCollect instance to use the custom hostname. */
+        /**
+         * Sets the VGSCollect instance to use the custom hostname.
+         * Also, the localhost IP can be used for VGS-Satellite for local testing.
+         *
+         * @param cname where VGSCollect will send requests.
+         */
         fun setHostname(cname: String): Builder = this.apply {
             if (!cname.isURLValid()) {
                 VGSCollectLogger.warn(message = context.getString(R.string.error_custom_host_wrong_short))
@@ -724,7 +729,7 @@ class VGSCollect {
 
         /**
          * Sets the VGSCollect instance to use the custom hostname port.
-         * Port cn be used only with localhost for ex. with VGS-Satellite, otherwise it will be ignored.
+         * Port can be used only with localhost with VGS-Satellite, otherwise, it will be ignored.
          *
          * @param port Integer value from 1 to 65353.
          */
