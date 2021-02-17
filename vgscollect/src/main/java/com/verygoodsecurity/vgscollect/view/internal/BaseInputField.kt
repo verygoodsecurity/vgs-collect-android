@@ -4,8 +4,6 @@ import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.text.TextWatcher
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -20,13 +18,14 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.AutofillAction
 import com.verygoodsecurity.vgscollect.core.model.state.*
-import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.conection.BaseInputConnection
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
@@ -65,6 +64,15 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             field = value
             inputConnection?.getOutput()?.enableValidation = value
             inputConnection?.run()
+        }
+
+    internal var customValidator: RegexValidator? = null
+        set(value) {
+            field = value
+            (inputConnection as? BaseInputConnection)?.let {
+                it.customValidator = value
+                it.run()
+            }
         }
 
     protected var isListeningPermitted = true

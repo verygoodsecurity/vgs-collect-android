@@ -11,7 +11,6 @@ import android.view.View
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
-import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardNumberConnection
@@ -66,7 +65,9 @@ internal class CardInputField(context: Context) : BaseInputField(context), Input
     }
 
     override fun applyFieldType() {
-        inputConnection = InputCardNumberConnection(id, validator, this, divider)
+        inputConnection = InputCardNumberConnection(id, validator, this, divider).apply {
+            customValidator = this@CardInputField.customValidator
+        }
 
         val defFilter = DefaultCardBrandFilter(CardType.values(), divider)
         inputConnection!!.addFilter(defFilter)

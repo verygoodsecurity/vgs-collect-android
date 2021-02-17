@@ -14,11 +14,9 @@ internal class InfoInputField(context: Context): BaseInputField(context) {
 
     override fun applyFieldType() {
         val validator = InfoValidator()
-        inputConnection =
-            InputInfoConnection(
-                id,
-                validator
-            )
+        inputConnection = InputInfoConnection(id, validator).apply {
+            customValidator = this@InfoInputField.customValidator
+        }
 
         val str = text.toString()
         val stateContent = FieldContent.InfoContent().apply {

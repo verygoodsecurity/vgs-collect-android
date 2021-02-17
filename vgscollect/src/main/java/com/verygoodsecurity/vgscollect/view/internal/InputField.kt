@@ -241,7 +241,7 @@ internal class InputField(context: Context): BaseInputField(context),
         val cvcLength = dependency.value as Array<Int>
         val filterLength = InputFilter.LengthFilter(cvcLength.last())
         filters = arrayOf(CVCValidateFilter(), filterLength)
-        (inputConnection as? InputCardCVCConnection)?.runtimeValidator = CardCVCCodeValidator(cvcLength)
+        (inputConnection as? InputCardCVCConnection)?.validator = CardCVCCodeValidator(cvcLength)
         text = text
     }
 
