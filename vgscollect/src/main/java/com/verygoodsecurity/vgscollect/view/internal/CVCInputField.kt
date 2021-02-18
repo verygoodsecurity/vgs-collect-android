@@ -155,7 +155,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         when (previewIconVisibility) {
             ALWAYS -> setIcon(getIcon())
             HAS_CONTENT -> setIcon(if (text.isNullOrEmpty()) null else getIcon())
-            IF_BRAND_DETECTED -> setIcon(if (cardType != CardType.UNKNOWN && isAttachedToWindow) getIcon() else null)
+            IF_BRAND_DETECTED -> setIcon(if (cardType == CardType.UNKNOWN) null else getIcon())
             NEVER -> setIcon(null)
         }
     }

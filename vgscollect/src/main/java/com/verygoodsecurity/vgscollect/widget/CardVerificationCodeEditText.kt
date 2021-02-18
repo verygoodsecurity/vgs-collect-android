@@ -10,6 +10,7 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
 
 class CardVerificationCodeEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -43,13 +44,18 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
                     getBoolean(R.styleable.CardVerificationCodeEditText_singleLine, true)
                 val scrollHorizontally =
                     getBoolean(R.styleable.CardVerificationCodeEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.CardVerificationCodeEditText_gravity, Gravity.START or Gravity.CENTER_VERTICAL)
+                val gravity = getInt(
+                    R.styleable.CardVerificationCodeEditText_gravity,
+                    Gravity.START or Gravity.CENTER_VERTICAL
+                )
                 val ellipsize = getInt(R.styleable.CardVerificationCodeEditText_ellipsize, 0)
 
                 val minLines = getInt(R.styleable.CardVerificationCodeEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.CardVerificationCodeEditText_maxLines, 0)
-                val previewCardVisibility =
-                    getInt(R.styleable.CardVerificationCodeEditText_previewIconVisibility, 0)
+                val previewCardVisibility = getInt(
+                    R.styleable.CardVerificationCodeEditText_previewIconVisibility,
+                    CVCInputField.PreviewIconVisibility.NEVER.ordinal
+                )
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -69,9 +75,17 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
 
                 setText(text)
                 setEnabled(enabled)
-                applyPreviewIconMode(previewCardVisibility)
-
                 setInputType(inputType)
+
+                if (isInEditMode) {
+                    if (previewCardVisibility != CVCInputField.PreviewIconVisibility.ALWAYS.ordinal) {
+                        applyPreviewIconMode(CVCInputField.PreviewIconVisibility.NEVER.ordinal)
+                    } else {
+                        applyPreviewIconMode(previewCardVisibility)
+                    }
+                } else {
+                    applyPreviewIconMode(previewCardVisibility)
+                }
             } finally {
                 recycle()
             }
