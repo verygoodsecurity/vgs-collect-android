@@ -36,6 +36,7 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.cvc.CvcIconAdapter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.*
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
@@ -1198,6 +1199,12 @@ abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? SSNInputField)?.getState() as? FieldState.SSNNumberState
         } else {
             null
+        }
+    }
+
+    protected fun setCVCPreviewIconAdapter(adapter: CvcIconAdapter?) {
+        if (fieldType == FieldType.CVC) {
+            (inputField as? CVCInputField)?.setPreviewIconAdapter(adapter)
         }
     }
 
