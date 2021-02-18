@@ -430,7 +430,7 @@
 
         <attr name="hint" />
 
-        <!-- Specifies visibility for card security code preview icon. -->
+        <!-- Specifies visibility for card security code preview icon. By default visibility is never.-->
         <attr name="previewIconVisibility">
             <!-- Preview icon is visible all the time. -->
             <enum name="always" value="0" />
