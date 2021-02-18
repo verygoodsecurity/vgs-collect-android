@@ -14,8 +14,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.spy
+import org.mockito.Mockito.*
 
 
 class NotifierTest {
@@ -58,14 +57,19 @@ class NotifierTest {
 
         val argument_1: ArgumentCaptor<FieldType> = ArgumentCaptor.forClass(FieldType::class.java)
         val argument_2: ArgumentCaptor<Dependency> = ArgumentCaptor.forClass(Dependency::class.java)
-        Mockito.verify(notifier).onDependencyDetected(capture(argument_1), capture(argument_2))
+        verify(notifier, times(2)).onDependencyDetected(capture(argument_1), capture(argument_2))
 
-        assertEquals(FieldType.CVC, argument_1.value)
+        assertEquals(FieldType.CVC, argument_1.allValues[0])
+        assertEquals(FieldType.CVC, argument_1.allValues[1])
 
-        assertEquals(DependencyType.RANGE, argument_2.value.dependencyType)
+        assertEquals(DependencyType.RANGE, argument_2.allValues[0].dependencyType)
+        assertEquals(DependencyType.CARD_TYPE, argument_2.allValues[1].dependencyType)
 
-        val cvcRange = (argument_2.value.value as Array<Int>)
+        val cvcRange = (argument_2.allValues[0].value as Array<Int>)
         assertArrayEquals(CardType.MASTERCARD.rangeCVV, cvcRange)
+
+        val cardType = (argument_2.allValues[1].value as CardType)
+        assertEquals(CardType.MASTERCARD, cardType)
     }
 
     @Test
@@ -77,14 +81,19 @@ class NotifierTest {
 
         val argument_1: ArgumentCaptor<FieldType> = ArgumentCaptor.forClass(FieldType::class.java)
         val argument_2: ArgumentCaptor<Dependency> = ArgumentCaptor.forClass(Dependency::class.java)
-        Mockito.verify(notifier).onDependencyDetected(capture(argument_1), capture(argument_2))
+        verify(notifier, times(2)).onDependencyDetected(capture(argument_1), capture(argument_2))
 
-        assertEquals(FieldType.CVC, argument_1.value)
+        assertEquals(FieldType.CVC, argument_1.allValues[0])
+        assertEquals(FieldType.CVC, argument_1.allValues[1])
 
-        assertEquals(DependencyType.RANGE, argument_2.value.dependencyType)
+        assertEquals(DependencyType.RANGE, argument_2.allValues[0].dependencyType)
+        assertEquals(DependencyType.CARD_TYPE, argument_2.allValues[1].dependencyType)
 
-        val cvcRange = (argument_2.value.value as Array<Int>)
+        val cvcRange = (argument_2.allValues[0].value as Array<Int>)
         assertArrayEquals(CardType.AMERICAN_EXPRESS.rangeCVV, cvcRange)
+
+        val cardType = (argument_2.allValues[1].value as CardType)
+        assertEquals(CardType.AMERICAN_EXPRESS, cardType)
     }
 
     @Test
