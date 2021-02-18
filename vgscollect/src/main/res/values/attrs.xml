@@ -434,10 +434,10 @@
         <attr name="previewIconVisibility">
             <!-- Preview icon is visible all the time. -->
             <enum name="always" value="0" />
-            <!-- Preview icon is visible only when card brand is detected. -->
-            <enum name="ifBrandDetected" value="1" />
             <!-- Preview icon is visible when some input exists. -->
-            <enum name="hasContent" value="2" />
+            <enum name="hasContent" value="1" />
+            <!-- Preview icon is visible only when card brand is detected. -->
+            <enum name="ifBrandDetected" value="2" />
             <!-- Preview icon is never visible. -->
             <enum name="never" value="3" />
         </attr>
