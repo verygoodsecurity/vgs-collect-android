@@ -441,6 +441,14 @@
             <!-- Preview icon is never visible. -->
             <enum name="never" value="3" />
         </attr>
+
+        <!-- Specifies how to align the icon by the view’s x-axis. By default, gravity in end position. -->
+        <attr name="previewIconGravity">
+            <!-- Align icon to start of view. -->
+            <enum name="start" value="0" />
+            <!-- Align icon to end of view. -->
+            <enum name="end" value="1" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="VGSCardNumberEditText">
