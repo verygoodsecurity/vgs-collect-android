@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Representation of dates and times that will be visible for end-user.
          The method uses the ISO 8601 standard.
@@ -429,6 +429,18 @@
         <attr name="scrollHorizontally"/>
 
         <attr name="hint" />
+
+        <!-- Specifies visibility for card security code preview icon. -->
+        <attr name="previewIconVisibility">
+            <!-- Preview icon is visible all the time. -->
+            <enum name="always" value="0" />
+            <!-- Preview icon is visible only when card brand is detected. -->
+            <enum name="ifBrandDetected" value="1" />
+            <!-- Preview icon is visible when some input exists. -->
+            <enum name="hasContent" value="2" />
+            <!-- Preview icon is never visible. -->
+            <enum name="never" value="3" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="VGSCardNumberEditText">

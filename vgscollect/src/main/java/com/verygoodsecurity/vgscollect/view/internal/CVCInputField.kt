@@ -45,7 +45,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
             it?.bounds = iconBounds
         }
 
-    private var previewIconVisibility = ALWAYS
+    private var previewIconVisibility = NEVER
     private var previewIconGravity = END
 
     override fun applyFieldType() {
@@ -147,11 +147,15 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         }
     }
 
+    internal fun setPreviewIconVisibility(mode: Int) {
+        this.previewIconVisibility = PreviewIconVisibility.values()[mode]
+    }
+
     private fun refreshIcon() {
         when (previewIconVisibility) {
             ALWAYS -> setIcon(getIcon())
             HAS_CONTENT -> setIcon(if (text.isNullOrEmpty()) null else getIcon())
-            IF_BRAND_DETECTED -> setIcon(if (cardType != CardType.UNKNOWN) getIcon() else null)
+            IF_BRAND_DETECTED -> setIcon(if (cardType != CardType.UNKNOWN && isAttachedToWindow) getIcon() else null)
             NEVER -> setIcon(null)
         }
     }

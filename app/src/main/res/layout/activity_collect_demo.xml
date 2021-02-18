@@ -208,7 +208,7 @@
 
                                 <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
                                     android:id="@+id/cardCVCFieldLay"
-                                    android:layout_width="130dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     app:hintEnabled="true"
                                     app:hint="@string/cvc"
@@ -220,6 +220,7 @@
                                         android:layout_height="match_parent"
                                         style="@style/AppTheme.PaymentField"
                                         app:fieldName="card_data.cardCvc"
+                                        app:previewIconVisibility="never"
                                         app:text="123"
                                         app:fontFamily="@font/robotomono_light"
                                         app:imeOptions="actionDone"/>

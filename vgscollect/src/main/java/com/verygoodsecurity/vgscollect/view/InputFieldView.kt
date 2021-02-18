@@ -823,6 +823,8 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun applyPreviewIconMode(mode: Int) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setPreviewIconMode(mode)
+        } else if (fieldType == FieldType.CVC) {
+            (inputField as? CVCInputField)?.setPreviewIconVisibility(mode)
         }
     }
 

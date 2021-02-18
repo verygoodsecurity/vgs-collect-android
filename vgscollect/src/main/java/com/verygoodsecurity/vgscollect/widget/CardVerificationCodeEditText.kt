@@ -48,6 +48,8 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
 
                 val minLines = getInt(R.styleable.CardVerificationCodeEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.CardVerificationCodeEditText_maxLines, 0)
+                val previewCardVisibility =
+                    getInt(R.styleable.CardVerificationCodeEditText_previewIconVisibility, 0)
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -67,6 +69,7 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
 
                 setText(text)
                 setEnabled(enabled)
+                applyPreviewIconMode(previewCardVisibility)
 
                 setInputType(inputType)
             } finally {
