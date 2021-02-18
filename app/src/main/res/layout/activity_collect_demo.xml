@@ -223,6 +223,7 @@
                                         app:fieldName="card_data.cardCvc"
                                         app:fontFamily="@font/robotomono_light"
                                         app:imeOptions="actionDone"
+                                        app:previewIconVisibility="hasContent"
                                         app:text="123" />
                                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
                             </LinearLayout>

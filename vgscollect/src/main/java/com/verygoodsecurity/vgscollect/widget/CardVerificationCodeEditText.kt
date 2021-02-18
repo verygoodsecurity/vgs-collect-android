@@ -77,15 +77,7 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
                 setEnabled(enabled)
                 setInputType(inputType)
 
-                if (isInEditMode) {
-                    if (previewCardVisibility != CVCInputField.PreviewIconVisibility.ALWAYS.ordinal) {
-                        applyPreviewIconMode(CVCInputField.PreviewIconVisibility.NEVER.ordinal)
-                    } else {
-                        applyPreviewIconMode(previewCardVisibility)
-                    }
-                } else {
-                    applyPreviewIconMode(previewCardVisibility)
-                }
+                applyPreviewIconMode(previewCardVisibility)
             } finally {
                 recycle()
             }
