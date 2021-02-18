@@ -151,6 +151,10 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         this.previewIconVisibility = PreviewIconVisibility.values()[mode]
     }
 
+    internal fun setPreviewIconGravity(gravity: Int) {
+        this.previewIconGravity = PreviewIconGravity.values()[gravity]
+    }
+
     private fun refreshIcon() {
         when (previewIconVisibility) {
             ALWAYS -> setIcon(getIcon())

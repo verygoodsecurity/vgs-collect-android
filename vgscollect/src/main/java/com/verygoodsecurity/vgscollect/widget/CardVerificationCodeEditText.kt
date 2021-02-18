@@ -56,6 +56,10 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
                     R.styleable.CardVerificationCodeEditText_previewIconVisibility,
                     CVCInputField.PreviewIconVisibility.NEVER.ordinal
                 )
+                val previewCardGravity = getInt(
+                    R.styleable.CardVerificationCodeEditText_previewIconGravity,
+                    CVCInputField.PreviewIconGravity.END.ordinal
+                )
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -78,6 +82,7 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
                 setInputType(inputType)
 
                 applyPreviewIconMode(previewCardVisibility)
+                applyPreviewIconGravity(previewCardGravity)
             } finally {
                 recycle()
             }

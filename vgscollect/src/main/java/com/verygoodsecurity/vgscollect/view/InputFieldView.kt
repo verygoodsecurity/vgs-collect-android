@@ -814,9 +814,11 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.stateListener = stateListener
     }
 
-    protected fun applyCardIconGravity(gravity: Int) {
+    protected fun applyPreviewIconGravity(gravity: Int) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardPreviewIconGravity(gravity)
+        } else if (fieldType == FieldType.CVC) {
+            (inputField as? CVCInputField)?.setPreviewIconGravity(gravity)
         }
     }
 
