@@ -36,12 +36,14 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         context.resources.getDimension(R.dimen.c_icon_size_h).toInt()
     )
 
-    private var defaultPreviewIcon = ContextCompat.getDrawable(context, R.drawable.ic_card_front_preview_dark).also {
+    private var defaultPreviewIcon =
+        ContextCompat.getDrawable(context, R.drawable.ic_card_front_preview_dark).also {
             it?.bounds = iconBounds
-    }
-    private var amExPreviewIcon = ContextCompat.getDrawable(context, R.drawable.ic_card_front_preview_dark_4).also {
-        it?.bounds = iconBounds
-    }
+        }
+    private var amExPreviewIcon =
+        ContextCompat.getDrawable(context, R.drawable.ic_card_front_preview_dark_4).also {
+            it?.bounds = iconBounds
+        }
 
     private var previewIconVisibility = ALWAYS
     private var previewIconGravity = END
@@ -161,7 +163,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         }
     }
 
-    private fun getIcon(): Drawable? = when(cardType) {
+    private fun getIcon(): Drawable? = when (cardType) {
         CardType.AMERICAN_EXPRESS -> amExPreviewIcon
         else -> defaultPreviewIcon
     }
