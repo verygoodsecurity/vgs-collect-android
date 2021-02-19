@@ -4,7 +4,6 @@ import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.isCardNumberType
-import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 typealias DependencyHandler = (FieldType, Dependency) -> Unit
@@ -37,13 +36,9 @@ internal class Notifier : DependencyDispatcher, FieldDependencyObserver {
     private fun notifyRelatedFields(state: VGSFieldState, onDependencyDetected: DependencyHandler) {
         when {
             state.isCardNumberType() -> {
-                val cardContent = state.content as? FieldContent.CardNumberContent
-                val dependencyRange =
-                    Dependency.range(cardContent?.rangeCVV?.sortedArray() ?: arrayOf(3, 4))
-                onDependencyDetected(FieldType.CVC, dependencyRange)
-                val dependencyCardType =
-                    Dependency.cardType(cardContent?.cardtype ?: CardType.UNKNOWN)
-                onDependencyDetected(FieldType.CVC, dependencyCardType)
+                val cardContent = (state.content as? FieldContent.CardNumberContent)
+                    ?: FieldContent.CardNumberContent()
+                onDependencyDetected(FieldType.CVC, Dependency.card(cardContent))
             }
         }
     }

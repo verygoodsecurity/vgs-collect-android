@@ -232,13 +232,13 @@ internal class InputField(context: Context): BaseInputField(context),
 
     override fun dispatchDependencySetting(dependency: Dependency) {
         when(dependency.dependencyType) {
-            DependencyType.RANGE -> manageLengthDependency(dependency)
+            DependencyType.CARD -> manageLengthDependency(dependency)
             DependencyType.TEXT -> setText(dependency.value.toString())
         }
     }
 
     private fun manageLengthDependency(dependency: Dependency) {
-        val cvcLength = dependency.value as Array<Int>
+        val cvcLength = (dependency.value as FieldContent.CardNumberContent).rangeCVV
         val filterLength = InputFilter.LengthFilter(cvcLength.last())
         filters = arrayOf(CVCValidateFilter(), filterLength)
         (inputConnection as? InputCardCVCConnection)?.runtimeValidator = CardCVCCodeValidator(cvcLength)

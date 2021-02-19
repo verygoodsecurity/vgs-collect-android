@@ -4,6 +4,5 @@ package com.verygoodsecurity.vgscollect.core.storage
 enum class DependencyType {
     TEXT,
     LENGTH,
-    RANGE,
-    CARD_TYPE
+    CARD
 }

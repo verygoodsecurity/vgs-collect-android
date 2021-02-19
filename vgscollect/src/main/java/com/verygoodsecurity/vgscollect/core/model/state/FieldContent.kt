@@ -24,6 +24,31 @@ sealed class FieldContent {
             internal set
         var cardBrandName:String? = null
             internal set
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (javaClass != other?.javaClass) return false
+
+            other as CardNumberContent
+
+            if (cardtype != other.cardtype) return false
+            if (!numberRange.contentEquals(other.numberRange)) return false
+            if (!rangeCVV.contentEquals(other.rangeCVV)) return false
+            if (iconResId != other.iconResId) return false
+            if (cardBrandName != other.cardBrandName) return false
+
+            return true
+        }
+
+        override fun hashCode(): Int {
+            var result = 0
+            result = 31 * result + cardtype.hashCode()
+            result = 31 * result + numberRange.contentHashCode()
+            result = 31 * result + rangeCVV.contentHashCode()
+            result = 31 * result + (iconResId ?: 0)
+            result = 31 * result + (cardBrandName?.hashCode() ?: 0)
+            return result
+        }
     }
 
     class CreditCardExpDateContent:FieldContent() {
