@@ -141,7 +141,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         when (previewIconVisibility) {
             ALWAYS -> setIcon()
             HAS_CONTENT -> if (text.isNullOrEmpty()) removeIcon() else setIcon()
-            IF_BRAND_DETECTED -> if (cardContent.cardtype == CardType.UNKNOWN) removeIcon() else setIcon()
+            IF_BRAND_DETECTED -> if (cardContent.cardBrandName == CardType.UNKNOWN.name) removeIcon() else setIcon()
             NEVER -> removeIcon()
         }
     }
