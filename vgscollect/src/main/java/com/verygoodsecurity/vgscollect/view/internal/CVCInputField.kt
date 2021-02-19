@@ -101,22 +101,8 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
 
     override fun dispatchDependencySetting(dependency: Dependency) {
         when (dependency.dependencyType) {
-            DependencyType.RANGE -> {
-                val cvcLength = dependency.value as Array<Int>
-                if (cvcLength.isNotEmpty() && !this.cvcLength.contentEquals(cvcLength)) {
-                    this.cvcLength = cvcLength
-                    applyLengthFilter(cvcLength.last())
-
-                    (inputConnection as? InputCardCVCConnection)?.runtimeValidator =
-                        CardCVCCodeValidator(this.cvcLength)
-
-                    text = text
-                }
-            }
-            DependencyType.CARD_TYPE -> {
-                this.cardType = dependency.value as CardType
-                refreshIcon()
-            }
+            DependencyType.RANGE -> handleRangeDependency(dependency.value as Array<Int>)
+            DependencyType.CARD_TYPE -> handleCardTypeDependency(dependency.value as CardType)
             else -> super.dispatchDependencySetting(dependency)
         }
     }
@@ -149,6 +135,23 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
 
     internal fun setPreviewIconVisibility(mode: Int) {
         this.previewIconVisibility = PreviewIconVisibility.values()[mode]
+    }
+
+    private fun handleRangeDependency(cvcLength: Array<Int>) {
+        if (cvcLength.isNotEmpty() && !this.cvcLength.contentEquals(cvcLength)) {
+            this.cvcLength = cvcLength
+            applyLengthFilter(cvcLength.last())
+
+            (inputConnection as? InputCardCVCConnection)?.runtimeValidator =
+                CardCVCCodeValidator(this.cvcLength)
+
+            text = text
+        }
+    }
+
+    private fun handleCardTypeDependency(cardType: CardType) {
+        this.cardType = cardType
+        refreshIcon()
     }
 
     private fun refreshIcon() {
