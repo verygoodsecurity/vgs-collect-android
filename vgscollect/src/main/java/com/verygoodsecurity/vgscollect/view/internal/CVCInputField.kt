@@ -44,7 +44,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
             it?.bounds = iconBounds
         }
 
-    private var previewIconVisibility = ALWAYS
+    private var previewIconVisibility = NEVER
     private var previewIconGravity = END
 
     override fun applyFieldType() {
