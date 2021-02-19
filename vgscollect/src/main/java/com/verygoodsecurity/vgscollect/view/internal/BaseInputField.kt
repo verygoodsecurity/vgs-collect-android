@@ -70,7 +70,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         set(value) {
             field = value
             (inputConnection as? BaseInputConnection)?.let {
-                it.customValidator = value
+                it.validator = value
                 it.run()
             }
         }

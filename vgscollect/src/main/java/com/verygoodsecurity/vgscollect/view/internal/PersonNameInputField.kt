@@ -28,7 +28,7 @@ internal class PersonNameInputField(context: Context): BaseInputField(context) {
 
     override fun applyFieldType() {
         inputConnection = InputCardHolderConnection(id, validator).apply {
-            customValidator = this@PersonNameInputField.customValidator
+            validator = this@PersonNameInputField.customValidator
         }
 
         val str = text.toString()

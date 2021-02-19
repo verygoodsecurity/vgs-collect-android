@@ -30,7 +30,7 @@ internal class SSNInputField(context: Context): BaseInputField(context) {
         validator.addRule(LengthValidator(MAX_LENGTH))
         validator.addRule(RegexValidator(VALIDATION_REGEX))
         inputConnection = InputSSNConnection(id, validator).apply {
-            customValidator = this@SSNInputField.customValidator
+            validator = this@SSNInputField.customValidator
         }
 
         val str = text.toString()

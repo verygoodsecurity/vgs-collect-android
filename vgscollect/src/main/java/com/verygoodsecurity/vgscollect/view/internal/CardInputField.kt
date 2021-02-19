@@ -66,7 +66,7 @@ internal class CardInputField(context: Context) : BaseInputField(context), Input
 
     override fun applyFieldType() {
         inputConnection = InputCardNumberConnection(id, validator, this, divider).apply {
-            customValidator = this@CardInputField.customValidator
+            validator = this@CardInputField.customValidator
         }
 
         val defFilter = DefaultCardBrandFilter(CardType.values(), divider)
