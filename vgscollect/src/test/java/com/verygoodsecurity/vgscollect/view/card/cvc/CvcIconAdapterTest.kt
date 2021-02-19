@@ -40,7 +40,7 @@ class CvcIconAdapterTest {
     @Test
     fun getIcon_defaultBounds_defaultBoundsReturned() {
         // Act
-        val item = adapter.getItem(CardType.UNKNOWN, 3, dummyRect)
+        val item = adapter.getItem(CardType.UNKNOWN, "", 3, dummyRect)
 
         // Assert
         assertEquals(item.bounds.height(), adapter.getDefaultHeight())
@@ -54,7 +54,7 @@ class CvcIconAdapterTest {
         val width = 100
         overrideItemSize(height, width)
         // Act
-        val item = adapter.getItem(CardType.UNKNOWN, 3, dummyRect)
+        val item = adapter.getItem(CardType.UNKNOWN, "", 3, dummyRect)
         // Assert
         assertEquals(item.bounds.height(), height)
         assertEquals(item.bounds.width(), width)
@@ -63,7 +63,7 @@ class CvcIconAdapterTest {
     @Test
     fun getIcon_cardUnknown_defaultIconReturned() {
         // Act
-        val item = adapter.getItem(CardType.UNKNOWN, 3, dummyRect)
+        val item = adapter.getItem(CardType.UNKNOWN, "", 3, dummyRect)
         // Assert
         assertEquals(item.constantState, anyCardDrawable.constantState)
     }
@@ -71,7 +71,7 @@ class CvcIconAdapterTest {
     @Test
     fun getIcon_amExCard_amExIconReturned() {
         // Act
-        val item = adapter.getItem(CardType.AMERICAN_EXPRESS, 4, dummyRect)
+        val item = adapter.getItem(CardType.AMERICAN_EXPRESS, "", 4, dummyRect)
         // Assert
         assertEquals(item.constantState, amExDrawable.constantState)
     }
@@ -81,7 +81,7 @@ class CvcIconAdapterTest {
         // Arrange
         overrideIcon(overrideIconDrawable)
         // Act
-        val item = adapter.getItem(CardType.AMERICAN_EXPRESS, 4, dummyRect)
+        val item = adapter.getItem(CardType.AMERICAN_EXPRESS, "", 4, dummyRect)
         // Assert
         assertEquals(item.constantState, overrideIconDrawable.constantState)
     }
@@ -104,8 +104,13 @@ class CvcIconAdapterTest {
             return rect ?: super.getDefaultBounds()
         }
 
-        override fun getIcon(cardType: CardType, cvcLength: Int, r: Rect): Drawable {
-            return drawable ?: super.getIcon(cardType, cvcLength, r)
+        override fun getIcon(
+            cardType: CardType,
+            cardBrand: String?,
+            cvcLength: Int,
+            r: Rect
+        ): Drawable {
+            return drawable ?: super.getIcon(cardType, cardBrand, cvcLength, r)
         }
 
         fun setSize(height: Int, width: Int) {

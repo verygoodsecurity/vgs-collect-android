@@ -147,7 +147,12 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
     }
 
     private fun setIcon() {
-        val icon = iconAdapter.getItem(cardContent.cardtype, cardContent.rangeCVV.last(), localVisibleRect)
+        val icon = iconAdapter.getItem(
+            cardContent.cardtype,
+            cardContent.cardBrandName,
+            cardContent.rangeCVV.last(),
+            localVisibleRect
+        )
         when (previewIconGravity) {
             START -> setCompoundDrawablesOrNull(start = icon)
             END -> setCompoundDrawablesOrNull(end = icon)

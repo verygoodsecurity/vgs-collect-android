@@ -30,12 +30,18 @@ open class CvcIconAdapter(private val context: Context) {
      * Returns prepared Drawable to display in [CardVerificationCodeEditText]
      *
      * @param cardType detected card brand type
+     * @param cardBrand card brand name
      * @param cvcLength cvc length
      * @param r size of the input field. The size will be 0 if View is not visible.
      *
      * @return Drawable object for the preview.
      */
-    protected open fun getIcon(cardType: CardType, cvcLength: Int, r: Rect): Drawable {
+    protected open fun getIcon(
+        cardType: CardType,
+        cardBrand: String?,
+        cvcLength: Int,
+        r: Rect
+    ): Drawable {
         val drawable = getDrawable(getDrawableId(cardType))
         drawable.bounds = this@CvcIconAdapter.getDefaultBounds()
         return drawable
@@ -52,8 +58,13 @@ open class CvcIconAdapter(private val context: Context) {
     protected open fun getDefaultBounds(): Rect = Rect(0, 0, defaultIconWidth, defaultIconHeight)
 
     /** @suppress */
-    internal fun getItem(cardType: CardType, cvcLength: Int, r: Rect): Drawable {
-        val icon = getIcon(cardType, cvcLength, r)
+    internal fun getItem(
+        cardType: CardType,
+        cardBrand: String?,
+        cvcLength: Int,
+        r: Rect
+    ): Drawable {
+        val icon = getIcon(cardType, cardBrand, cvcLength, r)
         if (icon.bounds.isEmpty) {
             icon.bounds = this.getDefaultBounds()
         }
