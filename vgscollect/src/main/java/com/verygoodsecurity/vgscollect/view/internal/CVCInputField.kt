@@ -22,11 +22,10 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
 
     override fun applyFieldType() {
         val validator = CardCVCCodeValidator(cvcLength)
-        inputConnection =
-            InputCardCVCConnection(
-                id,
-                validator
-            )
+        inputConnection = InputCardCVCConnection(id, validator).apply {
+            this.regexValidator = this@CVCInputField.regexValidator
+        }
+
 
         val str = text.toString()
         val stateContent = FieldContent.InfoContent().apply {
@@ -78,8 +77,7 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
                 this.cvcLength = cvcLength
                 applyLengthFilter(cvcLength.last())
 
-                (inputConnection as? InputCardCVCConnection)?.runtimeValidator =
-                    CardCVCCodeValidator(this.cvcLength)
+                (inputConnection as? InputCardCVCConnection)?.defaultValidator = CardCVCCodeValidator(this.cvcLength)
 
                 text = text
             }

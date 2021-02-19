@@ -4,12 +4,12 @@ import java.util.regex.Pattern
 
 /** @suppress */
 class RegexValidator(
-    regex:String? = null
-):VGSValidator {
-    private var m:Pattern? = null
+    regex: String? = null
+) : VGSValidator {
+    private var m: Pattern? = null
 
     init {
-        if(!regex.isNullOrEmpty()) {
+        if (!regex.isNullOrEmpty()) {
             m = Pattern.compile(regex)
         }
     }
@@ -20,10 +20,10 @@ class RegexValidator(
             val s = !str.isNullOrEmpty() &&
                     m!!.matcher(str).matches()
             s
-        }?:true
+        } ?: true
     }
 
-    internal fun setRegex(regex:String) {
+    internal fun setRegex(regex: String) {
         m = Pattern.compile(regex)
     }
 }

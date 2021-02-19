@@ -6,10 +6,9 @@ import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 /** @suppress */
-internal class InputInfoConnection(
-    private val id: Int,
-    private val validator: VGSValidator?
-) : BaseInputConnection() {
+internal class InputInfoConnection(id: Int, validator: VGSValidator?) :
+    BaseInputConnection(id, validator) {
+
     private var output = VGSFieldState()
 
     override fun setOutput(state: VGSFieldState) {
@@ -18,14 +17,14 @@ internal class InputInfoConnection(
 
     override fun getOutput() = output
 
-    override fun setOutputListener(l: OnVgsViewStateChangeListener?) {
-        l?.let { addNewListener(it) } ?: clearAllListeners()
+    override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
+        listener?.let { addNewListener(it) } ?: clearAllListeners()
     }
 
     override fun run() {
         output.isValid = isRequiredValid() && isContentValid()
 
-        notifyAllListeners(id, output)
+        notifyAllListeners(output)
     }
 
     private fun isContentValid(): Boolean {
@@ -37,11 +36,7 @@ internal class InputInfoConnection(
         }
     }
 
-    private fun checkIsContentValid(content: String?): Boolean {
-        val updatedStr = content?.trim() ?: ""
-
-        return validator?.isValid(updatedStr) ?: false
-    }
+    private fun checkIsContentValid(content: String?): Boolean = isValid(content?.trim() ?: "")
 
     private fun isRequiredValid(): Boolean {
         return output.isRequired && !output.content?.data.isNullOrEmpty() || !output.isRequired

@@ -9,5 +9,5 @@ interface InputRunnable:Runnable, CardInputFilter {
     fun setOutput(state: VGSFieldState)
     fun getOutput(): VGSFieldState
 
-    fun setOutputListener(l: OnVgsViewStateChangeListener?)
+    fun setOutputListener(listener: OnVgsViewStateChangeListener?)
 }
