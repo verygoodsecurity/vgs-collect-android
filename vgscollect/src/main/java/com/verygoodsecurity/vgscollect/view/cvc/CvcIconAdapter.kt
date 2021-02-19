@@ -13,8 +13,9 @@ import com.verygoodsecurity.vgscollect.view.card.CardType
  */
 open class CvcIconAdapter(private val context: Context) {
 
-    private val defaultIcon =
-        AppCompatResources.getDrawable(context, R.drawable.ic_card_front_preview_dark)!!
+    private val defaultIcon: Drawable by lazy {
+        AppCompatResources.getDrawable(context, R.drawable.ic_maestro_dark)!!
+    }
 
     private val defaultIconWidth = context.resources.getDimension(R.dimen.c_icon_size_w).toInt()
     private val defaultIconHeight = context.resources.getDimension(R.dimen.c_icon_size_h).toInt()
@@ -22,7 +23,7 @@ open class CvcIconAdapter(private val context: Context) {
     /**
      * Returns a drawable object associated with a particular resource ID or default drawable.
      */
-    protected fun getDrawable(resId: Int) =
+    protected fun getDrawable(@DrawableRes resId: Int) =
         AppCompatResources.getDrawable(context, resId) ?: defaultIcon
 
     /**
