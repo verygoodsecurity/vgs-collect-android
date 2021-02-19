@@ -23,8 +23,7 @@ import com.verygoodsecurity.vgscollect.view.internal.CVCInputField.PreviewIconVi
 internal class CVCInputField(context: Context) : BaseInputField(context) {
 
     override var fieldType: FieldType = FieldType.CVC
-    private var cvcLength: Array<Int> = arrayOf(3, 4)
-    private var cardType: CardType = CardType.UNKNOWN
+    private var cardContent: FieldContent.CardNumberContent = FieldContent.CardNumberContent()
 
     private var iconAdapter = CvcIconAdapter(context)
 
@@ -32,7 +31,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
     private var previewIconGravity = END
 
     override fun applyFieldType() {
-        val validator = CardCVCCodeValidator(cvcLength)
+        val validator = CardCVCCodeValidator(cardContent.rangeCVV)
         inputConnection =
             InputCardCVCConnection(
                 id,
@@ -49,7 +48,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         inputConnection?.setOutputListener(stateListener)
 
         applyNewTextWatcher(null)
-        applyLengthFilter(cvcLength.last())
+        applyLengthFilter(cardContent.rangeCVV.last())
         applyInputType()
     }
 
@@ -84,8 +83,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
 
     override fun dispatchDependencySetting(dependency: Dependency) {
         when (dependency.dependencyType) {
-            DependencyType.RANGE -> handleRangeDependency(dependency.value as Array<Int>)
-            DependencyType.CARD_TYPE -> handleCardTypeDependency(dependency.value as CardType)
+            DependencyType.CARD -> handleCardDependency(dependency.value as FieldContent.CardNumberContent)
             else -> super.dispatchDependencySetting(dependency)
         }
     }
@@ -128,34 +126,28 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         this.iconAdapter = adapter ?: CvcIconAdapter(context)
     }
 
-    private fun handleRangeDependency(cvcLength: Array<Int>) {
-        if (cvcLength.isNotEmpty() && !this.cvcLength.contentEquals(cvcLength)) {
-            this.cvcLength = cvcLength
-            applyLengthFilter(cvcLength.last())
-
+    private fun handleCardDependency(cardContent: FieldContent.CardNumberContent) {
+        if (this.cardContent != cardContent) {
+            this.cardContent = cardContent
+            applyLengthFilter(cardContent.rangeCVV.last())
             (inputConnection as? InputCardCVCConnection)?.runtimeValidator =
-                CardCVCCodeValidator(this.cvcLength)
-
+                CardCVCCodeValidator(cardContent.rangeCVV)
             text = text
+            refreshIcon()
         }
-    }
-
-    private fun handleCardTypeDependency(cardType: CardType) {
-        this.cardType = cardType
-        refreshIcon()
     }
 
     private fun refreshIcon() {
         when (previewIconVisibility) {
             ALWAYS -> setIcon()
             HAS_CONTENT -> if (text.isNullOrEmpty()) removeIcon() else setIcon()
-            IF_BRAND_DETECTED -> if (cardType == CardType.UNKNOWN) removeIcon() else setIcon()
+            IF_BRAND_DETECTED -> if (cardContent.cardtype == CardType.UNKNOWN) removeIcon() else setIcon()
             NEVER -> removeIcon()
         }
     }
 
     private fun setIcon() {
-        val icon = iconAdapter.getItem(cardType, cvcLength.last(), localVisibleRect)
+        val icon = iconAdapter.getItem(cardContent.cardtype, cardContent.rangeCVV.last(), localVisibleRect)
         when (previewIconGravity) {
             START -> setCompoundDrawablesOrNull(start = icon)
             END -> setCompoundDrawablesOrNull(end = icon)
