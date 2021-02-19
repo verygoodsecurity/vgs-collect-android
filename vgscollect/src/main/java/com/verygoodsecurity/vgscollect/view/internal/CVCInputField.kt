@@ -26,8 +26,7 @@ import com.verygoodsecurity.vgscollect.view.internal.CVCInputField.PreviewIconVi
 internal class CVCInputField(context: Context) : BaseInputField(context) {
 
     override var fieldType: FieldType = FieldType.CVC
-    private var cvcLength: Array<Int> = arrayOf(3, 4)
-    private var cardType: CardType = CardType.UNKNOWN
+    private var cardContent: FieldContent.CardNumberContent = FieldContent.CardNumberContent()
 
     private val iconBounds = Rect(
         0,
@@ -49,7 +48,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
     private var previewIconGravity = END
 
     override fun applyFieldType() {
-        val validator = CardCVCCodeValidator(cvcLength)
+        val validator = CardCVCCodeValidator(cardContent.rangeCVV)
         inputConnection =
             InputCardCVCConnection(
                 id,
@@ -66,7 +65,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         inputConnection?.setOutputListener(stateListener)
 
         applyNewTextWatcher(null)
-        applyLengthFilter(cvcLength.last())
+        applyLengthFilter(cardContent.rangeCVV.last())
         applyInputType()
     }
 
@@ -101,8 +100,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
 
     override fun dispatchDependencySetting(dependency: Dependency) {
         when (dependency.dependencyType) {
-            DependencyType.RANGE -> handleRangeDependency(dependency.value as Array<Int>)
-            DependencyType.CARD_TYPE -> handleCardTypeDependency(dependency.value as CardType)
+            DependencyType.CARD -> handleCardDependency(dependency.value as FieldContent.CardNumberContent)
             else -> super.dispatchDependencySetting(dependency)
         }
     }
@@ -141,28 +139,22 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         this.previewIconGravity = PreviewIconGravity.values()[gravity]
     }
 
-    private fun handleRangeDependency(cvcLength: Array<Int>) {
-        if (cvcLength.isNotEmpty() && !this.cvcLength.contentEquals(cvcLength)) {
-            this.cvcLength = cvcLength
-            applyLengthFilter(cvcLength.last())
-
+    private fun handleCardDependency(cardContent: FieldContent.CardNumberContent) {
+        if (this.cardContent != cardContent) {
+            this.cardContent = cardContent
+            applyLengthFilter(cardContent.rangeCVV.last())
             (inputConnection as? InputCardCVCConnection)?.runtimeValidator =
-                CardCVCCodeValidator(this.cvcLength)
-
+                CardCVCCodeValidator(cardContent.rangeCVV)
             text = text
+            refreshIcon()
         }
-    }
-
-    private fun handleCardTypeDependency(cardType: CardType) {
-        this.cardType = cardType
-        refreshIcon()
     }
 
     private fun refreshIcon() {
         when (previewIconVisibility) {
             ALWAYS -> setIcon(getIcon())
             HAS_CONTENT -> setIcon(if (text.isNullOrEmpty()) null else getIcon())
-            IF_BRAND_DETECTED -> setIcon(if (cardType == CardType.UNKNOWN) null else getIcon())
+            IF_BRAND_DETECTED -> setIcon(if (cardContent.cardtype != CardType.UNKNOWN) getIcon() else null)
             NEVER -> setIcon(null)
         }
     }
@@ -174,7 +166,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         }
     }
 
-    private fun getIcon(): Drawable? = when (cardType) {
+    private fun getIcon(): Drawable? = when (cardContent.cardtype) {
         CardType.AMERICAN_EXPRESS -> amExPreviewIcon
         else -> defaultPreviewIcon
     }
