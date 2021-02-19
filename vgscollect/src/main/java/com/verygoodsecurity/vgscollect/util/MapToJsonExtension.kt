@@ -11,6 +11,7 @@ internal fun Map<*, *>.mapToJSON():JSONObject {
     this.forEach { entry->
         val key:String = entry.key.toString()
         when(entry.value) {
+            is Boolean -> jObjectData.put(key, entry.value)
             is String -> jObjectData.put(key, entry.value)
             is Int -> jObjectData.put(key, entry.value as Int)
             is Long -> jObjectData.put(key, entry.value as Long)
@@ -41,6 +42,7 @@ private fun Collection<*>.mapCollectionToJSON():JSONArray {
 
     this.forEach { entry->
         when(entry) {
+            is Boolean -> array.put(entry)
             is String -> array.put(entry)
             is Int -> array.put(entry)
             is Char -> array.put(entry)
@@ -70,6 +72,7 @@ private fun Array<*>.mapArrToJSON():JSONArray {
 
     this.forEach { entry->
         when(entry) {
+            is Boolean -> array.put(entry)
             is String -> array.put(entry)
             is Char -> array.put(entry)
             is Int -> array.put(entry)
