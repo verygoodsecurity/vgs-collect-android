@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.card.conection
 
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 internal abstract class BaseInputConnection constructor(
@@ -9,12 +10,12 @@ internal abstract class BaseInputConnection constructor(
     internal var defaultValidator: VGSValidator?
 ) : InputRunnable {
 
-    internal var validator: VGSValidator? = defaultValidator
+    internal var regexValidator: RegexValidator? = null
 
     private var stateListeners = mutableListOf<OnVgsViewStateChangeListener>()
 
     protected fun isValid(input: String?): Boolean {
-        return validator.takeIf { it != null }?.let {
+        return regexValidator.takeIf { it != null }?.let {
             return@let it.isValid(input)
         } ?: (defaultValidator?.isValid(input) ?: false)
     }

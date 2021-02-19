@@ -66,11 +66,11 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             inputConnection?.run()
         }
 
-    internal var customValidator: RegexValidator? = null
+    internal var regexValidator: RegexValidator? = null
         set(value) {
             field = value
             (inputConnection as? BaseInputConnection)?.let {
-                it.validator = value
+                it.regexValidator = value
                 it.run()
             }
         }

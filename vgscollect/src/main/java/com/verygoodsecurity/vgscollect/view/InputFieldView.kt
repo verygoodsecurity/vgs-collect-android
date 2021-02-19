@@ -1326,7 +1326,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param regex custom validation regex.
      */
     fun setValidationRegex(regex: String?) {
-        inputField.customValidator = if (regex.isNullOrEmpty()) null else RegexValidator(regex)
+        inputField.regexValidator = if (regex.isNullOrEmpty()) null else RegexValidator(regex)
     }
 
     companion object {

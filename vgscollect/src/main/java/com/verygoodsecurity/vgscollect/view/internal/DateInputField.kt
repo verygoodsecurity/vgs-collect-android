@@ -82,7 +82,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     override fun applyFieldType() {
         val timeGapsValidator = TimeGapsValidator(datePattern, minDate, maxDate).apply {
-            customValidator = this@DateInputField.customValidator
+            regexValidator = this@DateInputField.regexValidator
         }
 
         inputConnection =

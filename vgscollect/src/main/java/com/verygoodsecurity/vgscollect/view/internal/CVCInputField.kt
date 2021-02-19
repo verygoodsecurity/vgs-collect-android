@@ -23,7 +23,7 @@ internal class CVCInputField(context: Context): BaseInputField(context) {
     override fun applyFieldType() {
         val validator = CardCVCCodeValidator(cvcLength)
         inputConnection = InputCardCVCConnection(id, validator).apply {
-            this.validator = this@CVCInputField.customValidator
+            this.regexValidator = this@CVCInputField.regexValidator
         }
 
 
