@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscollect.view.card.conection
 
-import android.util.Log
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
