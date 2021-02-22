@@ -10,7 +10,7 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.cvc.CvcIconAdapter
+import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
 
 class CardVerificationCodeEditText @JvmOverloads constructor(
@@ -105,7 +105,7 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
      * @param adapter The adapter is responsible for maintaining the icons backing this view and
      * for producing a drawable for preview.
      */
-    fun setPreviewIconAdapter(adapter: CvcIconAdapter?) {
+    fun setPreviewIconAdapter(adapter: CVCIconAdapter?) {
         setCVCPreviewIconAdapter(adapter)
     }
 }

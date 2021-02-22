@@ -14,7 +14,7 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardCVCConnection
 import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.CardCVCCodeValidator
-import com.verygoodsecurity.vgscollect.view.cvc.CvcIconAdapter
+import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField.PreviewIconGravity.END
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField.PreviewIconGravity.START
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField.PreviewIconVisibility.*
@@ -25,7 +25,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
     override var fieldType: FieldType = FieldType.CVC
     private var cardContent: FieldContent.CardNumberContent = FieldContent.CardNumberContent()
 
-    private var iconAdapter = CvcIconAdapter(context)
+    private var iconAdapter = CVCIconAdapter(context)
 
     private var previewIconVisibility = NEVER
     private var previewIconGravity = END
@@ -118,8 +118,8 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         this.previewIconGravity = PreviewIconGravity.values()[gravity]
     }
 
-    internal fun setPreviewIconAdapter(adapter: CvcIconAdapter?) {
-        this.iconAdapter = adapter ?: CvcIconAdapter(context)
+    internal fun setPreviewIconAdapter(adapter: CVCIconAdapter?) {
+        this.iconAdapter = adapter ?: CVCIconAdapter(context)
     }
 
     private fun handleCardDependency(cardContent: FieldContent.CardNumberContent) {

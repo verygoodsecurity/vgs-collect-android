@@ -11,7 +11,7 @@ import com.verygoodsecurity.vgscollect.view.card.CardType
 /**
  * You can use this class to create custom Drawables as a preview image for the [CardVerificationCodeEditText].
  */
-open class CvcIconAdapter(private val context: Context) {
+open class CVCIconAdapter(private val context: Context) {
 
     private val defaultIcon: Drawable by lazy {
         AppCompatResources.getDrawable(context, R.drawable.ic_card_back_preview_dark)!!
@@ -43,7 +43,7 @@ open class CvcIconAdapter(private val context: Context) {
         r: Rect
     ): Drawable {
         val drawable = getDrawable(getDrawableId(cardType))
-        drawable.bounds = this@CvcIconAdapter.getDefaultBounds()
+        drawable.bounds = this@CVCIconAdapter.getDefaultBounds()
         return drawable
     }
 

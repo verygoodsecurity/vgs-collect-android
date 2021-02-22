@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.card.CardType
-import com.verygoodsecurity.vgscollect.view.cvc.CvcIconAdapter
+import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -95,7 +95,7 @@ class CvcIconAdapterTest {
         adapter.setIcon(drawable)
     }
 
-    class IconAdapterFake(context: Context) : CvcIconAdapter(context) {
+    class IconAdapterFake(context: Context) : CVCIconAdapter(context) {
 
         private var rect: Rect? = null
         private var drawable: Drawable? = null
