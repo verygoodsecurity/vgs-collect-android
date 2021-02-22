@@ -302,7 +302,8 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     private var validator: MutableValidator = CompositeValidator()
 
     internal fun applyValidationRule(rule: PaymentCardNumberRule) {
-        allowToOverrideDefaultValidation = rule.canOverrideDefaultValidation
+        allowToOverrideDefaultValidation = rule.canOverrideDefaultValidation &&
+                (rule.length != null || rule.algorithm != null || rule.regex != null)
 
         validator.clearRules()
         rule.length?.let {
