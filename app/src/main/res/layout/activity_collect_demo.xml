@@ -210,19 +210,22 @@
                                     android:id="@+id/cardCVCFieldLay"
                                     android:layout_width="130dp"
                                     android:layout_height="wrap_content"
-                                    app:hintEnabled="true"
-                                    app:hint="@string/cvc"
+                                    app:boxBackgroundModes="outline"
                                     app:errorTextAppearance="@style/error_appearance"
-                                    app:boxBackgroundModes="outline">
+                                    app:hint="@string/cvc"
+                                    app:hintEnabled="true">
+
                                     <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                                         android:id="@+id/cardCVCField"
+                                        style="@style/AppTheme.PaymentField"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        style="@style/AppTheme.PaymentField"
                                         app:fieldName="card_data.cardCvc"
-                                        app:text="123"
                                         app:fontFamily="@font/robotomono_light"
-                                        app:imeOptions="actionDone"/>
+                                        app:imeOptions="actionDone"
+                                        app:previewIconGravity="end"
+                                        app:previewIconVisibility="hasContent"
+                                        app:text="123" />
                                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
                             </LinearLayout>
 
