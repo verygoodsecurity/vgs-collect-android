@@ -76,13 +76,12 @@ internal class InputCardNumberConnection(
 
     private fun checkIsContentValid(card: CardBrandPreview): Boolean {
         val rawStr = output.content?.data?.replace(divider ?: " ", "") ?: ""
-        return when {
-            regexValidator != null || !card.successfullyDetected -> isValid(rawStr)
-            else -> {
-                val isLengthAppropriate: Boolean = checkLength(card.numberLength, rawStr.length)
-                val isLuhnValid: Boolean = validateCheckSum(card.algorithm, rawStr)
-                isLengthAppropriate && isLuhnValid
-            }
+        return if (regexValidator != null || !card.successfullyDetected) {
+            isValid(rawStr)
+        } else {
+            val isLengthAppropriate: Boolean = checkLength(card.numberLength, rawStr.length)
+            val isLuhnValid: Boolean = validateCheckSum(card.algorithm, rawStr)
+            isLengthAppropriate && isLuhnValid
         }
     }
 
