@@ -29,7 +29,9 @@ internal class SSNInputField(context: Context): BaseInputField(context) {
     override fun applyFieldType() {
         validator.addRule(LengthValidator(MAX_LENGTH))
         validator.addRule(RegexValidator(VALIDATION_REGEX))
-        inputConnection = InputSSNConnection(id, validator)
+        inputConnection = InputSSNConnection(id, validator).apply {
+            this.regexValidator = this@SSNInputField.regexValidator
+        }
 
         val str = text.toString()
         val stateContent = FieldContent.SSNContent().apply {

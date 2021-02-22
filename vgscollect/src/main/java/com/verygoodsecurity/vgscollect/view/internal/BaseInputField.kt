@@ -23,7 +23,9 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.conection.BaseInputConnection
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
@@ -62,6 +64,15 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             field = value
             inputConnection?.getOutput()?.enableValidation = value
             inputConnection?.run()
+        }
+
+    internal var regexValidator: RegexValidator? = null
+        set(value) {
+            field = value
+            (inputConnection as? BaseInputConnection)?.let {
+                it.regexValidator = value
+                it.run()
+            }
         }
 
     protected var isListeningPermitted = true

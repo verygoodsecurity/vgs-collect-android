@@ -83,11 +83,9 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     override fun applyFieldType() {
         val timeGapsValidator = TimeGapsValidator(datePattern, minDate, maxDate)
 
-        inputConnection =
-            InputCardExpDateConnection(
-                id,
-                timeGapsValidator
-            )
+        inputConnection = InputCardExpDateConnection(id, timeGapsValidator).apply {
+            this.regexValidator = this@DateInputField.regexValidator
+        }
 
         val stateContent = FieldContent.CreditCardExpDateContent().apply {
             if(!text.isNullOrEmpty() && handleInputMode(text.toString())) {

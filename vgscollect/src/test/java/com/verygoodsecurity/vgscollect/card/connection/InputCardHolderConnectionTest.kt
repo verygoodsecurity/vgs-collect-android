@@ -3,9 +3,14 @@ package com.verygoodsecurity.vgscollect.card.connection
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.view.card.conection.BaseInputConnection
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardHolderConnection
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
+import junit.framework.Assert.assertFalse
+import junit.framework.Assert.assertTrue
+import org.junit.Assert
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mockito
@@ -78,6 +83,48 @@ class InputCardHolderConnectionTest {
 
         connection.run()
         Mockito.verify(listener).emit(0, textItem)
+    }
+
+    @Test
+    fun setRegexValidation_correctParams_validReturned() {
+        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
+        connection.setOutputListener(listener)
+
+        (connection as BaseInputConnection).regexValidator = RegexValidator("^[a-zA-Z]{1,10}\\s[a-zA-Z]{1,10}\$")
+
+        val content = FieldContent.InfoContent()
+        content.data = "John Doe"
+        val textItem = VGSFieldState(isValid = true,
+            isRequired = true,
+            fieldName = "fieldName",
+            content = content)
+
+        connection.setOutput(textItem)
+
+        connection.run()
+
+        assertTrue(textItem.isValid)
+    }
+
+    @Test
+    fun setRegexValidation_incorrectParams_invalidReturned() {
+        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
+        connection.setOutputListener(listener)
+
+        (connection as BaseInputConnection).regexValidator = RegexValidator("^[a-zA-Z]{1,10}\\s[a-zA-Z]{1,10}\$")
+
+        val content = FieldContent.InfoContent()
+        content.data = "John Doe Junior"
+        val textItem = VGSFieldState(isValid = true,
+            isRequired = true,
+            fieldName = "fieldName",
+            content = content)
+
+        connection.setOutput(textItem)
+
+        connection.run()
+
+        assertFalse(textItem.isValid)
     }
 
     private fun <T> any(): T = Mockito.any<T>()

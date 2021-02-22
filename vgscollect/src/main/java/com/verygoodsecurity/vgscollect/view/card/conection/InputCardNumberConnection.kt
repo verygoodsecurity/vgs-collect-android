@@ -3,19 +3,19 @@ package com.verygoodsecurity.vgscollect.view.card.conection
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.brand.*
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.brand.LuhnCheckSumValidator
 
 /** @suppress */
 internal class InputCardNumberConnection(
-    private val id: Int,
-    private val validator: VGSValidator?,
+    id: Int,
+    validator: VGSValidator?,
     private val IcardBrand: IDrawCardBrand? = null,
     private val divider: String? = null
-) : BaseInputConnection() {
+) : BaseInputConnection(id, validator) {
     private val cardFilters = mutableListOf<VGSCardFilter>()
 
 
@@ -51,7 +51,7 @@ internal class InputCardNumberConnection(
 
         validate(brand)
 
-        notifyAllListeners(id, output)
+        notifyAllListeners(output)
     }
 
     private fun validate(brand: CardBrandPreview) {
@@ -74,21 +74,15 @@ internal class InputCardNumberConnection(
         }
     }
 
-    private fun checkIsContentValid(
-        card: CardBrandPreview
-    ): Boolean {
+    private fun checkIsContentValid(card: CardBrandPreview): Boolean {
         val rawStr = output.content?.data?.replace(divider ?: " ", "") ?: ""
-
-        val isValid = if (card.successfullyDetected) {
-            val isLengthAppropriate = checkLength(card.numberLength, rawStr.length)
-            val isLuhnValid: Boolean = validateCheckSum(card.algorithm, rawStr)
-
-            isLengthAppropriate && isLuhnValid
+        return if (regexValidator != null || !card.successfullyDetected) {
+            isValid(rawStr)
         } else {
-            validator?.isValid(rawStr) ?: false
+            val isLengthAppropriate: Boolean = checkLength(card.numberLength, rawStr.length)
+            val isLuhnValid: Boolean = validateCheckSum(card.algorithm, rawStr)
+            isLengthAppropriate && isLuhnValid
         }
-
-        return isValid
     }
 
     private fun validateCheckSum(
