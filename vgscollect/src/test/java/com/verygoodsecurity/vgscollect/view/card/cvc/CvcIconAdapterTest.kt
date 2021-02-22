@@ -29,11 +29,11 @@ class CvcIconAdapterTest {
         with(Robolectric.buildActivity(Activity::class.java).get()) {
             adapter = IconAdapterFake(this)
             amExDrawable =
-                AppCompatResources.getDrawable(this, R.drawable.ic_card_front_preview_dark_4)!!
+                AppCompatResources.getDrawable(this, R.drawable.ic_card_back_preview_dark_4)!!
             anyCardDrawable =
-                AppCompatResources.getDrawable(this, R.drawable.ic_card_front_preview_dark)!!
+                AppCompatResources.getDrawable(this, R.drawable.ic_card_back_preview_dark)!!
             overrideIconDrawable =
-                AppCompatResources.getDrawable(this, R.drawable.ic_card_front_preview_light_4)!!
+                AppCompatResources.getDrawable(this, R.drawable.ic_card_back_preview_light_4)!!
         }
     }
 
