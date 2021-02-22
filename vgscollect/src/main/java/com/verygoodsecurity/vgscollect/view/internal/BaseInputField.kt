@@ -3,7 +3,6 @@ package com.verygoodsecurity.vgscollect.view.internal
 import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.text.TextWatcher
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -23,9 +22,7 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.conection.BaseInputConnection
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
-import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
@@ -64,15 +61,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             field = value
             inputConnection?.getOutput()?.enableValidation = value
             inputConnection?.run()
-        }
-
-    internal var regexValidator: RegexValidator? = null
-        set(value) {
-            field = value
-            (inputConnection as? BaseInputConnection)?.let {
-                it.regexValidator = value
-                it.run()
-            }
         }
 
     protected var isListeningPermitted = true
@@ -220,13 +208,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
                 || direction == View.TEXT_DIRECTION_RTL
     }
 
-    private fun getResolvedLayoutDirection(): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            layoutDirection
-        } else {
-            View.LAYOUT_DIRECTION_LTR
-        }
-    }
+    private fun getResolvedLayoutDirection(): Int = layoutDirection
 
     protected fun refreshInput() {
         val currentSelection = selectionStart

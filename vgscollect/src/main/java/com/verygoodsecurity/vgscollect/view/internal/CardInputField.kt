@@ -22,15 +22,14 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
-import com.verygoodsecurity.vgscollect.view.card.validation.CheckSumValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 
 /** @suppress */
-internal class CardInputField(context: Context) : BaseInputField(context), InputCardNumberConnection.IDrawCardBrand {
+internal class CardInputField(context: Context) : BaseInputField(context),
+    InputCardNumberConnection.IDrawCardBrand {
 
     companion object {
         private const val MASK_REGEX = "[^#]"
@@ -40,6 +39,12 @@ internal class CardInputField(context: Context) : BaseInputField(context), Input
     }
 
     override var fieldType: FieldType = FieldType.CARD_NUMBER
+
+    private var allowToOverrideDefaultValidation: Boolean = false
+        set(value) {
+            field = value
+            (inputConnection as? InputCardNumberConnection)?.canOverrideDefaultValidation = value
+        }
 
     private var divider: String = SPACE
     private var iconGravity: Int = Gravity.NO_GRAVITY
@@ -66,7 +71,7 @@ internal class CardInputField(context: Context) : BaseInputField(context), Input
 
     override fun applyFieldType() {
         inputConnection = InputCardNumberConnection(id, validator, this, divider).apply {
-            this.regexValidator = this@CardInputField.regexValidator
+            allowToOverrideDefaultValidation = this@CardInputField.allowToOverrideDefaultValidation
         }
 
         val defFilter = DefaultCardBrandFilter(CardType.values(), divider)
@@ -223,14 +228,14 @@ internal class CardInputField(context: Context) : BaseInputField(context), Input
 
         lastCardIconPreview = iconAdapter.getItem(card.cardType, card.name, card.resId, r)
 
-        when(previewIconMode) {
+        when (previewIconMode) {
             PreviewIconMode.ALWAYS -> refreshIconPreview()
-            PreviewIconMode.IF_DETECTED -> if(card.successfullyDetected) {
+            PreviewIconMode.IF_DETECTED -> if (card.successfullyDetected) {
                 refreshIconPreview()
             } else {
                 setCompoundDrawables(null, null, null, null)
             }
-            PreviewIconMode.HAS_CONTENT -> if(!text.isNullOrEmpty()) {
+            PreviewIconMode.HAS_CONTENT -> if (!text.isNullOrEmpty()) {
                 refreshIconPreview()
             } else {
                 setCompoundDrawables(null, null, null, null)
@@ -250,24 +255,26 @@ internal class CardInputField(context: Context) : BaseInputField(context), Input
     }
 
     private fun updateMask(
-            card: CardBrandPreview
+        card: CardBrandPreview
     ) {
         if (!text.isNullOrEmpty()) {
-            val bin = (inputConnection?.getOutput()?.content as FieldContent.CardNumberContent).parseCardBin()
+            val bin =
+                (inputConnection?.getOutput()?.content as FieldContent.CardNumberContent).parseCardBin()
             cardNumberMask = maskAdapter.getItem(
-                    card.cardType,
-                    card.name ?: "",
-                    bin,
-                    card.currentMask)
+                card.cardType,
+                card.name ?: "",
+                bin,
+                card.currentMask
+            )
             applyDividerOnMask()
         }
     }
 
     override fun setCompoundDrawables(
-            left: Drawable?,
-            top: Drawable?,
-            right: Drawable?,
-            bottom: Drawable?
+        left: Drawable?,
+        top: Drawable?,
+        right: Drawable?,
+        bottom: Drawable?
     ) {
         if (hasRTL) {
             super.setCompoundDrawables(right, top, left, bottom)
@@ -295,12 +302,18 @@ internal class CardInputField(context: Context) : BaseInputField(context), Input
     private var validator: MutableValidator = CompositeValidator()
 
     internal fun applyValidationRule(rule: PaymentCardNumberRule) {
+        allowToOverrideDefaultValidation = rule.canOverrideDefaultValidation &&
+                (rule.length != null || rule.algorithm != null || rule.regex != null)
+
         validator.clearRules()
         rule.length?.let {
             validator.addRule(LengthValidator(it))
         }
         rule.algorithm?.let {
-            validator.addRule(CheckSumValidator(rule.algorithm))
+            validator.addRule(CheckSumValidator(it))
+        }
+        rule.regex?.let {
+            validator.addRule(RegexValidator(it))
         }
     }
 }

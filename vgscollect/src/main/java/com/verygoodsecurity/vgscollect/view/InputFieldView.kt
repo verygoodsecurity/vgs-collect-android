@@ -34,7 +34,6 @@ import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
-import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
 import com.verygoodsecurity.vgscollect.view.cvc.CvcIconAdapter
@@ -1327,17 +1326,6 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     override fun setOnKeyListener(l: OnKeyListener?) {
         inputField.setOnKeyListener(l)
-    }
-
-    /**
-     * Set custom validation regex that will define if the input is valid or not.
-     * Note: This regex will override default validation rules.
-     * To return to use default validation rules call this function with 'null'.
-     *
-     * @param regex custom validation regex.
-     */
-    fun setValidationRegex(regex: String?) {
-        inputField.regexValidator = if (regex.isNullOrEmpty()) null else RegexValidator(regex)
     }
 
     companion object {

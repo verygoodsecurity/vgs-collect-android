@@ -85,47 +85,5 @@ class InputCardHolderConnectionTest {
         Mockito.verify(listener).emit(0, textItem)
     }
 
-    @Test
-    fun setRegexValidation_correctParams_validReturned() {
-        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
-
-        (connection as BaseInputConnection).regexValidator = RegexValidator("^[a-zA-Z]{1,10}\\s[a-zA-Z]{1,10}\$")
-
-        val content = FieldContent.InfoContent()
-        content.data = "John Doe"
-        val textItem = VGSFieldState(isValid = true,
-            isRequired = true,
-            fieldName = "fieldName",
-            content = content)
-
-        connection.setOutput(textItem)
-
-        connection.run()
-
-        assertTrue(textItem.isValid)
-    }
-
-    @Test
-    fun setRegexValidation_incorrectParams_invalidReturned() {
-        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
-
-        (connection as BaseInputConnection).regexValidator = RegexValidator("^[a-zA-Z]{1,10}\\s[a-zA-Z]{1,10}\$")
-
-        val content = FieldContent.InfoContent()
-        content.data = "John Doe Junior"
-        val textItem = VGSFieldState(isValid = true,
-            isRequired = true,
-            fieldName = "fieldName",
-            content = content)
-
-        connection.setOutput(textItem)
-
-        connection.run()
-
-        assertFalse(textItem.isValid)
-    }
-
     private fun <T> any(): T = Mockito.any<T>()
 }
