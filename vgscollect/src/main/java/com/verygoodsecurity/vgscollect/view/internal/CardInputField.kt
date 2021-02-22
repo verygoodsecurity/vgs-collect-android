@@ -43,7 +43,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     private var allowToOverrideDefaultValidation: Boolean = false
         set(value) {
             field = value
-            inputConnection?.setAllowToOverrideDefaultValidation(value)
+            (inputConnection as? InputCardNumberConnection)?.canOverrideDefaultValidation = value
         }
 
     private var divider: String = SPACE
@@ -70,9 +70,9 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     override fun applyFieldType() {
-        inputConnection = InputCardNumberConnection(id, validator, this, divider)
-
-        inputConnection!!.setAllowToOverrideDefaultValidation(allowToOverrideDefaultValidation)
+        inputConnection = InputCardNumberConnection(id, validator, this, divider).apply {
+            allowToOverrideDefaultValidation = this@CardInputField.allowToOverrideDefaultValidation
+        }
 
         val defFilter = DefaultCardBrandFilter(CardType.values(), divider)
         inputConnection!!.addFilter(defFilter)

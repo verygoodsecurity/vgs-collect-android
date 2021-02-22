@@ -11,8 +11,6 @@ internal abstract class BaseInputConnection constructor(
 
     private var stateListeners = mutableListOf<OnVgsViewStateChangeListener>()
 
-    protected var canOverrideDefaultValidation = false
-
     protected fun isValid(input: String?): Boolean {
         return defaultValidator?.isValid(input) ?: false
     }
@@ -30,9 +28,5 @@ internal abstract class BaseInputConnection constructor(
 
     protected fun notifyAllListeners(output: VGSFieldState) {
         stateListeners.forEach { it.emit(id, output) }
-    }
-
-    override fun setAllowToOverrideDefaultValidation(canOverride: Boolean) {
-        canOverrideDefaultValidation = canOverride
     }
 }
