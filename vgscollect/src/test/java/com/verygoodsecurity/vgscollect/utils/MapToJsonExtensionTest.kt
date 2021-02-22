@@ -37,8 +37,8 @@ class MapToJsonExtensionTest {
     fun test_1_level_nested_map() {
         val userData = "{" +
                 "\"addition_data\":{" +
-                "\"age\":32," +
-                "\"height\":1.9" +
+                    "\"age\":32," +
+                    "\"height\":1.9" +
                 "}," +
                 "\"cardCvc\":\"123\"," +
                 "\"cardHolder\":\"John Galt\"," +
@@ -61,16 +61,16 @@ class MapToJsonExtensionTest {
     fun test_2_level_nested_map() {
         val userData = "{" +
                 "\"addition_data\":{" +
-                "\"allow\":false," +
-                "\"char\":\"#\"," +
-                "\"age\":32," +
-                "\"height\":1.9," +
-                "\"level_2\":{" +
-                "\"allow\":false," +
-                "\"char\":\"#\"," +
-                "\"age\":32," +
-                "\"height\":1.9" +
-                "}" +
+                    "\"allow\":false," +
+                    "\"char\":\"#\"," +
+                    "\"age\":32," +
+                    "\"height\":1.9," +
+                    "\"level_2\":{" +
+                        "\"allow\":false," +
+                        "\"char\":\"#\"," +
+                        "\"age\":32," +
+                        "\"height\":1.9" +
+                    "}" +
                 "}," +
                 "\"cardCvc\":\"123\"," +
                 "\"cardHolder\":\"John Galt\"," +
@@ -104,7 +104,7 @@ class MapToJsonExtensionTest {
     fun test_1_level_nested_collection() {
         val userData = "{" +
                 "\"addition_data\":[" +
-                "\"test\",true,12,1.9,\"&\"" +
+                    "\"test\",true,12,1.9,\"&\"" +
                 "]," +
                 "\"cardCvc\":\"123\"," +
                 "\"cardHolder\":\"John Galt\"," +
@@ -131,11 +131,11 @@ class MapToJsonExtensionTest {
     fun test_2_level_nested_collection() {
         val userData = "{" +
                 "\"addition_data\":[" +
-                "\"test\"," +
-                "true," +
-                "12," +
-                "1.9," +
-                "[\"test\",true,12,1.9]" +
+                    "\"test\"," +
+                    "true," +
+                    "12," +
+                    "1.9," +
+                    "[\"test\",true,12,1.9]" +
                 "]," +
                 "\"cardCvc\":\"123\"," +
                 "\"cardHolder\":\"John Galt\"," +
@@ -208,12 +208,12 @@ class MapToJsonExtensionTest {
     fun test_2_level_nested_collection_map() {
         val userData = "{" +
                 "\"addition_data\":[" +
-                "\"test\",true,12,1.9,{" +
-                "\"allow\":false," +
-                "\"char\":\"#\"," +
-                "\"age\":32," +
-                "\"height\":1.9" +
-                "}" +
+                    "\"test\",true,12,1.9,{" +
+                        "\"allow\":false," +
+                        "\"char\":\"#\"," +
+                        "\"age\":32," +
+                        "\"height\":1.9" +
+                    "}" +
                 "]," +
                 "\"cardCvc\":\"123\"," +
                 "\"cardHolder\":\"John Galt\"," +

@@ -5,8 +5,8 @@ import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
-import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.Action
+import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.toAnalyticRequest
 import java.util.*
@@ -15,7 +15,8 @@ import java.util.concurrent.Executors
 internal class CollectActionTracker(
     val tnt: String,
     val environment: String,
-    val formId: String
+    val formId: String,
+    val isSatelliteMode: Boolean
 ) : AnalyticTracker {
 
     override var isEnabled: Boolean = true
@@ -29,9 +30,9 @@ internal class CollectActionTracker(
     }
 
     override fun logEvent(action: Action) {
-        if(isEnabled) {
+        if (isEnabled) {
             val event = action.run {
-                val sender = Event(client, tnt, environment, formId)
+                val sender = Event(client, tnt, environment, formId, isSatelliteMode)
                 sender.map = getAttributes()
                 sender
             }
@@ -44,7 +45,8 @@ internal class CollectActionTracker(
         private val client: ApiClient,
         private val tnt: String,
         private val environment: String,
-        private val formId: String
+        private val formId: String,
+        private val isSatelliteMode: Boolean
     ) : Runnable {
 
         var map: MutableMap<String, Any> = mutableMapOf()
@@ -55,6 +57,7 @@ internal class CollectActionTracker(
 
         private fun attachDefaultInfo(map: MutableMap<String, Any>): Map<String, Any> {
             return with(map) {
+                this[SATELLITE] = isSatelliteMode
                 this[VG_SESSION_ID] = Sid.id
                 this[FORM_ID] = formId
                 this[SOURCE] = SOURCE_TAG
@@ -89,6 +92,7 @@ internal class CollectActionTracker(
         }
 
         companion object {
+            private const val SATELLITE = "vgsSatellite"
             private const val FORM_ID = "formId"
             private const val SESSION_ID = "sessionId"
             private const val VG_SESSION_ID = "vgsCollectSessionId"

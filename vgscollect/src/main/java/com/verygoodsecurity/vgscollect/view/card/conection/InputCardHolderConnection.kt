@@ -6,10 +6,8 @@ import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 /** @suppress */
-internal class InputCardHolderConnection(
-    private val id: Int,
-    private val validator: VGSValidator?
-) : BaseInputConnection() {
+internal class InputCardHolderConnection(id: Int, validator: VGSValidator?) :
+    BaseInputConnection(id, validator) {
 
     private var output = VGSFieldState()
 
@@ -26,7 +24,7 @@ internal class InputCardHolderConnection(
     override fun run() {
         output.isValid = isRequiredValid() && isContentValid()
 
-        notifyAllListeners(id, output)
+        notifyAllListeners(output)
     }
 
     private fun isContentValid(): Boolean {
@@ -38,11 +36,7 @@ internal class InputCardHolderConnection(
         }
     }
 
-    private fun checkIsContentValid(content: String?): Boolean {
-        val updatedStr = content?.trim() ?: ""
-
-        return validator?.isValid(updatedStr) ?: false
-    }
+    private fun checkIsContentValid(content: String?): Boolean = isValid(content?.trim() ?: "")
 
     private fun isRequiredValid(): Boolean {
         return output.isRequired && !output.content?.data.isNullOrEmpty() || !output.isRequired

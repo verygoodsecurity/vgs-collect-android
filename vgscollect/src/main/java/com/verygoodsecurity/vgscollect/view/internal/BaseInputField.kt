@@ -3,9 +3,6 @@ package com.verygoodsecurity.vgscollect.view.internal
 import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
-import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.text.TextWatcher
 import android.view.View
 import android.view.View.OnFocusChangeListener
@@ -20,7 +17,6 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.AutofillAction
 import com.verygoodsecurity.vgscollect.core.model.state.*
-import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
@@ -33,8 +29,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     DependencyListener, OnVgsViewStateChangeListener {
 
     companion object {
-        fun getInputField(context: Context, parent:InputFieldView):BaseInputField {
-            val field = when(parent.getFieldType()) {
+        fun getInputField(context: Context, parent: InputFieldView): BaseInputField {
+            val field = when (parent.getFieldType()) {
                 FieldType.CARD_NUMBER -> CardInputField(context)
                 FieldType.CVC -> CVCInputField(context)
                 FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
@@ -53,14 +49,14 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             inputConnection?.setOutputListener(value)
             inputConnection?.run()
         }
-    internal var isRequired:Boolean = true
+    internal var isRequired: Boolean = true
         set(value) {
             field = value
             inputConnection?.getOutput()?.isRequired = value
             inputConnection?.run()
         }
 
-    internal var enableValidation:Boolean = true
+    internal var enableValidation: Boolean = true
         set(value) {
             field = value
             inputConnection?.getOutput()?.enableValidation = value
@@ -76,12 +72,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     protected var inputConnection: InputRunnable? = null
 
-    protected var vgsParent:InputFieldView? = null
+    protected var vgsParent: InputFieldView? = null
 
-    private var onFieldStateChangeListener:OnFieldStateChangeListener? = null
+    private var onFieldStateChangeListener: OnFieldStateChangeListener? = null
 
-    private var userFocusChangeListener:OnFocusChangeListener? = null
-    private var onEditorActionListener:InputFieldView.OnEditorActionListener? = null
+    private var userFocusChangeListener: OnFocusChangeListener? = null
+    private var onEditorActionListener: InputFieldView.OnEditorActionListener? = null
     private var userKeyListener: OnKeyListener? = null
 
     private var isBackgroundVisible = true
@@ -104,13 +100,14 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private fun setupEditorActionListener() {
         setOnEditorActionListener { _, actionId, event ->
-            val consumedAction = onEditorActionListener?.onEditorAction(vgsParent, actionId, event)?:false
+            val consumedAction =
+                onEditorActionListener?.onEditorAction(vgsParent, actionId, event) ?: false
 
             consumedAction
         }
     }
 
-    internal fun setIsListeningPermitted(state:Boolean) {
+    internal fun setIsListeningPermitted(state: Boolean) {
         isListeningPermitted = state
     }
 
@@ -126,7 +123,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
                 userFocusChangeListener?.onFocusChange(vgsParent, hasFocus)
 
-                if(hasFocus != isFocusable) {
+                if (hasFocus != isFocusable) {
                     isFocusable = hasFocus
                     hasUserInteraction = true
                     inputConnection?.run()
@@ -196,14 +193,14 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         return state
     }
 
-    internal fun setHasBackground(state:Boolean) {
+    internal fun setHasBackground(state: Boolean) {
         isBackgroundVisible = state
-        if(isBackgroundVisible) {
+        if (isBackgroundVisible) {
             setBackgroundResource(android.R.color.transparent)
         }
     }
 
-    protected fun isRTL():Boolean {
+    protected fun isRTL(): Boolean {
         val direction = getResolvedLayoutDirection()
         return direction == View.LAYOUT_DIRECTION_RTL
                 || direction == View.TEXT_DIRECTION_ANY_RTL
@@ -211,13 +208,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
                 || direction == View.TEXT_DIRECTION_RTL
     }
 
-    private fun getResolvedLayoutDirection():Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            layoutDirection
-        } else {
-            View.LAYOUT_DIRECTION_LTR
-        }
-    }
+    private fun getResolvedLayoutDirection(): Int = layoutDirection
 
     protected fun refreshInput() {
         val currentSelection = selectionStart
@@ -237,14 +228,14 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     override fun addTextChangedListener(watcher: TextWatcher?) {
-        if(isListeningPermitted) {
+        if (isListeningPermitted) {
             super.addTextChangedListener(watcher)
         }
     }
 
-    private var minH:Int = 0
-    private var minW:Int = 0
-    internal fun setMinimumPaddingLimitations(w:Int, h:Int) {
+    private var minH: Int = 0
+    private var minW: Int = 0
+    internal fun setMinimumPaddingLimitations(w: Int, h: Int) {
         minH = h
         minW = w
     }
@@ -263,7 +254,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         right: Drawable?,
         bottom: Drawable?
     ) {
-        if(isRTL()) {
+        if (isRTL()) {
             super.setCompoundDrawables(right, top, left, bottom)
         } else {
             super.setCompoundDrawables(left, top, right, bottom)
@@ -271,12 +262,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {
-        if(dependency.dependencyType == DependencyType.TEXT) {
+        if (dependency.dependencyType == DependencyType.TEXT) {
             setText(dependency.value.toString())
         }
     }
 
-    private fun requestFocusOnView(id:Int) {
+    private fun requestFocusOnView(id: Int) {
         val nextView = rootView?.findViewById<View>(id)
 
         when (nextView) {
@@ -295,10 +286,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             userKeyListener = l
         }
     }
-      
+
     override fun requestFocus(direction: Int, previouslyFocusedRect: Rect?): Boolean {
         return super.requestFocus(direction, previouslyFocusedRect).also {
-            setSelection(text?.length?:0)
+            setSelection(text?.length ?: 0)
         }
     }
 
@@ -337,25 +328,25 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         inputConnection?.run()
     }
 
-    internal fun setOnFocusChangeListener(l: OnFocusChangeListener?, isUserListener:Boolean) {
-        if(isUserListener) {
+    internal fun setOnFocusChangeListener(l: OnFocusChangeListener?, isUserListener: Boolean) {
+        if (isUserListener) {
             userFocusChangeListener = l
         }
     }
 
     override fun setOnEditorActionListener(l: OnEditorActionListener?) {
-        if(!isEditorActionListenerConfigured) {
+        if (!isEditorActionListenerConfigured) {
             isEditorActionListenerConfigured = true
             super.setOnEditorActionListener(l)
         }
     }
 
-    fun setEditorActionListener(onEditorActionListener:InputFieldView.OnEditorActionListener?) {
+    fun setEditorActionListener(onEditorActionListener: InputFieldView.OnEditorActionListener?) {
         this.onEditorActionListener = onEditorActionListener
     }
 
     internal open fun getState(): FieldState? {
-        return  inputConnection?.getOutput()?.mapToFieldState()
+        return inputConnection?.getOutput()?.mapToFieldState()
     }
 
     internal var tracker: AnalyticTracker? = null
@@ -376,3 +367,19 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         )
     }
 }
+
+internal fun TextInputEditText.setCompoundDrawablesOrNull(
+    start: Drawable? = null,
+    top: Drawable? = null,
+    end: Drawable? = null,
+    bottom: Drawable? = null
+) {
+    this.setCompoundDrawables(start, top, end, bottom)
+}
+
+internal val TextInputEditText.localVisibleRect: Rect
+    get() {
+        val rect = Rect()
+        this.getLocalVisibleRect(rect)
+        return rect
+    }

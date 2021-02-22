@@ -1,8 +1,8 @@
 package com.verygoodsecurity.vgscollect.core.api.client
 
 import com.verygoodsecurity.vgscollect.BuildConfig
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
-import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isCodeSuccessful
@@ -10,7 +10,6 @@ import com.verygoodsecurity.vgscollect.core.api.client.extension.setMethod
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
-import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient

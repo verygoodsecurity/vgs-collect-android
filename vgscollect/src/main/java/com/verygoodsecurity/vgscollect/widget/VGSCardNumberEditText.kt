@@ -92,7 +92,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                 setInputType(inputType)
 
                 setNumberDivider(divider)
-                applyCardIconGravity(previewGravity)
+                applyPreviewIconGravity(previewGravity)
                 applyPreviewIconMode(brandIconVisibility)
 
                 if (!isValidationPredefined()) {
@@ -129,7 +129,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      * @param gravity Specifies how to align the icon by the view’s x-axis.
      */
     fun setCardBrandIconGravity(gravity: Int) {
-        applyCardIconGravity(gravity)
+        applyPreviewIconGravity(gravity)
     }
 
     /**
