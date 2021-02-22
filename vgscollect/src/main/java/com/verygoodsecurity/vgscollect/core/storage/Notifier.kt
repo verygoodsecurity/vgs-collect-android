@@ -1,12 +1,15 @@
 package com.verygoodsecurity.vgscollect.core.storage
 
-import com.verygoodsecurity.vgscollect.core.model.state.*
+import com.verygoodsecurity.vgscollect.core.model.state.Dependency
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.core.model.state.isCardNumberType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 typealias DependencyHandler = (FieldType, Dependency) -> Unit
 
 /** @suppress */
-internal class Notifier: DependencyDispatcher, FieldDependencyObserver {
+internal class Notifier : DependencyDispatcher, FieldDependencyObserver {
 
     private val views = mutableMapOf<FieldType, DependencyListener>()
 
@@ -16,7 +19,7 @@ internal class Notifier: DependencyDispatcher, FieldDependencyObserver {
 
     override fun onDependencyDetected(type: FieldType, dependency: Dependency) {
         views.forEach {
-            if(type == it.key) {
+            if (type == it.key) {
                 it.value.dispatchDependencySetting(dependency)
             }
         }
@@ -33,9 +36,9 @@ internal class Notifier: DependencyDispatcher, FieldDependencyObserver {
     private fun notifyRelatedFields(state: VGSFieldState, onDependencyDetected: DependencyHandler) {
         when {
             state.isCardNumberType() -> {
-                val r:Array<Int> = (state.content as? FieldContent.CardNumberContent)?.rangeCVV?.sortedArray()?: arrayOf(3,4)
-                val dependency = Dependency(DependencyType.RANGE, r)
-                onDependencyDetected(FieldType.CVC, dependency)
+                val cardContent = (state.content as? FieldContent.CardNumberContent)
+                    ?: FieldContent.CardNumberContent()
+                onDependencyDetected(FieldType.CVC, Dependency.card(cardContent))
             }
         }
     }

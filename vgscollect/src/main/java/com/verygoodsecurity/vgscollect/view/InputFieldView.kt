@@ -37,6 +37,7 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.cvc.CvcIconAdapter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.*
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
@@ -815,15 +816,19 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.stateListener = stateListener
     }
 
-    protected fun applyCardIconGravity(gravity: Int) {
+    protected fun applyPreviewIconGravity(gravity: Int) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardPreviewIconGravity(gravity)
+        } else if (fieldType == FieldType.CVC) {
+            (inputField as? CVCInputField)?.setPreviewIconGravity(gravity)
         }
     }
 
     protected fun applyPreviewIconMode(mode: Int) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setPreviewIconMode(mode)
+        } else if (fieldType == FieldType.CVC) {
+            (inputField as? CVCInputField)?.setPreviewIconVisibility(mode)
         }
     }
 
@@ -1195,6 +1200,12 @@ abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? SSNInputField)?.getState() as? FieldState.SSNNumberState
         } else {
             null
+        }
+    }
+
+    protected fun setCVCPreviewIconAdapter(adapter: CvcIconAdapter?) {
+        if (fieldType == FieldType.CVC) {
+            (inputField as? CVCInputField)?.setPreviewIconAdapter(adapter)
         }
     }
 
