@@ -383,3 +383,10 @@ internal fun TextInputEditText.setCompoundDrawablesOrNull(
 ) {
     this.setCompoundDrawables(start, top, end, bottom)
 }
+
+internal val TextInputEditText.localVisibleRect: Rect
+    get() {
+        val rect = Rect()
+        this.getLocalVisibleRect(rect)
+        return rect
+    }

@@ -430,7 +430,7 @@
 
         <attr name="hint" />
 
-        <!-- Specifies visibility for card security code preview icon. -->
+        <!-- Specifies visibility for card security code preview icon. By default visibility is never.-->
         <attr name="previewIconVisibility">
             <!-- Preview icon is visible all the time. -->
             <enum name="always" value="0" />
@@ -440,6 +440,14 @@
             <enum name="ifBrandDetected" value="2" />
             <!-- Preview icon is never visible. -->
             <enum name="never" value="3" />
+        </attr>
+
+        <!-- Specifies how to align the icon by the view’s x-axis. By default, gravity in end position. -->
+        <attr name="previewIconGravity">
+            <!-- Align icon to start of view. -->
+            <enum name="start" value="0" />
+            <!-- Align icon to end of view. -->
+            <enum name="end" value="1" />
         </attr>
     </declare-styleable>
 

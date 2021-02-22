@@ -1,15 +1,11 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
-import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
 import android.view.Gravity
 import android.view.View
-import androidx.core.content.ContextCompat
-import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
@@ -18,6 +14,7 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardCVCConnection
 import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.CardCVCCodeValidator
+import com.verygoodsecurity.vgscollect.view.cvc.CvcIconAdapter
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField.PreviewIconGravity.END
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField.PreviewIconGravity.START
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField.PreviewIconVisibility.*
@@ -28,21 +25,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
     override var fieldType: FieldType = FieldType.CVC
     private var cardContent: FieldContent.CardNumberContent = FieldContent.CardNumberContent()
 
-    private val iconBounds = Rect(
-        0,
-        0,
-        context.resources.getDimension(R.dimen.c_icon_size_w).toInt(),
-        context.resources.getDimension(R.dimen.c_icon_size_h).toInt()
-    )
-
-    private var defaultPreviewIcon =
-        ContextCompat.getDrawable(context, R.drawable.ic_card_front_preview_dark).also {
-            it?.bounds = iconBounds
-        }
-    private var amExPreviewIcon =
-        ContextCompat.getDrawable(context, R.drawable.ic_card_front_preview_dark_4).also {
-            it?.bounds = iconBounds
-        }
+    private var iconAdapter = CvcIconAdapter(context)
 
     private var previewIconVisibility = NEVER
     private var previewIconGravity = END
@@ -135,6 +118,14 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         this.previewIconVisibility = PreviewIconVisibility.values()[mode]
     }
 
+    internal fun setPreviewIconGravity(gravity: Int) {
+        this.previewIconGravity = PreviewIconGravity.values()[gravity]
+    }
+
+    internal fun setPreviewIconAdapter(adapter: CvcIconAdapter?) {
+        this.iconAdapter = adapter ?: CvcIconAdapter(context)
+    }
+
     private fun handleCardDependency(cardContent: FieldContent.CardNumberContent) {
         if (this.cardContent != cardContent) {
             this.cardContent = cardContent
@@ -148,23 +139,28 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
 
     private fun refreshIcon() {
         when (previewIconVisibility) {
-            ALWAYS -> setIcon(getIcon())
-            HAS_CONTENT -> setIcon(if (text.isNullOrEmpty()) null else getIcon())
-            IF_BRAND_DETECTED -> setIcon(if (cardContent.cardtype != CardType.UNKNOWN) getIcon() else null)
-            NEVER -> setIcon(null)
+            ALWAYS -> setIcon()
+            HAS_CONTENT -> if (text.isNullOrEmpty()) removeIcon() else setIcon()
+            IF_BRAND_DETECTED -> if (cardContent.cardBrandName == CardType.UNKNOWN.name) removeIcon() else setIcon()
+            NEVER -> removeIcon()
         }
     }
 
-    private fun setIcon(drawable: Drawable?) {
+    private fun setIcon() {
+        val icon = iconAdapter.getItem(
+            cardContent.cardtype,
+            cardContent.cardBrandName,
+            cardContent.rangeCVV.last(),
+            localVisibleRect
+        )
         when (previewIconGravity) {
-            START -> setCompoundDrawablesOrNull(start = drawable)
-            END -> setCompoundDrawablesOrNull(end = drawable)
+            START -> setCompoundDrawablesOrNull(start = icon)
+            END -> setCompoundDrawablesOrNull(end = icon)
         }
     }
 
-    private fun getIcon(): Drawable? = when (cardContent.cardtype) {
-        CardType.AMERICAN_EXPRESS -> amExPreviewIcon
-        else -> defaultPreviewIcon
+    private fun removeIcon() {
+        setCompoundDrawablesOrNull()
     }
 
     enum class PreviewIconVisibility {

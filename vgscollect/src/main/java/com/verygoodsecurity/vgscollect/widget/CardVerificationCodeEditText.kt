@@ -10,6 +10,7 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.cvc.CvcIconAdapter
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
 
 class CardVerificationCodeEditText @JvmOverloads constructor(
@@ -56,6 +57,10 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
                     R.styleable.CardVerificationCodeEditText_previewIconVisibility,
                     CVCInputField.PreviewIconVisibility.NEVER.ordinal
                 )
+                val previewCardGravity = getInt(
+                    R.styleable.CardVerificationCodeEditText_previewIconGravity,
+                    CVCInputField.PreviewIconGravity.END.ordinal
+                )
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -78,6 +83,7 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
                 setInputType(inputType)
 
                 applyPreviewIconMode(previewCardVisibility)
+                applyPreviewIconGravity(previewCardGravity)
             } finally {
                 recycle()
             }
@@ -91,5 +97,15 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
      */
     fun getState(): FieldState.CVCState? {
         return getCVCState()
+    }
+
+    /**
+     * Sets the custom icons for cvc.
+     *
+     * @param adapter The adapter is responsible for maintaining the icons backing this view and
+     * for producing a drawable for preview.
+     */
+    fun setPreviewIconAdapter(adapter: CvcIconAdapter?) {
+        setCVCPreviewIconAdapter(adapter)
     }
 }
