@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscollect.view.card.conection
 
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 internal abstract class BaseInputConnection constructor(
@@ -10,14 +9,12 @@ internal abstract class BaseInputConnection constructor(
     internal var defaultValidator: VGSValidator?
 ) : InputRunnable {
 
-    internal var regexValidator: RegexValidator? = null
-
     private var stateListeners = mutableListOf<OnVgsViewStateChangeListener>()
 
+    protected var canOverrideDefaultValidation = false
+
     protected fun isValid(input: String?): Boolean {
-        return regexValidator.takeIf { it != null }?.let {
-            return@let it.isValid(input)
-        } ?: (defaultValidator?.isValid(input) ?: false)
+        return defaultValidator?.isValid(input) ?: false
     }
 
     protected fun clearAllListeners() {
@@ -33,5 +30,9 @@ internal abstract class BaseInputConnection constructor(
 
     protected fun notifyAllListeners(output: VGSFieldState) {
         stateListeners.forEach { it.emit(id, output) }
+    }
+
+    override fun setAllowToOverrideDefaultValidation(canOverride: Boolean) {
+        canOverrideDefaultValidation = canOverride
     }
 }

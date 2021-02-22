@@ -32,9 +32,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
 
     override fun applyFieldType() {
         val validator = CardCVCCodeValidator(cardContent.rangeCVV)
-        inputConnection = InputCardCVCConnection(id, validator).apply {
-            this.regexValidator = this@CVCInputField.regexValidator
-        }
+        inputConnection = InputCardCVCConnection(id, validator)
 
         val str = text.toString()
         val stateContent = FieldContent.InfoContent().apply {

@@ -18,7 +18,6 @@ internal class InputCardNumberConnection(
 ) : BaseInputConnection(id, validator) {
     private val cardFilters = mutableListOf<VGSCardFilter>()
 
-
     private var output = VGSFieldState()
 
     override fun setOutput(state: VGSFieldState) {
@@ -76,7 +75,8 @@ internal class InputCardNumberConnection(
 
     private fun checkIsContentValid(card: CardBrandPreview): Boolean {
         val rawStr = output.content?.data?.replace(divider ?: " ", "") ?: ""
-        return if (regexValidator != null || !card.successfullyDetected) {
+
+        return if(canOverrideDefaultValidation || !card.successfullyDetected) {
             isValid(rawStr)
         } else {
             val isLengthAppropriate: Boolean = checkLength(card.numberLength, rawStr.length)
