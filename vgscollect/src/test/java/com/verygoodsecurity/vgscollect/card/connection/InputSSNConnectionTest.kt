@@ -98,47 +98,5 @@ class InputSSNConnectionTest {
         return textItem
     }
 
-    @Test
-    fun setRegexValidation_correctParams_validReturned() {
-        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
-
-        (connection as BaseInputConnection).regexValidator = RegexValidator("^(?!000|666)[0-8][0-9]{2}-(?!00)[0-9]{2}-(?!0000)[0-9]{4}\$")
-
-        val content = FieldContent.InfoContent()
-        content.data = "123-12-3123"
-        val textItem = VGSFieldState(isValid = true,
-            isRequired = true,
-            fieldName = "fieldName",
-            content = content)
-
-        connection.setOutput(textItem)
-
-        connection.run()
-
-        assertTrue(textItem.isValid)
-    }
-
-    @Test
-    fun setRegexValidation_incorrectParams_invalidReturned() {
-        val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
-
-        (connection as BaseInputConnection).regexValidator = RegexValidator("^(?!000|666)[0-8][0-9]{2}-(?!00)[0-9]{2}-(?!0000)[0-9]{4}\\\$")
-
-        val content = FieldContent.InfoContent()
-        content.data = "123-12-3123 Z"
-        val textItem = VGSFieldState(isValid = true,
-            isRequired = true,
-            fieldName = "fieldName",
-            content = content)
-
-        connection.setOutput(textItem)
-
-        connection.run()
-
-        assertFalse(textItem.isValid)
-    }
-
     private fun <T> any(): T = Mockito.any<T>()
 }

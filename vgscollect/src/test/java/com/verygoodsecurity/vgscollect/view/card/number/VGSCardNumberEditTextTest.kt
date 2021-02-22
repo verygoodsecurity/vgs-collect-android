@@ -37,7 +37,6 @@ class VGSCardNumberEditTextTest {
 
     private lateinit var view: VGSCardNumberEditText
 
-
     @Before
     fun setUp() {
         activityController = Robolectric.buildActivity(Activity::class.java)
@@ -69,13 +68,11 @@ class VGSCardNumberEditTextTest {
         assertEquals(1, view.childCount)
     }
 
-
     @Test
     fun test_field_type() {
         val type = view.getFieldType()
         assertEquals(FieldType.CARD_NUMBER, type)
     }
-
 
     @Test
     fun test_set_divider() {
@@ -501,6 +498,141 @@ class VGSCardNumberEditTextTest {
     }
 
     @Test
+    fun test_regex() {
+        val child = view.statePreparer.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val rule = PaymentCardNumberRule.ValidationBuilder()
+            .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")
+            .build()
+        view.addRule(rule)
+
+
+        view.setText("4111111111111111")
+        child.refreshInternalState()
+
+        val state0 = view.getState()
+        assertNotNull(state0)
+        assertEquals(true, state0!!.isValid)
+        assertEquals(16, state0.contentLength)
+        assertEquals("411111", state0.bin)
+
+
+        view.setText("0111111111111111")
+        child.refreshInternalState()
+
+        val state1 = view.getState()
+        assertNotNull(state1)
+        assertEquals(true, state1!!.isValid)
+        assertEquals(16, state1.contentLength)
+        assertEquals("011111", state1.bin)
+
+        view.setText("01111111111111112")
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        assertNotNull(state2)
+        assertEquals(false, state2!!.isValid)
+        assertEquals(17, state2.contentLength)
+
+        view.setText("01111111111111")
+        child.refreshInternalState()
+
+        val state3 = view.getState()
+        assertNotNull(state3)
+        assertEquals(false, state3!!.isValid)
+        assertEquals(14, state3.contentLength)
+    }
+
+    @Test
+    fun test_override_default_validation() {
+        val child = view.statePreparer.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val rule = PaymentCardNumberRule.ValidationBuilder()
+            .setAllowableMinLength(12)
+            .setAllowableMaxLength(14)
+            .setAllowToOverrideDefaultValidation(true)
+            .build()
+        view.addRule(rule)
+
+
+        view.setText("41111111111111")
+        child.refreshInternalState()
+
+        val state0 = view.getState()
+        assertNotNull(state0)
+        assertEquals(true, state0!!.isValid)
+        assertEquals(14, state0.contentLength)
+        assertEquals("411111", state0.bin)
+
+        view.setText("411111111111")
+        child.refreshInternalState()
+
+        val state1 = view.getState()
+        assertNotNull(state1)
+        assertEquals(true, state1!!.isValid)
+        assertEquals(12, state1.contentLength)
+        assertEquals("411111", state1.bin)
+
+
+        view.setText("41111111111")
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        assertNotNull(state2)
+        assertEquals(false, state2!!.isValid)
+        assertEquals(11, state2.contentLength)
+    }
+
+    @Test
+    fun test_wrong_override_default_validation() {
+        val child = view.statePreparer.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val rule = PaymentCardNumberRule.ValidationBuilder()
+            .setAllowToOverrideDefaultValidation(true)
+            .build()
+        view.addRule(rule)
+
+
+        view.setText("41111111111111111")
+        child.refreshInternalState()
+
+        val state0 = view.getState()
+        assertNotNull(state0)
+        assertEquals(false, state0!!.isValid)
+        assertEquals(17, state0.contentLength)
+
+        view.setText("4111111111111111")
+        child.refreshInternalState()
+
+        val state1 = view.getState()
+        assertNotNull(state1)
+        assertEquals(true, state1!!.isValid)
+        assertEquals(16, state1.contentLength)
+        assertEquals("411111", state1.bin)
+
+
+        view.setText("411111111111111")
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        assertNotNull(state2)
+        assertEquals(false, state2!!.isValid)
+        assertEquals(15, state2.contentLength)
+    }
+
+    @Test
     fun test_length_luhn() {
         val child = view.statePreparer.getView()
         Assert.assertTrue(child is BaseInputField)
@@ -540,4 +672,44 @@ class VGSCardNumberEditTextTest {
         assertEquals(false, state3!!.isValid)
         assertEquals(19, state3.contentLength)
     }
+
+//    @Test
+//    fun test_luhn_length_regex() {
+//        val child = view.statePreparer.getView()
+//        Assert.assertTrue(child is BaseInputField)
+//
+//        (child as BaseInputField).prepareFieldTypeConnection()
+//        child.applyInternalFieldStateChangeListener()
+//
+//        val rule = PaymentCardNumberRule.ValidationBuilder()
+//            .setAlgorithm(ChecksumAlgorithm.LUHN)
+//            .setAllowableNumberLength(arrayOf(15))
+//            .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")
+//            .build()
+//        view.addRule(rule)
+//
+//        view.setText("4111111111111167")
+//        child.refreshInternalState()
+//
+//        val state = view.getState()
+//        assertNotNull(state)
+//        assertEquals(false, state!!.isValid)
+//        assertEquals(16, state.contentLength)
+//
+//        view.setText("411111111111116")
+//        child.refreshInternalState()
+//
+//        val state2 = view.getState()
+//        assertNotNull(state)
+//        assertEquals(false, state2!!.isValid)
+//        assertEquals(15, state2.contentLength)
+//
+//        view.setText("411111111111111")
+//        child.refreshInternalState()
+//
+//        val state3 = view.getState()
+//        assertNotNull(state)
+//        assertEquals(false, state3!!.isValid)
+//        assertEquals(15, state3.contentLength)
+//    }
 }
