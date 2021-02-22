@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscollect.core.storage.external
 
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
-import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import java.util.HashMap
 
 internal class DependencyReceiver:ExternalDependencyDispatcher {
@@ -20,13 +19,13 @@ internal class DependencyReceiver:ExternalDependencyDispatcher {
     override fun dispatch(map: HashMap<String, Any?>) {
         map.forEach {
             if(it.value != null) {
-                val d = Dependency(DependencyType.TEXT, it.value!!)
+                val d = Dependency.text(it.value!!)
                 views[it.key]?.dispatchDependencySetting(d)
             }
         }
     }
 
     override fun dispatch(fieldName: String, value: Any) {
-        views[fieldName]?.dispatchDependencySetting(Dependency(DependencyType.TEXT, value))
+        views[fieldName]?.dispatchDependencySetting(Dependency.text(value))
     }
 }

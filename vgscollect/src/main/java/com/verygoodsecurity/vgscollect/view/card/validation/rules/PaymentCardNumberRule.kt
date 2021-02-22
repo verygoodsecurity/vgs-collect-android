@@ -7,7 +7,9 @@ import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgo
  */
 data class PaymentCardNumberRule private constructor(
     internal val algorithm: ChecksumAlgorithm?,
-    internal val length:Array<Int>?
+    internal val length: Array<Int>?,
+    internal val regex: String?,
+    internal val canOverrideDefaultValidation: Boolean
 ) {
 
     /**
@@ -21,13 +23,19 @@ data class PaymentCardNumberRule private constructor(
         private var algorithm: ChecksumAlgorithm? = null
 
         /** The array of the card's number which will support. */
-        private var length:Array<Int>? = null
+        private var length: Array<Int>? = null
 
         /** The minimum length of the card's number which will support. */
         private var minLength = -1
 
         /** The maximum length of the card's number which will support. */
         private var maxLength = -1
+
+        /** Determines whether the Collect SDK can replace default validation rules by configured with ValidationBuilder. */
+        private var canOverrideDefaultValidation = false
+
+        /** The Regex for validation input. */
+        private var regex: String? = null
 
         /** Configure behavior for validation checkSum. */
         fun setAlgorithm(algorithm: ChecksumAlgorithm): ValidationBuilder {
@@ -36,17 +44,17 @@ data class PaymentCardNumberRule private constructor(
         }
 
         /** Configure the array of the card's number which will support. */
-        fun setAllowableNumberLength(length:Array<Int>): ValidationBuilder {
+        fun setAllowableNumberLength(length: Array<Int>): ValidationBuilder {
             this.length = length
             return this
         }
 
         /** Configure minimum length of the card's number which will support. */
-        fun setAllowableMinLength(length:Int): ValidationBuilder {
-            if(maxLength == -1) {
+        fun setAllowableMinLength(length: Int): ValidationBuilder {
+            if (maxLength == -1) {
                 maxLength = 19
             }
-            minLength = if(length > maxLength) {
+            minLength = if (length > maxLength) {
                 maxLength
             } else {
                 length
@@ -55,14 +63,27 @@ data class PaymentCardNumberRule private constructor(
         }
 
         /** Configure maximum length of the card's number which will support. */
-        fun setAllowableMaxLength(length:Int): ValidationBuilder {
-            if(minLength == -1) {
+        fun setAllowableMaxLength(length: Int): ValidationBuilder {
+            if (minLength == -1) {
                 minLength = 13
             }
-            if(length < minLength) {
+            if (length < minLength) {
                 minLength = length
             }
             maxLength = length
+            return this
+        }
+
+        /** Determines whether the Collect SDK can override default validation rules. */
+        fun setAllowToOverrideDefaultValidation(canOverride: Boolean): ValidationBuilder {
+            canOverrideDefaultValidation = canOverride
+            return this
+        }
+
+
+        /** Configure Regex for validation input. */
+        fun setRegex(regex: String): ValidationBuilder {
+            this.regex = regex
             return this
         }
 
@@ -76,7 +97,9 @@ data class PaymentCardNumberRule private constructor(
 
             return PaymentCardNumberRule(
                 algorithm,
-                range
+                range,
+                regex,
+                canOverrideDefaultValidation
             )
         }
     }

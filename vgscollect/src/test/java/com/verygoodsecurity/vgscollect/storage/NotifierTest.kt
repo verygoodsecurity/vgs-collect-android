@@ -28,7 +28,7 @@ class NotifierTest {
         val notifier = Notifier()
         notifier.addDependencyListener(FieldType.CVC, listenerCVC)
 
-        val testDependency = Dependency(DependencyType.RANGE, 3)
+        val testDependency = Dependency(DependencyType.CARD, 3)
         notifier.onDependencyDetected(FieldType.CVC, testDependency)
 
         Mockito.verify(listener).dispatchDependencySetting(testDependency)
@@ -42,7 +42,7 @@ class NotifierTest {
         val notifier = Notifier()
         notifier.addDependencyListener(FieldType.CVC, listenerCVC)
 
-        val testDependency = Dependency(DependencyType.RANGE, 4)
+        val testDependency = Dependency(DependencyType.CARD, 4)
         notifier.onDependencyDetected(FieldType.CVC, testDependency)
 
         Mockito.verify(listener).dispatchDependencySetting(testDependency)
@@ -62,9 +62,9 @@ class NotifierTest {
 
         assertEquals(FieldType.CVC, argument_1.value)
 
-        assertEquals(DependencyType.RANGE, argument_2.value.dependencyType)
+        assertEquals(DependencyType.CARD, argument_2.value.dependencyType)
 
-        val cvcRange = (argument_2.value.value as Array<Int>)
+        val cvcRange = (argument_2.value.value as FieldContent.CardNumberContent).rangeCVV
         assertArrayEquals(CardType.MASTERCARD.rangeCVV, cvcRange)
     }
 
@@ -81,9 +81,9 @@ class NotifierTest {
 
         assertEquals(FieldType.CVC, argument_1.value)
 
-        assertEquals(DependencyType.RANGE, argument_2.value.dependencyType)
+        assertEquals(DependencyType.CARD, argument_2.value.dependencyType)
 
-        val cvcRange = (argument_2.value.value as Array<Int>)
+        val cvcRange = (argument_2.value.value as FieldContent.CardNumberContent).rangeCVV
         assertArrayEquals(CardType.AMERICAN_EXPRESS.rangeCVV, cvcRange)
     }
 
