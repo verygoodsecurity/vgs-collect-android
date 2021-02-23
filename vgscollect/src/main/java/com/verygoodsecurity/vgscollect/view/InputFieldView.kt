@@ -848,14 +848,16 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun setNumberDivider(divider: String?) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setNumberDivider(divider)
+        } else if(fieldType == FieldType.SSN) {
+            (inputField as? SSNInputField)?.setNumberDivider(divider)
         }
     }
 
     protected fun getNumberDivider(): Char? {
-        return if (fieldType == FieldType.CARD_NUMBER) {
-            (inputField as? CardInputField)?.getNumberDivider()?.first()
-        } else {
-            null
+        return when(fieldType) {
+            FieldType.CARD_NUMBER ->  (inputField as? CardInputField)?.getNumberDivider()?.first()
+            FieldType.SSN ->  (inputField as? SSNInputField)?.getNumberDivider()?.first()
+            else -> null
         }
     }
 

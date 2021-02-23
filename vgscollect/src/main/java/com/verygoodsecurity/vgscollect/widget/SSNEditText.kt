@@ -24,6 +24,8 @@ class SSNEditText @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
+                val numberDivider:String? = getString(R.styleable.SSNEditText_numberDivider)
+
                 val fieldName:String? = getString(R.styleable.SSNEditText_fieldName)
 
                 val inputType = getInt(R.styleable.SSNEditText_inputType, EditorInfo.TYPE_NULL)
@@ -58,6 +60,8 @@ class SSNEditText @JvmOverloads constructor(
                 setEnabled(enabled)
 
                 setInputType(inputType)
+
+                setNumberDivider(numberDivider)
             } finally {
                 recycle()
             }
@@ -73,4 +77,28 @@ class SSNEditText @JvmOverloads constructor(
         return getSSNState()
     }
 
+    /**
+     * Sets the symbol that will divide groups of digits in the number.
+     * The divider make impact only on UI.
+     * 000 00 0000
+     *
+     * @param char The divider symbol.
+     */
+    fun setDivider(char: Char) {
+        setNumberDivider(char.toString())
+    }
+
+    /**
+     * Return symbol that will divide groups of digits in the number.
+     *
+     * @return divider symbol
+     */
+    fun getDivider(): Char? {
+        return getNumberDivider()
+    }
+
+
+    companion object {
+        internal val TAG: String = SSNEditText::class.simpleName.toString()
+    }
 }
