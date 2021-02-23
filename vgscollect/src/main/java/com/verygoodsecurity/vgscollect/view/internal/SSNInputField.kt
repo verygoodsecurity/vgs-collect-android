@@ -136,9 +136,11 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
         }
     }
 
+    internal fun getNumberDivider() = divider
+
     internal fun setNumberDivider(divider: String?) {
         when {
-            divider.isNullOrEmpty() -> this@SSNInputField.divider = EMPTY_CHAR
+            divider.isNullOrEmpty() -> this@SSNInputField.divider = DIVIDER
             divider.isNumeric() -> printWarning(TAG, R.string.error_divider_card_number_field)
             divider.length > 1 -> printWarning(TAG, R.string.error_divider_count_card_number_field)
             else -> this@SSNInputField.divider = divider

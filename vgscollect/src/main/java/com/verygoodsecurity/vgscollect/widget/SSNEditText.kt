@@ -88,6 +88,16 @@ class SSNEditText @JvmOverloads constructor(
         setNumberDivider(char.toString())
     }
 
+    /**
+     * Return symbol that will divide groups of digits in the number.
+     *
+     * @return divider symbol
+     */
+    fun getDivider(): Char? {
+        return getNumberDivider()
+    }
+
+
     companion object {
         internal val TAG: String = SSNEditText::class.simpleName.toString()
     }
