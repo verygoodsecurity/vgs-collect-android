@@ -321,7 +321,7 @@
         <flag name="flagForceAscii" value="0x80000000" />
     </attr>
 
-    <!--  To set the symbol that will divide groups of digits in the card number add app:numberDivider to your field's declaration in xml. -->
+    <!--  To set the symbol that will divide groups of digits. -->
     <attr name="numberDivider" format="string"/>
 
 
@@ -487,6 +487,7 @@
 
         <attr name="hint" />
 
+        <!--  To set the symbol that will divide groups of digits in the card number add app:numberDivider to your field's declaration in xml. -->
         <attr name="numberDivider"/>
 
         <!-- Specifies how to align the icon by the view’s x-axis. To specify gravity programmatically you could use android Gravity class.
@@ -529,6 +530,7 @@
         <attr name="gravity" />
         <attr name="ellipsize" />
 
+        <!--  To set the symbol that will divide groups of digits in the SSN add app:numberDivider to your field's declaration in xml. -->
         <attr name="numberDivider"/>
 
     </declare-styleable>
