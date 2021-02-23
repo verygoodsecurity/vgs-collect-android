@@ -861,6 +861,23 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    protected fun setOutputNumberDivider(divider: String?) {
+        if (fieldType == FieldType.CARD_NUMBER) {
+//            (inputField as? CardInputField)?.setNumberDivider(divider)
+        } else if(fieldType == FieldType.SSN) {
+            (inputField as? SSNInputField)?.setOutputNumberDivider(divider)
+        }
+    }
+
+    protected fun getOutputNumberDivider(): Char? {
+        return when(fieldType) {
+            FieldType.CARD_NUMBER -> null
+            FieldType.SSN ->  (inputField as? SSNInputField)?.getNumberDivider()?.first()
+            else -> null
+        }
+    }
+
+
     /**
      * @return the base paint used for the text.  Please use this only to
      * consult the Paint's properties and not to change them.

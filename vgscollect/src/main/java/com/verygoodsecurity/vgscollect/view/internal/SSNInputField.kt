@@ -7,6 +7,7 @@ import android.view.Gravity
 import android.view.View
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscollect.util.extension.formatToMask
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputSSNConnection
@@ -23,6 +24,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     override var fieldType: FieldType = FieldType.SSN
 
     private var divider: String = DIVIDER
+    private var outputDivider: String = DIVIDER
     private var ssnNumberMask = MASK
 
     private val validator: MutableValidator = CompositeValidator()
@@ -84,15 +86,17 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
                 if (str.isNotEmpty()) {
                     hasUserInteraction = true
                 }
-                content = createCardNumberContent(str)
+                content = createSSNContent(str)
             }
             it.run()
         }
     }
 
-    private fun createCardNumberContent(str: String): FieldContent.SSNContent {
+    private fun createSSNContent(str: String): FieldContent.SSNContent {
         val c = FieldContent.SSNContent()
-        c.rawData = str.replace(divider, EMPTY_CHAR)
+        c.rawData = MASK.replace(DIVIDER, outputDivider).run {
+            str.formatToMask(this)
+        }
         c.data = str
         return c
     }
@@ -136,11 +140,22 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
         }
     }
 
+    internal fun getOutputDivider() = outputDivider
+
+    internal fun setOutputNumberDivider(divider: String?) {
+        when {
+            divider.isNullOrEmpty() -> this@SSNInputField.divider = DIVIDER
+            divider.isNumeric() -> printWarning(TAG, R.string.error_output_divider_card_number_field)
+            divider.length > 1 -> printWarning(TAG, R.string.error_output_divider_count_card_number_field)
+            else -> outputDivider = divider
+        }
+    }
+
     internal fun getNumberDivider() = divider
 
     internal fun setNumberDivider(divider: String?) {
         when {
-            divider.isNullOrEmpty() -> this@SSNInputField.divider = DIVIDER
+            divider == null -> this@SSNInputField.divider = DIVIDER
             divider.isNumeric() -> printWarning(TAG, R.string.error_divider_card_number_field)
             divider.length > 1 -> printWarning(TAG, R.string.error_divider_count_card_number_field)
             else -> this@SSNInputField.divider = divider
@@ -154,8 +169,11 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     companion object {
         private const val MASK = "###-##-####"
         private const val MASK_REGEX = "[^#]"
-        private const val MAX_LENGTH = 11
-        internal const val VALIDATION_REGEX = "^(?!\\b(\\d)\\1+\\b)(?!(123-45-6789|219-09-9999|219-09-9999|457-55-5462))(?!(000|666|9))(\\d{3}\\D?(?!(00))\\d{2}\\D?(?!(0000))\\d{4})\$"
+        internal const val VALIDATION_REGEX = "^(?!\\b(\\d)\\1+\\b)" +
+                "(?!(123456789|219099999|457555462|" +
+                "123-45-6789|219-09-9999|457-55-5462))" +
+                "(?!(000|666|9))" +
+                "(\\d{3}\\D?(?!(00))\\d{2}\\D?(?!(0000))\\d{4})\$"
         private const val DIVIDER = "-"
         private const val EMPTY_CHAR = ""
     }
