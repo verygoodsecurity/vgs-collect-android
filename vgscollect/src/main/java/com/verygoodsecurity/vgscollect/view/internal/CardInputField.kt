@@ -25,7 +25,7 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
-import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText.Companion.TAG
 
 /** @suppress */
 internal class CardInputField(context: Context) : BaseInputField(context),
@@ -94,10 +94,9 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     private fun applyFormatter() {
-        cardNumberFormatter = with(CardNumberFormatter()) {
-            setMask(cardNumberMask)
-            applyNewTextWatcher(this)
-            this
+        cardNumberFormatter = CardNumberFormatter().also {
+            it.setMask(cardNumberMask)
+            applyNewTextWatcher(it)
         }
     }
 
@@ -172,18 +171,14 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     internal fun setNumberDivider(divider: String?) {
         when {
             divider.isNullOrEmpty() -> this@CardInputField.divider = EMPTY_CHAR
-            divider.isNumeric() -> printErrorInLog(R.string.error_divider_card_number_field)
-            divider.length > 1 -> printErrorInLog(R.string.error_divider_count_card_number_field)
+            divider.isNumeric() -> printWarning(TAG, R.string.error_divider_card_number_field)
+            divider.length > 1 -> printWarning(TAG, R.string.error_divider_count_card_number_field)
             else -> this@CardInputField.divider = divider
         }
 
         applyDividerOnMask()
         setupKeyListener()
         refreshInputConnection()
-    }
-
-    private fun printErrorInLog(resId: Int) {
-        VGSCollectLogger.warn(VGSCardNumberEditText.TAG, context.getString(resId))
     }
 
     private fun setupKeyListener() {
