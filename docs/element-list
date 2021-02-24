@@ -34,6 +34,7 @@ $dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.Companion///
 $dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.OnEditorActionListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.OnEditorActionListener.html
 $dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.OnTextChangedListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.OnTextChangedListener.html
 $dokka.location:com.verygoodsecurity.vgscollect.widget/ExpirationDateEditText.OnDatePickerVisibilityChangeListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/widget/ExpirationDateEditText.OnDatePickerVisibilityChangeListener.html
+$dokka.location:com.verygoodsecurity.vgscollect.widget/SSNEditText.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/widget/SSNEditText.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.widget/VGSCardNumberEditText.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/widget/VGSCardNumberEditText.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.widget/VGSTextInputLayout.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect/VGSCollectLogger.Level///PointingToDeclaration/com/verygoodsecurity/vgscollect/VGSCollectLogger.Level.html
