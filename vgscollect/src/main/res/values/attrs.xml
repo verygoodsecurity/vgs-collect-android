@@ -321,8 +321,14 @@
         <flag name="flagForceAscii" value="0x80000000" />
     </attr>
 
+    <!--  To set the symbol that will divide groups of digits in the card number add app:numberDivider to your field's declaration in xml. -->
     <!--  To set the symbol that will divide groups of digits. -->
     <attr name="numberDivider" format="string"/>
+
+    <!--  To set the symbol that will divide groups of digits before submit to the Proxy add app:outputNumberDivider to your field's declaration in xml.
+          By default, the widget doesn't change user input before submit.
+    -->
+    <attr name="outputNumberDivider" format="string"/>
 
 
     <declare-styleable name="InputFieldView">
@@ -532,6 +538,7 @@
 
         <!--  To set the symbol that will divide groups of digits in the SSN add app:numberDivider to your field's declaration in xml. -->
         <attr name="numberDivider"/>
+        <attr name="outputNumberDivider"/>
 
     </declare-styleable>
 

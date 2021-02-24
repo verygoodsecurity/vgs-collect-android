@@ -25,6 +25,7 @@ class SSNEditText @JvmOverloads constructor(
         ).apply {
             try {
                 val numberDivider:String? = getString(R.styleable.SSNEditText_numberDivider)
+                val outputNumberDivider:String? = getString(R.styleable.SSNEditText_outputNumberDivider)
 
                 val fieldName:String? = getString(R.styleable.SSNEditText_fieldName)
 
@@ -62,6 +63,7 @@ class SSNEditText @JvmOverloads constructor(
                 setInputType(inputType)
 
                 setNumberDivider(numberDivider)
+                setOutputNumberDivider(outputNumberDivider)
             } finally {
                 recycle()
             }
@@ -84,7 +86,7 @@ class SSNEditText @JvmOverloads constructor(
      *
      * @param char The divider symbol.
      */
-    fun setDivider(char: Char) {
+    fun setDivider(char: Char?) {
         setNumberDivider(char.toString())
     }
 
@@ -95,6 +97,26 @@ class SSNEditText @JvmOverloads constructor(
      */
     fun getDivider(): Char? {
         return getNumberDivider()
+    }
+
+    /**
+     * Sets the symbol that will divide groups of digits in the number before submit it.
+     * The divider has no impact on UI.
+     * 000 00 0000
+     *
+     * @param char The divider symbol.
+     */
+    fun setOutputDivider(char: Char?) {
+        setOutputNumberDivider(char.toString())
+    }
+
+    /**
+     * Return symbol that will divide groups of digits in the number before submitting on Proxy.
+     *
+     * @return divider symbol
+     */
+    fun getOutputDivider(): Char? {
+        return getOutputNumberDivider()
     }
 
 

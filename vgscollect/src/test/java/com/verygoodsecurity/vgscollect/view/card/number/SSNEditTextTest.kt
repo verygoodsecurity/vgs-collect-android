@@ -56,6 +56,14 @@ class SSNEditTextTest {
     }
 
     @Test
+    fun test_set_output_divider() {
+        Assert.assertNotNull(view)
+
+        view.setOutputDivider(' ')
+        Assert.assertEquals(' ', view.getOutputDivider())
+    }
+
+    @Test
     fun test_check_internal_view() {
         val internal = view.statePreparer.getView()
         Assert.assertNotNull(internal)
@@ -198,7 +206,6 @@ class SSNEditTextTest {
 
         Assert.assertEquals(stateResult.last, state.last)
     }
-
 
     @Test
     fun test_divider() {
