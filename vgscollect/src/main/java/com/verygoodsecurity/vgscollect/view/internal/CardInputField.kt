@@ -10,7 +10,7 @@ import android.view.Gravity
 import android.view.View
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.*
-import com.verygoodsecurity.vgscollect.VGSCollectLogger
+import com.verygoodsecurity.vgscollect.util.extension.formatToMask
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardNumberConnection
@@ -25,6 +25,7 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
+import com.verygoodsecurity.vgscollect.widget.SSNEditText
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText.Companion.TAG
 
 /** @suppress */
@@ -36,6 +37,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         private const val DEFAULT_MASK = "#### #### #### #### ###"
         private const val EMPTY_CHAR = ""
         private const val SPACE = " "
+        private const val DIVIDER = "-"
     }
 
     override var fieldType: FieldType = FieldType.CARD_NUMBER
@@ -47,6 +49,8 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         }
 
     private var divider: String = SPACE
+    private var outputDivider: String = EMPTY_CHAR
+
     private var iconGravity: Int = Gravity.NO_GRAVITY
     private var cardtype: CardType = CardType.UNKNOWN
 
@@ -127,7 +131,10 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     private fun createCardNumberContent(str: String): FieldContent.CardNumberContent {
         val c = FieldContent.CardNumberContent()
         c.cardtype = this@CardInputField.cardtype
-        c.rawData = str.replace(divider, EMPTY_CHAR)
+        c.rawData = cardNumberMask.replace(DIVIDER, outputDivider).run {
+            str.formatToMask(this)
+        }
+
         c.data = str
         return c
     }
@@ -165,6 +172,17 @@ internal class CardInputField(context: Context) : BaseInputField(context),
             layoutDirection = View.LAYOUT_DIRECTION_LTR
             textDirection = View.TEXT_DIRECTION_LTR
             gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
+        }
+    }
+
+    internal fun getOutputDivider() = outputDivider
+
+    internal fun setOutputNumberDivider(divider: String?) {
+        when {
+            divider.isNullOrEmpty() -> outputDivider = EMPTY_CHAR
+            divider.isNumeric() -> printWarning(SSNEditText.TAG, R.string.error_output_divider_card_number_field)
+            divider.length > 1 -> printWarning(SSNEditText.TAG, R.string.error_output_divider_count_card_number_field)
+            else -> outputDivider = divider
         }
     }
 
