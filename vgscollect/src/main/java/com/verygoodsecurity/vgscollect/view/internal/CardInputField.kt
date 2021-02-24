@@ -25,7 +25,6 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
-import com.verygoodsecurity.vgscollect.widget.SSNEditText
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText.Companion.TAG
 
 /** @suppress */
@@ -186,11 +185,11 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         when {
             divider.isNullOrEmpty() -> outputDivider = EMPTY_CHAR
             divider.isNumeric() -> printWarning(
-                SSNEditText.TAG,
+                TAG,
                 R.string.error_output_divider_number_field
             )
             divider.length > 1 -> printWarning(
-                SSNEditText.TAG,
+                TAG,
                 R.string.error_output_divider_count_number_field
             )
             else -> outputDivider = divider
