@@ -321,10 +321,13 @@
         <flag name="flagForceAscii" value="0x80000000" />
     </attr>
 
-    <!--  To set the symbol that will divide groups of digits in the card number add app:numberDivider to your field's declaration in xml.
-          By default, the widget doesn't have any pre-configured divider and all number will be a single line.
-    -->
+    <!--  To set the symbol that will divide groups of digits. -->
     <attr name="numberDivider" format="string"/>
+
+    <!--  To set the symbol that will divide groups of digits before submit to the Proxy.
+          By default, the widget doesn't change user input before submit.
+    -->
+    <attr name="outputNumberDivider" format="string"/>
 
 
     <declare-styleable name="InputFieldView">
@@ -489,7 +492,10 @@
 
         <attr name="hint" />
 
+        <!--  To set the symbol that will divide groups of digits in the card number add app:numberDivider to your field's declaration in xml. -->
         <attr name="numberDivider"/>
+
+        <attr name="outputNumberDivider"/>
 
         <!-- Specifies how to align the icon by the view’s x-axis. To specify gravity programmatically you could use android Gravity class.
              By default, gravity in end position.
@@ -531,6 +537,10 @@
         <attr name="gravity" />
         <attr name="ellipsize" />
 
+        <!--  To set the symbol that will divide groups of digits in the SSN add app:numberDivider to your field's declaration in xml. -->
+        <attr name="numberDivider"/>
+
+        <attr name="outputNumberDivider"/>
 
     </declare-styleable>
 

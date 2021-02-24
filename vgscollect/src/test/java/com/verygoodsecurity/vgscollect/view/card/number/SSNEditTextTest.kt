@@ -47,6 +47,23 @@ class SSNEditTextTest {
         Assert.assertNotNull(internal)
     }
 
+    @Test
+    fun test_set_divider() {
+        Assert.assertNotNull(view)
+
+        view.setDivider(' ')
+        Assert.assertEquals(' ', view.getDivider())
+    }
+
+    @Test
+    fun test_set_output_divider() {
+        Assert.assertNotNull(view)
+
+        view.setOutputDivider(null)
+        Assert.assertEquals(null, view.getOutputDivider())
+        view.setOutputDivider(' ')
+        Assert.assertEquals(' ', view.getOutputDivider())
+    }
 
     @Test
     fun test_check_internal_view() {
@@ -192,6 +209,44 @@ class SSNEditTextTest {
         Assert.assertEquals(stateResult.last, state.last)
     }
 
+    @Test
+    fun test_divider() {
+        view.setDivider(' ')
+        val child = view.statePreparer.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        child.refreshInternalState()
+        view.setText("123 12 3123")
+
+        child.refreshInternalState()
+
+        val state = view.getState()
+        Assert.assertNotNull(state)
+        Assert.assertEquals(true, state!!.isValid)
+        Assert.assertEquals(11, state.contentLength)
+        Assert.assertEquals("3123", state.last)
+
+        view.setText("123 12 3123777")
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        Assert.assertNotNull(state)
+        Assert.assertEquals(false, state2!!.isValid)
+        Assert.assertEquals(14, state2.contentLength)
+        Assert.assertEquals("", state2.last)
+
+        view.setText("123 12 312")
+        child.refreshInternalState()
+
+        val state3 = view.getState()
+        Assert.assertNotNull(state)
+        Assert.assertEquals(false, state3!!.isValid)
+        Assert.assertEquals(10, state3.contentLength)
+        Assert.assertEquals("", state3.last)
+    }
 
     @Test
     fun test_length() {

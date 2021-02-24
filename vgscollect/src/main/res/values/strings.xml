@@ -9,8 +9,10 @@
     <string name="error_file_size_validation">File %1$s is over 20Mb.</string>
     <string name="error_file_not_fount">File not found</string>
     <string name="error_file_not_support">File is not supported by SDK</string>
-    <string name="error_divider_count_card_number_field">Divider for card number can\'t be greater than 1 symbol.</string>
-    <string name="error_divider_card_number_field">Divider for card number can\'t a digit. (%1$s)</string>
+    <string name="error_divider_count_number_field">Divider for number can\'t be greater than 1 symbol.</string>
+    <string name="error_divider_number_field">Divider for number can\'t be a digit.</string>
+    <string name="error_output_divider_number_field">Output divider for number can\'t be a digit.</string>
+    <string name="error_output_divider_count_number_field">Divider for number can\'t be greater than 1 symbol.</string>
     <string name="error_custom_brand_mask_length">The mask and card number maximum length are not equal for %1$s brand.</string>
     <string name="error_custom_host_wrong">A specified host: %1$s was not correct. Looks like you don\'t activate cname for Collect SDK on the Dashboard.</string>
     <string name="error_custom_host_wrong_short">A specified host is not correct.</string>

@@ -83,6 +83,15 @@ class VGSCardNumberEditTextTest {
     }
 
     @Test
+    fun test_set_output_divider() {
+        assertNotNull(view)
+
+        assertEquals(null, view.getOutputDivider())
+        view.setOutputDivider(' ')
+        assertEquals(' ', view.getOutputDivider())
+    }
+
+    @Test
     fun test_set_card_brand_icon_gravity_start() {
         assertNotNull(view)
 
