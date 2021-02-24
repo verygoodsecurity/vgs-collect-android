@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.AutofillAction
@@ -210,6 +211,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private fun getResolvedLayoutDirection(): Int = layoutDirection
 
+    protected fun refreshOutputContent() {
+        updateTextChanged(text.toString())
+    }
+
     protected fun refreshInput() {
         val currentSelection = selectionStart
         setText(text)
@@ -365,6 +370,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         tracker?.logEvent(
             AutofillAction(m)
         )
+    }
+
+    protected fun printWarning(tag: String, resId: Int) {
+        VGSCollectLogger.warn(tag, context.getString(resId))
     }
 }
 

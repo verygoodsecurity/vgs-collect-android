@@ -31,31 +31,10 @@ internal fun VGSFieldState.mapToFieldState(): FieldState {
         FieldType.CVC -> FieldState.CVCState()
         FieldType.CARD_HOLDER_NAME -> FieldState.CardHolderNameState()
         FieldType.CARD_EXPIRATION_DATE -> FieldState.CardExpirationDateState()
-        FieldType.CARD_NUMBER -> {
-            val state = FieldState.CardNumberState()
-
-            val content = (content as? FieldContent.CardNumberContent)
-            if (isValid) {
-                state.bin = content?.parseCardBin()
-                state.last = content?.parseCardLast4Digits()
-            }
-            state.contentLengthRaw = content?.rawData?.length ?: 0
-            state.number = content?.parseCardNumber()
-            state.cardBrand = content?.cardBrandName ?: ""
-            state.drawableBrandResId = content?.iconResId ?: 0
-
-            state
-        }
-        FieldType.SSN -> {
-            val state = FieldState.SSNNumberState()
-            val content = (content as? FieldContent.SSNContent)
-            if (isValid) {
-                state.last = content?.parseCardLast4Digits()
-            }
-            state.contentLengthRaw = content?.rawData?.length ?: 0
-
-            state
-        }
+        FieldType.CARD_NUMBER -> prepareCardNumberState(
+            isValid, content as? FieldContent.CardNumberContent
+        )
+        FieldType.SSN -> prepareSSNState(isValid, content as? FieldContent.SSNContent)
     }
 
     f.fieldType = type
@@ -68,6 +47,34 @@ internal fun VGSFieldState.mapToFieldState(): FieldState {
     f.fieldName = fieldName ?: ""
     f.hasFocus = isFocusable
     return f
+}
+
+fun prepareSSNState(
+    isValid: Boolean,
+    content: FieldContent.SSNContent?
+): FieldState.SSNNumberState {
+    return FieldState.SSNNumberState().apply {
+        if (isValid) {
+            last = content?.parseCardLast4Digits()
+        }
+        contentLengthRaw = content?.rawData?.length ?: 0
+    }
+}
+
+private fun prepareCardNumberState(
+    isValid: Boolean,
+    content: FieldContent.CardNumberContent?
+): FieldState.CardNumberState {
+    return FieldState.CardNumberState().apply {
+        if (isValid) {
+            bin = content?.parseCardBin()
+            last = content?.parseCardLast4Digits()
+        }
+        contentLengthRaw = content?.rawData?.length ?: 0
+        number = content?.parseCardNumber()
+        cardBrand = content?.cardBrandName ?: ""
+        drawableBrandResId = content?.iconResId ?: 0
+    }
 }
 
 /** @suppress */

@@ -42,8 +42,10 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                     getInt(R.styleable.VGSCardNumberEditText_cardBrandIconGravity, 0)
                 val brandIconVisibility =
                     getInt(R.styleable.VGSCardNumberEditText_brandIconVisibility, 0)
-                val divider: String? =
-                    getString(R.styleable.VGSCardNumberEditText_numberDivider) ?: null
+
+                val divider: String? = getString(R.styleable.VGSCardNumberEditText_numberDivider)
+                val outputNumberDivider: String? =
+                    getString(R.styleable.VGSCardNumberEditText_outputNumberDivider)
 
                 val inputType =
                     getInt(R.styleable.VGSCardNumberEditText_inputType, EditorInfo.TYPE_NULL)
@@ -92,6 +94,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                 setInputType(inputType)
 
                 setNumberDivider(divider)
+                setOutputNumberDivider(outputNumberDivider)
                 applyPreviewIconGravity(previewGravity)
                 applyPreviewIconMode(brandIconVisibility)
 
@@ -164,7 +167,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      *
      * @param char The divider symbol.
      */
-    fun setDivider(char: Char) {
+    fun setDivider(char: Char?) {
         setNumberDivider(char.toString())
     }
 
@@ -175,6 +178,26 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      */
     fun getDivider(): Char? {
         return getNumberDivider()
+    }
+
+    /**
+     * Sets the symbol that will divide groups of digits in the card number before submit it.
+     * The divider has no impact on UI.
+     * 0000 0000 0000 0000
+     *
+     * @param char The divider symbol.
+     */
+    fun setOutputDivider(char: Char?) {
+        setOutputNumberDivider(char?.toString())
+    }
+
+    /**
+     * Return symbol that will divide groups of digits in the card number before submitting on Proxy.
+     *
+     * @return divider symbol
+     */
+    fun getOutputDivider(): Char? {
+        return getOutputNumberDivider()
     }
 
     /**

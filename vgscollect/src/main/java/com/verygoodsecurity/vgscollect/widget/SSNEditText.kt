@@ -24,6 +24,9 @@ class SSNEditText @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
+                val numberDivider:String? = getString(R.styleable.SSNEditText_numberDivider)
+                val outputNumberDivider:String? = getString(R.styleable.SSNEditText_outputNumberDivider)
+
                 val fieldName:String? = getString(R.styleable.SSNEditText_fieldName)
 
                 val inputType = getInt(R.styleable.SSNEditText_inputType, EditorInfo.TYPE_NULL)
@@ -58,6 +61,9 @@ class SSNEditText @JvmOverloads constructor(
                 setEnabled(enabled)
 
                 setInputType(inputType)
+
+                setNumberDivider(numberDivider)
+                setOutputNumberDivider(outputNumberDivider)
             } finally {
                 recycle()
             }
@@ -73,4 +79,48 @@ class SSNEditText @JvmOverloads constructor(
         return getSSNState()
     }
 
+    /**
+     * Sets the symbol that will divide groups of digits in the number.
+     * The divider make impact only on UI.
+     * 000 00 0000
+     *
+     * @param char The divider symbol.
+     */
+    fun setDivider(char: Char?) {
+        setNumberDivider(char.toString())
+    }
+
+    /**
+     * Return symbol that will divide groups of digits in the number.
+     *
+     * @return divider symbol
+     */
+    fun getDivider(): Char? {
+        return getNumberDivider()
+    }
+
+    /**
+     * Sets the symbol that will divide groups of digits in the number before submit it.
+     * The divider has no impact on UI.
+     * 000 00 0000
+     *
+     * @param char The divider symbol.
+     */
+    fun setOutputDivider(char: Char?) {
+        setOutputNumberDivider(char?.toString())
+    }
+
+    /**
+     * Return symbol that will divide groups of digits in the number before submitting on Proxy.
+     *
+     * @return divider symbol
+     */
+    fun getOutputDivider(): Char? {
+        return getOutputNumberDivider()
+    }
+
+
+    companion object {
+        internal val TAG: String = SSNEditText::class.simpleName.toString()
+    }
 }

@@ -10,7 +10,7 @@ import android.view.Gravity
 import android.view.View
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.*
-import com.verygoodsecurity.vgscollect.VGSCollectLogger
+import com.verygoodsecurity.vgscollect.util.extension.formatToMask
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardNumberConnection
@@ -25,7 +25,7 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
-import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText.Companion.TAG
 
 /** @suppress */
 internal class CardInputField(context: Context) : BaseInputField(context),
@@ -47,10 +47,13 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         }
 
     private var divider: String = SPACE
+    private var outputDivider: String = EMPTY_CHAR
+
     private var iconGravity: Int = Gravity.NO_GRAVITY
     private var cardtype: CardType = CardType.UNKNOWN
 
-    private var cardNumberMask: String = DEFAULT_MASK
+    private var derivedCardNumberMask: String = DEFAULT_MASK
+    private var originalCardNumberMask: String = DEFAULT_MASK
 
     private var iconAdapter = CardIconAdapter(context)
     private var previewIconMode: PreviewIconMode = PreviewIconMode.ALWAYS
@@ -94,10 +97,9 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     private fun applyFormatter() {
-        cardNumberFormatter = with(CardNumberFormatter()) {
-            setMask(cardNumberMask)
-            applyNewTextWatcher(this)
-            this
+        cardNumberFormatter = CardNumberFormatter().also {
+            it.setMask(derivedCardNumberMask)
+            applyNewTextWatcher(it)
         }
     }
 
@@ -128,7 +130,9 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     private fun createCardNumberContent(str: String): FieldContent.CardNumberContent {
         val c = FieldContent.CardNumberContent()
         c.cardtype = this@CardInputField.cardtype
-        c.rawData = str.replace(divider, EMPTY_CHAR)
+        c.rawData = originalCardNumberMask.replace(MASK_REGEX.toRegex(), outputDivider).run {
+            str.formatToMask(this)
+        }
         c.data = str
         return c
     }
@@ -169,21 +173,41 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         }
     }
 
+    internal fun getOutputDivider(): Char? {
+        return if(outputDivider.isEmpty()) {
+            null
+        } else {
+            outputDivider.first()
+        }
+    }
+
+    internal fun setOutputNumberDivider(divider: String?) {
+        when {
+            divider.isNullOrEmpty() -> outputDivider = EMPTY_CHAR
+            divider.isNumeric() -> printWarning(
+                TAG,
+                R.string.error_output_divider_number_field
+            )
+            divider.length > 1 -> printWarning(
+                TAG,
+                R.string.error_output_divider_count_number_field
+            )
+            else -> outputDivider = divider
+        }
+        refreshOutputContent()
+    }
+
     internal fun setNumberDivider(divider: String?) {
         when {
             divider.isNullOrEmpty() -> this@CardInputField.divider = EMPTY_CHAR
-            divider.isNumeric() -> printErrorInLog(R.string.error_divider_card_number_field)
-            divider.length > 1 -> printErrorInLog(R.string.error_divider_count_card_number_field)
+            divider.isNumeric() -> printWarning(TAG, R.string.error_divider_number_field)
+            divider.length > 1 -> printWarning(TAG, R.string.error_divider_count_number_field)
             else -> this@CardInputField.divider = divider
         }
 
         applyDividerOnMask()
         setupKeyListener()
         refreshInputConnection()
-    }
-
-    private fun printErrorInLog(resId: Int) {
-        VGSCollectLogger.warn(VGSCardNumberEditText.TAG, context.getString(resId))
     }
 
     private fun setupKeyListener() {
@@ -260,7 +284,10 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         if (!text.isNullOrEmpty()) {
             val bin =
                 (inputConnection?.getOutput()?.content as FieldContent.CardNumberContent).parseCardBin()
-            cardNumberMask = maskAdapter.getItem(
+
+            originalCardNumberMask = card.currentMask
+
+            derivedCardNumberMask = maskAdapter.getItem(
                 card.cardType,
                 card.name ?: "",
                 bin,
@@ -284,12 +311,12 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     private fun applyDividerOnMask() {
-        cardNumberMask = with(cardNumberMask) {
-            this.replace(Regex(MASK_REGEX), divider)
-        }
-        if (!text.isNullOrEmpty() && cardNumberFormatter?.getMask() != cardNumberMask) {
-            cardNumberFormatter?.setMask(cardNumberMask)
-            refreshInput()
+        val newCardNumberMask = originalCardNumberMask.replace(MASK_REGEX.toRegex(), divider)
+
+        if (!text.isNullOrEmpty() && cardNumberFormatter?.getMask() != newCardNumberMask) {
+            derivedCardNumberMask = newCardNumberMask
+            cardNumberFormatter?.setMask(newCardNumberMask)
+            refreshOutputContent()
         }
     }
 
