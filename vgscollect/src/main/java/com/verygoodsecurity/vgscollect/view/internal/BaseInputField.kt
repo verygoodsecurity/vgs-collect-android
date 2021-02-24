@@ -211,6 +211,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private fun getResolvedLayoutDirection(): Int = layoutDirection
 
+    protected fun refreshOutputContent() {
+        updateTextChanged(text.toString())
+    }
+
     protected fun refreshInput() {
         val currentSelection = selectionStart
         setText(text)

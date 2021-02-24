@@ -37,7 +37,6 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         private const val DEFAULT_MASK = "#### #### #### #### ###"
         private const val EMPTY_CHAR = ""
         private const val SPACE = " "
-        private const val DIVIDER = "-"
     }
 
     override var fieldType: FieldType = FieldType.CARD_NUMBER
@@ -54,7 +53,8 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     private var iconGravity: Int = Gravity.NO_GRAVITY
     private var cardtype: CardType = CardType.UNKNOWN
 
-    private var cardNumberMask: String = DEFAULT_MASK
+    private var derivedCardNumberMask: String = DEFAULT_MASK
+    private var originalCardNumberMask: String = DEFAULT_MASK
 
     private var iconAdapter = CardIconAdapter(context)
     private var previewIconMode: PreviewIconMode = PreviewIconMode.ALWAYS
@@ -99,7 +99,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
 
     private fun applyFormatter() {
         cardNumberFormatter = CardNumberFormatter().also {
-            it.setMask(cardNumberMask)
+            it.setMask(derivedCardNumberMask)
             applyNewTextWatcher(it)
         }
     }
@@ -131,10 +131,9 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     private fun createCardNumberContent(str: String): FieldContent.CardNumberContent {
         val c = FieldContent.CardNumberContent()
         c.cardtype = this@CardInputField.cardtype
-        c.rawData = cardNumberMask.replace(DIVIDER, outputDivider).run {
+        c.rawData = originalCardNumberMask.replace(MASK_REGEX.toRegex(), outputDivider).run {
             str.formatToMask(this)
         }
-
         c.data = str
         return c
     }
@@ -180,17 +179,18 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     internal fun setOutputNumberDivider(divider: String?) {
         when {
             divider.isNullOrEmpty() -> outputDivider = EMPTY_CHAR
-            divider.isNumeric() -> printWarning(SSNEditText.TAG, R.string.error_output_divider_card_number_field)
-            divider.length > 1 -> printWarning(SSNEditText.TAG, R.string.error_output_divider_count_card_number_field)
+            divider.isNumeric() -> printWarning(SSNEditText.TAG, R.string.error_output_divider_number_field)
+            divider.length > 1 -> printWarning(SSNEditText.TAG, R.string.error_output_divider_count_number_field)
             else -> outputDivider = divider
         }
+        refreshOutputContent()
     }
 
     internal fun setNumberDivider(divider: String?) {
         when {
             divider.isNullOrEmpty() -> this@CardInputField.divider = EMPTY_CHAR
-            divider.isNumeric() -> printWarning(TAG, R.string.error_divider_card_number_field)
-            divider.length > 1 -> printWarning(TAG, R.string.error_divider_count_card_number_field)
+            divider.isNumeric() -> printWarning(TAG, R.string.error_divider_number_field)
+            divider.length > 1 -> printWarning(TAG, R.string.error_divider_count_number_field)
             else -> this@CardInputField.divider = divider
         }
 
@@ -273,7 +273,10 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         if (!text.isNullOrEmpty()) {
             val bin =
                 (inputConnection?.getOutput()?.content as FieldContent.CardNumberContent).parseCardBin()
-            cardNumberMask = maskAdapter.getItem(
+
+            originalCardNumberMask = card.currentMask
+
+            derivedCardNumberMask = maskAdapter.getItem(
                 card.cardType,
                 card.name ?: "",
                 bin,
@@ -297,12 +300,12 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     private fun applyDividerOnMask() {
-        cardNumberMask = with(cardNumberMask) {
-            this.replace(Regex(MASK_REGEX), divider)
-        }
-        if (!text.isNullOrEmpty() && cardNumberFormatter?.getMask() != cardNumberMask) {
-            cardNumberFormatter?.setMask(cardNumberMask)
-            refreshInput()
+        val newCardNumberMask = originalCardNumberMask.replace(MASK_REGEX.toRegex(), divider)
+
+        if (!text.isNullOrEmpty() && cardNumberFormatter?.getMask() != newCardNumberMask) {
+            derivedCardNumberMask = newCardNumberMask
+            cardNumberFormatter?.setMask(newCardNumberMask)
+            refreshOutputContent()
         }
     }
 
