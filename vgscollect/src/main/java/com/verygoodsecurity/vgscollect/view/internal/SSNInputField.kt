@@ -25,7 +25,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
 
     private var divider: String = DIVIDER
     private var outputDivider: String = DIVIDER
-    private var ssnNumberMask = MASK
+    private var derivedNumberMask = MASK
 
     private val validator: MutableValidator = CompositeValidator()
 
@@ -54,24 +54,26 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
 
     private fun prepareValidation() {
         validator.clearRules()
-        validator.addRule(LengthValidator(ssnNumberMask.length))
+        validator.addRule(LengthValidator(derivedNumberMask.length))
         validator.addRule(RegexValidator(VALIDATION_REGEX))
     }
 
     private fun applyFormatter() {
         numberFormatter = SSNumberFormatter().also {
-            it.setMask(ssnNumberMask)
+            it.setMask(derivedNumberMask)
             applyNewTextWatcher(it)
         }
     }
 
     private fun applyDividerOnMask() {
-        ssnNumberMask = MASK.run {
+        val newNumberMask = MASK.run {
             replace(Regex(MASK_REGEX), divider)
         }
 
-        if (!text.isNullOrEmpty() && numberFormatter?.getMask() != ssnNumberMask) {
-            numberFormatter?.setMask(ssnNumberMask)
+        if (!text.isNullOrEmpty() && numberFormatter?.getMask() != newNumberMask) {
+            derivedNumberMask = newNumberMask
+            numberFormatter?.setMask(newNumberMask)
+            refreshOutputContent()
         }
     }
 
@@ -140,7 +142,13 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
         }
     }
 
-    internal fun getOutputDivider() = outputDivider
+    internal fun getOutputDivider(): Char? {
+        return if(outputDivider.isEmpty()) {
+            null
+        } else {
+            outputDivider.first()
+        }
+    }
 
     internal fun setOutputNumberDivider(divider: String?) {
         when {
@@ -149,6 +157,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
             divider.length > 1 -> printWarning(TAG, R.string.error_output_divider_count_number_field)
             else -> outputDivider = divider
         }
+        refreshOutputContent()
     }
 
     internal fun getNumberDivider() = divider

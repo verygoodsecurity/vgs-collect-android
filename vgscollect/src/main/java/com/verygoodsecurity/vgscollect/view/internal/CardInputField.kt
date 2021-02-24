@@ -174,13 +174,25 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         }
     }
 
-    internal fun getOutputDivider() = outputDivider
+    internal fun getOutputDivider(): Char? {
+        return if(outputDivider.isEmpty()) {
+            null
+        } else {
+            outputDivider.first()
+        }
+    }
 
     internal fun setOutputNumberDivider(divider: String?) {
         when {
             divider.isNullOrEmpty() -> outputDivider = EMPTY_CHAR
-            divider.isNumeric() -> printWarning(SSNEditText.TAG, R.string.error_output_divider_number_field)
-            divider.length > 1 -> printWarning(SSNEditText.TAG, R.string.error_output_divider_count_number_field)
+            divider.isNumeric() -> printWarning(
+                SSNEditText.TAG,
+                R.string.error_output_divider_number_field
+            )
+            divider.length > 1 -> printWarning(
+                SSNEditText.TAG,
+                R.string.error_output_divider_count_number_field
+            )
             else -> outputDivider = divider
         }
         refreshOutputContent()

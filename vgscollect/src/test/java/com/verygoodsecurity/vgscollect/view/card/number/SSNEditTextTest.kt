@@ -59,6 +59,8 @@ class SSNEditTextTest {
     fun test_set_output_divider() {
         Assert.assertNotNull(view)
 
+        view.setOutputDivider(null)
+        Assert.assertEquals(null, view.getOutputDivider())
         view.setOutputDivider(' ')
         Assert.assertEquals(' ', view.getOutputDivider())
     }
