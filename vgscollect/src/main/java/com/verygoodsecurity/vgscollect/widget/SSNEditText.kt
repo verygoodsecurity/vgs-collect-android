@@ -107,7 +107,7 @@ class SSNEditText @JvmOverloads constructor(
      * @param char The divider symbol.
      */
     fun setOutputDivider(char: Char?) {
-        setOutputNumberDivider(char.toString())
+        setOutputNumberDivider(char?.toString())
     }
 
     /**
