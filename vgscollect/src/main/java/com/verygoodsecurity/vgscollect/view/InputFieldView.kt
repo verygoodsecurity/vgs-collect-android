@@ -848,31 +848,31 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun setNumberDivider(divider: String?) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setNumberDivider(divider)
-        } else if(fieldType == FieldType.SSN) {
+        } else if (fieldType == FieldType.SSN) {
             (inputField as? SSNInputField)?.setNumberDivider(divider)
         }
     }
 
     protected fun getNumberDivider(): Char? {
-        return when(fieldType) {
-            FieldType.CARD_NUMBER ->  (inputField as? CardInputField)?.getNumberDivider()?.first()
-            FieldType.SSN ->  (inputField as? SSNInputField)?.getNumberDivider()?.first()
+        return when (fieldType) {
+            FieldType.CARD_NUMBER -> (inputField as? CardInputField)?.getNumberDivider()?.first()
+            FieldType.SSN -> (inputField as? SSNInputField)?.getNumberDivider()?.first()
             else -> null
         }
     }
 
     protected fun setOutputNumberDivider(divider: String?) {
         if (fieldType == FieldType.CARD_NUMBER) {
-//            (inputField as? CardInputField)?.setNumberDivider(divider)
-        } else if(fieldType == FieldType.SSN) {
+//            (inputField as? CardInputField)?.setOutputNumberDivider(divider)
+        } else if (fieldType == FieldType.SSN) {
             (inputField as? SSNInputField)?.setOutputNumberDivider(divider)
         }
     }
 
     protected fun getOutputNumberDivider(): Char? {
-        return when(fieldType) {
-            FieldType.CARD_NUMBER -> null
-            FieldType.SSN ->  (inputField as? SSNInputField)?.getOutputDivider()?.first()
+        return when (fieldType) {
+            FieldType.CARD_NUMBER -> null //(inputField as? CardInputField)?.getOutputDivider()?.first()
+            FieldType.SSN -> (inputField as? SSNInputField)?.getOutputDivider()?.first()
             else -> null
         }
     }
