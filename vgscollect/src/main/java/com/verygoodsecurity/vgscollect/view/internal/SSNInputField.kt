@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
+import com.verygoodsecurity.vgscollect.widget.SSNEditText.Companion.DIVIDER
 import com.verygoodsecurity.vgscollect.widget.SSNEditText.Companion.TAG
 
 internal class SSNInputField(context: Context) : BaseInputField(context) {
@@ -143,11 +144,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     }
 
     internal fun getOutputDivider(): Char? {
-        return if (outputDivider.isEmpty()) {
-            null
-        } else {
-            outputDivider.first()
-        }
+        return outputDivider.firstOrNull()
     }
 
     internal fun setOutputNumberDivider(divider: String?) {
@@ -177,11 +174,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     }
 
     internal fun getNumberDivider(): Char? {
-        return if (divider.isEmpty()) {
-            null
-        } else {
-            divider.first()
-        }
+        return divider.firstOrNull()
     }
 
     internal fun setNumberDivider(divider: String?) {
@@ -218,7 +211,6 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
                 "123-45-6789|219-09-9999|457-55-5462))" +
                 "(?!(000|666|9))" +
                 "(\\d{3}\\D?(?!(00))\\d{2}\\D?(?!(0000))\\d{4})\$"
-        private const val DIVIDER = "-"
         private const val EMPTY_CHAR = ""
     }
 }

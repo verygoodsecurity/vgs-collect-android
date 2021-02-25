@@ -24,9 +24,9 @@ class SSNEditText @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
-                val numberDivider: String = getString(R.styleable.SSNEditText_numberDivider) ?: "-"
+                val numberDivider: String = getString(R.styleable.SSNEditText_numberDivider) ?: DIVIDER
                 val outputNumberDivider: String =
-                    getString(R.styleable.SSNEditText_outputNumberDivider) ?: "-"
+                    getString(R.styleable.SSNEditText_outputNumberDivider) ?: DIVIDER
 
                 val fieldName: String? = getString(R.styleable.SSNEditText_fieldName)
 
@@ -127,5 +127,7 @@ class SSNEditText @JvmOverloads constructor(
 
     companion object {
         internal val TAG: String = SSNEditText::class.simpleName.toString()
+
+        internal const val DIVIDER = "-"
     }
 }

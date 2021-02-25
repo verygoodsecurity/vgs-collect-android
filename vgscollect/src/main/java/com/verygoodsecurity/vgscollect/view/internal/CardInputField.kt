@@ -174,11 +174,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     internal fun getOutputDivider(): Char? {
-        return if (outputDivider.isEmpty()) {
-            null
-        } else {
-            outputDivider.first()
-        }
+        return outputDivider.firstOrNull()
     }
 
     internal fun setOutputNumberDivider(divider: String?) {
@@ -238,13 +234,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         keyListener = DigitsKeyListener.getInstance(digits)
     }
 
-    internal fun getNumberDivider(): Char? {
-        return if (divider.isEmpty()) {
-            null
-        } else {
-            divider.first()
-        }
-    }
+    internal fun getNumberDivider(): Char? = divider.firstOrNull()
 
     override fun setInputType(type: Int) {
         val validType = validateInputType(type)
