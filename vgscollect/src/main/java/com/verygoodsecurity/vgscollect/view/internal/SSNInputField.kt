@@ -70,7 +70,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
             replace(Regex(MASK_REGEX), divider)
         }
 
-        if (!text.isNullOrEmpty() && numberFormatter?.getMask() != newNumberMask) {
+        if (numberFormatter?.getMask() != newNumberMask) {
             derivedNumberMask = newNumberMask
             numberFormatter?.setMask(newNumberMask)
             refreshOutputContent()
@@ -143,7 +143,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     }
 
     internal fun getOutputDivider(): Char? {
-        return if(outputDivider.isEmpty()) {
+        return if (outputDivider.isEmpty()) {
             null
         } else {
             outputDivider.first()
@@ -153,20 +153,55 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     internal fun setOutputNumberDivider(divider: String?) {
         when {
             divider.isNullOrEmpty() -> outputDivider = EMPTY_CHAR
-            divider.isNumeric() -> printWarning(TAG, R.string.error_output_divider_number_field)
-            divider.length > 1 -> printWarning(TAG, R.string.error_output_divider_count_number_field)
+            arrayOf("#", "\\").contains(divider) -> printWarning(
+                TAG,
+                R.string.error_output_divider_mask
+            ).also {
+                outputDivider = DIVIDER
+            }
+            divider.isNumeric() -> printWarning(
+                TAG,
+                R.string.error_output_divider_number_field
+            ).also {
+                outputDivider = DIVIDER
+            }
+            divider.length > 1 -> printWarning(
+                TAG,
+                R.string.error_output_divider_count_number_field
+            ).also {
+                outputDivider = DIVIDER
+            }
             else -> outputDivider = divider
         }
         refreshOutputContent()
     }
 
-    internal fun getNumberDivider() = divider
+    internal fun getNumberDivider(): Char? {
+        return if (divider.isEmpty()) {
+            null
+        } else {
+            divider.first()
+        }
+    }
 
     internal fun setNumberDivider(divider: String?) {
         when {
             divider.isNullOrEmpty() -> this@SSNInputField.divider = EMPTY_CHAR
-            divider.isNumeric() -> printWarning(TAG, R.string.error_divider_number_field)
-            divider.length > 1 -> printWarning(TAG, R.string.error_divider_count_number_field)
+            arrayOf("#", "\\").contains(divider) -> printWarning(
+                TAG,
+                R.string.error_divider_mask
+            ).also {
+                this@SSNInputField.divider = DIVIDER
+            }
+            divider.isNumeric() -> printWarning(TAG, R.string.error_divider_number_field).also {
+                this@SSNInputField.divider = DIVIDER
+            }
+            divider.length > 1 -> printWarning(
+                TAG,
+                R.string.error_divider_count_number_field
+            ).also {
+                this@SSNInputField.divider = DIVIDER
+            }
             else -> this@SSNInputField.divider = divider
         }
 
