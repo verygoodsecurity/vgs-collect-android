@@ -24,10 +24,11 @@ class SSNEditText @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
-                val numberDivider:String? = getString(R.styleable.SSNEditText_numberDivider)
-                val outputNumberDivider:String? = getString(R.styleable.SSNEditText_outputNumberDivider)
+                val numberDivider: String = getString(R.styleable.SSNEditText_numberDivider) ?: DIVIDER
+                val outputNumberDivider: String =
+                    getString(R.styleable.SSNEditText_outputNumberDivider) ?: DIVIDER
 
-                val fieldName:String? = getString(R.styleable.SSNEditText_fieldName)
+                val fieldName: String? = getString(R.styleable.SSNEditText_fieldName)
 
                 val inputType = getInt(R.styleable.SSNEditText_inputType, EditorInfo.TYPE_NULL)
                 val hint = getString(R.styleable.SSNEditText_hint)
@@ -39,8 +40,12 @@ class SSNEditText @JvmOverloads constructor(
                 val enabled = getBoolean(R.styleable.SSNEditText_enabled, true)
                 val isRequired = getBoolean(R.styleable.SSNEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.SSNEditText_singleLine, true)
-                val scrollHorizontally = getBoolean(R.styleable.SSNEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.SSNEditText_gravity, Gravity.START or Gravity.CENTER_VERTICAL)
+                val scrollHorizontally =
+                    getBoolean(R.styleable.SSNEditText_scrollHorizontally, true)
+                val gravity = getInt(
+                    R.styleable.SSNEditText_gravity,
+                    Gravity.START or Gravity.CENTER_VERTICAL
+                )
                 val ellipsize = getInt(R.styleable.SSNEditText_ellipsize, 0)
 
                 setFieldName(fieldName)
@@ -87,7 +92,7 @@ class SSNEditText @JvmOverloads constructor(
      * @param char The divider symbol.
      */
     fun setDivider(char: Char?) {
-        setNumberDivider(char.toString())
+        setNumberDivider(char?.toString())
     }
 
     /**
@@ -122,5 +127,7 @@ class SSNEditText @JvmOverloads constructor(
 
     companion object {
         internal val TAG: String = SSNEditText::class.simpleName.toString()
+
+        internal const val DIVIDER = "-"
     }
 }

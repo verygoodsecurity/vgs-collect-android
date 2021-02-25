@@ -218,8 +218,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected fun refreshInput() {
         val currentSelection = selectionStart
         setText(text)
+        val textLength = text?.length?:0
 
         when {
+            currentSelection > textLength -> setSelection(textLength)
             selectionStart > currentSelection -> setSelection(selectionStart)
             selectionStart < currentSelection -> setSelection(currentSelection)
         }
