@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
+import com.verygoodsecurity.vgscollect.widget.SSNEditText.Companion.DIVIDER
 import com.verygoodsecurity.vgscollect.widget.SSNEditText.Companion.TAG
 
 internal class SSNInputField(context: Context) : BaseInputField(context) {
@@ -70,7 +71,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
             replace(Regex(MASK_REGEX), divider)
         }
 
-        if (!text.isNullOrEmpty() && numberFormatter?.getMask() != newNumberMask) {
+        if (numberFormatter?.getMask() != newNumberMask) {
             derivedNumberMask = newNumberMask
             numberFormatter?.setMask(newNumberMask)
             refreshOutputContent()
@@ -143,30 +144,57 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     }
 
     internal fun getOutputDivider(): Char? {
-        return if(outputDivider.isEmpty()) {
-            null
-        } else {
-            outputDivider.first()
-        }
+        return outputDivider.firstOrNull()
     }
 
     internal fun setOutputNumberDivider(divider: String?) {
         when {
             divider.isNullOrEmpty() -> outputDivider = EMPTY_CHAR
-            divider.isNumeric() -> printWarning(TAG, R.string.error_output_divider_number_field)
-            divider.length > 1 -> printWarning(TAG, R.string.error_output_divider_count_number_field)
+            arrayOf("#", "\\").contains(divider) -> printWarning(
+                TAG,
+                R.string.error_output_divider_mask
+            ).also {
+                outputDivider = DIVIDER
+            }
+            divider.isNumeric() -> printWarning(
+                TAG,
+                R.string.error_output_divider_number_field
+            ).also {
+                outputDivider = DIVIDER
+            }
+            divider.length > 1 -> printWarning(
+                TAG,
+                R.string.error_output_divider_count_number_field
+            ).also {
+                outputDivider = DIVIDER
+            }
             else -> outputDivider = divider
         }
         refreshOutputContent()
     }
 
-    internal fun getNumberDivider() = divider
+    internal fun getNumberDivider(): Char? {
+        return divider.firstOrNull()
+    }
 
     internal fun setNumberDivider(divider: String?) {
         when {
             divider.isNullOrEmpty() -> this@SSNInputField.divider = EMPTY_CHAR
-            divider.isNumeric() -> printWarning(TAG, R.string.error_divider_number_field)
-            divider.length > 1 -> printWarning(TAG, R.string.error_divider_count_number_field)
+            arrayOf("#", "\\").contains(divider) -> printWarning(
+                TAG,
+                R.string.error_divider_mask
+            ).also {
+                this@SSNInputField.divider = DIVIDER
+            }
+            divider.isNumeric() -> printWarning(TAG, R.string.error_divider_number_field).also {
+                this@SSNInputField.divider = DIVIDER
+            }
+            divider.length > 1 -> printWarning(
+                TAG,
+                R.string.error_divider_count_number_field
+            ).also {
+                this@SSNInputField.divider = DIVIDER
+            }
             else -> this@SSNInputField.divider = divider
         }
 
@@ -183,7 +211,6 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
                 "123-45-6789|219-09-9999|457-55-5462))" +
                 "(?!(000|666|9))" +
                 "(\\d{3}\\D?(?!(00))\\d{2}\\D?(?!(0000))\\d{4})\$"
-        private const val DIVIDER = "-"
         private const val EMPTY_CHAR = ""
     }
 }

@@ -78,6 +78,18 @@ class VGSCardNumberEditTextTest {
     fun test_set_divider() {
         assertNotNull(view)
 
+        view.setDivider('=')
+        assertEquals('=', view.getDivider())
+        view.setDivider('1')
+        assertEquals(' ', view.getDivider())
+        view.setDivider('#')
+        assertEquals(' ', view.getDivider())
+        view.setDivider('\\')
+        assertEquals(' ', view.getDivider())
+        view.setDivider('/')
+        assertEquals('/', view.getDivider())
+        view.setDivider(null)
+        assertEquals(null, view.getDivider())
         view.setDivider(' ')
         assertEquals(' ', view.getDivider())
     }
@@ -86,6 +98,17 @@ class VGSCardNumberEditTextTest {
     fun test_set_output_divider() {
         assertNotNull(view)
 
+        view.setOutputDivider('=')
+        assertEquals('=', view.getOutputDivider())
+        view.setOutputDivider('1')
+        assertEquals(null, view.getOutputDivider())
+        view.setOutputDivider('#')
+        assertEquals(null, view.getOutputDivider())
+        view.setOutputDivider('\\')
+        assertEquals(null, view.getOutputDivider())
+        view.setOutputDivider('/')
+        assertEquals('/', view.getOutputDivider())
+        view.setOutputDivider(null)
         assertEquals(null, view.getOutputDivider())
         view.setOutputDivider(' ')
         assertEquals(' ', view.getOutputDivider())
