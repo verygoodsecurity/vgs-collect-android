@@ -78,6 +78,18 @@ class VGSCardNumberEditTextTest {
     fun test_set_divider() {
         assertNotNull(view)
 
+        view.setDivider('=')
+        assertEquals('=', view.getDivider())
+        view.setDivider('1')
+        assertEquals(' ', view.getDivider())
+        view.setDivider('#')
+        assertEquals(' ', view.getDivider())
+        view.setDivider('\\')
+        assertEquals(' ', view.getDivider())
+        view.setDivider('/')
+        assertEquals('/', view.getDivider())
+        view.setDivider(null)
+        assertEquals(null, view.getDivider())
         view.setDivider(' ')
         assertEquals(' ', view.getDivider())
     }
@@ -86,6 +98,17 @@ class VGSCardNumberEditTextTest {
     fun test_set_output_divider() {
         assertNotNull(view)
 
+        view.setOutputDivider('=')
+        assertEquals('=', view.getOutputDivider())
+        view.setOutputDivider('1')
+        assertEquals(null, view.getOutputDivider())
+        view.setOutputDivider('#')
+        assertEquals(null, view.getOutputDivider())
+        view.setOutputDivider('\\')
+        assertEquals(null, view.getOutputDivider())
+        view.setOutputDivider('/')
+        assertEquals('/', view.getOutputDivider())
+        view.setOutputDivider(null)
         assertEquals(null, view.getOutputDivider())
         view.setOutputDivider(' ')
         assertEquals(' ', view.getOutputDivider())
@@ -682,43 +705,43 @@ class VGSCardNumberEditTextTest {
         assertEquals(19, state3.contentLength)
     }
 
-//    @Test
-//    fun test_luhn_length_regex() {
-//        val child = view.statePreparer.getView()
-//        Assert.assertTrue(child is BaseInputField)
-//
-//        (child as BaseInputField).prepareFieldTypeConnection()
-//        child.applyInternalFieldStateChangeListener()
-//
-//        val rule = PaymentCardNumberRule.ValidationBuilder()
-//            .setAlgorithm(ChecksumAlgorithm.LUHN)
-//            .setAllowableNumberLength(arrayOf(15))
-//            .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")
-//            .build()
-//        view.addRule(rule)
-//
-//        view.setText("4111111111111167")
-//        child.refreshInternalState()
-//
-//        val state = view.getState()
-//        assertNotNull(state)
-//        assertEquals(false, state!!.isValid)
-//        assertEquals(16, state.contentLength)
-//
-//        view.setText("411111111111116")
-//        child.refreshInternalState()
-//
-//        val state2 = view.getState()
-//        assertNotNull(state)
-//        assertEquals(false, state2!!.isValid)
-//        assertEquals(15, state2.contentLength)
-//
-//        view.setText("411111111111111")
-//        child.refreshInternalState()
-//
-//        val state3 = view.getState()
-//        assertNotNull(state)
-//        assertEquals(false, state3!!.isValid)
-//        assertEquals(15, state3.contentLength)
-//    }
+    @Test
+    fun test_luhn_length_regex() {
+        val child = view.statePreparer.getView()
+        Assert.assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val rule = PaymentCardNumberRule.ValidationBuilder()
+            .setAlgorithm(ChecksumAlgorithm.LUHN)
+            .setAllowableNumberLength(arrayOf(15))
+            .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")
+            .build()
+        view.addRule(rule)
+
+        view.setText("4111111111111167")
+        child.refreshInternalState()
+
+        val state = view.getState()
+        assertNotNull(state)
+        assertEquals(false, state!!.isValid)
+        assertEquals(16, state.contentLength)
+
+        view.setText("411111111111116")
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        assertNotNull(state)
+        assertEquals(false, state2!!.isValid)
+        assertEquals(15, state2.contentLength)
+
+        view.setText("411111111111111")
+        child.refreshInternalState()
+
+        val state3 = view.getState()
+        assertNotNull(state)
+        assertEquals(false, state3!!.isValid)
+        assertEquals(15, state3.contentLength)
+    }
 }

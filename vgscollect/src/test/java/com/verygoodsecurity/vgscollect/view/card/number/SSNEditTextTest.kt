@@ -51,6 +51,18 @@ class SSNEditTextTest {
     fun test_set_divider() {
         Assert.assertNotNull(view)
 
+        view.setDivider('=')
+        Assert.assertEquals('=', view.getDivider())
+        view.setDivider('1')
+        Assert.assertEquals('-', view.getDivider())
+        view.setDivider('#')
+        Assert.assertEquals('-', view.getDivider())
+        view.setDivider('\\')
+        Assert.assertEquals('-', view.getDivider())
+        view.setDivider('/')
+        Assert.assertEquals('/', view.getDivider())
+        view.setDivider(null)
+        Assert.assertEquals(null, view.getDivider())
         view.setDivider(' ')
         Assert.assertEquals(' ', view.getDivider())
     }
@@ -59,6 +71,16 @@ class SSNEditTextTest {
     fun test_set_output_divider() {
         Assert.assertNotNull(view)
 
+        view.setOutputDivider('=')
+        Assert.assertEquals('=', view.getOutputDivider())
+        view.setOutputDivider('1')
+        Assert.assertEquals('-', view.getOutputDivider())
+        view.setOutputDivider('#')
+        Assert.assertEquals('-', view.getOutputDivider())
+        view.setOutputDivider('\\')
+        Assert.assertEquals('-', view.getOutputDivider())
+        view.setOutputDivider('/')
+        Assert.assertEquals('/', view.getOutputDivider())
         view.setOutputDivider(null)
         Assert.assertEquals(null, view.getOutputDivider())
         view.setOutputDivider(' ')
