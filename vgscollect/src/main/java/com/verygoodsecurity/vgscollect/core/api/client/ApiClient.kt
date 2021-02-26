@@ -20,10 +20,10 @@ internal interface ApiClient {
 
     companion object {
         internal const val CONNECTION_TIME_OUT = 60000L
-        internal const val AGENT = "vgs-client"
         internal const val CONTENT_TYPE = "Content-type"
-        internal const val TEMPORARY_AGENT_TEMPLATE =
-            "source=androidSDK&medium=vgs-collect&content=%s&vgsCollectSessionId=%s"
+        private const val AGENT = "vgs-client"
+        private const val TEMPORARY_AGENT_TEMPLATE =
+            "source=androidSDK&medium=vgs-collect&content=%s&vgsCollectSessionId=%s&tr=%s"
 
         fun newHttpClient(
             url: String,
@@ -33,12 +33,12 @@ internal interface ApiClient {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 OkHttpClient(
                     isLogsVisible,
-                    storage?:getInternalStorage()
+                    storage ?: VgsApiTemporaryStorageImpl()
                 ).apply { setHost(url) }
             } else {
                 URLConnectionClient.newInstance(
                     isLogsVisible,
-                    storage?:getInternalStorage()
+                    storage ?: VgsApiTemporaryStorageImpl()
                 ).apply { setHost(url) }
             }
         }
@@ -49,29 +49,21 @@ internal interface ApiClient {
         ): ApiClient {
 
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                OkHttpClient(
-                    isLogsVisible,
-                    storage?:getInternalStorage()
-                )
+                OkHttpClient(isLogsVisible, storage ?: VgsApiTemporaryStorageImpl())
             } else {
                 URLConnectionClient.newInstance(
                     isLogsVisible,
-                    storage?:getInternalStorage())
-            }
-        }
-
-        private fun getInternalStorage(): VgsApiTemporaryStorage {
-            return VgsApiTemporaryStorageImpl().apply {
-                setCustomHeaders(
-                    mapOf(
-                        AGENT to String.format(
-                            TEMPORARY_AGENT_TEMPLATE,
-                            BuildConfig.VERSION_NAME,
-                            CollectActionTracker.Sid.id
-                        )
-                    )
+                    storage ?: VgsApiTemporaryStorageImpl()
                 )
             }
         }
+
+        fun generateAgentHeader(isAnalyticsEnabled: Boolean): Pair<String, String> =
+            AGENT to String.format(
+                TEMPORARY_AGENT_TEMPLATE,
+                BuildConfig.VERSION_NAME,
+                CollectActionTracker.Sid.id,
+                if (isAnalyticsEnabled) "default" else "none"
+            )
     }
 }

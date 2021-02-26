@@ -10,6 +10,8 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
+import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
 
 class CardVerificationCodeEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -43,11 +45,22 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
                     getBoolean(R.styleable.CardVerificationCodeEditText_singleLine, true)
                 val scrollHorizontally =
                     getBoolean(R.styleable.CardVerificationCodeEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.CardVerificationCodeEditText_gravity, Gravity.START or Gravity.CENTER_VERTICAL)
+                val gravity = getInt(
+                    R.styleable.CardVerificationCodeEditText_gravity,
+                    Gravity.START or Gravity.CENTER_VERTICAL
+                )
                 val ellipsize = getInt(R.styleable.CardVerificationCodeEditText_ellipsize, 0)
 
                 val minLines = getInt(R.styleable.CardVerificationCodeEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.CardVerificationCodeEditText_maxLines, 0)
+                val previewCardVisibility = getInt(
+                    R.styleable.CardVerificationCodeEditText_previewIconVisibility,
+                    CVCInputField.PreviewIconVisibility.NEVER.ordinal
+                )
+                val previewCardGravity = getInt(
+                    R.styleable.CardVerificationCodeEditText_previewIconGravity,
+                    CVCInputField.PreviewIconGravity.END.ordinal
+                )
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -67,8 +80,10 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
 
                 setText(text)
                 setEnabled(enabled)
-
                 setInputType(inputType)
+
+                applyPreviewIconMode(previewCardVisibility)
+                applyPreviewIconGravity(previewCardGravity)
             } finally {
                 recycle()
             }
@@ -82,5 +97,15 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
      */
     fun getState(): FieldState.CVCState? {
         return getCVCState()
+    }
+
+    /**
+     * Sets the custom icons for cvc.
+     *
+     * @param adapter The adapter is responsible for maintaining the icons backing this view and
+     * for producing a drawable for preview.
+     */
+    fun setPreviewIconAdapter(adapter: CVCIconAdapter?) {
+        setCVCPreviewIconAdapter(adapter)
     }
 }

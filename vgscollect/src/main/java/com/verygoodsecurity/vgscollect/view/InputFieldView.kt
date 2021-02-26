@@ -36,6 +36,7 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.*
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
@@ -154,12 +155,12 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     override fun onDetachedFromWindow() {
-        if (childCount > 0) removeAllViews()
+        if (hasChildren()) removeAllViews()
         super.onDetachedFromWindow()
     }
 
     override fun addView(child: View?) {
-        if (childCount == 0 && child is BaseInputField) {
+        if (!hasChildren() && child is BaseInputField) {
             super.addView(child)
         }
     }
@@ -499,7 +500,9 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @return True if this view has or contains focus, false otherwise.
      */
     override fun hasFocus(): Boolean {
-        return inputField.hasFocus()
+        return super.hasFocus().takeIf {
+            ::inputField.isInitialized.not()
+        } ?: inputField.hasFocus()
     }
 
     /**
@@ -765,6 +768,8 @@ abstract class InputFieldView @JvmOverloads constructor(
         return fontFamily
     }
 
+    protected fun hasChildren(): Boolean = childCount > 0
+
     private fun syncInputState() {
         notifier = DependencyNotifier(inputField)
 
@@ -810,15 +815,19 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.stateListener = stateListener
     }
 
-    protected fun applyCardIconGravity(gravity: Int) {
+    protected fun applyPreviewIconGravity(gravity: Int) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setCardPreviewIconGravity(gravity)
+        } else if (fieldType == FieldType.CVC) {
+            (inputField as? CVCInputField)?.setPreviewIconGravity(gravity)
         }
     }
 
     protected fun applyPreviewIconMode(mode: Int) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setPreviewIconMode(mode)
+        } else if (fieldType == FieldType.CVC) {
+            (inputField as? CVCInputField)?.setPreviewIconVisibility(mode)
         }
     }
 
@@ -839,16 +848,35 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun setNumberDivider(divider: String?) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setNumberDivider(divider)
+        } else if (fieldType == FieldType.SSN) {
+            (inputField as? SSNInputField)?.setNumberDivider(divider)
         }
     }
 
     protected fun getNumberDivider(): Char? {
-        return if (fieldType == FieldType.CARD_NUMBER) {
-            (inputField as? CardInputField)?.getNumberDivider()?.first()
-        } else {
-            null
+        return when (fieldType) {
+            FieldType.CARD_NUMBER -> (inputField as? CardInputField)?.getNumberDivider()?.first()
+            FieldType.SSN -> (inputField as? SSNInputField)?.getNumberDivider()?.first()
+            else -> null
         }
     }
+
+    protected fun setOutputNumberDivider(divider: String?) {
+        if (fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.setOutputNumberDivider(divider)
+        } else if (fieldType == FieldType.SSN) {
+            (inputField as? SSNInputField)?.setOutputNumberDivider(divider)
+        }
+    }
+
+    protected fun getOutputNumberDivider(): Char? {
+        return when (fieldType) {
+            FieldType.CARD_NUMBER -> (inputField as? CardInputField)?.getOutputDivider()
+            FieldType.SSN -> (inputField as? SSNInputField)?.getOutputDivider()
+            else -> null
+        }
+    }
+
 
     /**
      * @return the base paint used for the text.  Please use this only to
@@ -1193,6 +1221,12 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    protected fun setCVCPreviewIconAdapter(adapter: CVCIconAdapter?) {
+        if (fieldType == FieldType.CVC) {
+            (inputField as? CVCInputField)?.setPreviewIconAdapter(adapter)
+        }
+    }
+
     protected fun getCVCState(): FieldState.CVCState? {
         return if (fieldType == FieldType.CVC) {
             (inputField as? CVCInputField)?.getState() as? FieldState.CVCState
@@ -1304,7 +1338,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         listener?.let { textChangeListeners.remove(listener) }
     }
 
-     /** 
+    /**
      * Register a callback to be invoked when a key is pressed in this view.
      *
      * @param l the key listener to attach to this view

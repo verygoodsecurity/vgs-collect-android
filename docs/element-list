@@ -12,6 +12,7 @@ $dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/SubmitA
 $dokka.location:com.verygoodsecurity.vgscollect.core.model.network/VGSRequest.VGSRequestBuilder///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/network/VGSRequest.VGSRequestBuilder.html
 $dokka.location:com.verygoodsecurity.vgscollect.core.model.network/VGSResponse.ErrorResponse///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/network/VGSResponse.ErrorResponse.html
 $dokka.location:com.verygoodsecurity.vgscollect.core.model.network/VGSResponse.SuccessResponse///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/network/VGSResponse.SuccessResponse.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.state/Dependency.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/Dependency.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.core.model.state/FieldContent.CardNumberContent///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/FieldContent.CardNumberContent.html
 $dokka.location:com.verygoodsecurity.vgscollect.core.model.state/FieldContent.CreditCardExpDateContent///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/FieldContent.CreditCardExpDateContent.html
 $dokka.location:com.verygoodsecurity.vgscollect.core.model.state/FieldContent.InfoContent///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/state/FieldContent.InfoContent.html
@@ -31,7 +32,9 @@ $dokka.location:com.verygoodsecurity.vgscollect.view.card.validation.rules/Payme
 $dokka.location:com.verygoodsecurity.vgscollect.view.card.validation.rules/PersonNameRule.ValidationBuilder///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/validation/rules/PersonNameRule.ValidationBuilder.html
 $dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.OnEditorActionListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.OnEditorActionListener.html
+$dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.OnTextChangedListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.OnTextChangedListener.html
 $dokka.location:com.verygoodsecurity.vgscollect.widget/ExpirationDateEditText.OnDatePickerVisibilityChangeListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/widget/ExpirationDateEditText.OnDatePickerVisibilityChangeListener.html
+$dokka.location:com.verygoodsecurity.vgscollect.widget/SSNEditText.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/widget/SSNEditText.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.widget/VGSCardNumberEditText.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/widget/VGSCardNumberEditText.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.widget/VGSTextInputLayout.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/widget/VGSTextInputLayout.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect/VGSCollectLogger.Level///PointingToDeclaration/com/verygoodsecurity/vgscollect/VGSCollectLogger.Level.html
@@ -62,6 +65,7 @@ com.verygoodsecurity.vgscollect.view.card.validation
 com.verygoodsecurity.vgscollect.view.card.validation.payment
 com.verygoodsecurity.vgscollect.view.card.validation.payment.brand
 com.verygoodsecurity.vgscollect.view.card.validation.rules
+com.verygoodsecurity.vgscollect.view.cvc
 com.verygoodsecurity.vgscollect.view.date
 com.verygoodsecurity.vgscollect.view.material
 com.verygoodsecurity.vgscollect.widget

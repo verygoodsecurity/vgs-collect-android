@@ -6,10 +6,9 @@ import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 /** @suppress */
-internal class InputCardExpDateConnection(
-    private val id: Int,
-    private vararg val validators: VGSValidator
-) : BaseInputConnection() {
+internal class InputCardExpDateConnection(id: Int, validator: VGSValidator) :
+    BaseInputConnection(id, validator) {
+
     private var output = VGSFieldState()
 
     override fun setOutput(state: VGSFieldState) {
@@ -25,7 +24,7 @@ internal class InputCardExpDateConnection(
     override fun run() {
         output.isValid = isRequiredValid() && isContentValid()
 
-        notifyAllListeners(id, output)
+        notifyAllListeners(output)
     }
 
     private fun isContentValid(): Boolean {
@@ -37,17 +36,7 @@ internal class InputCardExpDateConnection(
         }
     }
 
-    private fun checkIsContentValid(content: String?): Boolean {
-        val updatedStr = content?.trim() ?: ""
-
-        var isDateValid = true
-        validators.forEach {
-            if (isDateValid) {
-                isDateValid = it.isValid(updatedStr)
-            }
-        }
-        return isDateValid
-    }
+    private fun checkIsContentValid(content: String?): Boolean = isValid(content?.trim() ?: "")
 
     private fun isRequiredValid(): Boolean {
         return output.isRequired && !output.content?.data.isNullOrEmpty() || !output.isRequired

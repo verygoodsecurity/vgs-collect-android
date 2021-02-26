@@ -5,7 +5,7 @@ apply plugin: "org.jetbrains.dokka"
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 21
@@ -32,7 +32,7 @@ dependencies {
     dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
 
     api project(':vgscollect')
-    implementation 'com.getbouncer:cardscan-ui:2.0.0072'
+    implementation 'com.getbouncer:cardscan-ui:2.0.0068'
 }
 
 apply from: rootProject.file('release-bintray.gradle')

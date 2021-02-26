@@ -5,7 +5,7 @@ apply plugin: "org.jetbrains.dokka"
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 19
@@ -59,7 +59,7 @@ tasks.withType(Javadoc).all {
 
 dependencies {
     implementation "androidx.appcompat:appcompat:$android_support_libraries"
-    implementation "com.google.android.material:material:1.2.1"
+    implementation "com.google.android.material:material:1.3.0"
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
 
@@ -78,3 +78,6 @@ dependencies {
 }
 
 apply from: rootProject.file('release-bintray.gradle')
+tasks.named("dokkaJavadoc") {
+    outputDirectory.set(rootProject.file('docs'))
+}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Representation of dates and times that will be visible for end-user.
          The method uses the ISO 8601 standard.
@@ -321,10 +321,13 @@
         <flag name="flagForceAscii" value="0x80000000" />
     </attr>
 
-    <!--  To set the symbol that will divide groups of digits in the card number add app:numberDivider to your field's declaration in xml.
-          By default, the widget doesn't have any pre-configured divider and all number will be a single line.
-    -->
+    <!--  To set the symbol that will divide groups of digits. -->
     <attr name="numberDivider" format="string"/>
+
+    <!--  To set the symbol that will divide groups of digits before submit to the Proxy.
+          By default, the widget doesn't change user input before submit.
+    -->
+    <attr name="outputNumberDivider" format="string"/>
 
 
     <declare-styleable name="InputFieldView">
@@ -429,6 +432,26 @@
         <attr name="scrollHorizontally"/>
 
         <attr name="hint" />
+
+        <!-- Specifies visibility for card security code preview icon. By default visibility is never.-->
+        <attr name="previewIconVisibility">
+            <!-- Preview icon is visible all the time. -->
+            <enum name="always" value="0" />
+            <!-- Preview icon is visible when some input exists. -->
+            <enum name="hasContent" value="1" />
+            <!-- Preview icon is visible only when card brand is detected. -->
+            <enum name="ifBrandDetected" value="2" />
+            <!-- Preview icon is never visible. -->
+            <enum name="never" value="3" />
+        </attr>
+
+        <!-- Specifies how to align the icon by the view’s x-axis. By default, gravity in end position. -->
+        <attr name="previewIconGravity">
+            <!-- Align icon to start of view. -->
+            <enum name="start" value="0" />
+            <!-- Align icon to end of view. -->
+            <enum name="end" value="1" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="VGSCardNumberEditText">
@@ -469,7 +492,10 @@
 
         <attr name="hint" />
 
+        <!--  To set the symbol that will divide groups of digits in the card number add app:numberDivider to your field's declaration in xml. -->
         <attr name="numberDivider"/>
+
+        <attr name="outputNumberDivider"/>
 
         <!-- Specifies how to align the icon by the view’s x-axis. To specify gravity programmatically you could use android Gravity class.
              By default, gravity in end position.
@@ -511,6 +537,10 @@
         <attr name="gravity" />
         <attr name="ellipsize" />
 
+        <!--  To set the symbol that will divide groups of digits in the SSN add app:numberDivider to your field's declaration in xml. -->
+        <attr name="numberDivider"/>
+
+        <attr name="outputNumberDivider"/>
 
     </declare-styleable>
 

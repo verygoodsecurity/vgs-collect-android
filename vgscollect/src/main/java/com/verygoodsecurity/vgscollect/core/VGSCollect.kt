@@ -5,15 +5,18 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.*
-import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
+import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.*
 import com.verygoodsecurity.vgscollect.core.api.analityc.utils.toAnalyticStatus
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
+import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.generateAgentHeader
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isHttpStatusCode
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.network.*
@@ -21,17 +24,15 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.*
 import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageErrorListener
-import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
+import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.*
-import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscollect.util.extension.hasAccessNetworkStatePermission
 import com.verygoodsecurity.vgscollect.util.extension.hasInternetPermission
 import com.verygoodsecurity.vgscollect.util.extension.isConnectionAvailable
-import com.verygoodsecurity.vgscollect.util.mapUsefulPayloads
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import java.util.*
@@ -50,10 +51,10 @@ class VGSCollect {
 
     private val tracker: AnalyticTracker
 
-    private lateinit var client: ApiClient
+    private var client: ApiClient
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
-    private lateinit var storage: InternalStorage
+    private var storage: InternalStorage
     private val storageErrorListener: StorageErrorListener = object : StorageErrorListener {
         override fun onStorageError(error: VGSError) {
             VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context).also { r ->
@@ -77,8 +78,40 @@ class VGSCollect {
         }
     }
 
-    private var baseURL: String
+    private val baseURL: String
     private val context: Context
+
+    private var cname: String? = null
+    private var isSatelliteMode: Boolean = false
+
+    private constructor(
+        context: Context,
+        id: String,
+        environment: String,
+        url: String?,
+        port: Int?
+    ) {
+        this.context = context
+        this.storage = InternalStorage(context, storageErrorListener)
+        this.externalDependencyDispatcher = DependencyReceiver()
+        this.client = ApiClient.newHttpClient()
+        this.baseURL = generateBaseUrl(id, environment, url, port)
+        this.tracker = CollectActionTracker(id, environment, UUID.randomUUID().toString(), isSatelliteMode)
+        cname?.let { configureHostname(it, id) }
+        updateAgentHeader()
+        addOnResponseListeners(analyticListener)
+    }
+
+    constructor(
+        /** Activity context */
+        context: Context,
+
+        /** Unique Vault id */
+        id: String,
+
+        /** Type of Vault */
+        environment: String
+    ) : this(context, id, environment, null, null)
 
     constructor(
         /** Activity context */
@@ -89,18 +122,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: Environment = Environment.SANDBOX
-    ) {
-        this.context = context
-
-        tracker = CollectActionTracker(
-            id,
-            environment.rawValue,
-            UUID.randomUUID().toString()
-        )
-
-        baseURL = id.setupURL(environment.rawValue)
-        initializeCollect()
-    }
+    ) : this(context, id, environment.rawValue, null, null)
 
     constructor(
         /** Activity context */
@@ -114,39 +136,7 @@ class VGSCollect {
 
         /** Region identifier */
         suffix: String
-    ) : this(context, id, environmentType concatWithDash suffix)
-
-    constructor(
-        /** Activity context */
-        context: Context,
-
-        /** Unique Vault id */
-        id: String,
-
-        /** Type of Vault */
-        environment: String
-    ) {
-        this.context = context
-        tracker = CollectActionTracker(
-            id,
-            environment,
-            UUID.randomUUID().toString()
-        )
-
-        baseURL = id.setupURL(environment)
-        initializeCollect()
-    }
-
-    private fun initializeCollect() {
-        client = ApiClient.newHttpClient()
-        storage = InternalStorage(context, storageErrorListener)
-    }
-
-
-    init {
-        externalDependencyDispatcher = DependencyReceiver()
-        addOnResponseListeners(analyticListener)
-    }
+    ) : this(context, id, environmentType concatWithDash suffix, null, null)
 
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSCollect receive response from Server.
@@ -486,6 +476,18 @@ class VGSCollect {
         return storage.getFileProvider()
     }
 
+    /**
+     * If you want to disable collecting analytics from VGS Collect SDK, you can set the value to false.
+     * This helps us to understand which areas require improvements.
+     * No personal information is tracked.
+     *
+     * Warning: if this option is set to false, it will increase resolving time for possible incidents.
+     */
+    fun setAnalyticsEnabled(isEnabled: Boolean) {
+        tracker.isEnabled = isEnabled
+        updateAgentHeader()
+    }
+
     @VisibleForTesting
     internal fun getResponseListeners(): Collection<VgsCollectResponseListener> {
         return responseListeners
@@ -594,8 +596,46 @@ class VGSCollect {
 
     private var hasCustomHostname = false
 
-    private fun configureHostname(host: String?, tnt: String) {
-        if (!host.isNullOrBlank() && baseURL.isNotEmpty()) {
+    private fun generateBaseUrl(id: String, environment: String, url: String?, port: Int?): String {
+
+        fun printPortDenied() {
+            if (port.isValidPort()) {
+                VGSCollectLogger.warn(message = context.getString(R.string.error_custom_port_is_not_allowed))
+            }
+        }
+
+        if (!url.isNullOrBlank() && url.isURLValid()) {
+            val host = getHost(url)
+            if (host.isValidIp()) {
+                if (!host.isIpAllowed()) {
+                    VGSCollectLogger.warn(message = context.getString(R.string.error_custom_ip_is_not_allowed))
+                    return id.setupURL(environment)
+                }
+                if (!environment.isSandbox()) {
+                    VGSCollectLogger.warn(message = context.getString(R.string.error_env_incorrect))
+                    return id.setupURL(environment)
+                }
+                isSatelliteMode = true
+                return host.setupLocalhostURL(port)
+            } else {
+                printPortDenied()
+                cname = host
+                return id.setupURL(environment)
+            }
+        } else {
+            printPortDenied()
+            return id.setupURL(environment)
+        }
+    }
+
+    private fun getHost(url: String) = url.toHost().also {
+        if (it != url) {
+            VGSCollectLogger.debug(message = "Hostname will be normalized to the $it")
+        }
+    }
+
+    private fun configureHostname(host: String, tnt: String) {
+        if (host.isNotBlank() && baseURL.isNotEmpty()) {
             val r = VGSRequest.VGSRequestBuilder()
                 .setMethod(HTTPMethod.GET)
                 .setFormat(VGSHttpBodyFormat.PLAIN_TEXT)
@@ -640,18 +680,22 @@ class VGSCollect {
         )
     }
 
-    class Builder(
+    private fun updateAgentHeader() {
+        client.getTemporaryStorage().setCustomHeaders(mapOf(generateAgentHeader(tracker.isEnabled)))
+    }
 
-        /** Activity context */
-        private val context: Context,
-
-        /** Specific Vault ID  */
-        private val id: String
-    ) {
+    /**
+     * Used to create VGSCollect instances with default and overridden settings.
+     *
+     * @constructor Main constrictor for creating VGSShow instance builder.
+     * @param context Activity context.
+     * @param id Specific Vault ID.
+     */
+    class Builder(private val context: Context, private val id: String) {
 
         private var environment: String = Environment.SANDBOX.rawValue
-
         private var host: String? = null
+        private var port: Int? = null
 
         /** Specify Environment for the VGSCollect instance. */
         fun setEnvironment(env: Environment, region: String = ""): Builder = this.apply {
@@ -669,40 +713,34 @@ class VGSCollect {
          */
         fun setEnvironment(env: String): Builder = this.apply { environment = env }
 
-        /** Sets the VGSCollect instance to use the custom hostname. */
-        fun setHostname(cname: String): Builder {
-            if (cname.isURLValid()) {
-                host = cname.toHost()
-
-                if (host != cname) VGSCollectLogger.debug(message = "Hostname will be normalized to the $host")
-
-            } else {
+        /**
+         * Sets the VGSCollect instance to use the custom hostname.
+         * Also, the localhost IP can be used for VGS-Satellite for local testing.
+         *
+         * @param cname where VGSCollect will send requests.
+         */
+        fun setHostname(cname: String): Builder = this.apply {
+            if (!cname.isURLValid()) {
                 VGSCollectLogger.warn(message = context.getString(R.string.error_custom_host_wrong_short))
+                return@apply
             }
-
-            return this
+            this.host = cname
         }
+
+        /**
+         * Sets the VGSCollect instance to use the custom hostname port.
+         * Port can be used only with localhost with VGS-Satellite, otherwise, it will be ignored.
+         *
+         * @param port Integer value from 1 to 65353.
+         */
+        fun setPort(
+            @IntRange(from = PORT_MIN_VALUE, to = PORT_MAX_VALUE) port: Int
+        ) = this.apply { this.port = port }
 
         /**
          * Creates an VGSCollect with the arguments supplied to this
          * builder.
          */
-        fun create(): VGSCollect {
-            return VGSCollect(context, id, environment).apply {
-                configureHostname(host, id)
-            }
-        }
+        fun create() = VGSCollect(context, id, environment, host, port)
     }
-
-    /**
-     * If you want to disable collecting analytics from VGS Collect SDK, you can set the value to false.
-     * This helps us to understand which areas require improvements.
-     * No personal information is tracked.
-     *
-     * Warning: if this option is set to false, it will increase resolving time for possible incidents.
-     */
-    fun setAnalyticsEnabled(isEnabled: Boolean) {
-        tracker.setAnalyticsEnabled(isEnabled)
-    }
-
 }
