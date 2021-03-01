@@ -1,19 +1,15 @@
 package com.verygoodsecurity.vgscollect.core.api.client
 
 import com.verygoodsecurity.vgscollect.BuildConfig
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
-import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.api.*
-import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorage
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONTENT_TYPE
 import com.verygoodsecurity.vgscollect.core.api.client.extension.*
-import com.verygoodsecurity.vgscollect.core.api.isURLValid
-import com.verygoodsecurity.vgscollect.core.api.toContentType
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
-import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
 import java.net.HttpURLConnection
 import java.net.URL
@@ -53,24 +49,8 @@ internal class URLConnectionClient(
         return if (!request.url.isURLValid()) {
             NetworkResponse(error = VGSError.URL_NOT_VALID)
         } else {
-            makeRequest(request)
+            request(request)
         }
-    }
-
-    @Synchronized
-    private fun makeRequest(request: NetworkRequest): NetworkResponse {
-        return when (request.method) {
-            HTTPMethod.GET -> get(request)
-            HTTPMethod.POST -> post(request)
-        }
-    }
-
-    private fun get(request: NetworkRequest): NetworkResponse {
-        val conn = generateURL(request).openConnection()
-        conn.requestMethod = request.method.toString()
-        conn.useCaches = false
-
-        return handleResponse(conn)
     }
 
     private fun generateURL(request: NetworkRequest): String {
@@ -83,7 +63,8 @@ internal class URLConnectionClient(
         }
     }
 
-    private fun post(request: NetworkRequest): NetworkResponse {
+    @Synchronized
+    private fun request(request: NetworkRequest): NetworkResponse {
         var connection: HttpURLConnection? = null
         return try {
             connection = generateURL(request).openConnection()
@@ -98,7 +79,7 @@ internal class URLConnectionClient(
                 .setMethod(request.method)
 
             if (enableLogs) VGSCollectLogger.debug(message = buildRequestLog(connection))
-            writeOutput(connection, request.customData)
+            if (request.method != HTTPMethod.GET) writeOutput(connection, request.customData)
 
             handleResponse(connection)
         } catch (e: Exception) {
