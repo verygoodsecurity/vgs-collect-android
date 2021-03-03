@@ -5,7 +5,9 @@ import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.*
 import androidx.test.espresso.intent.matcher.IntentMatchers.*
@@ -180,6 +182,9 @@ class ActivityCaseInstrumentedTest {
     private fun startMainScreen() {
         val startWithActivityBtn = onView(withId(R.id.startWithActivityBtn))
             .check(matches(isDisplayed()))
+
+        onView(withId(R.id.userVault)).perform(typeText(Utils.DEFAULT_TENANT_ID))
+        onView(withId(R.id.userPath)).perform(typeText(Utils.DEFAULT_PATH), ViewActions.closeSoftKeyboard())
 
         performClick(startWithActivityBtn)
     }

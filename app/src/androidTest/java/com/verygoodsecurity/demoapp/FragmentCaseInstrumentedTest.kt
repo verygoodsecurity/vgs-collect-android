@@ -5,7 +5,9 @@ import android.app.Instrumentation
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.*
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
@@ -209,6 +211,9 @@ class FragmentCaseInstrumentedTest {
     private fun startMainScreen() {
         val startWithActivityBtn = onView(withId(R.id.startWithFragmentBtn))
             .check(matches(isDisplayed()))
+
+        onView(withId(R.id.userVault)).perform(ViewActions.typeText(Utils.DEFAULT_TENANT_ID))
+        onView(withId(R.id.userPath)).perform(ViewActions.typeText(Utils.DEFAULT_PATH), closeSoftKeyboard())
 
         startWithActivityBtn.perform(click())
     }
