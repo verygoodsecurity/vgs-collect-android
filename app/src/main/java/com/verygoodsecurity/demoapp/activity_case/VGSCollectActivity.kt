@@ -82,7 +82,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     private fun setupCardHolderField() {
         val rule : PersonNameRule = PersonNameRule.ValidationBuilder()
-//            .setRegex("^([a-zA-Z]{2,}\\s[a-zA-z]{1,})\$")
             .setAllowableMinLength(3)
             .setAllowableMaxLength(7)
             .build()
