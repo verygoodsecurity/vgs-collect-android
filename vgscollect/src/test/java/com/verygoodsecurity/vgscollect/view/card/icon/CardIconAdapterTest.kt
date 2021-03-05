@@ -6,9 +6,9 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.card.CardType
-import org.junit.Assert
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
@@ -34,8 +34,8 @@ class CardIconAdapterTest {
 
         val cb = adapter.getCardBrand()
 
-        Assert.assertEquals(cardType.resId, cb!!.resId)
-        Assert.assertEquals(cardType.name, cb.name)
+        assertEquals(cardType.resId, cb!!.resId)
+        assertEquals(cardType.name, cb.name)
     }
 
     @Test
@@ -48,10 +48,10 @@ class CardIconAdapterTest {
         val item = adapter.getItem(cardType, cardType.name, cardType.resId, Rect())
         val bounds = item.bounds
 
-        Assert.assertEquals(0, bounds.left)
-        Assert.assertEquals(0, bounds.top)
-        Assert.assertEquals(w, bounds.right)
-        Assert.assertEquals(h, bounds.bottom)
+        assertEquals(0, bounds.left)
+        assertEquals(0, bounds.top)
+        assertEquals(w, bounds.right)
+        assertEquals(h, bounds.bottom)
     }
 
     @Test
@@ -65,14 +65,14 @@ class CardIconAdapterTest {
         val bounds = item.bounds
 
         val cb = adapter.getCardBrand()
-        Assert.assertNotEquals(cardType.resId, cb!!.resId)
-        Assert.assertEquals(R.drawable.ic_amex_light, cb.resId)
-        Assert.assertEquals(cardType.name, cb.name)
+        assertNotEquals(cardType.resId, cb!!.resId)
+        assertEquals(R.drawable.ic_amex_light, cb.resId)
+        assertEquals(cardType.name, cb.name)
 
-        Assert.assertEquals(0, bounds.left)
-        Assert.assertEquals(0, bounds.top)
-        Assert.assertEquals(w, bounds.right)
-        Assert.assertEquals(h, bounds.bottom)
+        assertEquals(0, bounds.left)
+        assertEquals(0, bounds.top)
+        assertEquals(w, bounds.right)
+        assertEquals(h, bounds.bottom)
     }
 
 
@@ -87,14 +87,14 @@ class CardIconAdapterTest {
         val bounds = item.bounds
 
         val cb = adapter.getCardBrand()
-        Assert.assertNotEquals(cardType.resId, cb!!.resId)
-        Assert.assertEquals(R.drawable.ic_visa_light, cb.resId)
-        Assert.assertEquals(cardType.name, cb.name)
+        assertNotEquals(cardType.resId, cb!!.resId)
+        assertEquals(R.drawable.ic_visa_light, cb.resId)
+        assertEquals(cardType.name, cb.name)
 
-        Assert.assertEquals(0, bounds.left)
-        Assert.assertEquals(0, bounds.top)
-        Assert.assertEquals(w, bounds.right)
-        Assert.assertEquals(h, bounds.bottom)
+        assertEquals(0, bounds.left)
+        assertEquals(0, bounds.top)
+        assertEquals(w, bounds.right)
+        assertEquals(h, bounds.bottom)
     }
 
     class TestAdapter(

@@ -1,9 +1,11 @@
 package com.verygoodsecurity.vgscollect.view.card.date
 
 import android.app.Activity
+import android.graphics.Typeface
 import android.text.InputType
 import android.view.View
 import com.verygoodsecurity.vgscollect.TestApplication
+import com.verygoodsecurity.vgscollect.any
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
@@ -12,12 +14,11 @@ import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
-import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
+import org.mockito.Mockito.*
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
@@ -44,236 +45,236 @@ class ExpirationDateEditTextTest {
     fun test_view() {
         view.onAttachedToWindow()
         val internal = view.statePreparer.getView()
-        Assert.assertNotNull(internal)
+        assertNotNull(internal)
     }
 
     @Test
     fun test_attach_view() {
         view.onAttachedToWindow()
 
-        Assert.assertEquals(1, view.childCount)
+        assertEquals(1, view.childCount)
     }
 
     @Test
     fun test_check_internal_view() {
         val internal = view.statePreparer.getView()
-        Assert.assertNotNull(internal)
+        assertNotNull(internal)
 
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is DateInputField)
+        assertTrue(child is DateInputField)
     }
 
     @Test
     fun test_field_type() {
         val type = view.getFieldType()
-        Assert.assertEquals(FieldType.CARD_EXPIRATION_DATE, type)
+        assertEquals(FieldType.CARD_EXPIRATION_DATE, type)
     }
 
     @Test
     fun test_dd_MM_yy() {
         view.setDateRegex("dd/MM/yy")
-        Assert.assertEquals("dd/MM/yy", view.getDateRegex())
+        assertEquals("dd/MM/yy", view.getDateRegex())
 
         view.setDateRegex("dd MMMM yyyy")
-        Assert.assertEquals("dd MMMM yyyy", view.getDateRegex())
+        assertEquals("dd MMMM yyyy", view.getDateRegex())
     }
 
     @Test
     fun test_date_picker_mode() {
         view.setDatePickerMode(DatePickerMode.SPINNER)
-        Assert.assertEquals(DatePickerMode.SPINNER, view.getDatePickerMode())
+        assertEquals(DatePickerMode.SPINNER, view.getDatePickerMode())
 
         view.setDatePickerMode(DatePickerMode.CALENDAR)
-        Assert.assertEquals(DatePickerMode.CALENDAR, view.getDatePickerMode())
+        assertEquals(DatePickerMode.CALENDAR, view.getDatePickerMode())
 
         view.setDatePickerMode(DatePickerMode.INPUT)
-        Assert.assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
+        assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
 
         view.setDatePickerMode(DatePickerMode.DEFAULT)
-        Assert.assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
+        assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
     }
 
     @Test
     fun test_input_picker_mode_failure() {
-        val DEFAULT_PATTERN = "MM/yyyy"
+        val defaultPattern = "MM/yyyy"
 
         view.setDateRegex("HH:mm dd/yy")
-        Assert.assertEquals("HH:mm dd/yy", view.getDateRegex())
+        assertEquals("HH:mm dd/yy", view.getDateRegex())
 
         view.setDatePickerMode(DatePickerMode.INPUT)
-        Assert.assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
+        assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
 
-        Assert.assertEquals(DEFAULT_PATTERN, view.getDateRegex())
+        assertEquals(defaultPattern, view.getDateRegex())
     }
 
-        @Test
+    @Test
     fun test_input_picker_mode_failure2() {
-        val DEFAULT_PATTERN = "MM/yyyy"
+        val defaultPattern = "MM/yyyy"
 
         view.setDatePickerMode(DatePickerMode.INPUT)
-        Assert.assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
+        assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
 
         view.setDateRegex("dd/MMMM/yy")
-        Assert.assertEquals(DEFAULT_PATTERN, view.getDateRegex())
+        assertEquals(defaultPattern, view.getDateRegex())
 
         view.setDateRegex("dd/mm/yy")
-        Assert.assertEquals(DEFAULT_PATTERN, view.getDateRegex())
+        assertEquals(defaultPattern, view.getDateRegex())
 
         view.setDateRegex("dd/mmmm/yy")
-        Assert.assertEquals(DEFAULT_PATTERN, view.getDateRegex())
+        assertEquals(defaultPattern, view.getDateRegex())
 
         view.setDateRegex("dd0mmTyy")
-        Assert.assertEquals(DEFAULT_PATTERN, view.getDateRegex())
+        assertEquals(defaultPattern, view.getDateRegex())
 
         view.setDateRegex("dd mm/yy'T'")
-        Assert.assertEquals(DEFAULT_PATTERN, view.getDateRegex())
+        assertEquals(defaultPattern, view.getDateRegex())
 
         view.setDateRegex("dd mm/yy ")
-        Assert.assertEquals(DEFAULT_PATTERN, view.getDateRegex())
+        assertEquals(defaultPattern, view.getDateRegex())
 
         view.setDateRegex("dd mm/yyy")
-        Assert.assertEquals(DEFAULT_PATTERN, view.getDateRegex())
+        assertEquals(defaultPattern, view.getDateRegex())
     }
 
     @Test
     fun test_input_picker_mode_right() {
         view.setDatePickerMode(DatePickerMode.INPUT)
-        Assert.assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
+        assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
 
         view.setDateRegex("dd/MM/yy")
-        Assert.assertEquals("dd/MM/yy", view.getDateRegex())
+        assertEquals("dd/MM/yy", view.getDateRegex())
 
         view.setDateRegex("dd/MM/yyyy")
-        Assert.assertEquals("dd/MM/yyyy", view.getDateRegex())
+        assertEquals("dd/MM/yyyy", view.getDateRegex())
 
         view.setDateRegex("MM/yy")
-        Assert.assertEquals("MM/yy", view.getDateRegex())
+        assertEquals("MM/yy", view.getDateRegex())
 
         view.setDateRegex("MM/yy")
-        Assert.assertEquals("MM/yy", view.getDateRegex())
+        assertEquals("MM/yy", view.getDateRegex())
     }
 
     @Test
     fun test_calendar_picker_mode_right() {
         view.setDatePickerMode(DatePickerMode.CALENDAR)
-        Assert.assertEquals(DatePickerMode.CALENDAR, view.getDatePickerMode())
+        assertEquals(DatePickerMode.CALENDAR, view.getDatePickerMode())
 
         view.setDateRegex("HH:mm dd/MMMM/yy")
-        Assert.assertEquals("HH:mm dd/MMMM/yy", view.getDateRegex())
+        assertEquals("HH:mm dd/MMMM/yy", view.getDateRegex())
     }
 
     @Test
     fun test_spinner_picker_mode_right() {
         view.setDatePickerMode(DatePickerMode.SPINNER)
-        Assert.assertEquals(DatePickerMode.SPINNER, view.getDatePickerMode())
+        assertEquals(DatePickerMode.SPINNER, view.getDatePickerMode())
 
         view.setDateRegex("HH:mm dd/MMMM/yy")
-        Assert.assertEquals("HH:mm dd/MMMM/yy", view.getDateRegex())
+        assertEquals("HH:mm dd/MMMM/yy", view.getDateRegex())
     }
 
     @Test
     fun test_input_type_number() {
-        Assert.assertNotNull(view)
+        assertNotNull(view)
 
         view.setInputType(InputType.TYPE_CLASS_NUMBER)
-        Assert.assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
+        assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
     }
 
     @Test
     fun test_input_type_number_password() {
-        Assert.assertNotNull(view)
+        assertNotNull(view)
 
         val passType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         view.setInputType(passType)
-        Assert.assertEquals(passType, view.getInputType())
+        assertEquals(passType, view.getInputType())
     }
 
     @Test
     fun test_input_type_text() {
-        Assert.assertNotNull(view)
+        assertNotNull(view)
 
         val passType = InputType.TYPE_CLASS_TEXT
         view.setInputType(passType)
-        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+        assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
     }
 
     @Test
     fun test_input_type_text_password() {
-        Assert.assertNotNull(view)
+        assertNotNull(view)
 
         val passType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
         view.setInputType(passType)
-        Assert.assertEquals(passType, view.getInputType())
+        assertEquals(passType, view.getInputType())
     }
 
     @Test
     fun test_input_type_date() {
-        Assert.assertNotNull(view)
+        assertNotNull(view)
 
         view.setInputType(InputType.TYPE_CLASS_DATETIME)
-        Assert.assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
+        assertEquals(InputType.TYPE_CLASS_DATETIME, view.getInputType())
     }
 
     @Test
     fun test_input_type_other() {
-        Assert.assertNotNull(view)
+        assertNotNull(view)
 
         view.setInputType(InputType.TYPE_CLASS_PHONE)
-        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+        assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
 
         view.setInputType(InputType.TYPE_CLASS_PHONE or InputType.TYPE_CLASS_DATETIME)
-        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+        assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
 
         view.setInputType(InputType.TYPE_MASK_CLASS)
-        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+        assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
 
         view.setInputType(InputType.TYPE_NULL)
-        Assert.assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
+        assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
     }
 
     @Test
     fun test_field_state_change_listener_first() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
-        val listener = Mockito.mock(OnFieldStateChangeListener::class.java)
+        val listener = mock(OnFieldStateChangeListener::class.java)
         view.setOnFieldStateChangeListener(listener)
-        Mockito.verify(listener, Mockito.times(0)).onStateChange(any())
+        verify(listener, times(0)).onStateChange(any())
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        Mockito.verify(listener).onStateChange(any())
+        verify(listener).onStateChange(any())
     }
 
     @Test
     fun test_field_state_change_listener_last() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val listener = Mockito.mock(OnFieldStateChangeListener::class.java)
+        val listener = mock(OnFieldStateChangeListener::class.java)
         view.setOnFieldStateChangeListener(listener)
 
-        Mockito.verify(listener, Mockito.times(1)).onStateChange(any())
+        verify(listener, times(1)).onStateChange(any())
     }
 
     @Test
     fun test_on_focus_change_listener() {
         val child = view.statePreparer.getView()
         view.setDatePickerMode(DatePickerMode.INPUT)
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val listener = Mockito.mock(View.OnFocusChangeListener::class.java)
+        val listener = mock(View.OnFocusChangeListener::class.java)
         view.onFocusChangeListener = listener
         view.requestFocus()
 
-        Mockito.verify(listener).onFocusChange(view, true)
+        verify(listener).onFocusChange(view, true)
     }
 
     @Test
@@ -289,7 +290,7 @@ class ExpirationDateEditTextTest {
         stateResult.fieldType = FieldType.CARD_EXPIRATION_DATE
 
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         view.setText(text)
         view.setFieldName("date")
@@ -299,14 +300,14 @@ class ExpirationDateEditTextTest {
 
 
         val state = view.getState()
-        Assert.assertNotNull(state)
-        Assert.assertEquals(stateResult.hasFocus, state!!.hasFocus)
-        Assert.assertEquals(stateResult.isEmpty, state.isEmpty)
-        Assert.assertEquals(stateResult.isValid, state.isValid)
-        Assert.assertEquals(stateResult.isRequired, state.isRequired)
-        Assert.assertEquals(stateResult.contentLength, state.contentLength)
-        Assert.assertEquals(stateResult.fieldName, state.fieldName)
-        Assert.assertEquals(stateResult.fieldType, state.fieldType)
+        assertNotNull(state)
+        assertEquals(stateResult.hasFocus, state!!.hasFocus)
+        assertEquals(stateResult.isEmpty, state.isEmpty)
+        assertEquals(stateResult.isValid, state.isValid)
+        assertEquals(stateResult.isRequired, state.isRequired)
+        assertEquals(stateResult.contentLength, state.contentLength)
+        assertEquals(stateResult.fieldName, state.fieldName)
+        assertEquals(stateResult.fieldType, state.fieldType)
     }
 
     @Test
@@ -322,7 +323,7 @@ class ExpirationDateEditTextTest {
         stateResult.fieldType = FieldType.CARD_EXPIRATION_DATE
 
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         view.setText(text)
         view.setFieldName("date")
@@ -332,25 +333,35 @@ class ExpirationDateEditTextTest {
 
 
         val state = view.getState()
-        Assert.assertNotNull(state)
-        Assert.assertEquals(stateResult.hasFocus, state!!.hasFocus)
-        Assert.assertEquals(stateResult.isEmpty, state.isEmpty)
-        Assert.assertEquals(stateResult.isValid, state.isValid)
-        Assert.assertEquals(stateResult.isRequired, state.isRequired)
-        Assert.assertEquals(stateResult.contentLength, state.contentLength)
-        Assert.assertEquals(stateResult.fieldName, state.fieldName)
-        Assert.assertEquals(stateResult.fieldType, state.fieldType)
+        assertNotNull(state)
+        assertEquals(stateResult.hasFocus, state!!.hasFocus)
+        assertEquals(stateResult.isEmpty, state.isEmpty)
+        assertEquals(stateResult.isValid, state.isValid)
+        assertEquals(stateResult.isRequired, state.isRequired)
+        assertEquals(stateResult.contentLength, state.contentLength)
+        assertEquals(stateResult.fieldName, state.fieldName)
+        assertEquals(stateResult.fieldType, state.fieldType)
     }
 
     @Test
     fun test_formatter_mode() {
         view.setFormatterMode(FormatMode.FLEXIBLE.ordinal)
-        Assert.assertEquals(FormatMode.FLEXIBLE.ordinal, view.getFormatterMode())
+        assertEquals(FormatMode.FLEXIBLE.ordinal, view.getFormatterMode())
 
         view.setFormatterMode(FormatMode.STRICT.ordinal)
-        Assert.assertEquals(FormatMode.STRICT.ordinal, view.getFormatterMode())
+        assertEquals(FormatMode.STRICT.ordinal, view.getFormatterMode())
     }
 
+    @Test
+    fun set_typeface() {
+        assertEquals(null, view.getTypeface())
+        view.getTypeface().let {
+            view.setTypeface(it, Typeface.BOLD)
+        }
 
-    private fun <T> any(): T = Mockito.any<T>()
+        assertEquals(view.getTypeface(), Typeface.DEFAULT_BOLD)
+        view.setTypeface(null, Typeface.NORMAL)
+        assertEquals(view.getTypeface(), Typeface.DEFAULT)
+    }
+
 }
