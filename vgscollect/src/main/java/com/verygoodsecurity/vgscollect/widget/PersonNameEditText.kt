@@ -26,7 +26,8 @@ class PersonNameEditText @JvmOverloads constructor(
         ).apply {
 
             try {
-                val inputType = getInt(R.styleable.PersonNameEditText_inputType, EditorInfo.TYPE_NULL)
+                val inputType =
+                    getInt(R.styleable.PersonNameEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.PersonNameEditText_fieldName)
                 val hint = getString(R.styleable.PersonNameEditText_hint)
                 val textSize = getDimension(R.styleable.PersonNameEditText_textSize, -1f)
@@ -37,8 +38,12 @@ class PersonNameEditText @JvmOverloads constructor(
                 val enabled = getBoolean(R.styleable.PersonNameEditText_enabled, true)
                 val isRequired = getBoolean(R.styleable.PersonNameEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.PersonNameEditText_singleLine, true)
-                val scrollHorizontally = getBoolean(R.styleable.PersonNameEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.PersonNameEditText_gravity, Gravity.START or Gravity.CENTER_VERTICAL)
+                val scrollHorizontally =
+                    getBoolean(R.styleable.PersonNameEditText_scrollHorizontally, true)
+                val gravity = getInt(
+                    R.styleable.PersonNameEditText_gravity,
+                    Gravity.START or Gravity.CENTER_VERTICAL
+                )
                 val ellipsize = getInt(R.styleable.PersonNameEditText_ellipsize, 0)
 
                 val minLines = getInt(R.styleable.PersonNameEditText_minLines, 0)
@@ -56,9 +61,7 @@ class PersonNameEditText @JvmOverloads constructor(
                 setMinLines(minLines)
                 setSingleLine(singleLine)
                 setIsRequired(isRequired)
-                getTypeface()?.let {
-                    setTypeface(it, textStyle)
-                }
+                setTypeface(getTypeface(), textStyle)
 
                 setText(text)
                 setEnabled(enabled)
