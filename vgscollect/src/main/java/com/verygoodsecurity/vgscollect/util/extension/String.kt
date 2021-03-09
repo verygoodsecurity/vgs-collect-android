@@ -61,3 +61,9 @@ internal fun String.toBase64(): String {
         Base64.NO_WRAP
     )
 }
+
+internal fun String.substringOrNull(startIndex: Int, endIndex: Int) = try {
+    this.substring(startIndex.inc(), endIndex)
+} catch (e: Exception) {
+    null
+}
