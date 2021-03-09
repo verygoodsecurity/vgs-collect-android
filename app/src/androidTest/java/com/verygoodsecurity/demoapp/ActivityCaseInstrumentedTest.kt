@@ -45,7 +45,7 @@ class ActivityCaseInstrumentedTest {
         const val CARD_HOLDER= "Gohn G"
 
         const val CARD_EXP_DATE_WRONG = "22/2222"
-        const val CARD_EXP_DATE= "02/2023"
+        const val CARD_EXP_DATE= "02/25"
 
         const val CARD_CVC_WRONG = "12"
         const val CARD_CVC= "123"

@@ -167,7 +167,6 @@ class FragmentCaseInstrumentedTest {
             bin = CARD_NUMBER_WRONG_BIN_CHECK
         )))
         cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
-        cardExpDateInputField.check(matches(withCardExpDateState("09")))
         cardCVCInputField.check(matches(withCardCVCState(CARD_CVC_WRONG)))
 
         performClick(submitBtn)
