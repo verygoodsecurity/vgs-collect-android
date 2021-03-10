@@ -23,8 +23,8 @@ fun MutableMap<String, Any>.deepMerge(
                 this[key] = targetValue.deepMerge(sourceValue, policy)
             }
             value is ArrayList<*> && this[key] is ArrayList<*> -> {
-                val sourceValue = value as ArrayList<Any>
-                val targetValue = (this[key] as ArrayList<Any>)
+                val sourceValue = value as ArrayList<Any?>
+                val targetValue = (this[key] as ArrayList<Any?>)
                 this[key] = targetValue.deepMerge(sourceValue, policy)
             }
             else -> this[key] = value

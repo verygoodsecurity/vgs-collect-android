@@ -1,27 +1,29 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
-internal fun <T> arrayListOfNulls(capacity: Int): ArrayList<T?> {
-    val result = ArrayList<T?>(capacity)
-    for (i in 0..capacity) {
+import kotlin.jvm.Throws
+
+internal fun <T> arrayListOfNulls(maxIndex: Int): ArrayList<T?> {
+    val result = ArrayList<T?>(maxIndex)
+    for (i in 0..maxIndex) {
         result.add(null)
     }
     return result
 }
 
-internal inline infix fun <reified T : Any> ArrayList<T?>.merge(target: ArrayList<T?>): ArrayList<T?> {
-    val result = arrayListOfNulls<T>(this.size.coerceAtLeast(target.size).dec())
+internal inline infix fun <reified T : Any> ArrayList<T?>.merge(source: ArrayList<T?>): ArrayList<T?> {
+    val result = arrayListOfNulls<T>(this.size.coerceAtLeast(source.size).dec())
     for (i in 0 until result.size) {
         result[i] = this.getOrNull(i)
-        target.getOrNull(i)?.let { result[i] = it }
+        source.getOrNull(i)?.let { result[i] = it }
     }
     return result
 }
 
 @Suppress("UNCHECKED_CAST")
-fun ArrayList<Any>.deepMerge(
-    source: ArrayList<Any>,
+fun ArrayList<Any?>.deepMerge(
+    source: ArrayList<Any?>,
     policy: ArrayMergePolicy = ArrayMergePolicy.OVERWRITE
-): ArrayList<Any> {
+): ArrayList<Any?> {
     return when (policy) {
         ArrayMergePolicy.OVERWRITE -> source
         ArrayMergePolicy.MERGE -> {
@@ -32,7 +34,7 @@ fun ArrayList<Any>.deepMerge(
                         val targetValue = (this[index] as Map<String, Any>).toMutableMap()
                         this[index] = targetValue.deepMerge(sourceValue, policy)
                     }
-                    value is Map<*, *> -> this.setSafe(index, value)
+                    value is Map<*, *> -> this.setOrAdd(index, value)
                     else -> this.add(value)
                 }
             }
@@ -41,7 +43,8 @@ fun ArrayList<Any>.deepMerge(
     }
 }
 
-fun <T> ArrayList<T>.setSafe(index: Int, value: T) {
+@Throws(IndexOutOfBoundsException::class)
+fun <T> ArrayList<T>.setOrAdd(index: Int, value: T) {
     try {
         set(index, value)
     } catch (e: Exception) {
