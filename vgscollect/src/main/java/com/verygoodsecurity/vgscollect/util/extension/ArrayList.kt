@@ -20,11 +20,11 @@ internal inline infix fun <reified T : Any> ArrayList<T?>.merge(target: ArrayLis
 @Suppress("UNCHECKED_CAST")
 fun ArrayList<Any>.deepMerge(
     source: ArrayList<Any>,
-    policy: VgsCollectArrayMergePolicy
+    policy: ArrayMergePolicy = ArrayMergePolicy.OVERWRITE
 ): ArrayList<Any> {
     return when (policy) {
-        VgsCollectArrayMergePolicy.OVERWRITE -> source
-        VgsCollectArrayMergePolicy.MERGE -> {
+        ArrayMergePolicy.OVERWRITE -> source
+        ArrayMergePolicy.MERGE -> {
             source.forEachIndexed { index, value ->
                 when {
                     value is Map<*, *> && this.getOrNull(index) is Map<*, *> -> {
@@ -49,7 +49,7 @@ fun <T> ArrayList<T>.setSafe(index: Int, value: T) {
     }
 }
 
-enum class VgsCollectArrayMergePolicy {
+enum class ArrayMergePolicy {
 
     OVERWRITE,
     MERGE
