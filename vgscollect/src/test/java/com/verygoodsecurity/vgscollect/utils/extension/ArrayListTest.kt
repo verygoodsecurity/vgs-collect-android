@@ -60,7 +60,7 @@ class ArrayListTest {
         // Arrange
         val target = arrayListOf<Any?>(1, null, null, 3, 5)
         val source = arrayListOf<Any?>(3, 2, null, 22)
-        val expectedResult = arrayListOf<Any?>(1, null, null, 3, 5, 3, 2, null, 22)
+        val expectedResult = arrayListOf<Any?>(1, null, null, 3, 5, 3, 2, 22)
         // Act
         val result = target.deepMerge(source, VGSArrayMergePolicy.MERGE)
         // Arrange
@@ -124,7 +124,7 @@ class ArrayListTest {
         val target = arrayListOf(1, null)
         val expectedResult = arrayListOf(1, 10)
         // Act
-        target.setOrAdd(1, 10)
+        target.setOrAdd(10, 1)
         // Arrange
         assertEquals(expectedResult, target)
     }
