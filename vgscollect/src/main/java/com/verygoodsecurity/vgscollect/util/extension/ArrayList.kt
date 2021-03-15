@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
-import kotlin.jvm.Throws
+import com.verygoodsecurity.vgscollect.core.model.VGSArrayMergePolicy
 
 internal fun <T> arrayListOfNulls(maxIndex: Int): ArrayList<T?> {
     val result = ArrayList<T?>(maxIndex)
@@ -20,22 +20,22 @@ internal inline infix fun <reified T : Any> ArrayList<T?>.merge(source: ArrayLis
 }
 
 @Suppress("UNCHECKED_CAST")
-fun ArrayList<Any?>.deepMerge(
+internal fun ArrayList<Any?>.deepMerge(
     source: ArrayList<Any?>,
-    policy: ArrayMergePolicy = ArrayMergePolicy.OVERWRITE
+    policy: VGSArrayMergePolicy
 ): ArrayList<Any?> {
     return when (policy) {
-        ArrayMergePolicy.OVERWRITE -> source
-        ArrayMergePolicy.MERGE -> {
+        VGSArrayMergePolicy.OVERWRITE -> source
+        VGSArrayMergePolicy.MERGE -> {
             source.forEachIndexed { index, value ->
                 when {
-                    value is Map<*, *> && this.getOrNull(index) is Map<*, *> -> {
+                    value is Map<*, *> && this.getOrNull(index) is Map<*, *> -> { // Target and source values are maps, try to merge
                         val sourceValue = value as Map<String, Any>
                         val targetValue = (this[index] as Map<String, Any>).toMutableMap()
                         this[index] = targetValue.deepMerge(sourceValue, policy)
                     }
-                    value is Map<*, *> -> this.setOrAdd(index, value)
-                    else -> this.add(value)
+                    value is Map<*, *> -> this.setOrAdd(value, index) // Source value is map, replace target value
+                    else -> value?.let { this.add(it) } // Add source value if not null
                 }
             }
             this
@@ -43,17 +43,10 @@ fun ArrayList<Any?>.deepMerge(
     }
 }
 
-@Throws(IndexOutOfBoundsException::class)
-fun <T> ArrayList<T>.setOrAdd(index: Int, value: T) {
+internal fun <T> ArrayList<T>.setOrAdd(value: T, index: Int) {
     try {
         set(index, value)
     } catch (e: Exception) {
-        add(index, value)
+        add(value)
     }
-}
-
-enum class ArrayMergePolicy {
-
-    OVERWRITE,
-    MERGE
 }

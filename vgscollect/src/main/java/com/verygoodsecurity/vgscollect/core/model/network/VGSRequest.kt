@@ -1,8 +1,8 @@
 package com.verygoodsecurity.vgscollect.core.model.network
 
-import android.util.Base64
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
+import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscollect.util.extension.toBase64
 import com.verygoodsecurity.vgscollect.util.mapToJSON
@@ -24,9 +24,10 @@ data class VGSRequest private constructor(
     val path: String,
     val customHeader: HashMap<String, String>,
     val customData: HashMap<String, Any>,
-    val fieldsIgnore: Boolean = false,
-    val fileIgnore: Boolean = false,
-    val format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
+    val fieldsIgnore: Boolean,
+    val fileIgnore: Boolean,
+    val format: VGSHttpBodyFormat,
+    val fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy
 ) {
 
     /**
@@ -41,6 +42,7 @@ data class VGSRequest private constructor(
         private var fieldsIgnore: Boolean = false
         private var format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var fileIgnore: Boolean = false
+        private var fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy = VGSCollectFieldNameMappingPolicy.NestedJson
 
         /**
          * It collect custom data which will be send to the server.
@@ -106,6 +108,16 @@ data class VGSRequest private constructor(
             return this
         }
 
+        /**
+         * Defines how to map fieldNames. Default is `VGSCollectFieldNameMappingPolicy.NestedJson`.
+         *
+         * @return current builder instance
+         */
+        fun setFieldNameMappingPolicy(policy: VGSCollectFieldNameMappingPolicy): VGSRequestBuilder {
+            this.fieldNameMappingPolicy = policy
+            return this
+        }
+
         internal fun setFormat(format: VGSHttpBodyFormat): VGSRequestBuilder {
             this.format = format
             return this
@@ -135,7 +147,8 @@ data class VGSRequest private constructor(
                 customData,
                 fieldsIgnore,
                 fileIgnore,
-                format
+                format,
+                fieldNameMappingPolicy
             )
         }
     }

@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
+import com.verygoodsecurity.vgscollect.core.model.VGSArrayMergePolicy
+
 internal fun <K, V> MutableMap<K, V>.putIfAbsentSafe(key: K?, value: V): V? {
     return key?.let {
         if (get(key) == null) {
@@ -13,7 +15,7 @@ internal fun <K, V> MutableMap<K, V>.putIfAbsentSafe(key: K?, value: V): V? {
 @Suppress("UNCHECKED_CAST")
 fun MutableMap<String, Any>.deepMerge(
     source: Map<String, Any>,
-    policy: ArrayMergePolicy = ArrayMergePolicy.OVERWRITE
+    policy: VGSArrayMergePolicy
 ): Map<String, Any> {
     source.forEach { (key, value) ->
         when {

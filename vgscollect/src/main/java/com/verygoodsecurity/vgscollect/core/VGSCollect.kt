@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.R
@@ -371,10 +372,16 @@ class VGSCollect {
             map.putAll(mergedMap)
             map
         }
+        Log.d("Test", "requestBodyMap = $requestBodyMap")
 
-        return storage.getAssociatedList(fieldsIgnore, fileIgnore)
-            .mapUsefulPayloads(requestBodyMap)
-            ?.run { customData.deepMerge(this) }
+        val associatedList = storage.getAssociatedList(fieldsIgnore, fileIgnore)
+        Log.d("Test", "associatedList = $associatedList")
+        val usefulPayloads = associatedList.mapUsefulPayloads(requestBodyMap)
+        Log.d("Test", "usefulPayloads = $usefulPayloads")
+        val deepMerge = usefulPayloads?.run {  customData.deepMerge(usefulPayloads) }
+        Log.d("Test", "deepMerge = $deepMerge")
+
+        return deepMerge
     }
 
     /**

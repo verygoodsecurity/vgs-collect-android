@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.utils.extension
 
-import com.verygoodsecurity.vgscollect.util.extension.ArrayMergePolicy
+import com.verygoodsecurity.vgscollect.core.model.VGSArrayMergePolicy
 import com.verygoodsecurity.vgscollect.util.extension.deepMerge
 import com.verygoodsecurity.vgscollect.util.extension.putIfAbsentSafe
 import org.junit.Assert.*
@@ -35,7 +35,7 @@ class MapTest {
         val source = mutableMapOf<String, Any>("test_test" to "test")
         val expectedResult = mutableMapOf<String, Any>("test" to "test", "test_test" to "test")
         // Act
-        target.deepMerge(source)
+        target.deepMerge(source, VGSArrayMergePolicy.OVERWRITE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -60,7 +60,7 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source)
+        target.deepMerge(source, VGSArrayMergePolicy.OVERWRITE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -84,7 +84,7 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source)
+        target.deepMerge(source, VGSArrayMergePolicy.OVERWRITE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -121,7 +121,7 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source)
+        target.deepMerge(source, VGSArrayMergePolicy.OVERWRITE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -151,7 +151,7 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source, ArrayMergePolicy.MERGE)
+        target.deepMerge(source, VGSArrayMergePolicy.MERGE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -181,7 +181,7 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source, ArrayMergePolicy.OVERWRITE)
+        target.deepMerge(source, VGSArrayMergePolicy.OVERWRITE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -219,7 +219,7 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source, ArrayMergePolicy.MERGE)
+        target.deepMerge(source, VGSArrayMergePolicy.MERGE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -258,7 +258,7 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source, ArrayMergePolicy.MERGE)
+        target.deepMerge(source, VGSArrayMergePolicy.MERGE)
         // Arrange
         assertEquals(target, expectedResult)
     }
