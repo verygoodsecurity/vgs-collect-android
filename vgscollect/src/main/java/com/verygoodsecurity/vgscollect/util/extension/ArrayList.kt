@@ -41,7 +41,11 @@ internal fun ArrayList<Any?>.deepMerge(
                         this[index] = targetValue.deepMerge(sourceValue, policy)
                     }
                     value is Map<*, *> -> this.setOrAdd(value, index) // Source value is map, replace target value
-                    else -> value?.let { this.add(it) } // Add source value if not null
+                    else -> {
+                        if (value != null || index > this.lastIndex) {
+                            this.add(value)
+                        }
+                    }
                 }
             }
             this
