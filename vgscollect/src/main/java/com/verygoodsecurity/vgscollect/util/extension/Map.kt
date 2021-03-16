@@ -1,8 +1,15 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
-import com.verygoodsecurity.vgscollect.core.model.VGSArrayMergePolicy
+import com.verygoodsecurity.vgscollect.core.model.map.FlatMap
+import org.json.JSONObject
 
-internal fun <K, V> MutableMap<K, V>.putIfAbsentSafe(key: K?, value: V): V? {
+fun <K, V> Map<K, V>.toJSON(): JSONObject = try {
+    JSONObject(this)
+} catch (e: Exception) {
+    JSONObject()
+}
+
+internal fun <K, V> MutableMap<K, V>.putIfAbsentCompat(key: K?, value: V): V? {
     return key?.let {
         if (get(key) == null) {
             put(key, value)
@@ -12,10 +19,18 @@ internal fun <K, V> MutableMap<K, V>.putIfAbsentSafe(key: K?, value: V): V? {
     }
 }
 
+internal fun Map<String, Any>.toFlatMap(allowParseArrays: Boolean): FlatMap {
+    return FlatMap(allowParseArrays).apply {
+        this@toFlatMap.forEach { (key, value) ->
+            this.set(key, value)
+        }
+    }
+}
+
 @Suppress("UNCHECKED_CAST")
-fun MutableMap<String, Any>.deepMerge(
+internal fun MutableMap<String, Any>.deepMerge(
     source: Map<String, Any>,
-    policy: VGSArrayMergePolicy
+    policy: ArrayMergePolicy
 ): Map<String, Any> {
     source.forEach { (key, value) ->
         when {

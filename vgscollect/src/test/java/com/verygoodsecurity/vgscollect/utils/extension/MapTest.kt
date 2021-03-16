@@ -1,8 +1,9 @@
 package com.verygoodsecurity.vgscollect.utils.extension
 
-import com.verygoodsecurity.vgscollect.core.model.VGSArrayMergePolicy
+import com.verygoodsecurity.vgscollect.util.extension.ArrayMergePolicy
 import com.verygoodsecurity.vgscollect.util.extension.deepMerge
-import com.verygoodsecurity.vgscollect.util.extension.putIfAbsentSafe
+import com.verygoodsecurity.vgscollect.util.extension.putIfAbsentCompat
+import com.verygoodsecurity.vgscollect.util.extension.toJSON
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -13,7 +14,7 @@ class MapTest {
         //Arrange
         val date = mutableMapOf("test_test" to "test")
         // Act
-        val result = date.putIfAbsentSafe("test", "test")
+        val result = date.putIfAbsentCompat("test", "test")
         // Arrange
         assertNotNull(result)
     }
@@ -23,7 +24,7 @@ class MapTest {
         //Arrange
         val date = mutableMapOf("test" to "test")
         // Act
-        val result = date.putIfAbsentSafe("test", "test")
+        val result = date.putIfAbsentCompat("test", "test")
         // Arrange
         assertNull(result)
     }
@@ -35,7 +36,7 @@ class MapTest {
         val source = mutableMapOf<String, Any>("test_test" to "test")
         val expectedResult = mutableMapOf<String, Any>("test" to "test", "test_test" to "test")
         // Act
-        target.deepMerge(source, VGSArrayMergePolicy.OVERWRITE)
+        target.deepMerge(source, ArrayMergePolicy.OVERWRITE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -60,7 +61,7 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source, VGSArrayMergePolicy.OVERWRITE)
+        target.deepMerge(source, ArrayMergePolicy.OVERWRITE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -84,7 +85,7 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source, VGSArrayMergePolicy.OVERWRITE)
+        target.deepMerge(source, ArrayMergePolicy.OVERWRITE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -121,7 +122,7 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source, VGSArrayMergePolicy.OVERWRITE)
+        target.deepMerge(source, ArrayMergePolicy.OVERWRITE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -151,7 +152,7 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source, VGSArrayMergePolicy.MERGE)
+        target.deepMerge(source, ArrayMergePolicy.MERGE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -181,7 +182,7 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source, VGSArrayMergePolicy.OVERWRITE)
+        target.deepMerge(source, ArrayMergePolicy.OVERWRITE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -219,7 +220,7 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source, VGSArrayMergePolicy.MERGE)
+        target.deepMerge(source, ArrayMergePolicy.MERGE)
         // Arrange
         assertEquals(target, expectedResult)
     }
@@ -258,7 +259,42 @@ class MapTest {
             )
         )
         // Act
-        target.deepMerge(source, VGSArrayMergePolicy.MERGE)
+        target.deepMerge(source, ArrayMergePolicy.MERGE)
+        // Arrange
+        assertEquals(target, expectedResult)
+    }
+
+    @Test
+    fun deepMerge_extraDataWithNulls() {
+        //Arrange
+        val target = mutableMapOf<String, Any>(
+                "test" to arrayListOf(
+                    null,
+                    mutableMapOf<String, Any>(
+                        "test_1" to "test_1"
+                    ),
+                    null
+                )
+        )
+        val source = mutableMapOf<String, Any>(
+            "test" to arrayListOf(
+                null,
+                null,
+                "test_1"
+            )
+        )
+        val expectedResult = mutableMapOf<String, Any>(
+            "test" to arrayListOf(
+                null,
+                mutableMapOf<String, Any>(
+                    "test_1" to "test_1"
+                ),
+                null,
+                "test_1"
+            )
+        )
+        // Act
+        target.deepMerge(source, ArrayMergePolicy.MERGE)
         // Arrange
         assertEquals(target, expectedResult)
     }

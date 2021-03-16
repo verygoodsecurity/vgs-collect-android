@@ -39,10 +39,11 @@ sealed class Key {
 
     companion object {
 
-        fun create(key: String): Key = if (ArrayKey.isArrayKey(key)) {
-            ArrayKey(key)
-        } else {
-            ObjectKey(key)
-        }
+        fun create(key: String, allowParseArray: Boolean): Key =
+            if (allowParseArray && ArrayKey.isArrayKey(key)) {
+                ArrayKey(key)
+            } else {
+                ObjectKey(key)
+            }
     }
 }

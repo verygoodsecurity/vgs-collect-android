@@ -1,7 +1,5 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
-import com.verygoodsecurity.vgscollect.core.model.VGSArrayMergePolicy
-
 internal fun <T> arrayListOfNulls(maxIndex: Int): ArrayList<T?> {
     val result = ArrayList<T?>(maxIndex)
     for (i in 0..maxIndex) {
@@ -19,14 +17,22 @@ internal inline infix fun <reified T : Any> ArrayList<T?>.merge(source: ArrayLis
     return result
 }
 
+internal fun <T> ArrayList<T>.setOrAdd(value: T, index: Int) {
+    try {
+        set(index, value)
+    } catch (e: Exception) {
+        add(value)
+    }
+}
+
 @Suppress("UNCHECKED_CAST")
 internal fun ArrayList<Any?>.deepMerge(
     source: ArrayList<Any?>,
-    policy: VGSArrayMergePolicy
+    policy: ArrayMergePolicy
 ): ArrayList<Any?> {
     return when (policy) {
-        VGSArrayMergePolicy.OVERWRITE -> source
-        VGSArrayMergePolicy.MERGE -> {
+        ArrayMergePolicy.OVERWRITE -> source
+        ArrayMergePolicy.MERGE -> {
             source.forEachIndexed { index, value ->
                 when {
                     value is Map<*, *> && this.getOrNull(index) is Map<*, *> -> { // Target and source values are maps, try to merge
@@ -40,13 +46,5 @@ internal fun ArrayList<Any?>.deepMerge(
             }
             this
         }
-    }
-}
-
-internal fun <T> ArrayList<T>.setOrAdd(value: T, index: Int) {
-    try {
-        set(index, value)
-    } catch (e: Exception) {
-        add(value)
     }
 }

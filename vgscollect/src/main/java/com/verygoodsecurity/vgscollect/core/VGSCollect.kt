@@ -19,6 +19,7 @@ import com.verygoodsecurity.vgscollect.core.api.analityc.utils.toAnalyticStatus
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.generateAgentHeader
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isHttpStatusCode
+import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy.*
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.network.*
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
@@ -30,14 +31,10 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.*
-import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
-import com.verygoodsecurity.vgscollect.util.extension.hasAccessNetworkStatePermission
-import com.verygoodsecurity.vgscollect.util.extension.hasInternetPermission
-import com.verygoodsecurity.vgscollect.util.extension.isConnectionAvailable
+import com.verygoodsecurity.vgscollect.util.extension.*
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * VGS Collect allows you to securely collect data and files from your users without having
@@ -257,7 +254,7 @@ class VGSCollect {
 
         collectUserData(request) {
             response = client.execute(
-                request.toNetworkRequest(baseURL)
+                request.toNetworkRequest(baseURL, it)
             ).toVGSResponse(context)
         }
 
@@ -288,13 +285,13 @@ class VGSCollect {
      */
     fun asyncSubmit(request: VGSRequest) {
         collectUserData(request) {
-            client.enqueue(request.toNetworkRequest(baseURL)) { r ->
+            client.enqueue(request.toNetworkRequest(baseURL, it)) { r ->
                 mainHandler.post { notifyAllListeners(r.toVGSResponse()) }
             }
         }
     }
 
-    private fun collectUserData(request: VGSRequest, submitRequest: () -> Unit) {
+    private fun collectUserData(request: VGSRequest, submitRequest: (Map<String, Any>) -> Unit) {
         when {
             !request.fieldsIgnore && !validateFields() -> return
             !request.fileIgnore && !validateFiles() -> return
@@ -306,16 +303,16 @@ class VGSCollect {
             !context.isConnectionAvailable() ->
                 notifyAllListeners(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(context))
             else -> {
-                mergeData(request.customData, request.fieldsIgnore, request.fileIgnore)
+                val data = mergeData(request)
                 submitEvent(
                     true,
                     !request.fileIgnore,
                     !request.fieldsIgnore,
                     request.customHeader.isNotEmpty(),
-                    request.customData.isNotEmpty(),
+                    data.isNotEmpty(),
                     hasCustomHostname
                 )
-                submitRequest()
+                submitRequest(data)
             }
         }
     }
@@ -357,31 +354,26 @@ class VGSCollect {
         return isValid
     }
 
-    private fun mergeData(
-        customData: HashMap<String, Any> = HashMap(),
-        fieldsIgnore: Boolean = false,
-        fileIgnore: Boolean = false
-    ): Map<String, Any>? {
-        val requestBodyMap = customData.run {
-            val map = HashMap<String, Any>()
-            val customDataTmp = client.getTemporaryStorage().getCustomData()
-            val newDynamicData = this.mapToMap()
-            val newStaticData = customDataTmp.mapToMap()
-            val mergedMap = newStaticData.deepMerge(newDynamicData)
-
-            map.putAll(mergedMap)
-            map
+    private fun mergeData(request: VGSRequest): Map<String, Any> {
+        val result = mutableMapOf<String, Any>()
+        val (allowArrays, mergeArraysPolicy) = when (request.fieldNameMappingPolicy) {
+            NESTED_JSON -> false to ArrayMergePolicy.OVERWRITE
+            NESTED_JSON_WITH_ARRAYS_MERGE -> true to ArrayMergePolicy.MERGE
+            NESTED_JSON_WITH_ARRAYS_OVERWRITE -> true to ArrayMergePolicy.OVERWRITE
         }
-        Log.d("Test", "requestBodyMap = $requestBodyMap")
-
-        val associatedList = storage.getAssociatedList(fieldsIgnore, fileIgnore)
-        Log.d("Test", "associatedList = $associatedList")
-        val usefulPayloads = associatedList.mapUsefulPayloads(requestBodyMap)
-        Log.d("Test", "usefulPayloads = $usefulPayloads")
-        val deepMerge = usefulPayloads?.run {  customData.deepMerge(usefulPayloads) }
-        Log.d("Test", "deepMerge = $deepMerge")
-
-        return deepMerge
+        // Merge static custom data into result
+        result.deepMerge(client.getTemporaryStorage().getCustomData(), mergeArraysPolicy)
+        // Merge dynamic custom data into result
+        result.deepMerge(request.customData, mergeArraysPolicy)
+        // Merge fields data into result
+        result.deepMerge(
+            storage.getAssociatedList(
+                request.fieldsIgnore,
+                request.fileIgnore
+            ).toMap().toFlatMap(allowArrays).structuredData,
+            mergeArraysPolicy
+        )
+        return result
     }
 
     /**
@@ -647,9 +639,7 @@ class VGSCollect {
                 .setMethod(HTTPMethod.GET)
                 .setFormat(VGSHttpBodyFormat.PLAIN_TEXT)
                 .build()
-                .toNetworkRequest(
-                    host.toHostnameValidationUrl(tnt)
-                )
+                .toNetworkRequest(host.toHostnameValidationUrl(tnt))
 
             client.enqueue(r) {
                 hasCustomHostname = it.isSuccessful && host equalsUrl it.body

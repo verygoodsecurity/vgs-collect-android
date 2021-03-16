@@ -2,15 +2,15 @@ package com.verygoodsecurity.vgscollect.core.model.map
 
 import com.verygoodsecurity.vgscollect.util.extension.arrayListOfNulls
 import com.verygoodsecurity.vgscollect.util.extension.merge
-import com.verygoodsecurity.vgscollect.util.extension.putIfAbsentSafe
+import com.verygoodsecurity.vgscollect.util.extension.putIfAbsentCompat
 
 @Suppress("UNCHECKED_CAST")
-class FlatMap {
+class FlatMap constructor(private val allowParseArrays: Boolean = true) {
 
     val structuredData: MutableMap<String, Any> by lazy { mutableMapOf() }
 
     fun set(key: String, value: Any): Any? {
-        val keys = key.split(DOT_SEPARATOR).map { Key.create(it) }.toMutableList()
+        val keys = key.split(DOT_SEPARATOR).map { Key.create(it, allowParseArrays) }.toMutableList()
         return if (keys.any { !it.isValid }) null else set(structuredData, keys, value)
     }
 
@@ -29,7 +29,7 @@ class FlatMap {
         key: Key.ObjectKey,
         value: Any?
     ): MutableMap<String, Any>? {
-        target.putIfAbsentSafe(key.value, value ?: mutableMapOf<String, Any>())
+        target.putIfAbsentCompat(key.value, value ?: mutableMapOf<String, Any>())
         return target[key.value] as? MutableMap<String, Any>
     }
 

@@ -1,10 +1,6 @@
 package com.verygoodsecurity.vgscollect.utils.extension
 
-import com.verygoodsecurity.vgscollect.core.model.VGSArrayMergePolicy
-import com.verygoodsecurity.vgscollect.util.extension.arrayListOfNulls
-import com.verygoodsecurity.vgscollect.util.extension.deepMerge
-import com.verygoodsecurity.vgscollect.util.extension.merge
-import com.verygoodsecurity.vgscollect.util.extension.setOrAdd
+import com.verygoodsecurity.vgscollect.util.extension.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -50,7 +46,7 @@ class ArrayListTest {
         val target = arrayListOf<Any?>(1, null, null, 3, 5)
         val source = arrayListOf<Any?>(3, 2, null, 22)
         // Act
-        val result = target.deepMerge(source, VGSArrayMergePolicy.OVERWRITE)
+        val result = target.deepMerge(source, ArrayMergePolicy.OVERWRITE)
         // Arrange
         assertEquals(source, result)
     }
@@ -62,7 +58,7 @@ class ArrayListTest {
         val source = arrayListOf<Any?>(3, 2, null, 22)
         val expectedResult = arrayListOf<Any?>(1, null, null, 3, 5, 3, 2, 22)
         // Act
-        val result = target.deepMerge(source, VGSArrayMergePolicy.MERGE)
+        val result = target.deepMerge(source, ArrayMergePolicy.MERGE)
         // Arrange
         assertEquals(expectedResult, result)
     }
@@ -75,7 +71,7 @@ class ArrayListTest {
         val expectedResult =
             arrayListOf(mutableMapOf<String, Any>("test" to "test"), null, null, 3, 5)
         // Act
-        val result = target.deepMerge(source, VGSArrayMergePolicy.MERGE)
+        val result = target.deepMerge(source, ArrayMergePolicy.MERGE)
         // Arrange
         assertEquals(expectedResult, result)
     }
@@ -88,7 +84,7 @@ class ArrayListTest {
         val expectedResult =
             arrayListOf(mutableMapOf<String, Any>("test" to "test"), null, null, 3, 5, 1)
         // Act
-        val result = target.deepMerge(source, VGSArrayMergePolicy.MERGE)
+        val result = target.deepMerge(source, ArrayMergePolicy.MERGE)
         // Arrange
         assertEquals(expectedResult, result)
     }
@@ -99,7 +95,7 @@ class ArrayListTest {
         val target = arrayListOf<Any?>(mutableMapOf<String, Any>("test" to "test"))
         val source = arrayListOf<Any?>(mutableMapOf<String, Any>("test" to "test1"))
         // Act
-        val result = target.deepMerge(source, VGSArrayMergePolicy.MERGE)
+        val result = target.deepMerge(source, ArrayMergePolicy.MERGE)
         // Arrange
         assertEquals(source, result)
     }
@@ -112,7 +108,7 @@ class ArrayListTest {
         val expectedResult =
             arrayListOf(mutableMapOf<String, Any>("test" to "test", "test1" to "test1"))
         // Act
-        val result = target.deepMerge(source, VGSArrayMergePolicy.MERGE)
+        val result = target.deepMerge(source, ArrayMergePolicy.MERGE)
         // Arrange
         assertEquals(expectedResult, result)
     }
