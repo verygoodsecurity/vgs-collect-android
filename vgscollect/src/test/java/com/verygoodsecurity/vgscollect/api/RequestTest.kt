@@ -65,7 +65,7 @@ class RequestTest {
         val r = VGSRequest.VGSRequestBuilder()
             .setMethod(METHOD)
             .setPath(PATH)
-            .build().toNetworkRequest(BASE_URL)
+            .build().toNetworkRequest(BASE_URL, emptyMap())
 
         assertEquals(exampleRequest, r)
     }

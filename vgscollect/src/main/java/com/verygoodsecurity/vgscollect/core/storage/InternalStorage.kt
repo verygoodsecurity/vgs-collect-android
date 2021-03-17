@@ -8,8 +8,8 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageErrorListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
-import com.verygoodsecurity.vgscollect.util.merge
-import com.verygoodsecurity.vgscollect.util.toAssociatedList
+import com.verygoodsecurity.vgscollect.util.extension.merge
+import com.verygoodsecurity.vgscollect.util.extension.toAssociatedList
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 
 /** @suppress */

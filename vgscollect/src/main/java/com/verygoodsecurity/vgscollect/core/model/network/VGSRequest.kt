@@ -1,11 +1,11 @@
 package com.verygoodsecurity.vgscollect.core.model.network
 
-import android.util.Base64
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
+import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscollect.util.extension.toBase64
-import com.verygoodsecurity.vgscollect.util.mapToJSON
+import com.verygoodsecurity.vgscollect.util.extension.toJSON
 
 /**
  * Class to collect data before submit.
@@ -22,11 +22,12 @@ import com.verygoodsecurity.vgscollect.util.mapToJSON
 data class VGSRequest private constructor(
     val method: HTTPMethod,
     val path: String,
-    val customHeader: HashMap<String, String>,
-    val customData: HashMap<String, Any>,
-    val fieldsIgnore: Boolean = false,
-    val fileIgnore: Boolean = false,
-    val format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
+    val customHeader: Map<String, String>,
+    val customData: Map<String, Any>,
+    val fieldsIgnore: Boolean,
+    val fileIgnore: Boolean,
+    val format: VGSHttpBodyFormat,
+    val fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy
 ) {
 
     /**
@@ -41,6 +42,7 @@ data class VGSRequest private constructor(
         private var fieldsIgnore: Boolean = false
         private var format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var fileIgnore: Boolean = false
+        private var fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy = VGSCollectFieldNameMappingPolicy.NESTED_JSON
 
         /**
          * It collect custom data which will be send to the server.
@@ -106,6 +108,16 @@ data class VGSRequest private constructor(
             return this
         }
 
+        /**
+         * Defines how to map fieldNames. Default is `VGSCollectFieldNameMappingPolicy.NestedJson`.
+         *
+         * @return current builder instance
+         */
+        fun setFieldNameMappingPolicy(policy: VGSCollectFieldNameMappingPolicy): VGSRequestBuilder {
+            this.fieldNameMappingPolicy = policy
+            return this
+        }
+
         internal fun setFormat(format: VGSHttpBodyFormat): VGSRequestBuilder {
             this.format = format
             return this
@@ -135,7 +147,8 @@ data class VGSRequest private constructor(
                 customData,
                 fieldsIgnore,
                 fileIgnore,
-                format
+                format,
+                fieldNameMappingPolicy
             )
         }
     }
@@ -146,19 +159,19 @@ fun VGSRequest.toAnalyticRequest(url: String): NetworkRequest {
         method,
         url concatWithSlash path,
         customHeader,
-        customData.mapToJSON().toString().toBase64(),
+        customData.toJSON().toString().toBase64(),
         fieldsIgnore,
         fileIgnore,
         format
     )
 }
 
-fun VGSRequest.toNetworkRequest(url: String): NetworkRequest {
+fun VGSRequest.toNetworkRequest(url: String, requestData: Map<String, Any>? = null): NetworkRequest {
     return NetworkRequest(
         method,
         url concatWithSlash path,
         customHeader,
-        customData.mapToJSON().toString(),
+        requestData?.toJSON()?.toString() ?: customData,
         fieldsIgnore,
         fileIgnore,
         format
