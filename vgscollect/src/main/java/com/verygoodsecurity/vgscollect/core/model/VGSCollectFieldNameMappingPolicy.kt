@@ -12,13 +12,14 @@ enum class VGSCollectFieldNameMappingPolicy {
     NESTED_JSON,
 
     /**
-     * Map fieldName to JSON and Arrays if index is specified. Also merge extra data array with
+     * Map fieldName to JSON with arrays if index is specified. Also merge extra data array with
      * collect array data at the same nested level if possible.
      */
     NESTED_JSON_WITH_ARRAYS_MERGE,
 
     /**
-     * Map fieldName to JSON and Arrays if index is specified. Completely overwrite extra data array with collect array data.
+     * Map fieldName to JSON with arrays if index is specified. Completely overwrite extra data
+     * array with collect array data.
      */
     NESTED_JSON_WITH_ARRAYS_OVERWRITE
 }
