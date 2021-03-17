@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.R
@@ -19,6 +18,7 @@ import com.verygoodsecurity.vgscollect.core.api.analityc.utils.toAnalyticStatus
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.generateAgentHeader
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isHttpStatusCode
+import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy.*
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.network.*
@@ -310,7 +310,8 @@ class VGSCollect {
                     !request.fieldsIgnore,
                     request.customHeader.isNotEmpty(),
                     data.isNotEmpty(),
-                    hasCustomHostname
+                    hasCustomHostname,
+                    request.fieldNameMappingPolicy
                 )
                 submitRequest(data)
             }
@@ -535,6 +536,7 @@ class VGSCollect {
         hasCustomHeader: Boolean = false,
         hasCustomData: Boolean = false,
         hasCustomHostname: Boolean = false,
+        mappingPolicy: VGSCollectFieldNameMappingPolicy = NESTED_JSON,
         code: Int = 200
     ) {
         if (code.isHttpStatusCode()) {
@@ -553,6 +555,7 @@ class VGSCollect {
                     if (hasCustomData ||
                         client.getTemporaryStorage().getCustomData().isNotEmpty()
                     ) add("customData")
+                    add(mappingPolicy.analyticsName)
                     this
                 }
 
