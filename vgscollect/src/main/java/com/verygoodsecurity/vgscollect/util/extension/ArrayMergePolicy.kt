@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
-enum class ArrayMergePolicy {
+internal enum class ArrayMergePolicy {
 
     OVERWRITE,
     MERGE
