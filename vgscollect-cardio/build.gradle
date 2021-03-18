@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: "org.jetbrains.dokka"
+apply plugin: "com.vanniktech.maven.publish"
 
 android {
     compileSdkVersion 30
@@ -11,8 +12,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode CODE_VERSION.toInteger()
-        versionName POM_VERSION
+        versionCode VERSION_CODE.toInteger()
+        versionName VERSION_NAME
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -35,5 +36,3 @@ dependencies {
     api project(':vgscollect')
     implementation 'io.card:android-sdk:5.5.1'
 }
-
-apply from: rootProject.file('release-bintray.gradle')
