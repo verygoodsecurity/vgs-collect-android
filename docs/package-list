@@ -9,6 +9,11 @@ $dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/InitAct
 $dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ResponseAction.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/api/analityc/action/ResponseAction.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ScanAction.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/api/analityc/action/ScanAction.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/SubmitAction.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/api/analityc/action/SubmitAction.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.map/FlatMap.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/map/FlatMap.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.map/Key.ArrayKey.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/map/Key.ArrayKey.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.map/Key.ArrayKey///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/map/Key.ArrayKey.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.map/Key.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/map/Key.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.core.model.map/Key.ObjectKey///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/map/Key.ObjectKey.html
 $dokka.location:com.verygoodsecurity.vgscollect.core.model.network/VGSRequest.VGSRequestBuilder///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/network/VGSRequest.VGSRequestBuilder.html
 $dokka.location:com.verygoodsecurity.vgscollect.core.model.network/VGSResponse.ErrorResponse///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/network/VGSResponse.ErrorResponse.html
 $dokka.location:com.verygoodsecurity.vgscollect.core.model.network/VGSResponse.SuccessResponse///PointingToDeclaration/com/verygoodsecurity/vgscollect/core/model/network/VGSResponse.SuccessResponse.html
@@ -46,11 +51,12 @@ com.verygoodsecurity.vgscollect.core.api.analityc
 com.verygoodsecurity.vgscollect.core.api.analityc.action
 com.verygoodsecurity.vgscollect.core.api.analityc.utils
 com.verygoodsecurity.vgscollect.core.api.client.extension
+com.verygoodsecurity.vgscollect.core.model
+com.verygoodsecurity.vgscollect.core.model.map
 com.verygoodsecurity.vgscollect.core.model.network
 com.verygoodsecurity.vgscollect.core.model.state
 com.verygoodsecurity.vgscollect.core.storage
 com.verygoodsecurity.vgscollect.core.storage.content.file
-com.verygoodsecurity.vgscollect.util
 com.verygoodsecurity.vgscollect.util.extension
 com.verygoodsecurity.vgscollect.view
 com.verygoodsecurity.vgscollect.view.card
