@@ -36,3 +36,5 @@ dependencies {
     implementation 'com.getbouncer:cardscan-ui:2.0.0074'
     implementation 'com.getbouncer:tensorflow-lite:2.0.0074'
 }
+
+apply from: rootProject.file('release-bintray.gradle')

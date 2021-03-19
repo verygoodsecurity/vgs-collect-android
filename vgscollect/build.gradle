@@ -77,6 +77,7 @@ dependencies {
     dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
 }
 
+apply from: rootProject.file('release-bintray.gradle')
 tasks.named("dokkaJavadoc") {
     outputDirectory.set(rootProject.file('docs'))
 }
