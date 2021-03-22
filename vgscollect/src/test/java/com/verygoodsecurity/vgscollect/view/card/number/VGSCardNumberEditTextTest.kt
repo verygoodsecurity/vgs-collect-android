@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.card.number
 
 import android.app.Activity
+import android.graphics.Typeface
 import android.text.InputType
 import android.view.Gravity
 import android.view.View
@@ -15,14 +16,11 @@ import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNum
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CardInputField
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
-import org.junit.Assert
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
+import org.mockito.Mockito.*
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.android.controller.ActivityController
@@ -58,7 +56,7 @@ class VGSCardNumberEditTextTest {
         assertNotNull(internal)
 
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is CardInputField)
+        assertTrue(child is CardInputField)
     }
 
     @Test
@@ -209,22 +207,22 @@ class VGSCardNumberEditTextTest {
     @Test
     fun test_field_state_change_listener_first() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         val listener = mock(OnFieldStateChangeListener::class.java)
         view.setOnFieldStateChangeListener(listener)
-        Mockito.verify(listener, Mockito.times(0)).onStateChange(any())
+        verify(listener, times(0)).onStateChange(any())
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        Mockito.verify(listener, Mockito.times(1)).onStateChange(any())
+        verify(listener, times(1)).onStateChange(any())
     }
 
     @Test
     fun test_field_state_change_listener_last() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
@@ -232,13 +230,13 @@ class VGSCardNumberEditTextTest {
         val listener = mock(OnFieldStateChangeListener::class.java)
         view.setOnFieldStateChangeListener(listener)
 
-        Mockito.verify(listener, Mockito.times(1)).onStateChange(any())
+        verify(listener, times(1)).onStateChange(any())
     }
 
     @Test
     fun test_on_focus_change_listener() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
@@ -247,7 +245,7 @@ class VGSCardNumberEditTextTest {
         view.onFocusChangeListener = listener
         view.requestFocus()
 
-        Mockito.verify(listener, Mockito.times(1)).onFocusChange(view, true)
+        verify(listener, times(1)).onFocusChange(view, true)
     }
 
     @Test
@@ -267,7 +265,7 @@ class VGSCardNumberEditTextTest {
         stateResult.drawableBrandResId = R.drawable.ic_visa_dark
 
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
         view.setText(text)
         view.setFieldName("number")
 
@@ -294,7 +292,7 @@ class VGSCardNumberEditTextTest {
     @Test
     fun test_length() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
@@ -334,7 +332,7 @@ class VGSCardNumberEditTextTest {
     @Test
     fun test_length_min() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
@@ -377,7 +375,7 @@ class VGSCardNumberEditTextTest {
     @Test
     fun test_length_max() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
@@ -430,7 +428,7 @@ class VGSCardNumberEditTextTest {
     @Test
     fun test_length_min_max() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
@@ -490,7 +488,7 @@ class VGSCardNumberEditTextTest {
     @Test
     fun test_luhn() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
@@ -532,7 +530,7 @@ class VGSCardNumberEditTextTest {
     @Test
     fun test_regex() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
@@ -582,7 +580,7 @@ class VGSCardNumberEditTextTest {
     @Test
     fun test_override_default_validation() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
@@ -626,7 +624,7 @@ class VGSCardNumberEditTextTest {
     @Test
     fun test_wrong_override_default_validation() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
@@ -667,7 +665,7 @@ class VGSCardNumberEditTextTest {
     @Test
     fun test_length_luhn() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
@@ -708,7 +706,7 @@ class VGSCardNumberEditTextTest {
     @Test
     fun test_luhn_length_regex() {
         val child = view.statePreparer.getView()
-        Assert.assertTrue(child is BaseInputField)
+        assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
@@ -744,4 +742,17 @@ class VGSCardNumberEditTextTest {
         assertEquals(false, state3!!.isValid)
         assertEquals(15, state3.contentLength)
     }
+
+    @Test
+    fun set_typeface() {
+        assertEquals(null, view.getTypeface())
+        view.getTypeface().let {
+            view.setTypeface(it, Typeface.BOLD)
+        }
+
+        assertEquals(view.getTypeface(), Typeface.DEFAULT_BOLD)
+        view.setTypeface(null, Typeface.NORMAL)
+        assertEquals(view.getTypeface(), Typeface.DEFAULT)
+    }
+
 }

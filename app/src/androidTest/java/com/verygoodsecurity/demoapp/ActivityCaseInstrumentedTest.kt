@@ -5,7 +5,7 @@ import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
-import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.*
 import androidx.test.espresso.intent.matcher.IntentMatchers.*
@@ -43,7 +43,7 @@ class ActivityCaseInstrumentedTest {
         const val CARD_HOLDER= "Gohn G"
 
         const val CARD_EXP_DATE_WRONG = "22/2222"
-        const val CARD_EXP_DATE= "02/2023"
+        const val CARD_EXP_DATE= "02/25"
 
         const val CARD_CVC_WRONG = "12"
         const val CARD_CVC= "123"
@@ -174,12 +174,16 @@ class ActivityCaseInstrumentedTest {
 
     private fun interactWithResponseContainer(): ViewInteraction {
         return onView(withId(R.id.responseContainerView))
+            .perform(scrollTo())
             .check(matches(isDisplayed()))
     }
 
     private fun startMainScreen() {
         val startWithActivityBtn = onView(withId(R.id.startWithActivityBtn))
             .check(matches(isDisplayed()))
+
+        onView(withId(R.id.userVault)).perform(typeText(Utils.DEFAULT_TENANT_ID), closeSoftKeyboard())
+        onView(withId(R.id.userPath)).perform(typeText(Utils.DEFAULT_PATH), closeSoftKeyboard())
 
         performClick(startWithActivityBtn)
     }
@@ -222,6 +226,7 @@ class ActivityCaseInstrumentedTest {
 
     private fun interactWithSubmitButton(): ViewInteraction {
         return onView(withId(R.id.submitBtn))
+            .perform(scrollTo())
             .check(matches(isDisplayed()))
     }
 

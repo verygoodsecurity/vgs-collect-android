@@ -632,11 +632,13 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @param tf This value may be null.
      * @param style Value is Typeface.NORMAL, Typeface.BOLD, Typeface.ITALIC, or Typeface.BOLD_ITALIC
      */
-    open fun setTypeface(tf: Typeface, style: Int) {
+    open fun setTypeface(tf: Typeface?, style: Int) {
         when (style) {
-            0 -> inputField.typeface = Typeface.DEFAULT_BOLD
+            -1 -> inputField.typeface = fontFamily
+            0 -> inputField.typeface = Typeface.DEFAULT
             1 -> inputField.setTypeface(tf, Typeface.BOLD)
             2 -> inputField.setTypeface(tf, Typeface.ITALIC)
+            3 -> inputField.setTypeface(tf, Typeface.BOLD_ITALIC)
         }
     }
 

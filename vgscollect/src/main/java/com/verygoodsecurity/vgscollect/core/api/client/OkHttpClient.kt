@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isCodeSuccessful
-import com.verygoodsecurity.vgscollect.core.api.client.extension.setMethod
+import com.verygoodsecurity.vgscollect.core.api.client.extension.toRequestBodyOrNull
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
@@ -119,11 +119,11 @@ internal class OkHttpClient(
         data: Any?,
         contentType: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
     ): Request {
-        return Request.Builder().url(url).setMethod(
-            method,
-            data?.toString(),
-            contentType.toContentType().toMediaTypeOrNull()
-        )
+        val mediaType = contentType.toContentType().toMediaTypeOrNull()
+        val requestBody = data?.toString().toRequestBodyOrNull(mediaType, method)
+        return Request.Builder()
+            .url(url)
+            .method(method.name, requestBody)
             .addHeaders(headers)
             .build()
     }

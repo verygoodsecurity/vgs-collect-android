@@ -15,5 +15,20 @@ enum class HTTPMethod {
     /**
      *  HTTP POST method
      */
-    POST
+    POST,
+
+    /**
+     *  HTTP PUT method
+     */
+    PUT,
+
+    /**
+     *  HTTP PATCH method
+     */
+    PATCH,
+
+    /**
+     *  HTTP DELETE method
+     */
+    DELETE
 }

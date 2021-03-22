@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.card.cvc
 
 import android.app.Activity
+import android.graphics.Typeface
 import android.text.InputType
 import android.view.View
 import com.verygoodsecurity.vgscollect.TestApplication
@@ -9,10 +10,8 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
 import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
-import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -41,7 +40,7 @@ class CardVerificationCodeEditTextTest {
     fun test_view() {
         view.onAttachedToWindow()
         val internal = view.statePreparer.getView()
-        Assert.assertNotNull(internal)
+        assertNotNull(internal)
     }
 
     @Test
@@ -54,7 +53,7 @@ class CardVerificationCodeEditTextTest {
     @Test
     fun test_check_internal_view() {
         val internal = view.statePreparer.getView()
-        Assert.assertNotNull(internal)
+        assertNotNull(internal)
 
         val child = view.statePreparer.getView()
         assertTrue(child is CVCInputField)
@@ -85,7 +84,7 @@ class CardVerificationCodeEditTextTest {
 
     @Test
     fun test_input_type_number() {
-        Assert.assertNotNull(view)
+        assertNotNull(view)
 
         view.setInputType(InputType.TYPE_CLASS_NUMBER)
         assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
@@ -93,7 +92,7 @@ class CardVerificationCodeEditTextTest {
 
     @Test
     fun test_input_type_number_password() {
-        Assert.assertNotNull(view)
+        assertNotNull(view)
 
         val passType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         view.setInputType(passType)
@@ -105,7 +104,7 @@ class CardVerificationCodeEditTextTest {
 
     @Test
     fun test_input_type_text_password() {
-        Assert.assertNotNull(view)
+        assertNotNull(view)
 
         val passType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_NUMBER_VARIATION_PASSWORD
         view.setInputType(passType)
@@ -117,7 +116,7 @@ class CardVerificationCodeEditTextTest {
 
     @Test
     fun test_input_type_other() {
-        Assert.assertNotNull(view)
+        assertNotNull(view)
 
         view.setInputType(InputType.TYPE_CLASS_TEXT)
         assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
@@ -172,6 +171,18 @@ class CardVerificationCodeEditTextTest {
         assertEquals(stateResult.contentLength, state.contentLength)
         assertEquals(stateResult.fieldName, state.fieldName)
         assertEquals(stateResult.fieldType, state.fieldType)
+    }
+
+    @Test
+    fun set_typeface() {
+        assertEquals(null, view.getTypeface())
+        view.getTypeface().let {
+            view.setTypeface(it, Typeface.BOLD)
+        }
+
+        assertEquals(view.getTypeface(), Typeface.DEFAULT_BOLD)
+        view.setTypeface(null, Typeface.NORMAL)
+        assertEquals(view.getTypeface(), Typeface.DEFAULT)
     }
 
 }

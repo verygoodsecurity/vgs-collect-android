@@ -5,7 +5,7 @@ import android.app.Instrumentation
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
-import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.*
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
@@ -135,6 +135,7 @@ class FragmentCaseInstrumentedTest {
         cardCVCInputField.check(matches(withCardCVCState(CARD_CVC)))
 
 
+        submitBtn.perform(scrollTo())
         performClick(submitBtn)
 
         pauseTestFor(7000)
@@ -165,7 +166,6 @@ class FragmentCaseInstrumentedTest {
             bin = CARD_NUMBER_WRONG_BIN_CHECK
         )))
         cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
-        cardExpDateInputField.check(matches(withCardExpDateState("09")))
         cardCVCInputField.check(matches(withCardCVCState(CARD_CVC_WRONG)))
 
         performClick(submitBtn)
@@ -203,12 +203,16 @@ class FragmentCaseInstrumentedTest {
 
     private fun interactWithResponseContainer(): ViewInteraction {
         return onView(withId(R.id.responseContainerView))
+            .perform(scrollTo())
             .check(matches(isDisplayed()))
     }
 
     private fun startMainScreen() {
         val startWithActivityBtn = onView(withId(R.id.startWithFragmentBtn))
             .check(matches(isDisplayed()))
+
+        onView(withId(R.id.userVault)).perform(typeText(Utils.DEFAULT_TENANT_ID))
+        onView(withId(R.id.userPath)).perform(typeText(Utils.DEFAULT_PATH), closeSoftKeyboard())
 
         startWithActivityBtn.perform(click())
     }
@@ -242,7 +246,9 @@ class FragmentCaseInstrumentedTest {
     }
 
     private fun interactWithSubmitButton(): ViewInteraction {
-        return onView(withId(R.id.submitBtn)).check(matches(isDisplayed()))
+        return onView(withId(R.id.submitBtn))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
     }
 
     private fun performClick(interaction: ViewInteraction) {
