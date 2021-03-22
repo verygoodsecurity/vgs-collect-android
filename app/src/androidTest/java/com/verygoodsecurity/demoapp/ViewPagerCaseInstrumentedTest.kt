@@ -181,6 +181,7 @@ class ViewPagerCaseInstrumentedTest {
             .check(matches(isDisplayed()))
 
         startWithActivityBtn.perform(click())
+        pauseTestFor(2000)
     }
 
     private fun interactWithNextButton(): ViewInteraction {

@@ -186,6 +186,7 @@ class ActivityCaseInstrumentedTest {
         onView(withId(R.id.userPath)).perform(typeText(Utils.DEFAULT_PATH), closeSoftKeyboard())
 
         performClick(startWithActivityBtn)
+        pauseTestFor(2000)
     }
 
     private fun interactWithCardCVC(): ViewInteraction {

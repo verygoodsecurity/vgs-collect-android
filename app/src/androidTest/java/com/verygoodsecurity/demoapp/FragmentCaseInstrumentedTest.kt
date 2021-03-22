@@ -215,6 +215,7 @@ class FragmentCaseInstrumentedTest {
         onView(withId(R.id.userPath)).perform(typeText(Utils.DEFAULT_PATH), closeSoftKeyboard())
 
         startWithActivityBtn.perform(click())
+        pauseTestFor(2000)
     }
 
     private fun interactWithCardCVC(): ViewInteraction {
