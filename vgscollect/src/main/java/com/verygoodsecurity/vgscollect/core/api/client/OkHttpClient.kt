@@ -1,7 +1,5 @@
 package com.verygoodsecurity.vgscollect.core.api.client
 
-import com.verygoodsecurity.vgscollect.BuildConfig
-import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONNECTION_TIME_OUT
@@ -10,17 +8,23 @@ import com.verygoodsecurity.vgscollect.core.api.client.extension.toRequestBodyOr
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
+import com.verygoodsecurity.vgscollect.core.api.client.extension.logException
+import com.verygoodsecurity.vgscollect.core.api.client.extension.logRequest
+import com.verygoodsecurity.vgscollect.core.api.client.extension.logResponse
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
+import okio.Buffer
 import java.io.IOException
 import java.io.InterruptedIOException
+import java.lang.Exception
+import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 internal class OkHttpClient(
-    private val isLogsVisible: Boolean = BuildConfig.DEBUG,
+    isLogsVisible: Boolean,
     private val tempStore: VgsApiTemporaryStorage
 ) : ApiClient {
 
@@ -28,12 +32,13 @@ internal class OkHttpClient(
 
     private val client: OkHttpClient by lazy {
         OkHttpClient().newBuilder()
-            .addInterceptor(HttpLoggingInterceptor(isLogsVisible))
             .addInterceptor(hostInterceptor)
             .callTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .readTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .writeTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
-            .dispatcher(Dispatcher(Executors.newSingleThreadExecutor()))
+            .dispatcher(Dispatcher(Executors.newSingleThreadExecutor())).also {
+                if (isLogsVisible) it.addInterceptor(HttpLoggingInterceptor())
+            }
             .build()
     }
 
@@ -57,8 +62,14 @@ internal class OkHttpClient(
 
         try {
             client.newCall(okHttpRequest).enqueue(object : Callback {
+
                 override fun onFailure(call: Call, e: IOException) {
-                    callback?.invoke(NetworkResponse(message = e.message))
+                    logException(e)
+                    if (e is InterruptedIOException || e is TimeoutException) {
+                        callback?.invoke(NetworkResponse(error = VGSError.TIME_OUT))
+                    } else {
+                        callback?.invoke(NetworkResponse(message = e.message))
+                    }
                 }
 
                 override fun onResponse(call: Call, response: Response) {
@@ -71,11 +82,8 @@ internal class OkHttpClient(
                     )
                 }
             })
-        } catch (e: InterruptedIOException) {
-            callback?.invoke(NetworkResponse(error = VGSError.TIME_OUT))
-        } catch (e: TimeoutException) {
-            callback?.invoke(NetworkResponse(error = VGSError.TIME_OUT))
-        } catch (e: IOException) {
+        } catch (e: Exception) {
+            logException(e)
             callback?.invoke(NetworkResponse(message = e.message))
         }
     }
@@ -108,6 +116,10 @@ internal class OkHttpClient(
         } catch (e: IOException) {
             NetworkResponse(message = e.message)
         }
+    }
+
+    override fun cancelAll() {
+        client.dispatcher.cancelAll()
     }
 
     override fun getTemporaryStorage(): VgsApiTemporaryStorage = tempStore
@@ -161,47 +173,39 @@ internal class OkHttpClient(
         }
     }
 
-    private class HttpLoggingInterceptor(
-        private val isLogsVisible: Boolean = BuildConfig.DEBUG
-    ) : Interceptor {
-
-        companion object {
-            private fun buildRequestLog(request: Request): String {
-                val builder = StringBuilder("Request")
-                    .append("{")
-                    .append("method=")
-                    .append(request.method)
-                    .append("}")
-
-                return builder.toString()
-            }
-
-            private fun buildResponseLog(response: Response): String {
-                val builder = StringBuilder("Response")
-                    .append("{")
-                    .append("code=")
-                    .append(response.code.toString())
-                    .append(", ")
-                    .append("message=")
-                    .append(response.message)
-                    .append("}")
-
-                return builder.toString()
-            }
-        }
+    private class HttpLoggingInterceptor : Interceptor {
 
         override fun intercept(chain: Interceptor.Chain): Response {
-            val request = chain.request()
-            if (isLogsVisible) VGSCollectLogger.debug(message = buildRequestLog(request))
-
-            val response = chain.proceed(request)
-            if (isLogsVisible) VGSCollectLogger.debug(message = buildResponseLog(response))
-
-            return response
+            val requestId = UUID.randomUUID().toString()
+            return chain.proceed(chain.request().also {
+                it.logRequest(
+                    requestId,
+                    it.url.toString(),
+                    it.method,
+                    it.headers.toMap(),
+                    getBody(it.body),
+                    it::class.java.simpleName
+                )
+            }).also {
+                logResponse(
+                    requestId,
+                    it.request.url.toString(),
+                    it.code,
+                    it.message,
+                    it.headers.toMap(),
+                    it::class.java.simpleName
+                )
+            }
         }
-    }
 
-    override fun cancelAll() {
-        client.dispatcher.cancelAll()
+        private fun getBody(request: RequestBody?): String {
+            return try {
+                val buffer = Buffer()
+                request?.writeTo(buffer)
+                buffer.readUtf8()
+            } catch (e: IOException) {
+                ""
+            }
+        }
     }
 }
