@@ -8,6 +8,7 @@ import com.verygoodsecurity.vgscollect.core.api.client.extension.toRequestBodyOr
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
+import com.verygoodsecurity.vgscollect.util.extension.logException
 import com.verygoodsecurity.vgscollect.util.extension.logRequest
 import com.verygoodsecurity.vgscollect.util.extension.logResponse
 import okhttp3.*
@@ -16,6 +17,7 @@ import okhttp3.OkHttpClient
 import okio.Buffer
 import java.io.IOException
 import java.io.InterruptedIOException
+import java.lang.Exception
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -60,8 +62,14 @@ internal class OkHttpClient(
 
         try {
             client.newCall(okHttpRequest).enqueue(object : Callback {
+
                 override fun onFailure(call: Call, e: IOException) {
-                    callback?.invoke(NetworkResponse(message = e.message))
+                    logException(e)
+                    if (e is InterruptedIOException || e is TimeoutException) {
+                        callback?.invoke(NetworkResponse(error = VGSError.TIME_OUT))
+                    } else {
+                        callback?.invoke(NetworkResponse(message = e.message))
+                    }
                 }
 
                 override fun onResponse(call: Call, response: Response) {
@@ -74,11 +82,8 @@ internal class OkHttpClient(
                     )
                 }
             })
-        } catch (e: InterruptedIOException) {
-            callback?.invoke(NetworkResponse(error = VGSError.TIME_OUT))
-        } catch (e: TimeoutException) {
-            callback?.invoke(NetworkResponse(error = VGSError.TIME_OUT))
-        } catch (e: IOException) {
+        } catch (e: Exception) {
+            logException(e)
             callback?.invoke(NetworkResponse(message = e.message))
         }
     }
