@@ -1,7 +1,5 @@
 package com.verygoodsecurity.vgscollect.core.api.client
 
-import com.verygoodsecurity.vgscollect.BuildConfig
-import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONNECTION_TIME_OUT
@@ -11,16 +9,21 @@ import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
+import com.verygoodsecurity.vgscollect.util.extension.logException
+import com.verygoodsecurity.vgscollect.util.extension.logRequest
+import com.verygoodsecurity.vgscollect.util.extension.logResponse
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
 internal class URLConnectionClient(
-    private val enableLogs: Boolean = BuildConfig.DEBUG,
+    private val isLogsVisible: Boolean,
     private val tempStore: VgsApiTemporaryStorage
 ) : ApiClient {
+
     private val submittedTasks = mutableListOf<Future<*>>()
     private val executor: ExecutorService by lazy {
         Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors())
@@ -65,25 +68,27 @@ internal class URLConnectionClient(
 
     @Synchronized
     private fun request(request: NetworkRequest): NetworkResponse {
+        val requestId: String = UUID.randomUUID().toString()
         var connection: HttpURLConnection? = null
         return try {
+            val headers = (tempStore.getCustomHeaders() + request.customHeader).toMutableMap().apply {
+                this[CONTENT_TYPE] = request.format.toContentType()
+            }
             connection = generateURL(request).openConnection()
                 .callTimeout(CONNECTION_TIME_OUT)
                 .readTimeout(CONNECTION_TIME_OUT)
                 .setInstanceFollowRedirectEnabled(false)
                 .setIsUserInteractionEnabled(false)
                 .setCacheEnabled(false)
-                .addHeader(CONTENT_TYPE, request.format.toContentType())
-                .addHeaders(tempStore.getCustomHeaders())
-                .addHeaders(request.customHeader)
+                .addHeaders(headers)
                 .setMethod(request.method)
 
-            if (enableLogs) VGSCollectLogger.debug(message = buildRequestLog(connection))
+            logRequestIfNeeded(requestId, request, headers, connection)
             if (request.method != HTTPMethod.GET) writeOutput(connection, request.customData)
-
+            logResponseIfNeeded(requestId, connection)
             handleResponse(connection)
         } catch (e: Exception) {
-            if (enableLogs) VGSCollectLogger.debug(message = e.localizedMessage ?: "")
+            logExceptionIfNeeded(e)
             NetworkResponse(message = e.localizedMessage)
         } finally {
             connection?.disconnect()
@@ -101,15 +106,11 @@ internal class URLConnectionClient(
 
     private fun handleResponse(connection: HttpURLConnection): NetworkResponse {
         val responseCode = connection.responseCode
-
-        if (enableLogs) VGSCollectLogger.debug(message = buildResponseLog(connection))
-
         return if (responseCode.isCodeSuccessful()) {
             val rawResponse = connection.inputStream?.bufferedReader()?.use { it.readText() }
             NetworkResponse(true, rawResponse, responseCode)
         } else {
             val responseStr = connection.errorStream?.bufferedReader()?.use { it.readText() }
-            if (enableLogs) VGSCollectLogger.debug(message = responseStr.toString())
             NetworkResponse(message = responseStr, code = responseCode)
         }
     }
@@ -122,35 +123,41 @@ internal class URLConnectionClient(
         }
     }
 
-    companion object {
-        fun newInstance(
-            isLogsVisible: Boolean = BuildConfig.DEBUG,
-            storage: VgsApiTemporaryStorage
-        ): ApiClient {
-            return URLConnectionClient(isLogsVisible, storage)
+    private fun logRequestIfNeeded(
+        requestId: String,
+        request: NetworkRequest,
+        requestHeaders: Map<String, String>,
+        connection: HttpURLConnection
+    ) {
+        if (!isLogsVisible) {
+            return
         }
+        logRequest(
+            requestId,
+            connection.url.toString(),
+            connection.requestMethod,
+            requestHeaders,
+            request.customData.toString()
+        )
+    }
 
-        private fun buildRequestLog(connection: HttpURLConnection): String {
-            val builder = StringBuilder("Request")
-                .append("{")
-                .append("method=")
-                .append(connection.requestMethod)
-                .append("}")
-
-            return builder.toString()
+    private fun logResponseIfNeeded(requestId: String, connection: HttpURLConnection) {
+        if (!isLogsVisible) {
+            return
         }
+        logResponse(
+            requestId,
+            connection.url.toString(),
+            connection.responseCode,
+            connection.responseMessage,
+            connection.getHeaders()
+        )
+    }
 
-        private fun buildResponseLog(connection: HttpURLConnection): String {
-            val builder = StringBuilder("Response")
-                .append("{")
-                .append("code=")
-                .append(connection.responseCode.toString())
-                .append(", ")
-                .append("message=")
-                .append(connection.responseMessage)
-                .append("}")
-
-            return builder.toString()
+    private fun logExceptionIfNeeded(e: Exception) {
+        if (!isLogsVisible) {
+            return
         }
+        logException(e)
     }
 }

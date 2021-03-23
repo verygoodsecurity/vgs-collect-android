@@ -687,7 +687,7 @@ class VGSCollect {
     /**
      * Used to create VGSCollect instances with default and overridden settings.
      *
-     * @constructor Main constrictor for creating VGSShow instance builder.
+     * @constructor Main constrictor for creating VGSCollect instance builder.
      * @param context Activity context.
      * @param id Specific Vault ID.
      */
