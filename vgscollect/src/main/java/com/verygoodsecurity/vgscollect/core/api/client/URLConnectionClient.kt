@@ -9,9 +9,9 @@ import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
-import com.verygoodsecurity.vgscollect.util.extension.logException
-import com.verygoodsecurity.vgscollect.util.extension.logRequest
-import com.verygoodsecurity.vgscollect.util.extension.logResponse
+import com.verygoodsecurity.vgscollect.core.api.client.extension.logException
+import com.verygoodsecurity.vgscollect.core.api.client.extension.logRequest
+import com.verygoodsecurity.vgscollect.core.api.client.extension.logResponse
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*

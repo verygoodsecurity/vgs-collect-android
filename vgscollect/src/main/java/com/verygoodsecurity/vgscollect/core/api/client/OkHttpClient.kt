@@ -8,9 +8,9 @@ import com.verygoodsecurity.vgscollect.core.api.client.extension.toRequestBodyOr
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
-import com.verygoodsecurity.vgscollect.util.extension.logException
-import com.verygoodsecurity.vgscollect.util.extension.logRequest
-import com.verygoodsecurity.vgscollect.util.extension.logResponse
+import com.verygoodsecurity.vgscollect.core.api.client.extension.logException
+import com.verygoodsecurity.vgscollect.core.api.client.extension.logRequest
+import com.verygoodsecurity.vgscollect.core.api.client.extension.logResponse
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
