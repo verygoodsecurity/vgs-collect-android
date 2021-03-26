@@ -63,3 +63,17 @@ internal fun HttpURLConnection.setMethod(method: HTTPMethod): HttpURLConnection 
     requestMethod = method.name
     return this
 }
+
+internal fun HttpURLConnection.getHeaders(): Map<String, String> {
+    val result = mutableMapOf<String, String>()
+    var index = 0
+    while (true) {
+        val key = getHeaderFieldKey(index)
+        val value = getHeaderField(index)
+        if (key == null || value == null) {
+            return result
+        }
+        result[key] = value
+        index++
+    }
+}

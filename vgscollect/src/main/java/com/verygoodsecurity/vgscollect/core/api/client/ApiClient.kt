@@ -36,10 +36,12 @@ internal interface ApiClient {
                     storage ?: VgsApiTemporaryStorageImpl()
                 ).apply { setHost(url) }
             } else {
-                URLConnectionClient.newInstance(
+                URLConnectionClient(
                     isLogsVisible,
-                    storage ?: VgsApiTemporaryStorageImpl()
-                ).apply { setHost(url) }
+                    (storage ?: VgsApiTemporaryStorageImpl())
+                ).apply {
+                    setHost(url)
+                }
             }
         }
 
@@ -51,9 +53,9 @@ internal interface ApiClient {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 OkHttpClient(isLogsVisible, storage ?: VgsApiTemporaryStorageImpl())
             } else {
-                URLConnectionClient.newInstance(
+                URLConnectionClient(
                     isLogsVisible,
-                    storage ?: VgsApiTemporaryStorageImpl()
+                    (storage ?: VgsApiTemporaryStorageImpl())
                 )
             }
         }
