@@ -9,9 +9,6 @@ import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
-import com.verygoodsecurity.vgscollect.core.api.client.extension.logException
-import com.verygoodsecurity.vgscollect.core.api.client.extension.logRequest
-import com.verygoodsecurity.vgscollect.core.api.client.extension.logResponse
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
@@ -111,7 +108,11 @@ internal class URLConnectionClient(
             NetworkResponse(true, rawResponse, responseCode)
         } else {
             val responseStr = connection.errorStream?.bufferedReader()?.use { it.readText() }
-            NetworkResponse(message = responseStr, code = responseCode)
+            NetworkResponse(
+                body = responseStr,
+                code = responseCode,
+                message = connection.responseMessage
+            )
         }
     }
 
