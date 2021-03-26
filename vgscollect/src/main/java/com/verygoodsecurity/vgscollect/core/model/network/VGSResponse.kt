@@ -43,7 +43,7 @@ sealed class VGSResponse(
         private val rawResponse: String? = null
     ) : VGSResponse(errorCode, rawResponse) {
         override fun toString(): String {
-            return "Code: $errorCode \n $localizeMessage"
+            return "Code: $errorCode\n $localizeMessage\n $body"
         }
     }
 }

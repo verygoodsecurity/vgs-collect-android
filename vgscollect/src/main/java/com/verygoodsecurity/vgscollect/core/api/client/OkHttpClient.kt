@@ -77,7 +77,8 @@ internal class OkHttpClient(
                         NetworkResponse(
                             response.code.isCodeSuccessful(),
                             response.body?.string(),
-                            response.code
+                            response.code,
+                            response.message
                         )
                     )
                 }
