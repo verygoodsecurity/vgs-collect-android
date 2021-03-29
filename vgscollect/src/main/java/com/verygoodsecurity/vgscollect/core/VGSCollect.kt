@@ -187,6 +187,17 @@ class VGSCollect {
     }
 
     /**
+     * Allows VGS secure fields to interact with [VGSCollect] and collect data from this source.
+     *
+     * @param views VGS views.
+     */
+    fun bindView(vararg views: InputFieldView?) {
+        views.forEach {
+            bindView(it)
+        }
+    }
+
+    /**
      * Allows to unsubscribe from a View updates.
      *
      * @param view base class for VGS secure fields.
@@ -194,6 +205,17 @@ class VGSCollect {
     fun unbindView(view: InputFieldView?) {
         view?.let {
             storage.unsubscribe(view)
+        }
+    }
+
+    /**
+     * Allows to unsubscribe from a View updates.
+     *
+     * @param views VGS views.
+     */
+    fun unbindView(vararg views: InputFieldView?) {
+        views.forEach {
+            unbindView(it)
         }
     }
 
