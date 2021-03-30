@@ -154,7 +154,7 @@ class VGSFieldStateTest {
 
         val c = Calendar.getInstance()
         c.time = fieldDateFormat.parse(date)
-        content.handleOutputFormat(c, fieldDateFormat, fieldDateOutPutFormat)
+        content.handleOutputFormat(c, fieldDateFormat, fieldDateOutPutFormat, null)
 
         assertTrue(content.rawData == "2024-12-01")
     }
@@ -171,7 +171,7 @@ class VGSFieldStateTest {
 
         val c = Calendar.getInstance()
         c.time = fieldDateFormat.parse(date)
-        content.handleOutputFormat(c, fieldDateFormat, fieldDateOutPutFormat)
+        content.handleOutputFormat(c, fieldDateFormat, fieldDateOutPutFormat, null)
 
         assertTrue(content.rawData == "12/2024")
     }
