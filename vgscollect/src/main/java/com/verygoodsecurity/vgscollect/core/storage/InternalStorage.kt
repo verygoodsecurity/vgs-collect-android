@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.storage
 
 import android.content.Context
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.*
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.content.field.FieldStateContractor
 import com.verygoodsecurity.vgscollect.core.storage.content.field.TemporaryFieldsStorage
@@ -9,8 +10,8 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageErrorLis
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.util.extension.merge
-import com.verygoodsecurity.vgscollect.util.extension.toAssociatedList
 import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 
 /** @suppress */
 internal class InternalStorage(
@@ -54,7 +55,7 @@ internal class InternalStorage(
         val list = mutableListOf<Pair<String, String>>()
 
         if (fieldsIgnore.not()) {
-            list.addAll(fieldsStorage.getItems().toAssociatedList())
+            list.addAll(stateToAssociatedList(fieldsStorage.getItems()))
         }
 
         if (fileIgnore.not()) {
@@ -92,5 +93,42 @@ internal class InternalStorage(
 
     fun getFileSizeLimit(): Int {
         return 19 * 1024 * 1024
+    }
+
+    private fun stateToAssociatedList(items: MutableCollection<VGSFieldState>): MutableCollection<Pair<String, String>> {
+        val result = mutableListOf<Pair<String, String>>()
+        items.filter { state -> state.isNotNullOrEmpty() }.forEach { state ->
+            with(state.content!!) {
+                when (this) {
+                    is CardNumberContent -> result.add(state.fieldName!! to (rawData ?: data!!))
+                    is SSNContent -> result.add(state.fieldName!! to (rawData ?: data!!))
+                    is CreditCardExpDateContent -> {
+                        result.addAll(handleExpirationDateContent(state.fieldName!!, this))
+                    }
+                    else -> result.add(state.fieldName!! to data!!)
+                }
+            }
+        }
+        return result
+    }
+
+    private fun handleExpirationDateContent(
+        fieldName: String,
+        content: CreditCardExpDateContent
+    ): List<Pair<String, String>> {
+        val result = mutableListOf<Pair<String, String>>()
+        val data = (content.rawData ?: content.data!!)
+        if (content.serializers != null) {
+            content.serializers?.forEach {
+                if (it is VGSExpDateSeparateSerializer) {
+                    result.addAll(
+                        it.serialize(VGSExpDateSeparateSerializer.Params(data, content.dateFormat))
+                    )
+                }
+            }
+        } else {
+            result.add(fieldName to data)
+        }
+        return result
     }
 }

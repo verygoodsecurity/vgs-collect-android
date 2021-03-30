@@ -22,6 +22,7 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.date.DatePickerFormat
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.FlexibleDateFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.StrictExpirationDateFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
+import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
@@ -57,6 +58,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     private val dateLimitationFormat = SimpleDateFormat(SDF, Locale.getDefault())
     private var fieldDateFormat:SimpleDateFormat? = null
     private var fieldDateOutPutFormat:SimpleDateFormat? = null
+    private var fieldDataSerializers: List<FieldDataSerializer<*, *>>? = null
 
     private var datePickerMode:DatePickerMode = DatePickerMode.INPUT
     private var isDaysVisible = true
@@ -87,7 +89,12 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
         val stateContent = FieldContent.CreditCardExpDateContent().apply {
             if(!text.isNullOrEmpty() && handleInputMode(text.toString())) {
-                handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
+                handleOutputFormat(
+                    selectedDate,
+                    fieldDateFormat,
+                    fieldDateOutPutFormat,
+                    fieldDataSerializers
+                )
             } else {
                 data = text.toString()
                 rawData = data
@@ -152,7 +159,12 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
                 c.data = str
                 c.rawData = str
             }
-            else -> c.handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
+            else -> c.handleOutputFormat(
+                selectedDate,
+                fieldDateFormat,
+                fieldDateOutPutFormat,
+                fieldDataSerializers
+            )
         }
         return c
     }
@@ -359,6 +371,10 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     internal fun setDatePickerVisibilityListener(listener: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
         datePickerVisibilityChangeListener = listener
+    }
+
+    internal fun setFieldDataSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
+        this.fieldDataSerializers = serializers
     }
 
     override fun setupAutofill() {

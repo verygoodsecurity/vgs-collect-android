@@ -11,6 +11,7 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
+import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 
 /**
@@ -171,5 +172,14 @@ class ExpirationDateEditText @JvmOverloads constructor(
      */
     fun getState(): FieldState.CardExpirationDateState? {
         return getExpirationDate()
+    }
+
+    /**
+     * Sets output data serializers, which will serialize data before send it to back-end.
+     *
+     * @param serializers - list of FieldDataSerializer serializers.
+     */
+    fun setSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
+       super.setFieldDataSerializers(serializers)
     }
 }
