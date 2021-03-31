@@ -5,9 +5,9 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
@@ -34,24 +34,33 @@ class ExpirationDateEditText @JvmOverloads constructor(
         ).apply {
 
             try {
-                val formatterMode = getInt(R.styleable.ExpirationDateEditText_formatterMode, FormatMode.STRICT.ordinal)
+                val formatterMode = getInt(
+                    R.styleable.ExpirationDateEditText_formatterMode,
+                    FormatMode.STRICT.ordinal
+                )
                 val datePattern = getString(R.styleable.ExpirationDateEditText_datePattern)
                 val outputPattern = getString(R.styleable.ExpirationDateEditText_outputPattern)
                 val datePickerMode = getInt(R.styleable.ExpirationDateEditText_datePickerModes, 1)
 
-                val inputType = getInt(R.styleable.ExpirationDateEditText_inputType, EditorInfo.TYPE_NULL)
+                val inputType =
+                    getInt(R.styleable.ExpirationDateEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.ExpirationDateEditText_fieldName)
                 val hint = getString(R.styleable.ExpirationDateEditText_hint)
                 val textSize = getDimension(R.styleable.ExpirationDateEditText_textSize, -1f)
                 val textColor = getColor(R.styleable.ExpirationDateEditText_textColor, Color.BLACK)
                 val text = getString(R.styleable.ExpirationDateEditText_text)
                 val textStyle = getInt(R.styleable.ExpirationDateEditText_textStyle, -1)
-                val cursorVisible = getBoolean(R.styleable.ExpirationDateEditText_cursorVisible, true)
+                val cursorVisible =
+                    getBoolean(R.styleable.ExpirationDateEditText_cursorVisible, true)
                 val enabled = getBoolean(R.styleable.ExpirationDateEditText_enabled, true)
                 val isRequired = getBoolean(R.styleable.ExpirationDateEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.ExpirationDateEditText_singleLine, true)
-                val scrollHorizontally = getBoolean(R.styleable.ExpirationDateEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.ExpirationDateEditText_gravity, Gravity.START or Gravity.CENTER_VERTICAL)
+                val scrollHorizontally =
+                    getBoolean(R.styleable.ExpirationDateEditText_scrollHorizontally, true)
+                val gravity = getInt(
+                    R.styleable.ExpirationDateEditText_gravity,
+                    Gravity.START or Gravity.CENTER_VERTICAL
+                )
                 val ellipsize = getInt(R.styleable.ExpirationDateEditText_ellipsize, 0)
 
                 setFieldName(fieldName)
@@ -90,7 +99,7 @@ class ExpirationDateEditText @JvmOverloads constructor(
      *
      * @param regex Specifies date representation format
      */
-    fun setOutputRegex(regex:String) {
+    fun setOutputRegex(regex: String) {
         setOutputPattern(regex)
     }
 
@@ -101,7 +110,7 @@ class ExpirationDateEditText @JvmOverloads constructor(
      * @param regex Specifies date representation format
      *
      */
-    fun setDateRegex(regex:String) {
+    fun setDateRegex(regex: String) {
         setDatePattern(regex)
     }
 
@@ -110,7 +119,7 @@ class ExpirationDateEditText @JvmOverloads constructor(
      *
      * @return regex
      */
-    fun getDateRegex():String? = getDatePattern()
+    fun getDateRegex(): String? = getDatePattern()
 
     /**
      * Sets type of exact appearance and interaction model of this widget.
@@ -126,7 +135,7 @@ class ExpirationDateEditText @JvmOverloads constructor(
      *
      * @return date picker mode
      */
-    fun getDatePickerMode():DatePickerMode? = getDateMode()
+    fun getDatePickerMode(): DatePickerMode? = getDateMode()
 
     /**
      * Start the DatePicker dialog and display it on screen.
@@ -152,6 +161,7 @@ class ExpirationDateEditText @JvmOverloads constructor(
          * Called when the DatePicker Dialog was shown.
          */
         fun onShow()
+
         /**
          * Called when the DatePicker Dialog was dismissed.
          */
@@ -177,9 +187,18 @@ class ExpirationDateEditText @JvmOverloads constructor(
     /**
      * Sets output data serializers, which will serialize data before send it to back-end.
      *
+     * @param serializer - FieldDataSerializer serializer.
+     */
+    fun setSerializer(serializer: FieldDataSerializer<*, *>?) {
+        if (serializer == null) setSerializers(null) else setSerializers(listOf(serializer))
+    }
+
+    /**
+     * Sets output data serializers, which will serialize data before send it to back-end.
+     *
      * @param serializers - list of FieldDataSerializer serializers.
      */
     fun setSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
-       super.setFieldDataSerializers(serializers)
+        super.setFieldDataSerializers(serializers)
     }
 }
