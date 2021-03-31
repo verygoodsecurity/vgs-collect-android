@@ -50,10 +50,10 @@ class VGSExpDateSeparateSerializer constructor(
             monthSDF
         } else {
             try {
-                SimpleDateFormat(monthFormat, Locale.US)
+                SimpleDateFormat(monthFormat, Locale.getDefault())
             } catch (e: Exception) {
                 logException(e)
-                SimpleDateFormat(DEFAULT_MONTH_FORMAT, Locale.US)
+                SimpleDateFormat(DEFAULT_MONTH_FORMAT, Locale.getDefault())
             }
         }
     }
@@ -63,10 +63,10 @@ class VGSExpDateSeparateSerializer constructor(
             yearSDF
         } else {
             try {
-                SimpleDateFormat(yearFormat, Locale.US)
+                SimpleDateFormat(yearFormat, Locale.getDefault())
             } catch (e: Exception) {
                 logException(e)
-                SimpleDateFormat(DEFAULT_YEAR_FORMAT, Locale.US)
+                SimpleDateFormat(DEFAULT_YEAR_FORMAT, Locale.getDefault())
             }
         }
     }
