@@ -55,7 +55,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     private val selectedDate = Calendar.getInstance()
 
-    private val dateLimitationFormat = SimpleDateFormat(SDF, Locale.getDefault())
+    private val dateLimitationFormat = SimpleDateFormat(SDF, Locale.US)
     private var fieldDateFormat:SimpleDateFormat? = null
     private var fieldDateOutPutFormat:SimpleDateFormat? = null
     private var fieldDataSerializers: List<FieldDataSerializer<*, *>>? = null
@@ -271,7 +271,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             pattern
         }
 
-        fieldDateOutPutFormat = SimpleDateFormat(outputPattern, Locale.getDefault())
+        fieldDateOutPutFormat = SimpleDateFormat(outputPattern, Locale.US)
     }
 
     internal fun setDatePattern(pattern:String?) {
@@ -282,7 +282,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
 
         isDaysVisible = datePattern.contains(DD)
-        fieldDateFormat = SimpleDateFormat(datePattern, Locale.getDefault())
+        fieldDateFormat = SimpleDateFormat(datePattern, Locale.US)
 
         isListeningPermitted = true
 
@@ -419,7 +419,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     private fun String.handleDate(incomePattern: String, outcomePattern: String):String? {
         return try {
-            val income = SimpleDateFormat(incomePattern, Locale.getDefault())
+            val income = SimpleDateFormat(incomePattern, Locale.US)
             val currentDate = income.parse(this)
             val selectedDate = Calendar.getInstance()
             selectedDate.time = currentDate
@@ -428,7 +428,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             selectedDate.set(Calendar.MINUTE, 59)
             selectedDate.set(Calendar.SECOND, 59)
             selectedDate.set(Calendar.MILLISECOND, 999)
-            val outcome = SimpleDateFormat(outcomePattern, Locale.getDefault())
+            val outcome = SimpleDateFormat(outcomePattern, Locale.US)
             outcome.format(selectedDate.time)
         } catch (e: ParseException) {
             null

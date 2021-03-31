@@ -12,7 +12,7 @@ internal class TimeGapsValidator(
     private val maxDate:Long? = null
 ) : VGSValidator {
     private val sdf by lazy {
-        val sdf = SimpleDateFormat(pattern, Locale.getDefault())
+        val sdf = SimpleDateFormat(pattern, Locale.US)
         sdf.isLenient = false
         sdf
     }
