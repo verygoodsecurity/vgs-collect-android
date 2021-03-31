@@ -7,7 +7,7 @@ import java.util.*
 
 /**
  * Represents [com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText] date split serializer.
- * Note: [com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText] field name will be ignored.
+ * Note: [com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText] fieldName & outputPattern will be ignored.
  *
  * @constructor primary constructor.
  * @param monthFieldName - this field name will be used for month in request json.
@@ -50,10 +50,10 @@ class VGSExpDateSeparateSerializer constructor(
             monthSDF
         } else {
             try {
-                SimpleDateFormat(monthFormat, Locale.getDefault())
+                SimpleDateFormat(monthFormat, Locale.US)
             } catch (e: Exception) {
                 logException(e)
-                SimpleDateFormat(DEFAULT_MONTH_FORMAT, Locale.getDefault())
+                SimpleDateFormat(DEFAULT_MONTH_FORMAT, Locale.US)
             }
         }
     }
@@ -63,10 +63,10 @@ class VGSExpDateSeparateSerializer constructor(
             yearSDF
         } else {
             try {
-                SimpleDateFormat(yearFormat, Locale.getDefault())
+                SimpleDateFormat(yearFormat, Locale.US)
             } catch (e: Exception) {
                 logException(e)
-                SimpleDateFormat(DEFAULT_YEAR_FORMAT, Locale.getDefault())
+                SimpleDateFormat(DEFAULT_YEAR_FORMAT, Locale.US)
             }
         }
     }
