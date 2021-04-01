@@ -7,19 +7,15 @@ import java.util.*
 
 /**
  * Represents [com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText] date split serializer.
- * Note: [com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText] fieldName & outputPattern will be ignored.
+ * Note: [com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText] fieldName will be ignored.
  *
  * @constructor primary constructor.
  * @param monthFieldName - this field name will be used for month in request json.
  * @param yearFieldName - this field name will be used for year in request json.
- * @param monthFormat - format, for example: MMM.
- * @param yearFormat - format, for example: yyyy.
  */
 class VGSExpDateSeparateSerializer constructor(
     private val monthFieldName: String,
     private val yearFieldName: String,
-    private val monthFormat: String,
-    private val yearFormat: String
 ) : FieldDataSerializer<VGSExpDateSeparateSerializer.Params, List<Pair<String, String>>>() {
 
     private lateinit var monthSDF: SimpleDateFormat
@@ -36,8 +32,8 @@ class VGSExpDateSeparateSerializer constructor(
                 return emptyList()
             }
             listOf(
-                monthFieldName to getMonthFormat().format(date),
-                yearFieldName to getYearFormat().format(date)
+                monthFieldName to getMonthFormat(params.dateFormat).format(date),
+                yearFieldName to getYearFormat(params.dateFormat).format(date)
             )
         } catch (e: Exception) {
             logException(e)
@@ -45,11 +41,18 @@ class VGSExpDateSeparateSerializer constructor(
         }
     }
 
-    private fun getMonthFormat(): SimpleDateFormat {
+    private fun getMonthFormat(dateFormat: String?): SimpleDateFormat {
         return if (this::monthSDF.isInitialized) {
             monthSDF
         } else {
             try {
+                val monthFormat = when {
+                    dateFormat?.contains("MMMM") == true -> "MMMM"
+                    dateFormat?.contains("MMM") == true -> "MMM"
+                    dateFormat?.contains("MM") == true -> "MM"
+                    dateFormat?.contains("M") == true -> "M"
+                    else -> DEFAULT_MONTH_FORMAT
+                }
                 SimpleDateFormat(monthFormat, Locale.US)
             } catch (e: Exception) {
                 logException(e)
@@ -58,11 +61,16 @@ class VGSExpDateSeparateSerializer constructor(
         }
     }
 
-    private fun getYearFormat(): SimpleDateFormat {
+    private fun getYearFormat(dateFormat: String?): SimpleDateFormat {
         return if (this::yearSDF.isInitialized) {
             yearSDF
         } else {
             try {
+                val yearFormat = when {
+                    dateFormat?.contains("yyyy") == true -> "yyyy"
+                    dateFormat?.contains("yy") == true -> "yy"
+                    else -> DEFAULT_YEAR_FORMAT
+                }
                 SimpleDateFormat(yearFormat, Locale.US)
             } catch (e: Exception) {
                 logException(e)
