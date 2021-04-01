@@ -32,8 +32,10 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$android_support_libraries"
     implementation 'androidx.core:core-ktx:1.3.2'
 
-    api 'com.getbouncer:cardscan-ui:2.0.0074'
-    api 'com.getbouncer:tensorflow-lite:2.0.0074'
+    api 'com.getbouncer:cardscan-ui:2.0.0082'
+    api 'com.getbouncer:tensorflow-lite:2.0.0082'
+    api "com.getbouncer:scan-payment-ocr:2.0.0082"
+    api "com.getbouncer:scan-payment-card-detect:2.0.0082"
 
     dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
 }
