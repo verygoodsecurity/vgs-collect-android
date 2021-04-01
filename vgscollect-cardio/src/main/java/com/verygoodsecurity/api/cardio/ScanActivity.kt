@@ -119,7 +119,7 @@ class ScanActivity: BaseTransmitActivity() {
 
             val mStr = String.format("%02d", scanResult.expiryMonth)
             val yStr = scanResult.expiryYear.toString()
-            val date = SimpleDateFormat("$mMask/$yMask", Locale.getDefault())
+            val date = SimpleDateFormat("$mMask/$yMask", Locale.US)
                 .parse("$mStr/$yStr")
             date?.time
         } else {
