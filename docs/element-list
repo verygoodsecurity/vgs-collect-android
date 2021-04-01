@@ -35,6 +35,8 @@ $dokka.location:com.verygoodsecurity.vgscollect.view.card.formatter/SSNumberForm
 $dokka.location:com.verygoodsecurity.vgscollect.view.card.text/ExpirationDateTextWatcher.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/text/ExpirationDateTextWatcher.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.view.card.validation.rules/PaymentCardNumberRule.ValidationBuilder///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/validation/rules/PaymentCardNumberRule.ValidationBuilder.html
 $dokka.location:com.verygoodsecurity.vgscollect.view.card.validation.rules/PersonNameRule.ValidationBuilder///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/validation/rules/PersonNameRule.ValidationBuilder.html
+$dokka.location:com.verygoodsecurity.vgscollect.view.core.serializers/VGSExpDateSeparateSerializer.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/core/serializers/VGSExpDateSeparateSerializer.Companion.html
+$dokka.location:com.verygoodsecurity.vgscollect.view.core.serializers/VGSExpDateSeparateSerializer.Params///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/core/serializers/VGSExpDateSeparateSerializer.Params.html
 $dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.OnEditorActionListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.OnEditorActionListener.html
 $dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.OnTextChangedListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.OnTextChangedListener.html
@@ -71,6 +73,7 @@ com.verygoodsecurity.vgscollect.view.card.validation
 com.verygoodsecurity.vgscollect.view.card.validation.payment
 com.verygoodsecurity.vgscollect.view.card.validation.payment.brand
 com.verygoodsecurity.vgscollect.view.card.validation.rules
+com.verygoodsecurity.vgscollect.view.core.serializers
 com.verygoodsecurity.vgscollect.view.cvc
 com.verygoodsecurity.vgscollect.view.date
 com.verygoodsecurity.vgscollect.view.material

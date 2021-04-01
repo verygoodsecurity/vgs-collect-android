@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <!-- NewPage -->
 <html lang="en"><head>
-    <title>VGSCollect 1.6.3 API </title>
+    <title>VGSCollect 1.6.4 API </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="dc.created" content="2020-03-25">
     <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
@@ -251,12 +251,28 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                         <tr id="i4" class="altColor">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
+                                            <th class="colSecond" scope="row"><code><a href=VGSCollect.html#bindView(InputFieldView)>bindView</a>(<a href=../com/verygoodsecurity/vgscollect/view/InputFieldView.html>InputFieldView</a> views) </code>
+                                            </th>
+                                            <td class="colLast">Allows VGS secure fields to interact with <a href=VGSCollect.html>VGSCollect</a> and collect data from this source.</td>
+                                        </tr>
+                                        
+                                        <tr class="rowColor" id="i5">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#unbindView(InputFieldView)>unbindView</a>(<a href=../com/verygoodsecurity/vgscollect/view/InputFieldView.html>InputFieldView</a> view) </code>
                                             </th>
                                             <td class="colLast">Allows to unsubscribe from a View updates.</td>
                                         </tr>
                                         
-                                        <tr id="i5" class="rowColor">
+                                        <tr class="altColor" id="i6">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=VGSCollect.html#unbindView(InputFieldView)>unbindView</a>(<a href=../com/verygoodsecurity/vgscollect/view/InputFieldView.html>InputFieldView</a> views) </code>
+                                            </th>
+                                            <td class="colLast">Allows to unsubscribe from a View updates.</td>
+                                        </tr>
+                                        
+                                        <tr class="rowColor" id="i7">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#addOnFieldStateChangeListener(OnFieldStateChangeListener)>addOnFieldStateChangeListener</a>(<a href=../com/verygoodsecurity/vgscollect/core/storage/OnFieldStateChangeListener.html>OnFieldStateChangeListener</a> fieldStateListener) </code>
@@ -264,7 +280,7 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             <td class="colLast">This method adds a listener whose methods are called whenever VGS secure fields state changes.</td>
                                         </tr>
                                         
-                                        <tr id="i6" class="altColor">
+                                        <tr class="altColor" id="i8">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#onDestroy()>onDestroy</a>() </code>
@@ -272,7 +288,7 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             <td class="colLast">Clear all information collected before by VGSCollect.</td>
                                         </tr>
                                         
-                                        <tr id="i7" class="rowColor">
+                                        <tr class="rowColor" id="i9">
                                             <td class="colFirst"><code>final <a href=https://docs.oracle.com/javase/8/docs/api/java/util/List.html>List</a>&lt;<a href=../com/verygoodsecurity/vgscollect/core/model/state/FieldState.html>FieldState</a>&gt;</code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#getAllStates()>getAllStates</a>() </code>
@@ -280,7 +296,7 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             <td class="colLast">Returns the states of all fields bound before to VGSCollect.</td>
                                         </tr>
                                         
-                                        <tr id="i8" class="altColor">
+                                        <tr class="altColor" id="i10">
                                             <td class="colFirst"><code>final <a href=../com/verygoodsecurity/vgscollect/core/model/network/VGSResponse.html>VGSResponse</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#submit(String,HTTPMethod)>submit</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> path, <a href=HTTPMethod.html>HTTPMethod</a> method) </code>
@@ -288,7 +304,7 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             <td class="colLast">This method executes and send data on VGS Server.</td>
                                         </tr>
                                         
-                                        <tr id="i9" class="rowColor">
+                                        <tr class="rowColor" id="i11">
                                             <td class="colFirst"><code>final <a href=../com/verygoodsecurity/vgscollect/core/model/network/VGSResponse.html>VGSResponse</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#submit(VGSRequest)>submit</a>(<a href=../com/verygoodsecurity/vgscollect/core/model/network/VGSRequest.html>VGSRequest</a> request) </code>
@@ -296,7 +312,7 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             <td class="colLast">This method executes and send data on VGS Server.</td>
                                         </tr>
                                         
-                                        <tr id="i10" class="altColor">
+                                        <tr class="altColor" id="i12">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#asyncSubmit(String,HTTPMethod)>asyncSubmit</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> path, <a href=HTTPMethod.html>HTTPMethod</a> method) </code>
@@ -304,7 +320,7 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             <td class="colLast">This method executes and send data on VGS Server.</td>
                                         </tr>
                                         
-                                        <tr id="i11" class="rowColor">
+                                        <tr class="rowColor" id="i13">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#asyncSubmit(VGSRequest)>asyncSubmit</a>(<a href=../com/verygoodsecurity/vgscollect/core/model/network/VGSRequest.html>VGSRequest</a> request) </code>
@@ -312,7 +328,7 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             <td class="colLast">This method executes and send data on VGS Server.</td>
                                         </tr>
                                         
-                                        <tr id="i12" class="altColor">
+                                        <tr class="altColor" id="i14">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#onActivityResult(Integer,Integer,Intent)>onActivityResult</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a> requestCode, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a> resultCode, <a href=https://developer.android.com/reference/kotlin/android/content/Intent.html>Intent</a> data) </code>
@@ -320,7 +336,7 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             <td class="colLast">Called when an activity you launched exits, giving you the requestCode you started it with, the resultCode is returned, and any additional data for VGSCollect.</td>
                                         </tr>
                                         
-                                        <tr id="i13" class="rowColor">
+                                        <tr class="rowColor" id="i15">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#setCustomHeaders(Map)>setCustomHeaders</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/util/Map.html>Map</a>&lt;<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a>, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a>&gt; headers) </code>
@@ -328,7 +344,7 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             <td class="colLast">It collects headers that will be sent to the server.</td>
                                         </tr>
                                         
-                                        <tr id="i14" class="altColor">
+                                        <tr class="altColor" id="i16">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#resetCustomHeaders()>resetCustomHeaders</a>() </code>
@@ -336,7 +352,7 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             <td class="colLast">Reset all static headers which added before.</td>
                                         </tr>
                                         
-                                        <tr id="i15" class="rowColor">
+                                        <tr class="rowColor" id="i17">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#setCustomData(Map)>setCustomData</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/util/Map.html>Map</a>&lt;<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a>, <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html>Object</a>&gt; data) </code>
@@ -344,7 +360,7 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             <td class="colLast">It collect custom data which will be send to server.</td>
                                         </tr>
                                         
-                                        <tr id="i16" class="altColor">
+                                        <tr class="altColor" id="i18">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#resetCustomData()>resetCustomData</a>() </code>
@@ -352,7 +368,7 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             <td class="colLast">Reset all static custom data which added before.</td>
                                         </tr>
                                         
-                                        <tr id="i17" class="rowColor">
+                                        <tr class="rowColor" id="i19">
                                             <td class="colFirst"><code>final <a href=../com/verygoodsecurity/vgscollect/core/storage/content/file/VGSFileProvider.html>VGSFileProvider</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#getFileProvider()>getFileProvider</a>() </code>
@@ -360,7 +376,7 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             <td class="colLast">Return instance for managing attached files to request.</td>
                                         </tr>
                                         
-                                        <tr id="i18" class="altColor">
+                                        <tr class="altColor" id="i20">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=VGSCollect.html#setAnalyticsEnabled(Boolean)>setAnalyticsEnabled</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Boolean.html>Boolean</a> isEnabled) </code>
@@ -535,6 +551,30 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                     </li>
                                 </ul>
                                 
+                                <a id="bindView(InputFieldView)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>bindView</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSCollect.html#bindView(InputFieldView)>bindView</a>(<a href=../com/verygoodsecurity/vgscollect/view/InputFieldView.html>InputFieldView</a> views)</pre>
+                                        <div class="block"><p>Allows VGS secure fields to interact with <a href=VGSCollect.html>VGSCollect</a> and collect data from this source.</p></div>
+                                        
+                                        <dl>
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>views</code> - VGS secure views.</dd>
+                                            
+                                            
+                                        </dl>
+                                        
+                                        <!-- TODO missing return annotation -->
+                                    </li>
+                                </ul>
+                                
                                 <a id="unbindView(InputFieldView)">
                                     <!--   -->
                                 </a>
@@ -551,6 +591,30 @@ public final class <span class="typeNameLabel"><a href=VGSCollect.html>VGSCollec
                                             
                                             
                                             <dd><code>view</code> - base class for VGS secure fields.</dd>
+                                            
+                                            
+                                        </dl>
+                                        
+                                        <!-- TODO missing return annotation -->
+                                    </li>
+                                </ul>
+                                
+                                <a id="unbindView(InputFieldView)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>unbindView</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=VGSCollect.html#unbindView(InputFieldView)>unbindView</a>(<a href=../com/verygoodsecurity/vgscollect/view/InputFieldView.html>InputFieldView</a> views)</pre>
+                                        <div class="block"><p>Allows to unsubscribe from a View updates.</p></div>
+                                        
+                                        <dl>
+                                            <dt><span class="paramLabel">Parameters:</span></dt>
+                                            
+                                            
+                                            <dd><code>views</code> - VGS secure views.</dd>
                                             
                                             
                                         </dl>
