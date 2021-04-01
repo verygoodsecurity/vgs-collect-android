@@ -22,6 +22,7 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.date.DatePickerFormat
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.FlexibleDateFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.StrictExpirationDateFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
+import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
@@ -54,9 +55,10 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     private val selectedDate = Calendar.getInstance()
 
-    private val dateLimitationFormat = SimpleDateFormat(SDF, Locale.getDefault())
+    private val dateLimitationFormat = SimpleDateFormat(SDF, Locale.US)
     private var fieldDateFormat:SimpleDateFormat? = null
     private var fieldDateOutPutFormat:SimpleDateFormat? = null
+    private var fieldDataSerializers: List<FieldDataSerializer<*, *>>? = null
 
     private var datePickerMode:DatePickerMode = DatePickerMode.INPUT
     private var isDaysVisible = true
@@ -87,7 +89,12 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
         val stateContent = FieldContent.CreditCardExpDateContent().apply {
             if(!text.isNullOrEmpty() && handleInputMode(text.toString())) {
-                handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
+                handleOutputFormat(
+                    selectedDate,
+                    fieldDateFormat,
+                    fieldDateOutPutFormat,
+                    fieldDataSerializers
+                )
             } else {
                 data = text.toString()
                 rawData = data
@@ -152,7 +159,12 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
                 c.data = str
                 c.rawData = str
             }
-            else -> c.handleOutputFormat(selectedDate, fieldDateFormat, fieldDateOutPutFormat)
+            else -> c.handleOutputFormat(
+                selectedDate,
+                fieldDateFormat,
+                fieldDateOutPutFormat,
+                fieldDataSerializers
+            )
         }
         return c
     }
@@ -259,7 +271,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             pattern
         }
 
-        fieldDateOutPutFormat = SimpleDateFormat(outputPattern, Locale.getDefault())
+        fieldDateOutPutFormat = SimpleDateFormat(outputPattern, Locale.US)
     }
 
     internal fun setDatePattern(pattern:String?) {
@@ -270,7 +282,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
 
         isDaysVisible = datePattern.contains(DD)
-        fieldDateFormat = SimpleDateFormat(datePattern, Locale.getDefault())
+        fieldDateFormat = SimpleDateFormat(datePattern, Locale.US)
 
         isListeningPermitted = true
 
@@ -361,6 +373,10 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         datePickerVisibilityChangeListener = listener
     }
 
+    internal fun setFieldDataSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
+        this.fieldDataSerializers = serializers
+    }
+
     override fun setupAutofill() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setAutofillHints(View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DATE,
@@ -403,7 +419,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
 
     private fun String.handleDate(incomePattern: String, outcomePattern: String):String? {
         return try {
-            val income = SimpleDateFormat(incomePattern, Locale.getDefault())
+            val income = SimpleDateFormat(incomePattern, Locale.US)
             val currentDate = income.parse(this)
             val selectedDate = Calendar.getInstance()
             selectedDate.time = currentDate
@@ -412,7 +428,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             selectedDate.set(Calendar.MINUTE, 59)
             selectedDate.set(Calendar.SECOND, 59)
             selectedDate.set(Calendar.MILLISECOND, 999)
-            val outcome = SimpleDateFormat(outcomePattern, Locale.getDefault())
+            val outcome = SimpleDateFormat(outcomePattern, Locale.US)
             outcome.format(selectedDate.time)
         } catch (e: ParseException) {
             null

@@ -142,7 +142,7 @@ class ScanActivity : BaseTransmitActivity(), CardScanActivityResultHandler {
 
             val mStr = String.format("%02d", mounts) + "/"
             val yStr = year.toString()
-            val date = SimpleDateFormat("$dMask$mMask$yMask", Locale.getDefault())
+            val date = SimpleDateFormat("$dMask$mMask$yMask", Locale.US)
                 .parse("$dStr$mStr$yStr")
             date?.time
         } else {

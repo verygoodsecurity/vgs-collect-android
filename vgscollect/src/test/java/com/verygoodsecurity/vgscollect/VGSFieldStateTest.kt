@@ -144,9 +144,9 @@ class VGSFieldStateTest {
     @Test
     fun test_map_date_mm_yy() {
         val date = "12/24"
-        val fieldDateFormat: SimpleDateFormat = SimpleDateFormat("MM/yy", Locale.getDefault())
+        val fieldDateFormat: SimpleDateFormat = SimpleDateFormat("MM/yy", Locale.US)
         val fieldDateOutPutFormat: SimpleDateFormat =
-            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
         val content = FieldContent.CreditCardExpDateContent()
         content.data = date
@@ -154,7 +154,7 @@ class VGSFieldStateTest {
 
         val c = Calendar.getInstance()
         c.time = fieldDateFormat.parse(date)
-        content.handleOutputFormat(c, fieldDateFormat, fieldDateOutPutFormat)
+        content.handleOutputFormat(c, fieldDateFormat, fieldDateOutPutFormat, null)
 
         assertTrue(content.rawData == "2024-12-01")
     }
@@ -162,8 +162,8 @@ class VGSFieldStateTest {
     @Test
     fun test_map_date_dd_mm_yyyy() {
         val date = "31-12-24"
-        val fieldDateFormat = SimpleDateFormat("dd-MM-yy", Locale.getDefault())
-        val fieldDateOutPutFormat = SimpleDateFormat("MM/yyyy", Locale.getDefault())
+        val fieldDateFormat = SimpleDateFormat("dd-MM-yy", Locale.US)
+        val fieldDateOutPutFormat = SimpleDateFormat("MM/yyyy", Locale.US)
 
         val content = FieldContent.CreditCardExpDateContent()
         content.data = date
@@ -171,7 +171,7 @@ class VGSFieldStateTest {
 
         val c = Calendar.getInstance()
         c.time = fieldDateFormat.parse(date)
-        content.handleOutputFormat(c, fieldDateFormat, fieldDateOutPutFormat)
+        content.handleOutputFormat(c, fieldDateFormat, fieldDateOutPutFormat, null)
 
         assertTrue(content.rawData == "12/2024")
     }

@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscollect.core.model.state
 
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.CardType
-import java.lang.StringBuilder
+import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,6 +53,8 @@ sealed class FieldContent {
 
     class CreditCardExpDateContent:FieldContent() {
         var rawData:String? = null
+        internal var dateFormat: String? = null
+        internal var serializers: List<FieldDataSerializer<*, *>>? = null
     }
 
     class InfoContent:FieldContent()
@@ -71,14 +73,22 @@ sealed class FieldContent {
 }
 
 /** @suppress */
-internal fun FieldContent.CreditCardExpDateContent.handleOutputFormat(selectedDate: Calendar, fieldDateFormat: SimpleDateFormat?, fieldDateOutPutFormat: SimpleDateFormat?) {
-    if(fieldDateFormat != null && fieldDateFormat.toPattern() == fieldDateOutPutFormat?.toPattern()) {
+internal fun FieldContent.CreditCardExpDateContent.handleOutputFormat(
+    selectedDate: Calendar,
+    fieldDateFormat: SimpleDateFormat?,
+    fieldDateOutPutFormat: SimpleDateFormat?,
+    serializers: List<FieldDataSerializer<*, *>>?
+) {
+    if (fieldDateFormat != null && fieldDateFormat.toPattern() == fieldDateOutPutFormat?.toPattern()) {
         data = fieldDateFormat.format(selectedDate.time)
         rawData = data
+        dateFormat = fieldDateFormat.toPattern()
     } else {
         data = fieldDateFormat?.format(selectedDate.time)
         rawData = fieldDateOutPutFormat?.format(selectedDate.time)
+        dateFormat = fieldDateOutPutFormat?.toPattern() ?: fieldDateFormat?.toPattern()
     }
+    this.serializers = serializers
 }
 
 /** @suppress */

@@ -36,6 +36,7 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.*
@@ -1010,6 +1011,12 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun setDatePickerVisibilityListener(l: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
         if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setDatePickerVisibilityListener(l)
+        }
+    }
+
+    protected fun setFieldDataSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
+        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setFieldDataSerializers(serializers)
         }
     }
 
