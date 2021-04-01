@@ -1,7 +1,6 @@
 
 [![UT](https://img.shields.io/badge/Unit_Test-pass-green)]()
 [![license](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE)
-
 <img src="./ZeroDataLogo.png" width="55" hspace="8">
 
 # VGS Collect SDK 
