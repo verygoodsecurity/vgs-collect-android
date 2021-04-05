@@ -23,6 +23,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscollect.util.extension.toCardBrand
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.CardType
@@ -156,7 +157,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
             params2
         )
 
-        cardNumberField.addCardBrand(newBrand2)
+        cardNumberField.setValidCardBrands(newBrand2, CardType.VISA.toCardBrand())
     }
 
     private fun setupCardNumberField() {

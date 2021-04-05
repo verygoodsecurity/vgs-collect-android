@@ -10,7 +10,7 @@ data class CardBrandPreview(
     val name:String? = CardType.UNKNOWN.name,
     val resId:Int = CardType.UNKNOWN.resId,
     var currentMask:String = CardType.UNKNOWN.mask,
-    var algorithm: ChecksumAlgorithm = ChecksumAlgorithm.NONE,
+    var algorithm: ChecksumAlgorithm = CardType.UNKNOWN.algorithm,
     var numberLength: Array<Int> = CardType.UNKNOWN.rangeNumber,
     var cvcLength: Array<Int> = CardType.UNKNOWN.rangeCVV,
     val successfullyDetected:Boolean = false
