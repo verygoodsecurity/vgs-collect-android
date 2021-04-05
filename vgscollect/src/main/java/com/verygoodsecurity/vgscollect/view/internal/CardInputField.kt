@@ -25,6 +25,7 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText.Companion.TAG
 
 /** @suppress */
@@ -345,21 +346,16 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         }
     }
 
-    private var validator: MutableValidator = CompositeValidator()
+    override fun applyValidationRule(rule: ValidationRule) {
+        with(rule as PaymentCardNumberRule) {
+            allowToOverrideDefaultValidation = canOverrideDefaultValidation &&
+                    (length != null || algorithm != null || regex != null)
 
-    internal fun applyValidationRule(rule: PaymentCardNumberRule) {
-        allowToOverrideDefaultValidation = rule.canOverrideDefaultValidation &&
-                (rule.length != null || rule.algorithm != null || rule.regex != null)
+            validator.clearRules()
 
-        validator.clearRules()
-        rule.length?.let {
-            validator.addRule(LengthValidator(it))
-        }
-        rule.algorithm?.let {
-            validator.addRule(CheckSumValidator(it))
-        }
-        rule.regex?.let {
-            validator.addRule(RegexValidator(it))
+            if (length != null) validator.addRule(LengthValidator(length))
+            if (algorithm != null) validator.addRule(CheckSumValidator(algorithm))
+            if (regex != null) validator.addRule(RegexValidator(regex))
         }
     }
 }

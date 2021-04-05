@@ -5,12 +5,12 @@ import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgo
 /**
  * This rule provides a simplified mechanism to improve default behavior of the bank card number field.
  */
-data class PaymentCardNumberRule private constructor(
+class PaymentCardNumberRule private constructor(
     internal val algorithm: ChecksumAlgorithm?,
-    internal val length: Array<Int>?,
-    internal val regex: String?,
+    length: Array<Int>?,
+    regex: String?,
     internal val canOverrideDefaultValidation: Boolean
-) {
+): ValidationRule(regex, length) {
 
     /**
      * This class provides an API for set up rules for validation unknown bank card brands.

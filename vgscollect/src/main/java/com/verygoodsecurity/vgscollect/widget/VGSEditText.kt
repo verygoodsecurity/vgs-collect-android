@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoValidationRule
 
 /**
  * A user interface element that displays text.
@@ -21,6 +22,8 @@ open class VGSEditText @JvmOverloads constructor(
 ) : InputFieldView(context, attrs, defStyleAttr) {
 
     init {
+        setupViewType(FieldType.INFO)
+
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.VGSEditText,
@@ -28,8 +31,6 @@ open class VGSEditText @JvmOverloads constructor(
         ).apply {
 
             try {
-                val fieldType = getInteger(R.styleable.VGSEditText_fieldType, 4)
-
                 val inputType = getInt(R.styleable.VGSEditText_inputType, EditorInfo.TYPE_NULL)
                 val fieldName = getString(R.styleable.VGSEditText_fieldName)
                 val hint = getString(R.styleable.VGSEditText_hint)
@@ -47,8 +48,6 @@ open class VGSEditText @JvmOverloads constructor(
 
                 val minLines = getInt(R.styleable.VGSEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.VGSEditText_maxLines, 0)
-
-                setFieldType(FieldType.values()[fieldType])
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -77,18 +76,6 @@ open class VGSEditText @JvmOverloads constructor(
     }
 
     /**
-     * Sets type of current input field.
-     * Choosing the input type you configure the limitations for this type.
-     *
-     * @param type The type of current input field.
-     *
-     * @see FieldType
-     */
-    fun setFieldType(type: FieldType) {
-        applyFieldType(type)
-    }
-
-    /**
      * It return current state of the field.
      *
      * @return current state.
@@ -100,5 +87,12 @@ open class VGSEditText @JvmOverloads constructor(
     /** The max text length to display. */
     fun setMaxLength(length: Int) {
         applyMaxLength(length)
+    }
+
+    /**
+     * Adds a validation rule for the field.
+     */
+    fun addRule(rule: VGSInfoValidationRule) {
+        applyValidationRule(rule)
     }
 }

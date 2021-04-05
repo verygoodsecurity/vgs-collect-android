@@ -30,8 +30,11 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
     private var previewIconVisibility = NEVER
     private var previewIconGravity = END
 
+    init {
+        validator.addRule(CardCVCCodeValidator(cardContent.rangeCVV))
+    }
+
     override fun applyFieldType() {
-        val validator = CardCVCCodeValidator(cardContent.rangeCVV)
         inputConnection = InputCardCVCConnection(id, validator)
 
         val str = text.toString()

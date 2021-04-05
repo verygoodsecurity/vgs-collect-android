@@ -3,10 +3,10 @@ package com.verygoodsecurity.vgscollect.view.card.validation.rules
 /**
  * This rule provides a simplified mechanism to improve default behavior of field which include person name.
  */
-data class PersonNameRule(
-    internal val regex: String?,
-    internal val length:Array<Int>?
-) {
+ class PersonNameRule(
+      regex: String?,
+      length:Array<Int>?
+): ValidationRule(regex, length) {
 
     /**
      * This class provides an API for set up rules for validation person name.
@@ -68,24 +68,4 @@ data class PersonNameRule(
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as PersonNameRule
-
-        if (regex != other.regex) return false
-        if (length != null) {
-            if (other.length == null) return false
-            if (!length.contentEquals(other.length)) return false
-        } else if (other.length != null) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = regex?.hashCode() ?: 0
-        result = 31 * result + (length?.contentHashCode() ?: 0)
-        return result
-    }
 }
