@@ -10,7 +10,7 @@ import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoValidationRule
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
 
 /**
  * A user interface element that displays text.
@@ -92,7 +92,7 @@ open class VGSEditText @JvmOverloads constructor(
     /**
      * Adds a validation rule for the field.
      */
-    fun addRule(rule: VGSInfoValidationRule) {
+    fun addRule(rule: VGSInfoRule) {
         applyValidationRule(rule)
     }
 }

@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.rules
 
-class VGSInfoValidationRule private constructor(
+class VGSInfoRule private constructor(
     regex: String?,
     length: Array<Int>?
 ) : ValidationRule(regex, length) {
@@ -59,8 +59,8 @@ class VGSInfoValidationRule private constructor(
         }
 
         /** Creates a rule. */
-        fun build(): VGSInfoValidationRule {
-            return VGSInfoValidationRule(
+        fun build(): VGSInfoRule {
+            return VGSInfoRule(
                 regex,
                 getRange()
             )

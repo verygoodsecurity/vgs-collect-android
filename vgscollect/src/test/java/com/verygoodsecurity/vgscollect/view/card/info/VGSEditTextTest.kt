@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.any
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoValidationRule
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.InfoInputField
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
@@ -188,7 +188,7 @@ class VGSEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = VGSInfoValidationRule.ValidationBuilder()
+        val rule = VGSInfoRule.ValidationBuilder()
             .setAllowableMinLength(12)
             .setAllowableMaxLength(15)
             .build()
@@ -227,7 +227,7 @@ class VGSEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = VGSInfoValidationRule.ValidationBuilder()
+        val rule = VGSInfoRule.ValidationBuilder()
             .setAllowableMinLength(7)
             .build()
         view.addRule(rule)
@@ -268,7 +268,7 @@ class VGSEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = VGSInfoValidationRule.ValidationBuilder()
+        val rule = VGSInfoRule.ValidationBuilder()
             .setAllowableMaxLength(17)
             .build()
         view.addRule(rule)
@@ -327,7 +327,7 @@ class VGSEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = VGSInfoValidationRule.ValidationBuilder()
+        val rule = VGSInfoRule.ValidationBuilder()
             .setAllowableMaxLength(17)
             .setAllowableMinLength(15)
             .build()
@@ -384,7 +384,7 @@ class VGSEditTextTest {
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
-        val rule = VGSInfoValidationRule.ValidationBuilder()
+        val rule = VGSInfoRule.ValidationBuilder()
             .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")
             .build()
         view.addRule(rule)
