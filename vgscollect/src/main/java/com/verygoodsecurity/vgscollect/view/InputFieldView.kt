@@ -1236,7 +1236,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     protected fun getInfoState(): FieldState.InfoState? {
-        return (inputField as? DateInputField)?.getState() as? FieldState.InfoState
+        return (inputField as? InfoInputField)?.getState() as? FieldState.InfoState
     }
 
     /**
