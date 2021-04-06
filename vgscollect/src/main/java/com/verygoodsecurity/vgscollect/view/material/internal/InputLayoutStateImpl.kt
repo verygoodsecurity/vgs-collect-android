@@ -225,6 +225,13 @@ internal class InputLayoutStateImpl(
                 textInputLayout.boxStrokeColor = value
             }
         }
+    internal var boxStrokeColorStateList: ColorStateList? = null
+        set(value) {
+            field = value
+            if(isReady()) {
+                boxStrokeColorStateList?.let { textInputLayout.setBoxStrokeColorStateList(it) }
+            }
+        }
     internal var boxCornerRadiusBottomEnd: Float = 0f
         set(value) {
             field = value
@@ -353,6 +360,9 @@ internal class InputLayoutStateImpl(
             if (this@InputLayoutStateImpl.boxBackgroundMode != TextInputLayout.BOX_BACKGROUND_NONE) {
                 this.boxBackgroundColor = this@InputLayoutStateImpl.boxBackgroundColor
                 this.boxStrokeColor = this@InputLayoutStateImpl.boxStrokeColor
+                this@InputLayoutStateImpl.boxStrokeColorStateList?.let {
+                    this.setBoxStrokeColorStateList(it)
+                }
 
                 val te = this@InputLayoutStateImpl.boxCornerRadiusTopEnd
                 val be = this@InputLayoutStateImpl.boxCornerRadiusBottomEnd

@@ -112,10 +112,7 @@ internal class InputCardNumberConnection(
     private fun detectBrand(): CardBrandPreview {
         for (i in cardFilters.indices) {
             val filter = cardFilters[i]
-            val brand = filter.detect(output.content?.data)
-            if (brand != null) {
-                return brand
-            }
+            return filter.detect(output.content?.data)
         }
         return CardBrandPreview()
     }

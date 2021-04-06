@@ -74,6 +74,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
 
                 val boxBackgroundColor = getColor(R.styleable.VGSTextInputLayout_boxBackgroundColor, 0)
                 val boxStrokeColor = getColor(R.styleable.VGSTextInputLayout_boxStrokeColor, getThemeAccentColor(context))
+                val boxStrokeColorStateList = getColorStateList(R.styleable.VGSTextInputLayout_boxStrokeColor)
                 val boxBackgroundMode = getInteger(R.styleable.VGSTextInputLayout_boxBackgroundModes, 0)
                 val boxCornerRadiusBottomEnd = getDimension(R.styleable.VGSTextInputLayout_boxCornerRadiusBottomEnd, 0f)
                 val boxCornerRadiusTopStart = getDimension(R.styleable.VGSTextInputLayout_boxCornerRadiusTopStart, 0f)
@@ -112,6 +113,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
 
                 setBoxBackgroundColor(boxBackgroundColor)
                 setBoxStrokeColor(boxStrokeColor)
+                boxStrokeColorStateList?.let { setBoxStrokeColorStateList(it) }
 
                 setPasswordVisibilityToggleDrawable(drawRef)
 

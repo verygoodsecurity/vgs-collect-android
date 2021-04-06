@@ -828,6 +828,12 @@ abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? CardInputField)?.setCardBrand(c)
         }
     }
+    
+    protected fun setValidCardBrands(cardBrands: List<CardBrand>) {
+        if (fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.setValidCardBrands(cardBrands)
+        }
+    }
 
     protected fun setNumberDivider(divider: String?) {
         if (fieldType == FieldType.CARD_NUMBER) {
