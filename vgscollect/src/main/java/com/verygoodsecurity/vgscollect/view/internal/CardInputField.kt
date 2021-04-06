@@ -72,9 +72,8 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     override fun applyFieldType() {
-        inputConnection = InputCardNumberConnection(id, validator, this, divider).apply {
-            allowToOverrideDefaultValidation = this@CardInputField.allowToOverrideDefaultValidation
-        }
+        inputConnection = InputCardNumberConnection(id, validator, this, divider)
+        allowToOverrideDefaultValidation = this@CardInputField.allowToOverrideDefaultValidation
 
         inputConnection!!.addFilter(cardBrandFilter)
 
