@@ -3,10 +3,10 @@ package com.verygoodsecurity.vgscollect.view.card.validation.rules
 /**
  * This rule provides a simplified mechanism to improve default behavior of field which include person name.
  */
- class PersonNameRule(
-      regex: String?,
-      length:Array<Int>?
-): ValidationRule(regex, length) {
+class PersonNameRule private constructor(
+    regex: String?,
+    length: Array<Int>?
+) : ValidationRule(regex, length) {
 
     /**
      * This class provides an API for set up rules for validation person name.
@@ -29,11 +29,11 @@ package com.verygoodsecurity.vgscollect.view.card.validation.rules
         }
 
         /** Configure minimum length of the name which will support. */
-        fun setAllowableMinLength(length:Int): ValidationBuilder {
-            if(maxLength == -1) {
+        fun setAllowableMinLength(length: Int): ValidationBuilder {
+            if (maxLength == -1) {
                 maxLength = 256
             }
-            minLength = if(length > maxLength) {
+            minLength = if (length > maxLength) {
                 maxLength
             } else {
                 length
@@ -42,11 +42,11 @@ package com.verygoodsecurity.vgscollect.view.card.validation.rules
         }
 
         /** Configure maximum length of the name which will support. */
-        fun setAllowableMaxLength(length:Int): ValidationBuilder {
-            if(minLength == -1) {
+        fun setAllowableMaxLength(length: Int): ValidationBuilder {
+            if (minLength == -1) {
                 minLength = 1
             }
-            if(length < minLength) {
+            if (length < minLength) {
                 minLength = length
             }
             maxLength = length
@@ -55,7 +55,7 @@ package com.verygoodsecurity.vgscollect.view.card.validation.rules
 
         /** Creates a rule. */
         fun build(): PersonNameRule {
-            val range = if(minLength != -1 && maxLength != -1) {
+            val range = if (minLength != -1 && maxLength != -1) {
                 (minLength..maxLength).toList().toTypedArray()
             } else {
                 null

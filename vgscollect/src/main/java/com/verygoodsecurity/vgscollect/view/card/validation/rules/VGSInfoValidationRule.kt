@@ -1,14 +1,14 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.rules
 
-class VGSInfoValidationRule(
+class VGSInfoValidationRule private constructor(
     regex: String?,
-    length:Array<Int>?
-): ValidationRule(regex, length)  {
+    length: Array<Int>?
+) : ValidationRule(regex, length) {
 
     /**
      * This class provides an API for set up rules for validation person name.
      */
-    open class ValidationBuilder {
+    class ValidationBuilder {
 
         /** The Regex for validation input. */
         protected var regex: String? = null
@@ -26,11 +26,11 @@ class VGSInfoValidationRule(
         }
 
         /** Configure minimum length of the name which will support. */
-        fun setAllowableMinLength(length:Int): ValidationBuilder {
-            if(maxLength == -1) {
+        fun setAllowableMinLength(length: Int): ValidationBuilder {
+            if (maxLength == -1) {
                 maxLength = 256
             }
-            minLength = if(length > maxLength) {
+            minLength = if (length > maxLength) {
                 maxLength
             } else {
                 length
@@ -39,19 +39,19 @@ class VGSInfoValidationRule(
         }
 
         /** Configure maximum length of the name which will support. */
-        fun setAllowableMaxLength(length:Int): ValidationBuilder {
-            if(minLength == -1) {
+        fun setAllowableMaxLength(length: Int): ValidationBuilder {
+            if (minLength == -1) {
                 minLength = 1
             }
-            if(length < minLength) {
+            if (length < minLength) {
                 minLength = length
             }
             maxLength = length
             return this
         }
 
-        protected fun getRange(): Array<Int>? {
-            return if(minLength != -1 && maxLength != -1) {
+        private fun getRange(): Array<Int>? {
+            return if (minLength != -1 && maxLength != -1) {
                 (minLength..maxLength).toList().toTypedArray()
             } else {
                 null
@@ -59,7 +59,7 @@ class VGSInfoValidationRule(
         }
 
         /** Creates a rule. */
-        open fun build(): VGSInfoValidationRule {
+        fun build(): VGSInfoValidationRule {
             return VGSInfoValidationRule(
                 regex,
                 getRange()

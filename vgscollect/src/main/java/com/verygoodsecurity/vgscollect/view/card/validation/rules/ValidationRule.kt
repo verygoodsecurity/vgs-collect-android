@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.rules
 
-open class ValidationRule(
+open class ValidationRule protected constructor(
     internal val regex: String?,
     internal val length:Array<Int>?
 ) {
@@ -9,7 +9,7 @@ open class ValidationRule(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as PersonNameRule
+        other as ValidationRule
 
         if (regex != other.regex) return false
         if (length != null) {
