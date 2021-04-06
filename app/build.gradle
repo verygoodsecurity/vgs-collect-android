@@ -80,6 +80,7 @@ dependencies {
 
     implementation project(":vgscollect")
     implementation project(":vgscollect-cardio")
+    implementation project(":vgscollect-nfc")
 //    implementation project(":vgscollect-bouncer")
 
     implementation 'com.google.android.gms:play-services-auth:19.0.0'

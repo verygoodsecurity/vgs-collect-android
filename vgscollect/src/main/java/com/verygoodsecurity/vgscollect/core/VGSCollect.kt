@@ -10,6 +10,7 @@ import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
+import com.verygoodsecurity.vgscollect.app.VGSDataAdapter
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
@@ -764,5 +765,28 @@ class VGSCollect {
          * builder.
          */
         fun create() = VGSCollect(context, id, environment, host, port)
+    }
+
+
+    //NEW API
+    private val dataAdapters = mutableListOf<VGSDataAdapter>()
+
+    fun addDataAdapter(adapter: VGSDataAdapter) {
+        adapter.vgsCollect = this
+        dataAdapters.add(adapter)
+    }
+
+    fun onCreate() {
+        dataAdapters.forEach { it.initialize() }
+    }
+
+    fun onNewIntent(i: Intent?) {
+        dataAdapters.forEach { it.navigateUpTo(i) }
+    }
+
+    internal fun dispatchData(storage: VGSHashMapWrapper<String, Any?>?) {
+        storage?.run {
+            externalDependencyDispatcher.dispatch(this.mapOf())
+        }
     }
 }

@@ -12,6 +12,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.api.cardio.ScanActivity
+import com.verygoodsecurity.api.nfc.VGSCardNFCAdapter
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
@@ -45,11 +46,17 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     private lateinit var vgsForm: VGSCollect
 
+    private val nfcCardAdapter: VGSCardNFCAdapter = VGSCardNFCAdapter.create(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collect_demo)
 
         retrieveSettings()
+
+        vgsForm.addDataAdapter(nfcCardAdapter)
+
+        vgsForm.onCreate()
 
         submitBtn?.setOnClickListener(this)
         attachBtn?.setOnClickListener(this)
@@ -65,6 +72,17 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         val staticData = mutableMapOf<String, String>()
         staticData["static_data"] = "static custom data"
         vgsForm.setCustomData(staticData)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        vgsForm.onNewIntent(intent)
+    }
+
+    fun scanCard(v: View) {
+        nfcCardAdapter.stopScanning()
+
+        nfcCardAdapter.startScanning()
     }
 
     private fun setupCardExpDateField() {

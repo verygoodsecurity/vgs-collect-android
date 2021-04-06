@@ -1,1 +1,2 @@
+include ':vgscollect-nfc'
 include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-bouncer'
