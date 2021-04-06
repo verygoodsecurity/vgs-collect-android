@@ -11,7 +11,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 
-class CardBrandFilterTest {
+class CustomCardBrandsFilteringTest {
 
     private lateinit var filter: MutableCardFilter
 
@@ -25,8 +25,8 @@ class CardBrandFilterTest {
         val c1 = CardBrand("^123", "VG_Search", drawableResId = R.drawable.ic_card_front_preview_dark)
         val c2 = CardBrand("^777", "VGS", drawableResId = R.drawable.ic_jcb_light)
 
-        filter.add(c1)
-        filter.add(c2)
+        filter.addCustomCardBrand(c1)
+        filter.addCustomCardBrand(c2)
 
         val testItem1 = filter.detect("1234561112335412")
         assertEquals(testItem1?.resId, R.drawable.ic_card_front_preview_dark)
@@ -37,8 +37,8 @@ class CardBrandFilterTest {
         val c1 = CardBrand("^123", "VG_Search", drawableResId = R.drawable.ic_card_front_preview_dark)
         val c2 = CardBrand("^777", "VGS", drawableResId = R.drawable.ic_jcb_light)
 
-        filter.add(c1)
-        filter.add(c2)
+        filter.addCustomCardBrand(c1)
+        filter.addCustomCardBrand(c2)
 
         val testItem1 = filter.detect("1234561112335412")
         assertEquals(testItem1?.resId, R.drawable.ic_card_front_preview_dark)
@@ -55,7 +55,7 @@ class CardBrandFilterTest {
 
         val c1 = CardBrand(regex, name, resId, params)
 
-        filter.add(c1)
+        filter.addCustomCardBrand(c1)
 
         val testItem1 = filter.detect("12333611123354")
 
@@ -74,8 +74,8 @@ class CardBrandFilterTest {
         val c1 = CardBrand("^123", "VG_Search", drawableResId = R.drawable.ic_card_front_preview_dark)
         val c2 = CardBrand("^777", "VGS", drawableResId = R.drawable.ic_jcb_light)
 
-        filter.add(c1)
-        filter.add(c2)
+        filter.addCustomCardBrand(c1)
+        filter.addCustomCardBrand(c2)
 
         val testItem1 = filter.detect("1234-5611-1233-5412")
         assertEquals(testItem1?.resId, R.drawable.ic_card_front_preview_dark)
@@ -94,7 +94,7 @@ class CardBrandFilterTest {
 
         val c1 = CardBrand(regex, name, resId, params)
 
-        filter.add(c1)
+        filter.addCustomCardBrand(c1)
 
         val testItem1 = filter.detect("123-336-111-23354")
 

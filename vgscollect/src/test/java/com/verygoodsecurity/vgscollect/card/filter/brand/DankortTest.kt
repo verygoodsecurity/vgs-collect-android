@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.card.filter.brand
 
 import com.verygoodsecurity.vgscollect.view.card.CardType
-import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
+import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import org.junit.Assert
 import org.junit.Before
@@ -13,12 +13,12 @@ class DankortTest {
 
     @Before
     fun setupFilter() {
-        filter = DefaultCardBrandFilter(CardType.values())
+        filter = CardBrandFilter()
     }
 
     @Test
     fun test_1() {
         val brand = filter.detect("5019")
-        Assert.assertEquals(brand?.name, CardType.DANKORT.name)
+        Assert.assertEquals(brand.name, CardType.DANKORT.name)
     }
 }

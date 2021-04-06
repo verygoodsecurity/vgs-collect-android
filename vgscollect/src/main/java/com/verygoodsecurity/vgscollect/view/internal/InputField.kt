@@ -20,7 +20,6 @@ import com.verygoodsecurity.vgscollect.view.card.conection.InputCardNumberConnec
 import com.verygoodsecurity.vgscollect.view.card.conection.InputInfoConnection
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
-import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
@@ -47,7 +46,7 @@ internal class InputField(context: Context): BaseInputField(context),
 
     private var iconAdapter = CardIconAdapter(context)
 
-    private val userFilter: MutableCardFilter by lazy {
+    private val cardBrandFilter: MutableCardFilter by lazy {
         CardBrandFilter(divider)
     }
 
@@ -206,9 +205,7 @@ internal class InputField(context: Context): BaseInputField(context),
                 divider
             )
 
-        val defFilter = DefaultCardBrandFilter(CardType.values(), divider)
-        inputConnection!!.addFilter(defFilter)
-        inputConnection!!.addFilter(userFilter)
+        inputConnection!!.addFilter(cardBrandFilter)
 
         val str = text.toString()
         val stateContent = FieldContent.CardNumberContent().apply {
