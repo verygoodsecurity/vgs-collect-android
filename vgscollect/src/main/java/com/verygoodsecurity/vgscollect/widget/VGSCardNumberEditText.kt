@@ -239,7 +239,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     /**
-     * Adds a behaviour rule for the field.
+     * Adds a validation rule for the field.
      */
     fun addRule(rule: PaymentCardNumberRule) {
         applyValidationRule(rule)

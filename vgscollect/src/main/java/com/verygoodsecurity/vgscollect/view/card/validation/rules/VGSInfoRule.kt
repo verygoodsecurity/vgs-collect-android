@@ -1,9 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.rules
 
-/**
- * This rule provides a simplified mechanism to improve default behavior of field which include person name.
- */
-class PersonNameRule private constructor(
+class VGSInfoRule private constructor(
     regex: String?,
     length: Array<Int>?
 ) : ValidationRule(regex, length) {
@@ -14,13 +11,13 @@ class PersonNameRule private constructor(
     class ValidationBuilder {
 
         /** The Regex for validation input. */
-        private var regex: String? = null
+        protected var regex: String? = null
 
         /** The minimum length of the person name which will support. */
-        private var minLength = -1
+        protected var minLength = -1
 
         /** The maximum length of the person name which will support. */
-        private var maxLength = -1
+        protected var maxLength = -1
 
         /** Configure Regex for validation input. */
         fun setRegex(regex: String): ValidationBuilder {
@@ -53,17 +50,19 @@ class PersonNameRule private constructor(
             return this
         }
 
-        /** Creates a rule. */
-        fun build(): PersonNameRule {
-            val range = if (minLength != -1 && maxLength != -1) {
+        private fun getRange(): Array<Int>? {
+            return if (minLength != -1 && maxLength != -1) {
                 (minLength..maxLength).toList().toTypedArray()
             } else {
                 null
             }
+        }
 
-            return PersonNameRule(
+        /** Creates a rule. */
+        fun build(): VGSInfoRule {
+            return VGSInfoRule(
                 regex,
-                range
+                getRange()
             )
         }
     }
