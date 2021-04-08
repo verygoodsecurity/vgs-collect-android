@@ -16,7 +16,6 @@ import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardNumberConnection
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
-import com.verygoodsecurity.vgscollect.view.card.filter.DefaultCardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
@@ -25,6 +24,7 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.*
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText.Companion.TAG
 
 /** @suppress */
@@ -61,7 +61,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     private var maskAdapter = CardMaskAdapter()
     private var cardNumberFormatter: Formatter? = null
 
-    private val userFilter: MutableCardFilter by lazy {
+    private val cardBrandFilter: MutableCardFilter by lazy {
         CardBrandFilter(divider)
     }
 
@@ -74,12 +74,10 @@ internal class CardInputField(context: Context) : BaseInputField(context),
 
     override fun applyFieldType() {
         inputConnection = InputCardNumberConnection(id, validator, this, divider).apply {
-            allowToOverrideDefaultValidation = this@CardInputField.allowToOverrideDefaultValidation
+            this.canOverrideDefaultValidation = this@CardInputField.allowToOverrideDefaultValidation
         }
 
-        val defFilter = DefaultCardBrandFilter(CardType.values(), divider)
-        inputConnection!!.addFilter(defFilter)
-        inputConnection!!.addFilter(userFilter)
+        inputConnection!!.addFilter(cardBrandFilter)
 
         val str = text.toString()
         val stateContent = FieldContent.CardNumberContent().apply {
@@ -159,7 +157,12 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     internal fun setCardBrand(c: CardBrand) {
-        userFilter.add(c)
+        cardBrandFilter.addCustomCardBrand(c)
+        inputConnection?.run()
+    }
+
+    internal fun setValidCardBrands(cardBrands: List<CardBrand>) {
+        cardBrandFilter.setValidCardBrands(cardBrands)
         inputConnection?.run()
     }
 
@@ -345,21 +348,16 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         }
     }
 
-    private var validator: MutableValidator = CompositeValidator()
+    override fun applyValidationRule(rule: ValidationRule) {
+        with(rule as PaymentCardNumberRule) {
+            allowToOverrideDefaultValidation = canOverrideDefaultValidation &&
+                    (length != null || algorithm != null || regex != null)
 
-    internal fun applyValidationRule(rule: PaymentCardNumberRule) {
-        allowToOverrideDefaultValidation = rule.canOverrideDefaultValidation &&
-                (rule.length != null || rule.algorithm != null || rule.regex != null)
+            validator.clearRules()
 
-        validator.clearRules()
-        rule.length?.let {
-            validator.addRule(LengthValidator(it))
-        }
-        rule.algorithm?.let {
-            validator.addRule(CheckSumValidator(it))
-        }
-        rule.regex?.let {
-            validator.addRule(RegexValidator(it))
+            if (length != null) validator.addRule(LengthValidator(length))
+            if (algorithm != null) validator.addRule(CheckSumValidator(algorithm))
+            if (regex != null) validator.addRule(RegexValidator(regex))
         }
     }
 }

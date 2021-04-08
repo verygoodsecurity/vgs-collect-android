@@ -4,5 +4,8 @@ import com.verygoodsecurity.vgscollect.view.card.CardBrand
 
 /** @suppress */
 interface MutableCardFilter : VGSCardFilter {
-    fun add(item: CardBrand?)
+
+    fun addCustomCardBrand(brand: CardBrand)
+
+    fun setValidCardBrands(cardBrands: List<CardBrand>)
 }

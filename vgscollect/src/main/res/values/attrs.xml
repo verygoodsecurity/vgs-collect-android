@@ -392,21 +392,6 @@
 
         <attr name="hint" />
 
-        <!-- Sets type of current input field.
-             Choosing the input type you configure the limitations for this type. By default, widget configure as info.
-         -->
-        <attr name="fieldType" format="enum">
-        <!-- Field will have the card number validation.-->
-            <enum name="cardNumber" value="0"/>
-        <!-- Field will have card security code(CVC) validation.-->
-            <enum name="cvc" value="1"/>
-        <!-- Field will have the card expiration date validation.-->
-            <enum name="expDate" value="2"/>
-        <!-- Field will have the card holder name validation.-->
-            <enum name="cardHolderName" value="3"/>
-        <!-- Default field without validation.-->
-            <enum name="info" value="4"/>
-        </attr>
     </declare-styleable>
 
     <declare-styleable name="CardVerificationCodeEditText">

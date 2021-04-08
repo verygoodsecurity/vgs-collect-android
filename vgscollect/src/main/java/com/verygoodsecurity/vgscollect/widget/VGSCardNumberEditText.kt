@@ -162,6 +162,16 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     /**
+     * Modify list of valid card brands. Only this brands will be valid all other brands will be marked as UNKNOWN.
+     * Please note, that items adding order is important for correct brand detect.
+     *
+     * @param cardBrand n number of valid card brands.
+     */
+    fun setValidCardBrands(vararg cardBrand: CardBrand) {
+        super.setValidCardBrands(cardBrand.toList())
+    }
+
+    /**
      * Sets the symbol that will divide groups of digits in the card number.
      * 0000 0000 0000 0000
      *
@@ -229,7 +239,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     /**
-     * Adds a behaviour rule for the field.
+     * Adds a validation rule for the field.
      */
     fun addRule(rule: PaymentCardNumberRule) {
         applyValidationRule(rule)
