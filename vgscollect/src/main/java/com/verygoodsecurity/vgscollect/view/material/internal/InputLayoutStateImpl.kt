@@ -421,7 +421,11 @@ internal class InputLayoutStateImpl(
             val limitations = produceInnerViewPaddingLimitations(boxBackgroundMode, context)
             setMinimumPaddingLimitations(limitations.first, limitations.second)
 
-            setBackgroundResource(0)
+            if (boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_OUTLINE || boxBackgroundColor != 0) {
+                setBackgroundResource(0)
+            } else {
+                setBackgroundResource(android.R.color.transparent)
+            }
 
             if(this@InputLayoutStateImpl.hint.isNullOrEmpty() && !hint.isNullOrEmpty()) {
                 this@InputLayoutStateImpl.hint = hint
