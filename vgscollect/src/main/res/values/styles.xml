@@ -1,8 +1,8 @@
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-    </style>
 
-    <style name="VGSCollect" parent="android:Widget"/>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar" />
+
+    <style name="VGSCollect" parent="android:Widget" />
 
     <style name="VGSCollect.Widget.TextInputLayout.OutlineBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxBackgroundModes">outline</item>
