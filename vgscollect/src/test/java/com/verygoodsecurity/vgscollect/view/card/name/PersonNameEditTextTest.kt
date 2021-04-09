@@ -7,6 +7,7 @@ import android.view.View
 import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.PersonNameInputField
 import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
@@ -60,7 +61,7 @@ class PersonNameEditTextTest {
     }
 
     @Test
-    fun test_cvc() {
+    fun test_view_type() {
         assertEquals(FieldType.CARD_HOLDER_NAME, view.getFieldType())
     }
 
@@ -190,5 +191,249 @@ class PersonNameEditTextTest {
         view.setTypeface(null, Typeface.NORMAL)
         assertEquals(view.getTypeface(), Typeface.DEFAULT)
     }
+
+    @Test
+    fun test_length() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val rule = PersonNameRule.ValidationBuilder()
+            .setAllowableMinLength(12)
+            .setAllowableMaxLength(15)
+            .build()
+        view.addRule(rule)
+        view.setText("12312312312")
+
+        child.refreshInternalState()
+
+        val state = view.getState()
+        assertNotNull(state)
+        assertEquals(false, state!!.isValid)
+        assertEquals(11, state.contentLength)
+
+        view.setText("123123123123")
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        assertNotNull(state)
+        assertEquals(true, state2!!.isValid)
+        assertEquals(12, state2.contentLength)
+
+        view.setText("123123123123123")
+        child.refreshInternalState()
+
+        val state3 = view.getState()
+        assertNotNull(state)
+        assertEquals(true, state3!!.isValid)
+        assertEquals(15, state3.contentLength)
+    }
+
+    @Test
+    fun test_length_min() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val rule = PersonNameRule.ValidationBuilder()
+            .setAllowableMinLength(7)
+            .build()
+        view.addRule(rule)
+        view.setText("123123")
+
+        child.refreshInternalState()
+
+        val state = view.getState()
+        assertNotNull(state)
+        assertEquals(false, state!!.isValid)
+        assertEquals(6, state.contentLength)
+
+        view.setText("1231234")
+
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        assertNotNull(state)
+        assertEquals(true, state2!!.isValid)
+        assertEquals(7, state2.contentLength)
+
+        view.setText("1231231231231231231")
+
+        child.refreshInternalState()
+
+        val state3 = view.getState()
+        assertNotNull(state)
+        assertEquals(true, state3!!.isValid)
+        assertEquals(19, state3.contentLength)
+    }
+
+
+    @Test
+    fun test_length_max() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val rule = PersonNameRule.ValidationBuilder()
+            .setAllowableMaxLength(17)
+            .build()
+        view.addRule(rule)
+        view.setText("")
+
+        child.refreshInternalState()
+
+        val state = view.getState()
+        assertNotNull(state)
+        assertEquals(false, state!!.isValid)
+        assertEquals(0, state.contentLength)
+
+        view.setText("1")
+
+        child.refreshInternalState()
+
+        val state1 = view.getState()
+        assertNotNull(state)
+        assertEquals(true, state1!!.isValid)
+        assertEquals(1, state1.contentLength)
+
+        view.setText("1231231231233")
+
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        assertNotNull(state)
+        assertEquals(true, state2!!.isValid)
+        assertEquals(13, state2.contentLength)
+
+        view.setText("12312312312312312")
+
+        child.refreshInternalState()
+
+        val state3 = view.getState()
+        assertNotNull(state)
+        assertEquals(true, state3!!.isValid)
+        assertEquals(17, state3.contentLength)
+
+        view.setText("123123123123123123")
+
+        child.refreshInternalState()
+
+        val state4 = view.getState()
+        assertNotNull(state)
+        assertEquals(false, state4!!.isValid)
+        assertEquals(18, state4.contentLength)
+    }
+
+
+    @Test
+    fun test_length_min_max() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val rule = PersonNameRule.ValidationBuilder()
+            .setAllowableMaxLength(17)
+            .setAllowableMinLength(15)
+            .build()
+        view.addRule(rule)
+
+        view.setText("12312312312312")
+        child.refreshInternalState()
+
+        val state = view.getState()
+        assertNotNull(state)
+        assertEquals(false, state!!.isValid)
+        assertEquals(14, state.contentLength)
+
+
+        view.setText("123123123123123")
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        assertNotNull(state)
+        assertEquals(true, state2!!.isValid)
+        assertEquals(15, state2.contentLength)
+
+        view.setText("12312312312312312")
+        child.refreshInternalState()
+
+        val state3 = view.getState()
+        assertNotNull(state)
+        assertEquals(true, state3!!.isValid)
+        assertEquals(17, state3.contentLength)
+
+        view.setText("12312312312312312")
+        child.refreshInternalState()
+
+        val state4 = view.getState()
+        assertNotNull(state)
+        assertEquals(true, state4!!.isValid)
+        assertEquals(17, state4.contentLength)
+
+        view.setText("123123123123123123")
+        child.refreshInternalState()
+
+        val state5 = view.getState()
+        assertNotNull(state)
+        assertEquals(false, state5!!.isValid)
+        assertEquals(18, state5.contentLength)
+    }
+
+
+    @Test
+    fun test_regex() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val rule = PersonNameRule.ValidationBuilder()
+            .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")
+            .build()
+        view.addRule(rule)
+
+        view.setText("")
+        child.refreshInternalState()
+
+        val state0 = view.getState()
+        assertNotNull(state0)
+        assertEquals(false, state0!!.isValid)
+        assertEquals(0, state0.contentLength)
+
+
+        view.setText("0111111111111111")
+        child.refreshInternalState()
+
+        val state1 = view.getState()
+        assertNotNull(state1)
+        assertEquals(true, state1!!.isValid)
+        assertEquals(16, state1.contentLength)
+
+        view.setText("0111111111111w111")
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        assertNotNull(state2)
+        assertEquals(false, state2!!.isValid)
+        assertEquals(17, state2.contentLength)
+
+        view.setText("01111111111111")
+        child.refreshInternalState()
+
+        val state3 = view.getState()
+        assertNotNull(state3)
+        assertEquals(false, state3!!.isValid)
+        assertEquals(14, state3.contentLength)
+    }
+
 
 }

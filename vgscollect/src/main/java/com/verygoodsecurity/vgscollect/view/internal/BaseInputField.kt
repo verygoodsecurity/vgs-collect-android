@@ -24,6 +24,11 @@ import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
+import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
@@ -72,6 +77,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected abstract var fieldType: FieldType
 
     protected var inputConnection: InputRunnable? = null
+    protected var validator: MutableValidator = CompositeValidator()
 
     protected var vgsParent: InputFieldView? = null
 
@@ -218,7 +224,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected fun refreshInput() {
         val currentSelection = selectionStart
         setText(text)
-        val textLength = text?.length?:0
+        val textLength = text?.length ?: 0
 
         when {
             currentSelection > textLength -> setSelection(textLength)
@@ -376,6 +382,17 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     protected fun printWarning(tag: String, resId: Int) {
         VGSCollectLogger.warn(tag, context.getString(resId))
+    }
+
+    open fun applyValidationRule(rule: ValidationRule) {
+        validator.clearRules()
+        rule.length?.let {
+            validator.addRule(LengthValidator(it))
+        }
+
+        rule.regex?.let {
+            validator.addRule(RegexValidator(it))
+        }
     }
 }
 

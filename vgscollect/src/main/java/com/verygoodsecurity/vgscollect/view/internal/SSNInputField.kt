@@ -28,8 +28,6 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     private var outputDivider: String = DIVIDER
     private var derivedNumberMask = MASK
 
-    private val validator: MutableValidator = CompositeValidator()
-
     private var numberFormatter: Formatter? = null
 
     override fun applyFieldType() {

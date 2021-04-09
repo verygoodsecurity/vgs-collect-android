@@ -34,8 +34,7 @@ import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
-import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
-import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
@@ -745,26 +744,8 @@ abstract class InputFieldView @JvmOverloads constructor(
         return fieldType
     }
 
-    /**
-     * Sets type of current input field.
-     * Choosing the input type you configure the limitations for this type.
-     *
-     * @param type The type of current input field.
-     *
-     * @see FieldType
-     */
-    @Deprecated("deprecated from 1.0.5")
-    protected fun applyFieldType(type: FieldType) {
-        fieldType = type
-        if (::notifier.isInitialized.not()) {
-            inputField = InputField.getInputField(context, this@InputFieldView)
-            syncInputState()
-        }
-        (inputField as? InputField)?.setType(type)
-    }
-
     protected fun applyMaxLength(length: Int) {
-        (inputField as? InputField)?.filters = arrayOf(InputFilter.LengthFilter(length))
+        (inputField as? InfoInputField)?.filters = arrayOf(InputFilter.LengthFilter(length))
     }
 
     internal fun getFontFamily(): Typeface? {
@@ -847,6 +828,12 @@ abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? CardInputField)?.setCardBrand(c)
         }
     }
+    
+    protected fun setValidCardBrands(cardBrands: List<CardBrand>) {
+        if (fieldType == FieldType.CARD_NUMBER) {
+            (inputField as? CardInputField)?.setValidCardBrands(cardBrands)
+        }
+    }
 
     protected fun setNumberDivider(divider: String?) {
         if (fieldType == FieldType.CARD_NUMBER) {
@@ -886,12 +873,6 @@ abstract class InputFieldView @JvmOverloads constructor(
      * consult the Paint's properties and not to change them.
      */
     fun getPaint(): TextPaint? = inputField.paint
-
-    protected fun applyValidationRule(rule: PaymentCardNumberRule) {
-        if (fieldType == FieldType.CARD_NUMBER) {
-            (inputField as? CardInputField)?.applyValidationRule(rule)
-        }
-    }
 
     /**
      * Hook allowing a view to generate a representation of its internal state
@@ -1261,7 +1242,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     protected fun getInfoState(): FieldState.InfoState? {
-        return (inputField as? DateInputField)?.getState() as? FieldState.InfoState
+        return (inputField as? InfoInputField)?.getState() as? FieldState.InfoState
     }
 
     /**
@@ -1285,10 +1266,8 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     fun isValidationEnabled(): Boolean = inputField.enableValidation
 
-    protected fun applyValidationRule(rule: PersonNameRule) {
-        if (fieldType == FieldType.CARD_HOLDER_NAME) {
-            (inputField as? PersonNameInputField)?.applyValidationRule(rule)
-        }
+    protected fun applyValidationRule(rule: ValidationRule) {
+        inputField.applyValidationRule(rule)
     }
 
     override fun performClick(): Boolean {

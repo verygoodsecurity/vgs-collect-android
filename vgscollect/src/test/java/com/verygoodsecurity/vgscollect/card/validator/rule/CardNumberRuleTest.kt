@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.card.validator
+package com.verygoodsecurity.vgscollect.card.validator.rule
 
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
@@ -130,6 +130,17 @@ class CardNumberRuleTest {
             .build()
         assertEquals(null, rule.algorithm)
         assertArrayEquals(arrayOf(13), rule.length)
+    }
+
+    @Test
+    fun test_regex_min_max_rule() {
+        val rule = PaymentCardNumberRule.ValidationBuilder()
+            .setRegex("r")
+            .setAllowableMaxLength(19)
+            .setAllowableMinLength(12)
+            .build()
+        assertEquals("r", rule.regex)
+        assertArrayEquals((12..19).toList().toTypedArray(), rule.length)
     }
 
 }

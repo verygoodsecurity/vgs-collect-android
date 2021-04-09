@@ -369,6 +369,18 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
     }
 
     /**
+     * Set the outline box's stroke color state list.
+     *
+     * <p>Calling this method when not in outline box mode will do nothing.
+     *
+     * @param colorStateList the color state list to use for the box's stroke
+     * @see #getBoxStrokeColor()
+     */
+    open fun setBoxStrokeColorStateList(colorStateList: ColorStateList) {
+        fieldState.boxStrokeColorStateList = colorStateList
+    }
+
+    /**
      * Sets whether the floating label functionality is enabled or not in this layout.
      *
      * <p>If enabled, any non-empty hint in the child EditText will be moved into the floating hint,

@@ -1,4 +1,30 @@
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar" />
+
+    <style name="VGSCollect.Widget" parent="android:Widget" />
+
+    <style name="VGSCollect.Widget.TextInputLayout.OutlineBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundModes">outline</item>
+        <item name="boxCornerRadiusTopStart">4dp</item>
+        <item name="boxCornerRadiusTopEnd">4dp</item>
+        <item name="boxCornerRadiusBottomStart">4dp</item>
+        <item name="boxCornerRadiusBottomEnd">4dp</item>
+    </style>
+
+    <style name="VGSCollect.Widget.TextInputLayout.FilledBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+        <item name="boxBackgroundModes">filled</item>
+        <item name="android:paddingTop">8dp</item>
+    </style>
+
+    <style name="VGSCollect.Widget.TextInputEditText.OutlineBox" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <style name="VGSCollect.Widget.TextInputEditText.FilledBox" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">4dp</item>
     </style>
 </resources>

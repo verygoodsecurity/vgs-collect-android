@@ -1,50 +1,57 @@
 package com.verygoodsecurity.vgscollect.view.card.filter
 
 import androidx.annotation.VisibleForTesting
+import com.verygoodsecurity.vgscollect.util.extension.except
+import com.verygoodsecurity.vgscollect.util.extension.toCardBrands
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
+import com.verygoodsecurity.vgscollect.view.card.CardType
 import java.util.regex.Pattern
 
 /** @suppress */
-class CardBrandFilter(
-    private var divider:String? = ""
-) : MutableCardFilter {
+class CardBrandFilter(private var divider: String? = DEFAULT_DIVIDER) : MutableCardFilter {
 
-    private val userCustomCardBrands = mutableListOf<CardBrand>()
+    private val customCardBrands = mutableListOf<CardBrand>()
+    private val availableCardBrands: List<CardBrand> get() = customCardBrands + DEFAULT_BRANDS
+    private var validCardBrands: List<CardBrand>? = null
 
-
-    override fun add(item: CardBrand?) {
-        item?.let {
-            userCustomCardBrands.add(item)
-        }
+    override fun addCustomCardBrand(brand: CardBrand) {
+        customCardBrands.add(brand)
     }
 
-    override fun detect(str: String?): CardBrandPreview? {
-        if(str.isNullOrEmpty()) {
-            return CardBrandPreview()
-        }
-        val preparedStr = str.replace(divider?:" ", "")
+    override fun setValidCardBrands(cardBrands: List<CardBrand>) {
+        this.validCardBrands = cardBrands
+    }
 
-        for(i in userCustomCardBrands.indices) {
-            val value = userCustomCardBrands[i]
-            val m = Pattern.compile(value.regex).matcher(preparedStr)
-            while (m.find()) {
+    override fun detect(data: String?): CardBrandPreview {
+        if (data.isNullOrEmpty()) return CardBrandPreview()
+        val withoutDividerData = data.replace(divider ?: DEFAULT_DIVIDER, "")
+        (validCardBrands ?: availableCardBrands).forEach {
+            val matcher = Pattern.compile(it.regex).matcher(withoutDividerData)
+            while (matcher.find()) {
                 return CardBrandPreview(
-                    regex = value.regex,
-                    name = value.cardBrandName,
-                    resId = value.drawableResId,
-                    currentMask = value.params.mask,
-                    algorithm = value.params.algorithm,
-                    numberLength = value.params.rangeNumber,
-                    cvcLength =  value.params.rangeCVV,
-                    successfullyDetected = true)
+                    cardType = it.cardType,
+                    regex = it.regex,
+                    name = it.cardBrandName,
+                    resId = it.drawableResId,
+                    currentMask = it.params.mask,
+                    algorithm = it.params.algorithm,
+                    numberLength = it.params.rangeNumber,
+                    cvcLength = it.params.rangeCVV,
+                    successfullyDetected = true
+                )
             }
         }
-
-        return null
+        return CardBrandPreview()
     }
 
     @VisibleForTesting
-    fun setDivider(divider:String) {
+    fun setDivider(divider: String) {
         this.divider = divider
+    }
+
+    companion object {
+
+        private const val DEFAULT_DIVIDER = " "
+        private val DEFAULT_BRANDS = CardType.values().except(CardType.UNKNOWN).toCardBrands()
     }
 }
