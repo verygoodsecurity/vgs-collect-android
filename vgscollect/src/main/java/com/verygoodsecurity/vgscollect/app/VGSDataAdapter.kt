@@ -1,8 +1,24 @@
 package com.verygoodsecurity.vgscollect.app
 
-interface VGSDataAdapter {
+import com.verygoodsecurity.vgscollect.core.VGSCollect
+import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 
-    fun addListener(listener: VGSDataAdapterListener)
+private const val NFC_ADAPTER_CLASSNAME = "VGSNFCAdapter"
 
-    fun removeListener(listener: VGSDataAdapterListener)
+abstract class VGSDataAdapter {
+
+    internal var collect: VGSCollect? = null
+
+    protected fun setData(data: Map<String, Any?>) {
+        checkIsValidInheritance {
+            collect?.dispatchData(VGSHashMapWrapper(HashMap(data)))
+        }
+    }
+
+    private fun checkIsValidInheritance(action: () -> Unit) {
+        when (val name = this::class.java.simpleName) {
+            NFC_ADAPTER_CLASSNAME -> action.invoke()
+            else -> throw IllegalArgumentException("This class($name) should not inherit from VGSDataAdapter!")
+        }
+    }
 }

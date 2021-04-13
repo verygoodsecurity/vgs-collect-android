@@ -6,21 +6,17 @@ import kotlinx.android.parcel.RawValue
 
 /** @suppress */
 @Parcelize
-class VGSHashMapWrapper<K,V>(
+internal class VGSHashMapWrapper<K, V>(
     private val hashMap: @RawValue HashMap<K, V> = HashMap()
 ) : Parcelable {
 
-    internal fun put(key:K, value:V) {
+    internal fun put(key: K, value: V) {
         hashMap[key] = value
     }
 
-    internal fun get(key: K)= hashMap[key]
+    internal fun get(key: K) = hashMap[key]
 
     internal fun mapOf() = hashMap
 
-    internal fun isEmpty():Boolean = hashMap.isEmpty()
-
-    override fun toString(): String {
-        return "VGSHashMapWrapper[]"
-    }
+    internal fun isEmpty(): Boolean = hashMap.isEmpty()
 }

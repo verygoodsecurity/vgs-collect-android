@@ -11,7 +11,6 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.app.VGSDataAdapter
-import com.verygoodsecurity.vgscollect.app.VGSDataAdapterListener
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
@@ -773,28 +772,17 @@ class VGSCollect {
     //NEW API
     private val dataAdapters = mutableListOf<VGSDataAdapter>()
 
-    private val dataAdapterListener = object : VGSDataAdapterListener {
-
-        override fun onDataReceived(data: VGSHashMapWrapper<String, Any?>) {
-            dispatchData(data)
-        }
-
-        override fun onDataReceiveFailed(reason: String?) {
-            VGSCollectLogger.debug("VGSDataAdapter", "Data receive failed, reason = $reason")
-        }
-    }
-
     fun addDataAdapter(adapter: VGSDataAdapter) {
+        adapter.collect = this
         dataAdapters.add(adapter)
-        adapter.addListener(dataAdapterListener)
     }
 
     fun removeDataAdapter(adapter: VGSDataAdapter) {
+        adapter.collect = null
         dataAdapters.remove(adapter)
-        adapter.removeListener(dataAdapterListener)
     }
 
-    private fun dispatchData(data: VGSHashMapWrapper<String, Any?>?) {
+    internal fun dispatchData(data: VGSHashMapWrapper<String, Any?>?) {
         data?.run { externalDependencyDispatcher.dispatch(this.mapOf()) }
     }
 }

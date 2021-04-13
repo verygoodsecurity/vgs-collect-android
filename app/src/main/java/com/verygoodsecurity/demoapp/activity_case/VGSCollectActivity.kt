@@ -14,15 +14,15 @@ import androidx.core.content.ContextCompat
 import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.api.nfc.NFCAdapter
 import com.verygoodsecurity.api.nfc.VGSNFCAdapter
+import com.verygoodsecurity.api.nfc.VGSNFCAdapterListener
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
-import com.verygoodsecurity.vgscollect.app.VGSDataAdapterListener
+import com.verygoodsecurity.vgscollect.app.VGSDataAdapter
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
-import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
@@ -54,20 +54,9 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collect_demo)
-        nfcCardAdapter = VGSNFCAdapter(this)
+        nfcCardAdapter = VGSNFCAdapter(this, cardNumberField, cardExpDateField)
         retrieveSettings()
-
         vgsForm.addDataAdapter(nfcCardAdapter)
-        nfcCardAdapter.addListener(object : VGSDataAdapterListener {
-
-            override fun onDataReceived(data: VGSHashMapWrapper<String, Any?>) {
-                Log.d("Test", "onDataReceived, data = $data")
-            }
-
-            override fun onDataReceiveFailed(reason: String?) {
-                Log.d("Test", "onDataReceiveFailed, reason = $reason")
-            }
-        })
 
         submitBtn?.setOnClickListener(this)
         attachBtn?.setOnClickListener(this)

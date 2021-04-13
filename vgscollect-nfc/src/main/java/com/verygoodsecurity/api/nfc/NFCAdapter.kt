@@ -1,13 +1,15 @@
 package com.verygoodsecurity.api.nfc
 
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import com.verygoodsecurity.vgscollect.app.VGSDataAdapter
-import com.verygoodsecurity.vgscollect.app.VGSDataAdapterListener
-import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 
-abstract class NFCAdapter internal constructor() : VGSDataAdapter {
+abstract class NFCAdapter internal constructor() : VGSDataAdapter() {
 
-    private val listeners: MutableList<VGSDataAdapterListener> = mutableListOf()
+    private val mainThreadHandler = Handler(Looper.getMainLooper())
+
+    private val listeners: MutableList<VGSNFCAdapterListener> = mutableListOf()
 
     abstract fun startReading()
 
@@ -15,19 +17,19 @@ abstract class NFCAdapter internal constructor() : VGSDataAdapter {
 
     abstract fun handleNewIntent(intent: Intent?)
 
-    override fun addListener(listener: VGSDataAdapterListener) {
+    fun addListener(listener: VGSNFCAdapterListener) {
         listeners.add(listener)
     }
 
-    override fun removeListener(listener: VGSDataAdapterListener) {
+    fun removeListener(listener: VGSNFCAdapterListener) {
         listeners.remove(listener)
     }
 
-    protected fun notifyDataReceived(data: VGSHashMapWrapper<String, Any?>) {
-        listeners.forEach { it.onDataReceived(data) }
+    protected fun notifyReadingSuccess() {
+        mainThreadHandler.post { listeners.forEach { it.onReadingSuccess() } }
     }
 
-    protected fun notifyDataReceiveFailed(reason: String) {
-        listeners.forEach { it.onDataReceiveFailed(reason) }
+    protected fun notifyReadingFailed(reason: String) {
+        mainThreadHandler.post { listeners.forEach { it.onReadingFailed(reason) } }
     }
 }

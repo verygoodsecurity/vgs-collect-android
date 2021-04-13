@@ -10,7 +10,7 @@ internal class ReadTagRunnable(
 
     override fun run() {
         // TODO: Implement reading tag logic here(or in separate class)
-        listener.onSuccess(Card("41", "12/12"))
+        listener.onSuccess(Card("8567123456329012", "10/22"))
     }
 
     interface ResultListener {
