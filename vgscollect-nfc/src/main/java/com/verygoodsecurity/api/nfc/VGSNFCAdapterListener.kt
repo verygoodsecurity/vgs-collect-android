@@ -1,8 +1,8 @@
 package com.verygoodsecurity.api.nfc
 
-interface VGSNFCAdapterListener {
+abstract class VGSNFCAdapterListener {
 
-    fun onReadingSuccess()
+    open fun onReadingSuccess() {}
 
-    fun onReadingFailed(reason: String? = null)
+    open fun onReadingFailed(reason: String? = null) {}
 }
