@@ -12,13 +12,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.api.cardio.ScanActivity
-import com.verygoodsecurity.api.nfc.NFCAdapter
 import com.verygoodsecurity.api.nfc.VGSNFCAdapter
-import com.verygoodsecurity.api.nfc.VGSNFCAdapterListener
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
-import com.verygoodsecurity.vgscollect.app.VGSDataAdapter
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -49,7 +46,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     private lateinit var vgsForm: VGSCollect
 
-    private lateinit var nfcCardAdapter: NFCAdapter
+    private lateinit var nfcCardAdapter: VGSNFCAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
