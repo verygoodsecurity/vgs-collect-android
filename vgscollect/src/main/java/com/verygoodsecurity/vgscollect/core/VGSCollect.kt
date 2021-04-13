@@ -11,6 +11,7 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.app.VGSDataAdapter
+import com.verygoodsecurity.vgscollect.app.VGSDataAdapterListener
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
@@ -237,6 +238,7 @@ class VGSCollect {
         client.cancelAll()
         responseListeners.clear()
         storage.clear()
+        dataAdapters.forEach { removeDataAdapter(it) }
     }
 
     /**
@@ -771,22 +773,28 @@ class VGSCollect {
     //NEW API
     private val dataAdapters = mutableListOf<VGSDataAdapter>()
 
-    fun addDataAdapter(adapter: VGSDataAdapter) {
-        adapter.vgsCollect = this
-        dataAdapters.add(adapter)
-    }
+    private val dataAdapterListener = object : VGSDataAdapterListener {
 
-    fun onCreate() {
-        dataAdapters.forEach { it.initialize() }
-    }
-
-    fun onNewIntent(i: Intent?) {
-        dataAdapters.forEach { it.navigateUpTo(i) }
-    }
-
-    internal fun dispatchData(storage: VGSHashMapWrapper<String, Any?>?) {
-        storage?.run {
-            externalDependencyDispatcher.dispatch(this.mapOf())
+        override fun onDataReceived(data: VGSHashMapWrapper<String, Any?>) {
+            dispatchData(data)
         }
+
+        override fun onDataReceiveFailed(reason: String?) {
+            VGSCollectLogger.debug("VGSDataAdapter", "Data receive failed, reason = $reason")
+        }
+    }
+
+    fun addDataAdapter(adapter: VGSDataAdapter) {
+        dataAdapters.add(adapter)
+        adapter.addListener(dataAdapterListener)
+    }
+
+    fun removeDataAdapter(adapter: VGSDataAdapter) {
+        dataAdapters.remove(adapter)
+        adapter.removeListener(dataAdapterListener)
+    }
+
+    private fun dispatchData(data: VGSHashMapWrapper<String, Any?>?) {
+        data?.run { externalDependencyDispatcher.dispatch(this.mapOf()) }
     }
 }

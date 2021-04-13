@@ -12,14 +12,17 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.api.cardio.ScanActivity
-import com.verygoodsecurity.api.nfc.VGSCardNFCAdapter
+import com.verygoodsecurity.api.nfc.NFCAdapter
+import com.verygoodsecurity.api.nfc.VGSNFCAdapter
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
+import com.verygoodsecurity.vgscollect.app.VGSDataAdapterListener
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
@@ -46,17 +49,25 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     private lateinit var vgsForm: VGSCollect
 
-    private val nfcCardAdapter: VGSCardNFCAdapter = VGSCardNFCAdapter.create(this)
+    private lateinit var nfcCardAdapter: NFCAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collect_demo)
-
+        nfcCardAdapter = VGSNFCAdapter(this)
         retrieveSettings()
 
         vgsForm.addDataAdapter(nfcCardAdapter)
+        nfcCardAdapter.addListener(object : VGSDataAdapterListener {
 
-        vgsForm.onCreate()
+            override fun onDataReceived(data: VGSHashMapWrapper<String, Any?>) {
+                Log.d("Test", "onDataReceived, data = $data")
+            }
+
+            override fun onDataReceiveFailed(reason: String?) {
+                Log.d("Test", "onDataReceiveFailed, reason = $reason")
+            }
+        })
 
         submitBtn?.setOnClickListener(this)
         attachBtn?.setOnClickListener(this)
@@ -76,13 +87,15 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        vgsForm.onNewIntent(intent)
+        nfcCardAdapter.handleNewIntent(intent)
     }
 
     fun scanCard(v: View) {
-        nfcCardAdapter.stopScanning()
+        nfcCardAdapter.startReading()
+    }
 
-        nfcCardAdapter.startScanning()
+    fun cancelCardScan(v: View) {
+        nfcCardAdapter.stopReading()
     }
 
     private fun setupCardExpDateField() {
@@ -371,8 +384,8 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.submitBtn -> submitData()
-            R.id.attachBtn -> attachFile()
+            R.id.submitBtn -> scanCard(v)
+            R.id.attachBtn -> cancelCardScan(v)
         }
     }
 
