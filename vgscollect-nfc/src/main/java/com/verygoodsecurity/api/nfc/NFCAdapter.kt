@@ -11,11 +11,11 @@ abstract class NFCAdapter internal constructor() : VGSDataAdapter() {
 
     private val listeners: MutableList<VGSNFCAdapterListener> = mutableListOf()
 
-    abstract fun startReading()
+    abstract fun enableForegroundDispatch()
 
-    abstract fun stopReading()
+    abstract fun disableForegroundDispatch()
 
-    abstract fun handleNewIntent(intent: Intent?)
+    abstract fun onNewIntent(intent: Intent?)
 
     fun addListener(listener: VGSNFCAdapterListener) {
         listeners.add(listener)

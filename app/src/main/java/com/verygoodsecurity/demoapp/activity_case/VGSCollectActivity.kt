@@ -73,15 +73,15 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        nfcCardAdapter.handleNewIntent(intent)
+        nfcCardAdapter.onNewIntent(intent)
     }
 
     fun scanCard(v: View) {
-        nfcCardAdapter.startReading()
+        nfcCardAdapter.enableForegroundDispatch()
     }
 
     fun cancelCardScan(v: View) {
-        nfcCardAdapter.stopReading()
+        nfcCardAdapter.disableForegroundDispatch()
     }
 
     private fun setupCardExpDateField() {

@@ -27,17 +27,17 @@ class VGSNFCAdapter(
     private var readTask: Future<*>? = null
     private val readTaskExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 
-    override fun startReading() {
+    override fun enableForegroundDispatch() {
         nfcAdapter?.enableForegroundDispatch(activity, nfcAdapterIntent, INTENT_FILTER, TECH_LIST)
             ?: notifyReadingFailed("NFC Adapter is not initialized because device is does not support NFC or it disabled")
     }
 
-    override fun stopReading() {
+    override fun disableForegroundDispatch() {
         readTask?.cancel(true)
         nfcAdapter?.disableForegroundDispatch(activity)
     }
 
-    override fun handleNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent?) {
         (intent?.getParcelableExtra(NfcAdapter.EXTRA_TAG) as? Tag)?.let {
             readTask?.cancel(true)
             readTask = readTaskExecutor.submit(
