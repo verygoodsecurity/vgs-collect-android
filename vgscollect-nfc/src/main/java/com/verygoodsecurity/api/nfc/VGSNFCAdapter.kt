@@ -10,15 +10,16 @@ import android.nfc.tech.IsoDep
 import android.nfc.tech.NfcA
 import com.verygoodsecurity.api.nfc.core.ReadTagRunnable
 import com.verygoodsecurity.api.nfc.core.model.Card
-import com.verygoodsecurity.vgscollect.view.InputFieldView
-import com.verygoodsecurity.vgscollect.view.card.FieldType
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
+/**
+ * Provides ability to read NFC tags data into VGS views.
+ */
 class VGSNFCAdapter(
     private val activity: Activity,
-    private vararg val fields: InputFieldView
+    private val dataMapper: VGSNFCDataMapper
 ) : NFCAdapter() {
 
     private var nfcAdapter: NfcAdapter? = NfcAdapter.getDefaultAdapter(activity)
@@ -27,16 +28,28 @@ class VGSNFCAdapter(
     private var readTask: Future<*>? = null
     private val readTaskExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 
+    /**
+     * Enable NFC tags scanning.
+     * This function should be called only the activity is in the foreground (resumed) state.
+     * Also, disableForegroundDispatch must be called before the completion of [Activity.onPause]
+     */
     override fun enableForegroundDispatch() {
         nfcAdapter?.enableForegroundDispatch(activity, nfcAdapterIntent, INTENT_FILTER, TECH_LIST)
             ?: notifyReadingFailed("NFC Adapter is not initialized because device is does not support NFC or it disabled")
     }
 
+    /**
+     * Disable NFC tags scanning.
+     * Must be called before the completion of [Activity.onPause]
+     */
     override fun disableForegroundDispatch() {
         readTask?.cancel(true)
         nfcAdapter?.disableForegroundDispatch(activity)
     }
 
+    /**
+     * Must call this function inside [Activity.onNewIntent] to be able to read tag data.
+     */
     override fun onNewIntent(intent: Intent?) {
         (intent?.getParcelableExtra(NfcAdapter.EXTRA_TAG) as? Tag)?.let {
             readTask?.cancel(true)
@@ -44,7 +57,7 @@ class VGSNFCAdapter(
                 ReadTagRunnable(it, object : ReadTagRunnable.ResultListener {
 
                     override fun onSuccess(card: Card) {
-                        setData(mapCardToFields(card))
+                        setData(dataMapper.map(card))
                         notifyReadingSuccess()
                     }
 
@@ -59,20 +72,6 @@ class VGSNFCAdapter(
     private fun createAdapterPendingIntent(): PendingIntent {
         val intent = Intent(activity, activity.javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         return PendingIntent.getActivity(activity, 0, intent, 0)
-    }
-
-    private fun mapCardToFields(card: Card): Map<String, Any?> {
-        val data = mutableMapOf<String, Any?>()
-        fields.forEach {
-            it.getFieldName()?.let { fieldName ->
-                when (it.getFieldType()) {
-                    FieldType.CARD_NUMBER -> data[fieldName] = card.number
-                    FieldType.CARD_EXPIRATION_DATE -> data[fieldName] = card.date
-                    else -> TODO("Not implemented yet!")
-                }
-            }
-        }
-        return data
     }
 
     companion object {

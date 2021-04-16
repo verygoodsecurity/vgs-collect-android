@@ -3,6 +3,7 @@ package com.verygoodsecurity.api.nfc
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import androidx.annotation.MainThread
 import com.verygoodsecurity.vgscollect.app.VGSDataAdapter
 
 abstract class NFCAdapter internal constructor() : VGSDataAdapter() {
@@ -11,8 +12,10 @@ abstract class NFCAdapter internal constructor() : VGSDataAdapter() {
 
     private val listeners: MutableList<VGSNFCAdapterListener> = mutableListOf()
 
+    @MainThread
     abstract fun enableForegroundDispatch()
 
+    @MainThread
     abstract fun disableForegroundDispatch()
 
     abstract fun onNewIntent(intent: Intent?)
