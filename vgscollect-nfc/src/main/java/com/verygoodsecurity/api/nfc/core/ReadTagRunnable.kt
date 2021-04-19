@@ -24,7 +24,7 @@ internal class ReadTagRunnable(
 
         provider.transceive(command)
             .takeIf {
-                !it.isSucceed()
+                it.isSucceed()
             }?.run {
                 cardAdapter.getCard(this)
             }?.let {
