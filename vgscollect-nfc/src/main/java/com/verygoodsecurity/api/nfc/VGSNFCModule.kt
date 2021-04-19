@@ -8,8 +8,12 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.IsoDep
 import android.nfc.tech.NfcA
-import com.verygoodsecurity.api.nfc.core.PaymentAsyncTask
-import com.verygoodsecurity.vgscollect.view.card.FieldType
+import android.util.Log
+import com.verygoodsecurity.api.nfc.core.ReadTagRunnable
+import com.verygoodsecurity.api.nfc.core.model.Card
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
 
 class VGSNFCModule(
     private val activity: Activity
@@ -44,18 +48,21 @@ class VGSNFCModule(
         nfcAdapter.disableForegroundDispatch(activity)
     }
 
+    private var readTask: Future<*>? = null
+    private val readTaskExecutor: ExecutorService = Executors.newSingleThreadExecutor()
     override fun navigateUpTo(i: Intent?) {
-        val tag: Tag? = i?.getParcelableExtra(NfcAdapter.EXTRA_TAG)
-        if (nfcAdapter.isEnabled && tag != null) {
-            PaymentAsyncTask(tag).execute().also { card ->
-                fields.forEach {
-                    when (it.value) {
-                        FieldType.CARD_NUMBER -> mapData(it.key, card.number)
-                        FieldType.CARD_EXPIRATION_DATE -> mapData(it.key, card.date)
+        (i?.getParcelableExtra(NfcAdapter.EXTRA_TAG) as? Tag)?.let {
+            readTask?.cancel(true)
+            readTask = readTaskExecutor.submit(
+                ReadTagRunnable(it, object : ReadTagRunnable.ResultListener {
+                    override fun onSuccess(card: Card) {
+                        Log.e("test", "onSuccess")
                     }
-                }
-                send()
-            }
+                    override fun onFailure(error: String) {
+                        Log.e("test", "onFailure")
+                    }
+                })
+            )
         }
     }
 }
