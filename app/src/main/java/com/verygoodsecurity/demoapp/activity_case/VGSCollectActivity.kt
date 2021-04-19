@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.api.nfc.VGSNFCAdapter
-import com.verygoodsecurity.api.nfc.VGSNFCDataMapper
+import com.verygoodsecurity.vgscollect.app.mapper.VGSDataMapper
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
@@ -54,7 +54,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         setContentView(R.layout.activity_collect_demo)
         nfcCardAdapter = VGSNFCAdapter(
             this,
-            VGSNFCDataMapper.Builder()
+            VGSDataMapper.Builder()
                 .setCardNumber(cardNumberField.getFieldName())
                 .setExpirationDate(cardExpDateField.getFieldName())
                 .build()

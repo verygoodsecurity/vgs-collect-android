@@ -10,6 +10,8 @@ import android.nfc.tech.IsoDep
 import android.nfc.tech.NfcA
 import com.verygoodsecurity.api.nfc.core.ReadTagRunnable
 import com.verygoodsecurity.api.nfc.core.model.Card
+import com.verygoodsecurity.api.nfc.utils.extensions.toVGSCard
+import com.verygoodsecurity.vgscollect.app.mapper.VGSDataMapper
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
@@ -19,7 +21,7 @@ import java.util.concurrent.Future
  */
 class VGSNFCAdapter(
     private val activity: Activity,
-    private val dataMapper: VGSNFCDataMapper
+    private val dataMapper: VGSDataMapper
 ) : NFCAdapter() {
 
     private var nfcAdapter: NfcAdapter? = NfcAdapter.getDefaultAdapter(activity)
@@ -57,7 +59,7 @@ class VGSNFCAdapter(
                 ReadTagRunnable(it, object : ReadTagRunnable.ResultListener {
 
                     override fun onSuccess(card: Card) {
-                        setData(dataMapper.map(card))
+                        setData(dataMapper.map(card.toVGSCard()))
                         notifyReadingSuccess()
                     }
 
