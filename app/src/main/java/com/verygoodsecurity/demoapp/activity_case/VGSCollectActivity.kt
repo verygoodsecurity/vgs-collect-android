@@ -12,10 +12,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.api.cardio.ScanActivity
-import com.verygoodsecurity.api.nfc.VGSCardNFCAdapter
+import com.verygoodsecurity.api.nfc.VGSNFCAdapter
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
+import com.verygoodsecurity.vgscollect.app.mapper.VGSDataMapper
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -46,7 +47,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     private lateinit var vgsForm: VGSCollect
 
-    private val nfcCardAdapter: VGSCardNFCAdapter = VGSCardNFCAdapter.create(this)
+    private lateinit var nfcCardAdapter: VGSNFCAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,9 +55,8 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
         retrieveSettings()
 
+        nfcCardAdapter = VGSNFCAdapter(this, VGSDataMapper.Builder().build())
         vgsForm.addDataAdapter(nfcCardAdapter)
-
-        vgsForm.onCreate()
 
         submitBtn?.setOnClickListener(this)
         attachBtn?.setOnClickListener(this)
@@ -76,17 +76,17 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        vgsForm.onNewIntent(intent)
+        nfcCardAdapter.onNewIntent(intent)
     }
 
     override fun onResume() {
         super.onResume()
-        nfcCardAdapter.startScanning()
+        nfcCardAdapter.enableForegroundDispatch()
     }
 
     override fun onPause() {
         super.onPause()
-        nfcCardAdapter.stopScanning()
+        nfcCardAdapter.disableForegroundDispatch()
     }
 
     fun scanCard(v: View) {
