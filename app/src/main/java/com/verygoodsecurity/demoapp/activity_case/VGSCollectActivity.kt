@@ -12,8 +12,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.api.cardio.ScanActivity
-import com.verygoodsecurity.api.nfc.VGSNFCAdapter
-import com.verygoodsecurity.vgscollect.app.mapper.VGSDataMapper
+import com.verygoodsecurity.api.nfc.VGSCardNFCAdapter
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
@@ -47,20 +46,17 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     private lateinit var vgsForm: VGSCollect
 
-    private lateinit var nfcCardAdapter: VGSNFCAdapter
+    private val nfcCardAdapter: VGSCardNFCAdapter = VGSCardNFCAdapter.create(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collect_demo)
-        nfcCardAdapter = VGSNFCAdapter(
-            this,
-            VGSDataMapper.Builder()
-                .setCardNumber(cardNumberField.getFieldName())
-                .setExpirationDate(cardExpDateField.getFieldName())
-                .build()
-        )
+
         retrieveSettings()
+
         vgsForm.addDataAdapter(nfcCardAdapter)
+
+        vgsForm.onCreate()
 
         submitBtn?.setOnClickListener(this)
         attachBtn?.setOnClickListener(this)
@@ -80,15 +76,21 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        nfcCardAdapter.onNewIntent(intent)
+        vgsForm.onNewIntent(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        nfcCardAdapter.startScanning()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        nfcCardAdapter.stopScanning()
     }
 
     fun scanCard(v: View) {
-        nfcCardAdapter.enableForegroundDispatch()
-    }
 
-    fun cancelCardScan(v: View) {
-        nfcCardAdapter.disableForegroundDispatch()
     }
 
     private fun setupCardExpDateField() {
@@ -377,8 +379,8 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.submitBtn -> scanCard(v)
-            R.id.attachBtn -> cancelCardScan(v)
+            R.id.submitBtn -> submitData()
+            R.id.attachBtn -> attachFile()
         }
     }
 
