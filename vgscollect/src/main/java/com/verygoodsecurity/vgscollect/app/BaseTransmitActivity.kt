@@ -49,6 +49,14 @@ abstract class BaseTransmitActivity:AppCompatActivity() {
         }
     }
 
+    /**
+     * Associates the specified values with the specified keys in the HashMap.
+     * Is used for storing data that need to be sent as a result.
+     */
+    protected fun mapData(data: Map<String, Any?>) {
+        data.forEach { (key, value) -> mapData(key, value) }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

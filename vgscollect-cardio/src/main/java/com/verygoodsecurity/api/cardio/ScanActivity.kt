@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
+import com.verygoodsecurity.vgscollect.app.mapper.VGSCard
+import com.verygoodsecurity.vgscollect.app.mapper.VGSDataMapper
 import io.card.payment.CardIOActivity
 import io.card.payment.CreditCard
 import java.text.SimpleDateFormat
@@ -12,6 +14,7 @@ import kotlin.collections.HashMap
 
 class ScanActivity: BaseTransmitActivity() {
 
+    private var dataMapper: VGSDataMapper? = null
     private lateinit var settings:Map<String, Int>
     private var requirePostalCode:Boolean = false
     private var suppressConfirmation:Boolean = true
@@ -30,6 +33,7 @@ class ScanActivity: BaseTransmitActivity() {
 
     private fun saveSettings() {
         intent.extras?.let {
+            dataMapper = it.getParcelable(SCAN_CONFIGURATION) as? VGSDataMapper
             settings = it.getSerializable(SCAN_CONFIGURATION)?.run {
                 this as HashMap<String, Int>
             }?:HashMap()
@@ -80,17 +84,26 @@ class ScanActivity: BaseTransmitActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        configureInternalSettings(resultCode,data)
-        if(requestCode == CARD_IO_REQUEST_CODE) {
+        configureInternalSettings(resultCode, data)
+        if (requestCode == CARD_IO_REQUEST_CODE) {
             val scanResult: CreditCard? = data?.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT)
             scanResult?.run {
-                settings.forEach {
-                    when(it.value) {
-                        CARD_NUMBER -> mapData(it.key, scanResult.cardNumber)
-                        CARD_CVC -> mapData(it.key, scanResult.cvv)
-                        CARD_HOLDER -> mapData(it.key, scanResult.cardholderName)
-                        CARD_EXP_DATE -> mapData(it.key, retrieveDate(scanResult))
-                        POSTAL_CODE -> mapData(it.key, scanResult.postalCode)
+                val expirationDate = retrieveDate(this)
+                if (dataMapper != null) {
+                    mapData(
+                        dataMapper!!.map(
+                            VGSCard(cardNumber, cardholderName, expirationDate, cvv, postalCode)
+                        )
+                    )
+                } else {
+                    settings.forEach {
+                        when (it.value) {
+                            CARD_NUMBER -> mapData(it.key, cardNumber)
+                            CARD_CVC -> mapData(it.key, cvv)
+                            CARD_HOLDER -> mapData(it.key, cardholderName)
+                            CARD_EXP_DATE -> mapData(it.key, expirationDate)
+                            POSTAL_CODE -> mapData(it.key, postalCode)
+                        }
                     }
                 }
             }

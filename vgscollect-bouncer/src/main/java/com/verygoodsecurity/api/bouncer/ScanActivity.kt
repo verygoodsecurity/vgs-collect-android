@@ -10,6 +10,8 @@ import com.getbouncer.cardscan.ui.CardScanActivityResultHandler
 import com.getbouncer.scan.framework.exception.InvalidBouncerApiKeyException
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
+import com.verygoodsecurity.vgscollect.app.mapper.VGSCard
+import com.verygoodsecurity.vgscollect.app.mapper.VGSDataMapper
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,6 +19,7 @@ class ScanActivity : BaseTransmitActivity(), CardScanActivityResultHandler {
 
     private lateinit var key: String
 
+    private var dataMapper: VGSDataMapper? = null
     private lateinit var settings: Map<String, Int>
 
     private var enableEnterCardManually = false
@@ -48,6 +51,7 @@ class ScanActivity : BaseTransmitActivity(), CardScanActivityResultHandler {
 
     private fun saveSettings() {
         intent.extras?.let {
+            dataMapper = it.getParcelable(SCAN_CONFIGURATION) as? VGSDataMapper
             settings = it.getSerializable(SCAN_CONFIGURATION)?.run {
                 this as HashMap<String, Int>
             } ?: HashMap()
@@ -98,16 +102,26 @@ class ScanActivity : BaseTransmitActivity(), CardScanActivityResultHandler {
     }
 
     override fun cardScanned(scanId: String?, scanResult: CardScanActivityResult) {
-        settings.forEach {
-            when (it.value) {
-                CARD_NUMBER -> mapData(it.key, scanResult.pan)
-                CARD_CVC -> mapData(it.key, scanResult.cvc)
-                CARD_HOLDER -> mapData(it.key, scanResult.cardholderName)
-                CARD_EXP_DATE -> mapData(it.key, retrieveDate(scanResult))
+        with(scanResult) {
+            val expirationData = retrieveDate(this)
+            if (dataMapper != null) {
+                mapData(
+                    dataMapper!!.map(
+                        VGSCard(pan, cardholderName, expirationData, cvc, null)
+                    )
+                )
+            } else {
+                settings.forEach {
+                    when (it.value) {
+                        CARD_NUMBER -> mapData(it.key, pan)
+                        CARD_CVC -> mapData(it.key, cvc)
+                        CARD_HOLDER -> mapData(it.key, cardholderName)
+                        CARD_EXP_DATE -> mapData(it.key, expirationData)
+                    }
+                }
             }
+            addAnalyticInfo(scanId, Status.SUCCESS)
         }
-
-        addAnalyticInfo(scanId, Status.SUCCESS)
     }
 
     private fun retrieveDate(scanResult: CardScanActivityResult): Long? {

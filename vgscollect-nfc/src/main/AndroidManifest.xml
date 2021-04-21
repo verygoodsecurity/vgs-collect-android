@@ -2,4 +2,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.verygoodsecurity.api.nfc">
 
+    <uses-permission android:name="android.permission.NFC"/>
 </manifest>
