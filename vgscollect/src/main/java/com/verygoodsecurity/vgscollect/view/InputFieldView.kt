@@ -1266,6 +1266,11 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     fun isValidationEnabled(): Boolean = inputField.enableValidation
 
+    /**
+     * Returns true if view content same, false otherwise.
+     */
+    fun isContentEquals(view: InputFieldView): Boolean = inputField.isContentEquals(view.inputField)
+
     protected fun applyValidationRule(rule: ValidationRule) {
         inputField.applyValidationRule(rule)
     }
