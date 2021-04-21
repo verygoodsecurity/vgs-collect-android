@@ -395,7 +395,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    fun  isContentEquals(inputField: BaseInputField): Boolean {
+    fun isContentEquals(inputField: BaseInputField): Boolean {
         val thisContent = inputConnection?.getOutput()?.content
         val thisData = thisContent?.rawData ?: thisContent?.data
         val otherContent = inputField.inputConnection?.getOutput()?.content
