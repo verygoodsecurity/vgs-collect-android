@@ -9,6 +9,13 @@ fun <K, V> Map<K, V>.toJSON(): JSONObject = try {
     JSONObject()
 }
 
+internal fun <K, V> MutableMap<K, V>.putIfNotNull(key: K?, value: V?): V? {
+    if (key != null && value != null) {
+        return put(key, value)
+    }
+    return null
+}
+
 internal fun <K, V> MutableMap<K, V>.putIfAbsentCompat(key: K?, value: V): V? {
     return key?.let {
         if (get(key) == null) {

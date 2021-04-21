@@ -237,6 +237,7 @@ class VGSCollect {
         client.cancelAll()
         responseListeners.clear()
         storage.clear()
+        dataAdapters.forEach { removeDataAdapter(it) }
     }
 
     /**
@@ -772,21 +773,16 @@ class VGSCollect {
     private val dataAdapters = mutableListOf<VGSDataAdapter>()
 
     fun addDataAdapter(adapter: VGSDataAdapter) {
-        adapter.vgsCollect = this
+        adapter.collect = this
         dataAdapters.add(adapter)
     }
 
-    fun onCreate() {
-        dataAdapters.forEach { it.initialize() }
+    fun removeDataAdapter(adapter: VGSDataAdapter) {
+        adapter.collect = null
+        dataAdapters.remove(adapter)
     }
 
-    fun onNewIntent(i: Intent?) {
-        dataAdapters.forEach { it.navigateUpTo(i) }
-    }
-
-    internal fun dispatchData(storage: VGSHashMapWrapper<String, Any?>?) {
-        storage?.run {
-            externalDependencyDispatcher.dispatch(this.mapOf())
-        }
+    internal fun dispatchData(data: VGSHashMapWrapper<String, Any?>?) {
+        data?.run { externalDependencyDispatcher.dispatch(this.mapOf()) }
     }
 }
