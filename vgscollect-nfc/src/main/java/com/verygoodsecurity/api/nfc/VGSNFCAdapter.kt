@@ -8,6 +8,7 @@ import android.nfc.NfcAdapter
 import android.nfc.Tag
 import android.nfc.tech.IsoDep
 import android.nfc.tech.NfcA
+import android.util.Log
 import com.verygoodsecurity.api.nfc.core.ReadTagRunnable
 import com.verygoodsecurity.api.nfc.core.model.Card
 import com.verygoodsecurity.api.nfc.utils.extensions.toVGSCard
@@ -59,11 +60,13 @@ class VGSNFCAdapter(
                 ReadTagRunnable(it, object : ReadTagRunnable.ResultListener {
 
                     override fun onSuccess(card: Card) {
+                        Log.e("test", "onSuccess $card")
                         setData(dataMapper.map(card.toVGSCard()))
                         notifyReadingSuccess()
                     }
 
                     override fun onFailure(error: String) {
+                        Log.e("test", "onFailure $error")
                         notifyReadingFailed(error)
                     }
                 })

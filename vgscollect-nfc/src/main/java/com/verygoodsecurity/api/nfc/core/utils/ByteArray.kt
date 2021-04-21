@@ -6,15 +6,17 @@ import com.verygoodsecurity.api.nfc.core.content.isConstructed
 import com.verygoodsecurity.api.nfc.core.model.TLV
 import java.util.*
 
-fun ByteArray?.isSucceed(): Boolean {
+fun ByteArray?.isSuccessful(): Boolean {
     return this?.toTrailerADPU()?.run {
         this === TrailerADPU.SW_9000
     } ?: false
 }
 
-fun ByteArray?.compareADPU(adpu: TrailerADPU): Boolean {
+fun ByteArray?.isNotSuccessful(): Boolean = !this.isSuccessful()
+
+fun ByteArray?.compareADPU(trailer: TrailerADPU): Boolean {
     return this?.toTrailerADPU()?.run {
-        this === adpu
+        this === trailer
     } ?: false
 }
 
@@ -31,35 +33,6 @@ fun ByteArray.toTrailerADPU(): TrailerADPU? {
     } else null
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 fun ByteArray.byteArrayToInt(): Int {
     return if (size in 1..4) {
         var value = 0
@@ -73,55 +46,37 @@ fun ByteArray.byteArrayToInt(): Int {
 }
 
 fun ByteArray.getEMV(): EMV {
-    var testEMV:EMV = EMV.UNKNOWN
-    EMV.values().forEach {
-        val a = it.id.toHexByteArray()
-        if(a.contentEquals(this)) {
-            testEMV =  it
-        }
-    }
-
-    return testEMV
-}
-
-fun ByteArray.getTLVValue(vararg emv: EMV): ByteArray? {
-    var ret: ByteArray? = null
-    val stream = inputStream()
-    while (stream.available() > 0) {
-        val tlv: TLV = stream.getNextTLV()
-
-        if (emv.contains(tlv.tag)) {
-            ret = tlv.valueBytes
-        } else if(tlv.tag.isConstructed()) {
-            ret = tlv.valueBytes.getTLVValue(*emv)
-        }
-    }
-
-    return ret
+    return EMV.values().find {
+        val idBytes = it.id.toHexByteArray()
+        idBytes.contentEquals(this)
+    } ?: EMV.UNKNOWN
 }
 
 fun ByteArray.getAids(): List<ByteArray> {
-    val ret: MutableList<ByteArray> = ArrayList()
-    val listTlv: MutableList<TLV> = getListTLV(EMV.AID_CARD, EMV.KERNEL_IDENTIFIER)
-
-    listTlv.forEach {
-        if (it.tag === EMV.KERNEL_IDENTIFIER && ret.size != 0) {
-            when {
-                ret.isEmpty() -> ret.add(it.valueBytes)
-                it.valueBytes.isEmpty() -> { }
-                else -> {
-                    val joinedArray = ByteArray(ret.size + it.valueBytes.size)
-                    System.arraycopy(ret, 0, joinedArray, 0, ret.size)
-                    System.arraycopy(it.valueBytes, 0, joinedArray, ret.size, it.valueBytes.size)
-                    ret.add(joinedArray)
+    return with(mutableListOf<ByteArray>()) {
+        getListTLV(EMV.AID_CARD, EMV.KERNEL_IDENTIFIER).forEach {
+            if (it.tag === EMV.KERNEL_IDENTIFIER && this@with.size != 0) {
+                when {
+                    this@with.isEmpty() -> this@with.add(it.valueBytes)
+                    it.valueBytes.isEmpty() -> {
+                    }
+                    else -> {
+                        val joinedArray = ByteArray(this@with.size + it.valueBytes.size)
+                        System.arraycopy(
+                            this@with, 0, joinedArray, 0, this@with.size
+                        )
+                        System.arraycopy(
+                            it.valueBytes, 0, joinedArray, this@with.size, it.valueBytes.size
+                        )
+                        this@with.add(joinedArray)
+                    }
                 }
+            } else {
+                this@with.add(it.valueBytes)
             }
-        } else {
-            ret.add(it.valueBytes)
         }
+        this
     }
-
-    return ret
 }
 
 fun ByteArray.getListTLV(vararg emv: EMV): MutableList<TLV> {
@@ -133,7 +88,7 @@ fun ByteArray.getListTLV(vararg emv: EMV): MutableList<TLV> {
 
         if (emv.contains(tlv.tag)) {
             list.add(tlv)
-        } else if(tlv.tag.isConstructed()) {
+        } else if (tlv.tag.isConstructed()) {
             val l = tlv.valueBytes.getListTLV(*emv)
             list.addAll(l)
         }
@@ -141,4 +96,21 @@ fun ByteArray.getListTLV(vararg emv: EMV): MutableList<TLV> {
 
     return list
 }
+
+fun ByteArray.getTLVValue(vararg emv: EMV): ByteArray? {
+    var ret: ByteArray? = null
+    val stream = inputStream()
+    while (stream.available() > 0) {
+        val tlv: TLV = stream.getNextTLV()
+
+        if (emv.contains(tlv.tag)) {
+            ret = tlv.valueBytes
+        } else if (tlv.tag.isConstructed()) {
+            ret = tlv.valueBytes.getTLVValue(*emv)
+        }
+    }
+
+    return ret
+}
+
 

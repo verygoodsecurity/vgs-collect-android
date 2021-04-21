@@ -1,11 +1,9 @@
 package com.verygoodsecurity.api.nfc.core
 
 import android.nfc.Tag
-import android.util.Log
 import com.verygoodsecurity.api.nfc.core.content.*
 import com.verygoodsecurity.api.nfc.core.model.Card
 import com.verygoodsecurity.api.nfc.core.utils.*
-import java.util.*
 
 internal class ReadTagRunnable(
     @Suppress("unused") private val tag: Tag,
@@ -13,59 +11,55 @@ internal class ReadTagRunnable(
 ) : Runnable {
 
     private val provider = IsoDepProvider(tag)
-    private val cardAdapter = CardAdapter()
-
 
     override fun run() {
         provider.connect()
 
-        val command = CommandAPDU(CommandEnum.SELECT, PPSE).toBytes()
-
-        provider.transceive(command)
-            .takeIf {
-                it.isSucceed()
-            }?.apply {
-                getTLVValue(EMV.SFI)
-            }?.run {
-                // Check SFI
-                val sfi = byteArrayToInt()
-
-                val parseFCIProprietaryCommand = CommandAPDU(CommandEnum.READ_RECORD, sfi, sfi shl 3 or 4, 0).toBytes()
-                val data = provider.transceive(parseFCIProprietaryCommand)
-
-                // If LE is not correct
-                if (data!= null && data.compareADPU(TrailerADPU.SW_6C)) {
-                    val parseLECommand2 = CommandAPDU(
-                        CommandEnum.READ_RECORD,
-                        sfi,
-                        sfi shl 3 or 4,
-                        data[data.size - 1].toInt()
-                    ).toBytes()
-
-                    return@run provider.transceive(parseLECommand2)
-                } else {
-                    return@run this
-                }
-            }?.takeIf {
-                it.isSucceed()
-            }?.run {
-                // Get Aids
-                val aids: List<ByteArray> = getAids()
-                for (aid in aids) {
-                    val label:String? = extractApplicationLabel(this)
-                    Log.e("test", label.toString())
-//                    extractPublicData()
-                }
-                this
-            }?.run {
-                cardAdapter.getCard(this)
-            }?.let {
-                listener.onSuccess(it)
-            } ?: listener.onFailure("error")
+        provider.transceive(
+            CommandAPDU(CommandEnum.SELECT, PPSE).toBytes()
+        )?.takeIf { it.isSuccessful() }
+            ?.run {
+                parseFCITemplate(this)
+            }
+            ?.takeIf { it.isSuccessful() }
+            ?.run {
+                extractCardData(this)
+            }?.also { listener.onSuccess(it) } ?: listener.onFailure("error")
     }
 
-    protected fun extractApplicationLabel(pData: ByteArray?): String? {
-        var label: String? = null
+    fun parseFCITemplate(source: ByteArray): ByteArray {
+        // Get SFI
+        return source.getTLVValue(EMV.SFI)?.run {
+            // Check SFI
+            val sfi = byteArrayToInt()
+            val fciCommand = CommandAPDU(CommandEnum.READ_RECORD, sfi, sfi shl 3 or 4, 0).toBytes()
+            val d2 = provider.transceive(fciCommand)
+            // If LE is not correct
+            if (d2 != null && compareADPU(TrailerADPU.SW_6C)) {
+                val leCommand = CommandAPDU(
+                    CommandEnum.READ_RECORD, sfi, sfi shl 3 or 4, this[size - 1].toInt()
+                ).toBytes()
+                return provider.transceive(leCommand)!!
+            }
+            this
+        } ?: source
+    }
+
+    fun extractCardData(data: ByteArray): Card? {
+        var card: Card? = null
+        val aids: List<ByteArray> = data.getAids()
+        for (aid in aids) {
+            val label: String = extractApplicationLabel(data)
+            if (label.isNotEmpty()) {
+                card = Card(label, "4242424242424242", "10/29")
+                break
+            }
+        }
+        return card
+    }
+
+    private fun extractApplicationLabel(pData: ByteArray?): String {
+        var label = ""
         val labelByte = pData?.getTLVValue(EMV.APPLICATION_LABEL)
         if (labelByte != null) {
             label = String(labelByte)
@@ -73,12 +67,12 @@ internal class ReadTagRunnable(
         return label
     }
 
-
     interface ResultListener {
 
         fun onSuccess(card: Card)
 
         fun onFailure(error: String)
+
     }
 
     companion object {

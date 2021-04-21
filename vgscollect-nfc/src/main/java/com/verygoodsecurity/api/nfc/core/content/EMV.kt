@@ -7,9 +7,6 @@ enum class EMV(
     val id: String,
     val valueType: EMVFormat
 ) {
-    /**
-     * Short File Identifier (SFI)
-     */
     SFI("88", EMVFormat.BINARY),
     APPLICATION_LABEL("50", EMVFormat.TEXT),
 
