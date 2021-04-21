@@ -18,13 +18,10 @@ internal class ReadTagRunnable(
         provider.transceive(
             CommandAPDU(CommandEnum.SELECT, PPSE).toBytes()
         )?.takeIf { it.isSuccessful() }
-            ?.run {
-                parseFCITemplate(this)
-            }
+            ?.run { parseFCITemplate(this) }
             ?.takeIf { it.isSuccessful() }
-            ?.run {
-                extractCardData(this)
-            }?.also { listener.onSuccess(it) } ?: listener.onFailure("error")
+            ?.run { extractCardData(this) }
+            ?.also { listener.onSuccess(it) } ?: listener.onFailure("error")
     }
 
     fun parseFCITemplate(source: ByteArray): ByteArray {
