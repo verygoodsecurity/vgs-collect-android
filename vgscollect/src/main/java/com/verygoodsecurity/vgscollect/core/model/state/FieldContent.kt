@@ -8,15 +8,14 @@ import java.util.*
 
 /** @suppress */
 sealed class FieldContent {
+
+    var rawData:String? = null
+        internal set
+
     var data:String? = null
         internal set
 
-    class SSNContent:FieldContent() {
-        var rawData:String? = null
-    }
-
     class CardNumberContent:FieldContent() {
-        var rawData:String? = null
         var cardtype: CardType = CardType.UNKNOWN
         var numberRange: Array<Int> = CardType.UNKNOWN.rangeNumber
         var rangeCVV: Array<Int> = CardType.UNKNOWN.rangeCVV
@@ -52,10 +51,11 @@ sealed class FieldContent {
     }
 
     class CreditCardExpDateContent:FieldContent() {
-        var rawData:String? = null
         internal var dateFormat: String? = null
         internal var serializers: List<FieldDataSerializer<*, *>>? = null
     }
+
+    class SSNContent:FieldContent()
 
     class InfoContent:FieldContent()
 

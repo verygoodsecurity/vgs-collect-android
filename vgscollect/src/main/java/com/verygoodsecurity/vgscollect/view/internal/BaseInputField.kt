@@ -394,6 +394,14 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             validator.addRule(RegexValidator(it))
         }
     }
+
+    fun isContentEquals(inputField: BaseInputField): Boolean {
+        val thisContent = inputConnection?.getOutput()?.content
+        val thisData = thisContent?.rawData ?: thisContent?.data
+        val otherContent = inputField.inputConnection?.getOutput()?.content
+        val otherData = otherContent?.rawData ?: otherContent?.data
+        return thisData.equals(otherData)
+    }
 }
 
 internal fun TextInputEditText.setCompoundDrawablesOrNull(
