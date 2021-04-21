@@ -89,10 +89,6 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         nfcCardAdapter.stopScanning()
     }
 
-    fun scanCard(v: View) {
-
-    }
-
     private fun setupCardExpDateField() {
         vgsForm.bindView(cardExpDateField)
         cardExpDateField?.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {

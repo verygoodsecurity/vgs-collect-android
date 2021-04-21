@@ -49,6 +49,13 @@ internal data class CommandAPDU(
         le: Int = 0
     ) : this(command.cla, command.ins, command.p1, command.p2, data?.size ?: 0, data, le, true)
 
+    constructor(
+        command: CommandEnum,
+        p1: Int,
+        p2: Int,
+        le: Int
+    ) : this(command.cla, command.ins, p1, p2, le = le, leUsed = true)
+
     fun toBytes(): ByteArray {
         var length = 4 // CLA, INS, P1, P2
 
