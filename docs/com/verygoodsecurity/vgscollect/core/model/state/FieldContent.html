@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <!-- NewPage -->
 <html lang="en"><head>
-    <title>FieldContent 1.6.5 API </title>
+    <title>FieldContent 1.6.6 API </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="dc.created" content="2020-03-25">
     <link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
@@ -136,21 +136,21 @@ public class <span class="typeNameLabel"><a href=FieldContent.html>FieldContent<
                                         
                                         <tr class="altColor">
                                             <td class="colFirst"><code>public final class</code></td>
-                                            <th class="colSecond" scope="row"><code><a href="FieldContent.SSNContent.html">FieldContent.SSNContent</a></span></code>
+                                            <th class="colSecond" scope="row"><code><a href="FieldContent.CardNumberContent.html">FieldContent.CardNumberContent</a></span></code>
                                             </th>
                                             <td class="colLast"></td>
                                         </tr>
                                         
                                         <tr class="rowColor">
                                             <td class="colFirst"><code>public final class</code></td>
-                                            <th class="colSecond" scope="row"><code><a href="FieldContent.CardNumberContent.html">FieldContent.CardNumberContent</a></span></code>
+                                            <th class="colSecond" scope="row"><code><a href="FieldContent.CreditCardExpDateContent.html">FieldContent.CreditCardExpDateContent</a></span></code>
                                             </th>
                                             <td class="colLast"></td>
                                         </tr>
                                         
                                         <tr class="altColor">
                                             <td class="colFirst"><code>public final class</code></td>
-                                            <th class="colSecond" scope="row"><code><a href="FieldContent.CreditCardExpDateContent.html">FieldContent.CreditCardExpDateContent</a></span></code>
+                                            <th class="colSecond" scope="row"><code><a href="FieldContent.SSNContent.html">FieldContent.SSNContent</a></span></code>
                                             </th>
                                             <td class="colLast"></td>
                                         </tr>
@@ -186,6 +186,12 @@ public class <span class="typeNameLabel"><a href=FieldContent.html>FieldContent<
                                         </tr>
                                         
                                         <tr class="altColor">
+                                            <td class="colFirst"><code>private  <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a></code></td>
+                                            <th class="colSecond" scope="row"><code><a href=FieldContent.html#rawData>rawData</a></code></th>
+                                            <td class="colLast"></td>
+                                        </tr>
+                                        
+                                        <tr class="rowColor">
                                             <td class="colFirst"><code>private  <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a></code></td>
                                             <th class="colSecond" scope="row"><code><a href=FieldContent.html#data>data</a></code></th>
                                             <td class="colLast"></td>
@@ -249,12 +255,28 @@ public class <span class="typeNameLabel"><a href=FieldContent.html>FieldContent<
                                         <tr id="i3" class="rowColor">
                                             <td class="colFirst"><code>final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a></code>
                                             </td>
-                                            <th class="colSecond" scope="row"><code><a href=FieldContent.html#getData()>getData</a>() </code>
+                                            <th class="colSecond" scope="row"><code><a href=FieldContent.html#getRawData()>getRawData</a>() </code>
                                             </th>
                                             <td class="colLast"></td>
                                         </tr>
                                         
                                         <tr id="i4" class="altColor">
+                                            <td class="colFirst"><code>final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=FieldContent.html#getData()>getData</a>() </code>
+                                            </th>
+                                            <td class="colLast"></td>
+                                        </tr>
+                                        
+                                        <tr class="rowColor" id="i5">
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
+                                            </td>
+                                            <th class="colSecond" scope="row"><code><a href=FieldContent.html#setRawData(String)>setRawData</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> rawData) </code>
+                                            </th>
+                                            <td class="colLast"></td>
+                                        </tr>
+                                        
+                                        <tr class="altColor" id="i6">
                                             <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=FieldContent.html#setData(String)>setData</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> data) </code>
@@ -340,6 +362,21 @@ public class <span class="typeNameLabel"><a href=FieldContent.html>FieldContent<
                                     </li>
                                 </ul>
                                 
+                                <a id="getRawData()">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>getRawData</h4>
+                                        <pre class="methodSignature"> final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> <a href=FieldContent.html#getRawData()>getRawData</a>()</pre>
+                                        <div class="block"></div>
+                                        
+                                        <!-- TODO missing return annotation -->
+                                    </li>
+                                </ul>
+                                
                                 <a id="getData()">
                                     <!--   -->
                                 </a>
@@ -349,6 +386,21 @@ public class <span class="typeNameLabel"><a href=FieldContent.html>FieldContent<
                                     <li class="blockList">
                                         <h4>getData</h4>
                                         <pre class="methodSignature"> final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> <a href=FieldContent.html#getData()>getData</a>()</pre>
+                                        <div class="block"></div>
+                                        
+                                        <!-- TODO missing return annotation -->
+                                    </li>
+                                </ul>
+                                
+                                <a id="setRawData(String)">
+                                    <!--   -->
+                                </a>
+                                <ul class=
+                                              "blockList"
+                                          >
+                                    <li class="blockList">
+                                        <h4>setRawData</h4>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html>Unit</a> <a href=FieldContent.html#setRawData(String)>setRawData</a>(<a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> rawData)</pre>
                                         <div class="block"></div>
                                         
                                         <!-- TODO missing return annotation -->
