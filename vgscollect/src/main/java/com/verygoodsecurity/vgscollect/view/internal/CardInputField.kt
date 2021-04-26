@@ -333,7 +333,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     private fun applyDividerOnMask() {
-        val newCardNumberMask = originalCardNumberMask.replace(MASK_REGEX.toRegex(), divider)
+        val newCardNumberMask = derivedCardNumberMask.replace(MASK_REGEX.toRegex(), divider)
 
         if (cardNumberFormatter?.getMask() != newCardNumberMask) {
             derivedCardNumberMask = newCardNumberMask
