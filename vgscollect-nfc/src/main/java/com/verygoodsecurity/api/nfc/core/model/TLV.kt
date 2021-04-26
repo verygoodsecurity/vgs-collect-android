@@ -7,4 +7,9 @@ class TLV(
     val length: Int,
     val rawEncodedLengthBytes: ByteArray,
     val valueBytes: ByteArray,
-)
+) {
+    fun getBytes(): ByteArray {
+        return valueBytes
+    }
+}
+
