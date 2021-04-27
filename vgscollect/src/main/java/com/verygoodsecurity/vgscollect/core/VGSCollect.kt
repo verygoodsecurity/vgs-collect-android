@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.R
@@ -783,6 +784,7 @@ class VGSCollect {
     }
 
     internal fun dispatchData(data: VGSHashMapWrapper<String, Any?>?) {
-        data?.run { externalDependencyDispatcher.dispatch(this.mapOf()) }
+        Log.e("dispatchData", "$data")
+        data?.let { externalDependencyDispatcher.dispatch(it.mapOf()) }
     }
 }
