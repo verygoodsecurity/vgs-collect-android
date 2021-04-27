@@ -2,7 +2,6 @@ package com.verygoodsecurity.api.nfc.core.utils
 
 import com.verygoodsecurity.api.nfc.core.content.EMV
 import com.verygoodsecurity.api.nfc.core.content.TrailerADPU
-import com.verygoodsecurity.api.nfc.core.content.isConstructed
 import com.verygoodsecurity.api.nfc.core.model.ApplicationFileLocator
 import com.verygoodsecurity.api.nfc.core.model.TLV
 import java.util.*
@@ -100,7 +99,7 @@ fun ByteArray.getListTLV(vararg emv: EMV): MutableList<TLV> {
 
 fun ByteArray?.getTLVValue(vararg emv: EMV): ByteArray? {
     var ret: ByteArray? = null
-    if(this != null) {
+    if (this != null) {
         val stream = inputStream()
         while (stream.available() > 0) {
             val tlv: TLV = stream.getNextTLV()
@@ -123,11 +122,11 @@ fun ByteArray.parseTotalTagsLength(): Int {
 
     val stream = inputStream()
     while (stream.available() > 0) {
-        val tagIdBytes: ByteArray? = ByteUtil.readTagIdBytes(stream)
+        val tagIdBytes: ByteArray? = stream.readTagIdBytes()
         val tag: EMV? = tagIdBytes?.getEMV()
         val tagValueLength: Int = stream.readTagLength()
 
-        if(tag != null) tagAndLengthList.add(tag to tagValueLength)
+        if (tag != null) tagAndLengthList.add(tag to tagValueLength)
     }
     return tagAndLengthList.getLength()
 }
@@ -141,18 +140,7 @@ fun MutableList<Pair<EMV, Int>>.getLength(): Int {
     return ret
 }
 
-
-
-
-
-
-
-
-
-
-
-
-fun ByteArray.extractApplicationFileLocator():MutableList<ApplicationFileLocator> {
+fun ByteArray.extractApplicationFileLocator(): MutableList<ApplicationFileLocator> {
     val list: MutableList<ApplicationFileLocator> = ArrayList()
 
     val stream = inputStream()

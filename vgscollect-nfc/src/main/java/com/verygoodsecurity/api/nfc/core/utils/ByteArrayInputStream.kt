@@ -2,6 +2,8 @@ package com.verygoodsecurity.api.nfc.core.utils
 
 import com.verygoodsecurity.api.nfc.core.model.TLV
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import kotlin.experimental.and
 
 fun ByteArrayInputStream.getNextTLV(): TLV {
     available()
@@ -18,7 +20,7 @@ fun ByteArrayInputStream.getNextTLV(): TLV {
     }
     reset()
 
-    val tagIdBytes: ByteArray? = ByteUtil.readTagIdBytes(this)
+    val tagIdBytes: ByteArray? = this.readTagIdBytes()
 
     mark(0)
     val posBefore = available()
@@ -96,4 +98,29 @@ fun ByteArrayInputStream.readTagLength(): Int {
         }
     }
     return length
+}
+
+fun ByteArrayInputStream.readTagIdBytes(): ByteArray? {
+    val tagBAOS = ByteArrayOutputStream()
+    val tagFirstOctet = read().toByte()
+    tagBAOS.write(tagFirstOctet.toInt())
+
+    val MASK = 0x1F.toByte()
+    if (tagFirstOctet and MASK == MASK) {
+        do {
+            val nextOctet = read()
+            if (nextOctet < 0) {
+                break
+            }
+            tagBAOS.write(nextOctet)
+
+            if (nextOctet.matchBitByBitIndex(7).not()
+                || (nextOctet.matchBitByBitIndex(7)
+                        && nextOctet and 0x7f == 0)
+            ) {
+                break
+            }
+        } while (true)
+    }
+    return tagBAOS.toByteArray()
 }

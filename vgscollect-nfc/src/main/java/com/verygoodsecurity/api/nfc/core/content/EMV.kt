@@ -1,6 +1,5 @@
 package com.verygoodsecurity.api.nfc.core.content
 
-import com.verygoodsecurity.api.nfc.core.utils.ByteUtil
 
 enum class EMV(
     val id: String
@@ -41,16 +40,4 @@ enum class EMV(
     DATA_RECORD("ff8105"),
     DISCRETIONARY_DATA("ff8106"),
     UNKNOWN("00")
-}
-
-private fun EMV.matchBitByBitIndex(pVal: Int, pBitIndex: Int): Boolean {
-    return if (pBitIndex in 0..31) {
-        pVal and 1 shl pBitIndex != 0
-    } else {
-        throw IllegalArgumentException("parameter \'pBitIndex\' must be between 0 and 31. pBitIndex=$pBitIndex")
-    }
-}
-
-fun EMV.isConstructed(): Boolean {
-    return ByteUtil.matchBitByBitIndex(ByteUtil.fromString(id)[0].toInt(), 5)
 }
