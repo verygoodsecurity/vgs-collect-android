@@ -74,7 +74,7 @@ fun ByteArrayInputStream.getNextTLV(): TLV {
     }
     reset()
 
-    return TLV(emv, length, lengthBytes, valueBytes)
+    return TLV(emv, valueBytes)
 }
 
 fun ByteArrayInputStream.readTagLength(): Int {

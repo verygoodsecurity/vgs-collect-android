@@ -107,9 +107,7 @@ fun ByteArray?.getTLVValue(vararg emv: EMV): ByteArray? {
             if (emv.contains(tlv.tag)) {
                 ret = tlv.valueBytes
             } else if (tlv.tag.isConstructed()) {
-                val sentBytes = tlv.getBytes()
                 ret = tlv.valueBytes.getTLVValue(*emv)
-            } else {
             }
         }
     }
@@ -118,27 +116,18 @@ fun ByteArray?.getTLVValue(vararg emv: EMV): ByteArray? {
 }
 
 fun ByteArray.parseTotalTagsLength(): Int {
-    val tagAndLengthList = mutableListOf<Pair<EMV, Int>>()
+    var tagAndLength = 0
 
     val stream = inputStream()
     while (stream.available() > 0) {
         val tagIdBytes: ByteArray? = stream.readTagIdBytes()
         val tag: EMV? = tagIdBytes?.getEMV()
-        val tagValueLength: Int = stream.readTagLength()
 
-        if (tag != null) tagAndLengthList.add(tag to tagValueLength)
+        if (tag != null) tagAndLength += stream.readTagLength()
     }
-    return tagAndLengthList.getLength()
+    return tagAndLength
 }
 
-
-fun MutableList<Pair<EMV, Int>>.getLength(): Int {
-    var ret = 0
-    forEach {
-        ret += it.second
-    }
-    return ret
-}
 
 fun ByteArray.extractApplicationFileLocator(): MutableList<ApplicationFileLocator> {
     val list: MutableList<ApplicationFileLocator> = ArrayList()
@@ -172,7 +161,6 @@ fun ByteArray.bytesToStringNoSpace(): String {
 
     return sb.toString().toUpperCase(Locale.getDefault()).trim { it <= ' ' }
 }
-
 
 
 

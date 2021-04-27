@@ -4,6 +4,7 @@ import android.nfc.Tag
 import com.verygoodsecurity.api.nfc.core.content.*
 import com.verygoodsecurity.api.nfc.core.model.ApplicationFileLocator
 import com.verygoodsecurity.api.nfc.core.model.Card
+import com.verygoodsecurity.api.nfc.core.content.CommandAPDU
 import com.verygoodsecurity.api.nfc.core.utils.*
 import java.io.ByteArrayOutputStream
 
@@ -11,6 +12,14 @@ internal class ReadTagRunnable(
     @Suppress("unused") private val tag: Tag,
     private val listener: ResultListener,
 ) : Runnable {
+
+    interface ResultListener {
+
+        fun onSuccess(card: Card)
+
+        fun onFailure(error: String)
+
+    }
 
     private val provider = IsoDepProvider(tag)
 
@@ -26,29 +35,33 @@ internal class ReadTagRunnable(
             ?.also { listener.onSuccess(it) } ?: listener.onFailure("error")
     }
 
-    fun parseFCITemplate(source: ByteArray): ByteArray {
-        // Get SFI
-        return source.getTLVValue(EMV.SFI)?.run {
-            // Check SFI
-            val sfi = byteArrayToInt()
-            val fciCommand = CommandAPDU(CommandEnum.READ_RECORD, sfi, sfi shl 3 or 4, 0).toBytes()
-            val d2 = provider.transceive(fciCommand)
-            // If LE is not correct
-            if (d2 != null && compareADPU(TrailerADPU.SW_6C)) {
-                val leCommand = CommandAPDU(
-                    CommandEnum.READ_RECORD, sfi, sfi shl 3 or 4, this[size - 1].toInt()
+    private fun parseFCITemplate(source: ByteArray): ByteArray {
+        return source.getTLVValue(EMV.SFI)
+            ?.takeIf {
+                val fci = it.byteArrayToInt()
+                val fciCommand = CommandAPDU(
+                    CommandEnum.READ_RECORD, fci, fci shl 3 or 4, 0
                 ).toBytes()
-                return provider.transceive(leCommand)!!
+                val data = provider.transceive(fciCommand)
+
+                data != null && it.compareADPU(TrailerADPU.SW_6C)
             }
-            this
-        } ?: source
+            ?.run {
+                val fci = byteArrayToInt()
+                val leCommand = CommandAPDU(
+                    CommandEnum.READ_RECORD, fci, fci shl 3 or 4, this[size - 1].toInt()
+                ).toBytes()
+
+                provider.transceive(leCommand)!!
+            } ?: source
     }
 
-    fun extractCardData(data: ByteArray): Card? {
+    private fun extractCardData(data: ByteArray): Card? {
         var card: Card? = null
         val aids: List<ByteArray> = data.getAids()
         for (aid in aids) {
-            card = extractPublicCardData(aid, data)
+            val label: String = extractApplicationLabel(data)
+            card = extractPublicCardData(aid, label)
             if (card != null) break
         }
         return card
@@ -63,28 +76,7 @@ internal class ReadTagRunnable(
         return label
     }
 
-    interface ResultListener {
-
-        fun onSuccess(card: Card)
-
-        fun onFailure(error: String)
-
-    }
-
-    companion object {
-
-        /**
-         * PPSE directory "2PAY.SYS.DDF01"
-         */
-        private val PPSE = "2PAY.SYS.DDF01".toByteArray()
-    }
-
-    private fun extractPublicCardData(aid: ByteArray, data: ByteArray): Card? {
-        val label: String = extractApplicationLabel(data)
-        return parseCard(aid, label)
-    }
-
-    private fun parseCard(aid: ByteArray, label: String): Card? {
+    private fun extractPublicCardData(aid: ByteArray, label: String): Card? {
         val data: ByteArray? = provider.transceive(
             CommandAPDU(CommandEnum.SELECT, aid, 0).toBytes()
         )
@@ -110,6 +102,7 @@ internal class ReadTagRunnable(
             if (data2 != null) {
                 val listAfl: MutableList<ApplicationFileLocator> =
                     data2.extractApplicationFileLocator()
+
                 for (afl in listAfl) {
                     for (index in afl.firstRecord..afl.lastRecord) {
                         val c = CommandAPDU(
@@ -119,6 +112,7 @@ internal class ReadTagRunnable(
                             0
                         ).toBytes()
                         var info: ByteArray = provider.transceive(c)!!
+
                         if (info.compareADPU(TrailerADPU.SW_6C)) {
                             val s = CommandAPDU(
                                 CommandEnum.READ_RECORD,
@@ -126,13 +120,14 @@ internal class ReadTagRunnable(
                                 afl.sfi shl 3 or 4,
                                 info[info.size - 1].toInt()
                             ).toBytes()
+
                             info = provider.transceive(s)!!
                         }
 
                         if (info.isSuccessful()) {
-                            val c = parseTrack2(info, label)
-                            if (c != null) {
-                                return c
+                            val cardData = parseTrack2(info, label)
+                            if (cardData != null) {
+                                return cardData
                             }
                         }
                     }
@@ -154,7 +149,7 @@ internal class ReadTagRunnable(
         }
     }
 
-    fun parseTrack2(data: ByteArray, label: String): Card? {
+    private fun parseTrack2(data: ByteArray, label: String): Card? {
         return data.getTLVValue(EMV.TRACK_2_EQV_DATA, EMV.TRACK2_DATA)
             ?.bytesToStringNoSpace()
             ?.run {
@@ -167,4 +162,13 @@ internal class ReadTagRunnable(
                 }
             }
     }
+
+    companion object {
+
+        /**
+         * PPSE directory "2PAY.SYS.DDF01"
+         */
+        private val PPSE = "2PAY.SYS.DDF01".toByteArray()
+    }
+
 }
