@@ -13,14 +13,6 @@ internal class ReadTagRunnable(
     private val listener: ResultListener,
 ) : Runnable {
 
-    interface ResultListener {
-
-        fun onSuccess(card: Card)
-
-        fun onFailure(error: String)
-
-    }
-
     private val provider = IsoDepProvider(tag)
 
     override fun run() {
@@ -171,4 +163,10 @@ internal class ReadTagRunnable(
         private val PPSE = "2PAY.SYS.DDF01".toByteArray()
     }
 
+    interface ResultListener {
+
+        fun onSuccess(card: Card)
+
+        fun onFailure(error: String)
+    }
 }
