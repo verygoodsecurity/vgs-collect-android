@@ -1,8 +1,13 @@
 ## Migration Guides
 
+### Migrating from versions < v1.6.5
+
+#### VGSEditText
+Removed possibility to set field type in `VGSEditText` field as deprecated approach.
+
 ### Migrating from versions < v1.6.2
 
-### Additional data
+#### Additional data
 Previously, a `Key` in static or dynamic additional data could be converted into other data structures. From now the `Key` can be only as a `String`. 
 
 Let's see how to get of the following result:
