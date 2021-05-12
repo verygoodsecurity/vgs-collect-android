@@ -3,7 +3,7 @@
 ### Migrating from versions < v1.6.5
 
 #### VGSEditText
-Remove `app:fieldType` attribute from VGSEditText in your XML layout.
+Remove `app:fieldType` attributes from your XML layouts.
 
 Remove `setFieldType` method from code in case you use it.
 
