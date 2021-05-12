@@ -3,7 +3,13 @@
 ### Migrating from versions < v1.6.5
 
 #### VGSEditText
-Removed possibility to set field type in `VGSEditText` field as deprecated approach.
+Remove `app:fieldType` attribute from VGSEditText in your XML layout.
+
+Remove `setFieldType` method from code in case you use it.
+
+Please use `VGSCardNumberEditText`, `ExpirationDateEditText`, `CardVerificationCodeEditText`, `PersonNameEditText`, `SSNEditText`
+specific fields instead of `app:fieldType` attribute or `FieldType` enum class.
+
 
 ### Migrating from versions < v1.6.2
 
@@ -34,3 +40,16 @@ val staticData = mutableMapOf<String, Any>()
 val content = mutableMapOf( "content" to "content_data" )
 staticData["data"] = content
 ```
+
+
+### Migrating from versions < v1.3.0
+
+#### VGSEditText
+
+The attribute `app:fieldType` is deprecated.
+
+Method `setFieldType` is deprecated.
+
+Please use `VGSCardNumberEditText`, `ExpirationDateEditText`, `CardVerificationCodeEditText`, `PersonNameEditText`, `SSNEditText`
+specific fields instead of `app:fieldType` attribute or `FieldType` enum class.
+
