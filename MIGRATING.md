@@ -40,16 +40,3 @@ val staticData = mutableMapOf<String, Any>()
 val content = mutableMapOf( "content" to "content_data" )
 staticData["data"] = content
 ```
-
-
-### Migrating from versions < v1.3.0
-
-#### VGSEditText
-
-The attribute `app:fieldType` is deprecated.
-
-Method `setFieldType` is deprecated.
-
-Please use `VGSCardNumberEditText`, `ExpirationDateEditText`, `CardVerificationCodeEditText`, `PersonNameEditText`, `SSNEditText`
-specific fields instead of `app:fieldType` attribute or `FieldType` enum class.
-
