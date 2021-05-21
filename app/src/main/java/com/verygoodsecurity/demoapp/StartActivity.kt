@@ -43,6 +43,7 @@ class StartActivity:AppCompatActivity(), View.OnClickListener {
         startWithActivityBtn?.setOnClickListener(this)
         startWithFragmentBtn?.setOnClickListener(this)
         startWithViewPagerBtn?.setOnClickListener(this)
+        startDebugNFCBtn?.setOnClickListener(this)
     }
 
     private fun setupUI() {
@@ -61,6 +62,7 @@ class StartActivity:AppCompatActivity(), View.OnClickListener {
             R.id.startWithActivityBtn -> startInteractionWithActivity()
             R.id.startWithFragmentBtn -> startInteractionWithFragment()
             R.id.startWithViewPagerBtn -> startInteractionWithViewPager()
+            R.id.startDebugNFCBtn -> startDebugActivity()
         }
     }
 
@@ -76,6 +78,11 @@ class StartActivity:AppCompatActivity(), View.OnClickListener {
 
     private fun startInteractionWithViewPager() {
         val intent = prepareIntent(VGSViewPagerActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun startDebugActivity() {
+        val intent = prepareIntent(DebugActivity::class.java)
         startActivity(intent)
     }
 

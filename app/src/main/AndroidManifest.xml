@@ -31,6 +31,8 @@
             android:label="Fragment Demo"/>
         <activity android:name=".viewpager_case.VGSViewPagerActivity"
             android:label="ViewPager Demo"/>
+        <activity android:name=".DebugActivity"
+            android:label="Debug Activity"/>
     </application>
 
 </manifest>

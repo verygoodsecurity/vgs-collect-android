@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#09000000"
+        android:indeterminate="true"
+        android:progressTint="@color/colorAccent"
+        android:visibility="invisible" />
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:id="@+id/cardNumberFieldLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/half_default_margin"
+        app:boxBackgroundModes="outline"
+        app:hint="@string/card_number"
+        app:hintEnabled="true">
+
+        <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+            android:id="@+id/cardNumberField"
+            style="@style/AppTheme.PaymentField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardBrandIconGravity="end"
+            app:fieldName="cardNumber"
+            app:imeOptions="actionDone"
+            app:numberDivider="-" />
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:id="@+id/cardExpDateFieldLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/half_default_margin"
+        android:layout_marginEnd="@dimen/half_default_margin"
+        app:boxBackgroundModes="outline"
+        app:hint="@string/exp_date"
+        app:hintEnabled="true">
+
+        <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+            android:id="@+id/cardExpDateField"
+            style="@style/AppTheme.PaymentField"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:datePattern="MM/yy"
+            app:datePickerModes="input"
+            app:fieldName="card_data.personal_data.secret.expDate"
+            app:imeOptions="actionDone"
+            app:inputType="date"
+            app:outputPattern="yyyy-MM-dd'T'HH:mm:ss.SSSSSSS" />
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/half_default_margin"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/scanBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:text="Scan"
+            android:textColor="@android:color/white" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/clearBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:text="Clear"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+</LinearLayout>

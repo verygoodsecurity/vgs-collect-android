@@ -60,13 +60,11 @@ class VGSNFCAdapter(
                 ReadTagRunnable(it, object : ReadTagRunnable.ResultListener {
 
                     override fun onSuccess(card: Card) {
-                        Log.e("test", "onSuccess $card")
                         setData(dataMapper.map(card.toVGSCard()))
                         notifyReadingSuccess()
                     }
 
                     override fun onFailure(error: String) {
-                        Log.e("test", "onFailure $error")
                         notifyReadingFailed(error)
                     }
                 })

@@ -19,6 +19,7 @@
     <string name="start_with_activity">Start with Activity</string>
     <string name="start_with_fragment">Start with Fragment</string>
     <string name="start_view_pager">Start with ViewPager</string>
+    <string name="start_debug_activity">Start NFC debugging</string>
 
     <string name="scan_item">Scan Card</string>
 </resources>

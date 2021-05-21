@@ -137,6 +137,7 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         app:fieldName="cardNumber"
+                                        app:enabled="false"
                                         style="@style/AppTheme.PaymentField"
                                         app:text="4111-1111-1111-1111"
                                         app:numberDivider="-"

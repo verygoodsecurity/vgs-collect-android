@@ -46,7 +46,7 @@
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         android:textColor="@android:color/white"
-        android:textSize="14dp"
+        android:textSize="@dimen/vgs_field_text_size"
         android:textAllCaps="false"
         app:backgroundTint="@color/colorAccent"
         app:cornerRadius="@dimen/default_margin"
@@ -60,7 +60,7 @@
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         android:textColor="@android:color/white"
-        android:textSize="14dp"
+        android:textSize="@dimen/vgs_field_text_size"
         android:textAllCaps="false"
         app:backgroundTint="@color/colorAccent"
         app:cornerRadius="@dimen/default_margin"
@@ -74,9 +74,24 @@
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
         android:textColor="@android:color/white"
-        android:textSize="14dp"
+        android:textSize="@dimen/vgs_field_text_size"
         android:textAllCaps="false"
         app:backgroundTint="@color/colorAccent"
         app:cornerRadius="@dimen/default_margin"
         android:text="@string/start_view_pager"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/startDebugNFCBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginStart="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/vgs_field_text_size"
+        android:textAllCaps="false"
+        app:backgroundTint="@color/debugColorAccent"
+        app:cornerRadius="@dimen/default_margin"
+        android:text="@string/start_debug_activity"/>
+
 </LinearLayout>
