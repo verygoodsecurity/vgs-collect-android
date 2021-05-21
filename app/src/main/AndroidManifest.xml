@@ -5,12 +5,6 @@
 
     <uses-sdk tools:overrideLibrary="android.support.test.uiautomator.v18"/>
 
-    <uses-feature
-        android:name="android.hardware.nfc"
-        android:required="true" />
-
-    <uses-permission android:name="android.permission.NFC" />
-
     <application
         android:name=".DemoApplication"
         android:allowBackup="false"
@@ -22,7 +16,7 @@
 
         <activity android:name=".StartActivity"
             android:theme="@style/AppTheme.StartActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="fullSensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
