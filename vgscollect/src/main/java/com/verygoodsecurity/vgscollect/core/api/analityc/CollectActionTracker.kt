@@ -94,7 +94,6 @@ internal class CollectActionTracker(
         companion object {
             private const val SATELLITE = "vgsSatellite"
             private const val FORM_ID = "formId"
-            private const val SESSION_ID = "sessionId"
             private const val VG_SESSION_ID = "vgsCollectSessionId"
             private const val TIMESTAMP = "localTimestamp"
             private const val TNT = "tnt"

@@ -328,8 +328,8 @@ class VGSCollect {
                 val data = mergeData(request)
                 submitEvent(
                     true,
-                    !request.fileIgnore,
-                    !request.fieldsIgnore,
+                    !request.fileIgnore && storage.getFileStorage().getItems().isNotEmpty(),
+                    !request.fieldsIgnore && storage.getFieldsStorage().getItems().isNotEmpty(),
                     request.customHeader.isNotEmpty(),
                     data.isNotEmpty(),
                     hasCustomHostname,
@@ -568,15 +568,15 @@ class VGSCollect {
                 put("statusCode", code)
 
                 val arr = with(mutableListOf<String>()) {
-                    if (hasCustomHostname) add("customHostName")
+                    if (hasCustomHostname) add("custom_hostname")
                     if (hasFiles) add("file")
-                    if (hasFields) add("fields")
+                    if (hasFields) add("textField")
                     if (hasCustomHeader ||
                         client.getTemporaryStorage().getCustomHeaders().isNotEmpty()
-                    ) add("customHeaders")
+                    ) add("custom_header")
                     if (hasCustomData ||
                         client.getTemporaryStorage().getCustomData().isNotEmpty()
-                    ) add("customData")
+                    ) add("custom_data")
                     add(mappingPolicy.analyticsName)
                     this
                 }
