@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.api
 
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
+import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.model.network.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -59,7 +60,13 @@ class RequestTest {
 
         val exampleRequest = NetworkRequest(
             METHOD,
-            BASE_URL+PATH
+            BASE_URL+PATH,
+            emptyMap(),
+            "{}",
+            false,
+            false,
+            VGSHttpBodyFormat.JSON,
+            60000L
         )
 
         val r = VGSRequest.VGSRequestBuilder()
