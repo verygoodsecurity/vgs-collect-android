@@ -57,7 +57,7 @@ class PaymentFragment: Fragment(), VgsCollectResponseListener, OnFieldStateChang
 
         retrieveAttributes()
 
-        vgsForm = VGSCollect(activity!!, vault_id, env)
+        vgsForm = VGSCollect(requireActivity(), vault_id, env)
 
         vgsForm.addOnResponseListeners(this)
         vgsForm.addOnFieldStateChangeListener(this)
