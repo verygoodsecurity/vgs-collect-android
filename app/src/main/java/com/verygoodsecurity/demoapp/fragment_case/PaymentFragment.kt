@@ -57,7 +57,7 @@ class PaymentFragment: Fragment(), VgsCollectResponseListener, OnFieldStateChang
 
         retrieveAttributes()
 
-        vgsForm = VGSCollect(activity!!, vault_id, env)
+        vgsForm = VGSCollect(requireActivity(), vault_id, env)
 
         vgsForm.addOnResponseListeners(this)
         vgsForm.addOnFieldStateChangeListener(this)
@@ -219,13 +219,13 @@ class PaymentFragment: Fragment(), VgsCollectResponseListener, OnFieldStateChang
     private fun setEnabledResponseHeader(isEnabled:Boolean) {
         if(isEnabled) {
             attachBtn.setTextColor(
-                ContextCompat.getColor(activity!!,
+                ContextCompat.getColor(requireActivity(),
                 R.color.state_active
             ))
         } else {
             responseContainerView?.text = ""
             attachBtn.setTextColor(
-                ContextCompat.getColor(activity!!,
+                ContextCompat.getColor(requireActivity(),
                 R.color.state_unactive
             ))
         }
