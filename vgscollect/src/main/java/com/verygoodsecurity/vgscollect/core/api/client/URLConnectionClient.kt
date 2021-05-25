@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscollect.core.api.client
 
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.*
-import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONTENT_TYPE
 import com.verygoodsecurity.vgscollect.core.api.client.extension.*
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
@@ -72,8 +71,8 @@ internal class URLConnectionClient(
                 this[CONTENT_TYPE] = request.format.toContentType()
             }
             connection = generateURL(request).openConnection()
-                .callTimeout(CONNECTION_TIME_OUT)
-                .readTimeout(CONNECTION_TIME_OUT)
+                .callTimeout(request.requestTimeoutInterval)
+                .readTimeout(request.requestTimeoutInterval)
                 .setInstanceFollowRedirectEnabled(false)
                 .setIsUserInteractionEnabled(false)
                 .setCacheEnabled(false)

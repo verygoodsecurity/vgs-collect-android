@@ -2,22 +2,16 @@ package com.verygoodsecurity.vgscollect.core.api.client
 
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.*
-import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.CONNECTION_TIME_OUT
-import com.verygoodsecurity.vgscollect.core.api.client.extension.isCodeSuccessful
-import com.verygoodsecurity.vgscollect.core.api.client.extension.toRequestBodyOrNull
+import com.verygoodsecurity.vgscollect.core.api.client.extension.*
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
-import com.verygoodsecurity.vgscollect.core.api.client.extension.logException
-import com.verygoodsecurity.vgscollect.core.api.client.extension.logRequest
-import com.verygoodsecurity.vgscollect.core.api.client.extension.logResponse
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okio.Buffer
 import java.io.IOException
 import java.io.InterruptedIOException
-import java.lang.Exception
 import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
@@ -33,9 +27,6 @@ internal class OkHttpClient(
     private val client: OkHttpClient by lazy {
         OkHttpClient().newBuilder()
             .addInterceptor(hostInterceptor)
-            .callTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
-            .readTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
-            .writeTimeout(CONNECTION_TIME_OUT, TimeUnit.MILLISECONDS)
             .dispatcher(Dispatcher(Executors.newSingleThreadExecutor())).also {
                 if (isLogsVisible) it.addInterceptor(HttpLoggingInterceptor())
             }
@@ -61,7 +52,12 @@ internal class OkHttpClient(
         )
 
         try {
-            client.newCall(okHttpRequest).enqueue(object : Callback {
+            client.newBuilder()
+                .callTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+                .readTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+                .writeTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+                .build()
+                .newCall(okHttpRequest).enqueue(object : Callback {
 
                 override fun onFailure(call: Call, e: IOException) {
                     logException(e)
@@ -103,7 +99,12 @@ internal class OkHttpClient(
         )
 
         return try {
-            val response = client.newCall(okHttpRequest).execute()
+            val response = client.newBuilder()
+                .callTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+                .readTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+                .writeTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+                .build()
+                .newCall(okHttpRequest).execute()
 
             if (response.isSuccessful) {
                 NetworkResponse(response.isSuccessful, response.body?.string(), response.code)

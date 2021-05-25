@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.api
 
 import com.verygoodsecurity.vgscollect.core.*
+import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
@@ -22,7 +23,11 @@ class ApiClientTest {
             HTTPMethod.POST,
             "https://www.test.com/post",
             headers,
-            data
+            data,
+            false,
+            false,
+            VGSHttpBodyFormat.JSON,
+            60000L
         )
 
         client.execute(r)
@@ -43,7 +48,11 @@ class ApiClientTest {
             HTTPMethod.POST,
             "https://www.test.com/post",
             headers,
-            data
+            data,
+            false,
+            false,
+            VGSHttpBodyFormat.JSON,
+            60000L
         )
 
         client.enqueue(r)

@@ -19,7 +19,6 @@ internal interface ApiClient {
     fun getTemporaryStorage(): VgsApiTemporaryStorage
 
     companion object {
-        internal const val CONNECTION_TIME_OUT = 60000L
         internal const val CONTENT_TYPE = "Content-type"
         private const val AGENT = "vgs-client"
         private const val TEMPORARY_AGENT_TEMPLATE =
