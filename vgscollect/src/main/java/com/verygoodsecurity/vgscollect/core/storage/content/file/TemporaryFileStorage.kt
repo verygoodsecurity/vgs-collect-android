@@ -12,6 +12,7 @@ import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.app.FilePickerActivity
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
+import com.verygoodsecurity.vgscollect.util.extension.NotEnoughMemoryException
 import com.verygoodsecurity.vgscollect.util.extension.parseFile
 import java.util.HashMap
 
@@ -70,15 +71,15 @@ internal class TemporaryFileStorage(
     override fun dispatch(map: HashMap<String, Any?>) {
         val fileInfo = cipher.retrieve(map)
 
-        fileInfo?.second?.let {
-            val base64Content = cipher.getBase64(Uri.parse(it))
-            memoryCache.put(fileInfo.first, base64Content)
-        }
-
-        if (fileInfo == null) {
-            errorListener?.onStorageError(VGSError.FILE_NOT_FOUND)
+        if (fileInfo != null) {
+            try {
+                memoryCache.put(fileInfo.first, cipher.getBase64(Uri.parse(fileInfo.second)))
+                addItem(fileInfo.first, fileInfo.second)
+            } catch (e: NotEnoughMemoryException) {
+                errorListener?.onStorageError(VGSError.FILE_SIZE_OVER_LIMIT)
+            }
         } else {
-            addItem(fileInfo.first, fileInfo.second)
+            errorListener?.onStorageError(VGSError.FILE_NOT_FOUND)
         }
     }
 

@@ -9,6 +9,7 @@ import android.provider.DocumentsContract
 import android.util.Base64
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.util.extension.toBase64String
+import com.verygoodsecurity.vgscollect.util.extension.useIfMemoryEnough
 import java.util.*
 
 internal class Base64Cipher(val context: Context):VgsFileCipher {
@@ -16,7 +17,7 @@ internal class Base64Cipher(val context: Context):VgsFileCipher {
     private var submitCode = -1L
     private var fieldName = ""
 
-    override fun save(fieldName:String):Long {
+    override fun save(fieldName: String): Long {
         if (submitCode == -1L) {
             this.fieldName = fieldName
             submitCode = System.currentTimeMillis()
@@ -70,7 +71,7 @@ internal class Base64Cipher(val context: Context):VgsFileCipher {
     override fun getBase64(uri: Uri): String = readBytes(uri)?.toBase64String(Base64.NO_WRAP) ?: ""
 
     private fun readBytes(fileUri: Uri): ByteArray? {
-        contentResolver.openInputStream(fileUri)?.use {
+        contentResolver.openInputStream(fileUri)?.useIfMemoryEnough {
             return it.readBytes()
         }
         return null
