@@ -68,10 +68,12 @@ internal class Base64Cipher(val context: Context):VgsFileCipher {
         fieldName = ""
     }
 
-    override fun getBase64(uri: Uri): String = readBytes(uri)?.toBase64String(Base64.NO_WRAP) ?: ""
+    override fun getBase64(uri: Uri, maxSize: Long): String {
+        return readBytes(uri, maxSize)?.toBase64String(Base64.NO_WRAP) ?: ""
+    }
 
-    private fun readBytes(fileUri: Uri): ByteArray? {
-        contentResolver.openInputStream(fileUri)?.useIfMemoryEnough {
+    private fun readBytes(uri: Uri, maxSize: Long): ByteArray? {
+        contentResolver.openInputStream(uri)?.useIfMemoryEnough(maxSize) {
             return it.readBytes()
         }
         return null

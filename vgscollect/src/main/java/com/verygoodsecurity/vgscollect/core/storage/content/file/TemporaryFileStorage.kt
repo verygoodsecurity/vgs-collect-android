@@ -15,7 +15,6 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
 import com.verygoodsecurity.vgscollect.util.extension.NotEnoughMemoryException
 import com.verygoodsecurity.vgscollect.util.extension.queryOptional
-import com.verygoodsecurity.vgscollect.util.extension.toKb
 import java.util.*
 
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
@@ -32,7 +31,7 @@ internal class TemporaryFileStorage(
     //region VGSFileProvider
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun resize(size: Int) {
-        encodedFileMaxSize = size.toKb()
+        encodedFileMaxSize = size.toLong()
     }
 
     override fun attachFile(fieldName: String) {
@@ -69,7 +68,7 @@ internal class TemporaryFileStorage(
             return
         }
         try {
-            encodedFile = cipher.getBase64(Uri.parse(fileInfo.second))
+            encodedFile = cipher.getBase64(Uri.parse(fileInfo.second), encodedFileMaxSize)
             addItem(fileInfo.first, fileInfo.second)
         } catch (e: NotEnoughMemoryException) {
             errorListener?.onStorageError(VGSError.FILE_SIZE_OVER_LIMIT)

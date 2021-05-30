@@ -11,5 +11,5 @@ internal interface VgsFileCipher {
     fun retrieve(map: HashMap<String, Any?>): Pair<String, String>?
 
     @Throws(NotEnoughMemoryException::class)
-    fun getBase64(uri: Uri): String
+    fun getBase64(uri: Uri, maxSize: Long): String
 }
