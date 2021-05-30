@@ -6,113 +6,131 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.LruCache
+import android.provider.OpenableColumns
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
+import androidx.core.net.toUri
 import com.verygoodsecurity.vgscollect.app.FilePickerActivity
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
 import com.verygoodsecurity.vgscollect.util.extension.NotEnoughMemoryException
-import com.verygoodsecurity.vgscollect.util.extension.parseFile
-import java.util.HashMap
+import com.verygoodsecurity.vgscollect.util.extension.queryOptional
+import com.verygoodsecurity.vgscollect.util.extension.toKb
+import java.util.*
 
+@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 internal class TemporaryFileStorage(
     private val context: Context,
     private val errorListener: StorageErrorListener? = null
 ) : VGSFileProvider, FileStorage {
 
-    companion object {
-        internal const val REQUEST_CODE = 0x3712
-    }
-
     private var cipher: VgsFileCipher = Base64Cipher(context)
+    private val fileInfoStore = mutableMapOf<String, FileState>()
+    private var encodedFileMaxSize: Long = Runtime.getRuntime().maxMemory() / 8
+    private var encodedFile: String? = null
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal val memoryCache:LruCache<String, String> by lazy {
-        val totalMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
-        val cacheSize = totalMemory / 8
-        object : LruCache<String, String>(cacheSize) {}
-    }
-
-    private val store = mutableMapOf<String, FileState>()
-
-    override fun detachAll() {
-        store.clear()
-        memoryCache.evictAll()
-    }
-
+    //region VGSFileProvider
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun resize(size: Int) {
-        memoryCache.resize(size)
+        encodedFileMaxSize = size.toKb()
     }
 
     override fun attachFile(fieldName: String) {
-        val tag = cipher.save(fieldName)
-
-        val mRequestFileIntent = Intent(context, FilePickerActivity::class.java)
-
-        val bndl = Bundle().apply {
-            putString(FilePickerActivity.TAG, tag.toString())
-        }
-        mRequestFileIntent.putExtras(bndl)
-        (context as Activity).startActivityForResult(
-            mRequestFileIntent,
+        (context as? Activity)?.startActivityForResult(
+            createFilePickerIntent(fieldName),
             REQUEST_CODE
-        )
+        ) ?: errorListener?.onStorageError(VGSError.NOT_ACTIVITY_CONTEXT)
     }
 
-    override fun getAttachedFiles(): List<FileState> = store.values.toList()
+    override fun getAttachedFiles(): List<FileState> = fileInfoStore.values.toList()
+
+    override fun detachAll() {
+        fileInfoStore.clear()
+        encodedFile = null
+    }
 
     override fun detachFile(file: FileState) {
-        store.remove(file.fieldName)
-        memoryCache.remove(file.fieldName)
+        fileInfoStore.remove(file.fieldName)
+        encodedFile = null
+    }
+    //endregion
+
+    //region FileStorage
+    override fun getAssociatedList(): MutableCollection<Pair<String, String>> {
+        return fileInfoStore.keys.map {
+            it to (encodedFile ?: "")
+        }.toMutableList()
     }
 
     override fun dispatch(map: HashMap<String, Any?>) {
         val fileInfo = cipher.retrieve(map)
-
-        if (fileInfo != null) {
-            try {
-                memoryCache.put(fileInfo.first, cipher.getBase64(Uri.parse(fileInfo.second)))
-                addItem(fileInfo.first, fileInfo.second)
-            } catch (e: NotEnoughMemoryException) {
-                errorListener?.onStorageError(VGSError.FILE_SIZE_OVER_LIMIT)
-            }
-        } else {
+        if (fileInfo == null) {
             errorListener?.onStorageError(VGSError.FILE_NOT_FOUND)
+            return
+        }
+        try {
+            encodedFile = cipher.getBase64(Uri.parse(fileInfo.second))
+            addItem(fileInfo.first, fileInfo.second)
+        } catch (e: NotEnoughMemoryException) {
+            errorListener?.onStorageError(VGSError.FILE_SIZE_OVER_LIMIT)
         }
     }
+    //endregion
 
+    //region VgsStore
     override fun clear() {
-        store.clear()
-        memoryCache.evictAll()
+        fileInfoStore.clear()
+        encodedFile = null
     }
 
-    override fun remove(key: String) {
-        memoryCache.remove(key)
-        store.remove(key)
+    override fun remove(id: String) {
+        fileInfoStore.remove(id)
+        encodedFile = null
     }
 
-    override fun addItem(fieldName: String, uriStr: String) {
-        val fileInfo = Uri.parse(uriStr).parseFile(context, fieldName)
-        fileInfo?.let {
-            store.clear()
-            store[it.fieldName] = fileInfo
+    override fun addItem(fieldName: String, uri: String) {
+        val fileState = queryFileState(uri.toUri(), fieldName)
+        if (fileState == null) {
+            errorListener?.onStorageError(VGSError.FILE_NOT_FOUND)
+            return
+        }
+        fileInfoStore.clear()
+        fileInfoStore[fileState.fieldName] = fileState
+    }
+
+    override fun getItems(): MutableCollection<String> = fileInfoStore.keys
+    //endregion
+
+    private fun createFilePickerIntent(fieldName: String): Intent {
+        return Intent(context, FilePickerActivity::class.java).apply {
+            putExtras(Bundle().apply {
+                putString(FilePickerActivity.TAG, cipher.save(fieldName).toString())
+            })
         }
     }
 
-    override fun getItems(): MutableCollection<String> {
-        return store.keys
-    }
-
-    override fun getAssociatedList(): MutableCollection<Pair<String, String>> {
-        return store.keys.map {
-            it to memoryCache.get(it)
-        }.toMutableList()
+    private fun queryFileState(uri: Uri, fieldName: String): FileState? {
+        context.contentResolver.queryOptional(uri)?.use {
+            val sizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
+            val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            it.moveToFirst()
+            return FileState(
+                it.getLong(sizeIndex),
+                it.getString(nameIndex),
+                context.contentResolver.getType(uri),
+                fieldName
+            )
+        }
+        return null
     }
 
     @VisibleForTesting
     fun setCipher(c: VgsFileCipher) {
         cipher = c
+    }
+
+    companion object {
+
+        internal const val REQUEST_CODE = 0x3712
     }
 }

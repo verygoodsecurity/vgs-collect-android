@@ -30,6 +30,9 @@ enum class VGSError(val code:Int, val messageResId:Int) {
     ),
     FILE_SIZE_OVER_LIMIT(1103,
         R.string.error_file_size_validation
+    ),
+    NOT_ACTIVITY_CONTEXT(1105,
+        R.string.error_not_activity_context
     )
 }
 
