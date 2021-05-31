@@ -89,10 +89,6 @@ internal class TemporaryFileStorage(
 
     override fun addItem(fieldName: String, uri: String) {
         val fileState = queryFileState(uri.toUri(), fieldName)
-        if (fileState == null) {
-            errorListener?.onStorageError(VGSError.FILE_NOT_FOUND)
-            return
-        }
         fileInfoStore.clear()
         fileInfoStore[fileState.fieldName] = fileState
     }
@@ -108,19 +104,16 @@ internal class TemporaryFileStorage(
         }
     }
 
-    private fun queryFileState(uri: Uri, fieldName: String): FileState? {
+    private fun queryFileState(uri: Uri, fieldName: String): FileState {
+        var name = ""
+        var size = 0L
         context.contentResolver.queryOptional(uri)?.use {
-            val sizeIndex = it.getColumnIndex(OpenableColumns.SIZE)
-            val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-            it.moveToFirst()
-            return FileState(
-                it.getLong(sizeIndex),
-                it.getString(nameIndex),
-                context.contentResolver.getType(uri),
-                fieldName
-            )
+            if (it.moveToFirst()) {
+                name = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                size = it.getLong(it.getColumnIndex(OpenableColumns.SIZE))
+            }
         }
-        return null
+        return FileState(size, name, context.contentResolver.getType(uri), fieldName)
     }
 
     @VisibleForTesting
