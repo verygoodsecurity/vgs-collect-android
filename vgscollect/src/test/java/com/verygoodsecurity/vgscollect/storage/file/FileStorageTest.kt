@@ -2,18 +2,15 @@ package com.verygoodsecurity.vgscollect.storage.file
 
 import android.app.Activity
 import android.net.Uri
-import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VgsFileCipher
-import io.mockk.spyk
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
@@ -23,6 +20,8 @@ import org.robolectric.android.controller.ActivityController
 class FileStorageTest {
     private lateinit var activityController: ActivityController<Activity>
     private lateinit var activity: Activity
+
+    private val encodedFileMaxSize = Runtime.getRuntime().maxMemory() / 8
 
     @Before
     fun setUp() {
@@ -94,7 +93,7 @@ class FileStorageTest {
         val uri = Uri.parse(filePath)
 
         doReturn(base64Str)
-            .`when`(c).getBase64(uri)
+            .`when`(c).getBase64(uri, encodedFileMaxSize)
 
 
         val response = fieldName to filePath
@@ -131,7 +130,7 @@ class FileStorageTest {
         val uri = Uri.parse(filePath)
 
         doReturn(base64Str)
-            .`when`(c).getBase64(uri)
+            .`when`(c).getBase64(uri, encodedFileMaxSize)
 
 
         val response = fieldName to filePath
@@ -150,7 +149,7 @@ class FileStorageTest {
         store.dispatch(map)
 
 
-        verify(c).getBase64(uri)
+        verify(c).getBase64(uri, encodedFileMaxSize)
 
         assertEquals(1, store.getItems().size)
     }

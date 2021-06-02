@@ -55,7 +55,7 @@ class VGSCollect {
     private var storage: InternalStorage
     private val storageErrorListener: StorageErrorListener = object : StorageErrorListener {
         override fun onStorageError(error: VGSError) {
-            VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context).also { r ->
+           error.toVGSResponse(context).also { r ->
                 notifyAllListeners(r)
                 VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
                 submitEvent(false, code = r.errorCode)
