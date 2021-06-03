@@ -7,6 +7,8 @@ import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscollect.util.extension.toBase64
 import com.verygoodsecurity.vgscollect.util.extension.toJSON
 
+private const val DEFAULT_CONNECTION_TIME_OUT = 60_000L
+
 /**
  * Class to collect data before submit.
  *
@@ -27,7 +29,8 @@ data class VGSRequest private constructor(
     val fieldsIgnore: Boolean,
     val fileIgnore: Boolean,
     val format: VGSHttpBodyFormat,
-    val fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy
+    val fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy,
+    val requestTimeoutInterval: Long,
 ) {
 
     /**
@@ -43,6 +46,7 @@ data class VGSRequest private constructor(
         private var format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var fileIgnore: Boolean = false
         private var fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy = VGSCollectFieldNameMappingPolicy.NESTED_JSON
+        private var requestTimeoutInterval: Long = DEFAULT_CONNECTION_TIME_OUT
 
         /**
          * It collect custom data which will be send to the server.
@@ -118,11 +122,6 @@ data class VGSRequest private constructor(
             return this
         }
 
-        internal fun setFormat(format: VGSHttpBodyFormat): VGSRequestBuilder {
-            this.format = format
-            return this
-        }
-
         /**
          * Ignore files in a request to the server.
          *
@@ -131,6 +130,21 @@ data class VGSRequest private constructor(
          */
         fun ignoreFiles(): VGSRequestBuilder {
             fileIgnore = true
+            return this
+        }
+
+        /**
+         * Specifies request timeout interval in milliseconds.
+         *
+         * @param timeout interval in milliseconds.
+         */
+        fun setRequestTimeoutInterval(timeout: Long): VGSRequestBuilder {
+            this.requestTimeoutInterval = timeout
+            return this
+        }
+
+        internal fun setFormat(format: VGSHttpBodyFormat): VGSRequestBuilder {
+            this.format = format
             return this
         }
 
@@ -148,7 +162,8 @@ data class VGSRequest private constructor(
                 fieldsIgnore,
                 fileIgnore,
                 format,
-                fieldNameMappingPolicy
+                fieldNameMappingPolicy,
+                requestTimeoutInterval
             )
         }
     }
@@ -162,7 +177,8 @@ fun VGSRequest.toAnalyticRequest(url: String): NetworkRequest {
         customData.toJSON().toString().toBase64(),
         fieldsIgnore,
         fileIgnore,
-        format
+        format,
+        requestTimeoutInterval
     )
 }
 
@@ -174,6 +190,7 @@ fun VGSRequest.toNetworkRequest(url: String, requestData: Map<String, Any>? = nu
         requestData?.toJSON()?.toString() ?: customData,
         fieldsIgnore,
         fileIgnore,
-        format
+        format,
+        requestTimeoutInterval
     )
 }

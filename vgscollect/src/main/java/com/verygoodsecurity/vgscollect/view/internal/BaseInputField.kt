@@ -24,6 +24,7 @@ import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
+import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
@@ -371,7 +372,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private fun logAutofillAction() {
         val m = with(mutableMapOf<String, String>()) {
-            put("field", fieldType.raw)
+            put("field", fieldType.getAnalyticName())
             this
         }
 

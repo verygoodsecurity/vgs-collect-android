@@ -123,7 +123,7 @@ var pathtoroot = "../../../../../";
                     <pre class="wrap-overflow">
 
 public enum <span class="typeNameLabel"><a href=FieldType.html>FieldType</a></span>
-extends <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html>Enum</a>&lt;<a href=FieldType.html>FieldType</a>&gt;
+extends <a href=https://developer.android.com/reference/kotlin/java/lang/Enum.html>Enum</a>&lt;<a href=FieldType.html>FieldType</a>&gt;
                     </pre>
                     <div class="block"><p>The enum class represents all available type of VGS input fields.</p></div>
                 </li>
@@ -152,19 +152,19 @@ extends <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html>En
                                         </tr>
                                         
                                         <tr class="altColor">
-                                            <td class="colFirst"><code>private final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a></code></td>
+                                            <td class="colFirst"><code>private final <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a></code></td>
                                             <th class="colSecond" scope="row"><code><a href=FieldType.html#raw>raw</a></code></th>
                                             <td class="colLast"></td>
                                         </tr>
                                         
                                         <tr class="rowColor">
-                                            <td class="colFirst"><code>private final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a></code></td>
+                                            <td class="colFirst"><code>private final <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a></code></td>
                                             <th class="colSecond" scope="row"><code><a href=FieldType.html#name>name</a></code></th>
                                             <td class="colLast"></td>
                                         </tr>
                                         
                                         <tr class="altColor">
-                                            <td class="colFirst"><code>private final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a></code></td>
+                                            <td class="colFirst"><code>private final <a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a></code></td>
                                             <th class="colSecond" scope="row"><code><a href=FieldType.html#ordinal>ordinal</a></code></th>
                                             <td class="colLast"></td>
                                         </tr>
@@ -194,38 +194,38 @@ extends <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html>En
                                     
                                     <tr class="altColor">
                                         <th class="colFirst" scope="row"><code><span class="memberNameLink"><a
-                                                href="TODO"><a href=FieldType.html#CARD_NUMBER>CARD_NUMBER</a></a></span></code></th>
-                                        <td class="colLast"><p>Represents field with card number input in '####-####-####-####' format. The field supports smart detection of different card brands. Some available brands support Luhn algorithm during validation.</p></td>
+                                                href="TODO"><a href=FieldType.html#SSN>SSN</a></a></span></code></th>
+                                        <td class="colLast"><p>Represents field with Social Security Number (SSN) consists of nine digits, commonly written as three fields separated by hyphens: ###-##-####.</p></td>
                                     </tr>
                                     
                                     <tr class="rowColor">
-                                        <th class="colFirst" scope="row"><code><span class="memberNameLink"><a
-                                                href="TODO"><a href=FieldType.html#CVC>CVC</a></a></span></code></th>
-                                        <td class="colLast"><p>Represents field with CVC number. CVC input field depends on CARD_NUMBER field. CVC input field applies limitations defined in the CardType class.</p></td>
-                                    </tr>
-                                    
-                                    <tr class="altColor">
-                                        <th class="colFirst" scope="row"><code><span class="memberNameLink"><a
-                                                href="TODO"><a href=FieldType.html#CARD_EXPIRATION_DATE>CARD_EXPIRATION_DATE</a></a></span></code></th>
-                                        <td class="colLast"><p>The input field provides date limitations with format MM/yy .</p></td>
-                                    </tr>
-                                    
-                                    <tr class="rowColor">
-                                        <th class="colFirst" scope="row"><code><span class="memberNameLink"><a
-                                                href="TODO"><a href=FieldType.html#CARD_HOLDER_NAME>CARD_HOLDER_NAME</a></a></span></code></th>
-                                        <td class="colLast"><p>The input field applies any characters, digits, and space.</p></td>
-                                    </tr>
-                                    
-                                    <tr class="altColor">
                                         <th class="colFirst" scope="row"><code><span class="memberNameLink"><a
                                                 href="TODO"><a href=FieldType.html#INFO>INFO</a></a></span></code></th>
                                         <td class="colLast"><p>The input field has no limitations.</p></td>
                                     </tr>
                                     
+                                    <tr class="altColor">
+                                        <th class="colFirst" scope="row"><code><span class="memberNameLink"><a
+                                                href="TODO"><a href=FieldType.html#CARD_HOLDER_NAME>CARD_HOLDER_NAME</a></a></span></code></th>
+                                        <td class="colLast"><p>The input field applies any characters, digits, and space.</p></td>
+                                    </tr>
+                                    
                                     <tr class="rowColor">
                                         <th class="colFirst" scope="row"><code><span class="memberNameLink"><a
-                                                href="TODO"><a href=FieldType.html#SSN>SSN</a></a></span></code></th>
-                                        <td class="colLast"><p>Represents field with Social Security Number (SSN) consists of nine digits, commonly written as three fields separated by hyphens: ###-##-####.</p></td>
+                                                href="TODO"><a href=FieldType.html#CARD_EXPIRATION_DATE>CARD_EXPIRATION_DATE</a></a></span></code></th>
+                                        <td class="colLast"><p>The input field provides date limitations with format MM/yy .</p></td>
+                                    </tr>
+                                    
+                                    <tr class="altColor">
+                                        <th class="colFirst" scope="row"><code><span class="memberNameLink"><a
+                                                href="TODO"><a href=FieldType.html#CVC>CVC</a></a></span></code></th>
+                                        <td class="colLast"><p>Represents field with CVC number. CVC input field depends on CARD_NUMBER field. CVC input field applies limitations defined in the CardType class.</p></td>
+                                    </tr>
+                                    
+                                    <tr class="rowColor">
+                                        <th class="colFirst" scope="row"><code><span class="memberNameLink"><a
+                                                href="TODO"><a href=FieldType.html#CARD_NUMBER>CARD_NUMBER</a></a></span></code></th>
+                                        <td class="colLast"><p>Represents field with card number input in '####-####-####-####' format. The field supports smart detection of different card brands. Some available brands support Luhn algorithm during validation.</p></td>
                                     </tr>
                                     
                                 </table>
@@ -255,7 +255,7 @@ extends <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html>En
                                         </tr>
                                         
                                         <tr id="i0" class="altColor">
-                                            <td class="colFirst"><code>final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a></code>
+                                            <td class="colFirst"><code>final <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=FieldType.html#getRaw()>getRaw</a>() </code>
                                             </th>
@@ -263,7 +263,7 @@ extends <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html>En
                                         </tr>
                                         
                                         <tr id="i1" class="rowColor">
-                                            <td class="colFirst"><code>final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a></code>
+                                            <td class="colFirst"><code>final <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=FieldType.html#getName()>getName</a>() </code>
                                             </th>
@@ -271,7 +271,7 @@ extends <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html>En
                                         </tr>
                                         
                                         <tr id="i2" class="altColor">
-                                            <td class="colFirst"><code>final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a></code>
+                                            <td class="colFirst"><code>final <a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=FieldType.html#getOrdinal()>getOrdinal</a>() </code>
                                             </th>
@@ -283,12 +283,6 @@ extends <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html>En
                                 </div>
                                 <ul class="blockList">
                                 
-                                    <li class="blockList"><a id="methods.inherited.from.class.com.verygoodsecurity.vgscollect.view.card.FieldType">
-                                            <!--   -->
-                                        </a>
-                                            <h3>Methods inherited from class&nbsp;com.verygoodsecurity.vgscollect.view.card.FieldType</h3>
-                                            <code>compareTo, equals, finalize, getDeclaringClass, hashCode, toString</code></li>
-                                 
                                     <li class="blockList"><a id="methods.inherited.from.class.java.lang.Object">
                                         <!--   -->
                                     </a>
@@ -325,7 +319,7 @@ extends <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html>En
                                           >
                                     <li class="blockList">
                                         <h4>getRaw</h4>
-                                        <pre class="methodSignature"> final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> <a href=FieldType.html#getRaw()>getRaw</a>()</pre>
+                                        <pre class="methodSignature"> final <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> <a href=FieldType.html#getRaw()>getRaw</a>()</pre>
                                         <div class="block"></div>
                                         
                                         <!-- TODO missing return annotation -->
@@ -340,7 +334,7 @@ extends <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html>En
                                           >
                                     <li class="blockList">
                                         <h4>getName</h4>
-                                        <pre class="methodSignature"> final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/String.html>String</a> <a href=FieldType.html#getName()>getName</a>()</pre>
+                                        <pre class="methodSignature"> final <a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> <a href=FieldType.html#getName()>getName</a>()</pre>
                                         <div class="block"></div>
                                         
                                         <!-- TODO missing return annotation -->
@@ -355,7 +349,7 @@ extends <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Enum.html>En
                                           >
                                     <li class="blockList">
                                         <h4>getOrdinal</h4>
-                                        <pre class="methodSignature"> final <a href=https://docs.oracle.com/javase/8/docs/api/java/lang/Integer.html>Integer</a> <a href=FieldType.html#getOrdinal()>getOrdinal</a>()</pre>
+                                        <pre class="methodSignature"> final <a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a> <a href=FieldType.html#getOrdinal()>getOrdinal</a>()</pre>
                                         <div class="block"></div>
                                         
                                         <!-- TODO missing return annotation -->

@@ -8,16 +8,16 @@ import android.provider.BaseColumns
 import android.provider.DocumentsContract
 import android.util.Base64
 import androidx.annotation.VisibleForTesting
-import java.io.*
+import com.verygoodsecurity.vgscollect.util.extension.toBase64String
+import com.verygoodsecurity.vgscollect.util.extension.useIfMemoryEnough
 import java.util.*
 
 internal class Base64Cipher(val context: Context):VgsFileCipher {
     private var contentResolver = (context as Activity).contentResolver
-    private val outputDir = context.cacheDir
     private var submitCode = -1L
     private var fieldName = ""
 
-    override fun save(fieldName:String):Long {
+    override fun save(fieldName: String): Long {
         if (submitCode == -1L) {
             this.fieldName = fieldName
             submitCode = System.currentTimeMillis()
@@ -68,31 +68,15 @@ internal class Base64Cipher(val context: Context):VgsFileCipher {
         fieldName = ""
     }
 
-    private fun getFileBase64(attachment: ByteArray?): String {
-        return attachment?.run {
-            Base64.encodeToString(attachment, Base64.NO_WRAP)
-        }?:""
+    override fun getBase64(uri: Uri, maxSize: Long): String {
+        return readBytes(uri, maxSize)?.toBase64String(Base64.NO_WRAP) ?: ""
     }
 
-    private fun getFile(fileUri: Uri): ByteArray? {
-        val tempFile = File.createTempFile("prefix", "extension", outputDir)
-
-        val inputStream: InputStream = contentResolver.openInputStream(fileUri)!!
-        val out: OutputStream = FileOutputStream(tempFile)
-        val buf = ByteArray(1024)
-        var len = 0
-        while (inputStream.read(buf).also { len = it } > 0) {
-            out.write(buf, 0, len)
+    private fun readBytes(uri: Uri, maxSize: Long): ByteArray? {
+        contentResolver.openInputStream(uri)?.useIfMemoryEnough(maxSize) {
+            return it.readBytes()
         }
-        out.close()
-        inputStream.close()
-
-        return tempFile.readBytes()
-    }
-
-    override fun getBase64(file: Uri): String {
-        val ff = getFile(file)
-        return getFileBase64(ff)
+        return null
     }
 
     @VisibleForTesting
