@@ -24,12 +24,11 @@ internal class InfoInputField(context: Context) : BaseInputField(context) {
         inputConnection?.setOutputListener(stateListener)
 
         applyNewTextWatcher(null)
-        filters = arrayOf()
         applyInputType()
     }
 
-    override fun setInputType(type: Int) {
-        super.setInputType(type)
+    override fun setText(text: CharSequence?, type: BufferType?) {
+        super.setText(text, type)
     }
 
     private fun applyInputType() {
@@ -38,7 +37,7 @@ internal class InfoInputField(context: Context) : BaseInputField(context) {
         when (type) {
             InputType.TYPE_CLASS_NUMBER,
             InputType.TYPE_CLASS_DATETIME,
-            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> { }
+            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> {}
             InputType.TYPE_TEXT_VARIATION_PASSWORD,
             InputType.TYPE_NUMBER_VARIATION_PASSWORD,
             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> {
