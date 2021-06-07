@@ -12,6 +12,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.R
+import com.verygoodsecurity.demoapp.actions.SetTextAction
 import com.verygoodsecurity.demoapp.instrumented.VGSEditTextInputTypeActivity
 import com.verygoodsecurity.demoapp.matchers.withEditTextState
 import org.junit.Before
@@ -41,7 +42,7 @@ class VGSEditTextActivityInputTypeInstrumentedTest {
 
         openKeyboard(field)
 
-        typeNumber(device)
+        field.perform(SetTextAction(NUMBER))
         field.check(ViewAssertions.matches(withEditTextState(NUMBER)))
     }
 
