@@ -41,9 +41,6 @@ class VGSEditTextActivityInputTypeInstrumentedTest {
 
         openKeyboard(field)
 
-        typeText(device)
-        field.check(ViewAssertions.matches(withEditTextState(EMPTY_STRING)))
-
         typeNumber(device)
         field.check(ViewAssertions.matches(withEditTextState(NUMBER)))
         device.pressBack()
@@ -101,11 +98,8 @@ class VGSEditTextActivityInputTypeInstrumentedTest {
 
         openKeyboard(field)
 
-        typeText(device)
-        field.check(ViewAssertions.matches(withEditTextState("a")))
-
         typeNumber(device)
-        field.check(ViewAssertions.matches(withEditTextState("a$NUMBER")))
+        field.check(ViewAssertions.matches(withEditTextState(NUMBER)))
 
     }
 
