@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp
+package com.verygoodsecurity.demoapp.tests.flows
 
 import android.widget.DatePicker
 import androidx.test.espresso.Espresso.onView
@@ -9,6 +9,8 @@ import androidx.test.espresso.contrib.PickerActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.verygoodsecurity.demoapp.R
+import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.demoapp.actions.FieldClickAction
 import com.verygoodsecurity.demoapp.actions.SetTextAction
 import com.verygoodsecurity.demoapp.matchers.withCardCVCState

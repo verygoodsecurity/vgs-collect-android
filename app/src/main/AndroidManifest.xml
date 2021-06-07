@@ -31,6 +31,10 @@
             android:label="Fragment Demo"/>
         <activity android:name=".viewpager_case.VGSViewPagerActivity"
             android:label="ViewPager Demo"/>
+        <activity android:name=".instrumented.VGSEditTextInputTypeActivity"
+            android:label="Instrumented Demo"/>
+        <activity android:name=".instrumented.VGSEditTextActivity"
+            android:label="Instrumented Demo"/>
     </application>
 
 </manifest>
