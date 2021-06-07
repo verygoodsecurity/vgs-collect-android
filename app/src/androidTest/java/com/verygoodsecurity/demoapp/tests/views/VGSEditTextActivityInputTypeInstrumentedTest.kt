@@ -40,8 +40,6 @@ class VGSEditTextActivityInputTypeInstrumentedTest {
         val field = Espresso.onView(ViewMatchers.withId(R.id.vgsEditTextNumber))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
-        openKeyboard(field)
-
         field.perform(SetTextAction(NUMBER))
         field.check(ViewAssertions.matches(withEditTextState(NUMBER)))
     }
