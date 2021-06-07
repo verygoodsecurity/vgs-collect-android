@@ -43,7 +43,6 @@ class VGSEditTextActivityInputTypeInstrumentedTest {
 
         typeNumber(device)
         field.check(ViewAssertions.matches(withEditTextState(NUMBER)))
-        device.pressBack()
     }
 
     @Test
