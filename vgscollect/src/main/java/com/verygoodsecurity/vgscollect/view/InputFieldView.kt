@@ -459,20 +459,14 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @return True if this view has focus, false otherwise.
      */
-    override fun isFocused(): Boolean {
-        return inputField.isFocused
-    }
+    override fun isFocused(): Boolean = inputField.isFocused
 
     /**
      * Find the view in the hierarchy rooted at this view that currently has focus.
      *
      * @return The view that currently has focus, or null if no focused view can be found.
      */
-    override fun findFocus(): View? {
-        return inputField.findFocus()?.run {
-            this@InputFieldView
-        }
-    }
+    override fun findFocus(): View = inputField.findFocus()
 
     /**
      * Set whether this view can receive the focus.
