@@ -12,6 +12,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.R
+import com.verygoodsecurity.demoapp.actions.SetTextAction
 import com.verygoodsecurity.demoapp.instrumented.VGSEditTextInputTypeActivity
 import com.verygoodsecurity.demoapp.matchers.withEditTextState
 import org.junit.Before
@@ -39,14 +40,8 @@ class VGSEditTextActivityInputTypeInstrumentedTest {
         val field = Espresso.onView(ViewMatchers.withId(R.id.vgsEditTextNumber))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
-        openKeyboard(field)
-
-        typeText(device)
-        field.check(ViewAssertions.matches(withEditTextState(EMPTY_STRING)))
-
-        typeNumber(device)
+        field.perform(SetTextAction(NUMBER))
         field.check(ViewAssertions.matches(withEditTextState(NUMBER)))
-        device.pressBack()
     }
 
     @Test
@@ -101,11 +96,8 @@ class VGSEditTextActivityInputTypeInstrumentedTest {
 
         openKeyboard(field)
 
-        typeText(device)
-        field.check(ViewAssertions.matches(withEditTextState("a")))
-
         typeNumber(device)
-        field.check(ViewAssertions.matches(withEditTextState("a$NUMBER")))
+        field.check(ViewAssertions.matches(withEditTextState(NUMBER)))
 
     }
 
