@@ -6,6 +6,11 @@ package com.verygoodsecurity.vgscollect.core.model
 enum class VGSCollectFieldNameMappingPolicy constructor(internal val analyticsName: String) {
 
     /**
+     *
+     */
+    FLAT_JSON("flat_json"),
+
+    /**
      * Map fieldName to JSON. Deep nested key format is supported.
      * VGSCollect supports this format by default.
      */
