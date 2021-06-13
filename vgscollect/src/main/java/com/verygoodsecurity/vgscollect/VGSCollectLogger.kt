@@ -8,13 +8,16 @@ import com.verygoodsecurity.vgscollect.VGSCollectLogger.Level.*
  */
 object VGSCollectLogger {
 
-    private const val TAG = "VGSCollect"
+    const val DEFAULT_TAG = "VGSCollect"
 
     /** Current priority level for filtering debugging logs */
-    var logLevel: Level = if(BuildConfig.DEBUG) DEBUG else NONE
+    var logLevel: Level = DEBUG
 
     /** Allows enable and disable debug-log printing. */
-    var isEnabled = BuildConfig.DEBUG
+    var isEnabled = true
+
+    /** Current logs tag */
+    var tag: String = DEFAULT_TAG
 
     /**
      * Priority constant for the printing debug-logs.
@@ -41,15 +44,17 @@ object VGSCollectLogger {
     /**
      * Returns true if the logger print log messages.
      */
-    fun isDebugEnabled(): Boolean = logLevel.ordinal != NONE.ordinal
+    fun isDebugEnabled(): Boolean = isEnabled && (logLevel.ordinal != NONE.ordinal)
 
-    private fun printLog(level: Level, tag: String?, message: String) {
-        if(isEnabled && level.ordinal >= logLevel.ordinal) {
-            val log:String = if(tag.isNullOrEmpty()) message else "$tag: $message"
+    private fun printLog(level: Level, prefix: String?, message: String) {
+        if (isEnabled && level.ordinal >= logLevel.ordinal) {
+            val log: String = if (prefix.isNullOrEmpty()) message else "$prefix: $message"
 
             when (level) {
-                DEBUG -> Log.d(TAG, log)
-                WARN -> Log.w(TAG, log)
+                DEBUG -> Log.d(this.tag, log)
+                WARN -> Log.w(this.tag, log)
+                NONE -> {
+                }
             }
         }
     }
