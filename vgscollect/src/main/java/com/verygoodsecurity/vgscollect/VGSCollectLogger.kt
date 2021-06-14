@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscollect.VGSCollectLogger.Level.*
  */
 object VGSCollectLogger {
 
-    const val DEFAULT_TAG = "VGSCollect"
+    const val TAG = "VGSCollect"
 
     /** Current priority level for filtering debugging logs */
     var logLevel: Level = DEBUG
@@ -17,7 +17,7 @@ object VGSCollectLogger {
     var isEnabled = true
 
     /** Current logs tag */
-    var tag: String = DEFAULT_TAG
+    var tag: String = TAG
 
     /**
      * Priority constant for the printing debug-logs.
