@@ -27,6 +27,10 @@ internal fun Map<String, Any>.toFlatMap(allowParseArrays: Boolean): FlatMap {
     }
 }
 
+internal fun Iterable<Pair<String, Any>>.toFlatMap(allowParseArrays: Boolean): FlatMap {
+    return toMap().toFlatMap(allowParseArrays)
+}
+
 @Suppress("UNCHECKED_CAST")
 internal fun MutableMap<String, Any>.deepMerge(
     source: Map<String, Any>,

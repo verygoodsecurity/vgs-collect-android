@@ -6,10 +6,21 @@ package com.verygoodsecurity.vgscollect.core.model
 enum class VGSCollectFieldNameMappingPolicy constructor(internal val analyticsName: String) {
 
     /**
-     * Map fieldName to JSON. Deep nested key format is supported.
+     * Map fieldName to JSON. Deep nested key format is supported. Completely overwrite extra data.
+     * Arrays are not supported.
      * VGSCollect supports this format by default.
+     *
+     * When you need to send data in a specific JSON structure you may do it by adding . notation to fieldName-string.
+     * Each . in a fieldName represents a new level of nesting.
+     * New field name string could be set into app:fieldName or setFieldName method.
      */
     NESTED_JSON("nested_json"),
+
+    /**
+     * Map fieldName to JSON. A value uses in JSON without any changes before submitting.
+     * Completely overwrite extra data.
+     */
+    FLAT_JSON("flat_json"),
 
     /**
      * Map fieldName to JSON with arrays if index is specified. Also merge extra data array with

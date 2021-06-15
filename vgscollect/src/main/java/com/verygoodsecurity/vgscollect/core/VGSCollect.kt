@@ -55,7 +55,7 @@ class VGSCollect {
     private var storage: InternalStorage
     private val storageErrorListener: StorageErrorListener = object : StorageErrorListener {
         override fun onStorageError(error: VGSError) {
-           error.toVGSResponse(context).also { r ->
+            error.toVGSResponse(context).also { r ->
                 notifyAllListeners(r)
                 VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
                 submitEvent(false, code = r.errorCode)
@@ -94,7 +94,8 @@ class VGSCollect {
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
         this.baseURL = generateBaseUrl(id, environment, url, port)
-        this.tracker = CollectActionTracker(id, environment, UUID.randomUUID().toString(), isSatelliteMode)
+        this.tracker =
+            CollectActionTracker(id, environment, UUID.randomUUID().toString(), isSatelliteMode)
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
         addOnResponseListeners(analyticListener)
@@ -378,25 +379,24 @@ class VGSCollect {
     }
 
     private fun mergeData(request: VGSRequest): Map<String, Any> {
-        val result = mutableMapOf<String, Any>()
         val (allowArrays, mergeArraysPolicy) = when (request.fieldNameMappingPolicy) {
+            FLAT_JSON -> null to ArrayMergePolicy.OVERWRITE
             NESTED_JSON -> false to ArrayMergePolicy.OVERWRITE
             NESTED_JSON_WITH_ARRAYS_MERGE -> true to ArrayMergePolicy.MERGE
             NESTED_JSON_WITH_ARRAYS_OVERWRITE -> true to ArrayMergePolicy.OVERWRITE
         }
-        // Merge static custom data into result
-        result.deepMerge(client.getTemporaryStorage().getCustomData(), mergeArraysPolicy)
-        // Merge dynamic custom data into result
-        result.deepMerge(request.customData, mergeArraysPolicy)
-        // Merge fields data into result
-        result.deepMerge(
-            storage.getAssociatedList(
-                request.fieldsIgnore,
-                request.fileIgnore
-            ).toMap().toFlatMap(allowArrays).structuredData,
-            mergeArraysPolicy
-        )
-        return result
+
+        return with(client.getTemporaryStorage().getCustomData()) { // Static additional data
+            // Merge dynamic additional data
+            deepMerge(request.customData, mergeArraysPolicy)
+
+            val fieldsData = allowArrays?.let {
+                storage.getAssociatedList(request.fieldsIgnore, request.fileIgnore)
+                    .toFlatMap(it).structuredData
+            } ?: storage.getAssociatedList(request.fieldsIgnore, request.fileIgnore).toMap()
+
+            deepMerge(fieldsData, mergeArraysPolicy)
+        }
     }
 
     /**
