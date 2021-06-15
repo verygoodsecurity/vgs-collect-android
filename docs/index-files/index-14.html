@@ -180,7 +180,7 @@ var pathtoroot = "../";
                 
 
             </dt>
-            <dd><p>Map fieldName to JSON. Deep nested key format is supported. VGSCollect supports this format by default.</p></dd>
+            <dd><p>Map fieldName to JSON. Deep nested key format is supported. Completely overwrite extra data. Arrays are not supported. VGSCollect supports this format by default.</p><p>When you need to send data in a specific JSON structure you may do it by adding . notation to fieldName-string. Each . in a fieldName represents a new level of nesting. New field name string could be set into app:fieldName or setFieldName method.</p></dd>
 
         
             <dt>
