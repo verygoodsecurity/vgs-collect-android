@@ -6,6 +6,8 @@ import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
@@ -24,6 +26,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
+import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
@@ -774,11 +777,37 @@ abstract class InputFieldView @JvmOverloads constructor(
             inputField.setTextAppearance(context, textAppearance)
         }
 
-        val bgDraw = background?.constantState?.newDrawable()
-        if (bgDraw != null) {
-            inputField.background = bgDraw
+        background?.constantState?.newDrawable()?.apply {
+            setBackgroundColor(Color.TRANSPARENT)
+            bgDraw = this
+            inputField.background = this
         }
-        setBackgroundColor(Color.TRANSPARENT)
+    }
+
+    private var bgDraw: Drawable? = null
+
+    override fun setBackgroundColor(color: Int) {
+        background = ColorDrawable(color)
+    }
+
+    override fun setBackground(background: Drawable?) {
+        when {
+            ::inputField.isInitialized -> {
+                bgDraw = background
+                inputField.background = background
+                super.setBackground(ContextCompat.getDrawable(context, android.R.color.transparent))
+            }
+            bgDraw != null -> {
+                bgDraw = background
+                inputField.background = background
+                super.setBackground(ContextCompat.getDrawable(context, android.R.color.transparent))
+            }
+            else -> super.setBackground(background)
+        }
+    }
+
+    override fun getBackground(): Drawable? {
+        return bgDraw ?: super.getBackground()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -822,7 +851,7 @@ abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? CardInputField)?.setCardBrand(c)
         }
     }
-    
+
     protected fun setValidCardBrands(cardBrands: List<CardBrand>) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setValidCardBrands(cardBrands)

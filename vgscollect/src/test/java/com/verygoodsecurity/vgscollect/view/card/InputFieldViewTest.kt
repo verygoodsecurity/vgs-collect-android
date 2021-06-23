@@ -7,6 +7,7 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -295,7 +296,7 @@ class InputFieldViewTest {
 
         verify(listener, times(0)).onTextChange(view, false)
     }
-  
+
     @Test
     fun test_set_is_focusable() {
         view.isFocusable = false
@@ -305,9 +306,16 @@ class InputFieldViewTest {
 
     @Test
     fun tests_request_focus() {
+        view.onAttachedToWindow()
         view.requestFocus()
 
         assertEquals(view.hasFocus(), true)
         assertEquals(view.isFocused, true)
+    }
+
+    @Test
+    fun test_background() {
+        view.background = ContextCompat.getDrawable(activity, android.R.drawable.edit_text)
+        assertEquals(view.statePreparer.getView().background, view.background)
     }
 }
