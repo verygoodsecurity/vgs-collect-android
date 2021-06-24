@@ -792,12 +792,7 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     override fun setBackground(background: Drawable?) {
         when {
-            ::inputField.isInitialized -> {
-                bgDraw = background
-                inputField.background = background
-                super.setBackground(ContextCompat.getDrawable(context, android.R.color.transparent))
-            }
-            bgDraw != null -> {
+            ::inputField.isInitialized || bgDraw != null -> {
                 bgDraw = background
                 inputField.background = background
                 super.setBackground(ContextCompat.getDrawable(context, android.R.color.transparent))
