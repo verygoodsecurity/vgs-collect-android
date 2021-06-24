@@ -159,6 +159,7 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         if (hasChildren()) removeAllViews()
+        bgDraw = null
         super.onDetachedFromWindow()
     }
 
