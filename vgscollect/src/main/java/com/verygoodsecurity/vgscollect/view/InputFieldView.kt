@@ -21,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.autofill.AutofillId
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -1367,6 +1368,26 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     override fun setOnKeyListener(l: OnKeyListener?) {
         inputField.setOnKeyListener(l)
+    }
+
+    /**
+     * Explicitly request that the current input method's soft input area be shown to the user, if needed.
+     */
+    fun showKeyboard() {
+        if(::inputField.isInitialized) {
+            val im = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            im.showSoftInput(inputField, 0)
+        }
+    }
+
+    /**
+     * Request to hide the soft input window from the context of the window that is currently accepting input.
+     */
+    fun hideKeyboard() {
+        if(::inputField.isInitialized) {
+            val im = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            im.hideSoftInputFromWindow(inputField.windowToken, 0)
+        }
     }
 
     companion object {
