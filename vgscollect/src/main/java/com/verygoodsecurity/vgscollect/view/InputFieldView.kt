@@ -21,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.autofill.AutofillId
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -1367,6 +1368,20 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     override fun setOnKeyListener(l: OnKeyListener?) {
         inputField.setOnKeyListener(l)
+    }
+
+    fun showKeyboard() {
+        if(::inputField.isInitialized) {
+            val im = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            im.showSoftInput(inputField, 0)
+        }
+    }
+
+    fun hideKeyboard() {
+        if(::inputField.isInitialized) {
+            val im = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            im.hideSoftInputFromWindow(inputField.windowToken, 0)
+        }
     }
 
     companion object {
