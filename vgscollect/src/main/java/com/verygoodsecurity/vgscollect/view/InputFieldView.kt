@@ -1370,6 +1370,9 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.setOnKeyListener(l)
     }
 
+    /**
+     * Explicitly request that the current input method's soft input area be shown to the user, if needed.
+     */
     fun showKeyboard() {
         if(::inputField.isInitialized) {
             val im = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -1377,6 +1380,9 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Request to hide the soft input window from the context of the window that is currently accepting input.
+     */
     fun hideKeyboard() {
         if(::inputField.isInitialized) {
             val im = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
