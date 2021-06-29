@@ -121,6 +121,9 @@
              {@link android.text.InputType#TYPE_CLASS_DATETIME} |
              {@link android.text.InputType#TYPE_DATETIME_VARIATION_DATE}. -->
         <enum name="date" value="4" />
+
+        <!-- Corresponds to {@link android.text.InputType#TYPE_TEXT_FLAG_CAP_CHARACTERS}. -->
+        <enum name="textCapCharacters" value="4096" />
     </attr>
 
     <!-- Where to ellipsize text. -->
