@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.widget
 
 import android.content.Context
 import android.graphics.Color
+import android.text.InputType
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -73,6 +74,14 @@ open class VGSEditText @JvmOverloads constructor(
                 recycle()
             }
         }
+    }
+
+    override fun setInputType(inputType: Int) {
+        if (inputType == InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS) {
+            super.setInputType(getInputType() or inputType)
+            return
+        }
+        super.setInputType(inputType)
     }
 
     /**

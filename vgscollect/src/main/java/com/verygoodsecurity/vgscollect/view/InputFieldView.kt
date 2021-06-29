@@ -6,6 +6,8 @@ import android.content.res.TypedArray
 import android.graphics.Color
 import android.graphics.Rect
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
@@ -19,11 +21,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.autofill.AutofillId
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
+import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
@@ -156,6 +160,7 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         if (hasChildren()) removeAllViews()
+        bgDraw = null
         super.onDetachedFromWindow()
     }
 
@@ -459,7 +464,13 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @return True if this view has focus, false otherwise.
      */
-    override fun isFocused(): Boolean = inputField.isFocused
+    override fun isFocused(): Boolean {
+        return if(hasChildren()) {
+            inputField.isFocused
+        } else {
+            super.isFocused()
+        }
+    }
 
     /**
      * Find the view in the hierarchy rooted at this view that currently has focus.
@@ -774,11 +785,36 @@ abstract class InputFieldView @JvmOverloads constructor(
             inputField.setTextAppearance(context, textAppearance)
         }
 
-        val bgDraw = background?.constantState?.newDrawable()
-        if (bgDraw != null) {
-            inputField.background = bgDraw
+        background?.constantState?.newDrawable()?.apply {
+            setBackgroundColor(Color.TRANSPARENT)
+            bgDraw = this
+            inputField.background = this
         }
-        setBackgroundColor(Color.TRANSPARENT)
+    }
+
+    private var bgDraw: Drawable? = null
+
+    override fun setBackgroundColor(color: Int) {
+        background = ColorDrawable(color)
+    }
+
+    override fun setBackground(background: Drawable?) {
+        when {
+            ::inputField.isInitialized -> {
+                bgDraw = background
+                inputField.background = background
+                super.setBackground(ContextCompat.getDrawable(context, android.R.color.transparent))
+            }
+            bgDraw != null -> {
+                bgDraw = background
+                super.setBackground(ContextCompat.getDrawable(context, android.R.color.transparent))
+            }
+            else -> super.setBackground(background)
+        }
+    }
+
+    override fun getBackground(): Drawable? {
+        return bgDraw ?: super.getBackground()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -822,7 +858,7 @@ abstract class InputFieldView @JvmOverloads constructor(
             (inputField as? CardInputField)?.setCardBrand(c)
         }
     }
-    
+
     protected fun setValidCardBrands(cardBrands: List<CardBrand>) {
         if (fieldType == FieldType.CARD_NUMBER) {
             (inputField as? CardInputField)?.setValidCardBrands(cardBrands)
@@ -1332,6 +1368,26 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     override fun setOnKeyListener(l: OnKeyListener?) {
         inputField.setOnKeyListener(l)
+    }
+
+    /**
+     * Explicitly request that the current input method's soft input area be shown to the user, if needed.
+     */
+    fun showKeyboard() {
+        if(::inputField.isInitialized) {
+            val im = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            im.showSoftInput(inputField, 0)
+        }
+    }
+
+    /**
+     * Request to hide the soft input window from the context of the window that is currently accepting input.
+     */
+    fun hideKeyboard() {
+        if(::inputField.isInitialized) {
+            val im = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            im.hideSoftInputFromWindow(inputField.windowToken, 0)
+        }
     }
 
     companion object {
