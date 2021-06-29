@@ -8,7 +8,9 @@ import com.verygoodsecurity.vgscollect.view.card.CardType
 import java.util.regex.Pattern
 
 /** @suppress */
-class CardBrandFilter(private var divider: String? = DEFAULT_DIVIDER) : MutableCardFilter {
+internal class CardBrandFilter : MutableCardFilter {
+
+    internal var divider: String? = DEFAULT_DIVIDER
 
     private val customCardBrands = mutableListOf<CardBrand>()
     private val availableCardBrands: List<CardBrand> get() = customCardBrands + DEFAULT_BRANDS
