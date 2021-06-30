@@ -36,8 +36,7 @@ class CustomBrandsActivity : AppCompatActivity(), View.OnClickListener {
 
         cardNumber?.setCardBrandIconGravity(Gravity.END)
 
-        cardNumber?.id = View.generateViewId()
-            .also { activeViewId = it }
+        cardNumber?.id = VIEW_ID
     }
 
     private fun inflateCardNumberLayout() {
@@ -49,8 +48,7 @@ class CustomBrandsActivity : AppCompatActivity(), View.OnClickListener {
 
         cardNumber?.setCardBrandIconGravity(Gravity.END)
 
-        cardNumber?.id = View.generateViewId()
-            .also { activeViewId = it }
+        cardNumber?.id = VIEW_ID
     }
 
     private fun attachInflatedCardNumberLayout() {
@@ -85,7 +83,7 @@ class CustomBrandsActivity : AppCompatActivity(), View.OnClickListener {
 
         val DIVIDER: Char = '-'
 
-        var activeViewId = -1
+        val VIEW_ID = View.generateViewId()
 
         fun createCardBrand(): CardBrand {
             val params = BrandParams(
@@ -106,7 +104,7 @@ class CustomBrandsActivity : AppCompatActivity(), View.OnClickListener {
             val params = BrandParams(
                 "###### ##### ########",
                 ChecksumAlgorithm.LUHN,
-                arrayOf(15, 19),
+                arrayOf(16, 19),
                 arrayOf(3, 5)
             )
             return CardBrand(
