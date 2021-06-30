@@ -226,7 +226,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
             else -> this@CardInputField.divider = divider
         }
 
-//        cardBrandFilter.divider = this@CardInputField.divider
+        cardBrandFilter.divider = this@CardInputField.divider
         applyDividerOnMask()
         setupKeyListener()
         refreshInputConnection()

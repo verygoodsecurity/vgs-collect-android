@@ -503,7 +503,7 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
-    @Test
+    @Test(timeout = 10000L)
     fun test_custom_view_override_custom_brand_set_divider_before_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.createCardNumber))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -546,7 +546,7 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
-    @Test
+    @Test(timeout = 10000L)
     fun test_custom_view_override_custom_brand_set_divider_after_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.createCardNumber))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
