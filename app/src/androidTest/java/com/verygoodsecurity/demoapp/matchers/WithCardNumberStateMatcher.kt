@@ -41,11 +41,13 @@ class WithCardNumberStateMatcher @RemoteMsgConstructor internal constructor(
         state: FieldState.CardNumberState?,
         str: String
     ): Boolean {
-        return state?.run {
+        val s = state?.run {
             !bin.isNullOrEmpty() && !last.isNullOrEmpty() &&
                     str.startsWith(bin!!) &&
                     str.endsWith(last!!)
         }?:false
+
+        return s
     }
 }
 

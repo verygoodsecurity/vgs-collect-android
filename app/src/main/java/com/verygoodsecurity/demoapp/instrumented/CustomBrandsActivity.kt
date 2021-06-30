@@ -110,7 +110,7 @@ class CustomBrandsActivity : AppCompatActivity(), View.OnClickListener {
                 arrayOf(3, 5)
             )
             return CardBrand(
-                "^41120",
+                "^41111",
                 "newVisa-Brand",
                 R.drawable.ic_card_back_preview_dark,
                 params
