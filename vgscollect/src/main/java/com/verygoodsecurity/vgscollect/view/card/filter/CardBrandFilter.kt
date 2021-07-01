@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscollect.view.card.filter
 
-import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.util.extension.except
 import com.verygoodsecurity.vgscollect.util.extension.toCardBrands
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
@@ -44,11 +43,6 @@ internal class CardBrandFilter : MutableCardFilter {
             }
         }
         return CardBrandPreview()
-    }
-
-    @VisibleForTesting
-    fun setDivider(divider: String) {
-        this.divider = divider
     }
 
     companion object {
