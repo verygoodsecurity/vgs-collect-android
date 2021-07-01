@@ -70,7 +70,7 @@ class CustomBrandsActivityInstrumentedTest {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
     }
 
-//    previously inflated View
+    //    previously inflated View
     @Test
     fun test_default_flow() {
         val field = getXMLCardNumberField()
@@ -228,7 +228,7 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
-//    programmatically created View
+    //    programmatically created View
     @Test
     fun test_custom_view_default_flow() {
         Espresso.onView(ViewMatchers.withId(R.id.createCardNumber))
@@ -487,7 +487,7 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
-    @Test(timeout = 30000L)
+    @Test
     fun test_custom_view_override_custom_brand_set_divider_before_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.createCardNumber))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -530,7 +530,7 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
-    @Test(timeout = 30000L)
+    @Test
     fun test_custom_view_override_custom_brand_set_divider_after_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.createCardNumber))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -572,12 +572,7 @@ class CustomBrandsActivityInstrumentedTest {
     }
 
 
-
-
-
-
-
-//    programmatically created View
+    //    programmatically created View
     @Test
     fun test_inflated_programmatically_default_flow() {
         Espresso.onView(ViewMatchers.withId(R.id.inflateCardNumberLay))
@@ -836,7 +831,7 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
-    @Test(timeout = 30000L)
+    @Test
     fun test_inflated_programmatically_override_custom_brand_set_divider_before_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.inflateCardNumberLay))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -879,7 +874,7 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
-    @Test(timeout = 30000L)
+    @Test
     fun test_inflated_programmatically_override_custom_brand_set_divider_after_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.inflateCardNumberLay))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
