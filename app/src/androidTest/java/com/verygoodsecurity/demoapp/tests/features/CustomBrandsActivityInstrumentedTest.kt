@@ -26,8 +26,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.util.concurrent.TimeUnit
-import kotlin.concurrent.timer
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -198,7 +196,7 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
-    @Test
+    @Test(timeout = 10000L)
     fun test_default_override_custom_brand_with_set_divider() {
         val field = getXMLCardNumberField()
 
@@ -330,7 +328,7 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
-    @Test
+    @Test(timeout = 10000L)
     fun test_custom_view_custom_brand() {
         Espresso.onView(ViewMatchers.withId(R.id.createCardNumber))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -368,7 +366,7 @@ class CustomBrandsActivityInstrumentedTest {
         )
     }
 
-    @Test
+    @Test(timeout = 10000L)
     fun test_custom_view_custom_brand_set_divider_before_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.createCardNumber))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -412,7 +410,7 @@ class CustomBrandsActivityInstrumentedTest {
         )
     }
 
-    @Test
+    @Test(timeout = 10000L)
     fun test_custom_view_custom_brand_set_divider_after_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.createCardNumber))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -454,7 +452,7 @@ class CustomBrandsActivityInstrumentedTest {
         )
     }
 
-    @Test
+    @Test(timeout = 10000L)
     fun test_custom_view_override_custom_brand() {
         Espresso.onView(ViewMatchers.withId(R.id.createCardNumber))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -492,7 +490,7 @@ class CustomBrandsActivityInstrumentedTest {
     }
 
 
-    @Test(timeout = 3000)
+    @Test(timeout = 10000L)
     fun test_custom_view_override_custom_brand_set_divider_before_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.createCardNumber))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -535,8 +533,7 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
-    @Test(timeout = 3000)
-    @Throws(InterruptedException::class)
+    @Test(timeout = 10000L)
     fun test_custom_view_override_custom_brand_set_divider_after_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.createCardNumber))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -714,7 +711,7 @@ class CustomBrandsActivityInstrumentedTest {
         )
     }
 
-    @Test
+    @Test(timeout = 10000L)
     fun test_inflated_programmatically_custom_brand_set_divider_before_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.inflateCardNumberLay))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -758,7 +755,7 @@ class CustomBrandsActivityInstrumentedTest {
         )
     }
 
-    @Test
+    @Test(timeout = 10000L)
     fun test_inflated_programmatically_custom_brand_set_divider_after_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.inflateCardNumberLay))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -837,7 +834,7 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
-    @Test(timeout = 3000)
+    @Test(timeout = 10000L)
     fun test_inflated_programmatically_override_custom_brand_set_divider_before_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.inflateCardNumberLay))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
@@ -867,7 +864,9 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardNumberState(NUMBER_VISA)))
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
+        field.perform(SetTextAction(""))
         field.perform(SetTextAction(NUMBER_VISA_OVERRIDE))
+        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardNumberState(NUMBER_VISA_OVERRIDE)))
         field.check(
             ViewAssertions.matches(
@@ -880,7 +879,7 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
-    @Test(timeout = 3000)
+    @Test(timeout = 10000L)
     fun test_inflated_programmatically_override_custom_brand_set_divider_after_attach() {
         Espresso.onView(ViewMatchers.withId(R.id.inflateCardNumberLay))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
