@@ -69,7 +69,7 @@ class CustomCardBrandsFilteringTest {
 
     @Test
     fun test_detect_custom_brand_divider() {
-        (filter as CardBrandFilter).setDivider("-")
+        (filter as CardBrandFilter).divider = "-"
 
         val c1 = CardBrand("^123", "VG_Search", drawableResId = R.drawable.ic_card_front_preview_dark)
         val c2 = CardBrand("^777", "VGS", drawableResId = R.drawable.ic_jcb_light)
@@ -83,7 +83,7 @@ class CustomCardBrandsFilteringTest {
 
     @Test
     fun test_detect_custom_brand_divider_2() {
-        (filter as CardBrandFilter).setDivider("-")
+        (filter as CardBrandFilter).divider = "-"
 
         val regex = "^12333"
         val name = "VG_Search"
