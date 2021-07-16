@@ -31,7 +31,7 @@ dependencies {
     api project(':vgscollect')
 
     implementation "androidx.appcompat:appcompat:$android_support_libraries"
-    implementation 'androidx.core:core-ktx:1.5.0'
+    implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
 
     api 'io.card:android-sdk:5.5.1'
 
