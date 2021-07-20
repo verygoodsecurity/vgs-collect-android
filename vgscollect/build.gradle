@@ -72,7 +72,7 @@ dependencies {
     testImplementation "io.mockk:mockk:1.12.0"
     testImplementation "org.skyscreamer:jsonassert:1.5.0"
     androidTestImplementation "androidx.test:runner:$androidx_test_runner_version"
-    androidTestImplementation "androidx.test.ext:junit:$androidx_test_ext_junit_version"
+    androidTestImplementation "androidx.test.ext:junit:$androidx_test_junit_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso_espresso_core_version"
 
     dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
