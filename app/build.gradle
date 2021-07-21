@@ -5,7 +5,7 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "29.0.3"
+    buildToolsVersion "30.0.3"
     defaultConfig {
         applicationId "com.verygoodsecurity.demoapp"
         minSdkVersion 19
@@ -15,9 +15,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
-    buildFeatures {
-        viewBinding true
-    }
+
     buildTypes {
         release {
             buildConfigField("com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentRelease())
