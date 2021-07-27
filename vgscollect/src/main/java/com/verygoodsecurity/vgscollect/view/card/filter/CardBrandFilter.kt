@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscollect.view.card.filter
 
-import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.util.extension.except
 import com.verygoodsecurity.vgscollect.util.extension.toCardBrands
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
@@ -8,7 +7,9 @@ import com.verygoodsecurity.vgscollect.view.card.CardType
 import java.util.regex.Pattern
 
 /** @suppress */
-class CardBrandFilter(private var divider: String? = DEFAULT_DIVIDER) : MutableCardFilter {
+internal class CardBrandFilter : MutableCardFilter {
+
+    internal var divider: String? = DEFAULT_DIVIDER
 
     private val customCardBrands = mutableListOf<CardBrand>()
     private val availableCardBrands: List<CardBrand> get() = customCardBrands + DEFAULT_BRANDS
@@ -42,11 +43,6 @@ class CardBrandFilter(private var divider: String? = DEFAULT_DIVIDER) : MutableC
             }
         }
         return CardBrandPreview()
-    }
-
-    @VisibleForTesting
-    fun setDivider(divider: String) {
-        this.divider = divider
     }
 
     companion object {
