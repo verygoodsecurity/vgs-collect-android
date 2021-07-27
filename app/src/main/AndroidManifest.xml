@@ -35,6 +35,8 @@
             android:label="Instrumented Demo"/>
         <activity android:name=".instrumented.VGSEditTextActivity"
             android:label="Instrumented Demo"/>
+        <activity android:name=".instrumented.CustomBrandsActivity"
+            android:label="Instrumented Demo"/>
     </application>
 
 </manifest>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parentLay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="20dp">
+
+    <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+        android:id="@+id/xmlCardNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:fieldName="cardNumebr"
+        app:hint="card Number from xml"
+        app:cardBrandIconGravity="end"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/applyDividerBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Apply Divider"
+            android:layout_margin="5dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/addBrandBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="add brand"
+            android:layout_margin="5dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/overrideExistedBrandBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="override brand"
+            android:layout_margin="5dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/inflateCardNumberLay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Inflate last Lay"
+            android:layout_margin="5dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/createCardNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Create last Lay"
+            android:layout_margin="5dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/attachInflatedCardNumberLay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="attach Card Number"/>
+
+</LinearLayout>
