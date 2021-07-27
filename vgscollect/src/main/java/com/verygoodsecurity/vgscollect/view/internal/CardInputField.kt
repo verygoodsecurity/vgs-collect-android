@@ -16,6 +16,7 @@ import com.verygoodsecurity.vgscollect.view.card.*
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardNumberConnection
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
+import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
@@ -60,8 +61,8 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     private var maskAdapter = CardMaskAdapter()
     private var cardNumberFormatter: Formatter? = null
 
-    private val cardBrandFilter: CardBrandFilter by lazy {
-        CardBrandFilter().also { it.divider = divider }
+    private val cardBrandFilter: MutableCardFilter by lazy {
+        CardBrandFilter(divider)
     }
 
     enum class PreviewIconMode {
@@ -226,7 +227,6 @@ internal class CardInputField(context: Context) : BaseInputField(context),
             else -> this@CardInputField.divider = divider
         }
 
-        cardBrandFilter.divider = this@CardInputField.divider
         applyDividerOnMask()
         setupKeyListener()
         refreshInputConnection()

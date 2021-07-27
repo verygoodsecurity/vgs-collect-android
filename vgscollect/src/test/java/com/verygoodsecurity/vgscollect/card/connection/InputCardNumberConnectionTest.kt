@@ -175,8 +175,7 @@ class InputCardNumberConnectionTest {
         connection: InputRunnable,
         divider: String?
     ) {
-        val filter = CardBrandFilter()
-        filter.divider = divider
+        val filter = CardBrandFilter(divider)
         connection.addFilter(filter)
     }
 

@@ -1,9 +1,5 @@
 package com.verygoodsecurity.demoapp.matchers
 
-fun withCardBrand(brandName: String): WithCardBrandMatcher {
-    return WithCardBrandMatcher(brandName)
-}
-
 fun withCardNumberState(
     str: String? = null,
     bin: String? = null,
