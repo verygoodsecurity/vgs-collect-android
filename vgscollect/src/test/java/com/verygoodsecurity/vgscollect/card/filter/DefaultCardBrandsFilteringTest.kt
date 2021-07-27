@@ -25,7 +25,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_elo_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
 
         val brand = filter.detect("6362-9700-0045-7013")
         assertEquals(brand.name, CardType.ELO.name)
@@ -33,7 +33,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_elo_divider_false() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
 
         val brand = filter.detect("4011 7800 0045 7013")
         assertNotEquals(brand.name, CardType.ELO.name)
@@ -47,14 +47,14 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_visa_electron_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("4917-3008-0000-0000")
         assertEquals(brand.name, CardType.VISA_ELECTRON.name)
     }
 
     @Test
     fun test_visa_electron_divider_false() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("4175 0008 0000 0000")
         assertNotEquals(brand.name, CardType.VISA_ELECTRON.name)
     }
@@ -67,7 +67,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_maestro_13_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("6759-6498-2643-8")
         assertEquals(brand.name, CardType.MAESTRO.name)
     }
@@ -80,7 +80,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_maestro_14_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("6759-6498-2643-84")
         assertEquals(brand.name, CardType.MAESTRO.name)
     }
@@ -93,7 +93,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_maestro_15_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("6759-6498-2643-845")
         assertEquals(brand.name, CardType.MAESTRO.name)
     }
@@ -106,7 +106,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_maestro_16_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("6759-6498-2643-8453")
         assertEquals(brand.name, CardType.MAESTRO.name)
     }
@@ -119,7 +119,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_forbrugsforeningen_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("6007-2234-3434-3434")
         assertEquals(brand.name, CardType.FORBRUGSFORENINGEN.name)
     }
@@ -132,7 +132,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_dankort_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("5019 7170 1010 3742")
         assertEquals(brand.name, CardType.DANKORT.name)
     }
@@ -145,7 +145,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_visa_13_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("4111-1111-1111-1")
         assertEquals(brand.name, CardType.VISA.name)
     }
@@ -158,7 +158,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_visa_16_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("4111-1111-1111-1111")
         assertEquals(brand.name, CardType.VISA.name)
     }
@@ -171,7 +171,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_visa_19_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("4111-1111-1111-1111-111")
         assertEquals(brand.name, CardType.VISA.name)
     }
@@ -184,7 +184,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_mastercard_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("5555-5555-5555-5555")
         assertEquals(brand.name, CardType.MASTERCARD.name)
     }
@@ -197,7 +197,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_american_express_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3782-822463-10005")
         assertEquals(brand.name, CardType.AMERICAN_EXPRESS.name)
     }
@@ -210,14 +210,14 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_hipercard_14_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3841-0067-8627-66")
         assertEquals(brand.name, CardType.HIPERCARD.name)
     }
 
     @Test
     fun test_hipercard_14_divider_false() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3841 0067 8627 66")
         assertNotEquals(brand.name, CardType.HIPERCARD.name)
     }
@@ -230,14 +230,14 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_hipercard_15_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3841-0067-8627-662")
         assertEquals(brand.name, CardType.HIPERCARD.name)
     }
 
     @Test
     fun test_hipercard_15_divider_false() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3841 0067 8627 662")
         assertNotEquals(brand.name, CardType.HIPERCARD.name)
     }
@@ -250,14 +250,14 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_hipercard_16_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3841-0067-8627-6623")
         assertEquals(brand.name, CardType.HIPERCARD.name)
     }
 
     @Test
     fun test_hipercard_16_divider_false() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3841 0067 8627 6623")
         assertNotEquals(brand.name, CardType.HIPERCARD.name)
     }
@@ -270,14 +270,14 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_hipercard_17_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3841-0067-8627-6623-7")
         assertEquals(brand.name, CardType.HIPERCARD.name)
     }
 
     @Test
     fun test_hipercard_17_divider_false() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3841 0067 8627 6623 7")
         assertNotEquals(brand.name, CardType.HIPERCARD.name)
     }
@@ -290,14 +290,14 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_hipercard_18_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3841-0067-8627-6623-72")
         assertEquals(brand.name, CardType.HIPERCARD.name)
     }
 
     @Test
     fun test_hipercard_18_divider_false() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3841 0067 8627 6623 72")
         assertNotEquals(brand.name, CardType.HIPERCARD.name)
     }
@@ -310,14 +310,14 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_hipercard_19_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3841-0067-8627-6623-721")
         assertEquals(brand.name, CardType.HIPERCARD.name)
     }
 
     @Test
     fun test_hipercard_19_divider_false() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3841 0067 8627 6623 721")
         assertNotEquals(brand.name, CardType.HIPERCARD.name)
     }
@@ -330,7 +330,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_dinclub_divider_14() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3004-327725-3249")
         assertEquals(brand.name, CardType.DINCLUB.name)
     }
@@ -343,7 +343,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_dinclub_divider_16() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3004-327725-324912")
         assertEquals(brand.name, CardType.DINCLUB.name)
     }
@@ -356,7 +356,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_discover_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("6011-0000-0000-0004")
         assertEquals(brand.name, CardType.DISCOVER.name)
     }
@@ -369,7 +369,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_jcb_16_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3566-0020-2036-0505")
         assertEquals(brand.name, CardType.JCB.name)
     }
@@ -382,7 +382,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_jcb_17_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3566-0020-2036-0505-1")
         assertEquals(brand.name, CardType.JCB.name)
     }
@@ -395,7 +395,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_jcb_18_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3566-0020-2036-0505-12")
         assertEquals(brand.name, CardType.JCB.name)
     }
@@ -408,7 +408,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_jcb_19_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("3566-0020-2036-0505-125")
         assertEquals(brand.name, CardType.JCB.name)
     }
@@ -421,7 +421,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_unionpay_16_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("6212-3456-7890-1232")
         assertEquals(brand.name, CardType.UNIONPAY.name)
     }
@@ -434,7 +434,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_unionpay_17_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("6212-3456-7890-1232-7")
         assertEquals(brand.name, CardType.UNIONPAY.name)
     }
@@ -447,7 +447,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_unionpay_18_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("6212-3456-7890-1232-78")
         assertEquals(brand.name, CardType.UNIONPAY.name)
     }
@@ -460,7 +460,7 @@ class DefaultCardBrandsFilteringTest {
 
     @Test
     fun test_unionpay_19_divider() {
-        (filter as CardBrandFilter).divider = "-"
+        (filter as CardBrandFilter).setDivider("-")
         val brand = filter.detect("6212-3456-7890-1232-123")
         assertEquals(brand.name, CardType.UNIONPAY.name)
     }

@@ -30,7 +30,7 @@ dependencies {
     api project(':vgscollect')
 
     implementation "androidx.appcompat:appcompat:$android_support_libraries"
-    implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
+    implementation 'androidx.core:core-ktx:1.5.0'
 
     api 'com.getbouncer:cardscan-ui:2.0.0082'
     api 'com.getbouncer:tensorflow-lite:2.0.0082'

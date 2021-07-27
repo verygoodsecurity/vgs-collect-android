@@ -10,9 +10,6 @@ import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.any
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
-import com.verygoodsecurity.vgscollect.view.card.BrandParams
-import com.verygoodsecurity.vgscollect.view.card.CardBrand
-import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
@@ -205,6 +202,7 @@ class VGSCardNumberEditTextTest {
         view.setInputType(InputType.TYPE_CLASS_DATETIME)
         assertEquals(InputType.TYPE_CLASS_NUMBER, view.getInputType())
     }
+
 
     @Test
     fun test_field_state_change_listener_first() {
@@ -755,115 +753,6 @@ class VGSCardNumberEditTextTest {
         assertEquals(view.getTypeface(), Typeface.DEFAULT_BOLD)
         view.setTypeface(null, Typeface.NORMAL)
         assertEquals(view.getTypeface(), Typeface.DEFAULT)
-    }
-
-    @Test
-    fun test_custom_brand_state() {
-        val text = "4111111111111111"
-
-        val params = BrandParams(
-            "###### ##### ########",
-            ChecksumAlgorithm.LUHN,
-            arrayOf(16, 19),
-            arrayOf(3, 5)
-        )
-
-        val newVisa = CardBrand(
-            "^41111",
-            "newVisa-Brand",
-            R.drawable.ic_card_back_preview_dark,
-            params
-        )
-
-        val stateResult = FieldState.CardNumberState()
-        stateResult.bin = "411111"
-        stateResult.last = "1111"
-        stateResult.number = "411111######1111"
-        stateResult.cardBrand = CardType.VISA.name
-        stateResult.drawableBrandResId = R.drawable.ic_visa_dark
-
-        val child = view.statePreparer.getView()
-        assertTrue(child is BaseInputField)
-        view.setFieldName("number")
-
-        view.setText(text)
-        (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
-
-        with(view.getState()) {
-            assertNotNull(this)
-
-            assertEquals(stateResult.bin, this!!.bin)
-            assertEquals(stateResult.last, this.last)
-            assertEquals(stateResult.number, this.number)
-            assertEquals(stateResult.cardBrand, this.cardBrand)
-            assertEquals(stateResult.drawableBrandResId, this.drawableBrandResId)
-        }
-
-
-        view.addCardBrand(newVisa)
-
-        view.setText(text)
-        child.prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
-
-        with(view.getState()) {
-            assertNotNull(this)
-
-            assertEquals(stateResult.bin, this!!.bin)
-            assertEquals(stateResult.last, this.last)
-            assertEquals(stateResult.number, this.number)
-            assertNotEquals(stateResult.cardBrand, this.cardBrand)
-            assertNotEquals(stateResult.drawableBrandResId, this.drawableBrandResId)
-
-            assertEquals(newVisa.cardBrandName, this.cardBrand)
-            assertEquals(newVisa.drawableResId, this.drawableBrandResId)
-        }
-    }
-
-    @Test
-    fun test_custom_brand_state_with_divider() {
-        val text = "4111111111111111"
-
-        val params = BrandParams(
-            "###### ##### ########",
-            ChecksumAlgorithm.LUHN,
-            arrayOf(16, 19),
-            arrayOf(3, 5)
-        )
-
-        val newVisa = CardBrand(
-            "^41111",
-            "newVisa-Brand",
-            R.drawable.ic_card_back_preview_dark,
-            params
-        )
-
-        val stateResult = FieldState.CardNumberState()
-        stateResult.cardBrand = CardType.VISA.name
-        stateResult.drawableBrandResId = R.drawable.ic_visa_dark
-
-        val child = view.statePreparer.getView()
-        assertTrue(child is BaseInputField)
-        view.setFieldName("number")
-
-        (child as BaseInputField).prepareFieldTypeConnection()
-        child.applyInternalFieldStateChangeListener()
-
-        view.addCardBrand(newVisa)
-        view.setDivider('=')
-
-
-        view.setText(text)
-
-        with(view.getState()) {
-            assertNotNull(this)
-            assertNotEquals(stateResult.cardBrand, this!!.cardBrand)
-            assertNotEquals(stateResult.drawableBrandResId, this.drawableBrandResId)
-
-            assertEquals(newVisa.cardBrandName, this.cardBrand)
-            assertEquals(newVisa.drawableResId, this.drawableBrandResId)
-        }
     }
 
 }
