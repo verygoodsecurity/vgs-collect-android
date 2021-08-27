@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgscollect.core.api.analityc.action.*
 import com.verygoodsecurity.vgscollect.core.api.analityc.utils.toAnalyticStatus
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.generateAgentHeader
+import com.verygoodsecurity.vgscollect.core.api.client.extension.isCodeSuccessful
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isHttpStatusCode
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy.*
@@ -596,7 +597,7 @@ class VGSCollect {
         if (code.isHttpStatusCode()) {
             val m = with(mutableMapOf<String, Any>()) {
                 put("statusCode", code)
-                put("status", BaseTransmitActivity.Status.SUCCESS.raw)
+                put("status",  code.isCodeSuccessful().toAnalyticStatus())
                 if (!message.isNullOrEmpty()) put("error", message)
 
                 this
