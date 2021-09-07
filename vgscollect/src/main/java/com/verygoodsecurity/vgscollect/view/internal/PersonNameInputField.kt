@@ -39,11 +39,14 @@ internal class PersonNameInputField(context: Context) : BaseInputField(context) 
     }
 
     private fun applyInputType() {
-        val type = inputType
-        if (type == InputType.TYPE_TEXT_VARIATION_PASSWORD || type == InputType.TYPE_NUMBER_VARIATION_PASSWORD) {
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        } else {
-            inputType = InputType.TYPE_CLASS_TEXT
+        when (inputType) {
+            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_WORDS -> { }
+            InputType.TYPE_TEXT_VARIATION_PASSWORD, InputType.TYPE_NUMBER_VARIATION_PASSWORD -> {
+                inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            }
+            else -> {
+                inputType = InputType.TYPE_CLASS_TEXT
+            }
         }
         refreshInput()
     }
@@ -53,5 +56,4 @@ internal class PersonNameInputField(context: Context) : BaseInputField(context) 
             setAutofillHints(View.AUTOFILL_HINT_NAME)
         }
     }
-
 }
