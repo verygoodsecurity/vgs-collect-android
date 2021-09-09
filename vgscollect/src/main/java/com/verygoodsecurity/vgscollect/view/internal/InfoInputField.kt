@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
-import android.text.InputType
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputInfoConnection
@@ -24,30 +23,9 @@ internal class InfoInputField(context: Context) : BaseInputField(context) {
         inputConnection?.setOutputListener(stateListener)
 
         applyNewTextWatcher(null)
-        applyInputType()
     }
 
     override fun setText(text: CharSequence?, type: BufferType?) {
         super.setText(text, type)
     }
-
-    private fun applyInputType() {
-        val type = inputType
-
-        when (type) {
-            InputType.TYPE_CLASS_NUMBER,
-            InputType.TYPE_CLASS_DATETIME,
-            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_PASSWORD -> {}
-            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS -> {}
-            InputType.TYPE_TEXT_VARIATION_PASSWORD,
-            InputType.TYPE_NUMBER_VARIATION_PASSWORD,
-            InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD -> {
-                inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            }
-            else -> inputType = InputType.TYPE_CLASS_TEXT
-        }
-
-        refreshInput()
-    }
-
 }
