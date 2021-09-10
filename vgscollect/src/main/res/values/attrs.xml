@@ -122,8 +122,13 @@
              {@link android.text.InputType#TYPE_DATETIME_VARIATION_DATE}. -->
         <enum name="date" value="4" />
 
-        <!-- Corresponds to {@link android.text.InputType#TYPE_TEXT_FLAG_CAP_CHARACTERS}. -->
-        <enum name="textCapCharacters" value="4096" />
+        <!-- Capitalization of all characters .Corresponds to
+        {@link android.text.InputType#TYPE_TEXT_FLAG_CAP_CHARACTERS}. -->
+        <enum name="textCapCharacters" value="4097" />
+
+        <!-- Capitalization of the first character of every word. Corresponds to
+             {@link android.text.InputType#TYPE_TEXT_FLAG_CAP_WORDS}. -->
+        <enum name="textCapWords" value="8193" />
     </attr>
 
     <!-- Where to ellipsize text. -->
