@@ -415,20 +415,38 @@ class VGSCollectTest {
         verify(storage).getFileProvider()
     }
 
+    @Test
+    fun test_concurrent_modification_exception() {
+        collect.addOnResponseListeners(object : VgsCollectResponseListener {
+            override fun onResponse(response: VGSResponse?) {
+                collect.clearResponseListeners()
+            }
+        })
+
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(Manifest.permission.ACCESS_NETWORK_STATE)
+
+        val listener = applyResponseListener()
+
+        collect.asyncSubmit("/path", HTTPMethod.POST)
+
+        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+    }
+
     private fun applyStorage(): InternalStorage {
-        val storage = spy( InternalStorage(activity) )
+        val storage = spy(InternalStorage(activity))
         collect.setStorage(storage)
 
         return storage
     }
 
-    private fun applyEditText(typeField: FieldType):InputFieldView {
-        val view = when(typeField) {
+    private fun applyEditText(typeField: FieldType): InputFieldView {
+        val view = when (typeField) {
             FieldType.CARD_NUMBER -> createCardNumber()
             FieldType.CVC -> createCardCVC()
             FieldType.CARD_EXPIRATION_DATE -> createCardExpDate()
             FieldType.CARD_HOLDER_NAME -> createCardHolder()
-            else -> spy( VGSEditText(activity) ).apply {
+            else -> spy(VGSEditText(activity)).apply {
                 setFieldName("createInfoField")
             }
         }
@@ -441,26 +459,26 @@ class VGSCollectTest {
         return view
     }
 
-    private fun createCardNumber():VGSCardNumberEditText {
-        return  spy( VGSCardNumberEditText(activity) ).apply {
+    private fun createCardNumber(): VGSCardNumberEditText {
+        return spy(VGSCardNumberEditText(activity)).apply {
             setFieldName("createCardNumber")
         }
     }
 
-    private fun createCardCVC():CardVerificationCodeEditText {
-        return  spy( CardVerificationCodeEditText(activity) ).apply {
+    private fun createCardCVC(): CardVerificationCodeEditText {
+        return spy(CardVerificationCodeEditText(activity)).apply {
             setFieldName("createCardCVC")
         }
     }
 
-    private fun createCardHolder():PersonNameEditText {
-        return  spy( PersonNameEditText(activity) ).apply {
+    private fun createCardHolder(): PersonNameEditText {
+        return spy(PersonNameEditText(activity)).apply {
             setFieldName("createCardHolder")
         }
     }
 
-    private fun createCardExpDate():ExpirationDateEditText {
-        return  spy( ExpirationDateEditText(activity) ).apply {
+    private fun createCardExpDate(): ExpirationDateEditText {
+        return spy(ExpirationDateEditText(activity)).apply {
             setFieldName("createCardExpDate")
         }
     }
