@@ -36,6 +36,7 @@ import com.verygoodsecurity.vgscollect.util.extension.*
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import java.util.*
+import java.util.concurrent.CopyOnWriteArrayList
 
 /**
  * VGS Collect allows you to securely collect data and files from your users without having
@@ -64,7 +65,7 @@ class VGSCollect {
         }
     }
 
-    private val responseListeners = mutableListOf<VgsCollectResponseListener>()
+    private val responseListeners = CopyOnWriteArrayList<VgsCollectResponseListener>()
     private val analyticListener = object : VgsCollectResponseListener {
         override fun onResponse(response: VGSResponse?) {
             when (response) {
