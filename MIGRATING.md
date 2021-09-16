@@ -14,8 +14,8 @@ Remove `setFieldType` method from code in case you use it.
 Please use `VGSCardNumberEditText`, `ExpirationDateEditText`, `CardVerificationCodeEditText`, `PersonNameEditText`, `SSNEditText`
 specific fields instead of `app:fieldType` attribute or `FieldType` enum class.
 
-Field which doen't have validation rules will have invalid state, by default.
-In case you don't need validation for VGSEditText, then set `app:enableValidation="false"` in XML.
+Field which doesn't have validation rules will have invalid state, by default.
+In case you don't need validation for VGSEditText then set `app:enableValidation="false"` in XML.
 
 
 ### Migrating from versions < v1.6.2
