@@ -1,5 +1,9 @@
 ## Migration Guides
 
+### Migrating from versions < v1.6.14
+
+Field state will be valid if no validation rules defined.
+
 ### Migrating from versions < v1.6.5
 
 #### VGSEditText
