@@ -6,6 +6,7 @@ import android.text.InputType
 import android.view.View
 import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.any
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
@@ -64,6 +65,14 @@ class VGSEditTextTest {
     @Test
     fun test_info() {
         assertEquals(FieldType.INFO, view.getFieldType())
+    }
+
+    @Test
+    fun test_default_input_type() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        assertEquals(InputType.TYPE_CLASS_TEXT, view.getInputType())
     }
 
     @Test
@@ -193,30 +202,18 @@ class VGSEditTextTest {
             .setAllowableMaxLength(15)
             .build()
         view.addRule(rule)
+
         view.setText("12312312312")
-
         child.refreshInternalState()
-
-        val state = view.getState()
-        assertNotNull(state)
-        assertEquals(false, state!!.isValid)
-        assertEquals(11, state.contentLength)
+        view.getState().validateState(false, 11)
 
         view.setText("123123123123")
         child.refreshInternalState()
-
-        val state2 = view.getState()
-        assertNotNull(state)
-        assertEquals(true, state2!!.isValid)
-        assertEquals(12, state2.contentLength)
+        view.getState().validateState(true, 12)
 
         view.setText("123123123123123")
         child.refreshInternalState()
-
-        val state3 = view.getState()
-        assertNotNull(state)
-        assertEquals(true, state3!!.isValid)
-        assertEquals(15, state3.contentLength)
+        view.getState().validateState(true, 15)
     }
 
     @Test
@@ -231,32 +228,18 @@ class VGSEditTextTest {
             .setAllowableMinLength(7)
             .build()
         view.addRule(rule)
+
         view.setText("123123")
-
         child.refreshInternalState()
-
-        val state = view.getState()
-        assertNotNull(state)
-        assertEquals(false, state!!.isValid)
-        assertEquals(6, state.contentLength)
+        view.getState().validateState(false, 6)
 
         view.setText("1231234")
-
         child.refreshInternalState()
-
-        val state2 = view.getState()
-        assertNotNull(state)
-        assertEquals(true, state2!!.isValid)
-        assertEquals(7, state2.contentLength)
+        view.getState().validateState(true, 7)
 
         view.setText("1231231231231231231")
-
         child.refreshInternalState()
-
-        val state3 = view.getState()
-        assertNotNull(state)
-        assertEquals(true, state3!!.isValid)
-        assertEquals(19, state3.contentLength)
+        view.getState().validateState(true, 19)
     }
 
 
@@ -272,50 +255,27 @@ class VGSEditTextTest {
             .setAllowableMaxLength(17)
             .build()
         view.addRule(rule)
+
         view.setText("")
-
         child.refreshInternalState()
-
-        val state = view.getState()
-        assertNotNull(state)
-        assertEquals(false, state!!.isValid)
-        assertEquals(0, state.contentLength)
+        view.getState().validateState(false, 0)
 
         view.setText("1")
-
         child.refreshInternalState()
-
-        val state1 = view.getState()
-        assertNotNull(state)
-        assertEquals(true, state1!!.isValid)
-        assertEquals(1, state1.contentLength)
+        view.getState().validateState(true, 1)
 
         view.setText("1231231231233")
-
         child.refreshInternalState()
-
-        val state2 = view.getState()
-        assertNotNull(state)
-        assertEquals(true, state2!!.isValid)
-        assertEquals(13, state2.contentLength)
+        view.getState().validateState(true, 13)
 
         view.setText("12312312312312312")
-
         child.refreshInternalState()
-
-        val state3 = view.getState()
-        assertNotNull(state)
-        assertEquals(true, state3!!.isValid)
-        assertEquals(17, state3.contentLength)
+        view.getState().validateState(true, 17)
 
         view.setText("123123123123123123")
-
         child.refreshInternalState()
+        view.getState().validateState(false, 18)
 
-        val state4 = view.getState()
-        assertNotNull(state)
-        assertEquals(false, state4!!.isValid)
-        assertEquals(18, state4.contentLength)
     }
 
 
@@ -335,44 +295,23 @@ class VGSEditTextTest {
 
         view.setText("12312312312312")
         child.refreshInternalState()
-
-        val state = view.getState()
-        assertNotNull(state)
-        assertEquals(false, state!!.isValid)
-        assertEquals(14, state.contentLength)
-
+        view.getState().validateState(false, 14)
 
         view.setText("123123123123123")
         child.refreshInternalState()
-
-        val state2 = view.getState()
-        assertNotNull(state)
-        assertEquals(true, state2!!.isValid)
-        assertEquals(15, state2.contentLength)
+        view.getState().validateState(true, 15)
 
         view.setText("12312312312312312")
         child.refreshInternalState()
-
-        val state3 = view.getState()
-        assertNotNull(state)
-        assertEquals(true, state3!!.isValid)
-        assertEquals(17, state3.contentLength)
+        view.getState().validateState(true, 17)
 
         view.setText("12312312312312312")
         child.refreshInternalState()
-
-        val state4 = view.getState()
-        assertNotNull(state)
-        assertEquals(true, state4!!.isValid)
-        assertEquals(17, state4.contentLength)
+        view.getState().validateState(true, 17)
 
         view.setText("123123123123123123")
         child.refreshInternalState()
-
-        val state5 = view.getState()
-        assertNotNull(state)
-        assertEquals(false, state5!!.isValid)
-        assertEquals(18, state5.contentLength)
+        view.getState().validateState(false, 18)
     }
 
 
@@ -391,36 +330,51 @@ class VGSEditTextTest {
 
         view.setText("")
         child.refreshInternalState()
-
-        val state0 = view.getState()
-        assertNotNull(state0)
-        assertEquals(false, state0!!.isValid)
-        assertEquals(0, state0.contentLength)
-
+        view.getState().validateState(false, 0)
 
         view.setText("0111111111111111")
         child.refreshInternalState()
-
-        val state1 = view.getState()
-        assertNotNull(state1)
-        assertEquals(true, state1!!.isValid)
-        assertEquals(16, state1.contentLength)
+        view.getState().validateState(true, 16)
 
         view.setText("0111111111111w111")
         child.refreshInternalState()
-
-        val state2 = view.getState()
-        assertNotNull(state2)
-        assertEquals(false, state2!!.isValid)
-        assertEquals(17, state2.contentLength)
+        view.getState().validateState(false, 17)
 
         view.setText("01111111111111")
         child.refreshInternalState()
+        view.getState().validateState(false, 14)
+    }
 
-        val state3 = view.getState()
-        assertNotNull(state3)
-        assertEquals(false, state3!!.isValid)
-        assertEquals(14, state3.contentLength)
+    @Test
+    fun test_default_validation() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        view.setText("")
+        child.refreshInternalState()
+        view.getState().validateState(false, 0)
+
+        view.setText("1")
+        child.refreshInternalState()
+        view.getState().validateState(true, 1)
+
+        view.setText("")
+        child.refreshInternalState()
+        view.getState().validateState(false, 0)
+    }
+
+    private fun FieldState.InfoState?.validateState(
+        isValid: Boolean,
+        contentLength: Int
+    ) {
+        assertNotNull(this)
+        if (this != null) {
+            assertEquals(isValid, this.isValid)
+            assertEquals(contentLength, this.contentLength)
+        }
     }
 
 }

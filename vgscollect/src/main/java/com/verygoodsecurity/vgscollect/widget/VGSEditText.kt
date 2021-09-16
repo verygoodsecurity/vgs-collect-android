@@ -32,7 +32,7 @@ open class VGSEditText @JvmOverloads constructor(
         ).apply {
 
             try {
-                val inputType = getInt(R.styleable.VGSEditText_inputType, EditorInfo.TYPE_NULL)
+                val inputType = getInt(R.styleable.VGSEditText_inputType, EditorInfo.TYPE_CLASS_TEXT)
                 val fieldName = getString(R.styleable.VGSEditText_fieldName)
                 val hint = getString(R.styleable.VGSEditText_hint)
                 val textSize = getDimension(R.styleable.VGSEditText_textSize, -1f)

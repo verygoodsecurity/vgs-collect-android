@@ -43,16 +43,21 @@ class ActivityCaseInstrumentedTest {
         const val CARD_NUMBER_WRONG_2 = "41111111111111112"
 
         const val CARD_HOLDER_WRONG = "Gohn Galt, I."
-        const val CARD_HOLDER= "Gohn G"
+        const val CARD_HOLDER = "Gohn G"
 
         const val CARD_EXP_DATE_WRONG = "22/2222"
-        const val CARD_EXP_DATE= "02/25"
+        const val CARD_EXP_DATE = "02/25"
 
         const val CARD_CVC_WRONG = "12"
-        const val CARD_CVC= "123"
+        const val CARD_CVC = "123"
 
-        const val CODE_200= "Code: 200"
-        const val CODE_1001= "Code: 1001"
+        const val POSTAL_WRONG = "12"
+        const val POSTAL = "12345"
+
+        const val CITY = "new city"
+
+        const val CODE_200 = "Code: 200"
+        const val CODE_1001 = "Code: 1001"
     }
 
     @get:Rule
@@ -74,12 +79,12 @@ class ActivityCaseInstrumentedTest {
 
         interactWithScanner()
 
-        val submitBtn  = interactWithSubmitButton()
+        val submitBtn = interactWithSubmitButton()
         performClick(submitBtn)
 
         pauseTestFor(7000)
 
-        val responseContainer  = interactWithResponseContainer()
+        val responseContainer = interactWithResponseContainer()
         responseContainer.check(matches(withText(containsString(CODE_200))))
 
         release()
@@ -88,7 +93,7 @@ class ActivityCaseInstrumentedTest {
 
     fun interactWithScanner() = apply {
         val intent = Intent()
-        val card = CreditCard("4111111111111111", 5,2033, "123", null, "John B")
+        val card = CreditCard("4111111111111111", 5, 2033, "123", null, "John B")
         intent.putExtra(CardIOActivity.EXTRA_SCAN_RESULT, card)
 
 
@@ -133,9 +138,11 @@ class ActivityCaseInstrumentedTest {
     fun test_submit_flow() {
         startMainScreen()
 
-        val responseContainer  = interactWithResponseContainer()
-        val submitBtn  = interactWithSubmitButton()
+        val responseContainer = interactWithResponseContainer()
+        val submitBtn = interactWithSubmitButton()
 
+        val postalCode = interactWithPostalCode()
+        val city = interactWithCity()
         val cardInputField = interactWithCardNumber()
         val cardHolderNameInputField = interactWithCardHolderName()
         val cardExpDateInputField = interactWithCardExpDate()
@@ -169,6 +176,13 @@ class ActivityCaseInstrumentedTest {
         performClick(submitBtn)
         responseContainer.check(matches(withText(containsString(CODE_1001))))
         cardInputField.perform(SetTextAction(CARD_NUMBER))
+
+        postalCode.perform(SetTextAction(POSTAL_WRONG))
+        performClick(submitBtn)
+        responseContainer.check(matches(withText(containsString(CODE_1001))))
+
+        postalCode.perform(SetTextAction(POSTAL))
+        city.perform(SetTextAction(CITY))
         performClick(submitBtn)
 
         pauseTestFor(7000)
@@ -185,7 +199,10 @@ class ActivityCaseInstrumentedTest {
         val startWithActivityBtn = onView(withId(R.id.startWithActivityBtn))
             .check(matches(isDisplayed()))
 
-        onView(withId(R.id.userVault)).perform(typeText(Utils.DEFAULT_TENANT_ID), closeSoftKeyboard())
+        onView(withId(R.id.userVault)).perform(
+            typeText(Utils.DEFAULT_TENANT_ID),
+            closeSoftKeyboard()
+        )
         onView(withId(R.id.userPath)).perform(typeText(Utils.DEFAULT_PATH), closeSoftKeyboard())
 
         performClick(startWithActivityBtn)
@@ -216,6 +233,16 @@ class ActivityCaseInstrumentedTest {
             .check(matches(isDisplayed()))
 
         return cardHolderField
+    }
+
+    private fun interactWithCity(): ViewInteraction {
+        return onView(withId(R.id.cityField))
+            .check(matches(not(isDisplayed())))
+    }
+
+    private fun interactWithPostalCode(): ViewInteraction {
+        return onView(withId(R.id.postalCodeField))
+            .check(matches(not(isDisplayed())))
     }
 
     private fun interactWithCardNumber(): ViewInteraction {

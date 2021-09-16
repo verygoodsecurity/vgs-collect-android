@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <!-- NewPage -->
 <html lang="en"><head>
-    <title>BrandParams 1.6.13 API </title>
+    <title>BrandParams 1.6.14 API </title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="dc.created" content="2020-03-25">
     <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
@@ -104,6 +104,13 @@ var pathtoroot = "../../../../../";
             <ul class="blockList">
                 <li class="blockList">
                     
+                    <dl>
+                        <dt>All Implemented Interfaces:</dt>
+                        <dd>
+                            
+                        </dd>
+                    </dl>
+                    
                     <hr>
                     <pre class="wrap-overflow">
 
@@ -118,6 +125,27 @@ public final class <span class="typeNameLabel"><a href=BrandParams.html>BrandPar
             <ul class="blockList">
                 <li class="blockList">
                 <!-- ======== NESTED CLASS SUMMARY ======== -->
+                    
+                    <section role="region">
+                        <ul class="blockList">
+                            <li class="blockList"><a id="nested.class.summary">
+                                <!--   -->
+                            </a>
+                                <h3>Nested Class Summary</h3>
+                                <div class="memberSummary">
+                                    <table>
+                                        <caption><span>Nested Classes</span><span class="tabEnd">&nbsp;</span></caption>
+                                        <tr>
+                                            <th class="colFirst" scope="col">Modifier and Type</th>
+                                            <th class="colSecond" scope="col">Class</th>
+                                            <th class="colLast" scope="col">Description</th>
+                                        </tr>
+                                        
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
                     
                     <!-- =========== FIELD SUMMARY =========== -->
                     
@@ -149,13 +177,13 @@ public final class <span class="typeNameLabel"><a href=BrandParams.html>BrandPar
                                         </tr>
                                         
                                         <tr class="altColor">
-                                            <td class="colFirst"><code>private final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html>Array</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a>&gt;</code></td>
+                                            <td class="colFirst"><code>private final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a></code></td>
                                             <th class="colSecond" scope="row"><code><a href=BrandParams.html#rangeNumber>rangeNumber</a></code></th>
                                             <td class="colLast"></td>
                                         </tr>
                                         
                                         <tr class="rowColor">
-                                            <td class="colFirst"><code>private final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html>Array</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a>&gt;</code></td>
+                                            <td class="colFirst"><code>private final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a></code></td>
                                             <th class="colSecond" scope="row"><code><a href=BrandParams.html#rangeCVV>rangeCVV</a></code></th>
                                             <td class="colLast"></td>
                                         </tr>
@@ -186,7 +214,7 @@ public final class <span class="typeNameLabel"><a href=BrandParams.html>BrandPar
                                         
                                             <tr class="altColor">
                                                 <th class="colConstructorName" scope="row"><code><span class="memberNameLink"><a
-                                                        href="#BrandParams(String,ChecksumAlgorithm,Array,Array)">BrandParams</a></span>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> mask, <a href=validation/payment/ChecksumAlgorithm.html>ChecksumAlgorithm</a> algorithm, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html>Array</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a>&gt; rangeNumber, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html>Array</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a>&gt; rangeCVV)</code></th>
+                                                        href="#BrandParams(String,ChecksumAlgorithm,IntArray,IntArray)">BrandParams</a></span>(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> mask, <a href=validation/payment/ChecksumAlgorithm.html>ChecksumAlgorithm</a> algorithm, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a> rangeNumber, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a> rangeCVV)</code></th>
                                                 <td class="colLast"></td>
                                             </tr>
                                         
@@ -199,6 +227,24 @@ public final class <span class="typeNameLabel"><a href=BrandParams.html>BrandPar
                     </section>
                     
                     <!-- =========== ENUM CONSTANT SUMMARY =========== -->
+                    
+                    <section role="region">
+                        <ul class="blockList">
+                            <li class="blockList"><a id="enum.constant.summary">
+                                <!--   -->
+                            </a>
+                                <h3>Enum Constant Summary</h3>
+                                <table class="memberSummary">
+                                    <caption><span>Enum Constants</span><span class="tabEnd">&nbsp;</span></caption>
+                                    <tr>
+                                        <th class="colFirst" scope="col">Enum Constant</th>
+                                        <th class="colLast" scope="col">Description</th>
+                                    </tr>
+                                    
+                                </table>
+                            </li>
+                        </ul>
+                    </section>
                     
                     <!-- ========== METHOD SUMMARY =========== -->
                     
@@ -238,7 +284,7 @@ public final class <span class="typeNameLabel"><a href=BrandParams.html>BrandPar
                                         </tr>
                                         
                                         <tr id="i2" class="altColor">
-                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html>Array</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a>&gt;</code>
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=BrandParams.html#getRangeNumber()>getRangeNumber</a>() </code>
                                             </th>
@@ -246,7 +292,7 @@ public final class <span class="typeNameLabel"><a href=BrandParams.html>BrandPar
                                         </tr>
                                         
                                         <tr id="i3" class="rowColor">
-                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html>Array</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a>&gt;</code>
+                                            <td class="colFirst"><code>final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a></code>
                                             </td>
                                             <th class="colSecond" scope="row"><code><a href=BrandParams.html#getRangeCVV()>getRangeCVV</a>() </code>
                                             </th>
@@ -300,11 +346,11 @@ public final class <span class="typeNameLabel"><a href=BrandParams.html>BrandPar
                             </a>
                                 <h3>Constructor Detail</h3>
                                 
-                                <a name="BrandParams(String,ChecksumAlgorithm,Array,Array)"></a>
+                                <a name="BrandParams(String,ChecksumAlgorithm,IntArray,IntArray)"></a>
                                 <ul class="blockList">
                                     <li class="blockList">
                                         <h4>BrandParams</h4>
-                                        <pre>BrandParams(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> mask, <a href=validation/payment/ChecksumAlgorithm.html>ChecksumAlgorithm</a> algorithm, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html>Array</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a>&gt; rangeNumber, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html>Array</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a>&gt; rangeCVV)</pre>
+                                        <pre>BrandParams(<a href=https://developer.android.com/reference/kotlin/java/lang/String.html>String</a> mask, <a href=validation/payment/ChecksumAlgorithm.html>ChecksumAlgorithm</a> algorithm, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a> rangeNumber, <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a> rangeCVV)</pre>
                                         <div class="block"></div>
                                         
                                     </li>
@@ -361,7 +407,7 @@ public final class <span class="typeNameLabel"><a href=BrandParams.html>BrandPar
                                           >
                                     <li class="blockList">
                                         <h4>getRangeNumber</h4>
-                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html>Array</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a>&gt; <a href=BrandParams.html#getRangeNumber()>getRangeNumber</a>()</pre>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a> <a href=BrandParams.html#getRangeNumber()>getRangeNumber</a>()</pre>
                                         <div class="block"><p>The length of the card's number which a brand supported.</p></div>
                                         
                                         <!-- TODO missing return annotation -->
@@ -376,7 +422,7 @@ public final class <span class="typeNameLabel"><a href=BrandParams.html>BrandPar
                                           >
                                     <li class="blockList">
                                         <h4>getRangeCVV</h4>
-                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html>Array</a>&lt;<a href=https://developer.android.com/reference/kotlin/java/lang/Integer.html>Integer</a>&gt; <a href=BrandParams.html#getRangeCVV()>getRangeCVV</a>()</pre>
+                                        <pre class="methodSignature"> final <a href=https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html>IntArray</a> <a href=BrandParams.html#getRangeCVV()>getRangeCVV</a>()</pre>
                                         <div class="block"><p>The length of the card's CVC number which a brand supported.</p></div>
                                         
                                         <!-- TODO missing return annotation -->
