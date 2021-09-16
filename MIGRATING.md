@@ -10,6 +10,8 @@ Remove `setFieldType` method from code in case you use it.
 Please use `VGSCardNumberEditText`, `ExpirationDateEditText`, `CardVerificationCodeEditText`, `PersonNameEditText`, `SSNEditText`
 specific fields instead of `app:fieldType` attribute or `FieldType` enum class.
 
+Field which doen't have validation rules will not accept content, by default.
+
 
 ### Migrating from versions < v1.6.2
 
