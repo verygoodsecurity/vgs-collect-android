@@ -53,22 +53,17 @@ class VGSEditTextActivityValidationInstrumentedTest {
 
     @Test
     fun test_editText_disable_validation() {
-        Espresso.onView(ViewMatchers.withId(R.id.disableValidationBtn))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-            .perform(ViewActions.click())
-
         val field = Espresso.onView(ViewMatchers.withId(R.id.vgsEditText))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
 
-        field.perform(SetTextAction(NAME_WRONG_1))
-        field.check(ViewAssertions.matches(WithValidationStateMatcher()))
+        field.check(ViewAssertions.matches(CoreMatchers.not(WithValidationStateMatcher())))
 
         Espresso.onView(ViewMatchers.withId(R.id.disableValidationBtn))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
             .perform(ViewActions.click())
 
-        field.perform(SetTextAction(NAME_WRONG_1))
-        field.check(ViewAssertions.matches(CoreMatchers.not(WithValidationStateMatcher())))
+        field.perform(SetTextAction(NAME_CORRECT))
+        field.check(ViewAssertions.matches(WithValidationStateMatcher()))
     }
 
     private fun pauseTestFor(milliseconds: Long) {

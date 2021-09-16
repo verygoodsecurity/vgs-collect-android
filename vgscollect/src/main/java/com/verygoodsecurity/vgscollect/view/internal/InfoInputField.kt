@@ -4,11 +4,16 @@ import android.content.Context
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputInfoConnection
+import com.verygoodsecurity.vgscollect.view.card.validation.InfoValidator
 
 /** @suppress */
 internal class InfoInputField(context: Context) : BaseInputField(context) {
 
     override var fieldType: FieldType = FieldType.INFO
+
+    init {
+        validator.addRule(InfoValidator())
+    }
 
     override fun applyFieldType() {
         inputConnection = InputInfoConnection(id, validator)
