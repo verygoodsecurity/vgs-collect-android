@@ -35,7 +35,7 @@ dependencies {
 
     api "com.getbouncer:scan-payment-full:2.1.0011"
     api 'com.getbouncer:cardscan-ui:2.1.0011'
-    api 'com.getbouncer:tensorflow-lite:2.1.0011'
+    api 'com.getbouncer:tensorflow-lite:2.1.0012'
 
     dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
 }
