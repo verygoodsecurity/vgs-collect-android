@@ -31,17 +31,18 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
 import kotlinx.android.synthetic.main.activity_collect_demo.*
 
-class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener  {
+class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
 
     companion object {
         const val USER_SCAN_REQUEST_CODE = 0x7
     }
 
-    private lateinit var vault_id:String
-    private lateinit var path:String
-    private lateinit var env:Environment
+    private lateinit var vault_id: String
+    private lateinit var path: String
+    private lateinit var env: Environment
 
     private lateinit var vgsForm: VGSCollect
 
@@ -61,10 +62,28 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         setupCVCField()
         setupCardHolderField()
         setupCardExpDateField()
+        setupPostalCodeField()
+        setupCityField()
 
         val staticData = mutableMapOf<String, String>()
         staticData["static_data"] = "static custom data"
         vgsForm.setCustomData(staticData)
+    }
+
+    private fun setupCityField() {
+        vgsForm.bindView(cityField)
+    }
+
+    private fun setupPostalCodeField() {
+        postalCodeField?.apply {
+            addRule(
+                VGSInfoRule.ValidationBuilder()
+                    .setRegex("^[0-9]{5}(?:-[0-9]{4})?\$")
+                    .build()
+            )
+        }
+
+        vgsForm.bindView(postalCodeField)
     }
 
     private fun setupCardExpDateField() {
@@ -81,7 +100,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun setupCardHolderField() {
-        val rule : PersonNameRule = PersonNameRule.ValidationBuilder()
+        val rule: PersonNameRule = PersonNameRule.ValidationBuilder()
             .setAllowableMinLength(3)
             .setAllowableMaxLength(7)
             .build()
@@ -114,7 +133,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun setupDefaultBehaviour() {
-        val rule : PaymentCardNumberRule = PaymentCardNumberRule.ValidationBuilder()
+        val rule: PaymentCardNumberRule = PaymentCardNumberRule.ValidationBuilder()
 //            .setAlgorithm(ChecksumAlgorithm.NONE)
 
             .setAllowableNumberLength(arrayOf(15, 13, 19))
@@ -214,10 +233,10 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
 
         val bndl = intent?.extras
 
-        vault_id = bndl?.getString(StartActivity.VAULT_ID, "")?:""
-        path = bndl?.getString(StartActivity.PATH, "/")?:""
+        vault_id = bndl?.getString(StartActivity.VAULT_ID, "") ?: ""
+        path = bndl?.getString(StartActivity.PATH, "/") ?: ""
 
-        val envId = bndl?.getInt(StartActivity.ENVIROMENT, 0)?:0
+        val envId = bndl?.getInt(StartActivity.ENVIROMENT, 0) ?: 0
         env = Environment.values()[envId]
 
         vgsForm = VGSCollect.Builder(this, vault_id)
@@ -238,7 +257,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if(item.itemId == R.id.scan_card) {
+        return if (item.itemId == R.id.scan_card) {
             scanCard()
             true
         } else {
@@ -265,20 +284,9 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         return object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
                 Log.e("vgs_collect_state", "$state ")
-                when(state) {
-                    is FieldState.CardNumberState -> handleCardNumberState(state)
-                }
+
                 refreshAllStates()
             }
-        }
-    }
-
-    private fun handleCardNumberState(state: FieldState.CardNumberState) {
-        previewCardNumber?.text = state.number
-        if(state.cardBrand == CardType.VISA.name) {
-            previewCardBrand?.setImageResource(R.drawable.ic_custom_visa)
-        } else {
-            previewCardBrand?.setImageResource(state.drawableBrandResId)
         }
     }
 
@@ -308,7 +316,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun checkAttachedFiles() {
-        if(vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
+        if (vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
             attachBtn?.text = getString(R.string.collect_activity_attach_btn)
         } else {
             attachBtn?.text = getString(R.string.collect_activity_detach_btn)
@@ -320,13 +328,14 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
         setStateLoading(false)
 
         when (response) {
-            is VGSResponse.SuccessResponse -> responseContainerView.text = "Code: ${response.successCode}"
+            is VGSResponse.SuccessResponse -> responseContainerView.text =
+                "Code: ${response.successCode}"
             is VGSResponse.ErrorResponse -> responseContainerView.text = response.toString()
         }
     }
 
     private fun setStateLoading(state: Boolean) {
-        if(state) {
+        if (state) {
             progressBar?.visibility = View.VISIBLE
             submitBtn?.isEnabled = false
             attachBtn?.isEnabled = false
@@ -338,7 +347,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun setEnabledResponseHeader(isEnabled: Boolean) {
-        if(isEnabled) {
+        if (isEnabled) {
             attachBtn.setTextColor(
                 ContextCompat.getColor(this, R.color.state_active)
             )
@@ -378,7 +387,7 @@ class VGSCollectActivity: AppCompatActivity(), VgsCollectResponseListener, View.
     }
 
     private fun attachFile() {
-        if(vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
+        if (vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
             vgsForm.getFileProvider().attachFile("attachments.file")
         } else {
             vgsForm.getFileProvider().detachAll()
