@@ -2,7 +2,7 @@ apply from: 'gradle/gradle-dependencies.gradle'
 
 buildscript {
     ext.kotlin_version = '1.5.31'
-    ext.dokka_version = '1.5.30'
+    ext.dokka_version = '1.5.31'
 
     repositories {
         mavenCentral()
