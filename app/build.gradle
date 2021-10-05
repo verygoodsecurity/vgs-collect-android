@@ -80,7 +80,7 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$android_support_libraries"
     implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
     implementation "com.google.android.material:material:$android_material_version"
 
     implementation 'com.google.android.gms:play-services-auth:19.2.0'
