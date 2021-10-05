@@ -26,8 +26,11 @@ internal class TimeGapsValidator(
         try {
             val date = sdf.parse(str).time
             calendar.timeInMillis = date
-            val dayLast = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-            calendar.set(Calendar.DAY_OF_MONTH, dayLast)
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+            calendar.set(Calendar.HOUR_OF_DAY,  calendar.getActualMaximum(Calendar.HOUR_OF_DAY))
+            calendar.set(Calendar.MINUTE,  calendar.getActualMaximum(Calendar.MINUTE))
+            calendar.set(Calendar.SECOND,  calendar.getActualMaximum(Calendar.SECOND))
+            calendar.set(Calendar.MILLISECOND,  calendar.getActualMaximum(Calendar.MILLISECOND))
         } catch (e: ParseException) {
             return false
         }
