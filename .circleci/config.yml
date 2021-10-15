@@ -66,7 +66,6 @@ jobs:
               --device model=lv0,version=23,locale=en,orientation=portrait \
               --device model=capricorn,version=26,locale=en,orientation=portrait \
               --device model=tissot_sprout,version=28,locale=en,orientation=portrait \
-              --device model=x1q,version=29,locale=en,orientation=portrait \
               --device model=flame,version=30,locale=en,orientation=portrait \
 
 workflows:
