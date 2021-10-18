@@ -71,7 +71,7 @@ internal class OkHttpClient(
                 override fun onResponse(call: Call, response: Response) {
                     callback?.invoke(
                         NetworkResponse(
-                            response.code.isCodeSuccessful(),
+                            response.isSuccessful,
                             response.body?.string(),
                             response.code,
                             response.message
@@ -106,11 +106,12 @@ internal class OkHttpClient(
                 .build()
                 .newCall(okHttpRequest).execute()
 
-            if (response.isSuccessful) {
-                NetworkResponse(response.isSuccessful, response.body?.string(), response.code)
-            } else {
-                NetworkResponse(message = response.message, code = response.code)
-            }
+            NetworkResponse(
+                response.isSuccessful,
+                response.body?.string(),
+                response.code,
+                response.message
+            )
         } catch (e: InterruptedIOException) {
             NetworkResponse(error = VGSError.TIME_OUT)
         } catch (e: TimeoutException) {

@@ -61,7 +61,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$android_support_libraries"
     implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
     api "com.google.android.material:material:$android_material_version"
-    api 'com.squareup.okhttp3:okhttp:4.9.1'
+    api 'com.squareup.okhttp3:okhttp:4.9.2'
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
