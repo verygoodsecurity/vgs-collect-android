@@ -107,10 +107,12 @@ internal class TemporaryFileStorage(
     private fun queryFileState(uri: Uri, fieldName: String): FileState {
         var name = ""
         var size = 0L
-        context.contentResolver.queryOptional(uri)?.use {
-            if (it.moveToFirst()) {
-                name = it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                size = it.getLong(it.getColumnIndex(OpenableColumns.SIZE))
+        context.contentResolver.queryOptional(uri)?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME).takeIf { it >= 0 }
+                    ?.let { name = cursor.getString(it) }
+                cursor.getColumnIndex(OpenableColumns.SIZE).takeIf { it >= 0 }
+                    ?.let { size = cursor.getLong(it) }
             }
         }
         return FileState(size, name, context.contentResolver.getType(uri), fieldName)
