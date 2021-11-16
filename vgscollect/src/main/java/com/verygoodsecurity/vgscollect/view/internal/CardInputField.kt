@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.os.Build
@@ -10,6 +11,7 @@ import android.view.Gravity
 import android.view.View
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.*
+import com.verygoodsecurity.vgscollect.util.extension.applyLimitOnMask
 import com.verygoodsecurity.vgscollect.util.extension.formatToMask
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.*
@@ -59,6 +61,8 @@ internal class CardInputField(context: Context) : BaseInputField(context),
 
     private var maskAdapter = CardMaskAdapter()
     private var cardNumberFormatter: Formatter? = null
+
+    private var lengthLimit: Int = -1
 
     private val cardBrandFilter: CardBrandFilter by lazy {
         CardBrandFilter().also { it.divider = divider }
@@ -139,6 +143,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         refreshIconPreview()
     }
 
+    @SuppressLint("RtlHardcoded")
     internal fun setCardPreviewIconGravity(gravity: Int) {
         iconGravity = when (gravity) {
             0 -> gravity
@@ -165,6 +170,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         inputConnection?.run()
     }
 
+    @SuppressLint("RtlHardcoded")
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         if (isRTL()) {
@@ -290,6 +296,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         }
     }
 
+    @SuppressLint("RtlHardcoded")
     private fun refreshIconPreview() {
         when (iconGravity) {
             Gravity.LEFT -> setCompoundDrawables(lastCardIconPreview, null, null, null)
@@ -333,13 +340,17 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     private fun applyDividerOnMask() {
-        val newCardNumberMask = derivedCardNumberMask.replace(MASK_REGEX.toRegex(), divider)
-
-        if (cardNumberFormatter?.getMask() != newCardNumberMask) {
-            derivedCardNumberMask = newCardNumberMask
-            cardNumberFormatter?.setMask(newCardNumberMask)
-            refreshOutputContent()
-        }
+        derivedCardNumberMask
+            .replace(MASK_REGEX.toRegex(), divider)
+            .applyLimitOnMask(lengthLimit)
+            .takeIf { cardNumberFormatter?.getMask() != it }
+            ?.apply {
+                if (cardNumberFormatter?.getMask() != this) {
+                    derivedCardNumberMask = this
+                    cardNumberFormatter?.setMask(this)
+                    refreshOutputContent()
+                }
+            }
     }
 
     override fun setupAutofill() {
@@ -359,5 +370,9 @@ internal class CardInputField(context: Context) : BaseInputField(context),
             if (algorithm != null) validator.addRule(CheckSumValidator(algorithm))
             if (regex != null) validator.addRule(RegexValidator(regex))
         }
+    }
+
+    internal fun setMaxLength(length: Int) {
+        lengthLimit = length
     }
 }

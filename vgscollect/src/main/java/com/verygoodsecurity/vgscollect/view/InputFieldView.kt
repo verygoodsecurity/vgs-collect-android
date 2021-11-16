@@ -465,7 +465,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @return True if this view has focus, false otherwise.
      */
     override fun isFocused(): Boolean {
-        return if(hasChildren()) {
+        return if (hasChildren()) {
             inputField.isFocused
         } else {
             super.isFocused()
@@ -750,7 +750,10 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     protected fun applyMaxLength(length: Int) {
-        (inputField as? InfoInputField)?.filters = arrayOf(InputFilter.LengthFilter(length))
+        when (inputField) {
+            is CardInputField -> (inputField as CardInputField).setMaxLength(length)
+            is InfoInputField -> inputField.filters = arrayOf(InputFilter.LengthFilter(length))
+        }
     }
 
     internal fun getFontFamily(): Typeface? {
@@ -1374,7 +1377,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * Explicitly request that the current input method's soft input area be shown to the user, if needed.
      */
     fun showKeyboard() {
-        if(::inputField.isInitialized) {
+        if (::inputField.isInitialized) {
             val im = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             im.showSoftInput(inputField, 0)
         }
@@ -1384,7 +1387,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * Request to hide the soft input window from the context of the window that is currently accepting input.
      */
     fun hideKeyboard() {
-        if(::inputField.isInitialized) {
+        if (::inputField.isInitialized) {
             val im = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             im.hideSoftInputFromWindow(inputField.windowToken, 0)
         }

@@ -210,6 +210,11 @@ class VGSCardNumberEditText @JvmOverloads constructor(
         return getOutputNumberDivider()
     }
 
+    /** The max text length to display. */
+    fun setMaxLength(length: Int) {
+        applyMaxLength(length)
+    }
+
     /**
      * Sets the custom icons for Brand.
      *
