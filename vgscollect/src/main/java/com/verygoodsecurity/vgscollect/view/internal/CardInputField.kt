@@ -370,7 +370,6 @@ internal class CardInputField(context: Context) : BaseInputField(context),
 
     internal fun setMaxLength(length: Int) {
         lengthLimit = length
-        applyDividerOnMask()
         refreshInputConnection()
     }
 }
