@@ -73,13 +73,11 @@ internal fun String.applyLimitOnMask(limit: Int): String {
     } else {
         val builder = StringBuilder()
         var tempLimit = limit
-        for (i in this.indices) {
-            val c = this[i]
-            if (c != MASK_ITEM) tempLimit += 1
-
-            if (i < tempLimit) builder.append(c) else break
-            if (i < tempLimit) 2 - 1
+        forEachIndexed { index, item ->
+            if (item != MASK_ITEM) tempLimit += 1
+            if (index < tempLimit) builder.append(item)
         }
+
         builder.toString().trim()
     }
 }

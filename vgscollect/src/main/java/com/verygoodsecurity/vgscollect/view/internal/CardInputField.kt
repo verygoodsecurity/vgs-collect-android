@@ -314,13 +314,13 @@ internal class CardInputField(context: Context) : BaseInputField(context),
             val bin =
                 (inputConnection?.getOutput()?.content as FieldContent.CardNumberContent).parseCardBin()
 
-            originalCardNumberMask = card.currentMask
+            originalCardNumberMask = card.currentMask.applyLimitOnMask(lengthLimit)
 
             derivedCardNumberMask = maskAdapter.getItem(
                 card.cardType,
                 card.name ?: "",
                 bin,
-                card.currentMask
+                originalCardNumberMask
             )
             applyDividerOnMask()
         }
@@ -340,17 +340,13 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     private fun applyDividerOnMask() {
-        derivedCardNumberMask
-            .replace(MASK_REGEX.toRegex(), divider)
-            .applyLimitOnMask(lengthLimit)
-            .takeIf { cardNumberFormatter?.getMask() != it }
-            ?.apply {
-                if (cardNumberFormatter?.getMask() != this) {
-                    derivedCardNumberMask = this
-                    cardNumberFormatter?.setMask(this)
-                    refreshOutputContent()
-                }
-            }
+        val newCardNumberMask = derivedCardNumberMask.replace(MASK_REGEX.toRegex(), divider)
+
+        if (cardNumberFormatter?.getMask() != newCardNumberMask) {
+            derivedCardNumberMask = newCardNumberMask
+            cardNumberFormatter?.setMask(newCardNumberMask)
+            refreshOutputContent()
+        }
     }
 
     override fun setupAutofill() {
@@ -374,5 +370,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
 
     internal fun setMaxLength(length: Int) {
         lengthLimit = length
+        applyDividerOnMask()
+        refreshInputConnection()
     }
 }
