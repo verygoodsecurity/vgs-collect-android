@@ -210,8 +210,11 @@ class VGSCardNumberEditText @JvmOverloads constructor(
         return getOutputNumberDivider()
     }
 
-    /** The max text length to display. */
-    fun setMaxLength(length: Int) {
+    /**
+     * The max card number length to display.
+     * Counting the length of a card number divider chars is ignored.
+     */
+    fun setMaxInputLength(length: Int) {
         applyMaxLength(length)
     }
 
