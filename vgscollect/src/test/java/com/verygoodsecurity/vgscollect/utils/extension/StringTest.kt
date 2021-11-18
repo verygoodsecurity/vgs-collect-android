@@ -4,6 +4,7 @@ import com.verygoodsecurity.vgscollect.core.api.equalsUrl
 import com.verygoodsecurity.vgscollect.core.api.toHost
 import com.verygoodsecurity.vgscollect.core.api.toHostnameValidationUrl
 import com.verygoodsecurity.vgscollect.core.api.toHttps
+import com.verygoodsecurity.vgscollect.util.extension.applyLimitOnMask
 import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
 import org.junit.Assert.*
@@ -65,5 +66,44 @@ class StringTest {
         assertEquals("www.vgs.io", "https://www.vgs.io".toHost())
         assertEquals("www.vgs.io", "http://www.vgs.io".toHost())
         assertEquals("www.vgs.io", "www.vgs.io".toHost())
+    }
+
+    @Test
+    fun test_apply_limit_on_mask_positive() {
+        "#### #### #### #### ###".run {
+            assertEquals("", this.applyLimitOnMask(0))
+            assertEquals("#", this.applyLimitOnMask(1))
+            assertEquals("##", this.applyLimitOnMask(2))
+            assertEquals("###", this.applyLimitOnMask(3))
+            assertEquals("####", this.applyLimitOnMask(4))
+            assertEquals("#### #", this.applyLimitOnMask(5))
+            assertEquals("#### ####", this.applyLimitOnMask(8))
+            assertEquals("#### #### #", this.applyLimitOnMask(9))
+            assertEquals("#### #### ####", this.applyLimitOnMask(12))
+            assertEquals("#### #### #### #", this.applyLimitOnMask(13))
+            assertEquals("#### #### #### ####", this.applyLimitOnMask(16))
+            assertEquals("#### #### #### #### #", this.applyLimitOnMask(17))
+            assertEquals("#### #### #### #### ###", this.applyLimitOnMask(19))
+        }
+        "##  ## ##  ##  ##   ## ## ## ###".run {
+            assertEquals("#", this.applyLimitOnMask(1))
+            assertEquals("##", this.applyLimitOnMask(2))
+            assertEquals("##  #", this.applyLimitOnMask(3))
+            assertEquals("##  ##", this.applyLimitOnMask(4))
+            assertEquals("##  ## #", this.applyLimitOnMask(5))
+            assertEquals("##  ## ##  ##  ##", this.applyLimitOnMask(10))
+            assertEquals("##  ## ##  ##  ##   ## ## ## #", this.applyLimitOnMask(17))
+            assertEquals("##  ## ##  ##  ##   ## ## ## ###", this.applyLimitOnMask(19))
+        }
+    }
+
+    @Test
+    fun test_apply_limit_on_mask_negative() {
+        "#### #### #### #### ###".run {
+            assertEquals(this, this.applyLimitOnMask(-1))
+            assertEquals(this, this.applyLimitOnMask(-10))
+            assertEquals(this, this.applyLimitOnMask(this.length))
+            assertEquals(this, this.applyLimitOnMask(77))
+        }
     }
 }
