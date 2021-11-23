@@ -1,6 +1,6 @@
 ext {
     junit_version = '4.13.2'
-    mockito_version = '4.0.0'
+    mockito_version = '4.1.0'
     androidx_test_rules_version = '1.4.0'
     androidx_test_runner_version = '1.4.0'
     androidx_test_junit_version = '1.1.3'
