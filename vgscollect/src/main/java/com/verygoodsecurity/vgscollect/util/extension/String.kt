@@ -1,8 +1,7 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
 import android.util.Base64
-import java.lang.StringBuilder
-
+import kotlin.text.StringBuilder
 
 private const val NUMBER_REGEX = "[^\\d]"
 private const val MASK_ITEM = '#'
@@ -66,4 +65,19 @@ internal fun String.substringOrNull(startIndex: Int, endIndex: Int) = try {
     this.substring(startIndex.inc(), endIndex)
 } catch (e: Exception) {
     null
+}
+
+internal fun String.applyLimitOnMask(limit: Int): String {
+    return if (limit < 0 || limit >= this.length) {
+        this
+    } else {
+        val builder = StringBuilder()
+        var tempLimit = limit
+        forEachIndexed { index, item ->
+            if (item != MASK_ITEM) tempLimit += 1
+            if (index < tempLimit) builder.append(item)
+        }
+
+        builder.toString().trim()
+    }
 }

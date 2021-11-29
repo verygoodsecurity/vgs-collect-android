@@ -211,6 +211,14 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     /**
+     * The max card number length to display.
+     * Counting the length of a card number divider chars is ignored.
+     */
+    fun setMaxInputLength(length: Int) {
+        applyMaxLength(length)
+    }
+
+    /**
      * Sets the custom icons for Brand.
      *
      * @param adapter The adapter is responsible for maintaining the icons backing this view and
