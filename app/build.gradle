@@ -76,7 +76,7 @@ dependencies {
     implementation project(":vgscollect-cardio")
 //    implementation project(":vgscollect-bouncer")
 
-    implementation platform('com.google.firebase:firebase-bom:29.0.1')
+    implementation platform('com.google.firebase:firebase-bom:29.0.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'
 
     implementation "androidx.appcompat:appcompat:$android_support_libraries"
