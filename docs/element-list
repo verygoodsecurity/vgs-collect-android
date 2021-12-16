@@ -32,6 +32,7 @@ $dokka.location:com.verygoodsecurity.vgscollect.view.card.validation.rules/Perso
 $dokka.location:com.verygoodsecurity.vgscollect.view.card.validation.rules/VGSInfoRule.ValidationBuilder///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/card/validation/rules/VGSInfoRule.ValidationBuilder.html
 $dokka.location:com.verygoodsecurity.vgscollect.view.core.serializers/VGSExpDateSeparateSerializer.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/core/serializers/VGSExpDateSeparateSerializer.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.view.core.serializers/VGSExpDateSeparateSerializer.Params///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/core/serializers/VGSExpDateSeparateSerializer.Params.html
+$dokka.location:com.verygoodsecurity.vgscollect.view.material.internal/TextInputLayoutSavedState.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/material/internal/TextInputLayoutSavedState.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.Companion///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.Companion.html
 $dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.OnEditorActionListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.OnEditorActionListener.html
 $dokka.location:com.verygoodsecurity.vgscollect.view/InputFieldView.OnTextChangedListener///PointingToDeclaration/com/verygoodsecurity/vgscollect/view/InputFieldView.OnTextChangedListener.html
@@ -68,5 +69,6 @@ com.verygoodsecurity.vgscollect.view.core.serializers
 com.verygoodsecurity.vgscollect.view.cvc
 com.verygoodsecurity.vgscollect.view.date
 com.verygoodsecurity.vgscollect.view.material
+com.verygoodsecurity.vgscollect.view.material.internal
 com.verygoodsecurity.vgscollect.widget
 
