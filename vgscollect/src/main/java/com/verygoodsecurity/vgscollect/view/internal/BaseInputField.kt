@@ -5,7 +5,6 @@ import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.text.TextWatcher
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.VisibleForTesting
@@ -94,7 +93,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     init {
         isListeningPermitted = true
-        setupFocusChangeListener()
         setupInputConnectionListener()
         setupEditorActionListener()
         setupOnKeyListener()
@@ -125,17 +123,16 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         compoundDrawablePadding = resources.getDimension(R.dimen.half_vgsfield_padding).toInt()
     }
 
-    private fun setupFocusChangeListener() {
-        onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
-            inputConnection?.getOutput()?.apply {
+    override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
+        super.onFocusChanged(focused, direction, previouslyFocusedRect)
+        inputConnection?.getOutput()?.apply {
 
-                userFocusChangeListener?.onFocusChange(vgsParent, hasFocus)
+            userFocusChangeListener?.onFocusChange(vgsParent, focused)
 
-                if (hasFocus != isFocusable) {
-                    isFocusable = hasFocus
-                    hasUserInteraction = true
-                    inputConnection?.run()
-                }
+            if (focused != isFocusable) {
+                isFocusable = focused
+                hasUserInteraction = true
+                inputConnection?.run()
             }
         }
     }
