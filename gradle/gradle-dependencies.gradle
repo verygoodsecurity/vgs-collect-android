@@ -7,6 +7,6 @@ ext {
     androidx_test_espresso_espresso_core_version = '3.4.0'
 
     android_material_version = '1.4.0'
-    android_support_libraries = '1.4.0'
+    android_support_libraries = '1.4.1'
     androidx_core_ktx_version = '1.7.0'
 }
