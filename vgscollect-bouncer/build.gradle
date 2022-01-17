@@ -33,7 +33,7 @@ dependencies {
     implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
 
 
-    api "com.getbouncer:scan-payment-full:2.1.0016"
+    api "com.getbouncer:scan-payment-full:2.1.0021"
     api 'com.getbouncer:cardscan-ui:2.1.0016'
     api 'com.getbouncer:tensorflow-lite:2.1.0016'
 
