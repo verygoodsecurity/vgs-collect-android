@@ -76,6 +76,6 @@ dependencies {
     dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
 }
 
-tasks.named("dokkaJavadoc") {
+tasks.named("dokkaHtml") {
     outputDirectory.set(rootProject.file('docs'))
 }
