@@ -67,7 +67,7 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:$mockito_version"
     testImplementation 'org.json:json:20211205'
     testImplementation "org.robolectric:robolectric:4.7.3"
-    testImplementation "io.mockk:mockk:1.12.1"
+    testImplementation "io.mockk:mockk:1.12.2"
     testImplementation "org.skyscreamer:jsonassert:1.5.0"
     androidTestImplementation "androidx.test:runner:$androidx_test_runner_version"
     androidTestImplementation "androidx.test.ext:junit:$androidx_test_junit_version"
@@ -76,6 +76,6 @@ dependencies {
     dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
 }
 
-tasks.named("dokkaJavadoc") {
+tasks.named("dokkaHtml") {
     outputDirectory.set(rootProject.file('docs'))
 }
