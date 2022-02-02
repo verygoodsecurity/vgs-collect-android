@@ -7,9 +7,6 @@ updates:
     target-branch: "develop"
     open-pull-requests-limit: 10
     ignore:
-    - dependency-name: "@angular*"
-    versions:
-      - ">= 0"
     - dependency-name: "@cardscan-ui*"
     versions:
       - ">= 0"
