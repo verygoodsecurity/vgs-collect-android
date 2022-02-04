@@ -5,14 +5,3 @@ updates:
     schedule:
       interval: "daily"
     target-branch: "develop"
-    open-pull-requests-limit: 10
-    ignore:
-    - dependency-name: "@cardscan-ui*"
-    versions:
-      - ">= 0"
-    - dependency-name: "@scan-payment-full*"
-    versions:
-      - ">= 0"
-    - dependency-name: "@tensorflow-lite*"
-    versions:
-      - ">= 0"
