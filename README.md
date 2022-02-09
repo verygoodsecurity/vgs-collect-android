@@ -27,9 +27,10 @@ Table of contents
 | Dependency | Version |
 | :--- | :---: |
 | Min SDK | 19 |
-| Target SDK | 30 |
-| androidx.appcompat:appcompat | 1.2.0 |
-| com.google.android.material:material | 1.2.0 |
+| Target SDK | 32 |
+| androidx.appcompat:appcompat | 1.4.1 |
+| com.google.android.material:material | 1.5.0 |
+| com.squareup.okhttp3:okhttp | 4.9.3 |
 
 ## Structure
 * **VGSCollect SDK** - provides an API for interacting with the VGS Vault
