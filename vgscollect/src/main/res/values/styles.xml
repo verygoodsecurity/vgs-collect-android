@@ -28,7 +28,7 @@
         <item name="android:paddingBottom">4dp</item>
     </style>
 
-    <style name="VGSCollect.Widget.Material3.TextInputLayout.OutlineBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="VGSCollect.Widget.Material3.TextInputLayout.OutlineBox" parent="Widget.Material3.TextInputLayout.OutlinedBox">
         <item name="boxBackgroundModes">outline</item>
         <item name="boxCornerRadiusTopStart">4dp</item>
         <item name="boxCornerRadiusTopEnd">4dp</item>
@@ -36,18 +36,18 @@
         <item name="boxCornerRadiusBottomEnd">4dp</item>
     </style>
 
-    <style name="VGSCollect.Widget.Material3.TextInputLayout.FilledBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+    <style name="VGSCollect.Widget.Material3.TextInputLayout.FilledBox" parent="Widget.Material3.TextInputLayout.FilledBox">
         <item name="boxBackgroundColor">@android:color/transparent</item>
         <item name="boxBackgroundModes">filled</item>
         <item name="android:paddingTop">8dp</item>
     </style>
 
-    <style name="VGSCollect.Widget.Material3.TextInputEditText.OutlineBox" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+    <style name="VGSCollect.Widget.Material3.TextInputEditText.OutlineBox" parent="Widget.Material3.TextInputEditText.OutlinedBox">
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingBottom">8dp</item>
     </style>
 
-    <style name="VGSCollect.Widget.Material3.TextInputEditText.FilledBox" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
+    <style name="VGSCollect.Widget.Material3.TextInputEditText.FilledBox" parent="Widget.Material3.TextInputEditText.FilledBox">
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">4dp</item>
     </style>
