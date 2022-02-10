@@ -83,7 +83,7 @@ dependencies {
 
     implementation 'androidx.multidex:multidex:2.0.1'
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
 
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test:rules:$androidx_test_rules_version"
