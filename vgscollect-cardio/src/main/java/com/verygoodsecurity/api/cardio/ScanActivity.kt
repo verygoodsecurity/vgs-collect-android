@@ -156,8 +156,8 @@ class ScanActivity : BaseTransmitActivity() {
         const val EXTRA_REQUIRE_POSTAL_CODE = CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE
 
         /**
-         * Boolean extra. Optional. If this value is set to <code>true</code>, and the application has a theme,
-         * the theme for the card.io {@link android.app.Activity}s will be set to the theme of the application.
+         * Boolean extra. Optional. If this value is set to <code>true</code>,
+         * the theme will be set to the theme of the application.
          */
         const val EXTRA_KEEP_APPLICATION_THEME = CardIOActivity.EXTRA_KEEP_APPLICATION_THEME
 
