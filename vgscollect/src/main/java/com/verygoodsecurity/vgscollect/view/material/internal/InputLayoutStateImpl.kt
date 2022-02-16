@@ -386,9 +386,6 @@ internal class InputLayoutStateImpl(
             this.setStartIconOnClickListener(this@InputLayoutStateImpl.startIconOnClickListener)
             setStartIconTintList(this@InputLayoutStateImpl.startIconTintList)
 
-            if(this@InputLayoutStateImpl.endIconDrawable != 0) {
-                this.setEndIconDrawable(this@InputLayoutStateImpl.endIconDrawable)
-            }
             if(isPasswordVisibilityToggleEnabled) {
                 this.endIconMode = TextInputLayout.END_ICON_PASSWORD_TOGGLE
             } else {
@@ -407,6 +404,9 @@ internal class InputLayoutStateImpl(
                 this.setCounterTextAppearance(this@InputLayoutStateImpl.counterTextAppearance)
                 this.setHelperTextTextAppearance(this@InputLayoutStateImpl.helperTextTextAppearance)
                 this.setErrorTextAppearance(this@InputLayoutStateImpl.errorTextAppearance)
+            }
+            if(this@InputLayoutStateImpl.endIconDrawable != 0) {
+                this.setEndIconDrawable(this@InputLayoutStateImpl.endIconDrawable)
             }
         }
     }
