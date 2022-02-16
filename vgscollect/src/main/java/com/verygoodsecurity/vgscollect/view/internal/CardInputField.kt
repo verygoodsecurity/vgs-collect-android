@@ -273,25 +273,23 @@ internal class CardInputField(context: Context) : BaseInputField(context),
             PreviewIconMode.IF_DETECTED -> if (card.successfullyDetected) {
                 refreshIconPreview()
             } else {
-                setCompoundDrawablesRelative(null, null, null, null)
+                setCompoundDrawablesRelativeOrNull()
             }
             PreviewIconMode.HAS_CONTENT -> if (!text.isNullOrEmpty()) {
                 refreshIconPreview()
             } else {
-                setCompoundDrawablesRelative(null, null, null, null)
+                setCompoundDrawablesRelativeOrNull()
             }
-            PreviewIconMode.NEVER -> setCompoundDrawablesRelative(null, null, null, null)
+            PreviewIconMode.NEVER -> setCompoundDrawablesRelativeOrNull()
         }
     }
 
     @SuppressLint("RtlHardcoded")
     private fun refreshIconPreview() {
         with(iconGravity) {
-            setCompoundDrawablesRelative(
-                if (this == Gravity.LEFT || this == Gravity.START) lastCardIconPreview else null,
-                null,
-                if (this == Gravity.RIGHT || this == Gravity.END) lastCardIconPreview else null,
-                null,
+            setCompoundDrawablesRelativeOrNull(
+                start = if (this == Gravity.LEFT || this == Gravity.START) lastCardIconPreview else null,
+                end = if (this == Gravity.RIGHT || this == Gravity.END) lastCardIconPreview else null
             )
         }
     }
