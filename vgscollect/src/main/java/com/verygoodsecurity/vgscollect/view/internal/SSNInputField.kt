@@ -134,7 +134,6 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         if (isRTL()) {
-            hasRTL = true
             layoutDirection = View.LAYOUT_DIRECTION_LTR
             textDirection = View.TEXT_DIRECTION_LTR
             gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT

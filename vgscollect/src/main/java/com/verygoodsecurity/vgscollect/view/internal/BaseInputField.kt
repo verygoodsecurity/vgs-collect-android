@@ -72,7 +72,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected var isListeningPermitted = true
     private var isEditorActionListenerConfigured = false
     private var isKeyListenerConfigured = false
-    protected var hasRTL = false
 
     protected abstract var fieldType: FieldType
 
