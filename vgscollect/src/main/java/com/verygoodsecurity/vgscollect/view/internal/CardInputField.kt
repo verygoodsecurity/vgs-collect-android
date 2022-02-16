@@ -273,14 +273,14 @@ internal class CardInputField(context: Context) : BaseInputField(context),
             PreviewIconMode.IF_DETECTED -> if (card.successfullyDetected) {
                 refreshIconPreview()
             } else {
-                setCompoundDrawables(null, null, null, null)
+                setCompoundDrawablesRelative(null, null, null, null)
             }
             PreviewIconMode.HAS_CONTENT -> if (!text.isNullOrEmpty()) {
                 refreshIconPreview()
             } else {
-                setCompoundDrawables(null, null, null, null)
+                setCompoundDrawablesRelative(null, null, null, null)
             }
-            PreviewIconMode.NEVER -> setCompoundDrawables(null, null, null, null)
+            PreviewIconMode.NEVER -> setCompoundDrawablesRelative(null, null, null, null)
         }
     }
 
@@ -312,19 +312,6 @@ internal class CardInputField(context: Context) : BaseInputField(context),
                 originalCardNumberMask
             )
             applyDividerOnMask()
-        }
-    }
-
-    override fun setCompoundDrawables(
-        left: Drawable?,
-        top: Drawable?,
-        right: Drawable?,
-        bottom: Drawable?
-    ) {
-        if (hasRTL) {
-            super.setCompoundDrawables(right, top, left, bottom)
-        } else {
-            super.setCompoundDrawables(left, top, right, bottom)
         }
     }
 
