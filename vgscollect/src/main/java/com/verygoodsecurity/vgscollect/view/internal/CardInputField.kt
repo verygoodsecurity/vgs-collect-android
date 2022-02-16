@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.text.InputType
 import android.text.method.DigitsKeyListener
 import android.view.Gravity
-import android.view.View
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.util.extension.applyLimitOnMask
@@ -170,17 +169,6 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         inputConnection?.run()
     }
 
-    @SuppressLint("RtlHardcoded")
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        if (isRTL()) {
-            hasRTL = true
-            layoutDirection = View.LAYOUT_DIRECTION_LTR
-            textDirection = View.TEXT_DIRECTION_LTR
-            gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
-        }
-    }
-
     internal fun getOutputDivider(): Char? {
         return outputDivider.firstOrNull()
     }
@@ -298,12 +286,13 @@ internal class CardInputField(context: Context) : BaseInputField(context),
 
     @SuppressLint("RtlHardcoded")
     private fun refreshIconPreview() {
-        when (iconGravity) {
-            Gravity.LEFT -> setCompoundDrawables(lastCardIconPreview, null, null, null)
-            Gravity.START -> setCompoundDrawables(lastCardIconPreview, null, null, null)
-            Gravity.RIGHT -> setCompoundDrawables(null, null, lastCardIconPreview, null)
-            Gravity.END -> setCompoundDrawables(null, null, lastCardIconPreview, null)
-            Gravity.NO_GRAVITY -> setCompoundDrawables(null, null, null, null)
+        with(iconGravity) {
+            setCompoundDrawablesRelative(
+                if (this == Gravity.LEFT || this == Gravity.START) lastCardIconPreview else null,
+                null,
+                if (this == Gravity.RIGHT || this == Gravity.END) lastCardIconPreview else null,
+                null,
+            )
         }
     }
 
