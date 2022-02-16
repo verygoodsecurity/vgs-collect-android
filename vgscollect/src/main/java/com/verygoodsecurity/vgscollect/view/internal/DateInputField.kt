@@ -72,15 +72,6 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         maxDate = minDate + DateUtils.YEAR_IN_MILLIS * 20
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        if(isRTL()) {
-            layoutDirection = View.LAYOUT_DIRECTION_LTR
-            textDirection = View.TEXT_DIRECTION_LTR
-            gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
-        }
-    }
-
     override fun applyFieldType() {
         val timeGapsValidator = TimeGapsValidator(datePattern, minDate, maxDate)
 
