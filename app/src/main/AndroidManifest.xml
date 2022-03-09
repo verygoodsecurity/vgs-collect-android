@@ -3,10 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.verygoodsecurity.demoapp">
 
-    <uses-sdk tools:overrideLibrary="android.support.test.uiautomator.v18"/>
+    <uses-sdk tools:overrideLibrary="android.support.test.uiautomator.v18" />
 
     <application
-        android:name=".DemoApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,11 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".StartActivity"
-            android:theme="@style/AppTheme.StartActivity"
+        <activity
+            android:name=".StartActivity"
             android:exported="true"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.StartActivity"
+            tools:ignore="LockedOrientationActivity">
+
             <intent-filter>
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,18 +29,28 @@
         </activity>
 
 
-        <activity android:name=".activity_case.VGSCollectActivity"
-            android:label="Activity Demo"/>
-        <activity android:name=".fragment_case.VGSCollectFragmentActivity"
-            android:label="Fragment Demo"/>
-        <activity android:name=".viewpager_case.VGSViewPagerActivity"
-            android:label="ViewPager Demo"/>
-        <activity android:name=".instrumented.VGSEditTextInputTypeActivity"
-            android:label="Instrumented Demo"/>
-        <activity android:name=".instrumented.VGSEditTextActivity"
-            android:label="Instrumented Demo"/>
-        <activity android:name=".instrumented.CustomBrandsActivity"
-            android:label="Instrumented Demo"/>
-    </application>
+        <activity
+            android:name=".activity_case.VGSCollectActivity"
+            android:label="Activity Demo" />
 
+        <activity
+            android:name=".fragment_case.VGSCollectFragmentActivity"
+            android:label="Fragment Demo" />
+
+        <activity
+            android:name=".viewpager_case.VGSViewPagerActivity"
+            android:label="ViewPager Demo" />
+
+        <activity
+            android:name=".instrumented.VGSEditTextInputTypeActivity"
+            android:label="Instrumented Demo" />
+
+        <activity
+            android:name=".instrumented.VGSEditTextActivity"
+            android:label="Instrumented Demo" />
+
+        <activity
+            android:name=".instrumented.CustomBrandsActivity"
+            android:label="Instrumented Demo" />
+    </application>
 </manifest>

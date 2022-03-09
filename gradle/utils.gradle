@@ -1,0 +1,32 @@
+//file:noinspection UnnecessaryQualifiedReference
+ext {
+
+    getLocalProperty = { name ->
+        this.getLocalProperty(name)
+    }
+
+    getLocalProperties = {
+        this.getLocalProperties()
+    }
+}
+
+static def getLocalProperty(String name) {
+    def properties = getLocalProperties()
+    def value = properties[name]
+    if (value == null) {
+        throw new GradleException("local.properties does not contains $name property.")
+    } else {
+        return value
+    }
+}
+
+static def getLocalProperties() {
+    def properties = new Properties()
+    def localPropertiesFile = new File('local.properties')
+    if (localPropertiesFile.exists()) {
+        properties.load(localPropertiesFile.newDataInputStream())
+    } else {
+        throw new GradleException("local.properties does not exists.")
+    }
+    return properties
+}
