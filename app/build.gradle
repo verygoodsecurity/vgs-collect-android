@@ -70,19 +70,10 @@ dependencies {
 
     androidTestImplementation "androidx.test:runner:${testVersions.test_runner}"
     androidTestImplementation "androidx.test:rules:${testVersions.test_rules}"
-    androidTestImplementation "androidx.test:core-ktx:${testVersions.test_core_ktx}"
     androidTestImplementation "androidx.test.ext:junit:${testVersions.test_ext_junit}"
     androidTestImplementation "androidx.test.ext:junit-ktx:${testVersions.test_ext_junit_ktx}"
     androidTestImplementation "androidx.test.uiautomator:uiautomator:${testVersions.uiautomator}"
     androidTestImplementation "androidx.test.espresso:espresso-intents:${testVersions.espresso_intents}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${testVersions.espresso_core}"
-    androidTestImplementation "org.hamcrest:hamcrest-integration:${testVersions.hamcrest_integration}"
-    androidTestImplementation("com.android.support.test.espresso:espresso-contrib:${testVersions.espresso_contrib}") {
-        exclude group: 'com.android.support', module: 'appcompat'
-        exclude module: 'support-annotations'
-        exclude module: 'support-v4'
-        exclude module: 'support-v13'
-        exclude module: 'recyclerview-v7'
-        exclude module: 'appcompat-v7'
-    }
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:${testVersions.espresso_contrib}"
 }
