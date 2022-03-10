@@ -13,9 +13,12 @@ ext {
 
 def getLocalProperty(String name) {
     def properties = getLocalProperties()
+    if (properties == null) {
+        return ""
+    }
     def value = properties[name]
     if (value == null) {
-        throw new GradleException("local.properties does not contains $name property.")
+        return ""
     } else {
         return value
     }
@@ -23,11 +26,11 @@ def getLocalProperty(String name) {
 
 def getLocalProperties() {
     def properties = new Properties()
-    def localPropertiesFile = new File('local.properties')
+    def localPropertiesFile = new File('local.properies')
     if (localPropertiesFile.exists()) {
         properties.load(localPropertiesFile.newDataInputStream())
     } else {
-        throw new GradleException("local.properties does not exists.")
+        return null
     }
     return properties
 }
