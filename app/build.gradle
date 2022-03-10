@@ -70,8 +70,8 @@ dependencies {
 
     androidTestImplementation "androidx.test:runner:${testVersions.test_runner}"
     androidTestImplementation "androidx.test:rules:${testVersions.test_rules}"
-    androidTestImplementation "androidx.test.ext:junit:${testVersions.test_ext_junit}"
-    androidTestImplementation "androidx.test.ext:junit-ktx:${testVersions.test_ext_junit_ktx}"
+    androidTestImplementation "androidx.test.ext:junit:${testVersions.junit_ext}"
+    androidTestImplementation "androidx.test.ext:junit-ktx:${testVersions.junit_ext_ktx}"
     androidTestImplementation "androidx.test.uiautomator:uiautomator:${testVersions.uiautomator}"
     androidTestImplementation "androidx.test.espresso:espresso-intents:${testVersions.espresso_intents}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${testVersions.espresso_core}"

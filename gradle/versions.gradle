@@ -5,36 +5,35 @@ ext {
     kotlin = '1.6.10'
     dokka = '1.6.10'
 
-    android_material_version = '1.5.0'
     android_support_libraries = '1.4.1'
     androidx_core_ktx_version = '1.7.0'
-
-    junit_version = '4.13.2'
-    mockito_version = '4.3.1'
-    androidx_test_rules_version = '1.4.0'
-    androidx_test_runner_version = '1.4.0'
-    androidx_test_junit_version = '1.1.3'
-    androidx_test_espresso_espresso_core_version = '3.4.0'
 }
 
 ext.versions = [
-        'compileSdk'      : 29,
         'appcompat'       : '1.4.1',
         'core_ktx'        : '1.7.0',
         'constraintlayout': '2.1.3',
         'material'        : '1.5.0',
         'multidex'        : '2.0.1',
-        'leakcanary'      : '2.8.1'
+        'leakcanary'      : '2.8.1',
+        'okHttp'          : '4.9.3',
+        'dokka_base'      : '1.6.10',
 ]
 
 ext.testVersions = [
-        'junit'             : '4.13.2',
-        'test_rules'        : '1.4.0',
-        'test_ext_junit'    : '1.1.3',
-        'test_ext_junit_ktx': '1.1.3',
-        'test_runner'       : '1.4.0',
-        'espresso_core'     : '3.4.0',
-        'espresso_intents'  : '3.4.0',
-        'espresso_contrib'  : '3.0.2',
-        'uiautomator'       : '2.2.0'
+        'junit'           : '4.13.2',
+        'junit_ext'       : '1.1.3',
+        'junit_ext_ktx'   : '1.1.3',
+        'test_rules'      : '1.4.0',
+        'test_runner'     : '1.4.0',
+        'espresso_core'   : '3.4.0',
+        'espresso_intents': '3.4.0',
+        'espresso_contrib': '3.0.2',
+        'mockito_core'    : '4.3.1',
+        'mockito_inline'  : '4.3.1',
+        'mockk'           : '1.12.2',
+        'uiautomator'     : '2.2.0',
+        'robolectric'     : '4.7.3',
+        'json'            : '20211205',
+        'jsonassert'      : '1.5.0'
 ]
