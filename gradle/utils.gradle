@@ -1,4 +1,5 @@
 //file:noinspection UnnecessaryQualifiedReference
+//file:noinspection GrMethodMayBeStatic
 ext {
 
     getLocalProperty = { name ->
@@ -10,7 +11,7 @@ ext {
     }
 }
 
-static def getLocalProperty(String name) {
+def getLocalProperty(String name) {
     def properties = getLocalProperties()
     def value = properties[name]
     if (value == null) {
@@ -20,7 +21,7 @@ static def getLocalProperty(String name) {
     }
 }
 
-static def getLocalProperties() {
+def getLocalProperties() {
     def properties = new Properties()
     def localPropertiesFile = new File('local.properties')
     if (localPropertiesFile.exists()) {
