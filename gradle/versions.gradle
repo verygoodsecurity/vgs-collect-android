@@ -4,9 +4,6 @@ ext {
     maven_publish_plugin = '0.18.0'
     kotlin = '1.6.10'
     dokka = '1.6.10'
-
-    android_support_libraries = '1.4.1'
-    androidx_core_ktx_version = '1.7.0'
 }
 
 ext.versions = [
@@ -21,6 +18,7 @@ ext.versions = [
         'bouncer_scan_payment_full': '2.1.0016',
         'bouncer_cardscan_ui'      : '2.1.0016',
         'bouncer_tensorflow_lite'  : '2.1.0016',
+        'card_io_android_sdk'      : '5.5.1',
 ]
 
 ext.testVersions = [

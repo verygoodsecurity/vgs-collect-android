@@ -1,8 +1,10 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: "org.jetbrains.dokka"
-apply plugin: "com.vanniktech.maven.publish"
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'org.jetbrains.dokka'
+    id 'com.vanniktech.maven.publish'
+}
 
 android {
     compileSdkVersion 31
@@ -29,10 +31,10 @@ android {
 dependencies {
     api project(':vgscollect')
 
-    implementation "androidx.appcompat:appcompat:$android_support_libraries"
-    implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.core:core-ktx:${versions.core_ktx}"
 
-    api 'io.card:android-sdk:5.5.1'
+    api "io.card:android-sdk:${versions.card_io_android_sdk}"
 
-    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
+    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:${versions.dokka_base}")
 }
