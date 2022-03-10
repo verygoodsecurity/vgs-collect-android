@@ -19,7 +19,7 @@ android {
         multiDexEnabled true
 
         buildConfigField("String", "VAULT_ID", "\"${getLocalProperty("VGS_VAULT_ID")}\"")
-        buildConfigField("String", "PATH", "\"${getLocalProperty("VGS_ENDPOINT")}\"")
+        buildConfigField("String", "PATH", "\"${getLocalProperty("VGS_PATH")}\"")
     }
 
     buildTypes {
