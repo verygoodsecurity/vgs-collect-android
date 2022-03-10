@@ -8,12 +8,11 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:$gradle_tools"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin"
-
-        classpath "com.github.dcendents:android-maven-gradle-plugin:$maven_gragle_plugin"
-        classpath "com.vanniktech:gradle-maven-publish-plugin:$maven_publish_plugin"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka"
+        classpath "com.android.tools.build:gradle:${versions.gradle_tools}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.gradle_kotlin_plugin}"
+        classpath "com.github.dcendents:android-maven-gradle-plugin:${versions.gradle_maven_plugin}"
+        classpath "com.vanniktech:gradle-maven-publish-plugin:${versions.maven_publish_plugin}"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versions.gradle_dokka_plugin}"
     }
 }
 

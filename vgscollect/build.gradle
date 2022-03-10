@@ -59,7 +59,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${versions.appcompat}"
     implementation "androidx.core:core-ktx:${versions.core_ktx}"
 
-    api "com.google.android.material:material::${versions.material}"
+    api "com.google.android.material:material:${versions.material}"
     api "com.squareup.okhttp3:okhttp:${versions.okhttp}"
 
     testImplementation "junit:junit:${testVersions.junit}"
