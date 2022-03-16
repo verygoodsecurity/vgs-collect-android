@@ -46,8 +46,8 @@ class StartActivity:AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupUI() {
-        userVault?.setText(R.string.vault_id)
-        userPath?.setText(R.string.endpoint)
+        userVault?.setText(BuildConfig.VAULT_ID)
+        userPath?.setText(BuildConfig.PATH)
 
         environmentSpinner.setSelection(BuildConfig.ENVIRINMENT.ordinal)
     }
