@@ -1,5 +1,5 @@
 buildscript {
-    apply from: 'gradle/versions.gradle'
+    apply from: 'gradle/dependencies.gradle'
     apply from: 'gradle/utils.gradle'
 
     repositories {
