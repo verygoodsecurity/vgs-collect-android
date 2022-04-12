@@ -1,14 +1,31 @@
 include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-bouncer'
 
-// Read more gradle doc: https://docs.gradle.org/current/userguide/platforms.html
+// Read more about dependencyResolutionManagement in gradle docs: https://docs.gradle.org/current/userguide/platforms.html
 // Currently dependabot doesn't recognize toml files and doesn't support versions references.
 enableFeaturePreview("VERSION_CATALOGS")
 
 dependencyResolutionManagement {
     versionCatalogs {
         libs {
+            alias('androidxAppcompat').to('androidx.appcompat:appcompat:1.4.1')
+            alias('androidxCoreKtx').to('androidx.core:core-ktx:1.7.0')
+            alias('material').to('com.google.android.material:material:1.5.0')
+            alias('okHttp').to('com.squareup.okhttp3:okhttp:4.9.3')
+            alias('dokkaBase').to('org.jetbrains.dokka:dokka-base:1.6.10')
         }
         testLibs {
+            alias('junit').to('junit:junit:4.13.2')
+            alias('mockitoCore').to('org.mockito:mockito-core:4.4.0')
+            alias('mockitoInline').to('org.mockito:mockito-inline:4.4.0')
+            alias('robolectric').to('org.robolectric:robolectric:4.7.3')
+            alias('mockk').to('io.mockk:mockk:1.12.3')
+            alias('json').to('org.json:json:20211205')
+            alias('jsonassert').to('org.skyscreamer:jsonassert:1.5.0')
+        }
+        androidTestLibs {
+            alias('androidxRunner').to('androidx.test:runner:1.4.0')
+            alias('androidxExtJunit').to('androidx.test.ext:junit:1.1.3')
+            alias('androidxEspressoCore').to('androidx.test.espresso:espresso-core:3.4.0')
         }
     }
 }

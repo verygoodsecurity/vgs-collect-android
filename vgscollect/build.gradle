@@ -56,25 +56,25 @@ android {
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
-    implementation "androidx.core:core-ktx:${versions.core_ktx}"
+    implementation libs.androidxAppcompat
+    implementation libs.androidxCoreKtx
 
-    api "com.google.android.material:material:${versions.material}"
-    api "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+    api libs.material
+    api libs.okHttp
 
-    testImplementation "junit:junit:${testVersions.junit}"
-    testImplementation "org.mockito:mockito-core:${testVersions.mockito_core}"
-    testImplementation "org.mockito:mockito-inline:${testVersions.mockito_inline}"
-    testImplementation "org.robolectric:robolectric:${testVersions.robolectric}"
-    testImplementation "io.mockk:mockk:${testVersions.mockk}"
-    testImplementation "org.json:json:${testVersions.json}"
-    testImplementation "org.skyscreamer:jsonassert:${testVersions.jsonassert}"
+    testImplementation testLibs.junit
+    testImplementation testLibs.mockitoCore
+    testImplementation testLibs.mockitoInline
+    testImplementation testLibs.robolectric
+    testImplementation testLibs.mockk
+    testImplementation testLibs.json
+    testImplementation testLibs.jsonassert
 
-    androidTestImplementation "androidx.test:runner:${testVersions.runner}"
-    androidTestImplementation "androidx.test.ext:junit:${testVersions.junit_ext}"
-    androidTestImplementation "androidx.test.espresso:espresso-core:${testVersions.espresso_core}"
+    androidTestImplementation androidTestLibs.androidxRunner
+    androidTestImplementation androidTestLibs.androidxExtJunit
+    androidTestImplementation androidTestLibs.androidxEspressoCore
 
-    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:${versions.dokka_base}")
+    dokkaHtmlPlugin(libs.dokkaBase)
 }
 
 tasks.withType(Javadoc).all {
