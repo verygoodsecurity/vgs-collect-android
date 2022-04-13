@@ -30,10 +30,10 @@ android {
 dependencies {
     api project(':vgscollect')
 
-    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
-    implementation "androidx.core:core-ktx:${versions.core_ktx}"
+    implementation libs.androidxAppcompat
+    implementation libs.androidxCoreKtx
 
-    api "io.card:android-sdk:${versions.card_io_android_sdk}"
+    api libs.cardIO
 
-    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:${versions.dokka_base}")
+    dokkaHtmlPlugin(libs.dokkaBase)
 }

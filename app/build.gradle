@@ -57,23 +57,23 @@ dependencies {
     implementation project(":vgscollect")
     implementation project(":vgscollect-cardio")
 
-    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
-    implementation "androidx.core:core-ktx:${versions.core_ktx}"
-    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
-    implementation "com.google.android.material:material:${versions.material}"
+    implementation libs.androidxAppcompat
+    implementation libs.androidxCoreKtx
+    implementation libs.androidxConstraintLayout
+    implementation libs.androidxMultidex
 
-    implementation "androidx.multidex:multidex:${versions.multidex}"
+    implementation libs.material
 
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leakcanary}"
+    debugImplementation debugLibs.leakcanary
 
-    testImplementation "junit:junit:${testVersions.junit}"
+    testImplementation testLibs.junit
 
-    androidTestImplementation "androidx.test:runner:${testVersions.test_runner}"
-    androidTestImplementation "androidx.test:rules:${testVersions.test_rules}"
-    androidTestImplementation "androidx.test.ext:junit:${testVersions.junit_ext}"
-    androidTestImplementation "androidx.test.ext:junit-ktx:${testVersions.junit_ext_ktx}"
-    androidTestImplementation "androidx.test.uiautomator:uiautomator:${testVersions.uiautomator}"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:${testVersions.espresso_intents}"
-    androidTestImplementation "androidx.test.espresso:espresso-core:${testVersions.espresso_core}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:${testVersions.espresso_contrib}"
+    androidTestImplementation androidTestLibs.androidxRunner
+    androidTestImplementation androidTestLibs.androidxRules
+    androidTestImplementation androidTestLibs.androidxExtJunit
+    androidTestImplementation androidTestLibs.androidxExtJunitKtx
+    androidTestImplementation androidTestLibs.androidxUiAutomator
+    androidTestImplementation androidTestLibs.androidxEspressoCore
+    androidTestImplementation androidTestLibs.androidxEspressoIntents
+    androidTestImplementation androidTestLibs.espressoContrib
 }

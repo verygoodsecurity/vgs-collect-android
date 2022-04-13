@@ -30,12 +30,10 @@ android {
 dependencies {
     api project(':vgscollect')
 
-    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
-    implementation "androidx.core:core-ktx:${versions.core_ktx}"
+    implementation libs.androidxAppcompat
+    implementation libs.androidxCoreKtx
 
-    api "com.getbouncer:scan-payment-full:${versions.bouncer_scan_payment_full}"
-    api "com.getbouncer:cardscan-ui:${versions.bouncer_cardscan_ui}"
-    api "com.getbouncer:tensorflow-lite:${versions.bouncer_tensorflow_lite}"
+    api libs.bundles.bouncer
 
-    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:${versions.dokka_base}")
+    dokkaHtmlPlugin(libs.dokkaBase)
 }
