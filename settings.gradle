@@ -23,7 +23,7 @@ dependencyResolutionManagement {
             alias('okhttp').to('com.squareup.okhttp3:okhttp:4.9.3')
             alias('dokka-base').to('org.jetbrains.dokka:dokka-base:1.6.10')
             alias('bouncer-scan-payment-full').to('com.getbouncer:scan-payment-full:2.1.0016')
-            alias('bouncer-cardscan-ui').to('om.getbouncer:cardscan-ui:2.1.0016')
+            alias('bouncer-cardscan-ui').to('com.getbouncer:cardscan-ui:2.1.0016')
             alias('bouncer-tensorflow-lite').to('com.getbouncer:tensorflow-lite:2.1.0016')
             alias('cardio').to('io.card:android-sdk:5.5.1')
 
