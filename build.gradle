@@ -1,5 +1,4 @@
 buildscript {
-    apply from: 'gradle/dependencies.gradle'
     apply from: 'gradle/utils.gradle'
 
     repositories {
@@ -8,11 +7,11 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:${versions.gradle_tools}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.gradle_kotlin_plugin}"
-        classpath "com.github.dcendents:android-maven-gradle-plugin:${versions.gradle_maven_plugin}"
-        classpath "com.vanniktech:gradle-maven-publish-plugin:${versions.maven_publish_plugin}"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versions.gradle_dokka_plugin}"
+        classpath gradleLibs.tools
+        classpath gradleLibs.kotlin
+        classpath gradleLibs.maven
+        classpath gradleLibs.mavenPublish
+        classpath gradleLibs.dokka
     }
 }
 
