@@ -10,7 +10,7 @@ buildscript {
         classpath gradleLibs.tools
         classpath gradleLibs.kotlin
         classpath gradleLibs.maven
-        classpath gradleLibs.mavenPublish
+        classpath gradleLibs.maven.publish
         classpath gradleLibs.dokka
     }
 }

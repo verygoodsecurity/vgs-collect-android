@@ -56,25 +56,25 @@ android {
 }
 
 dependencies {
-    implementation libs.androidxAppcompat
-    implementation libs.androidxCoreKtx
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
 
     api libs.material
-    api libs.okHttp
+    api libs.okhttp
 
     testImplementation testLibs.junit
-    testImplementation testLibs.mockitoCore
-    testImplementation testLibs.mockitoInline
+    testImplementation testLibs.mockito.core
+    testImplementation testLibs.mockito.inline
     testImplementation testLibs.robolectric
     testImplementation testLibs.mockk
     testImplementation testLibs.json
     testImplementation testLibs.jsonassert
 
-    androidTestImplementation androidTestLibs.androidxRunner
-    androidTestImplementation androidTestLibs.androidxExtJunit
-    androidTestImplementation androidTestLibs.androidxEspressoCore
+    androidTestImplementation androidTestLibs.androidx.runner
+    androidTestImplementation androidTestLibs.androidx.junit.ext
+    androidTestImplementation androidTestLibs.androidx.espresso.core
 
-    dokkaHtmlPlugin(libs.dokkaBase)
+    dokkaHtmlPlugin(libs.dokka.base)
 }
 
 tasks.withType(Javadoc).all {

@@ -57,10 +57,10 @@ dependencies {
     implementation project(":vgscollect")
     implementation project(":vgscollect-cardio")
 
-    implementation libs.androidxAppcompat
-    implementation libs.androidxCoreKtx
-    implementation libs.androidxConstraintLayout
-    implementation libs.androidxMultidex
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.multidex
 
     implementation libs.material
 
@@ -68,12 +68,12 @@ dependencies {
 
     testImplementation testLibs.junit
 
-    androidTestImplementation androidTestLibs.androidxRunner
-    androidTestImplementation androidTestLibs.androidxRules
-    androidTestImplementation androidTestLibs.androidxExtJunit
-    androidTestImplementation androidTestLibs.androidxExtJunitKtx
-    androidTestImplementation androidTestLibs.androidxUiAutomator
-    androidTestImplementation androidTestLibs.androidxEspressoCore
-    androidTestImplementation androidTestLibs.androidxEspressoIntents
-    androidTestImplementation androidTestLibs.espressoContrib
+    androidTestImplementation androidTestLibs.androidx.runner
+    androidTestImplementation androidTestLibs.androidx.rules
+    androidTestImplementation androidTestLibs.androidx.junit.ext
+    androidTestImplementation androidTestLibs.androidx.junit.ext.ktx
+    androidTestImplementation androidTestLibs.androidx.uiautomator
+    androidTestImplementation androidTestLibs.androidx.espresso.core
+    androidTestImplementation androidTestLibs.androidx.espresso.intents
+    androidTestImplementation androidTestLibs.espresso.contrib
 }
