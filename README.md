@@ -11,7 +11,6 @@ Table of contents
 =================
 
 <!--ts-->
-   * [Dependencies](#dependencies)
    * [Structure](#structure)
    * [Integration](#integration)
    * [Next steps](#next-steps)
@@ -22,15 +21,6 @@ Table of contents
 <img src="/img/vgs-collect-android-state.png" width="200" alt="VGS Collect Android SDK States" hspace="20"><img src="/img/vgs-collect-android-response.png" width="200" alt="VGS Collect Android SDK Response" hspace="20">
 </p>
 
-## Dependencies
-
-| Dependency | Version |
-| :--- | :---: |
-| Min SDK | 19 |
-| Target SDK | 32 |
-| androidx.appcompat:appcompat | 1.4.1 |
-| com.google.android.material:material | 1.5.0 |
-| com.squareup.okhttp3:okhttp | 4.9.3 |
 
 ## Structure
 * **VGSCollect SDK** - provides an API for interacting with the VGS Vault
