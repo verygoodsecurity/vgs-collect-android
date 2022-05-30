@@ -45,7 +45,7 @@ class FragmentCaseInstrumentedTest {
         const val CARD_HOLDER = "Gohn Galt"
 
         const val CARD_EXP_DATE_WRONG = "99/9999"
-        const val CARD_EXP_DATE= "02/22"
+        const val CARD_EXP_DATE= "02/32"
 
         const val CARD_CVC_WRONG = "12"
         const val CARD_CVC= "123"

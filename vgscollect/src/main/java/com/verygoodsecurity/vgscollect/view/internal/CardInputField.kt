@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.text.InputType
 import android.text.method.DigitsKeyListener
 import android.view.Gravity
-import android.view.View
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.util.extension.applyLimitOnMask
@@ -170,17 +169,6 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         inputConnection?.run()
     }
 
-    @SuppressLint("RtlHardcoded")
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        if (isRTL()) {
-            hasRTL = true
-            layoutDirection = View.LAYOUT_DIRECTION_LTR
-            textDirection = View.TEXT_DIRECTION_LTR
-            gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT
-        }
-    }
-
     internal fun getOutputDivider(): Char? {
         return outputDivider.firstOrNull()
     }
@@ -285,25 +273,24 @@ internal class CardInputField(context: Context) : BaseInputField(context),
             PreviewIconMode.IF_DETECTED -> if (card.successfullyDetected) {
                 refreshIconPreview()
             } else {
-                setCompoundDrawables(null, null, null, null)
+                setCompoundDrawablesRelativeOrNull()
             }
             PreviewIconMode.HAS_CONTENT -> if (!text.isNullOrEmpty()) {
                 refreshIconPreview()
             } else {
-                setCompoundDrawables(null, null, null, null)
+                setCompoundDrawablesRelativeOrNull()
             }
-            PreviewIconMode.NEVER -> setCompoundDrawables(null, null, null, null)
+            PreviewIconMode.NEVER -> setCompoundDrawablesRelativeOrNull()
         }
     }
 
     @SuppressLint("RtlHardcoded")
     private fun refreshIconPreview() {
-        when (iconGravity) {
-            Gravity.LEFT -> setCompoundDrawables(lastCardIconPreview, null, null, null)
-            Gravity.START -> setCompoundDrawables(lastCardIconPreview, null, null, null)
-            Gravity.RIGHT -> setCompoundDrawables(null, null, lastCardIconPreview, null)
-            Gravity.END -> setCompoundDrawables(null, null, lastCardIconPreview, null)
-            Gravity.NO_GRAVITY -> setCompoundDrawables(null, null, null, null)
+        with(iconGravity) {
+            setCompoundDrawablesRelativeOrNull(
+                start = if (this == Gravity.LEFT || this == Gravity.START) lastCardIconPreview else null,
+                end = if (this == Gravity.RIGHT || this == Gravity.END) lastCardIconPreview else null
+            )
         }
     }
 
@@ -323,19 +310,6 @@ internal class CardInputField(context: Context) : BaseInputField(context),
                 originalCardNumberMask
             )
             applyDividerOnMask()
-        }
-    }
-
-    override fun setCompoundDrawables(
-        left: Drawable?,
-        top: Drawable?,
-        right: Drawable?,
-        bottom: Drawable?
-    ) {
-        if (hasRTL) {
-            super.setCompoundDrawables(right, top, left, bottom)
-        } else {
-            super.setCompoundDrawables(left, top, right, bottom)
         }
     }
 

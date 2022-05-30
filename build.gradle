@@ -1,8 +1,6 @@
-apply from: 'gradle/gradle-dependencies.gradle'
-
 buildscript {
-    ext.kotlin_version = '1.6.10'
-    ext.dokka_version = '1.6.10'
+    apply from: 'gradle/dependencies.gradle'
+    apply from: 'gradle/utils.gradle'
 
     repositories {
         mavenCentral()
@@ -10,12 +8,11 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.18.0'
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$dokka_version"
+        classpath "com.android.tools.build:gradle:${versions.gradle_tools}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.gradle_kotlin_plugin}"
+        classpath "com.github.dcendents:android-maven-gradle-plugin:${versions.gradle_maven_plugin}"
+        classpath "com.vanniktech:gradle-maven-publish-plugin:${versions.maven_publish_plugin}"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${versions.gradle_dokka_plugin}"
     }
 }
 

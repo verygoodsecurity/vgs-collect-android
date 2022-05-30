@@ -1,8 +1,10 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: "org.jetbrains.dokka"
-apply plugin: "com.vanniktech.maven.publish"
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'org.jetbrains.dokka'
+    id 'com.vanniktech.maven.publish'
+}
 
 android {
     compileSdkVersion 32
@@ -13,11 +15,12 @@ android {
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
-        buildConfigField "String", "VERSION_NAME", "\"$VERSION_NAME\""
-
-        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
+
+        vectorDrawables.useSupportLibrary = true
+
+        buildConfigField "String", "VERSION_NAME", "\"$VERSION_NAME\""
     }
 
     buildTypes {
@@ -52,28 +55,30 @@ android {
     }
 }
 
-tasks.withType(Javadoc).all {
-    enabled = false
+dependencies {
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.core:core-ktx:${versions.core_ktx}"
+
+    api "com.google.android.material:material:${versions.material}"
+    api "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+
+    testImplementation "junit:junit:${testVersions.junit}"
+    testImplementation "org.mockito:mockito-core:${testVersions.mockito_core}"
+    testImplementation "org.mockito:mockito-inline:${testVersions.mockito_inline}"
+    testImplementation "org.robolectric:robolectric:${testVersions.robolectric}"
+    testImplementation "io.mockk:mockk:${testVersions.mockk}"
+    testImplementation "org.json:json:${testVersions.json}"
+    testImplementation "org.skyscreamer:jsonassert:${testVersions.jsonassert}"
+
+    androidTestImplementation "androidx.test:runner:${testVersions.runner}"
+    androidTestImplementation "androidx.test.ext:junit:${testVersions.junit_ext}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${testVersions.espresso_core}"
+
+    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:${versions.dokka_base}")
 }
 
-dependencies {
-    implementation "androidx.appcompat:appcompat:$android_support_libraries"
-    implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
-    api "com.google.android.material:material:$android_material_version"
-    api 'com.squareup.okhttp3:okhttp:4.9.3'
-
-    testImplementation "junit:junit:$junit_version"
-    testImplementation "org.mockito:mockito-core:$mockito_version"
-    testImplementation "org.mockito:mockito-inline:$mockito_version"
-    testImplementation 'org.json:json:20211205'
-    testImplementation "org.robolectric:robolectric:4.7.3"
-    testImplementation "io.mockk:mockk:1.12.2"
-    testImplementation "org.skyscreamer:jsonassert:1.5.0"
-    androidTestImplementation "androidx.test:runner:$androidx_test_runner_version"
-    androidTestImplementation "androidx.test.ext:junit:$androidx_test_junit_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso_espresso_core_version"
-
-    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
+tasks.withType(Javadoc).all {
+    enabled = false
 }
 
 tasks.named("dokkaHtml") {
