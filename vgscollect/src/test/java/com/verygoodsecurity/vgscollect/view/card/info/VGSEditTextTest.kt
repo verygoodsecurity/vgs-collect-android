@@ -332,6 +332,10 @@ class VGSEditTextTest {
         child.refreshInternalState()
         view.getState().validateState(false, 0)
 
+        view.setText("011111111111111 ")
+        child.refreshInternalState()
+        view.getState().validateState(false, 16)
+
         view.setText("0111111111111111")
         child.refreshInternalState()
         view.getState().validateState(true, 16)
