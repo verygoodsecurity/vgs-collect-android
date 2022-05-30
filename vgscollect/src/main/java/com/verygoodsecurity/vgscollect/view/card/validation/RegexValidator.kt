@@ -16,10 +16,7 @@ class RegexValidator(
 
     override fun isValid(content: String?): Boolean {
         return m?.run {
-            val str = content?.trim()
-            val s = !str.isNullOrEmpty() &&
-                    m!!.matcher(str).matches()
-            s
+            !content.isNullOrEmpty() && m!!.matcher(content).matches()
         } ?: true
     }
 
