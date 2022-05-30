@@ -72,7 +72,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected var isListeningPermitted = true
     private var isEditorActionListenerConfigured = false
     private var isKeyListenerConfigured = false
-    protected var hasRTL = false
 
     protected abstract var fieldType: FieldType
 
@@ -402,13 +401,13 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 }
 
-internal fun TextInputEditText.setCompoundDrawablesOrNull(
+internal fun TextInputEditText.setCompoundDrawablesRelativeOrNull(
     start: Drawable? = null,
     top: Drawable? = null,
     end: Drawable? = null,
     bottom: Drawable? = null
 ) {
-    this.setCompoundDrawables(start, top, end, bottom)
+    this.setCompoundDrawablesRelative(start, top, end, bottom)
 }
 
 internal val TextInputEditText.localVisibleRect: Rect

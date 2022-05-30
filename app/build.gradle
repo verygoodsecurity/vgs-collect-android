@@ -1,107 +1,79 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+}
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "com.verygoodsecurity.demoapp"
         minSdkVersion 19
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
         multiDexEnabled true
+
+        buildConfigField("String", "VAULT_ID", "\"${getLocalProperty("VGS_VAULT_ID")}\"")
+        buildConfigField("String", "PATH", "\"${getLocalProperty("VGS_PATH")}\"")
     }
 
     buildTypes {
-        release {
-            buildConfigField("com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentRelease())
-
+        debug {
+            buildConfigField(
+                    "com.verygoodsecurity.vgscollect.core.Environment",
+                    "ENVIRINMENT",
+                    "com.verygoodsecurity.vgscollect.core.Environment.SANDBOX"
+            )
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-        debug {
-            buildConfigField "com.verygoodsecurity.vgscollect.core.Environment", "ENVIRINMENT", getEnvironmentDebug()
-
+        release {
+            buildConfigField(
+                    "com.verygoodsecurity.vgscollect.core.Environment",
+                    "ENVIRINMENT",
+                    "com.verygoodsecurity.vgscollect.core.Environment.LIVE"
+            )
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
     compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
-    }
-
-    applicationVariants.all { variant ->
-        String vari = getLocalProperty("VGS_VAULT_ID")
-        variant.resValue "string", "vault_id", vari+''
-        String vari2 = getLocalProperty("VGS_ENDPOINT")
-        variant.resValue "string", "endpoint", vari2+''
-    }
-}
-
-static def getEnvironmentRelease() {
-    return "com.verygoodsecurity.vgscollect.core.Environment.LIVE"
-}
-static def getEnvironmentDebug() {
-    return "com.verygoodsecurity.vgscollect.core.Environment.SANDBOX"
-}
-
-def getLocalProperty(String propName) {
-    def propsFile = rootProject.file('local.properties')
-    if (propsFile.exists()) {
-        def props = new Properties()
-        props.load(new FileInputStream(propsFile))
-        def value = props[propName]
-        if(value == null) {
-            return ""
-        } else {
-            return value
-        }
-
-    } else {
-        return ""
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
     implementation project(":vgscollect")
     implementation project(":vgscollect-cardio")
-//    implementation project(":vgscollect-bouncer")
 
-    implementation "androidx.appcompat:appcompat:$android_support_libraries"
-    implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    implementation "com.google.android.material:material:$android_material_version"
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.core:core-ktx:${versions.core_ktx}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
+    implementation "com.google.android.material:material:${versions.material}"
 
-    implementation 'com.google.android.gms:play-services-auth:20.0.1'
+    implementation "androidx.multidex:multidex:${versions.multidex}"
 
-    implementation 'androidx.multidex:multidex:2.0.1'
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leakcanary}"
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
+    testImplementation "junit:junit:${testVersions.junit}"
 
-    testImplementation "junit:junit:$junit_version"
-    androidTestImplementation "androidx.test:rules:$androidx_test_rules_version"
-    androidTestImplementation "androidx.test.ext:junit:$androidx_test_junit_version"
-    androidTestImplementation "androidx.test:runner:$androidx_test_runner_version"
-    androidTestImplementation "androidx.test:rules:$androidx_test_rules_version"
-    androidTestImplementation 'androidx.test:core-ktx:1.4.0'
-    androidTestImplementation "androidx.test.ext:junit-ktx:$androidx_test_junit_version"
-    androidTestImplementation 'org.hamcrest:hamcrest-integration:1.3'
-    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
-    androidTestImplementation "androidx.test.espresso:espresso-intents:3.4.0"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso_espresso_core_version"
-    androidTestImplementation('com.android.support.test.espresso:espresso-contrib:3.0.2') {
-        exclude group: 'com.android.support', module: 'appcompat'
-        exclude module: 'support-annotations'
-        exclude module: 'support-v4'
-        exclude module: 'support-v13'
-        exclude module: 'recyclerview-v7'
-        exclude module: 'appcompat-v7'
-    }
+    androidTestImplementation "androidx.test:runner:${testVersions.test_runner}"
+    androidTestImplementation "androidx.test:rules:${testVersions.test_rules}"
+    androidTestImplementation "androidx.test.ext:junit:${testVersions.junit_ext}"
+    androidTestImplementation "androidx.test.ext:junit-ktx:${testVersions.junit_ext_ktx}"
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:${testVersions.uiautomator}"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:${testVersions.espresso_intents}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${testVersions.espresso_core}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:${testVersions.espresso_contrib}"
 }

@@ -1,8 +1,9 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: "org.jetbrains.dokka"
-apply plugin: "com.vanniktech.maven.publish"
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'org.jetbrains.dokka'
+    id 'com.vanniktech.maven.publish'
+}
 
 android {
     compileSdkVersion 31
@@ -29,13 +30,12 @@ android {
 dependencies {
     api project(':vgscollect')
 
-    implementation "androidx.appcompat:appcompat:$android_support_libraries"
-    implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.core:core-ktx:${versions.core_ktx}"
 
+    api "com.getbouncer:scan-payment-full:${versions.bouncer_scan_payment_full}"
+    api "com.getbouncer:cardscan-ui:${versions.bouncer_cardscan_ui}"
+    api "com.getbouncer:tensorflow-lite:${versions.bouncer_tensorflow_lite}"
 
-    api "com.getbouncer:scan-payment-full:2.1.0016"
-    api 'com.getbouncer:cardscan-ui:2.1.0016'
-    api 'com.getbouncer:tensorflow-lite:2.1.0016'
-
-    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:$dokka_version")
+    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:${versions.dokka_base}")
 }
