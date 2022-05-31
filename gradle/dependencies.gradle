@@ -2,7 +2,7 @@ ext.versions = [
         'gradle_tools'             : '7.2.1',
         'gradle_kotlin_plugin'     : '1.6.21',
         'gradle_maven_plugin'      : '2.1',
-        'gradle_dokka_plugin'      : '1.6.21',
+        'gradle_dokka_plugin'      : '1.6.10',
         'maven_publish_plugin'     : '0.19.0',
         'appcompat'                : '1.4.1',
         'core_ktx'                 : '1.7.0',
