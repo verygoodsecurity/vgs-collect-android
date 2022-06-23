@@ -1,8 +1,9 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
+import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
-import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
+import com.verygoodsecurity.vgscollect.core.model.state.ArrayMergePolicy
 
 internal const val DEFAULT_CONNECTION_TIME_OUT = 60_000L
 
@@ -34,4 +35,21 @@ internal fun VGSBaseRequest.toNetworkRequest(
         format,
         requestTimeoutInterval
     )
+}
+
+internal fun VGSBaseRequest.prepareUserDataForCollecting(
+    staticData: MutableMap<String, Any>,
+    userData: MutableMap<String, Any>
+): Map<String, Any> {
+    val mergePolicy = when (fieldNameMappingPolicy) {
+        VGSCollectFieldNameMappingPolicy.NESTED_JSON -> ArrayMergePolicy.OVERWRITE
+        VGSCollectFieldNameMappingPolicy.FLAT_JSON -> ArrayMergePolicy.OVERWRITE
+        VGSCollectFieldNameMappingPolicy.NESTED_JSON_WITH_ARRAYS_MERGE -> ArrayMergePolicy.MERGE
+        VGSCollectFieldNameMappingPolicy.NESTED_JSON_WITH_ARRAYS_OVERWRITE -> ArrayMergePolicy.OVERWRITE
+    }
+
+    return with(staticData) {
+        deepMerge(customData, mergePolicy)
+        deepMerge(userData, mergePolicy)
+    }
 }

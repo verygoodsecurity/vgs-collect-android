@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
+import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 /** @suppress */
@@ -49,6 +50,18 @@ internal fun VGSFieldState.mapToFieldState(): FieldState {
     f.fieldName = fieldName ?: ""
     f.hasFocus = isFocusable
     return f
+}
+
+internal fun VGSFieldState.mapToMutableMap(): MutableMap<String, Any> {
+    val data = content?.data ?: ""
+    val format = content?.vaultAliasFormat?.name ?: ""
+    val storage = content?.vaultStorage?.name ?: ""
+
+    return mutableMapOf(
+        VGSTokenizationRequest.VALUE_KEY to data,
+        VGSTokenizationRequest.FORMAT_KEY to format,
+        VGSTokenizationRequest.STORAGE_KEY to storage
+    )
 }
 
 fun prepareSSNState(

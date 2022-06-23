@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.storage
 
 import android.content.Context
+import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.*
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.content.field.FieldStateContractor
@@ -9,7 +10,10 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageErrorListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
+import com.verygoodsecurity.vgscollect.util.extension.allowParseArrays
+import com.verygoodsecurity.vgscollect.util.extension.isArraysIgnored
 import com.verygoodsecurity.vgscollect.util.extension.merge
+import com.verygoodsecurity.vgscollect.util.extension.toFlatMap
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 
@@ -46,6 +50,21 @@ internal class InternalStorage(
     fun getAttachedFiles() = fileProvider.getAttachedFiles()
     fun getFileStorage() = fileStorage
     fun getFieldsStorage() = fieldsStorage
+
+    fun getData(
+        fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy,
+        fieldsIgnore: Boolean,
+        fileIgnore: Boolean
+    ): MutableMap<String, Any> {
+        return if (fieldNameMappingPolicy.isArraysIgnored()) {
+            getAssociatedList(fieldsIgnore, fileIgnore)
+                .toFlatMap(
+                    fieldNameMappingPolicy.allowParseArrays()
+                ).structuredData
+        } else {
+            getAssociatedList(fieldsIgnore, fileIgnore).toMap().toMutableMap()
+        }
+    }
 
     fun getFieldsStates(): MutableCollection<VGSFieldState> = fieldsStorage.getItems()
 

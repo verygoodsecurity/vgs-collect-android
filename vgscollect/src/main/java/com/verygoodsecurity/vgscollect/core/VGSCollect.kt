@@ -26,6 +26,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.*
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
+import com.verygoodsecurity.vgscollect.core.model.state.mapToMutableMap
 import com.verygoodsecurity.vgscollect.core.storage.*
 import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageErrorListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
@@ -347,9 +348,7 @@ class VGSCollect {
             !context.isConnectionAvailable() ->
                 notifyAllListeners(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(context))
             else -> {
-                val data = request.takeIf { it.requiresTokenization }
-                    ?.run { mergeTokenizationData() }
-                    ?: mergeData(request as VGSRequest)
+                val data = prepareDataToSubmit(request)
 
                 submitEvent(
                     true,
@@ -363,6 +362,12 @@ class VGSCollect {
                 submitRequest(data)
             }
         }
+    }
+
+    private fun prepareDataToSubmit(request: VGSBaseRequest): Map<String, Any> {
+        return request.takeIf { it.requiresTokenization }
+            ?.run { prepareDataForTokenization() }
+            ?: prepareDataForCollecting(request as VGSRequest)
     }
 
     private fun notifyAllListeners(r: VGSResponse) {
@@ -402,29 +407,24 @@ class VGSCollect {
         return isValid
     }
 
-    private fun mergeData(request: VGSRequest): Map<String, Any> {
-        val (allowArrays, mergeArraysPolicy) = when (request.fieldNameMappingPolicy) {
-            FLAT_JSON -> null to ArrayMergePolicy.OVERWRITE
-            NESTED_JSON -> false to ArrayMergePolicy.OVERWRITE
-            NESTED_JSON_WITH_ARRAYS_MERGE -> true to ArrayMergePolicy.MERGE
-            NESTED_JSON_WITH_ARRAYS_OVERWRITE -> true to ArrayMergePolicy.OVERWRITE
+    private fun prepareDataForCollecting(request: VGSRequest) =
+        request.prepareUserDataForCollecting(
+            client.getTemporaryStorage().getCustomData(),
+            storage.getData(
+                request.fieldNameMappingPolicy,
+                request.fieldsIgnore,
+                request.fileIgnore
+            )
+        )
+
+    private fun prepareDataForTokenization(): Map<String, Any> {
+        return storage.getFieldsStorage().getItems().filter {
+            it.content?.isEnabledTokenization ?: false
+        }.map {
+            it.mapToMutableMap()
+        }.run {
+            mutableMapOf<String, Any>(VGSTokenizationRequest.DATA_KEY to this)
         }
-
-        return with(client.getTemporaryStorage().getCustomData()) { // Static additional data
-            // Merge dynamic additional data
-            deepMerge(request.customData, mergeArraysPolicy)
-
-            val fieldsData = allowArrays?.let {
-                storage.getAssociatedList(request.fieldsIgnore, request.fileIgnore)
-                    .toFlatMap(it).structuredData
-            } ?: storage.getAssociatedList(request.fieldsIgnore, request.fileIgnore).toMap()
-
-            deepMerge(fieldsData, mergeArraysPolicy)
-        }
-    }
-
-    private fun mergeTokenizationData(): Map<String, Any> {
-        TODO("prepare user data before submit ")
     }
 
     /**

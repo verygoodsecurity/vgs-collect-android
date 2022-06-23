@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
+import com.verygoodsecurity.vgscollect.core.model.state.ArrayMergePolicy
+
 internal fun <T> arrayListOfNulls(maxIndex: Int): ArrayList<T?> {
     val result = ArrayList<T?>(maxIndex)
     for (i in 0..maxIndex) {
