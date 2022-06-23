@@ -4,4 +4,4 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    target-branch: "feature/dependancy_resolution_manager"
+    target-branch: "develop"
