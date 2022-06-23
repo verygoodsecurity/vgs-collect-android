@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscollect.api
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.model.network.*
+import com.verygoodsecurity.vgscollect.util.extension.toNetworkRequest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
