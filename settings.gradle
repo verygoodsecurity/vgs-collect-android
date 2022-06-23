@@ -19,7 +19,7 @@ dependencyResolutionManagement {
             library('androidx-multidex', 'androidx.multidex:multidex:2.0.1')
             library('material', 'com.google.android.material:material:1.6.1')
             library('okhttp', 'com.squareup.okhttp3:okhttp:4.9.3')
-            library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.6.10')
+            library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.7.0')
             library('bouncer-scan-payment-full', 'com.getbouncer:scan-payment-full:2.1.0016')
             library('bouncer-cardscan-ui', 'com.getbouncer:cardscan-ui:2.1.0016')
             library('bouncer-tensorflow-lite', 'com.getbouncer:tensorflow-lite:2.1.0016')
