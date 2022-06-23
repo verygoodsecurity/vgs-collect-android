@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
@@ -15,8 +17,9 @@ sealed class FieldContent {
     var data: String? = null
         internal set
 
-    internal var aliasFormat: String? = null
-    internal var storageType: String? = null
+    internal var vaultStorage: VGSVaultStorageType = VGSVaultStorageType.PERSISTENT
+    internal var vaultAliasFormat: VGSVaultAliasFormat = VGSVaultAliasFormat.UUID
+    internal var isEnabledTokenization: Boolean = true
 
     class CardNumberContent : FieldContent() {
         var cardtype: CardType = CardType.UNKNOWN

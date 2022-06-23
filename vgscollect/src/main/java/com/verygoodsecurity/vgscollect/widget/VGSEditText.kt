@@ -9,6 +9,8 @@ import android.view.Gravity
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
@@ -32,7 +34,8 @@ open class VGSEditText @JvmOverloads constructor(
         ).apply {
 
             try {
-                val inputType = getInt(R.styleable.VGSEditText_inputType, EditorInfo.TYPE_CLASS_TEXT)
+                val inputType =
+                    getInt(R.styleable.VGSEditText_inputType, EditorInfo.TYPE_CLASS_TEXT)
                 val fieldName = getString(R.styleable.VGSEditText_fieldName)
                 val hint = getString(R.styleable.VGSEditText_hint)
                 val textSize = getDimension(R.styleable.VGSEditText_textSize, -1f)
@@ -43,12 +46,24 @@ open class VGSEditText @JvmOverloads constructor(
                 val enabled = getBoolean(R.styleable.VGSEditText_enabled, true)
                 val isRequired = getBoolean(R.styleable.VGSEditText_isRequired, true)
                 val singleLine = getBoolean(R.styleable.VGSEditText_singleLine, true)
-                val scrollHorizontally = getBoolean(R.styleable.VGSEditText_scrollHorizontally, true)
-                val gravity = getInt(R.styleable.VGSEditText_gravity, Gravity.START or Gravity.CENTER_VERTICAL)
+                val scrollHorizontally =
+                    getBoolean(R.styleable.VGSEditText_scrollHorizontally, true)
+                val gravity = getInt(
+                    R.styleable.VGSEditText_gravity,
+                    Gravity.START or Gravity.CENTER_VERTICAL
+                )
                 val ellipsize = getInt(R.styleable.VGSEditText_ellipsize, 0)
 
                 val minLines = getInt(R.styleable.VGSEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.VGSEditText_maxLines, 0)
+                val aliasFormat =
+                    getInt(R.styleable.VGSEditText_aliasFormat, VGSVaultAliasFormat.UUID.ordinal)
+                val storageType = getInt(
+                    R.styleable.VGSEditText_storageType,
+                    VGSVaultStorageType.PERSISTENT.ordinal
+                )
+                val enableTokenization =
+                    getBoolean(R.styleable.VGSEditText_enableTokenization, true)
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -68,6 +83,9 @@ open class VGSEditText @JvmOverloads constructor(
 
                 setText(text)
                 setEnabled(enabled)
+                setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
+                setVaultStorageType(VGSVaultStorageType.values()[storageType])
+                enableTokenization(enableTokenization)
 
                 setInputType(inputType)
             } finally {
@@ -103,5 +121,26 @@ open class VGSEditText @JvmOverloads constructor(
      */
     fun addRule(rule: VGSInfoRule) {
         applyValidationRule(rule)
+    }
+
+    /**
+     * TODO: add description
+     */
+    fun setVaultAliasFormat(format: VGSVaultAliasFormat) {
+        applyAliasFormat(format)
+    }
+
+    /**
+     * TODO: add description
+     */
+    fun setVaultStorageType(storage: VGSVaultStorageType) {
+        applyStorageType(storage)
+    }
+
+    /**
+     * TODO: add description
+     */
+    fun setEnabledTokenization(isEnabled: Boolean) {
+        enableTokenization(isEnabled)
     }
 }

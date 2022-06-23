@@ -9,6 +9,8 @@ import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
@@ -71,6 +73,10 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                 val minLines = getInt(R.styleable.VGSCardNumberEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.VGSCardNumberEditText_maxLines, 0)
                 val validationRule = getInt(R.styleable.VGSCardNumberEditText_validationRule, 0)
+                val aliasFormat = getInt(
+                    R.styleable.VGSCardNumberEditText_aliasFormat,
+                    VGSVaultAliasFormat.FPE_SIX_T_FOUR.ordinal
+                )
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -92,6 +98,9 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                 setEnabled(enabled)
 
                 setInputType(inputType)
+
+                setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
+                applyStorageType(VGSVaultStorageType.PERSISTENT)
 
                 setNumberDivider(divider)
                 setOutputNumberDivider(outputNumberDivider)
@@ -251,6 +260,13 @@ class VGSCardNumberEditText @JvmOverloads constructor(
      */
     fun addRule(rule: PaymentCardNumberRule) {
         applyValidationRule(rule)
+    }
+
+    /**
+     * TODO: add description
+     */
+    fun setVaultAliasFormat(format: VGSVaultAliasFormat) {
+        applyAliasFormat(format)
     }
 
     companion object {
