@@ -1,1 +1,1 @@
-sourceset_dependencies='{":vgscollect:dokkaHtml/androidTestRelease":[],":vgscollect:dokkaHtml/debug":[],":vgscollect:dokkaHtml/main":[],":vgscollect:dokkaHtml/release":[]}'
+sourceset_dependencies='{":vgscollect:dokkaHtml/androidTestRelease":[],":vgscollect:dokkaHtml/debug":[],":vgscollect:dokkaHtml/main":[],":vgscollect:dokkaHtml/release":[],":vgscollect:dokkaHtml/testFixtures":[],":vgscollect:dokkaHtml/testFixturesDebug":[],":vgscollect:dokkaHtml/testFixturesRelease":[]}'

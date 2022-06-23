@@ -36,7 +36,7 @@ internal class InputInfoConnection(id: Int, validator: VGSValidator?) :
         }
     }
 
-    private fun checkIsContentValid(content: String?): Boolean = isValid(content?.trim() ?: "")
+    private fun checkIsContentValid(content: String?): Boolean = isValid(content ?: "")
 
     private fun isRequiredValid(): Boolean {
         return output.isRequired && !output.content?.data.isNullOrEmpty() || !output.isRequired
