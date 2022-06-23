@@ -2,12 +2,10 @@ include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-bouncer'
 
 // Read more about dependencyResolutionManagement in gradle docs: https://docs.gradle.org/current/userguide/platforms.html
 // Currently dependabot doesn't recognize toml files and doesn't support versions references.
-enableFeaturePreview("VERSION_CATALOGS")
-
 dependencyResolutionManagement {
     versionCatalogs {
         gradleLibs {
-            alias('tools').to('com.android.tools.build:gradle:7.1.2')
+            alias('tools').to('com.android.tools.build:gradle:7.2.1')
             alias('kotlin').to('org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10')
             alias('maven').to('com.github.dcendents:android-maven-gradle-plugin:2.1')
             alias('maven-publish').to('com.vanniktech:gradle-maven-publish-plugin:0.19.0')
