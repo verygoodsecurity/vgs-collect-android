@@ -5,50 +5,50 @@ include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-bouncer'
 dependencyResolutionManagement {
     versionCatalogs {
         gradleLibs {
-            alias('tools').to('com.android.tools.build:gradle:7.2.1')
-            alias('kotlin').to('org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10')
-            alias('maven').to('com.github.dcendents:android-maven-gradle-plugin:2.1')
-            alias('maven-publish').to('com.vanniktech:gradle-maven-publish-plugin:0.19.0')
-            alias('dokka').to('org.jetbrains.dokka:dokka-gradle-plugin:1.6.10')
+            library('tools', 'com.android.tools.build:gradle:7.2.1')
+            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10')
+            library('maven', 'com.github.dcendents:android-maven-gradle-plugin:2.1')
+            library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.19.0')
+            library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.6.10')
         }
         libs {
             // Libraries
-            alias('androidx-appcompat').to('androidx.appcompat:appcompat:1.4.1')
-            alias('androidx-core-ktx').to('androidx.core:core-ktx:1.7.0')
-            alias('androidx-constraintlayout').to('androidx.constraintlayout:constraintlayout:2.1.3')
-            alias('androidx-multidex').to('androidx.multidex:multidex:2.0.1')
-            alias('material').to('com.google.android.material:material:1.5.0')
-            alias('okhttp').to('com.squareup.okhttp3:okhttp:4.9.3')
-            alias('dokka-base').to('org.jetbrains.dokka:dokka-base:1.6.10')
-            alias('bouncer-scan-payment-full').to('com.getbouncer:scan-payment-full:2.1.0016')
-            alias('bouncer-cardscan-ui').to('com.getbouncer:cardscan-ui:2.1.0016')
-            alias('bouncer-tensorflow-lite').to('com.getbouncer:tensorflow-lite:2.1.0016')
-            alias('cardio').to('io.card:android-sdk:5.5.1')
+            library('androidx-appcompat', 'androidx.appcompat:appcompat:1.4.1')
+            library('androidx-core-ktx', 'androidx.core:core-ktx:1.7.0')
+            library('androidx-constraintlayout', 'androidx.constraintlayout:constraintlayout:2.1.3')
+            library('androidx-multidex', 'androidx.multidex:multidex:2.0.1')
+            library('material', 'com.google.android.material:material:1.5.0')
+            library('okhttp', 'com.squareup.okhttp3:okhttp:4.9.3')
+            library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.6.10')
+            library('bouncer-scan-payment-full', 'com.getbouncer:scan-payment-full:2.1.0016')
+            library('bouncer-cardscan-ui', 'com.getbouncer:cardscan-ui:2.1.0016')
+            library('bouncer-tensorflow-lite', 'com.getbouncer:tensorflow-lite:2.1.0016')
+            library('cardio', 'io.card:android-sdk:5.5.1')
 
             // Bundles
             bundle('bouncer', ['bouncer-scan-payment-full', 'bouncer-cardscan-ui', 'bouncer-tensorflow-lite'])
         }
         debugLibs {
-            alias('leakcanary').to('com.squareup.leakcanary:leakcanary-android:2.8.1')
+            library('leakcanary', 'com.squareup.leakcanary:leakcanary-android:2.8.1')
         }
         testLibs {
-            alias('junit').to('junit:junit:4.13.2')
-            alias('mockito-core').to('org.mockito:mockito-core:4.4.0')
-            alias('mockito-inline').to('org.mockito:mockito-inline:4.4.0')
-            alias('robolectric').to('org.robolectric:robolectric:4.7.3')
-            alias('mockk').to('io.mockk:mockk:1.12.3')
-            alias('json').to('org.json:json:20211205')
-            alias('jsonassert').to('org.skyscreamer:jsonassert:1.5.0')
+            library('junit', 'junit:junit:4.13.2')
+            library('mockito-core', 'org.mockito:mockito-core:4.4.0')
+            library('mockito-inline', 'org.mockito:mockito-inline:4.4.0')
+            library('robolectric', 'org.robolectric:robolectric:4.7.3')
+            library('mockk', 'io.mockk:mockk:1.12.3')
+            library('json', 'org.json:json:20211205')
+            library('jsonassert', 'org.skyscreamer:jsonassert:1.5.0')
         }
         androidTestLibs {
-            alias('androidx-runner').to('androidx.test:runner:1.4.0')
-            alias('androidx-rules').to('androidx.test:rules:1.4.0')
-            alias('androidx-junit-ext').to('androidx.test.ext:junit:1.1.3')
-            alias('androidx-junit-ext-ktx').to('androidx.test.ext:junit-ktx:1.1.3')
-            alias('androidx-uiautomator').to('androidx.test.uiautomator:uiautomator:2.2.0')
-            alias('androidx-espresso-core').to('androidx.test.espresso:espresso-core:3.4.0')
-            alias('androidx-espresso-intents').to('androidx.test.espresso:espresso-intents:3.4.0')
-            alias('espresso-contrib').to('com.android.support.test.espresso:espresso-contrib:3.0.2')
+            library('androidx-runner', 'androidx.test:runner:1.4.0')
+            library('androidx-rules', 'androidx.test:rules:1.4.0')
+            library('androidx-junit-ext', 'androidx.test.ext:junit:1.1.3')
+            library('androidx-junit-ext-ktx', 'androidx.test.ext:junit-ktx:1.1.3')
+            library('androidx-uiautomator', 'androidx.test.uiautomator:uiautomator:2.2.0')
+            library('androidx-espresso-core', 'androidx.test.espresso:espresso-core:3.4.0')
+            library('androidx-espresso-intents', 'androidx.test.espresso:espresso-intents:3.4.0')
+            library('espresso-contrib', 'com.android.support.test.espresso:espresso-contrib:3.0.2')
         }
     }
 }
