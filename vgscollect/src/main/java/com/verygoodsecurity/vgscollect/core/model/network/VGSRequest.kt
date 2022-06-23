@@ -3,11 +3,7 @@ package com.verygoodsecurity.vgscollect.core.model.network
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
-import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
-import com.verygoodsecurity.vgscollect.util.extension.toBase64
-import com.verygoodsecurity.vgscollect.util.extension.toJSON
-
-private const val DEFAULT_CONNECTION_TIME_OUT = 60_000L
+import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
 
 /**
  * Class to collect data before submit.
@@ -18,20 +14,20 @@ private const val DEFAULT_CONNECTION_TIME_OUT = 60_000L
  * @param customData The Map to save for request.
  * @param fieldsIgnore contains true if need to skip data from input fields.
  * @param fileIgnore contains true if need to skip files.
- *
- * @since 1.0.6
  */
 data class VGSRequest private constructor(
-    val method: HTTPMethod,
-    val path: String,
-    val customHeader: Map<String, String>,
-    val customData: Map<String, Any>,
-    val fieldsIgnore: Boolean,
-    val fileIgnore: Boolean,
-    val format: VGSHttpBodyFormat,
-    val fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy,
-    val requestTimeoutInterval: Long,
-) {
+    override val method: HTTPMethod,
+    override val path: String,
+    override val customHeader: Map<String, String>,
+    override val customData: Map<String, Any>,
+    override val fieldsIgnore: Boolean,
+    override val fileIgnore: Boolean,
+    override val format: VGSHttpBodyFormat,
+    override val fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy,
+    override val requestTimeoutInterval: Long,
+    override val routeId: String? = null,
+    override val requiresTokenization: Boolean = false
+) : VGSBaseRequest() {
 
     /**
      * Creates a builder for a request that uses to send data to VGS server.
@@ -45,7 +41,8 @@ data class VGSRequest private constructor(
         private var fieldsIgnore: Boolean = false
         private var format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var fileIgnore: Boolean = false
-        private var fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy = VGSCollectFieldNameMappingPolicy.NESTED_JSON
+        private var fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy =
+            VGSCollectFieldNameMappingPolicy.NESTED_JSON
         private var requestTimeoutInterval: Long = DEFAULT_CONNECTION_TIME_OUT
 
         /**
@@ -167,30 +164,4 @@ data class VGSRequest private constructor(
             )
         }
     }
-}
-
-fun VGSRequest.toAnalyticRequest(url: String): NetworkRequest {
-    return NetworkRequest(
-        method,
-        url concatWithSlash path,
-        customHeader,
-        customData.toJSON().toString().toBase64(),
-        fieldsIgnore,
-        fileIgnore,
-        format,
-        requestTimeoutInterval
-    )
-}
-
-fun VGSRequest.toNetworkRequest(url: String, requestData: Map<String, Any>? = null): NetworkRequest {
-    return NetworkRequest(
-        method,
-        url concatWithSlash path,
-        customHeader,
-        requestData?.toJSON()?.toString() ?: customData,
-        fieldsIgnore,
-        fileIgnore,
-        format,
-        requestTimeoutInterval
-    )
 }
