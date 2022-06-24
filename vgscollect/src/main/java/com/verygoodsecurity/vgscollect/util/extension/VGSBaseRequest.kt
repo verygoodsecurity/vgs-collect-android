@@ -16,14 +16,14 @@ internal fun VGSBaseRequest.toAnalyticRequest(url: String): NetworkRequest {
         fieldsIgnore,
         fileIgnore,
         format,
-        requestTimeoutInterval
+        requestTimeoutInterval,
+        false
     )
 }
 
-
 internal fun VGSBaseRequest.toNetworkRequest(
     url: String,
-    requestData: Map<String, Any>? = null
+    requestData: Map<String, Any>? = null,
 ): NetworkRequest {
     return NetworkRequest(
         method,
@@ -33,7 +33,8 @@ internal fun VGSBaseRequest.toNetworkRequest(
         fieldsIgnore,
         fileIgnore,
         format,
-        requestTimeoutInterval
+        requestTimeoutInterval,
+        requiresTokenization
     )
 }
 

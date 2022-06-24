@@ -5,6 +5,7 @@ import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
+import com.verygoodsecurity.vgscollect.util.extension.TOKENIZATION_PATH
 
 data class VGSTokenizationRequest private constructor(
     override val method: HTTPMethod,
@@ -98,14 +99,5 @@ data class VGSTokenizationRequest private constructor(
                 null
             )
         }
-    }
-
-    companion object {
-        private const val TOKENIZATION_PATH = "/tokens"
-
-        internal const val DATA_KEY = "data"
-        internal const val VALUE_KEY = "value"
-        internal const val FORMAT_KEY = "format"
-        internal const val STORAGE_KEY = "storage"
     }
 }

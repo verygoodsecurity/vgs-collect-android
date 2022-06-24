@@ -26,7 +26,6 @@ import com.verygoodsecurity.vgscollect.core.model.network.*
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
-import com.verygoodsecurity.vgscollect.core.model.state.mapToMutableMap
 import com.verygoodsecurity.vgscollect.core.storage.*
 import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageErrorListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
@@ -417,13 +416,11 @@ class VGSCollect {
             )
         )
 
-    private fun prepareDataForTokenization(): Map<String, Any> {
-        return storage.getFieldsStorage().getItems().filter {
-            it.content?.isEnabledTokenization ?: false
-        }.map {
-            it.mapToMutableMap()
+    private fun prepareDataForTokenization(): MutableMap<String, Any> {
+        return storage.getFieldsStorage().getItems().map {
+            it.mapTokenizationMutableMap()
         }.run {
-            mutableMapOf<String, Any>(VGSTokenizationRequest.DATA_KEY to this)
+            mutableMapOf(DATA_KEY to this)
         }
     }
 

@@ -56,7 +56,7 @@ internal class InternalStorage(
         fieldsIgnore: Boolean,
         fileIgnore: Boolean
     ): MutableMap<String, Any> {
-        return if (fieldNameMappingPolicy.isArraysIgnored()) {
+        return if (!fieldNameMappingPolicy.isArraysIgnored()) {
             getAssociatedList(fieldsIgnore, fileIgnore)
                 .toFlatMap(
                     fieldNameMappingPolicy.allowParseArrays()
