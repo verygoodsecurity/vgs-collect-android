@@ -298,7 +298,7 @@ class VGSCollect {
     /**
      * TODO: add description
      */
-    fun tokenize(request: VGSTokenizationRequest) {
+    private fun tokenize(request: VGSTokenizationRequest) {
         asyncSubmit(request)
     }
 

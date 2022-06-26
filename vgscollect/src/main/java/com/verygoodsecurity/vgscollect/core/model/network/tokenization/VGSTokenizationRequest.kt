@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.util.extension.TOKENIZATION_PATH
 
-data class VGSTokenizationRequest private constructor(
+internal data class VGSTokenizationRequest private constructor(
     override val method: HTTPMethod,
     override val path: String,
     override val customHeader: Map<String, String>,
