@@ -27,7 +27,8 @@ class ApiClientTest {
             false,
             false,
             VGSHttpBodyFormat.JSON,
-            60000L
+            60000L,
+             false
         )
 
         client.execute(r)
@@ -52,7 +53,8 @@ class ApiClientTest {
             false,
             false,
             VGSHttpBodyFormat.JSON,
-            60000L
+            60000L,
+            false
         )
 
         client.enqueue(r)

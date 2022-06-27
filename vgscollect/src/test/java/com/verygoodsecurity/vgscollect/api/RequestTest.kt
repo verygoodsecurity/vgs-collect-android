@@ -67,7 +67,8 @@ class RequestTest {
             false,
             false,
             VGSHttpBodyFormat.JSON,
-            60000L
+            60000L,
+            false
         )
 
         val r = VGSRequest.VGSRequestBuilder()
