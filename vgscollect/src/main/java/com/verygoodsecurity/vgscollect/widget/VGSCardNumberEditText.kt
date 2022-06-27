@@ -263,7 +263,9 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     /**
-     * TODO: add description
+     * Sets the vault alias format in which data stores on a backend.
+     *
+     * @param format The VGS alias format.
      */
     fun setVaultAliasFormat(format: VGSVaultAliasFormat) {
         applyAliasFormat(format)

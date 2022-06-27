@@ -15,7 +15,7 @@ import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OU
  * @param fieldsIgnore contains true if need to skip data from input fields.
  * @param fileIgnore contains true if need to skip files.
  */
-data class VGSRequest private constructor(
+data class VGSRequest internal constructor(
     override val method: HTTPMethod,
     override val path: String,
     override val customHeader: Map<String, String>,

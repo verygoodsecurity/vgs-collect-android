@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.util.extension.TOKENIZATION_PATH
 
-internal data class VGSTokenizationRequest private constructor(
+internal data class VGSTokenizationRequest internal constructor(
     override val method: HTTPMethod,
     override val path: String,
     override val customHeader: Map<String, String>,
@@ -58,7 +58,9 @@ internal data class VGSTokenizationRequest private constructor(
         }
 
         /**
-         * todo: add description
+         * Defines route id for submitting data.
+         *
+         * @param routeId A vault route id
          */
         fun setRouteId(routeId: String): VGSRequestBuilder {
             this.routeId = routeId

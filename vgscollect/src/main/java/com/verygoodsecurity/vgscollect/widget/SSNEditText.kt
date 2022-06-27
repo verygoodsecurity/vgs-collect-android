@@ -134,21 +134,27 @@ class SSNEditText @JvmOverloads constructor(
     }
 
     /**
-     * TODO: add description
+     * Sets the vault alias format in which data stores on a backend.
+     *
+     * @param format The VGS alias format.
      */
     fun setVaultAliasFormat(format: VGSVaultAliasFormat) {
         applyAliasFormat(format)
     }
 
     /**
-     * TODO: add description
+     * Sets the vault storage type for storing.
+     *
+     * @param type The VGS storage type.
      */
-    fun setVaultStorageType(storage: VGSVaultStorageType) {
-        applyStorageType(storage)
+    fun setVaultStorageType(type: VGSVaultStorageType) {
+        applyStorageType(type)
     }
 
     /**
-     * TODO: add description
+     * Defines if data requires tokenization.
+     *
+     * @param isEnabled Is tokenization enabled.
      */
     fun setEnabledTokenization(isEnabled: Boolean) {
         enableTokenization(isEnabled)

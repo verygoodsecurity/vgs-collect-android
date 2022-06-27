@@ -287,7 +287,7 @@ class VGSCollect {
     }
 
     /**
-     * TODO: add description
+     * The method sends data on VGS Server for tokenization.
      */
     fun tokenize() {
         with(VGSTokenizationRequest.VGSRequestBuilder().build()) {
@@ -296,7 +296,9 @@ class VGSCollect {
     }
 
     /**
-     * TODO: add description
+     * The method sends data on VGS Server for tokenization.
+     *
+     * @param request A tokenization request data.
      */
     private fun tokenize(request: VGSTokenizationRequest) {
         asyncSubmit(request)
