@@ -210,11 +210,7 @@ internal fun FieldContent.CardNumberContent.parseCardNumber(): String? {
 }
 
 private fun String.cardNumberBinEnd(): Int {
-    return if (this.isNumeric()) {
-        6
-    } else {
-        7
-    }
+    return if (this.isNumeric()) 6 else 7
 }
 
 private fun String.cardNumberLastDigStart(): Int {

@@ -7,12 +7,16 @@ import android.view.View
 import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.any
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
+import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
 import com.verygoodsecurity.vgscollect.view.internal.DateInputField
+import com.verygoodsecurity.vgscollect.view.internal.SSNInputField
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 import org.junit.Assert.*
 import org.junit.Before
@@ -362,6 +366,39 @@ class ExpirationDateEditTextTest {
         assertEquals(view.getTypeface(), Typeface.DEFAULT_BOLD)
         view.setTypeface(null, Typeface.NORMAL)
         assertEquals(view.getTypeface(), Typeface.DEFAULT)
+    }
+
+    @Test
+    fun test_alias_format() {
+        view.setVaultAliasFormat(VGSVaultAliasFormat.UUID)
+
+        val child = view.statePreparer.getView()
+
+        assertEquals((child as DateInputField).vaultAliasFormat, VGSVaultAliasFormat.UUID)
+    }
+
+    @Test
+    fun test_storage_type() {
+        view.setVaultStorageType(VGSVaultStorageType.VOLATILE)
+
+        val child = view.statePreparer.getView()
+        assertEquals((child as DateInputField).vaultStorage, VGSVaultStorageType.VOLATILE)
+    }
+
+    @Test
+    fun test_enabled_tokenization() {
+        view.setEnabledTokenization(false)
+
+        val child = view.statePreparer.getView()
+        assertEquals((child as DateInputField).isEnabledTokenization, false)
+    }
+
+    @Test
+    fun test_default_tokenization_settings() {
+        val child = view.statePreparer.getView()
+        assertEquals((child as DateInputField).isEnabledTokenization, true)
+        assertEquals(child.vaultAliasFormat, VGSVaultAliasFormat.UUID)
+        assertEquals(child.vaultStorage, VGSVaultStorageType.PERSISTENT)
     }
 
 }
