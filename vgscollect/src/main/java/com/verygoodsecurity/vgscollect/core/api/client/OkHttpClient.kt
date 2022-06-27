@@ -194,7 +194,6 @@ internal class OkHttpClient(
         override fun intercept(chain: Interceptor.Chain): Response {
             val originalRequest = chain.request()
 
-            Log.e("test", "requiresTokenization: $requiresTokenization")
             return if (requiresTokenization) {
                 val originalDataMap = unwrapRequestBody(originalRequest.body)
                 val request = originalRequest.mapTokenizationRequest(originalDataMap)
@@ -311,7 +310,6 @@ internal class OkHttpClient(
                 .headers(headers)
                 .build()
         }
-
     }
 
     private class HttpLoggingInterceptor : Interceptor {
