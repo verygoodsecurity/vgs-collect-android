@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.Action
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
-import com.verygoodsecurity.vgscollect.core.model.network.toAnalyticRequest
+import com.verygoodsecurity.vgscollect.util.extension.toAnalyticRequest
 import java.util.*
 import java.util.concurrent.Executors
 

@@ -11,6 +11,7 @@ import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.network.*
+import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
@@ -347,6 +348,39 @@ class VGSCollectTest {
             .setMethod(HTTPMethod.POST)
             .build()
         collect.asyncSubmit(request)
+
+        verify(client, after(500)).enqueue(any(), any())
+    }
+
+    @Test
+    fun test_tokenization() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
+        val client = applyApiClient()
+
+        collect.tokenize()
+
+        verify(client, after(500)).enqueue(any(), any())
+    }
+
+    @Test
+    fun test_tokenization_with_builder() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
+        val client = applyApiClient()
+
+        val request = VGSTokenizationRequest.VGSRequestBuilder()
+            .setRouteId("xxx")
+            .build()
+        collect.tokenize(request)
 
         verify(client, after(500)).enqueue(any(), any())
     }

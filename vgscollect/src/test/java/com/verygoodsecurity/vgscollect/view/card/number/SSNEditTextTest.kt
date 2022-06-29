@@ -7,10 +7,14 @@ import android.view.View
 import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.any
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
+import com.verygoodsecurity.vgscollect.view.internal.CardInputField
+import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.view.internal.SSNInputField
 import com.verygoodsecurity.vgscollect.widget.SSNEditText
 import org.junit.Assert.*
@@ -359,5 +363,39 @@ class SSNEditTextTest {
         view.setTypeface(null, Typeface.NORMAL)
         assertEquals(view.getTypeface(), Typeface.DEFAULT)
     }
+
+    @Test
+    fun test_alias_format() {
+        view.setVaultAliasFormat(VGSVaultAliasFormat.FPE_SIX_T_FOUR)
+
+        val child = view.statePreparer.getView()
+
+        assertEquals((child as SSNInputField).vaultAliasFormat, VGSVaultAliasFormat.FPE_SIX_T_FOUR)
+    }
+
+    @Test
+    fun test_storage_type() {
+        view.setVaultStorageType(VGSVaultStorageType.VOLATILE)
+
+        val child = view.statePreparer.getView()
+        assertEquals((child as SSNInputField).vaultStorage, VGSVaultStorageType.VOLATILE)
+    }
+
+    @Test
+    fun test_enabled_tokenization() {
+        view.setEnabledTokenization(false)
+
+        val child = view.statePreparer.getView()
+        assertEquals(false, (child as SSNInputField).isEnabledTokenization)
+    }
+
+    @Test
+    fun test_default_tokenization_settings() {
+        val child = view.statePreparer.getView()
+        assertEquals((child as SSNInputField).isEnabledTokenization, true)
+        assertEquals(child.vaultAliasFormat, VGSVaultAliasFormat.UUID)
+        assertEquals(child.vaultStorage, VGSVaultStorageType.PERSISTENT)
+    }
+
 
 }

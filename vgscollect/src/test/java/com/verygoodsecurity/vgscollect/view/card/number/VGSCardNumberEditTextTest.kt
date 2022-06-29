@@ -9,6 +9,8 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.any
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
@@ -18,6 +20,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgo
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CardInputField
+import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 import org.junit.Assert.*
 import org.junit.Before
@@ -864,6 +867,23 @@ class VGSCardNumberEditTextTest {
             assertEquals(newVisa.cardBrandName, this.cardBrand)
             assertEquals(newVisa.drawableResId, this.drawableBrandResId)
         }
+    }
+
+    @Test
+    fun test_alias_format() {
+        view.setVaultAliasFormat(VGSVaultAliasFormat.UUID)
+
+        val child = view.statePreparer.getView()
+
+        assertEquals((child as CardInputField).vaultAliasFormat, VGSVaultAliasFormat.UUID)
+    }
+
+    @Test
+    fun test_default_tokenization_settings() {
+        val child = view.statePreparer.getView()
+        assertEquals((child as CardInputField).isEnabledTokenization, true)
+        assertEquals(child.vaultAliasFormat, VGSVaultAliasFormat.FPE_SIX_T_FOUR)
+        assertEquals(child.vaultStorage, VGSVaultStorageType.PERSISTENT)
     }
 
 }

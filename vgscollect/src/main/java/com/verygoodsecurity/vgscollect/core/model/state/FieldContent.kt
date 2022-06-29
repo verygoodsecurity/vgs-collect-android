@@ -1,5 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
@@ -9,19 +11,23 @@ import java.util.*
 /** @suppress */
 sealed class FieldContent {
 
-    var rawData:String? = null
+    var rawData: String? = null
         internal set
 
-    var data:String? = null
+    var data: String? = null
         internal set
 
-    class CardNumberContent:FieldContent() {
+    internal var vaultStorage: VGSVaultStorageType = VGSVaultStorageType.PERSISTENT
+    internal var vaultAliasFormat: VGSVaultAliasFormat = VGSVaultAliasFormat.UUID
+    internal var isEnabledTokenization: Boolean = true
+
+    class CardNumberContent : FieldContent() {
         var cardtype: CardType = CardType.UNKNOWN
         var numberRange: Array<Int> = CardType.UNKNOWN.rangeNumber
         var rangeCVV: Array<Int> = CardType.UNKNOWN.rangeCVV
-        var iconResId:Int? = 0
+        var iconResId: Int? = 0
             internal set
-        var cardBrandName:String? = null
+        var cardBrandName: String? = null
             internal set
 
         override fun equals(other: Any?): Boolean {
@@ -50,14 +56,14 @@ sealed class FieldContent {
         }
     }
 
-    class CreditCardExpDateContent:FieldContent() {
+    class CreditCardExpDateContent : FieldContent() {
         internal var dateFormat: String? = null
         internal var serializers: List<FieldDataSerializer<*, *>>? = null
     }
 
-    class SSNContent:FieldContent()
+    class SSNContent : FieldContent()
 
-    class InfoContent:FieldContent()
+    class InfoContent : FieldContent()
 
     override fun hashCode(): Int {
         return data.hashCode()
@@ -68,7 +74,7 @@ sealed class FieldContent {
     }
 
     override fun toString(): String {
-        return data?:""
+        return data ?: ""
     }
 }
 
@@ -92,41 +98,38 @@ internal fun FieldContent.CreditCardExpDateContent.handleOutputFormat(
 }
 
 /** @suppress */
-internal fun FieldContent.CardNumberContent.parseCardBin():String {
+internal fun FieldContent.CardNumberContent.parseCardBin(): String {
     return data?.run {
         val numberSTR = data!!.replace("\\D".toRegex(), "")
-        if(numberSTR.length >= 6) {
+        if (numberSTR.length >= 6) {
             numberSTR.substring(0, 6)
         } else {
             numberSTR.substring(0, numberSTR.length)
         }
-    }?:""
+    } ?: ""
 }
 
-
-
 /** @suppress */
-internal fun FieldContent.SSNContent.parseCardLast4Digits():String {
+internal fun FieldContent.SSNContent.parseCardLast4Digits(): String {
     return data?.run {
         val numberSTR = data!!.replace("\\D".toRegex(), "")
 
-        return if(numberSTR.length > 5) {
+        return if (numberSTR.length > 5) {
             val start = 5
             val end = numberSTR.length
             numberSTR.substring(start, end)
         } else {
             ""
         }
-    }?:""
+    } ?: ""
 }
 
-
 /** @suppress */
-internal fun FieldContent.CardNumberContent.parseCardLast4Digits():String {
+internal fun FieldContent.CardNumberContent.parseCardLast4Digits(): String {
     return data?.run {
         val numberSTR = data!!.replace("\\D".toRegex(), "")
-        if(cardtype == CardType.UNKNOWN) {
-            if(numberSTR.length > 12) {
+        if (cardtype == CardType.UNKNOWN) {
+            if (numberSTR.length > 12) {
                 val start = numberSTR.length - 4
                 val end = numberSTR.length
                 numberSTR.substring(start, end)
@@ -138,48 +141,48 @@ internal fun FieldContent.CardNumberContent.parseCardLast4Digits():String {
             val end = numberSTR.length
             return numberSTR.substring(start, end)
         }
-    }?:""
+    } ?: ""
 }
 
 /** @suppress */
-internal fun FieldContent.CardNumberContent.parseRawCardBin():String {
+internal fun FieldContent.CardNumberContent.parseRawCardBin(): String {
     return data?.run {
         val numberSTR = this.replace("\\D".toRegex(), "")
         val binEnd = this.cardNumberBinEnd()
-        if(numberSTR.length >= binEnd) {
+        if (numberSTR.length >= binEnd) {
             substring(0, binEnd)
         } else {
             substring(0, numberSTR.length)
         }
-    }?:""
+    } ?: ""
 }
 
 /** @suppress */
-internal fun FieldContent.CardNumberContent.parseRawCardLastDigits():String {
+internal fun FieldContent.CardNumberContent.parseRawCardLastDigits(): String {
     return data?.run {
         val maxCount = this.cardNumberLastDigStart()
-        if(length > maxCount) {
+        if (length > maxCount) {
             substring(maxCount, length)
         } else {
             ""
         }
-    }?:""
+    } ?: ""
 }
 
 /** @suppress */
-internal fun FieldContent.CardNumberContent.parseCardNumber():String? {
-    if(this.data.isNullOrEmpty()) {
+internal fun FieldContent.CardNumberContent.parseCardNumber(): String? {
+    if (this.data.isNullOrEmpty()) {
         return ""
     }
     val startDig = this.data!!.cardNumberBinEnd()
     val endDig = this.data!!.cardNumberLastDigStart()
 
-    val str = if(data!!.length <= startDig) {
+    val str = if (data!!.length <= startDig) {
         data
     } else if (data!!.length < endDig) {
         val bin = parseRawCardBin()
         val dif = data!!.length - bin.length
-        if(dif > 0) {
+        if (dif > 0) {
             val start = bin.length
             val end = data!!.length
             val mask = data!!.substring(start, end).replace("\\d".toRegex(), "#")
@@ -206,11 +209,11 @@ internal fun FieldContent.CardNumberContent.parseCardNumber():String? {
 
 }
 
-private fun String.cardNumberBinEnd():Int {
-    return if (this.isNumeric()) { 6 } else { 7 }
+private fun String.cardNumberBinEnd(): Int {
+    return if (this.isNumeric()) 6 else 7
 }
 
-private fun String.cardNumberLastDigStart():Int {
+private fun String.cardNumberLastDigStart(): Int {
     return if (this.isNumeric()) {
         12
     } else {

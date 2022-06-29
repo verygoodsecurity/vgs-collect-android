@@ -23,6 +23,7 @@ import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPoli
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy.*
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.network.*
+import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.*
@@ -31,7 +32,6 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileSt
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
-import com.verygoodsecurity.vgscollect.util.*
 import com.verygoodsecurity.vgscollect.util.extension.*
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
@@ -287,6 +287,24 @@ class VGSCollect {
     }
 
     /**
+     * The method sends data on VGS Server for tokenization.
+     */
+    fun tokenize() {
+        with(VGSTokenizationRequest.VGSRequestBuilder().build()) {
+            submitAsyncRequest(this)
+        }
+    }
+
+    /**
+     * The method sends data on VGS Server for tokenization.
+     *
+     * @param request A tokenization request data.
+     */
+    internal fun tokenize(request: VGSTokenizationRequest) {
+        submitAsyncRequest(request)
+    }
+
+    /**
      * This method executes and send data on VGS Server.
      *
      * @param path path for a request
@@ -309,6 +327,10 @@ class VGSCollect {
      * @param request data class with attributes for submit
      */
     fun asyncSubmit(request: VGSRequest) {
+        submitAsyncRequest(request)
+    }
+
+    private fun submitAsyncRequest(request: VGSBaseRequest) {
         collectUserData(request) {
             client.enqueue(request.toNetworkRequest(baseURL, it)) { r ->
                 mainHandler.post { notifyAllListeners(r.toVGSResponse()) }
@@ -316,7 +338,10 @@ class VGSCollect {
         }
     }
 
-    private fun collectUserData(request: VGSRequest, submitRequest: (Map<String, Any>) -> Unit) {
+    private fun collectUserData(
+        request: VGSBaseRequest,
+        submitRequest: (Map<String, Any>) -> Unit
+    ) {
         when {
             !request.fieldsIgnore && !validateFields() -> return
             !request.fileIgnore && !validateFiles() -> return
@@ -328,7 +353,8 @@ class VGSCollect {
             !context.isConnectionAvailable() ->
                 notifyAllListeners(VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(context))
             else -> {
-                val data = mergeData(request)
+                val data = prepareDataToSubmit(request)
+
                 submitEvent(
                     true,
                     !request.fileIgnore && storage.getFileStorage().getItems().isNotEmpty(),
@@ -341,6 +367,12 @@ class VGSCollect {
                 submitRequest(data)
             }
         }
+    }
+
+    private fun prepareDataToSubmit(request: VGSBaseRequest): Map<String, Any> {
+        return request.takeIf { it.requiresTokenization }
+            ?.run { prepareDataForTokenization() }
+            ?: prepareDataForCollecting(request as VGSRequest)
     }
 
     private fun notifyAllListeners(r: VGSResponse) {
@@ -380,24 +412,21 @@ class VGSCollect {
         return isValid
     }
 
-    private fun mergeData(request: VGSRequest): Map<String, Any> {
-        val (allowArrays, mergeArraysPolicy) = when (request.fieldNameMappingPolicy) {
-            FLAT_JSON -> null to ArrayMergePolicy.OVERWRITE
-            NESTED_JSON -> false to ArrayMergePolicy.OVERWRITE
-            NESTED_JSON_WITH_ARRAYS_MERGE -> true to ArrayMergePolicy.MERGE
-            NESTED_JSON_WITH_ARRAYS_OVERWRITE -> true to ArrayMergePolicy.OVERWRITE
-        }
+    private fun prepareDataForCollecting(request: VGSRequest) =
+        request.prepareUserDataForCollecting(
+            client.getTemporaryStorage().getCustomData(),
+            storage.getData(
+                request.fieldNameMappingPolicy,
+                request.fieldsIgnore,
+                request.fileIgnore
+            )
+        )
 
-        return with(client.getTemporaryStorage().getCustomData()) { // Static additional data
-            // Merge dynamic additional data
-            deepMerge(request.customData, mergeArraysPolicy)
-
-            val fieldsData = allowArrays?.let {
-                storage.getAssociatedList(request.fieldsIgnore, request.fileIgnore)
-                    .toFlatMap(it).structuredData
-            } ?: storage.getAssociatedList(request.fieldsIgnore, request.fileIgnore).toMap()
-
-            deepMerge(fieldsData, mergeArraysPolicy)
+    private fun prepareDataForTokenization(): MutableMap<String, Any> {
+        return storage.getFieldsStorage().getItems().map {
+            it.toTokenizationMap()
+        }.run {
+            mutableMapOf(DATA_KEY to this)
         }
     }
 
@@ -598,7 +627,7 @@ class VGSCollect {
         if (code.isHttpStatusCode()) {
             val m = with(mutableMapOf<String, Any>()) {
                 put("statusCode", code)
-                put("status",  code.isCodeSuccessful().toAnalyticStatus())
+                put("status", code.isCodeSuccessful().toAnalyticStatus())
                 if (!message.isNullOrEmpty()) put("error", message)
 
                 this

@@ -8,6 +8,8 @@ import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
@@ -84,6 +86,9 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
 
                 applyPreviewIconMode(previewCardVisibility)
                 applyPreviewIconGravity(previewCardGravity)
+
+                applyAliasFormat(VGSVaultAliasFormat.NUM_LENGTH_PRESERVING)
+                applyStorageType(VGSVaultStorageType.VOLATILE)
             } finally {
                 recycle()
             }

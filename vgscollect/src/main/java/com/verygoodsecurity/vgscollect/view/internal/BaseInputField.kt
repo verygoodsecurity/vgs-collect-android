@@ -17,6 +17,8 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.action.AutofillAction
 import com.verygoodsecurity.vgscollect.core.model.state.*
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
@@ -48,6 +50,30 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             return field
         }
     }
+
+    internal var vaultStorage: VGSVaultStorageType = VGSVaultStorageType.PERSISTENT
+        set(value) {
+            field = value
+            inputConnection?.getOutput()?.content?.vaultStorage = value
+            inputConnection?.run()
+        }
+
+    internal var vaultAliasFormat: VGSVaultAliasFormat = VGSVaultAliasFormat.UUID
+        set(value) {
+            field = value
+            inputConnection?.getOutput()?.content?.vaultAliasFormat = value
+            inputConnection?.run()
+        }
+
+    internal var isEnabledTokenization: Boolean = true
+        get() {
+            return field
+        }
+        set(value) {
+            field = value
+            inputConnection?.getOutput()?.content?.isEnabledTokenization = value
+            inputConnection?.run()
+        }
 
     internal var stateListener: OnVgsViewStateChangeListener? = null
         set(value) {
@@ -159,6 +185,9 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         isListeningPermitted = true
         applyFieldType()
         inputConnection?.getOutput()?.enableValidation = enableValidation
+        inputConnection?.getOutput()?.content?.isEnabledTokenization = isEnabledTokenization
+        inputConnection?.getOutput()?.content?.vaultStorage = vaultStorage
+        inputConnection?.getOutput()?.content?.vaultAliasFormat = vaultAliasFormat
         super.onAttachedToWindow()
         applyInternalFieldStateChangeListener()
         isListeningPermitted = false
