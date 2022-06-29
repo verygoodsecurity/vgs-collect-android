@@ -274,7 +274,7 @@ class VGSCollect {
      *
      * @param request data class with attributes for submit.
      */
-    fun submit(request: VGSBaseRequest): VGSResponse {
+    fun submit(request: VGSRequest): VGSResponse {
         var response: VGSResponse = VGSResponse.ErrorResponse()
 
         collectUserData(request) {
@@ -291,7 +291,7 @@ class VGSCollect {
      */
     fun tokenize() {
         with(VGSTokenizationRequest.VGSRequestBuilder().build()) {
-            asyncSubmit(this)
+            submitAsyncRequest(this)
         }
     }
 
@@ -301,7 +301,7 @@ class VGSCollect {
      * @param request A tokenization request data.
      */
     internal fun tokenize(request: VGSTokenizationRequest) {
-        asyncSubmit(request)
+        submitAsyncRequest(request)
     }
 
     /**
@@ -326,7 +326,11 @@ class VGSCollect {
      *
      * @param request data class with attributes for submit
      */
-    fun asyncSubmit(request: VGSBaseRequest) {
+    fun asyncSubmit(request: VGSRequest) {
+        submitAsyncRequest(request)
+    }
+
+    private fun submitAsyncRequest(request: VGSBaseRequest) {
         collectUserData(request) {
             client.enqueue(request.toNetworkRequest(baseURL, it)) { r ->
                 mainHandler.post { notifyAllListeners(r.toVGSResponse()) }
