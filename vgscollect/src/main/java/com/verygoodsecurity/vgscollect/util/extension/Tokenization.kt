@@ -12,7 +12,7 @@ internal const val FIELD_NAME_KEY = "fieldName"
 internal const val ALIASES_KEY = "aliases"
 internal const val ALIAS_KEY = "alias"
 
-internal fun VGSFieldState.mapTokenizationMutableMap(): MutableMap<String, Any> {
+internal fun VGSFieldState.toTokenizationMap(): MutableMap<String, Any> {
     val data = content?.data ?: ""
     val isEnabledTokenization = content?.isEnabledTokenization ?: false
     val format = content?.vaultAliasFormat?.name ?: ""

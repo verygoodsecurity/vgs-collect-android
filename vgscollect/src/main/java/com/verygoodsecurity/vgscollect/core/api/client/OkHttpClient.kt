@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscollect.core.api.client
 
-import android.util.Log
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.client.extension.*
@@ -196,37 +195,36 @@ internal class OkHttpClient(
 
             return if (requiresTokenization) {
                 val originalDataMap = unwrapRequestBody(originalRequest.body)
-                val request = originalRequest.mapTokenizationRequest(originalDataMap)
-                chain.proceed(request).mapTokenizationResponse(originalDataMap)
+                val request = mapTokenizationRequest(originalRequest, originalDataMap)
+
+                val response = chain.proceed(request)
+                mapTokenizationResponse(response, originalDataMap)
             } else {
                 chain.proceed(originalRequest)
             }
         }
 
-        private fun Request.mapTokenizationRequest(data: MutableList<Map<String, Any>>): Request {
+        private fun mapTokenizationRequest(
+            request: Request,
+            data: MutableList<Map<String, Any>>
+        ): Request {
+            val body = data.filter {
+                (it[TOKENIZATION_REQUIRED_KEY] as? Boolean) ?: false
+            }.run {
+                mutableMapOf(DATA_KEY to this)
+            }.toJSON()
+                .toString()
+                .toRequestBody(
+                    request.body?.contentType()
+                )
 
-            fun createRequestBody(
-                request: Request,
-                data: MutableList<Map<String, Any>>
-            ): RequestBody {
-                return data.filter {
-                    (it[TOKENIZATION_REQUIRED_KEY] as? Boolean) ?: false
-                }.run {
-                    mutableMapOf(DATA_KEY to this)
-                }.toJSON()
-                    .toString()
-                    .toRequestBody(
-                        request.body?.contentType()
-                    )
+            return with(request) {
+                newBuilder()
+                    .url(url)
+                    .headers(headers)
+                    .method(method, body)
+                    .build()
             }
-
-            val body = createRequestBody(this, data)
-
-            return newBuilder()
-                .url(url)
-                .headers(headers)
-                .method(method, body)
-                .build()
         }
 
         @Suppress("UNCHECKED_CAST")
@@ -240,47 +238,50 @@ internal class OkHttpClient(
                 } ?: mutableListOf()
         }
 
-        private fun Response.mapTokenizationResponse(originalData: MutableList<Map<String, Any>>): Response {
+        @Suppress("UNCHECKED_CAST")
+        fun unwrapResponseBody(request: Response): Collection<Map<String, Any>> {
+            return request.body?.string()?.toMutableMap()
+                ?.takeIf {
+                    it[DATA_KEY] is Collection<*>
+                }?.run {
+                    get(DATA_KEY) as Collection<Map<String, Any>>
+                } ?: mutableListOf()
+        }
 
-            @Suppress("UNCHECKED_CAST")
-            fun unwrapResponseBody(response: Response): Collection<Map<String, Any>> {
-                return response.body?.string()?.toMutableMap()
-                    ?.takeIf {
-                        it[DATA_KEY] is Collection<*>
-                    }?.run {
-                        get(DATA_KEY) as Collection<Map<String, Any>>
-                    } ?: mutableListOf()
-            }
+        @Suppress("UNCHECKED_CAST")
+        fun getAlias(
+            data: Collection<Map<String, Any>>,
+            originalValue: String?,
+            format: String?,
+        ): String {
+            var alias = ""
 
-            @Suppress("UNCHECKED_CAST")
-            fun getAlias(
-                data: Collection<Map<String, Any>>,
-                originalValue: String?,
-                format: String?,
-            ): String {
-                var alias = ""
-
-                data.filter {
-                    it.containsKey(VALUE_KEY) &&
-                            it[VALUE_KEY] == originalValue &&
-                            it.containsKey(ALIASES_KEY)
-                }.forEach {
-                    val tokenizedValue = it[VALUE_KEY]
-                    if (originalValue == tokenizedValue) {
-                        (it[ALIASES_KEY] as? Collection<Map<String, String>>)?.forEach {
-                            if (it.containsKey(FORMAT_KEY) &&
-                                it[FORMAT_KEY] == format
-                            ) {
-                                alias = it[ALIAS_KEY].toString()
-                            }
+            data.filter {
+                it.containsKey(VALUE_KEY) &&
+                        it[VALUE_KEY] == originalValue &&
+                        it.containsKey(ALIASES_KEY)
+            }.forEach {
+                val tokenizedValue = it[VALUE_KEY]
+                if (originalValue == tokenizedValue) {
+                    (it[ALIASES_KEY] as? Collection<Map<String, String>>)?.forEach {
+                        if (it.containsKey(FORMAT_KEY) &&
+                            it[FORMAT_KEY] == format
+                        ) {
+                            alias = it[ALIAS_KEY].toString()
                         }
                     }
                 }
-
-                return alias
             }
 
-            val originalResponseData = unwrapResponseBody(this)
+            return alias
+        }
+
+        private fun mapTokenizationResponse(
+            response: Response,
+            originalData: MutableList<Map<String, Any>>
+        ): Response {
+
+            val originalResponseData = unwrapResponseBody(response)
 
             val responseBody = originalData.map {
                 val requiredTokenization: Boolean = (it[TOKENIZATION_REQUIRED_KEY] as? Boolean)
@@ -299,16 +300,18 @@ internal class OkHttpClient(
             }.toMap()
                 .toJSON()
                 .toString()
-                .toResponseBody(this.body?.contentType())
+                .toResponseBody(response.body?.contentType())
 
-            return Response.Builder()
-                .request(request)
-                .body(responseBody)
-                .code(code)
-                .protocol(protocol)
-                .message(message)
-                .headers(headers)
-                .build()
+            return with(response) {
+                Response.Builder()
+                    .request(request)
+                    .body(responseBody)
+                    .code(code)
+                    .protocol(protocol)
+                    .message(message)
+                    .headers(headers)
+                    .build()
+            }
         }
     }
 

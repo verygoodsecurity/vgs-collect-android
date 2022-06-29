@@ -420,7 +420,7 @@ class VGSCollect {
 
     private fun prepareDataForTokenization(): MutableMap<String, Any> {
         return storage.getFieldsStorage().getItems().map {
-            it.mapTokenizationMutableMap()
+            it.toTokenizationMap()
         }.run {
             mutableMapOf(DATA_KEY to this)
         }
