@@ -29,7 +29,7 @@ dependencyResolutionManagement {
             bundle('bouncer', ['bouncer-scan-payment-full', 'bouncer-cardscan-ui', 'bouncer-tensorflow-lite'])
         }
         debugLibs {
-            library('leakcanary', 'com.squareup.leakcanary:leakcanary-android:2.8.1')
+            library('leakcanary', 'com.squareup.leakcanary:leakcanary-android:2.9.1')
         }
         testLibs {
             library('junit', 'junit:junit:4.13.2')
