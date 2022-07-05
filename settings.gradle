@@ -35,9 +35,9 @@ dependencyResolutionManagement {
             library('junit', 'junit:junit:4.13.2')
             library('mockito-core', 'org.mockito:mockito-core:4.6.1')
             library('mockito-inline', 'org.mockito:mockito-inline:4.6.1')
-            library('robolectric', 'org.robolectric:robolectric:4.7.3')
+            library('robolectric', 'org.robolectric:robolectric:4.8.1')
             library('mockk', 'io.mockk:mockk:1.12.4')
-            library('json', 'org.json:json:20211205')
+            library('json', 'org.json:json:20220320')
             library('jsonassert', 'org.skyscreamer:jsonassert:1.5.0')
         }
         androidTestLibs {

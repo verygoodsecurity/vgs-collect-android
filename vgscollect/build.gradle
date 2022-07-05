@@ -10,7 +10,7 @@ android {
     compileSdkVersion 32
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 32
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
