@@ -247,7 +247,6 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @return the end padding in pixels
      */
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingEnd(): Int {
         return if (isAttachPermitted) {
             super.getPaddingEnd()
@@ -290,7 +289,6 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @return the start padding in pixels
      */
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingStart(): Int {
         return if (isAttachPermitted) {
             super.getPaddingStart()
