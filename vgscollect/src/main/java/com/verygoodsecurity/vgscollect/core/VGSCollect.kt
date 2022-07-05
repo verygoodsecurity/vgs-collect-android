@@ -74,6 +74,7 @@ class VGSCollect {
                     response.localizeMessage
                 )
                 is VGSResponse.SuccessResponse -> responseEvent(response.code)
+                else -> return
             }
         }
     }
