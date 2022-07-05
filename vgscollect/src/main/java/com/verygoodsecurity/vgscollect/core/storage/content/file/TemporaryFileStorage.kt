@@ -4,10 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.OpenableColumns
-import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import androidx.core.net.toUri
 import com.verygoodsecurity.vgscollect.app.FilePickerActivity
@@ -29,7 +27,6 @@ internal class TemporaryFileStorage(
     private var encodedFile: String? = null
 
     //region VGSFileProvider
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun resize(size: Int) {
         encodedFileMaxSize = size.toLong()
     }

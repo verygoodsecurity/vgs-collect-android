@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscollect.widget
 
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
 import android.util.TypedValue
 import com.google.android.material.textfield.TextInputLayout
@@ -162,13 +161,8 @@ class VGSTextInputLayout @JvmOverloads constructor(
     }
 
     private fun getThemeAccentColor(context: Context): Int {
-        val colorAccentAttr: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            android.R.attr.colorAccent
-        } else {
-            context.resources.getIdentifier("colorAccent", "attr", context.packageName)
-        }
         val outValue = TypedValue()
-        context.theme.resolveAttribute(colorAccentAttr, outValue, true)
+        context.theme.resolveAttribute(android.R.attr.colorAccent, outValue, true)
         return outValue.data
     }
 }
