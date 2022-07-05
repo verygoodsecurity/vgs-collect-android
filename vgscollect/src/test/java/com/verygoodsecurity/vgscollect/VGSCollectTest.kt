@@ -56,34 +56,34 @@ class VGSCollectTest {
         applyResponseListener()
         applyResponseListener()
 
-        assertEquals(3, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(2, collect.getResponseListeners().size)
     }
 
     @Test
     fun test_remove_response_listener() {
         val listener1 = mock(VgsCollectResponseListener::class.java)
         collect.addOnResponseListeners(listener1)
-        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(1, collect.getResponseListeners().size)
 
         val listener2 = mock(VgsCollectResponseListener::class.java)
         collect.removeOnResponseListener(listener2)
-        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(1, collect.getResponseListeners().size)
 
         collect.removeOnResponseListener(listener1)
-        assertEquals(1, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(0, collect.getResponseListeners().size)
     }
 
     @Test
     fun test_remove_all_response_listeners() {
         val listener1 = mock(VgsCollectResponseListener::class.java)
         collect.addOnResponseListeners(listener1)
-        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(1, collect.getResponseListeners().size) // + analytic listener
         val listener2 = mock(VgsCollectResponseListener::class.java)
         collect.addOnResponseListeners(listener2)
-        assertEquals(3, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
 
         collect.clearResponseListeners()
-        assertEquals(1, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(0, collect.getResponseListeners().size) // + analytic listener
     }
 
     @Test
