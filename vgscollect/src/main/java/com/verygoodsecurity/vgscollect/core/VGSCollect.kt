@@ -60,7 +60,7 @@ class VGSCollect {
             error.toVGSResponse(context).also { r ->
                 notifyAllListeners(r, false)
                 VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
-                submitEvent(false, code = r.errorCode)
+                submitEvent(false, false, code = r.errorCode)
             }
         }
     }
@@ -361,6 +361,7 @@ class VGSCollect {
 
                 submitEvent(
                     true,
+                    request.requiresTokenization,
                     !request.fileIgnore && storage.getFileStorage().getItems().isNotEmpty(),
                     !request.fieldsIgnore && storage.getFieldsStorage().getItems().isNotEmpty(),
                     request.customHeader.isNotEmpty(),
@@ -414,7 +415,7 @@ class VGSCollect {
                 VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context, it.fieldName).also { r ->
                     notifyAllListeners(r, requiresTokenization)
                     VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
-                    submitEvent(false, code = r.errorCode)
+                    submitEvent(false, requiresTokenization, code = r.errorCode)
                 }
 
                 isValid = false
@@ -596,6 +597,7 @@ class VGSCollect {
 
     private fun submitEvent(
         isSuccess: Boolean,
+        requiresTokenization: Boolean,
         hasFiles: Boolean = false,
         hasFields: Boolean = false,
         hasCustomHeader: Boolean = false,
@@ -607,9 +609,8 @@ class VGSCollect {
         if (code.isHttpStatusCode()) {
             val m = with(mutableMapOf<String, Any>()) {
                 put("status", isSuccess.toAnalyticStatus())
-
                 put("statusCode", code)
-
+                put("upstream", if (requiresTokenization) "tokenization" else "custom")
                 val arr = with(mutableListOf<String>()) {
                     if (hasCustomHostname) add("custom_hostname")
                     if (hasFiles) add("file")
