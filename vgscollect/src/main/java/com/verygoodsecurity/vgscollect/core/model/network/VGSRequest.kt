@@ -14,6 +14,7 @@ import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OU
  * @param customData The Map to save for request.
  * @param fieldsIgnore contains true if need to skip data from input fields.
  * @param fileIgnore contains true if need to skip files.
+ * @param requestTimeoutInterval Specifies request timeout interval in milliseconds.
  * @param routeId Defines route id for submitting data.
  */
 data class VGSRequest internal constructor(

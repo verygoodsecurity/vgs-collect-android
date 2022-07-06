@@ -8,7 +8,12 @@ import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OU
 import com.verygoodsecurity.vgscollect.util.extension.TOKENIZATION_PATH
 
 /**
- * todo: add description
+ * Class to collect data before tokenization.
+ *
+ * @param fieldsIgnore contains true if need to skip data from input fields.
+ * @param fileIgnore contains true if need to skip files.
+ * @param requestTimeoutInterval Specifies request timeout interval in milliseconds.
+ * @param routeId Defines route id for submitting data.
  */
 data class VGSTokenizationRequest internal constructor(
     override val method: HTTPMethod,
@@ -25,7 +30,8 @@ data class VGSTokenizationRequest internal constructor(
 ) : VGSBaseRequest() {
 
     /**
-     * todo: add description
+     * Creates a builder for a request that uses to send data to VGS server.
+     * dialog theme.
      */
     class VGSRequestBuilder {
         private var method: HTTPMethod = HTTPMethod.POST
