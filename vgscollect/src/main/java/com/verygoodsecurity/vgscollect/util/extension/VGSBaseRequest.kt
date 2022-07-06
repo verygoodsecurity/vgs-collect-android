@@ -22,12 +22,27 @@ internal fun VGSBaseRequest.toAnalyticRequest(url: String): NetworkRequest {
 }
 
 internal fun VGSBaseRequest.toNetworkRequest(
-    url: String,
+    host: String,
     requestData: Map<String, Any>? = null,
 ): NetworkRequest {
+    val position = host.indexOf(".")
+    val route = routeId?.replace(" ", "")
+
+    val url = if (position < 0 || route.isNullOrEmpty()) {
+        StringBuilder(host)
+            .append(path)
+            .toString()
+    } else {
+        StringBuilder(host)
+            .insert(position, routeId)
+            .insert(position, "-")
+            .append(path)
+            .toString()
+    }
+
     return NetworkRequest(
         method,
-        url concatWithSlash path,
+        url,
         customHeader,
         requestData?.toJSON()?.toString() ?: customData,
         fieldsIgnore,
