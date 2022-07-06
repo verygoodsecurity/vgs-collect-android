@@ -14,6 +14,7 @@ import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OU
  * @param customData The Map to save for request.
  * @param fieldsIgnore contains true if need to skip data from input fields.
  * @param fileIgnore contains true if need to skip files.
+ * @param routeId Defines route id for submitting data.
  */
 data class VGSRequest internal constructor(
     override val method: HTTPMethod,
@@ -44,6 +45,7 @@ data class VGSRequest internal constructor(
         private var fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy =
             VGSCollectFieldNameMappingPolicy.NESTED_JSON
         private var requestTimeoutInterval: Long = DEFAULT_CONNECTION_TIME_OUT
+        private var routeId: String? = null
 
         /**
          * It collect custom data which will be send to the server.
@@ -140,6 +142,16 @@ data class VGSRequest internal constructor(
             return this
         }
 
+        /**
+         * Defines route id for submitting data.
+         *
+         * @param routeId A vault route id
+         */
+        fun setRouteId(routeId: String): VGSRequestBuilder {
+            this.routeId = routeId
+            return this
+        }
+
         internal fun setFormat(format: VGSHttpBodyFormat): VGSRequestBuilder {
             this.format = format
             return this
@@ -160,7 +172,8 @@ data class VGSRequest internal constructor(
                 fileIgnore,
                 format,
                 fieldNameMappingPolicy,
-                requestTimeoutInterval
+                requestTimeoutInterval,
+                routeId
             )
         }
     }

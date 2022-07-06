@@ -7,7 +7,10 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.util.extension.TOKENIZATION_PATH
 
-internal data class VGSTokenizationRequest internal constructor(
+/**
+ * todo: add description
+ */
+data class VGSTokenizationRequest internal constructor(
     override val method: HTTPMethod,
     override val path: String,
     override val customHeader: Map<String, String>,
@@ -21,6 +24,9 @@ internal data class VGSTokenizationRequest internal constructor(
     override val requiresTokenization: Boolean = true
 ) : VGSBaseRequest() {
 
+    /**
+     * todo: add description
+     */
     class VGSRequestBuilder {
         private var method: HTTPMethod = HTTPMethod.POST
         private var path: String = TOKENIZATION_PATH
@@ -38,8 +44,6 @@ internal data class VGSTokenizationRequest internal constructor(
          * Ignore input's data in a request to the server.
          *
          * @return current builder instance
-         *
-         * @since 1.0.10
          */
         fun ignoreFields(): VGSRequestBuilder {
             fieldsIgnore = true
@@ -50,7 +54,6 @@ internal data class VGSTokenizationRequest internal constructor(
          * Ignore files in a request to the server.
          *
          * @return current builder instance
-         * @since 1.0.10
          */
         fun ignoreFiles(): VGSRequestBuilder {
             fileIgnore = true
@@ -98,7 +101,7 @@ internal data class VGSTokenizationRequest internal constructor(
                 format,
                 fieldNameMappingPolicy,
                 requestTimeoutInterval,
-                null
+                routeId
             )
         }
     }
