@@ -26,9 +26,8 @@ internal fun VGSBaseRequest.toNetworkRequest(
     requestData: Map<String, Any>? = null,
 ): NetworkRequest {
     val position = host.indexOf(".")
-    val route = routeId?.replace(" ", "")
 
-    val url = if (position < 0 || route.isNullOrEmpty()) {
+    val url = if (position < 0 || routeId.isNullOrEmpty()) {
         StringBuilder(host)
             .append(path)
             .toString()

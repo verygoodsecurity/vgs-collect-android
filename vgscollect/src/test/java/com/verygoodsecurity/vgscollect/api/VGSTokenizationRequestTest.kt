@@ -43,6 +43,17 @@ class VGSTokenizationRequestTest {
         Assert.assertEquals(exampleRequest, r)
     }
 
+    @Test
+    fun test_create_request_with_route_id() {
+        val ROUTE_ID = "route-id"
+        val r = VGSTokenizationRequest.VGSRequestBuilder()
+            .setRouteId(ROUTE_ID)
+            .build()
+
+        Assert.assertEquals(ROUTE_ID, r.routeId)
+    }
+
+
     companion object {
         private const val TOKENIZATION_PATH = "/tokens"
     }

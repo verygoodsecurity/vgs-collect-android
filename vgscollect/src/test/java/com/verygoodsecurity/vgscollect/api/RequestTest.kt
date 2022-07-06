@@ -41,6 +41,22 @@ class RequestTest {
     }
 
     @Test
+    fun test_create_request_with_route_id() {
+        val ROUTE_ID = "route-id"
+        val METHOD = HTTPMethod.POST
+        val PATH = "/some/path"
+        val r = VGSRequest.VGSRequestBuilder()
+            .setMethod(METHOD)
+            .setPath(PATH)
+            .setRouteId(ROUTE_ID)
+            .build()
+
+        assertEquals(PATH, r.path)
+        assertEquals(METHOD, r.method)
+        assertEquals(ROUTE_ID, r.routeId)
+    }
+
+    @Test
     fun test_create_request_without_custom_data() {
         val METHOD = HTTPMethod.POST
         val PATH = "/some/path"
