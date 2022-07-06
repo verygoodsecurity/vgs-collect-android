@@ -38,7 +38,7 @@ dependencyResolutionManagement {
             library('robolectric', 'org.robolectric:robolectric:4.8.1')
             library('mockk', 'io.mockk:mockk:1.12.4')
             library('json', 'org.json:json:20220320')
-            library('jsonassert', 'org.skyscreamer:jsonassert:1.5.0')
+            library('jsonassert', 'org.skyscreamer:jsonassert:1.5.1')
         }
         androidTestLibs {
             library('androidx-runner', 'androidx.test:runner:1.4.0')
