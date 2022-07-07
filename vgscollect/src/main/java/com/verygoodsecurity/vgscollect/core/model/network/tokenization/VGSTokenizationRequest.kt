@@ -1,23 +1,21 @@
-package com.verygoodsecurity.vgscollect.core.model.network
+package com.verygoodsecurity.vgscollect.core.model.network.tokenization
 
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
+import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
+import com.verygoodsecurity.vgscollect.util.extension.TOKENIZATION_PATH
 
 /**
- * Class to collect data before submit.
+ * Class to collect data before tokenization.
  *
- * @param method HTTP method
- * @param path path for a request
- * @param customHeader The headers to save for request.
- * @param customData The Map to save for request.
  * @param fieldsIgnore contains true if need to skip data from input fields.
  * @param fileIgnore contains true if need to skip files.
  * @param requestTimeoutInterval Specifies request timeout interval in milliseconds.
  * @param routeId Defines route id for submitting data.
  */
-data class VGSRequest internal constructor(
+data class VGSTokenizationRequest internal constructor(
     override val method: HTTPMethod,
     override val path: String,
     override val customHeader: Map<String, String>,
@@ -27,8 +25,8 @@ data class VGSRequest internal constructor(
     override val format: VGSHttpBodyFormat,
     override val fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy,
     override val requestTimeoutInterval: Long,
-    override val routeId: String? = null,
-    override val requiresTokenization: Boolean = false
+    override val routeId: String?,
+    override val requiresTokenization: Boolean = true
 ) : VGSBaseRequest() {
 
     /**
@@ -37,75 +35,21 @@ data class VGSRequest internal constructor(
      */
     class VGSRequestBuilder {
         private var method: HTTPMethod = HTTPMethod.POST
-        private var path: String = ""
+        private var path: String = TOKENIZATION_PATH
         private val customHeader: HashMap<String, String> = HashMap()
         private val customData: HashMap<String, Any> = HashMap()
         private var fieldsIgnore: Boolean = false
         private var format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
         private var fileIgnore: Boolean = false
+        private var routeId: String? = null
         private var fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy =
             VGSCollectFieldNameMappingPolicy.NESTED_JSON
         private var requestTimeoutInterval: Long = DEFAULT_CONNECTION_TIME_OUT
-        private var routeId: String? = null
-
-        /**
-         * It collect custom data which will be send to the server.
-         *
-         * @param customData The Map to save for request.
-         * @return current builder instance
-         */
-        fun setCustomData(customData: Map<String, Any>): VGSRequestBuilder {
-            this.customData.putAll(customData)
-            return this
-        }
-
-        /**
-         * It collect headers which will be send to the server.
-         *
-         * @param customHeader The headers to save for request.
-         * @return current builder instance
-         */
-        fun setCustomHeader(customHeader: Map<String, String>): VGSRequestBuilder {
-            this.customHeader.putAll(customHeader)
-            return this
-        }
-
-        /**
-         * Set the path using for a request to the server.
-         *
-         * @param path path for a request
-         * @return current builder instance
-         */
-        fun setPath(path: String): VGSRequestBuilder {
-            this.path = path.run {
-                val p = when {
-                    length == 0 -> "/"
-                    first() == '/' -> this
-                    else -> "/$this"
-                }
-                p
-            }
-            return this
-        }
-
-
-        /**
-         * Set the HTTP method using for a request to the server.
-         *
-         * @param method HTTP method
-         * @return current builder instance
-         */
-        fun setMethod(method: HTTPMethod): VGSRequestBuilder {
-            this.method = method
-            return this
-        }
 
         /**
          * Ignore input's data in a request to the server.
          *
          * @return current builder instance
-         *
-         * @since 1.0.10
          */
         fun ignoreFields(): VGSRequestBuilder {
             fieldsIgnore = true
@@ -113,33 +57,12 @@ data class VGSRequest internal constructor(
         }
 
         /**
-         * Defines how to map fieldNames. Default is `VGSCollectFieldNameMappingPolicy.NestedJson`.
-         *
-         * @return current builder instance
-         */
-        fun setFieldNameMappingPolicy(policy: VGSCollectFieldNameMappingPolicy): VGSRequestBuilder {
-            this.fieldNameMappingPolicy = policy
-            return this
-        }
-
-        /**
          * Ignore files in a request to the server.
          *
          * @return current builder instance
-         * @since 1.0.10
          */
         fun ignoreFiles(): VGSRequestBuilder {
             fileIgnore = true
-            return this
-        }
-
-        /**
-         * Specifies request timeout interval in milliseconds.
-         *
-         * @param timeout interval in milliseconds.
-         */
-        fun setRequestTimeoutInterval(timeout: Long): VGSRequestBuilder {
-            this.requestTimeoutInterval = timeout
             return this
         }
 
@@ -153,6 +76,16 @@ data class VGSRequest internal constructor(
             return this
         }
 
+        /**
+         * Specifies request timeout interval in milliseconds.
+         *
+         * @param timeout interval in milliseconds.
+         */
+        fun setRequestTimeoutInterval(timeout: Long): VGSRequestBuilder {
+            this.requestTimeoutInterval = timeout
+            return this
+        }
+
         internal fun setFormat(format: VGSHttpBodyFormat): VGSRequestBuilder {
             this.format = format
             return this
@@ -163,8 +96,8 @@ data class VGSRequest internal constructor(
          *
          * @return VGSRequest instance
          */
-        fun build(): VGSRequest {
-            return VGSRequest(
+        fun build(): VGSTokenizationRequest {
+            return VGSTokenizationRequest(
                 method,
                 path,
                 customHeader,

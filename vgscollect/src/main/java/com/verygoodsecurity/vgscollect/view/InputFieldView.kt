@@ -32,6 +32,8 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
@@ -245,7 +247,6 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @return the end padding in pixels
      */
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingEnd(): Int {
         return if (isAttachPermitted) {
             super.getPaddingEnd()
@@ -288,7 +289,6 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @return the start padding in pixels
      */
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingStart(): Int {
         return if (isAttachPermitted) {
             super.getPaddingStart()
@@ -758,6 +758,18 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     internal fun getFontFamily(): Typeface? {
         return fontFamily
+    }
+
+    protected fun applyStorageType(storage: VGSVaultStorageType) {
+        inputField.vaultStorage = storage
+    }
+
+    protected fun applyAliasFormat(format: VGSVaultAliasFormat) {
+        inputField.vaultAliasFormat = format
+    }
+
+    protected fun enableTokenization(isEnabled: Boolean) {
+        inputField.isEnabledTokenization = isEnabled
     }
 
     protected fun hasChildren(): Boolean = childCount > 0

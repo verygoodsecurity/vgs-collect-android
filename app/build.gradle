@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.verygoodsecurity.demoapp"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 32
         versionCode 1
         versionName "1.0"
@@ -57,23 +57,23 @@ dependencies {
     implementation project(":vgscollect")
     implementation project(":vgscollect-cardio")
 
-    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
-    implementation "androidx.core:core-ktx:${versions.core_ktx}"
-    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
-    implementation "com.google.android.material:material:${versions.material}"
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.multidex
 
-    implementation "androidx.multidex:multidex:${versions.multidex}"
+    implementation libs.material
 
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:${versions.leakcanary}"
+    debugImplementation debugLibs.leakcanary
 
-    testImplementation "junit:junit:${testVersions.junit}"
+    testImplementation testLibs.junit
 
-    androidTestImplementation "androidx.test:runner:${testVersions.test_runner}"
-    androidTestImplementation "androidx.test:rules:${testVersions.test_rules}"
-    androidTestImplementation "androidx.test.ext:junit:${testVersions.junit_ext}"
-    androidTestImplementation "androidx.test.ext:junit-ktx:${testVersions.junit_ext_ktx}"
-    androidTestImplementation "androidx.test.uiautomator:uiautomator:${testVersions.uiautomator}"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:${testVersions.espresso_intents}"
-    androidTestImplementation "androidx.test.espresso:espresso-core:${testVersions.espresso_core}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:${testVersions.espresso_contrib}"
+    androidTestImplementation androidTestLibs.androidx.runner
+    androidTestImplementation androidTestLibs.androidx.rules
+    androidTestImplementation androidTestLibs.androidx.junit.ext
+    androidTestImplementation androidTestLibs.androidx.junit.ext.ktx
+    androidTestImplementation androidTestLibs.androidx.uiautomator
+    androidTestImplementation androidTestLibs.androidx.espresso.core
+    androidTestImplementation androidTestLibs.androidx.espresso.intents
+    androidTestImplementation androidTestLibs.espresso.contrib
 }

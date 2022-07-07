@@ -10,7 +10,7 @@ android {
     compileSdkVersion 32
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 32
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
@@ -56,25 +56,25 @@ android {
 }
 
 dependencies {
-    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
-    implementation "androidx.core:core-ktx:${versions.core_ktx}"
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
 
-    api "com.google.android.material:material:${versions.material}"
-    api "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+    api libs.material
+    api libs.okhttp
 
-    testImplementation "junit:junit:${testVersions.junit}"
-    testImplementation "org.mockito:mockito-core:${testVersions.mockito_core}"
-    testImplementation "org.mockito:mockito-inline:${testVersions.mockito_inline}"
-    testImplementation "org.robolectric:robolectric:${testVersions.robolectric}"
-    testImplementation "io.mockk:mockk:${testVersions.mockk}"
-    testImplementation "org.json:json:${testVersions.json}"
-    testImplementation "org.skyscreamer:jsonassert:${testVersions.jsonassert}"
+    testImplementation testLibs.junit
+    testImplementation testLibs.mockito.core
+    testImplementation testLibs.mockito.inline
+    testImplementation testLibs.robolectric
+    testImplementation testLibs.mockk
+    testImplementation testLibs.json
+    testImplementation testLibs.jsonassert
 
-    androidTestImplementation "androidx.test:runner:${testVersions.runner}"
-    androidTestImplementation "androidx.test.ext:junit:${testVersions.junit_ext}"
-    androidTestImplementation "androidx.test.espresso:espresso-core:${testVersions.espresso_core}"
+    androidTestImplementation androidTestLibs.androidx.runner
+    androidTestImplementation androidTestLibs.androidx.junit.ext
+    androidTestImplementation androidTestLibs.androidx.espresso.core
 
-    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:${versions.dokka_base}")
+    dokkaHtmlPlugin(libs.dokka.base)
 }
 
 tasks.withType(Javadoc).all {

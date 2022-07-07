@@ -1,9 +1,8 @@
 package com.verygoodsecurity.vgscollect.utils.extension
 
-import com.verygoodsecurity.vgscollect.util.extension.ArrayMergePolicy
+import com.verygoodsecurity.vgscollect.core.model.state.ArrayMergePolicy
 import com.verygoodsecurity.vgscollect.util.extension.deepMerge
 import com.verygoodsecurity.vgscollect.util.extension.putIfAbsentCompat
-import com.verygoodsecurity.vgscollect.util.extension.toJSON
 import org.junit.Assert.*
 import org.junit.Test
 

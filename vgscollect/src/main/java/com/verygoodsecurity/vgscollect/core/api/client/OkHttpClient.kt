@@ -6,10 +6,16 @@ import com.verygoodsecurity.vgscollect.core.api.client.extension.*
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
+import com.verygoodsecurity.vgscollect.core.model.toMutableMap
+import com.verygoodsecurity.vgscollect.util.extension.*
+import com.verygoodsecurity.vgscollect.util.extension.DATA_KEY
+import com.verygoodsecurity.vgscollect.util.extension.FORMAT_KEY
+import com.verygoodsecurity.vgscollect.util.extension.VALUE_KEY
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
-import okio.Buffer
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import java.io.IOException
 import java.io.InterruptedIOException
 import java.util.*
@@ -22,11 +28,13 @@ internal class OkHttpClient(
     private val tempStore: VgsApiTemporaryStorage
 ) : ApiClient {
 
-    private val hostInterceptor: HostInterceptor = HostInterceptor()
+    private val hostInterceptor = HostInterceptor()
+    private val tokenizationInterceptor = TokenizationInterceptor()
 
     private val client: OkHttpClient by lazy {
         OkHttpClient().newBuilder()
             .addInterceptor(hostInterceptor)
+            .addInterceptor(tokenizationInterceptor)
             .dispatcher(Dispatcher(Executors.newSingleThreadExecutor())).also {
                 if (isLogsVisible) it.addInterceptor(HttpLoggingInterceptor())
             }
@@ -42,6 +50,8 @@ internal class OkHttpClient(
             callback?.invoke(NetworkResponse(error = VGSError.URL_NOT_VALID))
             return
         }
+
+        tokenizationInterceptor.requiresTokenization = request.requiresTokenization
 
         val okHttpRequest = buildRequest(
             request.url,
@@ -59,26 +69,26 @@ internal class OkHttpClient(
                 .build()
                 .newCall(okHttpRequest).enqueue(object : Callback {
 
-                override fun onFailure(call: Call, e: IOException) {
-                    logException(e)
-                    if (e is InterruptedIOException || e is TimeoutException) {
-                        callback?.invoke(NetworkResponse(error = VGSError.TIME_OUT))
-                    } else {
-                        callback?.invoke(NetworkResponse(message = e.message))
+                    override fun onFailure(call: Call, e: IOException) {
+                        logException(e)
+                        if (e is InterruptedIOException || e is TimeoutException) {
+                            callback?.invoke(NetworkResponse(error = VGSError.TIME_OUT))
+                        } else {
+                            callback?.invoke(NetworkResponse(message = e.message))
+                        }
                     }
-                }
 
-                override fun onResponse(call: Call, response: Response) {
-                    callback?.invoke(
-                        NetworkResponse(
-                            response.isSuccessful,
-                            response.body?.string(),
-                            response.code,
-                            response.message
+                    override fun onResponse(call: Call, response: Response) {
+                        callback?.invoke(
+                            NetworkResponse(
+                                response.isSuccessful,
+                                response.body?.string(),
+                                response.code,
+                                response.message
+                            )
                         )
-                    )
-                }
-            })
+                    }
+                })
         } catch (e: Exception) {
             logException(e)
             callback?.invoke(NetworkResponse(message = e.message))
@@ -176,6 +186,135 @@ internal class OkHttpClient(
         }
     }
 
+    private class TokenizationInterceptor : Interceptor {
+
+        var requiresTokenization: Boolean = false
+
+        override fun intercept(chain: Interceptor.Chain): Response {
+            val originalRequest = chain.request()
+
+            return if (requiresTokenization) {
+                val originalDataMap = unwrapRequestBody(originalRequest.body)
+                val request = mapTokenizationRequest(originalRequest, originalDataMap)
+
+                val response = chain.proceed(request)
+                mapTokenizationResponse(response, originalDataMap)
+            } else {
+                chain.proceed(originalRequest)
+            }
+        }
+
+        private fun mapTokenizationRequest(
+            request: Request,
+            data: MutableList<Map<String, Any>>
+        ): Request {
+            val body = data.filter {
+                (it[TOKENIZATION_REQUIRED_KEY] as? Boolean) ?: false
+            }.run {
+                mutableMapOf(DATA_KEY to this)
+            }.toJSON()
+                .toString()
+                .toRequestBody(
+                    request.body?.contentType()
+                )
+
+            return with(request) {
+                newBuilder()
+                    .url(url)
+                    .headers(headers)
+                    .method(method, body)
+                    .build()
+            }
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        private fun unwrapRequestBody(body: RequestBody?): MutableList<Map<String, Any>> {
+            return body?.bodyToString()
+                ?.toMutableMap()
+                ?.takeIf {
+                    it[DATA_KEY] is MutableList<*>
+                }?.run {
+                    get(DATA_KEY) as MutableList<Map<String, Any>>
+                } ?: mutableListOf()
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        fun unwrapResponseBody(request: Response): Collection<Map<String, Any>> {
+            return request.body?.string()?.toMutableMap()
+                ?.takeIf {
+                    it[DATA_KEY] is Collection<*>
+                }?.run {
+                    get(DATA_KEY) as Collection<Map<String, Any>>
+                } ?: mutableListOf()
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        fun getAlias(
+            data: Collection<Map<String, Any>>,
+            originalValue: String?,
+            format: String?,
+        ): String {
+            var alias = ""
+
+            data.filter {
+                it.containsKey(VALUE_KEY) &&
+                        it[VALUE_KEY] == originalValue &&
+                        it.containsKey(ALIASES_KEY)
+            }.forEach {
+                val tokenizedValue = it[VALUE_KEY]
+                if (originalValue == tokenizedValue) {
+                    (it[ALIASES_KEY] as? Collection<Map<String, String>>)?.forEach {
+                        if (it.containsKey(FORMAT_KEY) &&
+                            it[FORMAT_KEY] == format
+                        ) {
+                            alias = it[ALIAS_KEY].toString()
+                        }
+                    }
+                }
+            }
+
+            return alias
+        }
+
+        private fun mapTokenizationResponse(
+            response: Response,
+            originalData: MutableList<Map<String, Any>>
+        ): Response {
+
+            val originalResponseData = unwrapResponseBody(response)
+
+            val responseBody = originalData.map {
+                val requiredTokenization: Boolean = (it[TOKENIZATION_REQUIRED_KEY] as? Boolean)
+                    ?: false
+                val format = it[FORMAT_KEY].toString()
+                val originalValue = it[VALUE_KEY].toString()
+                val fieldName = it[FIELD_NAME_KEY].toString()
+
+                val alias = if (requiredTokenization) {
+                    getAlias(originalResponseData, originalValue, format)
+                } else {
+                    originalValue
+                }
+
+                fieldName to alias
+            }.toMap()
+                .toJSON()
+                .toString()
+                .toResponseBody(response.body?.contentType())
+
+            return with(response) {
+                Response.Builder()
+                    .request(request)
+                    .body(responseBody)
+                    .code(code)
+                    .protocol(protocol)
+                    .message(message)
+                    .headers(headers)
+                    .build()
+            }
+        }
+    }
+
     private class HttpLoggingInterceptor : Interceptor {
 
         override fun intercept(chain: Interceptor.Chain): Response {
@@ -186,7 +325,7 @@ internal class OkHttpClient(
                     it.url.toString(),
                     it.method,
                     it.headers.toMap(),
-                    getBody(it.body),
+                    it.body.bodyToString(),
                     it::class.java.simpleName
                 )
             }).also {
@@ -198,16 +337,6 @@ internal class OkHttpClient(
                     it.headers.toMap(),
                     it::class.java.simpleName
                 )
-            }
-        }
-
-        private fun getBody(request: RequestBody?): String {
-            return try {
-                val buffer = Buffer()
-                request?.writeTo(buffer)
-                buffer.readUtf8()
-            } catch (e: IOException) {
-                ""
             }
         }
     }

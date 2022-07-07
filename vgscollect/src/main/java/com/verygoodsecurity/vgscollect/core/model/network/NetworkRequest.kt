@@ -11,5 +11,6 @@ data class NetworkRequest(
     val fieldsIgnore: Boolean,
     val fileIgnore: Boolean,
     val format: VGSHttpBodyFormat,
-    val requestTimeoutInterval: Long
+    val requestTimeoutInterval: Long,
+    val requiresTokenization: Boolean
 )

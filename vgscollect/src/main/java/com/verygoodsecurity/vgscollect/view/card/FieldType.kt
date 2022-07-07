@@ -6,7 +6,7 @@ package com.verygoodsecurity.vgscollect.view.card
  * @since 1.0.1
  */
 enum class FieldType(
-    val raw:String
+    val raw: String
 ) {
 
     /**
@@ -42,8 +42,8 @@ enum class FieldType(
 
 }
 
-fun FieldType.getAnalyticName():String {
-    return when(this) {
+internal fun FieldType.getAnalyticName(): String {
+    return when (this) {
         FieldType.CARD_NUMBER -> "card-number"
         FieldType.CVC -> "card-security-code"
         FieldType.CARD_EXPIRATION_DATE -> "card-expiration-date"
