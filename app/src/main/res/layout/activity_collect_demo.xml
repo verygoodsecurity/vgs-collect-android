@@ -13,10 +13,10 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/default_margin"
-            android:paddingTop="@dimen/half_default_margin"
-            android:paddingEnd="@dimen/default_margin"
-            android:paddingBottom="@dimen/default_margin">
+            android:paddingStart="@dimen/margin_padding_material_medium"
+            android:paddingTop="@dimen/margin_padding_material_small"
+            android:paddingEnd="@dimen/margin_padding_material_medium"
+            android:paddingBottom="@dimen/margin_padding_material_medium">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -26,16 +26,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:paddingStart="@dimen/default_margin"
-                    android:paddingTop="@dimen/default_margin"
-                    android:paddingEnd="@dimen/default_margin">
+                    android:paddingStart="@dimen/margin_padding_material_medium"
+                    android:paddingTop="@dimen/margin_padding_material_medium"
+                    android:paddingEnd="@dimen/margin_padding_material_medium">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/default_margin"
+                        android:layout_marginBottom="@dimen/margin_padding_material_medium"
                         android:drawableStart="@drawable/ic_cards"
-                        android:drawablePadding="@dimen/half_default_margin"
+                        android:drawablePadding="@dimen/margin_padding_material_small"
                         android:text="@string/collect_activity_cards_title"
                         android:textColor="@color/title_color"
                         android:textSize="@dimen/collect_activity_cards_title_text_size" />
@@ -47,7 +47,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
-                        app:cardCornerRadius="@dimen/half_default_margin">
+                        app:cardCornerRadius="@dimen/margin_padding_material_small">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -74,7 +74,7 @@
 
                                     <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
                                         android:id="@+id/cardNumberField"
-                                        style="@style/AppTheme.PaymentField"
+                                        style="@style/EditText"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:nextFocusDown="@+id/cardHolderField"
@@ -106,7 +106,7 @@
 
                                     <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
                                         android:id="@+id/cardHolderField"
-                                        style="@style/AppTheme.PaymentField"
+                                        style="@style/EditText"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:nextFocusDown="@+id/cardExpDateField"
@@ -135,7 +135,7 @@
 
                                     <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
                                         android:id="@+id/cardExpDateField"
-                                        style="@style/AppTheme.PaymentField"
+                                        style="@style/EditText"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:nextFocusDown="@+id/cardCVCField"
@@ -160,7 +160,7 @@
 
                                     <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
                                         android:id="@+id/cardCVCField"
-                                        style="@style/AppTheme.PaymentField"
+                                        style="@style/EditText"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         app:fieldName="card_data.cardCvc"
@@ -209,7 +209,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/default_margin"
+                        android:layout_marginTop="@dimen/margin_padding_material_medium"
                         android:gravity="end"
                         android:orientation="horizontal">
 
@@ -228,19 +228,19 @@
                             android:id="@+id/submitBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/default_margin"
+                            android:layout_marginEnd="@dimen/margin_padding_material_medium"
                             android:text="@string/collect_activity_submit_btn"
                             android:textColor="@android:color/white"
                             android:textSize="14dp"
                             app:backgroundTint="@color/colorAccent"
-                            app:cornerRadius="@dimen/default_margin" />
+                            app:cornerRadius="@dimen/margin_padding_material_medium" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/attachBtn"
                             style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/default_margin"
+                            android:layout_marginEnd="@dimen/margin_padding_material_medium"
                             android:background="@color/colorAccent"
                             android:text="@string/collect_activity_attach_btn"
                             android:textColor="@color/colorAccent"
@@ -260,7 +260,7 @@
                             <ImageView
                                 android:layout_width="12dp"
                                 android:layout_height="match_parent"
-                                android:layout_marginEnd="@dimen/half_default_margin"
+                                android:layout_marginEnd="@dimen/margin_padding_material_small"
                                 android:clickable="false"
                                 android:src="@drawable/ic_attach_file" />
 
@@ -281,7 +281,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/default_margin"
+                        android:layout_marginTop="@dimen/margin_padding_material_medium"
                         android:gravity="end"
                         android:orientation="horizontal">
 
@@ -310,24 +310,24 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
-                        android:layout_marginTop="@dimen/half_default_margin"
+                        android:layout_marginTop="@dimen/margin_padding_material_small"
                         android:background="@color/colorAccent" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/half_default_margin"
+                        android:layout_marginBottom="@dimen/margin_padding_material_small"
                         android:background="@android:color/white"
                         android:gravity="end"
                         android:orientation="horizontal"
-                        android:padding="@dimen/default_margin">
+                        android:padding="@dimen/margin_padding_material_medium">
 
                         <TextView
                             android:id="@+id/stateContainerView"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:paddingEnd="@dimen/half_default_margin"
+                            android:paddingEnd="@dimen/margin_padding_material_small"
                             android:textColor="#5D6A7A"
                             android:textSize="10dp" />
 

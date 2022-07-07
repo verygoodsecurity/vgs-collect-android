@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_padding_material_medium">
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:hint="@string/user_vault_id_hint"
-        android:layout_margin="@dimen/default_margin"
-        android:foregroundTint="@color/colorAccent">
-        <EditText
+        android:foregroundTint="@color/colorAccent"
+        android:hint="@string/user_vault_id_hint">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/userVault"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:hint="@string/user_endpoint_hint"
-        android:layout_margin="@dimen/default_margin">
-        <EditText
+        android:layout_marginTop="@dimen/margin_padding_material_small"
+        android:hint="@string/user_endpoint_hint">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/userPath"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""/>
+            android:text="" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Spinner
@@ -36,47 +38,163 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/default_margin" />
+        android:layout_marginTop="@dimen/margin_padding_material_medium" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/startWithActivityBtn"
+    <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:textColor="@android:color/white"
-        android:textSize="14dp"
-        android:textAllCaps="false"
-        app:backgroundTint="@color/colorAccent"
-        app:cornerRadius="@dimen/default_margin"
-        android:text="@string/start_with_activity"/>
+        android:layout_marginTop="@dimen/margin_padding_material_medium"
+        android:columnCount="2"
+        android:rowCount="2">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/startWithFragmentBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:textColor="@android:color/white"
-        android:textSize="14dp"
-        android:textAllCaps="false"
-        app:backgroundTint="@color/colorAccent"
-        app:cornerRadius="@dimen/default_margin"
-        android:text="@string/start_with_fragment"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/startWithActivityBtn"
+            android:layout_width="0dp"
+            android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_marginEnd="@dimen/margin_padding_material_micro"
+            android:layout_marginBottom="@dimen/margin_padding_material_micro"
+            android:background="@drawable/bg_custom_btn"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_padding_material_small">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/startWithViewPagerBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:textColor="@android:color/white"
-        android:textSize="14dp"
-        android:textAllCaps="false"
-        app:backgroundTint="@color/colorAccent"
-        app:cornerRadius="@dimen/default_margin"
-        android:text="@string/start_view_pager"/>
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/CustomButtonText.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@string/start_tokenization_activity_title" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/CustomButtonText.Description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_material_micro"
+                android:layout_weight="1"
+                android:text="@string/start_tokenization_activity_description" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/CustomButtonText.Action"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_material_micro"
+                android:text="@string/start_flow" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/startTokenizationBtn"
+            android:layout_width="0dp"
+            android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_marginStart="@dimen/margin_padding_material_micro"
+            android:layout_marginBottom="@dimen/margin_padding_material_micro"
+            android:background="@drawable/bg_custom_btn"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_padding_material_small">
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/CustomButtonText.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@string/start_collect_with_activity_title" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/CustomButtonText.Description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_material_micro"
+                android:layout_weight="1"
+                android:text="@string/start_collect_with_activity_description" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/CustomButtonText.Action"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_material_micro"
+                android:text="@string/start_flow" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/startWithFragmentBtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_row="1"
+            android:layout_rowWeight="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            android:layout_marginEnd="@dimen/margin_padding_material_micro"
+            android:background="@drawable/bg_custom_btn"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_padding_material_small">
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/CustomButtonText.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@string/start_collect_with_fragment_title" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/CustomButtonText.Description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_material_micro"
+                android:layout_weight="1"
+                android:text="@string/start_collect_with_fragment_description" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/CustomButtonText.Action"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_material_micro"
+                android:text="@string/start_flow" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/startWithViewPagerBtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_row="1"
+            android:layout_rowWeight="1"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_marginStart="@dimen/margin_padding_material_micro"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            android:background="@drawable/bg_custom_btn"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_padding_material_small">
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/CustomButtonText.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:text="@string/start_collect_with_view_pager_title" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/CustomButtonText.Description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_material_micro"
+                android:layout_weight="1"
+                android:text="@string/start_collect_with_view_pager_description" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/CustomButtonText.Action"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_padding_material_micro"
+                android:text="@string/start_flow" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </GridLayout>
 </LinearLayout>

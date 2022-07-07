@@ -21,10 +21,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:background="#22000000"
-                android:paddingTop="@dimen/default_margin"
-                android:paddingStart="@dimen/half_default_margin"
-                android:paddingEnd="@dimen/half_default_margin"
-                android:paddingBottom="@dimen/half_default_margin">
+                android:paddingTop="@dimen/margin_padding_material_medium"
+                android:paddingStart="@dimen/margin_padding_material_small"
+                android:paddingEnd="@dimen/margin_padding_material_small"
+                android:paddingBottom="@dimen/margin_padding_material_small">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/previewCard"
@@ -32,9 +32,9 @@
                     android:layout_height="@dimen/card_preview_height"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    app:cardCornerRadius="@dimen/half_default_margin"
+                    app:cardCornerRadius="@dimen/margin_padding_material_small"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="@dimen/half_default_margin">
+                    android:layout_marginBottom="@dimen/margin_padding_material_small">
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -121,10 +121,10 @@
             android:textSize="14dp"
             android:textAllCaps="false"
             app:backgroundTint="@color/colorAccent"
-            app:cornerRadius="@dimen/default_margin"
+            app:cornerRadius="@dimen/margin_padding_material_medium"
             android:text="Back"
             android:visibility="invisible"
-            android:paddingEnd="@dimen/default_margin"
+            android:paddingEnd="@dimen/margin_padding_material_medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -140,9 +140,9 @@
             android:textSize="14dp"
             android:textAllCaps="false"
             app:backgroundTint="@color/colorAccent"
-            app:cornerRadius="@dimen/default_margin"
+            app:cornerRadius="@dimen/margin_padding_material_medium"
             android:text="Next"
-            android:paddingStart="@dimen/default_margin"
+            android:paddingStart="@dimen/margin_padding_material_medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

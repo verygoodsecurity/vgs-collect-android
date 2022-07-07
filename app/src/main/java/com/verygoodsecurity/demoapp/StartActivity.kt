@@ -40,6 +40,7 @@ class StartActivity:AppCompatActivity(), View.OnClickListener {
         setupSpinner()
         setupUI()
 
+        startTokenizationBtn?.setOnClickListener(this)
         startWithActivityBtn?.setOnClickListener(this)
         startWithFragmentBtn?.setOnClickListener(this)
         startWithViewPagerBtn?.setOnClickListener(this)
@@ -58,10 +59,18 @@ class StartActivity:AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when(v.id) {
+            R.id.startTokenizationBtn -> startTokenization()
             R.id.startWithActivityBtn -> startInteractionWithActivity()
             R.id.startWithFragmentBtn -> startInteractionWithFragment()
             R.id.startWithViewPagerBtn -> startInteractionWithViewPager()
         }
+    }
+
+
+    private fun startTokenization() {
+        // TODO: Implement
+        val intent = prepareIntent(VGSCollectActivity::class.java)
+        startActivity(intent)
     }
 
     private fun startInteractionWithActivity() {

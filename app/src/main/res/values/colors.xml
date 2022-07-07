@@ -17,4 +17,10 @@
     <color name="state_active">@color/colorAccent</color>
 
     <color name="black">#000</color>
+
+    <color name="fiord">#4b5d69</color>
+    <color name="royalBlue">#306EF5</color>
+    <color name="cobalt">#0044C1</color>
+    <color name="aliceBlue">#F0F6FF</color>
+    <color name="spindle">#BDC3CC</color>
 </resources>

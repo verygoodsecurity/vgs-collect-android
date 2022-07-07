@@ -18,10 +18,19 @@
     <string name="city">City</string>
 
     <string name="user_vault_id_hint">Vault ID</string>
-    <string name="user_endpoint_hint">path</string>
-    <string name="start_with_activity">Start with Activity</string>
-    <string name="start_with_fragment">Start with Fragment</string>
-    <string name="start_view_pager">Start with ViewPager</string>
+    <string name="user_endpoint_hint">Path (Optional)</string>
+    <string name="start_flow">Start</string>
+    <string name="start_tokenization_activity_title">Tokenization</string>
+    <string name="start_tokenization_activity_description">Description (TODO)</string>
+
+    <string name="start_collect_with_activity_title">Collect (Activity)</string>
+    <string name="start_collect_with_activity_description">Description (TODO)</string>
+
+    <string name="start_collect_with_fragment_title">Collect (Fragment)</string>
+    <string name="start_collect_with_fragment_description">Description (TODO)</string>
+
+    <string name="start_collect_with_view_pager_title">Collect (ViewPager)</string>
+    <string name="start_collect_with_view_pager_description">Description (TODO)</string>
 
     <string name="scan_item">Scan Card</string>
 </resources>

@@ -9,10 +9,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/half_default_margin"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginStart="@dimen/margin_padding_material_medium"
+        android:layout_marginEnd="@dimen/margin_padding_material_small"
+        android:layout_marginTop="@dimen/margin_padding_material_medium"
+        android:layout_marginBottom="@dimen/margin_padding_material_medium"
         android:text="Card owner(Name on the card)"/>
 
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -22,20 +22,20 @@
         app:hintAnimationEnabled="false"
         app:hintEnabled="false"
         app:boxStrokeColor="#969696"
-        app:boxCornerRadius="@dimen/half_default_margin"
+        app:boxCornerRadius="@dimen/margin_padding_material_small"
         android:background="@android:color/transparent"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin">
+        android:layout_marginStart="@dimen/margin_padding_material_medium"
+        android:layout_marginEnd="@dimen/margin_padding_material_medium">
         <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
             android:id="@+id/cardHolderField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:singleLine="true"
-            android:paddingStart="@dimen/default_margin"
-            android:paddingEnd="@dimen/default_margin"
+            android:paddingStart="@dimen/margin_padding_material_medium"
+            android:paddingEnd="@dimen/margin_padding_material_medium"
             android:hint="Card owner(Name on the card)"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"/>
+            android:layout_marginStart="@dimen/margin_padding_material_medium"
+            android:layout_marginEnd="@dimen/margin_padding_material_medium"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 </LinearLayout>

@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/half_default_margin">
+    android:padding="@dimen/margin_padding_material_small">
 
     <EditText
         android:layout_width="match_parent"
