@@ -287,7 +287,7 @@ class VGSCollect {
      *
      * @param request A tokenization request data.
      */
-    internal fun tokenize(request: VGSTokenizationRequest) {
+    fun tokenize(request: VGSTokenizationRequest) {
         submitAsyncRequest(request)
     }
 
