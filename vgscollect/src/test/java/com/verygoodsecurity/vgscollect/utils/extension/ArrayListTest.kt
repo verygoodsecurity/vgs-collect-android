@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.utils.extension
 
+import com.verygoodsecurity.vgscollect.core.model.state.ArrayMergePolicy
 import com.verygoodsecurity.vgscollect.util.extension.*
 import org.junit.Assert.assertEquals
 import org.junit.Test

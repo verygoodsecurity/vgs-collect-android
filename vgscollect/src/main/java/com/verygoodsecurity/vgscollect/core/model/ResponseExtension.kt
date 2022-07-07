@@ -5,16 +5,12 @@ import org.json.JSONException
 import org.json.JSONObject
 
 /** @suppress */
-internal fun String.parseVGSResponse():Map<String, Any> {
+internal fun String.toMutableMap(): Map<String, Any> {
     val resultMap = HashMap<String, Any>()
     when {
         isJSONObjectValid(this) -> {
             val json = JSONObject(this)
-            resultMap["response"] = json.toMap()
-        }
-        isJSONArrayValid(this) -> {
-            val json = JSONArray(this)
-            resultMap["response"] = json.toList()
+            return json.toMap()
         }
     }
 

@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.util.extension
+package com.verygoodsecurity.vgscollect.core.model.state
 
 internal enum class ArrayMergePolicy {
 

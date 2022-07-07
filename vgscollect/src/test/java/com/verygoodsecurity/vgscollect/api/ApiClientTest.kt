@@ -27,7 +27,8 @@ class ApiClientTest {
             false,
             false,
             VGSHttpBodyFormat.JSON,
-            60000L
+            60000L,
+             false
         )
 
         client.execute(r)
@@ -52,7 +53,35 @@ class ApiClientTest {
             false,
             false,
             VGSHttpBodyFormat.JSON,
-            60000L
+            60000L,
+            false
+        )
+
+        client.enqueue(r)
+
+        Mockito.verify(client).enqueue(r)
+    }
+
+
+    @Test
+    fun test_enqueue_tokenization_request() {
+        val client = Mockito.mock(ApiClient::class.java)
+
+        val headers = HashMap<String, String>()
+        headers.put("NEW-HEADER", "header")
+        val data = HashMap<String, Any>()
+        data.put("customData", "dataset")
+
+        val r = NetworkRequest(
+            HTTPMethod.POST,
+            "https://www.test.com/post",
+            headers,
+            data,
+            false,
+            false,
+            VGSHttpBodyFormat.JSON,
+            60000L,
+            true
         )
 
         client.enqueue(r)

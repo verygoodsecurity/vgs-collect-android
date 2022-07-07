@@ -337,6 +337,22 @@
     -->
     <attr name="outputNumberDivider" format="string"/>
 
+    <!-- Format of the alias. -->
+    <attr name="aliasFormat">
+        <enum name="UUID" value="0" />
+        <enum name="FPE_SIX_T_FOUR" value="1" />
+        <enum name="NUM_LENGTH_PRESERVING" value="2" />
+    </attr>
+
+    <!-- Storage of the alias. -->
+    <attr name="storageType">
+        <enum name="PERSISTENT" value="0" />
+        <enum name="VOLATILE" value="1" />
+    </attr>
+
+    <!-- Defines if data should be tokenized. -->
+    <attr name="enableTokenization" format="boolean"/>
+
 
     <declare-styleable name="InputFieldView">
 
@@ -374,6 +390,11 @@
         <attr name="scrollHorizontally"/>
 
         <attr name="hint" />
+
+        <!-- tokenization api-->
+        <attr name="storageType"/>
+        <attr name="aliasFormat"/>
+        <attr name="enableTokenization"/>
     </declare-styleable>
 
     <declare-styleable name="VGSEditText">
@@ -400,6 +421,10 @@
 
         <attr name="hint" />
 
+        <!-- tokenization api-->
+        <attr name="enableTokenization"/>
+        <attr name="storageType"/>
+        <attr name="aliasFormat"/>
     </declare-styleable>
 
     <declare-styleable name="CardVerificationCodeEditText">
@@ -510,6 +535,9 @@
             <!-- Preview icon is never visible. -->
             <enum name="never" value="3"/>
         </attr>
+
+        <!-- tokenization api-->
+        <attr name="aliasFormat"/>
     </declare-styleable>
 
     <declare-styleable name="SSNEditText">
@@ -535,6 +563,10 @@
 
         <attr name="outputNumberDivider"/>
 
+        <!-- tokenization api-->
+        <attr name="storageType"/>
+        <attr name="aliasFormat"/>
+        <attr name="enableTokenization"/>
     </declare-styleable>
 
 
@@ -561,12 +593,15 @@
 
         <attr name="hint" />
 
-
         <attr name="maxDate" format="string"/>
         <attr name="minDate" format="string"/>
         <attr name="datePattern"/>
         <attr name="datePickerModes"/>
 
+        <!-- tokenization api-->
+        <attr name="storageType"/>
+        <attr name="aliasFormat"/>
+        <attr name="enableTokenization"/>
     </declare-styleable>
 
     <declare-styleable name="ExpirationDateEditText">
@@ -606,6 +641,11 @@
         <attr name="datePattern"/>
         <attr name="outputPattern"/>
         <attr name="datePickerModes"/>
+
+        <!-- tokenization api-->
+        <attr name="storageType"/>
+        <attr name="aliasFormat"/>
+        <attr name="enableTokenization"/>
     </declare-styleable>
 
     <declare-styleable name="VGSTextInputLayout">
@@ -696,6 +736,5 @@
              or null if no helper text was set or if helper text functionality is not enabled.
         -->
         <attr name="helperText" format="string"/>
-
     </declare-styleable>
 </resources>

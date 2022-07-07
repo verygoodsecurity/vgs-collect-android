@@ -3,17 +3,22 @@ package com.verygoodsecurity.vgscollect
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import com.verygoodsecurity.vgscollect.Utils.capture
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.network.*
+import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
+import com.verygoodsecurity.vgscollect.util.extension.toJSON
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
@@ -22,6 +27,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.*
 import org.robolectric.Robolectric
@@ -50,34 +56,34 @@ class VGSCollectTest {
         applyResponseListener()
         applyResponseListener()
 
-        assertEquals(3, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(2, collect.getResponseListeners().size)
     }
 
     @Test
     fun test_remove_response_listener() {
         val listener1 = mock(VgsCollectResponseListener::class.java)
         collect.addOnResponseListeners(listener1)
-        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(1, collect.getResponseListeners().size)
 
         val listener2 = mock(VgsCollectResponseListener::class.java)
         collect.removeOnResponseListener(listener2)
-        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(1, collect.getResponseListeners().size)
 
         collect.removeOnResponseListener(listener1)
-        assertEquals(1, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(0, collect.getResponseListeners().size)
     }
 
     @Test
     fun test_remove_all_response_listeners() {
         val listener1 = mock(VgsCollectResponseListener::class.java)
         collect.addOnResponseListeners(listener1)
-        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(1, collect.getResponseListeners().size) // + analytic listener
         val listener2 = mock(VgsCollectResponseListener::class.java)
         collect.addOnResponseListeners(listener2)
-        assertEquals(3, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(2, collect.getResponseListeners().size) // + analytic listener
 
         collect.clearResponseListeners()
-        assertEquals(1, collect.getResponseListeners().size) // + analytic listener
+        assertEquals(0, collect.getResponseListeners().size) // + analytic listener
     }
 
     @Test
@@ -349,6 +355,86 @@ class VGSCollectTest {
         collect.asyncSubmit(request)
 
         verify(client, after(500)).enqueue(any(), any())
+    }
+
+    @Test
+    fun test_tokenization() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
+        val client = applyApiClient()
+
+        collect.tokenize()
+
+        verify(client, after(500)).enqueue(any(), any())
+    }
+
+    @Test
+    fun test_tokenization_with_builder() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
+        val client = applyApiClient()
+
+        val request = VGSTokenizationRequest.VGSRequestBuilder()
+            .setRouteId("xxx")
+            .build()
+        collect.tokenize(request)
+
+        verify(client, after(500)).enqueue(any(), any())
+    }
+
+    @Test
+    fun test_tokenization_requestDataValid() {
+        val activityShadow = Shadows.shadowOf(activity)
+        activityShadow.grantPermissions(
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_NETWORK_STATE
+        )
+
+        val cardView = VGSCardNumberEditText(activity)
+        cardView.setFieldName("card_number")
+        cardView.setText("4111111111111111")
+        cardView.setVaultAliasFormat(VGSVaultAliasFormat.NUM_LENGTH_PRESERVING)
+        collect.bindView(cardView)
+
+        val client = applyApiClient()
+
+        collect.tokenize()
+
+        val ac: ArgumentCaptor<NetworkRequest> = ArgumentCaptor.forClass(NetworkRequest::class.java)
+
+        verify(client, after(500)).enqueue(capture(ac), any())
+
+        val expected = NetworkRequest(
+            HTTPMethod.POST,
+            "https://tnts.sandbox.verygoodproxy.com/tokens",
+            emptyMap(),
+            mapOf<String, Any>(
+                "data" to listOf<Any>(
+                    mapOf<String, Any>(
+                        "is_required_tokenization" to true,
+                        "value" to "4111111111111111",
+                        "format" to "NUM_LENGTH_PRESERVING",
+                        "storage" to "PERSISTENT",
+                        "fieldName" to "card_number",
+                    )
+                )
+            ).toJSON().toString(),
+            false,
+            false,
+            VGSHttpBodyFormat.JSON,
+            60_000,
+            true
+        )
+
+        assertEquals(expected, ac.value)
     }
 
     @Test

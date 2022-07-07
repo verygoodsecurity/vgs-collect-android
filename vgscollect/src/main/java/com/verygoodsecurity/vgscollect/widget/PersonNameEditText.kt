@@ -8,6 +8,8 @@ import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
@@ -48,6 +50,9 @@ class PersonNameEditText @JvmOverloads constructor(
 
                 val minLines = getInt(R.styleable.PersonNameEditText_minLines, 0)
                 val maxLines = getInt(R.styleable.PersonNameEditText_maxLines, 0)
+                val aliasFormat = getInt(R.styleable.PersonNameEditText_aliasFormat, VGSVaultAliasFormat.UUID.ordinal)
+                val storageType = getInt(R.styleable.PersonNameEditText_storageType, VGSVaultStorageType.PERSISTENT.ordinal)
+                val enableTokenization = getBoolean(R.styleable.PersonNameEditText_enableTokenization, true)
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -67,6 +72,10 @@ class PersonNameEditText @JvmOverloads constructor(
                 setEnabled(enabled)
 
                 setInputType(inputType)
+
+                setEnabledTokenization(enableTokenization)
+                setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
+                setVaultStorageType(VGSVaultStorageType.values()[storageType])
             } finally {
                 recycle()
             }
@@ -88,4 +97,32 @@ class PersonNameEditText @JvmOverloads constructor(
     fun addRule(rule: PersonNameRule) {
         applyValidationRule(rule)
     }
+
+    /**
+     * Sets the vault alias format in which data stores on a backend.
+     *
+     * @param format The VGS alias format.
+     */
+    fun setVaultAliasFormat(format: VGSVaultAliasFormat) {
+        applyAliasFormat(format)
+    }
+
+    /**
+     * Sets the vault storage type for storing.
+     *
+     * @param storage The VGS storage type.
+     */
+    fun setVaultStorageType(storage: VGSVaultStorageType) {
+        applyStorageType(storage)
+    }
+
+    /**
+     * Defines if data requires tokenization.
+     *
+     * @param isEnabled Is tokenization enabled.
+     */
+    fun setEnabledTokenization(isEnabled: Boolean) {
+        enableTokenization(isEnabled)
+    }
+
 }

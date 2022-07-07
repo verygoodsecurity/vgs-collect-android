@@ -8,6 +8,8 @@ import android.view.Gravity
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
@@ -47,6 +49,9 @@ class SSNEditText @JvmOverloads constructor(
                     Gravity.START or Gravity.CENTER_VERTICAL
                 )
                 val ellipsize = getInt(R.styleable.SSNEditText_ellipsize, 0)
+                val aliasFormat = getInt(R.styleable.SSNEditText_aliasFormat, VGSVaultAliasFormat.UUID.ordinal)
+                val storageType = getInt(R.styleable.SSNEditText_storageType, VGSVaultStorageType.PERSISTENT.ordinal)
+                val enableTokenization = getBoolean(R.styleable.SSNEditText_enableTokenization, true)
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -69,6 +74,10 @@ class SSNEditText @JvmOverloads constructor(
 
                 setNumberDivider(numberDivider)
                 setOutputNumberDivider(outputNumberDivider)
+
+                setEnabledTokenization(enableTokenization)
+                setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
+                setVaultStorageType(VGSVaultStorageType.values()[storageType])
             } finally {
                 recycle()
             }
@@ -124,6 +133,32 @@ class SSNEditText @JvmOverloads constructor(
         return getOutputNumberDivider()
     }
 
+    /**
+     * Sets the vault alias format in which data stores on a backend.
+     *
+     * @param format The VGS alias format.
+     */
+    fun setVaultAliasFormat(format: VGSVaultAliasFormat) {
+        applyAliasFormat(format)
+    }
+
+    /**
+     * Sets the vault storage type for storing.
+     *
+     * @param type The VGS storage type.
+     */
+    fun setVaultStorageType(type: VGSVaultStorageType) {
+        applyStorageType(type)
+    }
+
+    /**
+     * Defines if data requires tokenization.
+     *
+     * @param isEnabled Is tokenization enabled.
+     */
+    fun setEnabledTokenization(isEnabled: Boolean) {
+        enableTokenization(isEnabled)
+    }
 
     companion object {
         internal val TAG: String = SSNEditText::class.simpleName.toString()

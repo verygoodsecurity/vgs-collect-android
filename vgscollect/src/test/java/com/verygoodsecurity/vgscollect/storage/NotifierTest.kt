@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.storage
 
+import com.verygoodsecurity.vgscollect.Utils.capture
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
@@ -124,7 +125,4 @@ class NotifierTest {
 
         return state
     }
-
-    private fun <T> capture(argumentCaptor: ArgumentCaptor<T>): T = argumentCaptor.capture()
-
 }

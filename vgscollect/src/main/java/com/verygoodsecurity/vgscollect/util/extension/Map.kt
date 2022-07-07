@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
 import com.verygoodsecurity.vgscollect.core.model.map.FlatMap
+import com.verygoodsecurity.vgscollect.core.model.state.ArrayMergePolicy
 import org.json.JSONObject
 
 fun <K, V> Map<K, V>.toJSON(): JSONObject = try {

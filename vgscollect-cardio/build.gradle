@@ -6,12 +6,11 @@ plugins {
 }
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 32
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 30
+        minSdkVersion 21
+        targetSdkVersion 32
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
@@ -30,10 +29,10 @@ android {
 dependencies {
     api project(':vgscollect')
 
-    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
-    implementation "androidx.core:core-ktx:${versions.core_ktx}"
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
 
-    api "io.card:android-sdk:${versions.card_io_android_sdk}"
+    api libs.cardio
 
-    dokkaHtmlPlugin("org.jetbrains.dokka:dokka-base:${versions.dokka_base}")
+    dokkaHtmlPlugin(libs.dokka.base)
 }
