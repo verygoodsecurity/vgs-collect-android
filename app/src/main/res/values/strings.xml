@@ -17,8 +17,8 @@
     <string name="postal_code">Postal code</string>
     <string name="city">City</string>
 
-    <string name="user_vault_id_hint">Vault ID</string>
-    <string name="user_endpoint_hint">Path (Optional)</string>
+    <string name="user_vault_id_hint">Vault id</string>
+    <string name="user_endpoint_hint">Route path (Optional)</string>
     <string name="start_flow">Start</string>
     <string name="start_tokenization_activity_title">Tokenization</string>
     <string name="start_tokenization_activity_description">Description (TODO)</string>
