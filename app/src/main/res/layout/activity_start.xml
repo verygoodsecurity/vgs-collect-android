@@ -10,12 +10,23 @@
         android:orientation="vertical"
         android:padding="@dimen/margin_padding_material_medium">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/start_activity_vault_id_hint"
+            android:layout_marginBottom="@dimen/margin_padding_material_micro"
+            android:textAppearance="?attr/textAppearanceCaption" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilVaultId"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/start_activity_vault_id_hint">
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:errorEnabled="false"
+            app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tiedVaultId"
@@ -26,13 +37,24 @@
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_small"
+            android:layout_marginBottom="@dimen/margin_padding_material_micro"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/start_activity_path_hint"
+            android:textAppearance="?attr/textAppearanceCaption" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPath"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_material_small"
-            android:hint="@string/start_activity_path_hint">
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:errorEnabled="false"
+            app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tiedPath"
