@@ -8,11 +8,18 @@
         <item name="android:textColorPrimary">@android:color/black</item>
         <item name="android:textColorSecondary">@color/fiord</item>
         <item name="actionBarStyle">@style/ActionBarStyle</item>
+        <item name="snackbarTextViewStyle">@style/SnackBarTextViewStyle</item>
     </style>
 
     <style name="ActionBarStyle" parent="Widget.MaterialComponents.ActionBar.Primary">
         <item name="logo">@drawable/ic_actionbar_logo</item>
         <item name="displayOptions">useLogo|showHome|showTitle</item>
+    </style>
+
+    <style name="SnackBarTextViewStyle" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
+        <item name="textColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="animationMode">slide</item>
     </style>
 
     <style name="AppTheme.StartActivity">

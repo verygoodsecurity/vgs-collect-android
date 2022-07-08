@@ -1,26 +1,35 @@
 package com.verygoodsecurity.demoapp.tokenization
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.demoapp.R
+import com.verygoodsecurity.demoapp.StartActivity
+import com.verygoodsecurity.vgscollect.core.VGSCollect
+import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 import kotlinx.android.synthetic.main.activity_collect_tokenization_demo.*
 
 class VGSCollectTokenizationActivity :
     AppCompatActivity(R.layout.activity_collect_tokenization_demo),
-    InputFieldView.OnTextChangedListener {
+    InputFieldView.OnTextChangedListener, VgsCollectResponseListener {
 
     private val defaultTextColor by lazy { ContextCompat.getColor(this, R.color.fiord) }
     private val defaultBackgroundColor by lazy { ContextCompat.getColor(this, R.color.fiord_20) }
     private val errorTextColor by lazy { ContextCompat.getColor(this, R.color.brown) }
     private val errorBackgroundColor by lazy { ContextCompat.getColor(this, R.color.vanillaIce) }
 
+    private lateinit var collect: VGSCollect
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initCollect()
         initViews()
     }
 
@@ -35,14 +44,38 @@ class VGSCollectTokenizationActivity :
         setInputValid(title, layout)
     }
 
-    private fun initViews() {
-        initTextChangeListener()
-        mbTokenize.setOnClickListener {
-            runIfInputsValid {
-                tokenize()
-            }
+    override fun onResponse(response: VGSResponse?) {
+        Log.d(this::class.java.simpleName, response.toString())
+        setLoading(false)
+        when (response) {
+            is VGSResponse.SuccessResponse -> mbReset.isVisible = true
+            is VGSResponse.ErrorResponse -> showSnackBar(response.localizeMessage)
+            null -> {}
         }
-        mbReset.setOnClickListener { resetView() }
+    }
+
+    private fun initCollect() {
+        with(intent?.extras) {
+            collect = VGSCollect(
+                this@VGSCollectTokenizationActivity,
+                this?.getString(StartActivity.KEY_BUNDLE_VAULT_ID) ?: "",
+                this?.getString(StartActivity.KEY_BUNDLE_ENVIRONMENT) ?: ""
+            )
+            collect.addOnResponseListeners(this@VGSCollectTokenizationActivity)
+        }
+    }
+
+    private fun initViews() {
+        bindViews()
+        initTextChangeListener()
+        initClickListeners()
+    }
+
+    private fun bindViews() {
+        collect.bindView(vgsTiedCardHolder)
+        collect.bindView(vgsTiedCardNumber)
+        collect.bindView(vgsTiedExpiry)
+        collect.bindView(vgsTiedCvc)
     }
 
     private fun initTextChangeListener() {
@@ -52,8 +85,18 @@ class VGSCollectTokenizationActivity :
         vgsTiedCvc.addOnTextChangeListener(this)
     }
 
+    private fun initClickListeners() {
+        mbTokenize.setOnClickListener {
+            runIfInputsValid {
+                tokenize()
+            }
+        }
+        mbReset.setOnClickListener { resetView() }
+    }
+
     private fun tokenize() {
-        mbReset.isVisible = true
+        setLoading(true)
+        collect.tokenize()
     }
 
     private fun resetView() {
@@ -93,5 +136,16 @@ class VGSCollectTokenizationActivity :
     private fun setInputInvalid(title: MaterialTextView, layout: VGSTextInputLayout) {
         title.setTextColor(errorTextColor)
         layout.setBoxBackgroundColor(errorBackgroundColor)
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        // TODO: Implement
+    }
+
+    private fun showSnackBar(message: String) {
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).apply {
+            anchorView = mbTokenize
+            animationMode = Snackbar.ANIMATION_MODE_SLIDE
+        }.show()
     }
 }

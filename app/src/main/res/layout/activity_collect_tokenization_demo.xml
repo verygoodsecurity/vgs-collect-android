@@ -2,6 +2,7 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/llRoot"
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:orientation="vertical"
@@ -42,7 +43,9 @@
             style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:imeOptions="actionNext" />
+            app:fieldName="card.name"
+            app:imeOptions="actionNext"
+            app:text="John Doe" />
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
     <com.google.android.material.textview.MaterialTextView
@@ -69,8 +72,10 @@
             style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:fieldName="card.number"
             app:imeOptions="actionNext"
-            app:numberDivider=" " />
+            app:numberDivider=" "
+            app:text="4111111111111111" />
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -110,8 +115,10 @@
                     android:layout_height="wrap_content"
                     app:datePattern="MM/yy"
                     app:datePickerModes="input"
+                    app:fieldName="card.expiry"
                     app:imeOptions="actionNext"
-                    app:inputType="date" />
+                    app:inputType="date"
+                    app:text="01/30" />
             </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -148,7 +155,9 @@
                     style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:imeOptions="actionDone" />
+                    app:fieldName="card.cvc"
+                    app:imeOptions="actionDone"
+                    app:text="111" />
             </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
