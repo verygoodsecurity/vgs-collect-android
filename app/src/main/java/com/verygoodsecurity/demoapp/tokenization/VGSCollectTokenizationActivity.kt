@@ -8,5 +8,6 @@ class VGSCollectTokenizationActivity: AppCompatActivity(R.layout.activity_collec
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val tokenize = ""
     }
 }
