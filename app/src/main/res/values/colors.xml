@@ -17,8 +17,11 @@
     <color name="state_active">@color/colorAccent</color>
 
     <color name="fiord">#4b5d69</color>
+    <color name="fiord_20">#204b5d69</color>
+    <color name="elephant">#22343e</color>
     <color name="navyBlue">#145ff5</color>
     <color name="kleinBlue">#0036c1</color>
-
-    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#00ffffff</color>
+    <color name="whisper">#E6E6E6</color>
+    <color name="brown">#AD3333</color>
+    <color name="vanillaIce">#E3D3D3</color>
 </resources>

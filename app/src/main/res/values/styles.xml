@@ -1,9 +1,10 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorPrimary">@color/navyBlue</item>
-        <item name="colorPrimaryDark">@color/kleinBlue</item>
-        <item name="colorAccent">@color/navyBlue</item>
+        <item name="colorPrimary">@color/fiord</item>
+        <item name="colorPrimaryDark">@color/elephant</item>
+        <item name="colorSecondary">@color/fiord</item>
+        <item name="colorSurface">@color/fiord</item>
         <item name="android:textColorPrimary">@android:color/black</item>
         <item name="android:textColorSecondary">@color/fiord</item>
         <item name="actionBarStyle">@style/ActionBarStyle</item>
@@ -30,7 +31,7 @@
 
     <style name="CustomButtonText.Action" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">sans-serif-medium</item>
-        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:textColor">@color/navyBlue</item>
     </style>
 
     <style name="EditText">
