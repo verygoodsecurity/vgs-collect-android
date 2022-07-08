@@ -32,6 +32,7 @@
             android:name=".activity_case.VGSCollectActivity"
             android:label="Collect (Activity)" />
 
+        <!--        TODO(Think about resize)-->
         <activity
             android:name=".tokenization.VGSCollectTokenizationActivity"
             android:label="Tokenization" />
