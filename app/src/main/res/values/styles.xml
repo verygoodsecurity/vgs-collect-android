@@ -1,18 +1,32 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/royalBlue</item>
         <item name="colorPrimaryDark">@color/cobalt</item>
         <item name="colorAccent">@color/royalBlue</item>
         <item name="android:textColorPrimary">@android:color/black</item>
         <item name="android:textColorSecondary">@color/fiord</item>
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
     </style>
 
-    <style name="CustomButtonText"/>
+    <style name="ActionBarStyle" parent="Widget.MaterialComponents.ActionBar.Primary">
+        <item name="logo">@drawable/ic_actionbar_logo</item>
+        <item name="displayOptions">useLogo|showHome|showTitle</item>
+    </style>
 
-    <style name="CustomButtonText.Title" parent="TextAppearance.MaterialComponents.Subtitle2"/>
+    <style name="AppTheme.StartActivity">
+        <item name="actionBarStyle">@style/ActionBarStyle.StartActivity</item>
+    </style>
 
-    <style name="CustomButtonText.Description" parent="TextAppearance.MaterialComponents.Caption"/>
+    <style name="ActionBarStyle.StartActivity">
+        <item name="title">@string/start_activity_app_bar_title</item>
+    </style>
+
+    <style name="CustomButtonText" />
+
+    <style name="CustomButtonText.Title" parent="TextAppearance.MaterialComponents.Subtitle2" />
+
+    <style name="CustomButtonText.Description" parent="TextAppearance.MaterialComponents.Caption" />
 
     <style name="CustomButtonText.Action" parent="TextAppearance.MaterialComponents.Body2">
         <item name="fontFamily">sans-serif-medium</item>

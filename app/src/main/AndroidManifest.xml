@@ -14,10 +14,10 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:label="Very Good Security"
             android:name=".StartActivity"
             android:exported="true"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.StartActivity"
             tools:ignore="LockedOrientationActivity">
 
             <intent-filter>
@@ -30,19 +30,19 @@
 
         <activity
             android:name=".activity_case.VGSCollectActivity"
-            android:label="Activity Demo" />
+            android:label="Collect (Activity)" />
 
         <activity
             android:name=".tokenization.VGSCollectTokenizationActivity"
-            android:label="Activity Tokenization Demo" />
+            android:label="Tokenization" />
 
         <activity
             android:name=".fragment_case.VGSCollectFragmentActivity"
-            android:label="Fragment Demo" />
+            android:label="Collect (Fragment)" />
 
         <activity
             android:name=".viewpager_case.VGSViewPagerActivity"
-            android:label="ViewPager Demo" />
+            android:label="Collect (ViewPager)" />
 
         <activity
             android:name=".instrumented.VGSEditTextInputTypeActivity"
