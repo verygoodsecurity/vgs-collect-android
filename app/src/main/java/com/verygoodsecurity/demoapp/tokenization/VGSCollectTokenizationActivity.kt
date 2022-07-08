@@ -3,6 +3,7 @@ package com.verygoodsecurity.demoapp.tokenization
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -36,29 +37,52 @@ class VGSCollectTokenizationActivity :
 
     private fun initViews() {
         initTextChangeListener()
-        mbTokenize?.setOnClickListener { validateInputs() }
+        mbTokenize.setOnClickListener {
+            runIfInputsValid {
+                tokenize()
+            }
+        }
+        mbReset.setOnClickListener { resetView() }
     }
 
     private fun initTextChangeListener() {
-        vgsTiedCardHolder?.addOnTextChangeListener(this)
-        vgsTiedCardNumber?.addOnTextChangeListener(this)
-        vgsTiedExpiry?.addOnTextChangeListener(this)
-        vgsTiedCvc?.addOnTextChangeListener(this)
+        vgsTiedCardHolder.addOnTextChangeListener(this)
+        vgsTiedCardNumber.addOnTextChangeListener(this)
+        vgsTiedExpiry.addOnTextChangeListener(this)
+        vgsTiedCvc.addOnTextChangeListener(this)
     }
 
-    private fun validateInputs() {
+    private fun tokenize() {
+        mbReset.isVisible = true
+    }
+
+    private fun resetView() {
+        vgsTiedCardHolder.setText(null)
+        vgsTiedCardNumber.setText(null)
+        vgsTiedExpiry.setText(null)
+        vgsTiedCvc.setText(null)
+        mbReset.isVisible = false
+    }
+
+    private fun runIfInputsValid(action: () -> Unit) {
+        var isValid = true
         if (vgsTiedCardHolder.getState()?.isValid == false) {
             setInputInvalid(mtvCardHolder, vgsTilCardHolder)
+            isValid = false
         }
         if (vgsTiedCardNumber.getState()?.isValid == false) {
             setInputInvalid(mtvCardNumber, vgsTilCardNumber)
+            isValid = false
         }
         if (vgsTiedExpiry.getState()?.isValid == false) {
             setInputInvalid(mtvExpiry, vgsTilExpiry)
+            isValid = false
         }
         if (vgsTiedCvc.getState()?.isValid == false) {
             setInputInvalid(mtvCvc, vgsTilCvc)
+            isValid = false
         }
+        if (isValid) action.invoke()
     }
 
     private fun setInputValid(title: MaterialTextView, layout: VGSTextInputLayout) {
