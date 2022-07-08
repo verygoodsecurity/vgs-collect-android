@@ -17,6 +17,6 @@
     <color name="state_active">@color/colorAccent</color>
 
     <color name="fiord">#4b5d69</color>
-    <color name="royalBlue">#306EF5</color>
-    <color name="cobalt">#0044C1</color>
+    <color name="navyBlue">#145ff5</color>
+    <color name="kleinBlue">#0036c1</color>
 </resources>
