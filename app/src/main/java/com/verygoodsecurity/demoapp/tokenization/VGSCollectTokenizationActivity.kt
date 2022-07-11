@@ -111,6 +111,7 @@ class VGSCollectTokenizationActivity :
     private fun copyResponseToClipboard() {
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         clipboard.setPrimaryClip(ClipData.newPlainText("", response))
+        showSnackBar("Tokenization response copied.")
     }
 
     private fun resetView() {
