@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
+import com.google.gson.Gson
 import com.verygoodsecurity.demoapp.BuildConfig
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
@@ -17,6 +18,8 @@ import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 import kotlinx.android.synthetic.main.activity_collect_tokenization_demo.*
@@ -35,6 +38,14 @@ class VGSCollectTokenizationActivity :
 
     private var response: String? by Delegates.observable(null) { _, _, new ->
         mbReset.isVisible = !new.isNullOrBlank()
+        updateCardView(
+            try {
+                Gson().fromJson(new, TokenizedCard::class.java)
+            } catch (e: Exception) {
+                showSnackBar(e.message ?: "Can't parse response.")
+                null
+            }
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,6 +101,8 @@ class VGSCollectTokenizationActivity :
     }
 
     private fun configureTokenization() {
+        vgsTiedCardHolder.setVaultStorageType(VGSVaultStorageType.PERSISTENT)
+        vgsTiedCardHolder.setVaultAliasFormat(VGSVaultAliasFormat.FPE_SIX_T_FOUR)
         // TODO: Configure tokenization
     }
 
@@ -108,6 +121,14 @@ class VGSCollectTokenizationActivity :
         }
         mcvCard.setOnClickListener { copyResponseToClipboard() }
         mbReset.setOnClickListener { resetView() }
+    }
+
+    private fun updateCardView(card: TokenizedCard?) {
+        val number =
+            Regex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})").replace(card?.number ?: "", "\$1 \$2 \$3 \$4")
+        mtvCardNumber.text = number
+        mtvCardHolder.text = card?.holder
+        mtvExpiry.text = card?.expiry
     }
 
     private fun tokenize() {
