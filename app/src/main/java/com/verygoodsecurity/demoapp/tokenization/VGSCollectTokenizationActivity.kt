@@ -231,6 +231,7 @@ class VGSCollectTokenizationActivity :
 
     private fun setLoading(isLoading: Boolean) {
         viewOverlay.isVisible = isLoading
+        progressBar?.isVisible = isLoading
     }
 
     private fun showSnackBar(message: String) {
