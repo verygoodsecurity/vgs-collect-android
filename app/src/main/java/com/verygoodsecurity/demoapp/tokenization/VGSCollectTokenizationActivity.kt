@@ -18,6 +18,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 import kotlinx.android.synthetic.main.activity_collect_tokenization_demo.*
+import kotlin.properties.Delegates
 
 class VGSCollectTokenizationActivity :
     AppCompatActivity(R.layout.activity_collect_tokenization_demo),
@@ -30,7 +31,9 @@ class VGSCollectTokenizationActivity :
 
     private lateinit var collect: VGSCollect
 
-    private var response: String? = null
+    private var response: String? by Delegates.observable(null) { _, _, new ->
+        mbReset.isVisible = !new.isNullOrBlank()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,10 +56,7 @@ class VGSCollectTokenizationActivity :
         Log.d(this::class.java.simpleName, response.toString())
         setLoading(false)
         when (response) {
-            is VGSResponse.SuccessResponse -> {
-                this.response = response.body
-                mbReset.isVisible = true
-            }
+            is VGSResponse.SuccessResponse -> this.response = response.body
             is VGSResponse.ErrorResponse -> showSnackBar(response.localizeMessage)
             null -> {}
         }
@@ -124,7 +124,7 @@ class VGSCollectTokenizationActivity :
         vgsTiedCardNumber.setText(null)
         vgsTiedExpiry.setText(null)
         vgsTiedCvc.setText(null)
-        mbReset.isVisible = false
+        response = null
     }
 
     private fun runIfInputsValid(action: () -> Unit) {
