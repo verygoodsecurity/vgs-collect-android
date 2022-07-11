@@ -20,6 +20,7 @@ android {
 
         buildConfigField("String", "VAULT_ID", "\"${getLocalProperty("VGS_VAULT_ID")}\"")
         buildConfigField("String", "PATH", "\"${getLocalProperty("VGS_PATH")}\"")
+        buildConfigField("String", "ROUTE_ID", "\"${getLocalProperty("VGS_ROUTE_ID")}\"")
     }
 
     buildTypes {

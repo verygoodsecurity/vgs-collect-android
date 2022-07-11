@@ -1,223 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/llRoot"
+    android:id="@+id/clRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:orientation="vertical"
-    android:padding="@dimen/margin_padding_material_medium">
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/mcvCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
-        app:cardCornerRadius="@dimen/margin_padding_material_small"
-        app:cardElevation="@dimen/margin_padding_material_small">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:alpha="0.04"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_vgs_logo_white" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/margin_padding_material_medium"
-                android:src="@drawable/ic_baseline_content_copy_24"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@android:color/white" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/mtvCardHolder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_padding_material_medium"
-        android:layout_marginBottom="@dimen/margin_padding_material_micro"
-        android:fontFamily="sans-serif-medium"
-        android:text="Card Holder"
-        android:textAppearance="?attr/textAppearanceCaption" />
-
-    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-        android:id="@+id/vgsTilCardHolder"
-        style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/fiord_20"
-        app:boxStrokeColor="@color/invisible_input_border"
-        app:hintEnabled="false">
-
-        <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
-            android:id="@+id/vgsTiedCardHolder"
-            style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:fieldName="card.name"
-            app:imeOptions="actionNext"
-            app:text="John Doe" />
-    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/mtvCardNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_padding_material_small"
-        android:layout_marginBottom="@dimen/margin_padding_material_micro"
-        android:fontFamily="sans-serif-medium"
-        android:text="Card Number"
-        android:textAppearance="?attr/textAppearanceCaption" />
-
-    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-        android:id="@+id/vgsTilCardNumber"
-        style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/fiord_20"
-        app:boxStrokeColor="@color/invisible_input_border"
-        app:hintEnabled="false">
-
-        <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
-            android:id="@+id/vgsTiedCardNumber"
-            style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:fieldName="card.number"
-            app:imeOptions="actionNext"
-            app:numberDivider=" "
-            app:text="4111111111111111" />
-    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_padding_material_small"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_padding_material_medium">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="0dp"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/mcvCard"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardCornerRadius="@dimen/margin_padding_material_small"
+            app:cardElevation="@dimen/margin_padding_material_small">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/mtvExpiry"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_padding_material_micro"
-                android:fontFamily="sans-serif-medium"
-                android:text="Expiry"
-                android:textAppearance="?attr/textAppearanceCaption" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
 
-            <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-                android:id="@+id/vgsTilExpiry"
-                style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:alpha="0.04"
+                    app:layout_constraintDimensionRatio="1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_vgs_logo_white" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_padding_material_medium"
+                    android:src="@drawable/ic_baseline_content_copy_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@android:color/white" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvCardHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_medium"
+            android:layout_marginBottom="@dimen/margin_padding_material_micro"
+            android:fontFamily="sans-serif-medium"
+            android:text="Card Holder"
+            android:textAppearance="?attr/textAppearanceCaption" />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTilCardHolder"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false">
+
+            <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
+                android:id="@+id/vgsTiedCardHolder"
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundColor="@color/fiord_20"
-                app:boxStrokeColor="@color/invisible_input_border"
-                app:hintEnabled="false">
+                app:fieldName="card.name"
+                app:imeOptions="actionNext"
+                app:text="John Doe" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
-                <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
-                    android:id="@+id/vgsTiedExpiry"
-                    style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvCardNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_small"
+            android:layout_marginBottom="@dimen/margin_padding_material_micro"
+            android:fontFamily="sans-serif-medium"
+            android:text="Card Number"
+            android:textAppearance="?attr/textAppearanceCaption" />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTilCardNumber"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false">
+
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                android:id="@+id/vgsTiedCardNumber"
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:fieldName="card.number"
+                app:imeOptions="actionNext"
+                app:numberDivider=" "
+                app:text="4111111111111111" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_small"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mtvExpiry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_padding_material_micro"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Expiry"
+                    android:textAppearance="?attr/textAppearanceCaption" />
+
+                <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+                    android:id="@+id/vgsTilExpiry"
+                    style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:datePattern="MM/yy"
-                    app:datePickerModes="input"
-                    app:fieldName="card.expiry"
-                    app:imeOptions="actionNext"
-                    app:inputType="date"
-                    app:text="01/30" />
-            </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+                    app:boxBackgroundColor="@color/fiord_20"
+                    app:boxStrokeColor="@color/invisible_input_border"
+                    app:hintEnabled="false">
+
+                    <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+                        android:id="@+id/vgsTiedExpiry"
+                        style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:datePattern="MM/yy"
+                        app:datePickerModes="input"
+                        app:fieldName="card.expiry"
+                        app:imeOptions="actionNext"
+                        app:inputType="date"
+                        app:text="01/30" />
+                </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <Space
+                android:layout_width="@dimen/margin_padding_material_medium"
+                android:layout_height="match_parent" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mtvCvc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_padding_material_micro"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="CVC"
+                    android:textAppearance="?attr/textAppearanceCaption" />
+
+                <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+                    android:id="@+id/vgsTilCvc"
+                    style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="@color/fiord_20"
+                    app:boxStrokeColor="@color/invisible_input_border"
+                    app:hintEnabled="false">
+
+                    <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+                        android:id="@+id/vgsTiedCvc"
+                        style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:fieldName="card.cvc"
+                        app:imeOptions="actionDone"
+                        app:text="111" />
+                </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <Space
-            android:layout_width="@dimen/margin_padding_material_medium"
-            android:layout_height="match_parent" />
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/mtvCvc"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbTokenize"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Tokenize" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbReset"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_padding_material_micro"
-                android:fontFamily="sans-serif-medium"
-                android:text="CVC"
-                android:textAppearance="?attr/textAppearanceCaption" />
-
-            <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-                android:id="@+id/vgsTilCvc"
-                style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:boxBackgroundColor="@color/fiord_20"
-                app:boxStrokeColor="@color/invisible_input_border"
-                app:hintEnabled="false">
-
-                <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
-                    android:id="@+id/vgsTiedCvc"
-                    style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:fieldName="card.cvc"
-                    app:imeOptions="actionDone"
-                    app:text="111" />
-            </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="@dimen/margin_padding_material_medium"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Reset"
+                android:visibility="gone" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <Space
+    <View
+        android:id="@+id/viewOverlay"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:orientation="horizontal">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mbTokenize"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="Tokenize" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mbReset"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="@dimen/margin_padding_material_medium"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="Reset"
-            android:visibility="gone" />
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</androidx.appcompat.widget.LinearLayoutCompat>
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,7 +35,9 @@
         <!--        TODO(Think about resize)-->
         <activity
             android:name=".tokenization.VGSCollectTokenizationActivity"
-            android:label="Tokenization" />
+            android:label="Tokenization"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <activity
             android:name=".fragment_case.VGSCollectFragmentActivity"

@@ -10,11 +10,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
+import com.verygoodsecurity.demoapp.BuildConfig
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
+import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 import kotlinx.android.synthetic.main.activity_collect_tokenization_demo.*
@@ -57,7 +59,7 @@ class VGSCollectTokenizationActivity :
         setLoading(false)
         when (response) {
             is VGSResponse.SuccessResponse -> this.response = response.body
-            is VGSResponse.ErrorResponse -> showSnackBar(response.localizeMessage)
+            is VGSResponse.ErrorResponse -> showSnackBar("Code: ${response.code}, ${response.localizeMessage}")
             null -> {}
         }
     }
@@ -110,7 +112,11 @@ class VGSCollectTokenizationActivity :
 
     private fun tokenize() {
         setLoading(true)
-        collect.tokenize()
+        collect.tokenize(
+            VGSTokenizationRequest.VGSRequestBuilder()
+                .setRouteId(BuildConfig.ROUTE_ID)
+                .build()
+        )
     }
 
     private fun copyResponseToClipboard() {
@@ -159,7 +165,7 @@ class VGSCollectTokenizationActivity :
     }
 
     private fun setLoading(isLoading: Boolean) {
-        // TODO: Implement
+        viewOverlay.isVisible = isLoading
     }
 
     private fun showSnackBar(message: String) {
