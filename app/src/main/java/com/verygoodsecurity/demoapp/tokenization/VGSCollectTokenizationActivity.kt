@@ -3,23 +3,26 @@ package com.verygoodsecurity.demoapp.tokenization
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.google.gson.Gson
+import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.BuildConfig
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
+import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
-import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
-import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 import kotlinx.android.synthetic.main.activity_collect_tokenization_demo.*
@@ -52,6 +55,32 @@ class VGSCollectTokenizationActivity :
         super.onCreate(savedInstanceState)
         initCollect()
         initViews()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.tokenization_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.scan -> {
+                scanCard()
+                true
+            }
+            R.id.settings -> {
+                openSettings()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        @Suppress("DEPRECATION")
+        super.onActivityResult(requestCode, resultCode, data)
+        collect.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onTextChange(view: InputFieldView, isEmpty: Boolean) {
@@ -101,8 +130,6 @@ class VGSCollectTokenizationActivity :
     }
 
     private fun configureTokenization() {
-        vgsTiedCardHolder.setVaultStorageType(VGSVaultStorageType.PERSISTENT)
-        vgsTiedCardHolder.setVaultAliasFormat(VGSVaultAliasFormat.FPE_SIX_T_FOUR)
         // TODO: Configure tokenization
     }
 
@@ -152,6 +179,23 @@ class VGSCollectTokenizationActivity :
         vgsTiedExpiry.setText(null)
         vgsTiedCvc.setText(null)
         response = null
+    }
+
+    private fun scanCard() {
+        val intent = Intent(this, ScanActivity::class.java).apply {
+            putExtra(ScanActivity.SCAN_CONFIGURATION, hashMapOf<String?, Int>().apply {
+                this[vgsTiedCardNumber?.getFieldName()] = ScanActivity.CARD_NUMBER
+                this[vgsTiedCardHolder?.getFieldName()] = ScanActivity.CARD_HOLDER
+                this[vgsTiedExpiry?.getFieldName()] = ScanActivity.CARD_EXP_DATE
+                this[vgsTiedCvc?.getFieldName()] = ScanActivity.CARD_CVC
+            })
+        }
+        @Suppress("DEPRECATION")
+        startActivityForResult(intent, VGSCollectActivity.USER_SCAN_REQUEST_CODE)
+    }
+
+    private fun openSettings() {
+        // TODO: Implement
     }
 
     private fun runIfInputsValid(action: () -> Unit) {
