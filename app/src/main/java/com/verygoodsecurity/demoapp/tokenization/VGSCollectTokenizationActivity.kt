@@ -45,10 +45,10 @@ class VGSCollectTokenizationActivity :
 
     override fun onTextChange(view: InputFieldView, isEmpty: Boolean) {
         val (title, layout) = (when (view.id) {
-            R.id.vgsTiedCardHolder -> mtvCardHolder to vgsTilCardHolder
-            R.id.vgsTiedCardNumber -> mtvCardNumber to vgsTilCardNumber
-            R.id.vgsTiedExpiry -> mtvExpiry to vgsTilExpiry
-            R.id.vgsTiedCvc -> mtvCvc to vgsTilCvc
+            R.id.vgsTiedCardHolder -> mtvCardHolderHint to vgsTilCardHolder
+            R.id.vgsTiedCardNumber -> mtvCardNumberHint to vgsTilCardNumber
+            R.id.vgsTiedExpiry -> mtvExpiryHint to vgsTilExpiry
+            R.id.vgsTiedCvc -> mtvCvcHint to vgsTilCvc
             else -> throw IllegalArgumentException("Not implemented.")
         })
         setInputValid(title, layout)
@@ -136,19 +136,19 @@ class VGSCollectTokenizationActivity :
     private fun runIfInputsValid(action: () -> Unit) {
         var isValid = true
         if (vgsTiedCardHolder.getState()?.isValid == false) {
-            setInputInvalid(mtvCardHolder, vgsTilCardHolder)
+            setInputInvalid(mtvCardHolderHint, vgsTilCardHolder)
             isValid = false
         }
         if (vgsTiedCardNumber.getState()?.isValid == false) {
-            setInputInvalid(mtvCardNumber, vgsTilCardNumber)
+            setInputInvalid(mtvCardNumberHint, vgsTilCardNumber)
             isValid = false
         }
         if (vgsTiedExpiry.getState()?.isValid == false) {
-            setInputInvalid(mtvExpiry, vgsTilExpiry)
+            setInputInvalid(mtvExpiryHint, vgsTilExpiry)
             isValid = false
         }
         if (vgsTiedCvc.getState()?.isValid == false) {
-            setInputInvalid(mtvCvc, vgsTilCvc)
+            setInputInvalid(mtvCvcHint, vgsTilCvc)
             isValid = false
         }
         if (isValid) action.invoke()

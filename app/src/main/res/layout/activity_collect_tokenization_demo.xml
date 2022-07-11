@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -23,24 +24,70 @@
             app:cardCornerRadius="@dimen/margin_padding_material_small"
             app:cardElevation="@dimen/margin_padding_material_small">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:padding="@dimen/margin_padding_material_medium"
+                android:src="@drawable/ic_baseline_content_copy_24"
+                app:tint="@android:color/white" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="200dp">
+                android:minHeight="200dp"
+                android:padding="@dimen/margin_padding_material_medium">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mtvCardNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:letterSpacing="0.2"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="4111 1111 1111 1111" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mtvCardHolder"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:letterSpacing="0.1"
+                    android:textAppearance="?attr/textAppearanceSubtitle1"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/mtvExpiry"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mtvCardNumber"
+                    app:layout_constraintVertical_bias="1.0"
+                    tools:text="John Doe" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/mtvExpiry"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/margin_padding_material_medium"
-                    android:src="@drawable/ic_baseline_content_copy_24"
+                    android:gravity="center"
+                    android:letterSpacing="0.1"
+                    android:textAppearance="?attr/textAppearanceSubtitle1"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@android:color/white" />
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/mtvCardHolder"
+                    app:layout_constraintTop_toBottomOf="@+id/mtvCardNumber"
+                    app:layout_constraintVertical_bias="1.0"
+                    tools:text="01/30" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtvCardHolder"
+            android:id="@+id/mtvCardHolderHint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_material_medium"
@@ -69,7 +116,7 @@
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtvCardNumber"
+            android:id="@+id/mtvCardNumberHint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_material_small"
@@ -111,7 +158,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/mtvExpiry"
+                    android:id="@+id/mtvExpiryHint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_padding_material_micro"
@@ -153,7 +200,7 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/mtvCvc"
+                    android:id="@+id/mtvCvcHint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_padding_material_micro"
