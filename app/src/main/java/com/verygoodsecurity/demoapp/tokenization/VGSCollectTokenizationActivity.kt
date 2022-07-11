@@ -75,6 +75,7 @@ class VGSCollectTokenizationActivity :
 
     private fun initViews() {
         bindViews()
+        configureTokenization()
         initTextChangeListener()
         initClickListeners()
     }
@@ -84,6 +85,10 @@ class VGSCollectTokenizationActivity :
         collect.bindView(vgsTiedCardNumber)
         collect.bindView(vgsTiedExpiry)
         collect.bindView(vgsTiedCvc)
+    }
+
+    private fun configureTokenization() {
+        // TODO: Configure tokenization
     }
 
     private fun initTextChangeListener() {
