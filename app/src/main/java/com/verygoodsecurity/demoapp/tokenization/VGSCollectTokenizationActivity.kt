@@ -83,6 +83,11 @@ class VGSCollectTokenizationActivity :
         collect.onActivityResult(requestCode, resultCode, data)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        collect.onDestroy()
+    }
+
     override fun onTextChange(view: InputFieldView, isEmpty: Boolean) {
         val (title, layout) = (when (view.id) {
             R.id.vgsTiedCardHolder -> mtvCardHolderHint to vgsTilCardHolder
