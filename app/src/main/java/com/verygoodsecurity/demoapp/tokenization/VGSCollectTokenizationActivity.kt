@@ -1,5 +1,8 @@
 package com.verygoodsecurity.demoapp.tokenization
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +30,8 @@ class VGSCollectTokenizationActivity :
 
     private lateinit var collect: VGSCollect
 
+    private var response: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initCollect()
@@ -48,7 +53,10 @@ class VGSCollectTokenizationActivity :
         Log.d(this::class.java.simpleName, response.toString())
         setLoading(false)
         when (response) {
-            is VGSResponse.SuccessResponse -> mbReset.isVisible = true
+            is VGSResponse.SuccessResponse -> {
+                this.response = response.body
+                mbReset.isVisible = true
+            }
             is VGSResponse.ErrorResponse -> showSnackBar(response.localizeMessage)
             null -> {}
         }
@@ -91,12 +99,18 @@ class VGSCollectTokenizationActivity :
                 tokenize()
             }
         }
+        mcvCard.setOnClickListener { copyResponseToClipboard() }
         mbReset.setOnClickListener { resetView() }
     }
 
     private fun tokenize() {
         setLoading(true)
         collect.tokenize()
+    }
+
+    private fun copyResponseToClipboard() {
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.setPrimaryClip(ClipData.newPlainText("", response))
     }
 
     private fun resetView() {
