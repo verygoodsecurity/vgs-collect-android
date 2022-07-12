@@ -11,6 +11,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.google.gson.Gson
@@ -59,6 +60,11 @@ class TokenizationActivity :
         super.onCreate(savedInstanceState)
         initCollect()
         initViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        configureTokenization()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -139,14 +145,39 @@ class TokenizationActivity :
     }
 
     private fun configureTokenization() {
-        vgsTiedCardHolder.setVaultStorageType(VGSVaultStorageType.VOLATILE)
-        vgsTiedCardHolder.setVaultAliasFormat(VGSVaultAliasFormat.UUID)
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        vgsTiedCardHolder.setEnabledTokenization(
+            preferences.getBoolean(
+                getString(R.string.tokenization_card_holder_enabled_key),
+                true
+            )
+        )
+        preferences.getString(getString(R.string.tokenization_card_holder_storage_key), null)?.let {
+            vgsTiedCardHolder.setVaultStorageType(parseStorage(it))
+        }
+        preferences.getString(getString(R.string.tokenization_card_holder_alias_format_key), null)
+            ?.let {
+                vgsTiedCardHolder.setVaultAliasFormat(parseAliasFormat(it))
+            }
 
-        vgsTiedCardNumber.setVaultAliasFormat(VGSVaultAliasFormat.UUID)
+        preferences.getString(getString(R.string.tokenization_card_number_alias_format_key), null)
+            ?.let {
+                vgsTiedCardNumber.setVaultAliasFormat(parseAliasFormat(it))
+            }
 
-
-        vgsTiedCvc.getState()
-        // TODO: Configure tokenization
+        vgsTiedExpiry.setEnabledTokenization(
+            preferences.getBoolean(
+                getString(R.string.tokenization_expiry_enabled_key),
+                true
+            )
+        )
+        preferences.getString(getString(R.string.tokenization_expiry_storage_key), null)?.let {
+            vgsTiedExpiry.setVaultStorageType(parseStorage(it))
+        }
+        preferences.getString(getString(R.string.tokenization_expiry_alias_format_key), null)
+            ?.let {
+                vgsTiedExpiry.setVaultAliasFormat(parseAliasFormat(it))
+            }
     }
 
     private fun initTextChangeListener() {
@@ -255,5 +286,18 @@ class TokenizationActivity :
             anchorView = mbTokenize
             animationMode = Snackbar.ANIMATION_MODE_SLIDE
         }.show()
+    }
+
+    private fun parseStorage(storage: String): VGSVaultStorageType = when (storage) {
+        VGSVaultStorageType.PERSISTENT.name -> VGSVaultStorageType.PERSISTENT
+        VGSVaultStorageType.VOLATILE.name -> VGSVaultStorageType.VOLATILE
+        else -> throw IllegalArgumentException("Not implemented!")
+    }
+
+    private fun parseAliasFormat(format: String): VGSVaultAliasFormat = when (format) {
+        VGSVaultAliasFormat.UUID.name -> VGSVaultAliasFormat.UUID
+        VGSVaultAliasFormat.FPE_SIX_T_FOUR.name -> VGSVaultAliasFormat.FPE_SIX_T_FOUR
+        VGSVaultAliasFormat.NUM_LENGTH_PRESERVING.name -> VGSVaultAliasFormat.NUM_LENGTH_PRESERVING
+        else -> throw IllegalArgumentException("Not implemented!")
     }
 }
