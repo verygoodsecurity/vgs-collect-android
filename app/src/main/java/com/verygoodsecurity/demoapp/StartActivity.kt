@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
 import com.verygoodsecurity.demoapp.fragment_case.VGSCollectFragmentActivity
-import com.verygoodsecurity.demoapp.tokenization.VGSCollectTokenizationActivity
+import com.verygoodsecurity.demoapp.tokenization.TokenizationActivity
 import com.verygoodsecurity.demoapp.viewpager_case.VGSViewPagerActivity
 import kotlinx.android.synthetic.main.activity_start.*
 
@@ -21,7 +21,7 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         tiedVaultId?.setText(BuildConfig.VAULT_ID)
         tiedPath?.setText(BuildConfig.PATH)
         llTokenizationFlow?.setOnClickListener {
-            startActivity(VGSCollectTokenizationActivity::class.java)
+            startActivity(TokenizationActivity::class.java)
         }
         llCollectActivityFlow?.setOnClickListener {
             startActivity(VGSCollectActivity::class.java)

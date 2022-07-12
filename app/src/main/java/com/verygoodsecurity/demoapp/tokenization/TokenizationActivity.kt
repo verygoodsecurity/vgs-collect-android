@@ -19,17 +19,19 @@ import com.verygoodsecurity.demoapp.BuildConfig
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
+import com.verygoodsecurity.demoapp.tokenization.model.TokenizedCard
+import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettingsActivity
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-import kotlinx.android.synthetic.main.activity_collect_tokenization_demo.*
+import kotlinx.android.synthetic.main.activity_tokenization.*
 import kotlin.properties.Delegates
 
-class VGSCollectTokenizationActivity :
-    AppCompatActivity(R.layout.activity_collect_tokenization_demo),
+class TokenizationActivity :
+    AppCompatActivity(R.layout.activity_tokenization),
     InputFieldView.OnTextChangedListener, VgsCollectResponseListener {
 
     private val defaultTextColor by lazy { ContextCompat.getColor(this, R.color.fiord) }
@@ -112,11 +114,11 @@ class VGSCollectTokenizationActivity :
     private fun initCollect() {
         with(intent?.extras) {
             collect = VGSCollect(
-                this@VGSCollectTokenizationActivity,
+                this@TokenizationActivity,
                 this?.getString(StartActivity.KEY_BUNDLE_VAULT_ID) ?: "",
                 this?.getString(StartActivity.KEY_BUNDLE_ENVIRONMENT) ?: ""
             )
-            collect.addOnResponseListeners(this@VGSCollectTokenizationActivity)
+            collect.addOnResponseListeners(this@TokenizationActivity)
         }
     }
 
@@ -200,7 +202,7 @@ class VGSCollectTokenizationActivity :
     }
 
     private fun openSettings() {
-        // TODO: Implement
+        TokenizationSettingsActivity.start(this)
     }
 
     private fun runIfInputsValid(action: () -> Unit) {

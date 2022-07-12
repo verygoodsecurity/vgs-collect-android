@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.tokenization
+package com.verygoodsecurity.demoapp.tokenization.model
 
 import com.google.gson.annotations.SerializedName
 

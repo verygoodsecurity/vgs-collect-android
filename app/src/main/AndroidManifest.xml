@@ -34,8 +34,15 @@
 
         <!--        TODO(Think about resize)-->
         <activity
-            android:name=".tokenization.VGSCollectTokenizationActivity"
+            android:name=".tokenization.TokenizationActivity"
             android:label="Tokenization"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity
+            android:name=".tokenization.settings.TokenizationSettingsActivity"
+            android:label="Settings"
+            android:theme="@style/AppTheme.TokenizationSettings"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
 
