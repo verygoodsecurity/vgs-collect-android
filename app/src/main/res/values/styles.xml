@@ -32,6 +32,11 @@
 
     <style name="AppTheme.TokenizationSettings">
         <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
+        <item name="preferenceTheme">@style/TokenizationPreferenceTheme</item>
+    </style>
+
+    <style name="TokenizationPreferenceTheme" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="android:tint">@color/fiord</item>
     </style>
 
     <style name="CustomButtonText" />

@@ -1,4 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory
+        android:title="Name"
+        app:icon="@drawable/ic_baseline_person_24">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/tokenization_card_holder_enabled_key"
+            android:title="Enabled" />
+
+        <ListPreference
+            android:defaultValue="PERSISTENT"
+            android:entries="@array/tokenization_storage_type"
+            android:entryValues="@array/tokenization_storage_type"
+            android:key="@string/tokenization_card_holder_storage_key"
+            android:summary="%s"
+            android:title="Storage"
+            app:shouldDisableView="true" />
+
+        <ListPreference
+            android:defaultValue="UUID"
+            android:entries="@array/tokenization_alias_format"
+            android:entryValues="@array/tokenization_alias_format"
+            android:key="@string/tokenization_card_holder_alias_format_key"
+            android:summary="%s"
+            android:title="Alias format" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Number"
+        app:icon="@drawable/ic_baseline_credit_card_24">
+
+        <ListPreference
+            android:defaultValue="UUID"
+            android:entries="@array/tokenization_alias_format"
+            android:entryValues="@array/tokenization_alias_format"
+            android:key="@string/tokenization_card_number_alias_format_key"
+            android:summary="%s"
+            android:title="Alias format" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Expiry"
+        app:icon="@drawable/ic_baseline_date_range_24">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="@string/tokenization_expiry_enabled_key"
+            android:title="Enabled" />
+
+        <ListPreference
+            android:defaultValue="PERSISTENT"
+            android:entries="@array/tokenization_storage_type"
+            android:entryValues="@array/tokenization_storage_type"
+            android:key="@string/tokenization_expiry_storage_key"
+            android:summary="%s"
+            android:title="Storage"
+            app:shouldDisableView="true" />
+
+        <ListPreference
+            android:defaultValue="UUID"
+            android:entries="@array/tokenization_alias_format"
+            android:entryValues="@array/tokenization_alias_format"
+            android:key="@string/tokenization_expiry_alias_format_key"
+            android:summary="%s"
+            android:title="Alias format" />
+    </PreferenceCategory>
 </PreferenceScreen>

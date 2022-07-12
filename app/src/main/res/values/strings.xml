@@ -26,6 +26,7 @@
     <string name="tokenization_scan_card_menu_item_title">Scan</string>
     <string name="tokenization_settings_menu_item_title">Settings</string>
 
+    <!--    Collect flow-->
     <string name="scan_item">Scan Card</string>
     <string name="collect_activity_cards_title">Collecting credit card data</string>
     <string name="collect_activity_submit_btn">submit</string>
@@ -43,4 +44,13 @@
 
     <string name="postal_code">Postal code</string>
     <string name="city">City</string>
+
+    <!--    Tokenization-->
+    <string name="tokenization_card_holder_enabled_key">key_card_holder_tokenization_enabled</string>
+    <string name="tokenization_card_holder_storage_key">key_card_holder_tokenization_storage</string>
+    <string name="tokenization_card_holder_alias_format_key">key_card_holder_tokenization_alias_format</string>
+    <string name="tokenization_card_number_alias_format_key">key_card_number_tokenization_alias_format</string>
+    <string name="tokenization_expiry_enabled_key">key_expiry_tokenization_enabled</string>
+    <string name="tokenization_expiry_storage_key">key_expiry_tokenization_storage</string>
+    <string name="tokenization_expiry_alias_format_key">key_expiry_tokenization_alias_format</string>
 </resources>

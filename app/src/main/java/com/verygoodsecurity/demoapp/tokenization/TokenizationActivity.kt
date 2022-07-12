@@ -25,6 +25,8 @@ import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
+import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 import kotlinx.android.synthetic.main.activity_tokenization.*
@@ -137,6 +139,13 @@ class TokenizationActivity :
     }
 
     private fun configureTokenization() {
+        vgsTiedCardHolder.setVaultStorageType(VGSVaultStorageType.VOLATILE)
+        vgsTiedCardHolder.setVaultAliasFormat(VGSVaultAliasFormat.UUID)
+
+        vgsTiedCardNumber.setVaultAliasFormat(VGSVaultAliasFormat.UUID)
+
+
+        vgsTiedCvc.getState()
         // TODO: Configure tokenization
     }
 
