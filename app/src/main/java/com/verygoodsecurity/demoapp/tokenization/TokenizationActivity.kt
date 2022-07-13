@@ -113,10 +113,9 @@ class TokenizationActivity :
     override fun onResponse(response: VGSResponse?) {
         Log.d(this::class.java.simpleName, response.toString())
         setLoading(false)
-        when (response) {
-            is VGSResponse.SuccessResponse -> this.response = response.body
-            is VGSResponse.ErrorResponse -> showSnackBar("Code: ${response.code}, ${response.localizeMessage}")
-            null -> {}
+        this.response = response?.body
+        if (response is VGSResponse.ErrorResponse) {
+            showSnackBar("Code: ${response.code}, ${response.localizeMessage}")
         }
     }
 
