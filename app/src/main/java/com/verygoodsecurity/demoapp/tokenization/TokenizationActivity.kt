@@ -225,13 +225,7 @@ class TokenizationActivity :
 
 
     private fun updateCodeExample(response: String?) {
-        cvResponse.setCode(
-            try {
-                JSONObject(response ?: "").toString(4)
-            } catch (e: Exception) {
-                ""
-            }
-        )
+        cvResponse.setCode(formatJson(response))
     }
 
     private fun tokenize() {
@@ -245,7 +239,7 @@ class TokenizationActivity :
 
     private fun copyResponseToClipboard() {
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setPrimaryClip(ClipData.newPlainText("", response))
+        clipboard.setPrimaryClip(ClipData.newPlainText("", formatJson(response)))
         showSnackBar("Tokenized card response copied.")
     }
 
@@ -315,6 +309,12 @@ class TokenizationActivity :
             anchorView = mbTokenize
             animationMode = Snackbar.ANIMATION_MODE_SLIDE
         }.show()
+    }
+
+    private fun formatJson(json: String?): String = try {
+        JSONObject(json ?: "").toString(4)
+    } catch (e: Exception) {
+        ""
     }
 
     private fun parseStorage(storage: String): VGSVaultStorageType = when (storage) {
