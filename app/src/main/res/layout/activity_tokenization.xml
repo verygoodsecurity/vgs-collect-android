@@ -1,105 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:padding="@dimen/margin_padding_material_medium">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
+
+        android:id="@+id/llInput"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
         android:clipToPadding="false"
         android:orientation="vertical"
-        android:padding="@dimen/margin_padding_material_medium">
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/mcvCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            app:cardCornerRadius="@dimen/margin_padding_material_small"
-            app:cardElevation="@dimen/margin_padding_material_small">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
-                android:padding="@dimen/margin_padding_material_medium"
-                android:src="@drawable/ic_baseline_content_copy_24"
-                app:tint="@android:color/white" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="200dp"
-                android:padding="@dimen/margin_padding_material_medium">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/mtvCardNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:hint="CARD NUMBER"
-                    android:letterSpacing="0.2"
-                    android:lines="1"
-                    android:textAppearance="?attr/textAppearanceHeadline6"
-                    android:textColor="@android:color/white"
-                    android:textColorHint="@android:color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="4111 1111 1111 1111" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/mtvCardHolder"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_padding_material_small"
-                    android:gravity="start"
-                    android:hint="HOLDER NAME"
-                    android:lines="1"
-                    android:textAppearance="?attr/textAppearanceCaption"
-                    android:textColor="@android:color/white"
-                    android:textColorHint="@android:color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/mtvExpiry"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mtvCardNumber"
-                    app:layout_constraintVertical_bias="1.0"
-                    tools:text="John Doe" />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/mtvExpiry"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_padding_material_small"
-                    android:gravity="end"
-                    android:hint="EXPIRY"
-                    android:lines="1"
-                    android:textAppearance="?attr/textAppearanceCaption"
-                    android:textColor="@android:color/white"
-                    android:textColorHint="@android:color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/mtvCardHolder"
-                    app:layout_constraintTop_toBottomOf="@+id/mtvCardNumber"
-                    app:layout_constraintVertical_bias="1.0"
-                    tools:text="01/30" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mtvCardHolderHint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_material_medium"
             android:layout_marginBottom="@dimen/margin_padding_material_micro"
             android:fontFamily="sans-serif-medium"
             android:text="Card Holder"
@@ -237,53 +171,58 @@
                 </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:orientation="horizontal">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mbTokenize"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:text="Tokenize" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mbReset"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginStart="@dimen/margin_padding_material_medium"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:text="Reset"
-                android:visibility="gone" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="gone"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_padding_material_medium_small"
+        android:layout_marginBottom="@dimen/margin_padding_material_medium"
+        app:cardBackgroundColor="@color/blackPearl"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/llButtons"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_default="wrap"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/llInput"
+        app:layout_constraintVertical_bias="0.0">
+
+        <include layout="@layout/code_example_layout" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/llButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mbTokenize"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Tokenize" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mbReset"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/margin_padding_material_medium"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Reset"
+            android:visibility="gone" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <View
         android:id="@+id/viewOverlay"

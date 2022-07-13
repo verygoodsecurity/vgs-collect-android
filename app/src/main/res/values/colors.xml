@@ -24,4 +24,7 @@
     <color name="whisper">#E6E6E6</color>
     <color name="brown">#AD3333</color>
     <color name="vanillaIce">#E3D3D3</color>
+    <color name="blackPearl">#181F27</color>
+    <color name="veryLightGray">#CCCCCC</color>
+    <color name="nobel">#999999</color>
 </resources>

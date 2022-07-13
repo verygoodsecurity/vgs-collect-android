@@ -14,13 +14,11 @@ import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
-import com.google.gson.Gson
 import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.BuildConfig
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
-import com.verygoodsecurity.demoapp.tokenization.model.TokenizedCard
 import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettingsActivity
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -30,7 +28,12 @@ import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAli
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+import io.github.kbiakov.codeview.adapters.Options
+import io.github.kbiakov.codeview.highlight.ColorThemeData
+import io.github.kbiakov.codeview.highlight.SyntaxColors
 import kotlinx.android.synthetic.main.activity_tokenization.*
+import kotlinx.android.synthetic.main.code_example_layout.*
+import org.json.JSONObject
 import kotlin.properties.Delegates
 
 class TokenizationActivity :
@@ -46,14 +49,7 @@ class TokenizationActivity :
 
     private var response: String? by Delegates.observable(null) { _, _, new ->
         mbReset.isVisible = !new.isNullOrBlank()
-        updateCardView(
-            try {
-                Gson().fromJson(new, TokenizedCard::class.java)
-            } catch (e: Exception) {
-                showSnackBar(e.message ?: "Can't parse response.")
-                null
-            }
-        )
+        updateCodeExample(response)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,6 +131,7 @@ class TokenizationActivity :
         configureTokenization()
         initTextChangeListener()
         initClickListeners()
+        updateCodeExample(null)
     }
 
     private fun bindViews() {
@@ -193,16 +190,41 @@ class TokenizationActivity :
                 tokenize()
             }
         }
-        mcvCard.setOnClickListener { copyResponseToClipboard() }
+        ivCopyCodeExample?.setOnClickListener { copyResponseToClipboard() }
         mbReset.setOnClickListener { resetView() }
     }
 
-    private fun updateCardView(card: TokenizedCard?) {
-        val number =
-            Regex("(\\d{4})(\\d{4})(\\d{4})(\\d{4})").replace(card?.number ?: "", "\$1 \$2 \$3 \$4")
-        mtvCardNumber.text = number
-        mtvCardHolder.text = card?.holder
-        mtvExpiry.text = card?.expiry
+    private fun updateCodeExample(response: String?) {
+        // TODO: Refactor
+        val formattedResponse = try {
+            JSONObject(response ?: "").toString(4)
+        } catch (e: Exception) {
+            ""
+        }
+        val syntaxColor = ContextCompat.getColor(this, R.color.veryLightGray)
+        val bgColor = ContextCompat.getColor(this, R.color.blackPearl)
+        val lineNumberColor = ContextCompat.getColor(this, R.color.nobel)
+        val theme = ColorThemeData(
+            SyntaxColors(
+                string = syntaxColor,
+                punctuation = syntaxColor,
+            ),
+            numColor = lineNumberColor,
+            bgContent = bgColor,
+            bgNum = bgColor,
+            noteColor = syntaxColor,
+        )
+        cvResponse.setCode(formattedResponse)
+        cvResponse.setOptions(
+            Options(
+                this,
+                formattedResponse,
+                "json",
+                theme,
+                animateOnHighlight = false
+            )
+        )
+        cvResponse.alpha = 1f
     }
 
     private fun tokenize() {

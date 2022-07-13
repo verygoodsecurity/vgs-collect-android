@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="margin_padding_material_large">32dp</dimen>
+    <dimen name="margin_padding_material_medium_small">24dp</dimen>
     <dimen name="margin_padding_material_medium">16dp</dimen>
     <dimen name="margin_padding_material_small">8dp</dimen>
     <dimen name="margin_padding_material_micro">4dp</dimen>
