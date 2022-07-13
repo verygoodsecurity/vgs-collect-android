@@ -4,25 +4,15 @@
     android:id="@+id/clRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:padding="@dimen/margin_padding_material_medium">
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:animateLayoutChanges="true">
 
     <androidx.appcompat.widget.LinearLayoutCompat
-
         android:id="@+id/llInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_material_medium"
+        android:layout_marginTop="@dimen/margin_padding_material_medium"
+        android:layout_marginEnd="@dimen/margin_padding_material_medium"
         android:animateLayoutChanges="true"
         android:clipToPadding="false"
         android:orientation="vertical"
@@ -176,7 +166,9 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginStart="@dimen/margin_padding_material_medium"
         android:layout_marginTop="@dimen/margin_padding_material_medium_small"
+        android:layout_marginEnd="@dimen/margin_padding_material_medium"
         android:layout_marginBottom="@dimen/margin_padding_material_medium"
         app:cardBackgroundColor="@color/blackPearl"
         app:cardElevation="0dp"
@@ -194,6 +186,9 @@
         android:id="@+id/llButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_material_medium"
+        android:layout_marginEnd="@dimen/margin_padding_material_medium"
+        android:layout_marginBottom="@dimen/margin_padding_material_medium"
         android:animateLayoutChanges="true"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -223,6 +218,18 @@
             android:text="Reset"
             android:visibility="gone" />
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:minHeight="0dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/viewOverlay"

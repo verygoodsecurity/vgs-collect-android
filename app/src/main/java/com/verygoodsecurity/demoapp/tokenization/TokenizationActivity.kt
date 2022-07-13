@@ -40,12 +40,16 @@ class TokenizationActivity :
     AppCompatActivity(R.layout.activity_tokenization),
     InputFieldView.OnTextChangedListener, VgsCollectResponseListener {
 
-    private val defaultTextColor by lazy { ContextCompat.getColor(this, R.color.fiord) }
-    private val defaultBackgroundColor by lazy { ContextCompat.getColor(this, R.color.fiord_20) }
-    private val errorTextColor by lazy { ContextCompat.getColor(this, R.color.brown) }
-    private val errorBackgroundColor by lazy { ContextCompat.getColor(this, R.color.vanillaIce) }
+    private val defaultHintTextColor by lazy { ContextCompat.getColor(this, R.color.fiord) }
+    private val defaultInputBackgroundColor by lazy {
+        ContextCompat.getColor(this, R.color.fiord_20)
+    }
+    private val errorHintTextColor by lazy { ContextCompat.getColor(this, R.color.brown) }
+    private val errorInputBackgroundColor by lazy {
+        ContextCompat.getColor(this, R.color.vanillaIce)
+    }
 
-    private lateinit var collect: VGSCollect
+    private var collect: VGSCollect? = null
 
     private var response: String? by Delegates.observable(null) { _, _, new ->
         mbReset.isVisible = !new.isNullOrBlank()
@@ -86,12 +90,13 @@ class TokenizationActivity :
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         @Suppress("DEPRECATION")
         super.onActivityResult(requestCode, resultCode, data)
-        collect.onActivityResult(requestCode, resultCode, data)
+        collect?.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        collect.onDestroy()
+        collect?.onDestroy()
+        collect = null
     }
 
     override fun onTextChange(view: InputFieldView, isEmpty: Boolean) {
@@ -122,7 +127,7 @@ class TokenizationActivity :
                 this?.getString(StartActivity.KEY_BUNDLE_VAULT_ID) ?: "",
                 this?.getString(StartActivity.KEY_BUNDLE_ENVIRONMENT) ?: ""
             )
-            collect.addOnResponseListeners(this@TokenizationActivity)
+            collect?.addOnResponseListeners(this@TokenizationActivity)
         }
     }
 
@@ -131,14 +136,15 @@ class TokenizationActivity :
         configureTokenization()
         initTextChangeListener()
         initClickListeners()
+        initCodeExampleView()
         updateCodeExample(null)
     }
 
     private fun bindViews() {
-        collect.bindView(vgsTiedCardHolder)
-        collect.bindView(vgsTiedCardNumber)
-        collect.bindView(vgsTiedExpiry)
-        collect.bindView(vgsTiedCvc)
+        collect?.bindView(vgsTiedCardHolder)
+        collect?.bindView(vgsTiedCardNumber)
+        collect?.bindView(vgsTiedExpiry)
+        collect?.bindView(vgsTiedCvc)
     }
 
     private fun configureTokenization() {
@@ -194,42 +200,43 @@ class TokenizationActivity :
         mbReset.setOnClickListener { resetView() }
     }
 
-    private fun updateCodeExample(response: String?) {
-        // TODO: Refactor
-        val formattedResponse = try {
-            JSONObject(response ?: "").toString(4)
-        } catch (e: Exception) {
-            ""
-        }
+
+    private fun initCodeExampleView() {
         val syntaxColor = ContextCompat.getColor(this, R.color.veryLightGray)
         val bgColor = ContextCompat.getColor(this, R.color.blackPearl)
         val lineNumberColor = ContextCompat.getColor(this, R.color.nobel)
-        val theme = ColorThemeData(
-            SyntaxColors(
-                string = syntaxColor,
-                punctuation = syntaxColor,
-            ),
-            numColor = lineNumberColor,
-            bgContent = bgColor,
-            bgNum = bgColor,
-            noteColor = syntaxColor,
-        )
-        cvResponse.setCode(formattedResponse)
         cvResponse.setOptions(
             Options(
-                this,
-                formattedResponse,
-                "json",
-                theme,
-                animateOnHighlight = false
+                context = this.applicationContext,
+                theme = ColorThemeData(
+                    SyntaxColors(
+                        string = syntaxColor,
+                        punctuation = syntaxColor,
+                    ),
+                    numColor = lineNumberColor,
+                    bgContent = bgColor,
+                    bgNum = bgColor,
+                    noteColor = syntaxColor,
+                )
             )
         )
         cvResponse.alpha = 1f
     }
 
+
+    private fun updateCodeExample(response: String?) {
+        cvResponse.setCode(
+            try {
+                JSONObject(response ?: "").toString(4)
+            } catch (e: Exception) {
+                ""
+            }
+        )
+    }
+
     private fun tokenize() {
         setLoading(true)
-        collect.tokenize(
+        collect?.tokenize(
             VGSTokenizationRequest.VGSRequestBuilder()
                 .setRouteId(BuildConfig.ROUTE_ID)
                 .build()
@@ -289,13 +296,13 @@ class TokenizationActivity :
     }
 
     private fun setInputValid(title: MaterialTextView, layout: VGSTextInputLayout) {
-        title.setTextColor(defaultTextColor)
-        layout.setBoxBackgroundColor(defaultBackgroundColor)
+        title.setTextColor(defaultHintTextColor)
+        layout.setBoxBackgroundColor(defaultInputBackgroundColor)
     }
 
     private fun setInputInvalid(title: MaterialTextView, layout: VGSTextInputLayout) {
-        title.setTextColor(errorTextColor)
-        layout.setBoxBackgroundColor(errorBackgroundColor)
+        title.setTextColor(errorHintTextColor)
+        layout.setBoxBackgroundColor(errorInputBackgroundColor)
     }
 
     private fun setLoading(isLoading: Boolean) {
