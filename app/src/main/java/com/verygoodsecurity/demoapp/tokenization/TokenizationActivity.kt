@@ -237,10 +237,6 @@ class TokenizationActivity :
     }
 
     private fun resetView() {
-        vgsTiedCardHolder.setText(null)
-        vgsTiedCardNumber.setText(null)
-        vgsTiedExpiry.setText(null)
-        vgsTiedCvc.setText(null)
         response = null
     }
 
