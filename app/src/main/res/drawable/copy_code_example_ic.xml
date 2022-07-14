@@ -5,7 +5,7 @@
 
     <item
         android:bottom="@dimen/margin_padding_material_small"
-        android:drawable="@drawable/ic_baseline_content_copy_24"
+        android:drawable="@drawable/ic_baseline_content_copy_16"
         android:left="@dimen/margin_padding_material_small"
         android:right="@dimen/margin_padding_material_small"
         android:top="@dimen/margin_padding_material_small" />
