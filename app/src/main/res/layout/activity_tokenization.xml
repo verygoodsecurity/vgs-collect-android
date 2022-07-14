@@ -170,6 +170,7 @@
         android:layout_marginTop="@dimen/margin_padding_material_medium_small"
         android:layout_marginEnd="@dimen/margin_padding_material_medium"
         android:layout_marginBottom="@dimen/margin_padding_material_medium"
+        android:animateLayoutChanges="true"
         app:cardBackgroundColor="@color/blackPearl"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/llButtons"

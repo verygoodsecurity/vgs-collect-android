@@ -1,5 +1,6 @@
 package com.verygoodsecurity.demoapp.tokenization
 
+import android.animation.LayoutTransition
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -129,6 +130,7 @@ class TokenizationActivity :
     }
 
     private fun initViews() {
+        clRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         bindViews()
         configureTokenization()
         initTextChangeListener()
