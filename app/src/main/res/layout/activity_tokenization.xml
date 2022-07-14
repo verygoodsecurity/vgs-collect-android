@@ -190,7 +190,7 @@
         android:layout_marginEnd="@dimen/margin_padding_material_medium"
         android:layout_marginBottom="@dimen/margin_padding_material_medium"
         android:animateLayoutChanges="true"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -198,7 +198,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbTokenize"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
@@ -209,11 +209,12 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbReset"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginStart="@dimen/margin_padding_material_medium"
+            android:layout_marginTop="@dimen/margin_padding_material_medium"
             android:insetTop="0dp"
+            android:layout_weight="1"
             android:insetBottom="0dp"
             android:text="Reset"
             android:visibility="gone" />
