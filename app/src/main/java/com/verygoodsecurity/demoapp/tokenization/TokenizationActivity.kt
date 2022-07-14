@@ -197,7 +197,6 @@ class TokenizationActivity :
         mbReset.setOnClickListener { resetView() }
     }
 
-
     private fun initCodeExampleView() {
         val syntaxColor = ContextCompat.getColor(this, R.color.veryLightGray)
         val bgColor = ContextCompat.getColor(this, R.color.blackPearl)
@@ -219,7 +218,6 @@ class TokenizationActivity :
         )
         cvResponse.alpha = 1f
     }
-
 
     private fun updateCodeExample(response: String?) {
         cvResponse.setCode(formatJson(response))
