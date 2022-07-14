@@ -15,7 +15,6 @@ import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.api.cardio.ScanActivity
-import com.verygoodsecurity.demoapp.BuildConfig
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
@@ -23,7 +22,6 @@ import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettingsAc
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
-import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -229,11 +227,7 @@ class TokenizationActivity :
 
     private fun tokenize() {
         setLoading(true)
-        collect?.tokenize(
-            VGSTokenizationRequest.VGSRequestBuilder()
-                .setRouteId(BuildConfig.ROUTE_ID)
-                .build()
-        )
+        collect?.tokenize()
     }
 
     private fun copyResponseToClipboard() {
