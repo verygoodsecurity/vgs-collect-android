@@ -12,6 +12,6 @@
 
     <item>
 
-        <ripple android:color="@color/blackPearl"/>
+        <ripple android:color="@color/fiord_20"/>
     </item>
 </layer-list>
