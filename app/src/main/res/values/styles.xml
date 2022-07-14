@@ -1,22 +1,56 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="colorPrimary">@color/fiord</item>
+        <item name="colorPrimaryDark">@color/elephant</item>
+        <item name="colorSecondary">@color/fiord</item>
+        <item name="colorSurface">@color/fiord</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="android:textColorSecondary">@color/fiord</item>
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
+        <item name="snackbarTextViewStyle">@style/SnackBarTextViewStyle</item>
     </style>
 
-    <style name="AppTheme.StartActivity" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorAccent</item>
-        <item name="colorPrimaryDark">@color/colorAccent</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlNormal">@color/colorAccent</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    <style name="ActionBarStyle" parent="Widget.MaterialComponents.ActionBar.Primary">
+        <item name="logo">@drawable/ic_actionbar_logo</item>
+        <item name="displayOptions">useLogo|showHome|showTitle</item>
     </style>
 
+    <style name="SnackBarTextViewStyle" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
+        <item name="textColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="animationMode">slide</item>
+    </style>
 
-    <style name="AppTheme.PaymentField">
+    <style name="AppTheme.StartActivity">
+        <item name="actionBarStyle">@style/ActionBarStyle.StartActivity</item>
+    </style>
+
+    <style name="ActionBarStyle.StartActivity">
+        <item name="title">@string/start_activity_app_bar_title</item>
+    </style>
+
+    <style name="AppTheme.TokenizationSettings">
+        <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
+        <item name="preferenceTheme">@style/TokenizationPreferenceTheme</item>
+    </style>
+
+    <style name="TokenizationPreferenceTheme" parent="@style/PreferenceThemeOverlay.v14.Material">
+        <item name="android:tint">@color/fiord</item>
+    </style>
+
+    <style name="CustomButtonText" />
+
+    <style name="CustomButtonText.Title" parent="TextAppearance.MaterialComponents.Subtitle2" />
+
+    <style name="CustomButtonText.Description" parent="TextAppearance.MaterialComponents.Caption" />
+
+    <style name="CustomButtonText.Action" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/navyBlue</item>
+    </style>
+
+    <style name="EditText">
         <item name="android:paddingTop">1dp</item>
         <item name="android:paddingBottom">1dp</item>
         <item name="android:paddingStart">@dimen/vgs_field_horizontal_padding</item>
@@ -58,5 +92,4 @@
         <item name="android:textSize">20dp</item>
         <item name="android:textStyle">bold</item>
     </style>
-
 </resources>

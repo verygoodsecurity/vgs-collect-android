@@ -12,10 +12,10 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/default_margin"
-            android:paddingEnd="@dimen/default_margin"
-            android:paddingTop="@dimen/half_default_margin"
-            android:paddingBottom="@dimen/default_margin">
+            android:paddingStart="@dimen/margin_padding_material_medium"
+            android:paddingEnd="@dimen/margin_padding_material_medium"
+            android:paddingTop="@dimen/margin_padding_material_small"
+            android:paddingBottom="@dimen/margin_padding_material_medium">
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -23,19 +23,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:paddingTop="@dimen/default_margin"
-                    android:paddingStart="@dimen/default_margin"
-                    android:paddingEnd="@dimen/default_margin">
+                    android:paddingTop="@dimen/margin_padding_material_medium"
+                    android:paddingStart="@dimen/margin_padding_material_medium"
+                    android:paddingEnd="@dimen/margin_padding_material_medium">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/ic_cards"
                         android:textColor="@color/title_color"
-                        android:drawablePadding="@dimen/half_default_margin"
+                        android:drawablePadding="@dimen/margin_padding_material_small"
                         android:textSize="@dimen/collect_activity_cards_title_text_size"
                         android:text="@string/collect_activity_cards_title"
-                        android:layout_marginBottom="@dimen/default_margin"/>
+                        android:layout_marginBottom="@dimen/margin_padding_material_medium"/>
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/previewCard"
@@ -43,9 +43,9 @@
                         android:layout_height="@dimen/card_preview_height"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
-                        app:cardCornerRadius="@dimen/half_default_margin"
+                        app:cardCornerRadius="@dimen/margin_padding_material_small"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/half_default_margin">
+                        android:layout_marginBottom="@dimen/margin_padding_material_small">
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -109,7 +109,7 @@
                         android:layout_height="@dimen/card_preview_height"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
-                        app:cardCornerRadius="@dimen/half_default_margin"
+                        app:cardCornerRadius="@dimen/margin_padding_material_small"
                         android:layout_gravity="center_horizontal">
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -134,7 +134,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     app:fieldName="card_data.cardNumber"
-                                    style="@style/AppTheme.PaymentField"
+                                    style="@style/EditText"
                                     app:numberDivider=" "
                                     app:fontFamily="@font/robotomono_light"
                                     android:nextFocusDown="@+id/cardHolderField"
@@ -157,7 +157,7 @@
                                     android:id="@+id/cardHolderField"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    style="@style/AppTheme.PaymentField"
+                                    style="@style/EditText"
                                     android:nextFocusDown="@+id/cardExpDateField"
                                     app:imeOptions="actionNext"
                                     app:fontFamily="@font/robotomono_light"
@@ -180,7 +180,7 @@
                                     android:id="@+id/cardExpDateField"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    style="@style/AppTheme.PaymentField"
+                                    style="@style/EditText"
                                     app:fieldName="card_data.personal_data.secret.expDate"
                                     android:nextFocusDown="@+id/cardCVCField"
                                     app:imeOptions="actionNext"
@@ -207,7 +207,7 @@
                                     android:id="@+id/cardCVCField"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    style="@style/AppTheme.PaymentField"
+                                    style="@style/EditText"
                                     app:fieldName="card_data.cardCvc"
                                     app:imeOptions="actionDone"
                                     app:fontFamily="@font/robotomono_light"/>
@@ -220,7 +220,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/default_margin"
+                        android:layout_marginTop="@dimen/margin_padding_material_medium"
                         android:gravity="end">
 
                         <FrameLayout
@@ -240,9 +240,9 @@
                             android:textColor="@android:color/white"
                             android:textSize="14dp"
                             android:text="@string/collect_activity_submit_btn"
-                            android:layout_marginEnd="@dimen/default_margin"
+                            android:layout_marginEnd="@dimen/margin_padding_material_medium"
                             app:backgroundTint="@color/colorAccent"
-                            app:cornerRadius="@dimen/default_margin"/>
+                            app:cornerRadius="@dimen/margin_padding_material_medium"/>
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/attachBtn"
@@ -254,7 +254,7 @@
                             app:iconTint="@color/colorAccent"
                             app:icon="@drawable/ic_attach_file"
                             android:text="@string/collect_activity_attach_btn"
-                            android:layout_marginEnd="@dimen/default_margin"
+                            android:layout_marginEnd="@dimen/margin_padding_material_medium"
                             android:background="@color/colorAccent"
                             app:cornerRadius="33dp"/>
 
@@ -270,7 +270,7 @@
                                 android:layout_width="12dp"
                                 android:layout_height="match_parent"
                                 android:src="@drawable/ic_attach_file"
-                                android:layout_marginEnd="@dimen/half_default_margin"/>
+                                android:layout_marginEnd="@dimen/margin_padding_material_small"/>
                             <TextView
                                 android:id="@+id/attachBtnTitle"
                                 android:clickable="false"
@@ -289,7 +289,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/default_margin"
+                        android:layout_marginTop="@dimen/margin_padding_material_medium"
                         android:gravity="end">
 
                         <TextView
@@ -318,15 +318,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="2dp"
                         android:background="@color/colorAccent"
-                        android:layout_marginTop="@dimen/half_default_margin" />
+                        android:layout_marginTop="@dimen/margin_padding_material_small" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:background="@android:color/white"
-                        android:layout_marginBottom="@dimen/half_default_margin"
-                        android:padding="@dimen/default_margin"
+                        android:layout_marginBottom="@dimen/margin_padding_material_small"
+                        android:padding="@dimen/margin_padding_material_medium"
                         android:gravity="end">
 
                         <TextView
@@ -335,7 +335,7 @@
                             android:layout_weight="1"
                             android:textSize="10dp"
                             android:layout_width="0dp"
-                            android:paddingEnd="@dimen/half_default_margin"
+                            android:paddingEnd="@dimen/margin_padding_material_small"
                             android:layout_height="wrap_content"/>
 
                         <TextView

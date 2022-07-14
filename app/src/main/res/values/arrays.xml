@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="tokenization_storage_type">
+        <item>PERSISTENT</item>
+        <item>VOLATILE</item>
+    </array>
+
+    <array name="tokenization_alias_format">
+        <item>UUID</item>
+        <item>FPE_SIX_T_FOUR</item>
+        <item>NUM_LENGTH_PRESERVING</item>
+    </array>
+</resources>

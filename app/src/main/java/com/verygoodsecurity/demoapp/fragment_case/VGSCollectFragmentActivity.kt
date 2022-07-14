@@ -42,9 +42,9 @@ class VGSCollectFragmentActivity: AppCompatActivity() {
     private fun retrieveSettings() {
         val bndl = intent?.extras
 
-        vault_id = bndl?.getString(StartActivity.VAULT_ID, "")?:""
-        path = bndl?.getString(StartActivity.PATH,"/")?:""
+        vault_id = bndl?.getString(StartActivity.KEY_BUNDLE_VAULT_ID, "")?:""
+        path = bndl?.getString(StartActivity.KEY_BUNDLE_PATH,"/")?:""
 
-        envId = bndl?.getInt(StartActivity.ENVIROMENT, 0)?:0
+        envId = bndl?.getInt(StartActivity.KEY_BUNDLE_ENVIRONMENT, 0)?:0
     }
 }

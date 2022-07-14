@@ -196,14 +196,14 @@ class ActivityCaseInstrumentedTest {
     }
 
     private fun startMainScreen() {
-        val startWithActivityBtn = onView(withId(R.id.startWithActivityBtn))
+        val startWithActivityBtn = onView(withId(R.id.llCollectActivityFlow))
             .check(matches(isDisplayed()))
 
-        onView(withId(R.id.userVault)).perform(
+        onView(withId(R.id.tiedVaultId)).perform(
             typeText(Utils.DEFAULT_TENANT_ID),
             closeSoftKeyboard()
         )
-        onView(withId(R.id.userPath)).perform(typeText(Utils.DEFAULT_PATH), closeSoftKeyboard())
+        onView(withId(R.id.tiedPath)).perform(typeText(Utils.DEFAULT_PATH), closeSoftKeyboard())
 
         performClick(startWithActivityBtn)
     }

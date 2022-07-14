@@ -10,10 +10,10 @@
         android:id="@+id/titleDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/half_default_margin"
-        android:layout_marginEnd="@dimen/half_default_margin"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginStart="@dimen/margin_padding_material_small"
+        android:layout_marginEnd="@dimen/margin_padding_material_small"
+        android:layout_marginTop="@dimen/margin_padding_material_medium"
+        android:layout_marginBottom="@dimen/margin_padding_material_medium"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="@+id/cardExpDateFieldLay"
         android:text="Expiration date"/>
@@ -28,10 +28,10 @@
         app:hintAnimationEnabled="false"
         app:hintEnabled="false"
         app:boxStrokeColor="#969696"
-        app:boxCornerRadius="@dimen/half_default_margin"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin">
+        app:boxCornerRadius="@dimen/margin_padding_material_small"
+        android:layout_marginTop="@dimen/margin_padding_material_medium"
+        android:layout_marginStart="@dimen/margin_padding_material_medium"
+        android:layout_marginEnd="@dimen/margin_padding_material_medium">
         <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
             android:id="@+id/cardExpDateField"
             android:layout_width="match_parent"
@@ -40,10 +40,10 @@
             android:singleLine="true"
             app:datePattern="MM/yy"
             android:hint="MM/YY"
-            android:paddingStart="@dimen/default_margin"
-            android:paddingEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"/>
+            android:paddingStart="@dimen/margin_padding_material_medium"
+            android:paddingEnd="@dimen/margin_padding_material_medium"
+            android:layout_marginStart="@dimen/margin_padding_material_medium"
+            android:layout_marginEnd="@dimen/margin_padding_material_medium"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 <!--    app:cardPreview="right"-->
 
@@ -53,10 +53,10 @@
         app:layout_constraintStart_toStartOf="@+id/cardCVCFieldLay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/half_default_margin"
-        android:layout_marginEnd="@dimen/half_default_margin"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginStart="@dimen/margin_padding_material_small"
+        android:layout_marginEnd="@dimen/margin_padding_material_small"
+        android:layout_marginTop="@dimen/margin_padding_material_medium"
+        android:layout_marginBottom="@dimen/margin_padding_material_medium"
         android:text="CVC"/>
 
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -69,10 +69,10 @@
         app:hintAnimationEnabled="false"
         app:hintEnabled="false"
         app:boxStrokeColor="#969696"
-        app:boxCornerRadius="@dimen/half_default_margin"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin">
+        app:boxCornerRadius="@dimen/margin_padding_material_small"
+        android:layout_marginTop="@dimen/margin_padding_material_medium"
+        android:layout_marginStart="@dimen/margin_padding_material_medium"
+        android:layout_marginEnd="@dimen/margin_padding_material_medium">
         <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
             android:id="@+id/cardCVCField"
             android:layout_width="match_parent"
@@ -80,10 +80,10 @@
             app:fieldName="cardCVCField"
             app:isRequired="true"
             app:singleLine="true"
-            android:paddingStart="@dimen/default_margin"
-            android:paddingEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginEnd="@dimen/default_margin"/>
+            android:paddingStart="@dimen/margin_padding_material_medium"
+            android:paddingEnd="@dimen/margin_padding_material_medium"
+            android:layout_marginStart="@dimen/margin_padding_material_medium"
+            android:layout_marginEnd="@dimen/margin_padding_material_medium"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

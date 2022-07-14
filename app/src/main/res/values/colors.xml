@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="colorPrimary">#27A386</color>
     <color name="colorPrimaryDark">#188269</color>
     <color name="colorAccent">#26A6D4</color>
@@ -16,5 +16,15 @@
     <color name="state_unactive">#C5E1EB</color>
     <color name="state_active">@color/colorAccent</color>
 
-    <color name="black">#000</color>
+    <color name="fiord">#4b5d69</color>
+    <color name="fiord_20">#204b5d69</color>
+    <color name="elephant">#22343e</color>
+    <color name="navyBlue">#145ff5</color>
+    <color name="kleinBlue">#0036c1</color>
+    <color name="whisper">#E6E6E6</color>
+    <color name="brown">#AD3333</color>
+    <color name="vanillaIce">#E3D3D3</color>
+    <color name="blackPearl">#181F27</color>
+    <color name="veryLightGray">#CCCCCC</color>
+    <color name="nobel">#999999</color>
 </resources>

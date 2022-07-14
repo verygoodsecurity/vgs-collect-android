@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/bg_code_example_badge" />
+
+    <item
+        android:bottom="@dimen/margin_padding_material_small"
+        android:drawable="@drawable/ic_baseline_content_copy_16"
+        android:left="@dimen/margin_padding_material_small"
+        android:right="@dimen/margin_padding_material_small"
+        android:top="@dimen/margin_padding_material_small" />
+
+    <item>
+
+        <ripple android:color="@color/fiord_20"/>
+    </item>
+</layer-list>

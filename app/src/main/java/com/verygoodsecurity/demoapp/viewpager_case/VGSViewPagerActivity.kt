@@ -2,7 +2,6 @@ package com.verygoodsecurity.demoapp.viewpager_case
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -65,10 +64,10 @@ class VGSViewPagerActivity:AppCompatActivity(), VgsCollectResponseListener, View
     private fun retrieveSettings() {
         val bndl = intent?.extras
 
-        vault_id = bndl?.getString(StartActivity.VAULT_ID, "")?:""
-        path = bndl?.getString(StartActivity.PATH,"/")?:""
+        vault_id = bndl?.getString(StartActivity.KEY_BUNDLE_VAULT_ID, "")?:""
+        path = bndl?.getString(StartActivity.KEY_BUNDLE_PATH,"/")?:""
 
-        val envId = bndl?.getInt(StartActivity.ENVIROMENT, 0)?:0
+        val envId = bndl?.getInt(StartActivity.KEY_BUNDLE_ENVIRONMENT, 0)?:0
         env = Environment.values()[envId]
 
         vgsForm = VGSCollect(this, vault_id, env)

@@ -1,82 +1,259 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:overScrollMode="never">
 
-    <com.google.android.material.textfield.TextInputLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:hint="@string/user_vault_id_hint"
-        android:layout_margin="@dimen/default_margin"
-        android:foregroundTint="@color/colorAccent">
-        <EditText
-            android:id="@+id/userVault"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </com.google.android.material.textfield.TextInputLayout>
+        android:orientation="vertical"
+        android:padding="@dimen/margin_padding_material_medium">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:hint="@string/user_endpoint_hint"
-        android:layout_margin="@dimen/default_margin">
-        <EditText
-            android:id="@+id/userPath"
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_padding_material_micro"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/start_activity_vault_id_hint"
+            android:textAppearance="?attr/textAppearanceCaption" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilVaultId"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""/>
-    </com.google.android.material.textfield.TextInputLayout>
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:errorEnabled="false"
+            app:hintEnabled="false">
 
-    <Spinner
-        android:id="@+id/environmentSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/default_margin" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiedVaultId"
+                style="TextInputEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/startWithActivityBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:textColor="@android:color/white"
-        android:textSize="14dp"
-        android:textAllCaps="false"
-        app:backgroundTint="@color/colorAccent"
-        app:cornerRadius="@dimen/default_margin"
-        android:text="@string/start_with_activity"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_small"
+            android:layout_marginBottom="@dimen/margin_padding_material_micro"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/start_activity_path_hint"
+            android:textAppearance="?attr/textAppearanceCaption" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/startWithFragmentBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:textColor="@android:color/white"
-        android:textSize="14dp"
-        android:textAllCaps="false"
-        app:backgroundTint="@color/colorAccent"
-        app:cornerRadius="@dimen/default_margin"
-        android:text="@string/start_with_fragment"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPath"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:errorEnabled="false"
+            app:hintEnabled="false">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/startWithViewPagerBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/default_margin"
-        android:layout_marginStart="@dimen/default_margin"
-        android:layout_marginEnd="@dimen/default_margin"
-        android:textColor="@android:color/white"
-        android:textSize="14dp"
-        android:textAllCaps="false"
-        app:backgroundTint="@color/colorAccent"
-        app:cornerRadius="@dimen/default_margin"
-        android:text="@string/start_view_pager"/>
-</LinearLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tiedPath"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_medium"
+            android:text="@string/start_activity_environment_title"
+            android:textAppearance="?attr/textAppearanceSubtitle2" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/mbGroupEnvironment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:checkedButton="@+id/mbSandbox"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbSandbox"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/start_activity_environment_sandbox"
+                android:textAppearance="?attr/textAppearanceSubtitle2" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbLive"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/start_activity_environment_Live"
+                android:textAppearance="?attr/textAppearanceSubtitle2" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_medium"
+            android:columnCount="2"
+            android:rowCount="2">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llTokenizationFlow"
+                android:layout_width="0dp"
+                android:layout_row="0"
+                android:layout_rowWeight="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:layout_marginEnd="@dimen/margin_padding_material_micro"
+                android:layout_marginBottom="@dimen/margin_padding_material_micro"
+                android:background="@drawable/bg_custom_btn"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_padding_material_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CustomButtonText.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/start_tokenization_activity_title" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CustomButtonText.Description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_material_micro"
+                    android:layout_weight="1"
+                    android:text="@string/start_tokenization_activity_description" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CustomButtonText.Action"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_material_micro"
+                    android:text="@string/start_activity_start_btn_title" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llCollectActivityFlow"
+                android:layout_width="0dp"
+                android:layout_row="0"
+                android:layout_rowWeight="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:layout_marginStart="@dimen/margin_padding_material_micro"
+                android:layout_marginBottom="@dimen/margin_padding_material_micro"
+                android:background="@drawable/bg_custom_btn"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_padding_material_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CustomButtonText.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/start_collect_with_activity_title" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CustomButtonText.Description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_material_micro"
+                    android:layout_weight="1"
+                    android:text="@string/start_collect_with_activity_description" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CustomButtonText.Action"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_material_micro"
+                    android:text="@string/start_activity_start_btn_title" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llCollectFragmentFlow"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_row="1"
+                android:layout_rowWeight="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:layout_marginTop="@dimen/margin_padding_material_micro"
+                android:layout_marginEnd="@dimen/margin_padding_material_micro"
+                android:background="@drawable/bg_custom_btn"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_padding_material_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CustomButtonText.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/start_collect_with_fragment_title" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CustomButtonText.Description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_material_micro"
+                    android:layout_weight="1"
+                    android:text="@string/start_collect_with_fragment_description" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CustomButtonText.Action"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_material_micro"
+                    android:text="@string/start_activity_start_btn_title" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llCollectViewPagerFlow"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_row="1"
+                android:layout_rowWeight="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:layout_marginStart="@dimen/margin_padding_material_micro"
+                android:layout_marginTop="@dimen/margin_padding_material_micro"
+                android:background="@drawable/bg_custom_btn"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_padding_material_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CustomButtonText.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/start_collect_with_view_pager_title" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CustomButtonText.Description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_material_micro"
+                    android:layout_weight="1"
+                    android:text="@string/start_collect_with_view_pager_description" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CustomButtonText.Action"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_material_micro"
+                    android:text="@string/start_activity_start_btn_title" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </GridLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</ScrollView>

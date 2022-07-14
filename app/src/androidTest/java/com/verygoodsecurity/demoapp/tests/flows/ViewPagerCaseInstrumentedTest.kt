@@ -179,7 +179,7 @@ class ViewPagerCaseInstrumentedTest {
     }
 
     private fun startMainScreen() {
-        val startWithActivityBtn = onView(withId(R.id.startWithViewPagerBtn))
+        val startWithActivityBtn = onView(withId(R.id.llCollectViewPagerFlow))
             .check(matches(isDisplayed()))
 
         startWithActivityBtn.perform(click())

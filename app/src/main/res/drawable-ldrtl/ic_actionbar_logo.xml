@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@drawable/ic_vgs_logo_white"
+        android:left="@dimen/margin_padding_material_medium" />
+</layer-list>
