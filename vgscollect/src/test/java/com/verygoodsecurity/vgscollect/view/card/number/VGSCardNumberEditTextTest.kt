@@ -20,7 +20,6 @@ import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgo
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CardInputField
-import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 import org.junit.Assert.*
 import org.junit.Before
@@ -264,7 +263,7 @@ class VGSCardNumberEditTextTest {
         stateResult.contentLength = text.length
         stateResult.fieldName = "number"
         stateResult.fieldType = FieldType.CARD_NUMBER
-        stateResult.bin = "411111"
+        stateResult.bin = "41111111"
         stateResult.last = "1111"
         stateResult.number = "411111######1111"
         stateResult.drawableBrandResId = R.drawable.ic_visa_dark
@@ -553,7 +552,7 @@ class VGSCardNumberEditTextTest {
         assertNotNull(state0)
         assertEquals(true, state0!!.isValid)
         assertEquals(16, state0.contentLength)
-        assertEquals("411111", state0.bin)
+        assertEquals("41111111", state0.bin)
 
 
         view.setText("0111111111111111")
@@ -655,7 +654,7 @@ class VGSCardNumberEditTextTest {
         assertNotNull(state1)
         assertEquals(true, state1!!.isValid)
         assertEquals(16, state1.contentLength)
-        assertEquals("411111", state1.bin)
+        assertEquals("41111111", state1.bin)
 
 
         view.setText("411111111111111")
@@ -779,7 +778,7 @@ class VGSCardNumberEditTextTest {
         )
 
         val stateResult = FieldState.CardNumberState()
-        stateResult.bin = "411111"
+        stateResult.bin = "41111111"
         stateResult.last = "1111"
         stateResult.number = "411111######1111"
         stateResult.cardBrand = CardType.VISA.name
@@ -813,9 +812,9 @@ class VGSCardNumberEditTextTest {
         with(view.getState()) {
             assertNotNull(this)
 
-            assertEquals(stateResult.bin, this!!.bin)
-            assertEquals(stateResult.last, this.last)
+            assertEquals(stateResult.last, this!!.last)
             assertEquals(stateResult.number, this.number)
+            assertNotEquals(stateResult.bin, this.bin)
             assertNotEquals(stateResult.cardBrand, this.cardBrand)
             assertNotEquals(stateResult.drawableBrandResId, this.drawableBrandResId)
 
