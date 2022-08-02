@@ -409,8 +409,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     open fun applyValidationRule(rule: ValidationRule) {
         validator.clearRules()
-        rule.lengthValidator?.let { validator.addRule(it) }
-        rule.regexValidator?.let { validator.addRule(it) }
+        rule.length?.let { validator.addRule(LengthValidator(it, rule.lengthResultLister)) }
+        rule.regex?.let { validator.addRule(RegexValidator(it, rule.regexResultLister)) }
     }
 
     fun isContentEquals(inputField: BaseInputField): Boolean {
