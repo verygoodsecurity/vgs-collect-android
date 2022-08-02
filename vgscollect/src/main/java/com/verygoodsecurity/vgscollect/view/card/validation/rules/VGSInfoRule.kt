@@ -1,9 +1,12 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.rules
 
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
+
 class VGSInfoRule private constructor(
-    regex: String?,
-    length: Array<Int>?
-) : ValidationRule(regex, length) {
+    regexValidator: RegexValidator?,
+    lengthValidator: LengthValidator?
+) : ValidationRule(regexValidator, lengthValidator) {
 
     /**
      * This class provides an API for set up rules for validation person name.
@@ -11,17 +14,23 @@ class VGSInfoRule private constructor(
     class ValidationBuilder {
 
         /** The Regex for validation input. */
-        protected var regex: String? = null
+        private var regex: RegexValidator? = null
 
         /** The minimum length of the person name which will support. */
-        protected var minLength = -1
+        private var minLength = -1
 
         /** The maximum length of the person name which will support. */
-        protected var maxLength = -1
+        private var maxLength = -1
+
+        /** Length validation result listener. */
+        private var lengthValidationResultListener: VGSValidationResultListener? = null
 
         /** Configure Regex for validation input. */
-        fun setRegex(regex: String): ValidationBuilder {
-            this.regex = regex
+        fun setRegex(
+            regex: String,
+            resultListener: VGSValidationResultListener? = null
+        ): ValidationBuilder {
+            this.regex = RegexValidator(regex, resultListener)
             return this
         }
 
@@ -50,9 +59,18 @@ class VGSInfoRule private constructor(
             return this
         }
 
-        private fun getRange(): Array<Int>? {
+        /** Set length validation listener. */
+        fun setLengthValidationResultListener(listener: VGSValidationResultListener): ValidationBuilder {
+            this.lengthValidationResultListener = listener
+            return this
+        }
+
+        private fun getLengthValidator(): LengthValidator? {
             return if (minLength != -1 && maxLength != -1) {
-                (minLength..maxLength).toList().toTypedArray()
+                LengthValidator(
+                    (minLength..maxLength).toList().toTypedArray(),
+                    lengthValidationResultListener
+                )
             } else {
                 null
             }
@@ -62,7 +80,7 @@ class VGSInfoRule private constructor(
         fun build(): VGSInfoRule {
             return VGSInfoRule(
                 regex,
-                getRange()
+                getLengthValidator()
             )
         }
     }

@@ -1,12 +1,15 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.rules
 
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
+
 /**
  * This rule provides a simplified mechanism to improve default behavior of field which include person name.
  */
 class PersonNameRule private constructor(
-    regex: String?,
-    length: Array<Int>?
-) : ValidationRule(regex, length) {
+    regexValidator: RegexValidator?,
+    lengthValidator: LengthValidator?
+) : ValidationRule(regexValidator, lengthValidator) {
 
     /**
      * This class provides an API for set up rules for validation person name.
@@ -14,7 +17,7 @@ class PersonNameRule private constructor(
     class ValidationBuilder {
 
         /** The Regex for validation input. */
-        private var regex: String? = null
+        private var regexValidator: RegexValidator? = null
 
         /** The minimum length of the person name which will support. */
         private var minLength = -1
@@ -22,9 +25,15 @@ class PersonNameRule private constructor(
         /** The maximum length of the person name which will support. */
         private var maxLength = -1
 
+        /** Length validation result listener. */
+        private var lengthValidationResultListener: VGSValidationResultListener? = null
+
         /** Configure Regex for validation input. */
-        fun setRegex(regex: String): ValidationBuilder {
-            this.regex = regex
+        fun setRegex(
+            regex: String,
+            onResult: ((isSuccessful: Boolean) -> Unit)? = null
+        ): ValidationBuilder {
+            this.regexValidator = RegexValidator(regex, onResult)
             return this
         }
 
@@ -53,17 +62,26 @@ class PersonNameRule private constructor(
             return this
         }
 
+        /** Set length validation listener. */
+        fun setLengthValidationResultListener(listener: VGSValidationResultListener): ValidationBuilder {
+            this.lengthValidationResultListener = listener
+            return this
+        }
+
         /** Creates a rule. */
         fun build(): PersonNameRule {
-            val range = if (minLength != -1 && maxLength != -1) {
-                (minLength..maxLength).toList().toTypedArray()
+            val lengthValidator = if (minLength != -1 && maxLength != -1) {
+                LengthValidator(
+                    (minLength..maxLength).toList().toTypedArray(),
+                    lengthValidationResultListener
+                )
             } else {
                 null
             }
 
             return PersonNameRule(
-                regex,
-                range
+                regexValidator,
+                lengthValidator
             )
         }
     }

@@ -17,7 +17,7 @@ class CompositeValidator : MutableValidator {
         } else {
             var isValid = true
             for (validator in validators) {
-                isValid = isValid && validator.isValid(content)
+                isValid = validator.isValid(content) && isValid
             }
             isValid
         }

@@ -1,10 +1,12 @@
 package com.verygoodsecurity.vgscollect.view.card.validation
 
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSValidationResultListener
 import java.util.regex.Pattern
 
 /** @suppress */
 class RegexValidator(
-    regex: String? = null
+    regex: String? = null,
+    private val listener: VGSValidationResultListener? = null
 ) : VGSValidator {
     private var m: Pattern? = null
 
@@ -15,9 +17,11 @@ class RegexValidator(
     }
 
     override fun isValid(content: String?): Boolean {
-        return m?.run {
+       val result =  m?.run {
             !content.isNullOrEmpty() && m!!.matcher(content).matches()
         } ?: true
+        listener?.onResult(result)
+        return result
     }
 
     internal fun setRegex(regex: String) {

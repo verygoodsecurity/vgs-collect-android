@@ -1,19 +1,26 @@
 package com.verygoodsecurity.vgscollect.view.card.validation
 
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSValidationResultListener
+
 /** @suppress */
 internal class LengthValidator : VGSValidator {
 
-    private val length:Array<Int>
+    private val length: Array<Int>
+    private val listener: VGSValidationResultListener?
 
-    constructor(length:Int) {
+    constructor(length: Int) {
         this.length = arrayOf(length)
+        this.listener = null
     }
 
-    constructor(length: Array<Int>) {
+    constructor(length: Array<Int>, listener: VGSValidationResultListener?) {
         this.length = length
+        this.listener = listener
     }
 
     override fun isValid(content: String?): Boolean {
-        return !content.isNullOrEmpty() && length.contains(content.length)
+        val result = !content.isNullOrEmpty() && length.contains(content.length)
+        listener?.onResult(result)
+        return result
     }
 }

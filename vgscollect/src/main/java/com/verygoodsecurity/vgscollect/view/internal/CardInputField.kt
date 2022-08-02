@@ -332,13 +332,13 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     override fun applyValidationRule(rule: ValidationRule) {
         with(rule as PaymentCardNumberRule) {
             allowToOverrideDefaultValidation = canOverrideDefaultValidation &&
-                    (length != null || algorithm != null || regex != null)
+                    (lengthValidator != null || algorithmValidator != null || regexValidator != null)
 
             validator.clearRules()
 
-            if (length != null) validator.addRule(LengthValidator(length))
-            if (algorithm != null) validator.addRule(CheckSumValidator(algorithm))
-            if (regex != null) validator.addRule(RegexValidator(regex))
+            if (lengthValidator != null) validator.addRule(lengthValidator)
+            if (algorithmValidator != null) validator.addRule(algorithmValidator)
+            if (regexValidator != null) validator.addRule(regexValidator)
         }
     }
 
