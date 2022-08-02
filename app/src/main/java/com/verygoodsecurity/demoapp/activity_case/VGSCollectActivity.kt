@@ -75,22 +75,15 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
     }
 
     private fun setupPostalCodeField() {
+        postalCodeField?.apply {
+            addRule(
+                VGSInfoRule.ValidationBuilder()
+                    .setRegex("^[0-9]{5}(?:-[0-9]{4})?\$")
+                    .build()
+            )
+        }
+
         vgsForm.bindView(postalCodeField)
-
-        val onlyDigits =
-            VGSInfoRule.ValidationBuilder()
-                .setRegex("\\d+") { if (!it) postalCodeRegexValidationFailed("onlyDigits") }
-                .build()
-
-        val fourDigitsRequired =
-            VGSInfoRule.ValidationBuilder()
-                .setRegex("^.{4,4}\$") { if (!it) postalCodeRegexValidationFailed("fourDigitsRequired") }
-                .build()
-        postalCodeField.setRules(listOf(onlyDigits, fourDigitsRequired))
-    }
-
-    private fun postalCodeRegexValidationFailed(message: String) {
-        Log.d("Test", message)
     }
 
     private fun setupCardExpDateField() {
