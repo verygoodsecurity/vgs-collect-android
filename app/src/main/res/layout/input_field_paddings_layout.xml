@@ -8,13 +8,13 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/default_margin">
+        android:padding="@dimen/margin_padding_material_medium">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#22ff0000"
-            android:layout_marginBottom="@dimen/half_default_margin"
+            android:layout_marginBottom="@dimen/margin_padding_material_small"
             android:text="some text"/>
 
         <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
@@ -60,7 +60,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:hint="padding left"
             android:background="#22ff0000"
             app:datePattern="MM/yy"
-            android:paddingLeft="@dimen/default_margin"/>
+            android:paddingLeft="@dimen/margin_padding_material_medium"/>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:layout_width="match_parent"
@@ -78,7 +78,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:imeOptions="actionNext"
                 app:datePickerModes="input"
                 app:datePattern="MM/yy"
-                android:paddingLeft="@dimen/default_margin"/>
+                android:paddingLeft="@dimen/margin_padding_material_medium"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.verygoodsecurity.vgscollect.widget.VGSEditText
@@ -89,7 +89,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:imeOptions="actionDone"
             app:hint="padding start"
             android:background="#22ff0000"
-            android:paddingStart="@dimen/default_margin"/>
+            android:paddingStart="@dimen/margin_padding_material_medium"/>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:layout_width="match_parent"
@@ -104,7 +104,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_height="wrap_content"
                 app:fieldName="card_data.cardCvc"
                 app:imeOptions="actionDone"
-                android:paddingStart="@dimen/default_margin"/>
+                android:paddingStart="@dimen/margin_padding_material_medium"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
@@ -119,7 +119,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             app:singleLine="true"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-            android:paddingRight="@dimen/default_margin"/>
+            android:paddingRight="@dimen/margin_padding_material_medium"/>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:layout_width="match_parent"
@@ -137,7 +137,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:hint="padding end"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-                android:paddingRight="@dimen/default_margin"/>
+                android:paddingRight="@dimen/margin_padding_material_medium"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
@@ -149,7 +149,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding end"
-            android:paddingEnd="@dimen/default_margin"/>
+            android:paddingEnd="@dimen/margin_padding_material_medium"/>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:layout_width="match_parent"
@@ -166,7 +166,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:imeOptions="actionDone"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-                android:paddingEnd="@dimen/default_margin"/>
+                android:paddingEnd="@dimen/margin_padding_material_medium"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
@@ -181,7 +181,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:singleLine="true"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-            android:paddingTop="@dimen/default_margin"/>
+            android:paddingTop="@dimen/margin_padding_material_medium"/>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:layout_width="match_parent"
@@ -199,7 +199,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:hint="padding top"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-                android:paddingTop="@dimen/default_margin"/>
+                android:paddingTop="@dimen/margin_padding_material_medium"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
@@ -212,7 +212,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding Bottom"
-            android:paddingBottom="@dimen/default_margin"/>
+            android:paddingBottom="@dimen/margin_padding_material_medium"/>
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
             android:layout_width="match_parent"
@@ -229,7 +229,7 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:imeOptions="actionDone"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-                android:paddingBottom="@dimen/default_margin"/>
+                android:paddingBottom="@dimen/margin_padding_material_medium"/>
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
 
@@ -242,8 +242,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding start top"
-            android:paddingTop="@dimen/default_margin"
-            android:paddingStart="@dimen/default_margin"
+            android:paddingTop="@dimen/margin_padding_material_medium"
+            android:paddingStart="@dimen/margin_padding_material_medium"
             />
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -261,8 +261,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:imeOptions="actionDone"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-                android:paddingTop="@dimen/default_margin"
-                android:paddingStart="@dimen/default_margin"
+                android:paddingTop="@dimen/margin_padding_material_medium"
+                android:paddingStart="@dimen/margin_padding_material_medium"
                 />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -276,8 +276,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding end bottom"
-            android:paddingBottom="@dimen/default_margin"
-            android:paddingEnd="@dimen/default_margin"
+            android:paddingBottom="@dimen/margin_padding_material_medium"
+            android:paddingEnd="@dimen/margin_padding_material_medium"
             />
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -295,8 +295,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:imeOptions="actionDone"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-                android:paddingBottom="@dimen/default_margin"
-                android:paddingEnd="@dimen/default_margin"
+                android:paddingBottom="@dimen/margin_padding_material_medium"
+                android:paddingEnd="@dimen/margin_padding_material_medium"
                 />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -311,8 +311,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding top bottom"
-            android:paddingBottom="@dimen/default_margin"
-            android:paddingTop="@dimen/default_margin"
+            android:paddingBottom="@dimen/margin_padding_material_medium"
+            android:paddingTop="@dimen/margin_padding_material_medium"
             />
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -330,8 +330,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:imeOptions="actionDone"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-                android:paddingBottom="@dimen/default_margin"
-                android:paddingTop="@dimen/default_margin"
+                android:paddingBottom="@dimen/margin_padding_material_medium"
+                android:paddingTop="@dimen/margin_padding_material_medium"
                 />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -345,8 +345,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding left right"
-            android:paddingLeft="@dimen/default_margin"
-            android:paddingRight="@dimen/default_margin"
+            android:paddingLeft="@dimen/margin_padding_material_medium"
+            android:paddingRight="@dimen/margin_padding_material_medium"
             />
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -364,8 +364,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:imeOptions="actionDone"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin"
+                android:paddingLeft="@dimen/margin_padding_material_medium"
+                android:paddingRight="@dimen/margin_padding_material_medium"
                 />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -379,10 +379,10 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
             android:background="#22ff0000"
             app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
             app:hint="padding all"
-            android:paddingLeft="@dimen/default_margin"
-            android:paddingRight="@dimen/default_margin"
-            android:paddingBottom="@dimen/default_margin"
-            android:paddingTop="@dimen/default_margin"
+            android:paddingLeft="@dimen/margin_padding_material_medium"
+            android:paddingRight="@dimen/margin_padding_material_medium"
+            android:paddingBottom="@dimen/margin_padding_material_medium"
+            android:paddingTop="@dimen/margin_padding_material_medium"
             />
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -400,10 +400,10 @@ xmlns:app="http://schemas.android.com/apk/res-auto"
                 app:imeOptions="actionDone"
                 app:singleLine="true"
                 app:text="text_test_text_test_text_test_text_test_text_test_text_test_"
-                android:paddingLeft="@dimen/default_margin"
-                android:paddingRight="@dimen/default_margin"
-                android:paddingBottom="@dimen/default_margin"
-                android:paddingTop="@dimen/default_margin"
+                android:paddingLeft="@dimen/margin_padding_material_medium"
+                android:paddingRight="@dimen/margin_padding_material_medium"
+                android:paddingBottom="@dimen/margin_padding_material_medium"
+                android:paddingTop="@dimen/margin_padding_material_medium"
                 />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 

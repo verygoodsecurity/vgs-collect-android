@@ -3,14 +3,12 @@ package com.verygoodsecurity.vgscollect.view.material
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Typeface
-import android.os.Build
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.DrawableRes
-import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -94,7 +92,6 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
      *
      * @return the end padding in pixels
      */
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingEnd(): Int {
         return fieldState.end
     }
@@ -128,7 +125,6 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
      *
      * @return the start padding in pixels
      */
-    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun getPaddingStart(): Int {
         return fieldState.start
     }

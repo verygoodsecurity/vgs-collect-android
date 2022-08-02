@@ -25,7 +25,7 @@ static def getLocalProperty(String name) {
 
 static def getLocalProperties() {
     def properties = new Properties()
-    def localPropertiesFile = new File('local.properies')
+    def localPropertiesFile = new File('local.properties')
     if (localPropertiesFile.exists()) {
         properties.load(localPropertiesFile.newDataInputStream())
     } else {

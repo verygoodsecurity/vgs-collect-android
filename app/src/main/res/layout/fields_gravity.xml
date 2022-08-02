@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/default_margin">
+        android:padding="@dimen/margin_padding_material_medium">
 
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout

@@ -233,10 +233,10 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
 
         val bndl = intent?.extras
 
-        vault_id = bndl?.getString(StartActivity.VAULT_ID, "") ?: ""
-        path = bndl?.getString(StartActivity.PATH, "/") ?: ""
+        vault_id = bndl?.getString(StartActivity.KEY_BUNDLE_VAULT_ID, "") ?: ""
+        path = bndl?.getString(StartActivity.KEY_BUNDLE_PATH, "/") ?: ""
 
-        val envId = bndl?.getInt(StartActivity.ENVIROMENT, 0) ?: 0
+        val envId = bndl?.getInt(StartActivity.KEY_BUNDLE_ENVIRONMENT, 0) ?: 0
         env = Environment.values()[envId]
 
         vgsForm = VGSCollect.Builder(this, vault_id)
@@ -244,10 +244,8 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
             .create()
 
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            val cacheSize = 10 * 1024 * 1024 // 10MB
-            vgsForm.getFileProvider().resize(cacheSize)
-        }
+        val cacheSize = 10 * 1024 * 1024 // 10MB
+        vgsForm.getFileProvider().resize(cacheSize)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

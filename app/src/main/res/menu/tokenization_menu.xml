@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/scan"
+        android:icon="@drawable/ic_scan_card"
+        android:title="@string/tokenization_scan_card_menu_item_title"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/tokenization_settings_menu_item_title"
+        app:showAsAction="ifRoom" />
+</menu>
