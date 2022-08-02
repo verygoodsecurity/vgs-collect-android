@@ -8,12 +8,12 @@ internal class LengthValidator : VGSValidator {
     private val length: Array<Int>
     private val listener: VGSValidationResultListener?
 
-    constructor(length: Int) {
+    constructor(length: Int, listener: VGSValidationResultListener? = null) {
         this.length = arrayOf(length)
-        this.listener = null
+        this.listener = listener
     }
 
-    constructor(length: Array<Int>, listener: VGSValidationResultListener?) {
+    constructor(length: Array<Int>, listener: VGSValidationResultListener? = null) {
         this.length = length
         this.listener = listener
     }

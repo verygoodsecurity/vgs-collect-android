@@ -1,19 +1,19 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.rules
 
-import com.verygoodsecurity.vgscollect.view.card.validation.CheckSumValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 
 /**
  * This rule provides a simplified mechanism to improve default behavior of the bank card number field.
  */
 class PaymentCardNumberRule private constructor(
-    internal val algorithmValidator: CheckSumValidator?,
-    lengthValidator: LengthValidator?,
-    regexValidator: RegexValidator?,
+    internal val algorithm: ChecksumAlgorithm?,
+    internal val algorithmResultListener: VGSValidationResultListener?,
+    regex: String?,
+    regexResultLister: VGSValidationResultListener?,
+    length: Array<Int>?,
+    lengthResultLister: VGSValidationResultListener?,
     internal val canOverrideDefaultValidation: Boolean
-) : ValidationRule(regexValidator, lengthValidator) {
+) : ValidationRule(regex, regexResultLister, length, lengthResultLister) {
 
     /**
      * This class provides an API for set up rules for validation unknown bank card brands.
@@ -23,7 +23,10 @@ class PaymentCardNumberRule private constructor(
     class ValidationBuilder {
 
         /** The algorithm for validation checkSum. */
-        private var algorithmValidator: CheckSumValidator? = null
+        private var algorithm: ChecksumAlgorithm? = null
+
+        /** Algorithm validation result listener. */
+        private var algorithmResultListener: VGSValidationResultListener? = null
 
         /** The array of the card's number which will support. */
         private var length: Array<Int>? = null
@@ -35,20 +38,24 @@ class PaymentCardNumberRule private constructor(
         private var maxLength = -1
 
         /** Length validation result listener. */
-        private var onLengthValidationResult: ((isSuccessful: Boolean) -> Unit)? = null
+        private var lengthValidationListener: VGSValidationResultListener? = null
+
+        /** The regex for validation input. */
+        private var regex: String? = null
+
+        /** Regex validation result listener. */
+        private var regexResultListener: VGSValidationResultListener? = null
 
         /** Determines whether the Collect SDK can replace default validation rules by configured with ValidationBuilder. */
         private var canOverrideDefaultValidation = false
 
-        /** The Regex for validation input. */
-        private var regexValidator: RegexValidator? = null
-
         /** Configure behavior for validation checkSum. */
         fun setAlgorithm(
             algorithm: ChecksumAlgorithm,
-            onResult: ((isSuccessful: Boolean) -> Unit)? = null
+            listener: VGSValidationResultListener? = null
         ): ValidationBuilder {
-            this.algorithmValidator = CheckSumValidator(algorithm, onResult)
+            this.algorithm = algorithm
+            this.algorithmResultListener = listener
             return this
         }
 
@@ -84,8 +91,8 @@ class PaymentCardNumberRule private constructor(
         }
 
         /** Set length validation listener. */
-        fun setLengthValidationResultListener(listener: (isSuccessful: Boolean) -> Unit): ValidationBuilder {
-            this.onLengthValidationResult = listener
+        fun setLengthValidationResultListener(listener: VGSValidationResultListener?): ValidationBuilder {
+            this.lengthValidationListener = listener
             return this
         }
 
@@ -99,26 +106,28 @@ class PaymentCardNumberRule private constructor(
         /** Configure Regex for validation input. */
         fun setRegex(
             regex: String,
-            onResult: ((isSuccessful: Boolean) -> Unit)? = null
+            listener: VGSValidationResultListener? = null
         ): ValidationBuilder {
-            this.regexValidator = RegexValidator(regex, onResult)
+            this.regex = regex
+            this.regexResultListener = listener
             return this
         }
 
         /** Creates a rule. */
         fun build(): PaymentCardNumberRule {
-            val lengthValidator = when {
-                !length.isNullOrEmpty() -> LengthValidator(length!!, onLengthValidationResult)
-                minLength != -1 && maxLength != -1 -> LengthValidator(
-                    (minLength..maxLength).toList().toTypedArray(), onLengthValidationResult
-                )
+            val range = when {
+                !length.isNullOrEmpty() -> length
+                minLength != -1 && maxLength != -1 -> (minLength..maxLength).toList().toTypedArray()
                 else -> null
             }
 
             return PaymentCardNumberRule(
-                algorithmValidator,
-                lengthValidator,
-                regexValidator,
+                algorithm,
+                algorithmResultListener,
+                regex,
+                regexResultListener,
+                range,
+                lengthValidationListener,
                 canOverrideDefaultValidation
             )
         }
