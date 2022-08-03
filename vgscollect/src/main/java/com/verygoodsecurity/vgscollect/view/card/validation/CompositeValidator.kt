@@ -4,12 +4,12 @@ class CompositeValidator : MutableValidator {
 
     private val validators = mutableListOf<VGSValidator>()
 
-    override fun clearRules() {
-        validators.clear()
-    }
-
     override fun addRule(validator: VGSValidator) {
         validators.add(validator)
+    }
+
+    override fun clearRules() {
+        validators.clear()
     }
 
     override fun isValid(content: String): Boolean {
