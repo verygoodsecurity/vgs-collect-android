@@ -31,6 +31,13 @@ class PersonNameRule private constructor(
         ) = this.apply { this.regex = RegexValidator(regex, errorMsg) }
 
         /** Configure minimum length which will support. */
+        fun setAllowableMinLength(length: Int, ) = this.apply {
+            this.length = this.length?.let {
+                it.copy(min = min(it.max, length))
+            } ?: LengthValidator(length, MAX_LENGTH)
+        }
+
+        /** Configure minimum length which will support. */
         fun setAllowableMinLength(
             length: Int,
             errorMsg: String = LengthValidator.DEFAULT_ERROR_MSG
@@ -41,9 +48,16 @@ class PersonNameRule private constructor(
         }
 
         /** Configure maximum length which will support. */
+        fun setAllowableMaxLength(length: Int) = this.apply {
+            this.length = this.length?.let {
+                it.copy(max = max(it.min, length))
+            } ?: LengthValidator(MIN_LENGTH, length)
+        }
+
+        /** Configure maximum length which will support. */
         fun setAllowableMaxLength(
             length: Int,
-            errorMsg: String = LengthValidator.DEFAULT_ERROR_MSG
+            errorMsg: String
         ) = this.apply {
             this.length = this.length?.let {
                 it.copy(max = max(it.min, length), errorMsg = errorMsg)
