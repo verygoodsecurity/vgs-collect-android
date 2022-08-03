@@ -1,25 +1,27 @@
 package com.verygoodsecurity.vgscollect.view.card.validation
 
-class CompositeValidator : MutableValidator {
+class CompositeValidator {
+
     private val validators = mutableListOf<VGSValidator>()
 
-    override fun clearRules() {
-        validators.clear()
-    }
-
-    override fun addRule(validator: VGSValidator) {
+    fun addRule(validator: VGSValidator) {
         validators.add(validator)
     }
 
-    override fun isValid(content: String?): Boolean {
-        return if(validators.isEmpty()) {
-            false
+    fun clearRules() {
+        validators.clear()
+    }
+
+    fun validate(content: String): List<String> {
+        return if (validators.isEmpty()) {
+            listOf(ERROR_MSG)
         } else {
-            var isValid = true
-            for (validator in validators) {
-                isValid = isValid && validator.isValid(content)
-            }
-            isValid
+            validators.mapNotNull { if (!it.isValid(content)) it.errorMsg else null }
         }
+    }
+
+    private companion object {
+
+        private const val ERROR_MSG = "NO_VALIDATION_RULES_ATTACHED_ATTACHED"
     }
 }

@@ -1,16 +1,23 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.rules
 
+import com.verygoodsecurity.vgscollect.view.card.validation.CheckSumValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthMatchValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
+import kotlin.math.max
+import kotlin.math.min
 
 /**
- * This rule provides a simplified mechanism to improve default behavior of the bank card number field.
+ * [com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText] validation rule.
  */
 class PaymentCardNumberRule private constructor(
-    internal val algorithm: ChecksumAlgorithm?,
-    length: Array<Int>?,
-    regex: String?,
-    internal val canOverrideDefaultValidation: Boolean
-): ValidationRule(regex, length) {
+    algorithm: CheckSumValidator?,
+    regex: RegexValidator?,
+    length: LengthValidator?,
+    lengthMatch: LengthMatchValidator?,
+    internal val overrideDefaultValidation: Boolean
+) : ValidationRule(algorithm, regex, length, lengthMatch) {
 
     /**
      * This class provides an API for set up rules for validation unknown bank card brands.
@@ -20,88 +27,92 @@ class PaymentCardNumberRule private constructor(
     class ValidationBuilder {
 
         /** The algorithm for validation checkSum. */
-        private var algorithm: ChecksumAlgorithm? = null
+        private var algorithm: CheckSumValidator? = null
 
-        /** The array of the card's number which will support. */
-        private var length: Array<Int>? = null
+        /** The regex for validation input. */
+        private var regex: RegexValidator? = null
 
-        /** The minimum length of the card's number which will support. */
-        private var minLength = -1
+        /** The length range for validation input. */
+        private var length: LengthValidator? = null
 
-        /** The maximum length of the card's number which will support. */
-        private var maxLength = -1
+        /** The length match for validation input. */
+        private var lengthMatch: LengthMatchValidator? = null
 
         /** Determines whether the Collect SDK can replace default validation rules by configured with ValidationBuilder. */
-        private var canOverrideDefaultValidation = false
-
-        /** The Regex for validation input. */
-        private var regex: String? = null
+        private var overrideDefaultValidation = false
 
         /** Configure behavior for validation checkSum. */
-        fun setAlgorithm(algorithm: ChecksumAlgorithm): ValidationBuilder {
-            this.algorithm = algorithm
-            return this
+        fun setAlgorithm(
+            algorithm: ChecksumAlgorithm,
+            errorMsg: String = CheckSumValidator.DEFAULT_ERROR_MSG
+        ) = this.apply { this.algorithm = CheckSumValidator(algorithm, errorMsg) }
+
+        /** Configure regex for validation input. */
+        fun setRegex(
+            regex: String,
+            errorMsg: String = RegexValidator.DEFAULT_ERROR_MSG
+        ) = this.apply { this.regex = RegexValidator(regex, errorMsg) }
+
+        /** Configure minimum length which will support. */
+        fun setAllowableMinLength(length: Int) = this.apply {
+            this.length = this.length?.let {
+                it.copy(min = min(it.max, length))
+            } ?: LengthValidator(length, MAX_LENGTH)
         }
 
-        /** Configure the array of the card's number which will support. */
-        fun setAllowableNumberLength(length: Array<Int>): ValidationBuilder {
-            this.length = length
-            return this
+        /** Configure minimum length which will support. */
+        fun setAllowableMinLength(
+            length: Int,
+            errorMsg: String
+        ) = this.apply {
+            this.length = this.length?.let {
+                it.copy(min = min(it.max, length), errorMsg = errorMsg)
+            } ?: LengthValidator(length, MAX_LENGTH, errorMsg)
         }
 
-        /** Configure minimum length of the card's number which will support. */
-        fun setAllowableMinLength(length: Int): ValidationBuilder {
-            if (maxLength == -1) {
-                maxLength = 19
-            }
-            minLength = if (length > maxLength) {
-                maxLength
-            } else {
-                length
-            }
-            return this
+        /** Configure maximum length which will support. */
+        fun setAllowableMaxLength(length: Int) = this.apply {
+            this.length = this.length?.let {
+                it.copy(max = max(it.min, length))
+            } ?: LengthValidator(MIN_LENGTH, length)
         }
 
-        /** Configure maximum length of the card's number which will support. */
-        fun setAllowableMaxLength(length: Int): ValidationBuilder {
-            if (minLength == -1) {
-                minLength = 13
-            }
-            if (length < minLength) {
-                minLength = length
-            }
-            maxLength = length
-            return this
+        /** Configure maximum length which will support. */
+        fun setAllowableMaxLength(
+            length: Int,
+            errorMsg: String
+        ) = this.apply {
+            this.length = this.length?.let {
+                it.copy(max = max(it.min, length), errorMsg = errorMsg)
+            } ?: LengthValidator(MIN_LENGTH, length, errorMsg)
+        }
+
+        /** Configure the array of lengths which will support. */
+        fun setAllowableNumberLength(
+            length: Array<Int>,
+            errorMsg: String = LengthMatchValidator.DEFAULT_ERROR_MSG
+        ) = this.apply {
+            this.lengthMatch = LengthMatchValidator(length, errorMsg)
         }
 
         /** Determines whether the Collect SDK can override default validation rules. */
-        fun setAllowToOverrideDefaultValidation(canOverride: Boolean): ValidationBuilder {
-            canOverrideDefaultValidation = canOverride
-            return this
-        }
-
-
-        /** Configure Regex for validation input. */
-        fun setRegex(regex: String): ValidationBuilder {
-            this.regex = regex
-            return this
+        fun setAllowToOverrideDefaultValidation(canOverride: Boolean) = this.apply {
+            this.overrideDefaultValidation = canOverride
         }
 
         /** Creates a rule. */
-        fun build(): PaymentCardNumberRule {
-            val range = when {
-                !length.isNullOrEmpty() -> length
-                minLength != -1 && maxLength != -1 -> (minLength..maxLength).toList().toTypedArray()
-                else -> null
-            }
+        fun build() = PaymentCardNumberRule(
+            algorithm,
+            regex,
+            length,
+            lengthMatch,
+            overrideDefaultValidation
+        )
 
-            return PaymentCardNumberRule(
-                algorithm,
-                range,
-                regex,
-                canOverrideDefaultValidation
-            )
+        companion object {
+
+            private const val MIN_LENGTH = 13
+            private const val MAX_LENGTH = 19
         }
     }
-
 }

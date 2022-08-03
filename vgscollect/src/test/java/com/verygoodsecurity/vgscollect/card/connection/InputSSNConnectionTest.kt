@@ -3,14 +3,10 @@ package com.verygoodsecurity.vgscollect.card.connection
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.conection.BaseInputConnection
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.conection.InputSSNConnection
-import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import org.junit.Assert
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
@@ -57,13 +53,13 @@ class InputSSNConnectionTest {
         val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
-        Mockito.verify(listener).emit(0, VGSFieldState(isValid = false))
+        Mockito.verify(listener).emit(0, VGSFieldState(isValid = true))
     }
 
     @Test
     fun test_emit_item() {
         connection.run()
-        Mockito.verify(stateListener, Mockito.times(2)).emit(0, VGSFieldState(isValid = false))
+        Mockito.verify(stateListener, Mockito.times(2)).emit(0, VGSFieldState(isValid = true))
     }
 
     @Test
@@ -75,9 +71,9 @@ class InputSSNConnectionTest {
         Mockito.verify(stateListener).emit(0, textItem)
     }
 
-    private fun getValidator(): VGSValidator {
-        val client = Mockito.mock(VGSValidator::class.java)
-        Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
+    private fun getValidator(): CompositeValidator {
+        val client = Mockito.mock(CompositeValidator::class.java)
+        Mockito.doReturn(emptyList<String>()).`when`(client).validate(Mockito.anyString())
 
         return client
     }
