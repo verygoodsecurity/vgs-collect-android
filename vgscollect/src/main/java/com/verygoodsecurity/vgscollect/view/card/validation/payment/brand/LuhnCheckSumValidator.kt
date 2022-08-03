@@ -5,8 +5,8 @@ import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 /** @suppress */
 class LuhnCheckSumValidator : VGSValidator {
 
-    override fun isValid(content: String?): Boolean {
-        return !content.isNullOrEmpty() && isLuhnCheckSumValid(content)
+    override fun isValid(content: String): Boolean {
+        return content.isNotEmpty() && isLuhnCheckSumValid(content)
     }
 
     private fun isLuhnCheckSumValid(number: String): Boolean {

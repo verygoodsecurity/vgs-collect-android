@@ -9,22 +9,15 @@ class CheckSumValidator(
     private val listener: VGSValidationResultListener? = null
 ) : VGSValidator {
 
-    private val validationList: Array<VGSValidator> = when (algorithm) {
-        ChecksumAlgorithm.LUHN -> arrayOf(
-            LuhnCheckSumValidator()
-        )
-        ChecksumAlgorithm.ANY -> arrayOf(
-            LuhnCheckSumValidator()
-        )
-        else -> arrayOf()
+    private val validator: LuhnCheckSumValidator? = when (algorithm) {
+        ChecksumAlgorithm.LUHN -> LuhnCheckSumValidator()
+        ChecksumAlgorithm.ANY -> LuhnCheckSumValidator()
+        ChecksumAlgorithm.NONE -> null
     }
 
     override fun isValid(content: String): Boolean {
-        var isValid = true
-        for (checkSumValidator in validationList) {
-            isValid = isValid && checkSumValidator.isValid(content)
-        }
-        listener?.onResult(isValid)
-        return isValid
+        val result = validator?.isValid(content) ?: true
+        listener?.onResult(result)
+        return result
     }
 }
