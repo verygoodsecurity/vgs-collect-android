@@ -2,11 +2,10 @@ package com.verygoodsecurity.vgscollect.view.card.validation
 
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.brand.LuhnCheckSumValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSValidationResultListener
 
 class CheckSumValidator(
     internal val value: ChecksumAlgorithm,
-    private val listener: VGSValidationResultListener? = null
+    private val errorMsg: String = DEFAULT_ERROR_MSG
 ) : VGSValidator {
 
     private val validator: LuhnCheckSumValidator? = when (value) {
@@ -16,8 +15,11 @@ class CheckSumValidator(
     }
 
     override fun isValid(content: String): Boolean {
-        val result = validator?.isValid(content) ?: true
-        listener?.onResult(result)
-        return result
+        return validator?.isValid(content) ?: true
+    }
+
+    internal companion object {
+
+        internal const val DEFAULT_ERROR_MSG = "LUHN_ALGORITHM_CHECK_VALIDATION_ERROR"
     }
 }

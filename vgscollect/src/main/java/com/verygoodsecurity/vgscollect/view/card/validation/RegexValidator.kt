@@ -1,19 +1,21 @@
 package com.verygoodsecurity.vgscollect.view.card.validation
 
-import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSValidationResultListener
 import java.util.regex.Pattern
 
 /** @suppress */
 class RegexValidator(
     internal val value: String,
-    private val listener: VGSValidationResultListener? = null
+    private val errorMsg: String = DEFAULT_ERROR_MSG
 ) : VGSValidator {
 
     private var pattern: Pattern = Pattern.compile(value)
 
     override fun isValid(content: String): Boolean {
-        val result = if (content.isEmpty()) true else pattern.matcher(content).matches()
-        listener?.onResult(result)
-        return result
+        return if (content.isEmpty()) true else pattern.matcher(content).matches()
+    }
+
+    internal companion object {
+
+        internal const val DEFAULT_ERROR_MSG = "REGEX_VALIDATION_ERROR"
     }
 }

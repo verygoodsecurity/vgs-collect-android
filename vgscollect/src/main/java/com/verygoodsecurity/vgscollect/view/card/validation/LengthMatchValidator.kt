@@ -1,27 +1,28 @@
 package com.verygoodsecurity.vgscollect.view.card.validation
 
-import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSValidationResultListener
-
 /** @suppress */
 internal class LengthMatchValidator : VGSValidator {
 
     internal val values: Array<Int>
 
-    private val listener: VGSValidationResultListener?
+    private val errorMsg: String
 
-    constructor(length: Int, listener: VGSValidationResultListener? = null) {
+    constructor(length: Int, errorMsg: String = DEFAULT_ERROR_MSG) {
         this.values = arrayOf(length)
-        this.listener = listener
+        this.errorMsg = errorMsg
     }
 
-    constructor(length: Array<Int>, listener: VGSValidationResultListener? = null) {
+    constructor(length: Array<Int>, errorMsg: String = DEFAULT_ERROR_MSG) {
         this.values = length
-        this.listener = listener
+        this.errorMsg = errorMsg
     }
 
     override fun isValid(content: String): Boolean {
-        val result = content.isNotEmpty() && values.contains(content.length)
-        listener?.onResult(result)
-        return result
+        return content.isNotEmpty() && values.contains(content.length)
+    }
+
+    internal companion object {
+
+        internal const val DEFAULT_ERROR_MSG = "LENGTH_RANGE_MATCH_VALIDATION_ERROR"
     }
 }

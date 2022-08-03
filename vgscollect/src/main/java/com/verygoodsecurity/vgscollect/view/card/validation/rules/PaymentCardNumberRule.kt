@@ -44,30 +44,41 @@ class PaymentCardNumberRule private constructor(
         /** Configure behavior for validation checkSum. */
         fun setAlgorithm(
             algorithm: ChecksumAlgorithm,
-            listener: VGSValidationResultListener? = null
-        ) = this.apply { this.algorithm = CheckSumValidator(algorithm, listener) }
+            errorMsg: String = CheckSumValidator.DEFAULT_ERROR_MSG
+        ) = this.apply { this.algorithm = CheckSumValidator(algorithm, errorMsg) }
 
         /** Configure regex for validation input. */
         fun setRegex(
             regex: String,
-            listener: VGSValidationResultListener? = null
-        ) = this.apply { this.regex = RegexValidator(regex, listener) }
+            errorMsg: String = RegexValidator.DEFAULT_ERROR_MSG
+        ) = this.apply { this.regex = RegexValidator(regex, errorMsg) }
 
         /** Configure minimum length which will support. */
-        fun setAllowableMinLength(length: Int) = this.apply {
-            this.length = this.length?.let { it.copy(min = min(it.max, length)) }
-                ?: LengthValidator(length, MAX_LENGTH)
+        fun setAllowableMinLength(
+            length: Int,
+            errorMsg: String = LengthValidator.DEFAULT_ERROR_MSG
+        ) = this.apply {
+            this.length = this.length?.let {
+                it.copy(min = min(it.max, length), errorMsg = errorMsg)
+            } ?: LengthValidator(length, MAX_LENGTH, errorMsg)
         }
 
         /** Configure maximum length which will support. */
-        fun setAllowableMaxLength(length: Int) = this.apply {
-            this.length = this.length?.let { it.copy(max = max(it.min, length)) }
-                ?: LengthValidator(MIN_LENGTH, length)
+        fun setAllowableMaxLength(
+            length: Int,
+            errorMsg: String = LengthValidator.DEFAULT_ERROR_MSG
+        ) = this.apply {
+            this.length = this.length?.let {
+                it.copy(max = max(it.min, length), errorMsg = errorMsg)
+            } ?: LengthValidator(MIN_LENGTH, length, errorMsg)
         }
 
         /** Configure the array of lengths which will support. */
-        fun setAllowableNumberLength(length: Array<Int>) = this.apply {
-            this.lengthMatch = LengthMatchValidator(length)
+        fun setAllowableNumberLength(
+            length: Array<Int>,
+            errorMsg: String = LengthMatchValidator.DEFAULT_ERROR_MSG
+        ) = this.apply {
+            this.lengthMatch = LengthMatchValidator(length, errorMsg)
         }
 
         /** Determines whether the Collect SDK can override default validation rules. */
