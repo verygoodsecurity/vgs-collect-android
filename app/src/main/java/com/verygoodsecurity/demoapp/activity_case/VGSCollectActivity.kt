@@ -229,7 +229,7 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
     }
 
     private fun retrieveSettings() {
-        VGSCollectLogger.logLevel = VGSCollectLogger.Level.WARN
+        VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
 
         val bndl = intent?.extras
 
@@ -329,6 +329,7 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
             is VGSResponse.SuccessResponse -> responseContainerView.text =
                 "Code: ${response.successCode}"
             is VGSResponse.ErrorResponse -> responseContainerView.text = response.toString()
+            else -> return
         }
     }
 
