@@ -100,7 +100,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected abstract var fieldType: FieldType
 
     protected var inputConnection: InputRunnable? = null
-    protected var validator: MutableValidator = CompositeValidator()
+    protected val validator: MutableValidator = CompositeValidator()
 
     protected var vgsParent: InputFieldView? = null
 

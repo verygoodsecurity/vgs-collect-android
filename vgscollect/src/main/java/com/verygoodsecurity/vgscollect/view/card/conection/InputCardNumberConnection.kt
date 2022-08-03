@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.payment.brand.LuhnCh
 /** @suppress */
 internal class InputCardNumberConnection(
     id: Int,
-    validator: VGSValidator?,
+    validator: VGSValidator,
     private val IcardBrand: IDrawCardBrand? = null,
     private val divider: String? = null
 ) : BaseInputConnection(id, validator) {

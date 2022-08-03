@@ -6,8 +6,10 @@ import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 /** @suppress */
-internal class InputInfoConnection(id: Int, validator: VGSValidator?) :
-    BaseInputConnection(id, validator) {
+internal class InputInfoConnection(
+    id: Int,
+    validator: VGSValidator
+) : BaseInputConnection(id, validator) {
 
     private var output = VGSFieldState()
 

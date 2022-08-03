@@ -6,14 +6,12 @@ import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 internal abstract class BaseInputConnection constructor(
     private val id: Int,
-    internal var defaultValidator: VGSValidator?
+    internal var validator: VGSValidator
 ) : InputRunnable {
 
     private var stateListeners = mutableListOf<OnVgsViewStateChangeListener>()
 
-    protected fun isValid(input: String?): Boolean {
-        return defaultValidator?.isValid(input) ?: false
-    }
+    protected fun isValid(input: String): Boolean = validator.isValid(input)
 
     protected fun clearAllListeners() {
         stateListeners.clear()
