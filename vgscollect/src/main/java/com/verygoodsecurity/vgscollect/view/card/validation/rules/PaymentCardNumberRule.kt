@@ -83,5 +83,11 @@ class PaymentCardNumberRule private constructor(
             lengthMatch,
             overrideDefaultValidation
         )
+
+        companion object {
+
+            private const val MIN_LENGTH = 13
+            private const val MAX_LENGTH = 19
+        }
     }
 }
