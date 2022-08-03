@@ -82,11 +82,6 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
                     .build()
             )
         }
-        postalCodeField?.addRule(
-            VGSInfoRule.ValidationBuilder()
-                .setAllowableMinLength(1)
-                .build()
-        )
 
         vgsForm.bindView(postalCodeField)
     }
