@@ -7,7 +7,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 /** @suppress */
 internal abstract class BaseInputConnection constructor(
     private val id: Int,
-    private val validator: CompositeValidator
+    protected val validator: CompositeValidator
 ) : InputRunnable {
 
     private var stateListeners = mutableListOf<OnVgsViewStateChangeListener>()
@@ -37,12 +37,10 @@ internal abstract class BaseInputConnection constructor(
         val content = state.content?.data
         return when {
             !state.isRequired && content.isNullOrEmpty() -> emptyList()
-            state.enableValidation -> isValid(getRawContent(content))
+            state.enableValidation -> validator.isValid(getRawContent(content))
             else -> emptyList()
         }
     }
-
-    protected fun isValid(input: String): List<String> = validator.isValid(input)
 
     private fun clearAllListeners() {
         stateListeners.clear()

@@ -40,18 +40,13 @@ internal class InputCardNumberConnection(
 
         IcardBrand?.onCardBrandPreview(brand)
 
-        validate(brand)
-
+        val errors = validate(brand)
+        state.isValid = errors.isEmpty()
+        state.errors = errors
         notifyAllListeners(state)
     }
 
-    private fun validate(brand: CardBrandPreview) {
-        val errors = isContentValid(brand)
-        state.isValid = errors.isEmpty()
-        state.errors = errors
-    }
-
-    private fun isContentValid(card: CardBrandPreview): List<String> {
+    private fun validate(card: CardBrandPreview): List<String> {
         val content = state.content?.data
         return when {
             !state.isRequired && content.isNullOrEmpty() -> emptyList()
@@ -63,7 +58,7 @@ internal class InputCardNumberConnection(
     private fun checkIsContentValid(card: CardBrandPreview): List<String> {
         val rawStr = getRawContent(state.content?.data)
         return if (canOverrideDefaultValidation || !card.successfullyDetected) {
-            isValid(rawStr)
+            validator.isValid(rawStr)
         } else {
             listOfNotNull(
                 LengthMatchValidator(card.numberLength).isValid(rawStr),
