@@ -5,6 +5,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultSto
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
+import java.lang.Integer.min
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -99,14 +100,13 @@ internal fun FieldContent.CreditCardExpDateContent.handleOutputFormat(
 
 /** @suppress */
 internal fun FieldContent.CardNumberContent.parseCardBin(): String {
-    return data?.run {
-        val numberSTR = data!!.replace("\\D".toRegex(), "")
-        if (numberSTR.length >= 6) {
-            numberSTR.substring(0, 6)
-        } else {
-            numberSTR.substring(0, numberSTR.length)
-        }
-    } ?: ""
+    val number = data?.replace("\\D".toRegex(), "") ?: ""
+    val binLength = if (allowed8DigitBIN(cardBrandName, number.length)) 8 else 6
+    return number.substring(0, min(number.length, binLength))
+}
+
+private fun allowed8DigitBIN(brand: String?, length: Int): Boolean {
+    return length >= 16 && (brand == CardType.MAESTRO.name || brand == CardType.MASTERCARD.name || brand == CardType.VISA.name)
 }
 
 /** @suppress */
