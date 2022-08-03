@@ -1,18 +1,18 @@
 package com.verygoodsecurity.vgscollect.view.card.validation
 
-class CompositeValidator : MutableValidator {
+class CompositeValidator {
 
     private val validators = mutableListOf<VGSValidator>()
 
-    override fun addRule(validator: VGSValidator) {
+    fun addRule(validator: VGSValidator) {
         validators.add(validator)
     }
 
-    override fun clearRules() {
+    fun clearRules() {
         validators.clear()
     }
 
-    override fun isValid(content: String): Boolean {
+    fun isValid(content: String): Boolean {
         return if (validators.isEmpty()) {
             false
         } else {

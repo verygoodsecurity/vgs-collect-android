@@ -27,7 +27,6 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
 
 /** @suppress */
@@ -100,7 +99,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected abstract var fieldType: FieldType
 
     protected var inputConnection: InputRunnable? = null
-    protected val validator: MutableValidator = CompositeValidator()
+    protected val validator: CompositeValidator = CompositeValidator()
 
     protected var vgsParent: InputFieldView? = null
 

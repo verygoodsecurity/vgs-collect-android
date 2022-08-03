@@ -2,11 +2,11 @@ package com.verygoodsecurity.vgscollect.view.card.conection
 
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 
 internal abstract class BaseInputConnection constructor(
     private val id: Int,
-    private val validator: VGSValidator
+    private val validator: CompositeValidator
 ) : InputRunnable {
 
     private var stateListeners = mutableListOf<OnVgsViewStateChangeListener>()

@@ -5,14 +5,14 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
-import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.brand.LuhnCheckSumValidator
 
 /** @suppress */
 internal class InputCardNumberConnection(
     id: Int,
-    validator: VGSValidator,
+    validator: CompositeValidator,
     private val IcardBrand: IDrawCardBrand? = null,
     private val divider: String? = null
 ) : BaseInputConnection(id, validator) {

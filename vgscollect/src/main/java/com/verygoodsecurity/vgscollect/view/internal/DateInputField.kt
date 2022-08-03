@@ -7,7 +7,6 @@ import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
 import android.text.format.DateUtils
-import android.view.Gravity
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.widget.DatePicker
@@ -73,9 +72,8 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     override fun applyFieldType() {
-        val timeGapsValidator = TimeGapsValidator(datePattern, minDate, maxDate)
-
-        inputConnection = InputCardExpDateConnection(id, timeGapsValidator)
+        validator.addRule(TimeGapsValidator(datePattern, minDate, maxDate))
+        inputConnection = InputCardExpDateConnection(id, validator)
 
         val stateContent = FieldContent.CreditCardExpDateContent().apply {
             if(!text.isNullOrEmpty() && handleInputMode(text.toString())) {
