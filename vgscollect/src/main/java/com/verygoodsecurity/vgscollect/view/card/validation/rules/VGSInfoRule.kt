@@ -40,7 +40,7 @@ class VGSInfoRule private constructor(
         /** Configure minimum length which will support. */
         fun setAllowableMinLength(
             length: Int,
-            errorMsg: String = LengthValidator.DEFAULT_ERROR_MSG
+            errorMsg: String
         ) = this.apply {
             this.length = this.length?.let {
                 it.copy(min = min(it.max, length), errorMsg = errorMsg)
