@@ -1,7 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.card.conection
 
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 
@@ -11,29 +10,21 @@ internal class InputCardHolderConnection(
     validator: CompositeValidator
 ) : BaseInputConnection(id, validator) {
 
-    private var output = VGSFieldState()
-
-    override fun setOutput(state: VGSFieldState) {
-        output = state
-    }
-
-    override fun getOutput() = output
-
     override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
         listener?.let { addNewListener(it) } ?: clearAllListeners()
     }
 
     override fun run() {
-        output.isValid = isRequiredValid() && isContentValid()
+        state.isValid = isRequiredValid() && isContentValid()
 
-        notifyAllListeners(output)
+        notifyAllListeners(state)
     }
 
     private fun isContentValid(): Boolean {
-        val content = output.content?.data
+        val content = state.content?.data
         return when {
-            !output.isRequired && content.isNullOrEmpty() -> true
-            output.enableValidation -> checkIsContentValid(content)
+            !state.isRequired && content.isNullOrEmpty() -> true
+            state.enableValidation -> checkIsContentValid(content)
             else -> true
         }
     }
@@ -41,7 +32,7 @@ internal class InputCardHolderConnection(
     private fun checkIsContentValid(content: String?): Boolean = isValid(content ?: "")
 
     private fun isRequiredValid(): Boolean {
-        return output.isRequired && !output.content?.data.isNullOrEmpty() || !output.isRequired
+        return state.isRequired && !state.content?.data.isNullOrEmpty() || !state.isRequired
     }
 
     override fun clearFilters() {}

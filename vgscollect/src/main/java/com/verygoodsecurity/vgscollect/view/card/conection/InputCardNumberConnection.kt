@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscollect.view.card.conection
 
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
-import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
@@ -20,14 +19,6 @@ internal class InputCardNumberConnection(
     var canOverrideDefaultValidation = false
 
     private val cardFilters = mutableListOf<VGSCardFilter>()
-
-    private var output = VGSFieldState()
-
-    override fun setOutput(state: VGSFieldState) {
-        output = state
-    }
-
-    override fun getOutput() = output
 
     override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
         listener?.let {
@@ -53,31 +44,31 @@ internal class InputCardNumberConnection(
 
         validate(brand)
 
-        notifyAllListeners(output)
+        notifyAllListeners(state)
     }
 
     private fun validate(brand: CardBrandPreview) {
         val isRequiredRuleValid = isRequiredValid()
         val isContentRuleValid = isContentValid(brand)
 
-        output.isValid = isRequiredRuleValid && isContentRuleValid
+        state.isValid = isRequiredRuleValid && isContentRuleValid
     }
 
     private fun isRequiredValid(): Boolean {
-        return output.isRequired && !output.content?.data.isNullOrEmpty() || !output.isRequired
+        return state.isRequired && !state.content?.data.isNullOrEmpty() || !state.isRequired
     }
 
     private fun isContentValid(card: CardBrandPreview): Boolean {
-        val content = output.content?.data
+        val content = state.content?.data
         return when {
-            !output.isRequired && content.isNullOrEmpty() -> true
-            output.enableValidation -> checkIsContentValid(card)
+            !state.isRequired && content.isNullOrEmpty() -> true
+            state.enableValidation -> checkIsContentValid(card)
             else -> true
         }
     }
 
     private fun checkIsContentValid(card: CardBrandPreview): Boolean {
-        val rawStr = output.content?.data?.replace(divider ?: " ", "") ?: ""
+        val rawStr = state.content?.data?.replace(divider ?: " ", "") ?: ""
 
         return if (canOverrideDefaultValidation || !card.successfullyDetected) {
             isValid(rawStr)
@@ -100,7 +91,7 @@ internal class InputCardNumberConnection(
     }
 
     private fun mapValue(item: CardBrandPreview) {
-        with(output.content as? FieldContent.CardNumberContent) {
+        with(state.content as? FieldContent.CardNumberContent) {
             this?.cardtype = item.cardType
             this?.cardBrandName = item.name
             this?.iconResId = item.resId
@@ -112,7 +103,7 @@ internal class InputCardNumberConnection(
     private fun detectBrand(): CardBrandPreview {
         for (i in cardFilters.indices) {
             val filter = cardFilters[i]
-            return filter.detect(output.content?.data)
+            return filter.detect(state.content?.data)
         }
         return CardBrandPreview()
     }

@@ -9,6 +9,14 @@ internal abstract class BaseInputConnection constructor(
     private val validator: CompositeValidator
 ) : InputRunnable {
 
+    protected var state = VGSFieldState()
+
+    override fun setOutput(state: VGSFieldState) {
+        this.state = state
+    }
+
+    override fun getOutput() = state
+
     private var stateListeners = mutableListOf<OnVgsViewStateChangeListener>()
 
     protected fun isValid(input: String): Boolean = validator.isValid(input)
