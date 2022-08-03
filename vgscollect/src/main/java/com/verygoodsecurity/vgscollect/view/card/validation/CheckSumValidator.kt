@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.payment.brand.LuhnCh
 
 class CheckSumValidator(
     internal val value: ChecksumAlgorithm,
-    errorMsg: String = DEFAULT_ERROR_MSG
+    override val errorMsg: String = DEFAULT_ERROR_MSG
 ) : VGSValidator {
 
     private val validator: LuhnCheckSumValidator? = when (value) {
@@ -14,9 +14,7 @@ class CheckSumValidator(
         ChecksumAlgorithm.NONE -> null
     }
 
-    override fun isValid(content: String): String? {
-        return validator?.isValid(content)
-    }
+    override fun isValid(content: String) = validator?.isValid(content) ?: true
 
     internal companion object {
 

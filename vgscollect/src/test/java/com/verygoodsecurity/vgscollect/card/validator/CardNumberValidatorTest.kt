@@ -19,27 +19,27 @@ class CardNumberValidatorTest {
 
     @Test
     fun test_without_rules() {
-        assertFalse(validator.validate("1234567890"))
-        assertFalse(validator.validate("1"))
-        assertFalse(validator.validate(""))
-        assertFalse(validator.validate("411111111111111"))
+        assertFalse(validator.validate("1234567890").isEmpty())
+        assertFalse(validator.validate("1").isEmpty())
+        assertFalse(validator.validate("").isEmpty())
+        assertFalse(validator.validate("411111111111111").isEmpty())
     }
 
     @Test
     fun test_length_rule() {
         validator.addRule(LengthMatchValidator(arrayOf(16)))
 
-        assertFalse(validator.validate("411111111111111"))
-        assertTrue(validator.validate("4111111111111118"))
-        assertFalse(validator.validate("4111111111111111110"))
+        assertFalse(validator.validate("411111111111111").isEmpty())
+        assertTrue(validator.validate("4111111111111118").isEmpty())
+        assertFalse(validator.validate("4111111111111111110").isEmpty())
     }
 
     @Test
     fun test_luhn_rule() {
         validator.addRule(CheckSumValidator(ChecksumAlgorithm.LUHN))
-        assertTrue(validator.validate("4111111111111111"))
-        assertFalse(validator.validate("4111111111111118"))
-        assertTrue(validator.validate("4111111111111111110"))
+        assertTrue(validator.validate("4111111111111111").isEmpty())
+        assertFalse(validator.validate("4111111111111118").isEmpty())
+        assertTrue(validator.validate("4111111111111111110").isEmpty())
     }
 
     @Test
@@ -47,9 +47,9 @@ class CardNumberValidatorTest {
         validator.addRule(LengthMatchValidator(arrayOf(16)))
         validator.addRule(CheckSumValidator(ChecksumAlgorithm.LUHN))
 
-        assertTrue(validator.validate("4111111111111111"))
-        assertFalse(validator.validate("4111111111111118"))
-        assertFalse(validator.validate("4111111111111111110"))
+        assertTrue(validator.validate("4111111111111111").isEmpty())
+        assertFalse(validator.validate("4111111111111118").isEmpty())
+        assertFalse(validator.validate("4111111111111111110").isEmpty())
     }
 
 }

@@ -16,7 +16,7 @@ class CompositeValidator {
         return if (validators.isEmpty()) {
             listOf(ERROR_MSG)
         } else {
-            validators.mapNotNull { it.isValid(content) }
+            validators.mapNotNull { if (!it.isValid(content)) it.errorMsg else null }
         }
     }
 

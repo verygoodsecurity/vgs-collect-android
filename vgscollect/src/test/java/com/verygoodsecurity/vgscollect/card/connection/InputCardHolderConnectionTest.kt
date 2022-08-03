@@ -13,7 +13,7 @@ import org.mockito.Mockito
 class InputCardHolderConnectionTest {
     val connection: InputRunnable by lazy {
         val client = Mockito.mock(CompositeValidator::class.java)
-        Mockito.doReturn(true).`when`(client).validate(Mockito.anyString())
+        Mockito.doReturn(emptyList<String>()).`when`(client).validate(Mockito.anyString())
         InputCardHolderConnection(
             0,
             client

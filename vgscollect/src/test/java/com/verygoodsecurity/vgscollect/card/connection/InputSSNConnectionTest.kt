@@ -53,13 +53,13 @@ class InputSSNConnectionTest {
         val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
-        Mockito.verify(listener).emit(0, VGSFieldState(isValid = false))
+        Mockito.verify(listener).emit(0, VGSFieldState(isValid = true))
     }
 
     @Test
     fun test_emit_item() {
         connection.run()
-        Mockito.verify(stateListener, Mockito.times(2)).emit(0, VGSFieldState(isValid = false))
+        Mockito.verify(stateListener, Mockito.times(2)).emit(0, VGSFieldState(isValid = true))
     }
 
     @Test
@@ -73,7 +73,7 @@ class InputSSNConnectionTest {
 
     private fun getValidator(): CompositeValidator {
         val client = Mockito.mock(CompositeValidator::class.java)
-        Mockito.doReturn(true).`when`(client).validate(Mockito.anyString())
+        Mockito.doReturn(emptyList<String>()).`when`(client).validate(Mockito.anyString())
 
         return client
     }

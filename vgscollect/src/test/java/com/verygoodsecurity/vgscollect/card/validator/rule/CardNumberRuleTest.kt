@@ -59,7 +59,7 @@ class CardNumberRuleTest {
             .build()
         assertEquals(null, rule.algorithm)
         assertEquals(16, rule.length?.min)
-        assertEquals(256, rule.length?.max)
+        assertEquals(19, rule.length?.max)
     }
 
     @Test
@@ -69,7 +69,7 @@ class CardNumberRuleTest {
             .build()
         assertEquals(null, rule.algorithm)
         assertEquals(16, rule.length?.max)
-        assertEquals(1, rule.length?.min)
+        assertEquals(13, rule.length?.min)
     }
 
     @Test

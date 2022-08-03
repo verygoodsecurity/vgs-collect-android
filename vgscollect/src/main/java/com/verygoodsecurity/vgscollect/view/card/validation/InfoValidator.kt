@@ -3,9 +3,9 @@ package com.verygoodsecurity.vgscollect.view.card.validation
 /** @suppress */
 class InfoValidator : VGSValidator {
 
-    override fun isValid(content: String): String? {
-        return if (content.trim().isEmpty()) ERROR_MESSAGE else null
-    }
+    override val errorMsg: String = ERROR_MESSAGE
+
+    override fun isValid(content: String) = content.trim().isNotEmpty()
 
     private companion object {
 

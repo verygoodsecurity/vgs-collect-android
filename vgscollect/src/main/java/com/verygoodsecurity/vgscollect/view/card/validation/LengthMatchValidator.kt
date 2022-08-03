@@ -5,7 +5,7 @@ internal class LengthMatchValidator : VGSValidator {
 
     internal val values: Array<Int>
 
-    private val errorMsg: String
+    override val errorMsg: String
 
     constructor(length: Int, errorMsg: String = DEFAULT_ERROR_MSG) {
         this.values = arrayOf(length)
@@ -17,9 +17,7 @@ internal class LengthMatchValidator : VGSValidator {
         this.errorMsg = errorMsg
     }
 
-    override fun isValid(content: String): String? {
-        return if (content.isNotEmpty() && values.contains(content.length)) null else errorMsg
-    }
+    override fun isValid(content: String) = values.contains(content.length)
 
     internal companion object {
 

@@ -4,12 +4,10 @@ import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 /** @suppress */
 class LuhnCheckSumValidator constructor(
-    private val errorMsg: String = DEFAULT_ERROR_MSG
+    override val errorMsg: String = DEFAULT_ERROR_MSG
 ) : VGSValidator {
 
-    override fun isValid(content: String): String? {
-        return if (content.isNotEmpty() && isLuhnCheckSumValid(content)) null else errorMsg
-    }
+    override fun isValid(content: String) = content.isNotEmpty() && isLuhnCheckSumValid(content)
 
     private fun isLuhnCheckSumValid(number: String): Boolean {
         var cardSum = 0

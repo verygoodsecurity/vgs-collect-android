@@ -116,13 +116,13 @@ class InputCardNumberConnectionTest {
         val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
-        Mockito.verify(listener).emit(0, VGSFieldState(isValid = false))
+        Mockito.verify(listener).emit(0, VGSFieldState(isValid = true))
     }
 
     @Test
     fun test_emit_item() {
         connection.run()
-        Mockito.verify(stateListener, Mockito.times(2)).emit(0, VGSFieldState(isValid = false))
+        Mockito.verify(stateListener, Mockito.times(2)).emit(0, VGSFieldState(isValid = true))
     }
 
     @Test
@@ -155,7 +155,7 @@ class InputCardNumberConnectionTest {
             content = content)
         connection.setOutput(state)
 
-        connection.addFilter(filter)
+        (connection as InputCardNumberConnection).addFilter(filter)
         connection.run()
         Mockito.verify(stateListener).emit(0, state)
     }
@@ -166,7 +166,7 @@ class InputCardNumberConnectionTest {
 
     private fun getValidator():CompositeValidator {
         val client = mock(CompositeValidator::class.java)
-        Mockito.doReturn(true).`when`(client).validate(Mockito.anyString())
+        Mockito.doReturn(emptyList<String>()).`when`(client).validate(Mockito.anyString())
 
         return client
     }
@@ -177,7 +177,7 @@ class InputCardNumberConnectionTest {
     ) {
         val filter = CardBrandFilter()
         filter.divider = divider
-        connection.addFilter(filter)
+        (connection as InputCardNumberConnection).addFilter(filter)
     }
 
     private fun setupListener(connection: InputRunnable) {

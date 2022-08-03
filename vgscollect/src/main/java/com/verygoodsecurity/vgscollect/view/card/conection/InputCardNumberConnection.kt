@@ -61,9 +61,9 @@ internal class InputCardNumberConnection(
             validator.validate(rawStr)
         } else {
             listOfNotNull(
-                LengthMatchValidator(card.numberLength).isValid(rawStr),
-                CheckSumValidator(card.algorithm).isValid(rawStr)
-            )
+                LengthMatchValidator(card.numberLength),
+                CheckSumValidator(card.algorithm)
+            ).mapNotNull { if (!it.isValid(rawStr)) it.errorMsg else null }
         }
     }
 
