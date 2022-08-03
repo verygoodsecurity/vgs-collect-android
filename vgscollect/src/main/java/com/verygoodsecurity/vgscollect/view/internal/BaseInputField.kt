@@ -409,7 +409,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     open fun applyValidationRule(rule: ValidationRule) {
         validator.clearRules()
-        rule.length?.let { validator.addRule(LengthValidator(it, rule.lengthResultLister)) }
+        rule.length?.let { validator.addRule(LengthMatchValidator(it, rule.lengthResultLister)) }
         rule.regex?.let { validator.addRule(RegexValidator(it, rule.regexResultLister)) }
     }
 

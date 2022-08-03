@@ -25,7 +25,7 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.CheckSumValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthMatchValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
@@ -340,7 +340,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
 
             validator.clearRules()
 
-            if (length != null) validator.addRule(LengthValidator(length, lengthResultLister))
+            if (length != null) validator.addRule(LengthMatchValidator(length, lengthResultLister))
             if (algorithm != null) validator.addRule(
                 CheckSumValidator(algorithm, algorithmResultListener)
             )

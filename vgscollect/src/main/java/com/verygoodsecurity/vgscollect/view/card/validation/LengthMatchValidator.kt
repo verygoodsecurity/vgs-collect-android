@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card.validation
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSValidationResultListener
 
 /** @suppress */
-internal class LengthValidator : VGSValidator {
+internal class LengthMatchValidator : VGSValidator {
 
     private val length: Array<Int>
     private val listener: VGSValidationResultListener?
