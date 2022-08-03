@@ -12,7 +12,7 @@ class CompositeValidator {
         validators.clear()
     }
 
-    fun isValid(content: String): List<String> {
+    fun validate(content: String): List<String> {
         return if (validators.isEmpty()) {
             listOf(ERROR_MSG)
         } else {

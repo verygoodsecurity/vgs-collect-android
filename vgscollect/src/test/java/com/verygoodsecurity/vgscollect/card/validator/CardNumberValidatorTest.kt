@@ -19,27 +19,27 @@ class CardNumberValidatorTest {
 
     @Test
     fun test_without_rules() {
-        assertFalse(validator.isValid("1234567890"))
-        assertFalse(validator.isValid("1"))
-        assertFalse(validator.isValid(""))
-        assertFalse(validator.isValid("411111111111111"))
+        assertFalse(validator.validate("1234567890"))
+        assertFalse(validator.validate("1"))
+        assertFalse(validator.validate(""))
+        assertFalse(validator.validate("411111111111111"))
     }
 
     @Test
     fun test_length_rule() {
         validator.addRule(LengthMatchValidator(arrayOf(16)))
 
-        assertFalse(validator.isValid("411111111111111"))
-        assertTrue(validator.isValid("4111111111111118"))
-        assertFalse(validator.isValid("4111111111111111110"))
+        assertFalse(validator.validate("411111111111111"))
+        assertTrue(validator.validate("4111111111111118"))
+        assertFalse(validator.validate("4111111111111111110"))
     }
 
     @Test
     fun test_luhn_rule() {
         validator.addRule(CheckSumValidator(ChecksumAlgorithm.LUHN))
-        assertTrue(validator.isValid("4111111111111111"))
-        assertFalse(validator.isValid("4111111111111118"))
-        assertTrue(validator.isValid("4111111111111111110"))
+        assertTrue(validator.validate("4111111111111111"))
+        assertFalse(validator.validate("4111111111111118"))
+        assertTrue(validator.validate("4111111111111111110"))
     }
 
     @Test
@@ -47,9 +47,9 @@ class CardNumberValidatorTest {
         validator.addRule(LengthMatchValidator(arrayOf(16)))
         validator.addRule(CheckSumValidator(ChecksumAlgorithm.LUHN))
 
-        assertTrue(validator.isValid("4111111111111111"))
-        assertFalse(validator.isValid("4111111111111118"))
-        assertFalse(validator.isValid("4111111111111111110"))
+        assertTrue(validator.validate("4111111111111111"))
+        assertFalse(validator.validate("4111111111111118"))
+        assertFalse(validator.validate("4111111111111111110"))
     }
 
 }

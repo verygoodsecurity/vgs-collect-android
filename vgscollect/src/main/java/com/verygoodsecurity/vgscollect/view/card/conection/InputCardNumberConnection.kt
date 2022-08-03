@@ -58,7 +58,7 @@ internal class InputCardNumberConnection(
     private fun checkIsContentValid(card: CardBrandPreview): List<String> {
         val rawStr = getRawContent(state.content?.data)
         return if (canOverrideDefaultValidation || !card.successfullyDetected) {
-            validator.isValid(rawStr)
+            validator.validate(rawStr)
         } else {
             listOfNotNull(
                 LengthMatchValidator(card.numberLength).isValid(rawStr),

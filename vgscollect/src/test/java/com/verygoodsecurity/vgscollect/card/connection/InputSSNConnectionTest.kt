@@ -73,7 +73,7 @@ class InputSSNConnectionTest {
 
     private fun getValidator(): CompositeValidator {
         val client = Mockito.mock(CompositeValidator::class.java)
-        Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
+        Mockito.doReturn(true).`when`(client).validate(Mockito.anyString())
 
         return client
     }

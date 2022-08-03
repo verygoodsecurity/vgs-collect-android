@@ -37,7 +37,7 @@ internal abstract class BaseInputConnection constructor(
         val content = state.content?.data
         return when {
             !state.isRequired && content.isNullOrEmpty() -> emptyList()
-            state.enableValidation -> validator.isValid(getRawContent(content))
+            state.enableValidation -> validator.validate(getRawContent(content))
             else -> emptyList()
         }
     }

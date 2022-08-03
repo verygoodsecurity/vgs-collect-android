@@ -7,7 +7,6 @@ import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardNumberConnection
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
-import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
@@ -167,7 +166,7 @@ class InputCardNumberConnectionTest {
 
     private fun getValidator():CompositeValidator {
         val client = mock(CompositeValidator::class.java)
-        Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
+        Mockito.doReturn(true).`when`(client).validate(Mockito.anyString())
 
         return client
     }
