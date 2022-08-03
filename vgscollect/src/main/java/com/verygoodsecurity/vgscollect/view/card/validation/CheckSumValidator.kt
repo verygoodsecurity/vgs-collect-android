@@ -5,11 +5,11 @@ import com.verygoodsecurity.vgscollect.view.card.validation.payment.brand.LuhnCh
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSValidationResultListener
 
 class CheckSumValidator(
-    algorithm: ChecksumAlgorithm,
+    private val algorithm: ChecksumAlgorithm,
     private val listener: VGSValidationResultListener? = null
 ) : VGSValidator {
 
-    private val validationList:Array<VGSValidator> = when(algorithm) {
+    private val validationList: Array<VGSValidator> = when (algorithm) {
         ChecksumAlgorithm.LUHN -> arrayOf(
             LuhnCheckSumValidator()
         )
@@ -21,8 +21,8 @@ class CheckSumValidator(
 
     override fun isValid(content: String): Boolean {
         var isValid = true
-        for(checkSumValidator in validationList) {
-            isValid =  isValid && checkSumValidator.isValid(content)
+        for (checkSumValidator in validationList) {
+            isValid = isValid && checkSumValidator.isValid(content)
         }
         listener?.onResult(isValid)
         return isValid
