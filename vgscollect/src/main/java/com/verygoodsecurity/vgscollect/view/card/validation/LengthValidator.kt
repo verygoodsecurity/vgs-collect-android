@@ -6,8 +6,8 @@ internal data class LengthValidator constructor(
     private val errorMsg: String = DEFAULT_ERROR_MSG,
 ) : VGSValidator {
 
-    override fun isValid(content: String): Boolean {
-        return content.length in min..max
+    override fun isValid(content: String): String? {
+        return if (content.length in min..max) null else errorMsg
     }
 
     internal companion object {

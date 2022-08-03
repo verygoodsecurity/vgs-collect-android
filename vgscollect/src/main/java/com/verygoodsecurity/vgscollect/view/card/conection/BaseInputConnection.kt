@@ -4,28 +4,51 @@ import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 
+/** @suppress */
 internal abstract class BaseInputConnection constructor(
     private val id: Int,
     private val validator: CompositeValidator
 ) : InputRunnable {
 
+    private var stateListeners = mutableListOf<OnVgsViewStateChangeListener>()
+
     protected var state = VGSFieldState()
+
+    abstract fun getRawContent(content: String?): String
+
+    override fun getOutput() = state
 
     override fun setOutput(state: VGSFieldState) {
         this.state = state
     }
 
-    override fun getOutput() = state
+    override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
+        listener?.let { addNewListener(it) } ?: clearAllListeners()
+    }
 
-    private var stateListeners = mutableListOf<OnVgsViewStateChangeListener>()
+    override fun run() {
+        val errors = validate()
+        state.isValid = errors.isEmpty()
+        state.errors = errors
+        notifyAllListeners(state)
+    }
 
-    protected fun isValid(input: String): Boolean = validator.isValid(input)
+    private fun validate(): List<String> {
+        val content = state.content?.data
+        return when {
+            !state.isRequired && content.isNullOrEmpty() -> emptyList()
+            state.enableValidation -> isValid(getRawContent(content))
+            else -> emptyList()
+        }
+    }
 
-    protected fun clearAllListeners() {
+    protected fun isValid(input: String): List<String> = validator.isValid(input)
+
+    private fun clearAllListeners() {
         stateListeners.clear()
     }
 
-    protected fun addNewListener(listener: OnVgsViewStateChangeListener) {
+    private fun addNewListener(listener: OnVgsViewStateChangeListener) {
         if (!stateListeners.contains(listener)) {
             stateListeners.add(listener)
             run()

@@ -17,8 +17,8 @@ internal class LengthMatchValidator : VGSValidator {
         this.errorMsg = errorMsg
     }
 
-    override fun isValid(content: String): Boolean {
-        return content.isNotEmpty() && values.contains(content.length)
+    override fun isValid(content: String): String? {
+        return if (content.isNotEmpty() && values.contains(content.length)) null else errorMsg
     }
 
     internal companion object {

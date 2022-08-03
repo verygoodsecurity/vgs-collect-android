@@ -12,15 +12,16 @@ class CompositeValidator {
         validators.clear()
     }
 
-    fun isValid(content: String): Boolean {
+    fun isValid(content: String): List<String> {
         return if (validators.isEmpty()) {
-            false
+            listOf(ERROR_MSG)
         } else {
-            var isValid = true
-            for (validator in validators) {
-                isValid = validator.isValid(content) && isValid
-            }
-            isValid
+            validators.mapNotNull { it.isValid(content) }
         }
+    }
+
+    private companion object {
+
+        private const val ERROR_MSG = "NO_VALIDATION_RULES_ATTACHED_ATTACHED"
     }
 }

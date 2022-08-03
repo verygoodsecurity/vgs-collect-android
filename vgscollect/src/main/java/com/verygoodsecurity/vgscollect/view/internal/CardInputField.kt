@@ -78,9 +78,8 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     override fun applyFieldType() {
         inputConnection = InputCardNumberConnection(id, validator, this, divider).apply {
             this.canOverrideDefaultValidation = this@CardInputField.allowToOverrideDefaultValidation
+            this.addFilter(cardBrandFilter)
         }
-
-        inputConnection!!.addFilter(cardBrandFilter)
 
         val str = text.toString()
         val stateContent = FieldContent.CardNumberContent().apply {

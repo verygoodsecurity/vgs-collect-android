@@ -18,10 +18,10 @@ internal class TimeGapsValidator(
     }
     private val calendar = Calendar.getInstance()
 
-    override fun isValid(content: String): Boolean {
+    override fun isValid(content: String): String? {
         val str = content.trim()
         if(str.isEmpty()) {
-            return false
+            return ERROR_MSG
         }
         try {
             val date = sdf.parse(str).time
@@ -32,7 +32,7 @@ internal class TimeGapsValidator(
             calendar.set(Calendar.SECOND,  calendar.getActualMaximum(Calendar.SECOND))
             calendar.set(Calendar.MILLISECOND,  calendar.getActualMaximum(Calendar.MILLISECOND))
         } catch (e: ParseException) {
-            return false
+            return ERROR_MSG
         }
 
         val isBiggerThanMin:Boolean = minDate?.run {
@@ -47,6 +47,11 @@ internal class TimeGapsValidator(
             }
         }?:true
 
-        return isBiggerThanMin && isLowerThanMax
+        return if (isBiggerThanMin && isLowerThanMax) null else ERROR_MSG
+    }
+
+    private companion object {
+
+        private const val ERROR_MSG = "EXPIRATION_DATE_VALIDATION_ERROR"
     }
 }

@@ -3,10 +3,12 @@ package com.verygoodsecurity.vgscollect.view.card.validation.payment.brand
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 
 /** @suppress */
-class LuhnCheckSumValidator : VGSValidator {
+class LuhnCheckSumValidator constructor(
+    private val errorMsg: String = DEFAULT_ERROR_MSG
+) : VGSValidator {
 
-    override fun isValid(content: String): Boolean {
-        return content.isNotEmpty() && isLuhnCheckSumValid(content)
+    override fun isValid(content: String): String? {
+        return if (content.isNotEmpty() && isLuhnCheckSumValid(content)) null else errorMsg
     }
 
     private fun isLuhnCheckSumValid(number: String): Boolean {
@@ -30,5 +32,10 @@ class LuhnCheckSumValidator : VGSValidator {
             isDoubled = !isDoubled
         }
         return cardSum % 10 == 0
+    }
+
+    private companion object {
+
+        private const val DEFAULT_ERROR_MSG = "LUHN_ALGORITHM_CHECK_VALIDATION_ERROR"
     }
 }

@@ -3,5 +3,10 @@ package com.verygoodsecurity.vgscollect.view.card.validation
 /** @suppress */
 interface VGSValidator {
 
-    fun isValid(content: String): Boolean
+    /**
+     * Check if content valid.
+     *
+     * @return error message if not valid, null otherwise.
+     */
+    fun isValid(content: String): String?
 }

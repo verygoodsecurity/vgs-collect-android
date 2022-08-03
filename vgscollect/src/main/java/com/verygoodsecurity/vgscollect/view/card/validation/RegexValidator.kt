@@ -10,8 +10,12 @@ class RegexValidator(
 
     private var pattern: Pattern = Pattern.compile(value)
 
-    override fun isValid(content: String): Boolean {
-        return if (content.isEmpty()) true else pattern.matcher(content).matches()
+    override fun isValid(content: String): String? {
+        return if (content.isEmpty() || pattern.matcher(content).matches()) {
+            null
+        } else {
+            errorMsg
+        }
     }
 
     internal companion object {

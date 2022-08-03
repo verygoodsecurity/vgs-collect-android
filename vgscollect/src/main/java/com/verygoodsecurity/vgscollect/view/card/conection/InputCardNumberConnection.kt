@@ -1,12 +1,12 @@
 package com.verygoodsecurity.vgscollect.view.card.conection
 
-import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
+import com.verygoodsecurity.vgscollect.view.card.filter.CardInputFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.VGSCardFilter
+import com.verygoodsecurity.vgscollect.view.card.validation.CheckSumValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
-import com.verygoodsecurity.vgscollect.view.card.validation.payment.brand.LuhnCheckSumValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthMatchValidator
 
 /** @suppress */
 internal class InputCardNumberConnection(
@@ -14,16 +14,14 @@ internal class InputCardNumberConnection(
     validator: CompositeValidator,
     private val IcardBrand: IDrawCardBrand? = null,
     private val divider: String? = null
-) : BaseInputConnection(id, validator) {
+) : BaseInputConnection(id, validator), CardInputFilter {
 
     var canOverrideDefaultValidation = false
 
     private val cardFilters = mutableListOf<VGSCardFilter>()
 
-    override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
-        listener?.let {
-            addNewListener(it)
-        } ?: clearAllListeners()
+    override fun getRawContent(content: String?): String {
+        return state.content?.data?.replace(divider ?: " ", "") ?: ""
     }
 
     override fun clearFilters() {
@@ -48,45 +46,29 @@ internal class InputCardNumberConnection(
     }
 
     private fun validate(brand: CardBrandPreview) {
-        val isRequiredRuleValid = isRequiredValid()
-        val isContentRuleValid = isContentValid(brand)
-
-        state.isValid = isRequiredRuleValid && isContentRuleValid
+        val errors = isContentValid(brand)
+        state.isValid = errors.isEmpty()
+        state.errors = errors
     }
 
-    private fun isRequiredValid(): Boolean {
-        return state.isRequired && !state.content?.data.isNullOrEmpty() || !state.isRequired
-    }
-
-    private fun isContentValid(card: CardBrandPreview): Boolean {
+    private fun isContentValid(card: CardBrandPreview): List<String> {
         val content = state.content?.data
         return when {
-            !state.isRequired && content.isNullOrEmpty() -> true
+            !state.isRequired && content.isNullOrEmpty() -> emptyList()
             state.enableValidation -> checkIsContentValid(card)
-            else -> true
+            else -> emptyList()
         }
     }
 
-    private fun checkIsContentValid(card: CardBrandPreview): Boolean {
-        val rawStr = state.content?.data?.replace(divider ?: " ", "") ?: ""
-
+    private fun checkIsContentValid(card: CardBrandPreview): List<String> {
+        val rawStr = getRawContent(state.content?.data)
         return if (canOverrideDefaultValidation || !card.successfullyDetected) {
             isValid(rawStr)
         } else {
-            val isLengthAppropriate: Boolean = checkLength(card.numberLength, rawStr.length)
-            val isLuhnValid: Boolean = validateCheckSum(card.algorithm, rawStr)
-            isLengthAppropriate && isLuhnValid
-        }
-    }
-
-    private fun validateCheckSum(
-        algorithm: ChecksumAlgorithm,
-        cardNumber: String
-    ): Boolean {
-        return when (algorithm) {
-            ChecksumAlgorithm.LUHN -> LuhnCheckSumValidator().isValid(cardNumber)
-            ChecksumAlgorithm.NONE -> true
-            else -> false
+            listOfNotNull(
+                LengthMatchValidator(card.numberLength).isValid(rawStr),
+                CheckSumValidator(card.algorithm).isValid(rawStr)
+            )
         }
     }
 
@@ -108,18 +90,8 @@ internal class InputCardNumberConnection(
         return CardBrandPreview()
     }
 
-    private fun checkLength(
-        rangeNumber: Array<Int>,
-        length: Int?
-    ): Boolean {
-        return rangeNumber.contains(length)
-    }
-
     internal interface IDrawCardBrand {
-        fun onCardBrandPreview(
-            card: CardBrandPreview
-        )
+
+        fun onCardBrandPreview(card: CardBrandPreview)
     }
-
-
 }
