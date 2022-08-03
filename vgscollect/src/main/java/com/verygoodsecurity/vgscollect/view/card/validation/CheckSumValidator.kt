@@ -19,7 +19,7 @@ class CheckSumValidator(
         else -> arrayOf()
     }
 
-    override fun isValid(content: String?): Boolean {
+    override fun isValid(content: String): Boolean {
         var isValid = true
         for(checkSumValidator in validationList) {
             isValid =  isValid && checkSumValidator.isValid(content)

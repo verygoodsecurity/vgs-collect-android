@@ -32,7 +32,7 @@ class CardHolderValidatorTest {
 
     @Test
     fun test_custom_regex() {
-        validator.setRegex("^([a-zA-Z]{2,}\\s[a-zA-z]{1,})\$")
+        val validator = RegexValidator("^([a-zA-Z]{2,}\\s[a-zA-z]{1,})\$")
 
         assertFalse(validator.isValid("abra"))
         assertTrue(validator.isValid("abra cadabra"))
@@ -42,15 +42,13 @@ class CardHolderValidatorTest {
 
     @Test
     fun testEmptyValidator() {
-        val validator = RegexValidator()
+        val validator = RegexValidator("")
 
         assertTrue(validator.isValid(""))
-        assertTrue(validator.isValid(null))
         assertTrue(validator.isValid("abra"))
         assertTrue(validator.isValid("abra cadabra"))
         assertTrue(validator.isValid("abra cadab ra"))
         assertTrue(validator.isValid("qq aa$"))
         assertTrue(validator.isValid("( * 2q aa$"))
     }
-
 }

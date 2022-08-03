@@ -18,8 +18,8 @@ internal class LengthMatchValidator : VGSValidator {
         this.listener = listener
     }
 
-    override fun isValid(content: String?): Boolean {
-        val result = !content.isNullOrEmpty() && length.contains(content.length)
+    override fun isValid(content: String): Boolean {
+        val result = content.isNotEmpty() && length.contains(content.length)
         listener?.onResult(result)
         return result
     }

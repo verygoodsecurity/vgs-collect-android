@@ -5,26 +5,15 @@ import java.util.regex.Pattern
 
 /** @suppress */
 class RegexValidator(
-    regex: String? = null,
+    private val regex: String,
     private val listener: VGSValidationResultListener? = null
 ) : VGSValidator {
-    private var m: Pattern? = null
 
-    init {
-        if (!regex.isNullOrEmpty()) {
-            m = Pattern.compile(regex)
-        }
-    }
+    private var pattern: Pattern = Pattern.compile(regex)
 
-    override fun isValid(content: String?): Boolean {
-       val result =  m?.run {
-            !content.isNullOrEmpty() && m!!.matcher(content).matches()
-        } ?: true
+    override fun isValid(content: String): Boolean {
+        val result = if (content.isEmpty()) true else pattern.matcher(content).matches()
         listener?.onResult(result)
         return result
-    }
-
-    internal fun setRegex(regex: String) {
-        m = Pattern.compile(regex)
     }
 }

@@ -5,8 +5,8 @@ internal data class LengthValidator constructor(
     private val max: Int
 ) : VGSValidator {
 
-    override fun isValid(content: String?): Boolean {
-        if (content.isNullOrEmpty()) return false
+    override fun isValid(content: String): Boolean {
+        if (content.isEmpty()) return false
         return content.length in min..max
     }
 }
