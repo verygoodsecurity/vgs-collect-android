@@ -5,11 +5,11 @@ import com.verygoodsecurity.vgscollect.view.card.validation.payment.brand.LuhnCh
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSValidationResultListener
 
 class CheckSumValidator(
-    private val algorithm: ChecksumAlgorithm,
+    internal val value: ChecksumAlgorithm,
     private val listener: VGSValidationResultListener? = null
 ) : VGSValidator {
 
-    private val validator: LuhnCheckSumValidator? = when (algorithm) {
+    private val validator: LuhnCheckSumValidator? = when (value) {
         ChecksumAlgorithm.LUHN -> LuhnCheckSumValidator()
         ChecksumAlgorithm.ANY -> LuhnCheckSumValidator()
         ChecksumAlgorithm.NONE -> null

@@ -42,7 +42,7 @@ class CardHolderValidatorTest {
 
     @Test
     fun testEmptyValidator() {
-        val validator = RegexValidator("")
+        val validator = RegexValidator(".*")
 
         assertTrue(validator.isValid(""))
         assertTrue(validator.isValid("abra"))

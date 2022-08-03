@@ -1,8 +1,8 @@
 package com.verygoodsecurity.vgscollect.view.card.validation
 
 internal data class LengthValidator constructor(
-    private val min: Int,
-    private val max: Int
+    internal val min: Int,
+    internal val max: Int
 ) : VGSValidator {
 
     override fun isValid(content: String): Boolean {

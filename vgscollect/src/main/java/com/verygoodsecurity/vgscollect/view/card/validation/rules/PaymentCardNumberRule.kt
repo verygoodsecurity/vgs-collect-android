@@ -5,6 +5,8 @@ import com.verygoodsecurity.vgscollect.view.card.validation.LengthMatchValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * [com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText] validation rule.
@@ -53,12 +55,14 @@ class PaymentCardNumberRule private constructor(
 
         /** Configure minimum length which will support. */
         fun setAllowableMinLength(length: Int) = this.apply {
-            this.length = this.length?.copy(min = length) ?: LengthValidator(length, MAX_LENGTH)
+            this.length = this.length?.let { it.copy(min = min(it.max, length)) }
+                ?: LengthValidator(length, MAX_LENGTH)
         }
 
         /** Configure maximum length which will support. */
         fun setAllowableMaxLength(length: Int) = this.apply {
-            this.length = this.length?.copy(max = length) ?: LengthValidator(MIN_LENGTH, length)
+            this.length = this.length?.let { it.copy(max = max(it.min, length)) }
+                ?: LengthValidator(MIN_LENGTH, length)
         }
 
         /** Configure the array of lengths which will support. */

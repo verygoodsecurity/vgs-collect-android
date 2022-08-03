@@ -5,11 +5,11 @@ import java.util.regex.Pattern
 
 /** @suppress */
 class RegexValidator(
-    private val regex: String,
+    internal val value: String,
     private val listener: VGSValidationResultListener? = null
 ) : VGSValidator {
 
-    private var pattern: Pattern = Pattern.compile(regex)
+    private var pattern: Pattern = Pattern.compile(value)
 
     override fun isValid(content: String): Boolean {
         val result = if (content.isEmpty()) true else pattern.matcher(content).matches()

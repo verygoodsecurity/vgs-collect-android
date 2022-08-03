@@ -13,7 +13,7 @@ class CardNumberRuleTest {
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .build()
         assertEquals(null, rule.algorithm)
-        assertArrayEquals(null, rule.length)
+        assertEquals(null, rule.length)
     }
 
     @Test
@@ -21,8 +21,8 @@ class CardNumberRuleTest {
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAlgorithm(ChecksumAlgorithm.NONE)
             .build()
-        assertEquals(ChecksumAlgorithm.NONE, rule.algorithm)
-        assertArrayEquals(null, rule.length)
+        assertEquals(ChecksumAlgorithm.NONE, rule.algorithm?.value)
+        assertEquals(null, rule.length)
     }
 
     @Test
@@ -30,8 +30,8 @@ class CardNumberRuleTest {
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAlgorithm(ChecksumAlgorithm.ANY)
             .build()
-        assertEquals(ChecksumAlgorithm.ANY, rule.algorithm)
-        assertArrayEquals(null, rule.length)
+        assertEquals(ChecksumAlgorithm.ANY, rule.algorithm?.value)
+        assertEquals(null, rule.length)
     }
 
     @Test
@@ -39,8 +39,8 @@ class CardNumberRuleTest {
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
             .build()
-        assertEquals(ChecksumAlgorithm.LUHN, rule.algorithm)
-        assertArrayEquals(null, rule.length)
+        assertEquals(ChecksumAlgorithm.LUHN, rule.algorithm?.value)
+        assertEquals(null, rule.length)
     }
 
     @Test
@@ -49,7 +49,7 @@ class CardNumberRuleTest {
             .setAllowableNumberLength(arrayOf(4,12,16))
             .build()
         assertEquals(null, rule.algorithm)
-        assertArrayEquals(arrayOf(4,12,16), rule.length)
+        assertArrayEquals(arrayOf(4,12,16), rule.lengthMatch?.values)
     }
 
     @Test
@@ -58,7 +58,8 @@ class CardNumberRuleTest {
             .setAllowableMinLength(16)
             .build()
         assertEquals(null, rule.algorithm)
-        assertArrayEquals(arrayOf(16,17,18,19), rule.length)
+        assertEquals(16, rule.length?.min)
+        assertEquals(256, rule.length?.max)
     }
 
     @Test
@@ -67,7 +68,8 @@ class CardNumberRuleTest {
             .setAllowableMaxLength(16)
             .build()
         assertEquals(null, rule.algorithm)
-        assertArrayEquals(arrayOf(13,14,15,16), rule.length)
+        assertEquals(16, rule.length?.max)
+        assertEquals(1, rule.length?.min)
     }
 
     @Test
@@ -77,17 +79,8 @@ class CardNumberRuleTest {
             .setAllowableMaxLength(19)
             .build()
         assertEquals(null, rule.algorithm)
-        assertArrayEquals(arrayOf(16,17,18,19), rule.length)
-    }
-
-    @Test
-    fun test_max_min_length_rule() {
-        val rule = PaymentCardNumberRule.ValidationBuilder()
-            .setAllowableMaxLength(19)
-            .setAllowableMinLength(16)
-            .build()
-        assertEquals(null, rule.algorithm)
-        assertArrayEquals(arrayOf(16,17,18,19), rule.length)
+        assertEquals(16, rule.length?.min)
+        assertEquals(19, rule.length?.max)
     }
 
     @Test
@@ -98,7 +91,9 @@ class CardNumberRuleTest {
             .setAllowableNumberLength(arrayOf(12,15,19))
             .build()
         assertEquals(null, rule.algorithm)
-        assertArrayEquals(arrayOf(12,15,19), rule.length)
+        assertArrayEquals(arrayOf(12,15,19), rule.lengthMatch?.values)
+        assertEquals(16, rule.length?.min)
+        assertEquals(19, rule.length?.max)
     }
 
     @Test
@@ -109,27 +104,9 @@ class CardNumberRuleTest {
             .setAllowableMinLength(16)
             .build()
         assertEquals(null, rule.algorithm)
-        assertArrayEquals(arrayOf(12,15,19), rule.length)
-    }
-
-    @Test
-    fun test_4_rule() {
-        val rule = PaymentCardNumberRule.ValidationBuilder()
-            .setAllowableMaxLength(13)
-            .setAllowableMinLength(16)
-            .build()
-        assertEquals(null, rule.algorithm)
-        assertArrayEquals(arrayOf(13), rule.length)
-    }
-
-    @Test
-    fun test_5_rule() {
-        val rule = PaymentCardNumberRule.ValidationBuilder()
-            .setAllowableMinLength(16)
-            .setAllowableMaxLength(13)
-            .build()
-        assertEquals(null, rule.algorithm)
-        assertArrayEquals(arrayOf(13), rule.length)
+        assertArrayEquals(arrayOf(12,15,19), rule.lengthMatch?.values)
+        assertEquals(16, rule.length?.min)
+        assertEquals(19, rule.length?.max)
     }
 
     @Test
@@ -139,8 +116,8 @@ class CardNumberRuleTest {
             .setAllowableMaxLength(19)
             .setAllowableMinLength(12)
             .build()
-        assertEquals("r", rule.regex)
-        assertArrayEquals((12..19).toList().toTypedArray(), rule.length)
+        assertEquals("r", rule.regex?.value)
+        assertEquals(12, rule.length?.min)
+        assertEquals(19, rule.length?.max)
     }
-
 }

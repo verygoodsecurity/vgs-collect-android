@@ -11,7 +11,7 @@ class PersonNameRuleTest {
         val rule = PersonNameRule.ValidationBuilder()
             .build()
         Assert.assertEquals(null, rule.regex)
-        Assert.assertArrayEquals(null, rule.length)
+        Assert.assertEquals(null, rule.lengthMatch)
     }
 
     @Test
@@ -20,7 +20,8 @@ class PersonNameRuleTest {
             .setAllowableMinLength(4)
             .build()
         Assert.assertEquals(null, rule.regex)
-        Assert.assertArrayEquals((4..256).toList().toTypedArray(), rule.length)
+        Assert.assertEquals(4, rule.length?.min)
+        Assert.assertEquals(256, rule.length?.max)
     }
 
     @Test
@@ -29,7 +30,8 @@ class PersonNameRuleTest {
             .setAllowableMaxLength(4)
             .build()
         Assert.assertEquals(null, rule.regex)
-        Assert.assertArrayEquals(arrayOf(1, 2, 3, 4), rule.length)
+        Assert.assertEquals(1, rule.length?.min)
+        Assert.assertEquals(4, rule.length?.max)
     }
 
     @Test
@@ -39,7 +41,8 @@ class PersonNameRuleTest {
             .setAllowableMaxLength(4)
             .build()
         Assert.assertEquals(null, rule.regex)
-        Assert.assertArrayEquals(arrayOf(2, 3, 4), rule.length)
+        Assert.assertEquals(2, rule.length?.min)
+        Assert.assertEquals(4, rule.length?.max)
     }
 
     @Test
@@ -49,7 +52,8 @@ class PersonNameRuleTest {
             .setAllowableMinLength(6)
             .build()
         Assert.assertEquals(null, rule.regex)
-        Assert.assertArrayEquals(arrayOf(3), rule.length)
+        Assert.assertEquals(3, rule.length?.min)
+        Assert.assertEquals(3, rule.length?.max)
     }
 
     @Test
@@ -57,8 +61,8 @@ class PersonNameRuleTest {
         val rule = PersonNameRule.ValidationBuilder()
             .setRegex("r")
             .build()
-        Assert.assertEquals("r", rule.regex)
-        Assert.assertArrayEquals(null, rule.length)
+        Assert.assertEquals("r", rule.regex?.value)
+        Assert.assertEquals(null, rule.length)
     }
 
     @Test
@@ -68,8 +72,8 @@ class PersonNameRuleTest {
             .setAllowableMaxLength(2000)
             .setAllowableMinLength(4)
             .build()
-        Assert.assertEquals("r", rule.regex)
-        Assert.assertArrayEquals((4..2000).toList().toTypedArray(), rule.length)
+        Assert.assertEquals("r", rule.regex?.value)
+        Assert.assertEquals(4, rule.length?.min)
+        Assert.assertEquals(2000, rule.length?.max)
     }
-
 }
