@@ -29,7 +29,7 @@ internal abstract class BaseInputConnection constructor(
     override fun run() {
         val errors = validate()
         state.isValid = errors.isEmpty()
-        state.errors = errors
+        state.validationErrors = errors
         notifyAllListeners(state)
     }
 

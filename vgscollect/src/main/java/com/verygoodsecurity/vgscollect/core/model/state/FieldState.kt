@@ -18,7 +18,7 @@ sealed class FieldState {
         internal set
 
     /** List of errors. */
-    var errors: List<String> = emptyList()
+    var validationErrors: List<String> = emptyList()
         internal set
 
     /** The state is true if the input field has no input inside. */

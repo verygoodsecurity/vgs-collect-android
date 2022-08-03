@@ -42,7 +42,7 @@ internal class InputCardNumberConnection(
 
         val errors = validate(brand)
         state.isValid = errors.isEmpty()
-        state.errors = errors
+        state.validationErrors = errors
         notifyAllListeners(state)
     }
 
