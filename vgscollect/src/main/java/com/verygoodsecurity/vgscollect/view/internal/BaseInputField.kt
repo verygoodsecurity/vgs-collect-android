@@ -26,7 +26,8 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
-import com.verygoodsecurity.vgscollect.view.card.validation.*
+import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
 
 /** @suppress */
@@ -409,8 +410,10 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     open fun applyValidationRule(rule: ValidationRule) {
         validator.clearRules()
-        rule.length?.let { validator.addRule(LengthMatchValidator(it, rule.lengthResultLister)) }
-        rule.regex?.let { validator.addRule(RegexValidator(it, rule.regexResultLister)) }
+        rule.algorithm?.let { validator.addRule(it) }
+        rule.regex?.let { validator.addRule(it) }
+        rule.length?.let { validator.addRule(it) }
+        rule.lengthMatch?.let { validator.addRule(it) }
     }
 
     fun isContentEquals(inputField: BaseInputField): Boolean {
