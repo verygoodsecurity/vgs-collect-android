@@ -118,7 +118,8 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         if (this.cardContent != cardContent) {
             this.cardContent = cardContent
             applyLengthFilter(cardContent.rangeCVV.last())
-            (inputConnection as? InputCardCVCConnection)?.validator = LengthMatchValidator(cardContent.rangeCVV)
+            validator.clearRules()
+            validator.addRule(LengthMatchValidator(cardContent.rangeCVV))
             text = text
             refreshIcon()
         }
