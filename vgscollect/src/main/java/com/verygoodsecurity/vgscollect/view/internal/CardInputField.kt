@@ -3,17 +3,20 @@ package com.verygoodsecurity.vgscollect.view.internal
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
-import android.os.Build
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.text.InputType
 import android.text.method.DigitsKeyListener
 import android.view.Gravity
 import com.verygoodsecurity.vgscollect.R
-import com.verygoodsecurity.vgscollect.core.model.state.*
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscollect.core.model.state.parseCardBin
 import com.verygoodsecurity.vgscollect.util.extension.applyLimitOnMask
 import com.verygoodsecurity.vgscollect.util.extension.formatToMask
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
-import com.verygoodsecurity.vgscollect.view.card.*
+import com.verygoodsecurity.vgscollect.view.card.CardBrand
+import com.verygoodsecurity.vgscollect.view.card.CardType
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardNumberConnection
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
@@ -21,8 +24,6 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
-import com.verygoodsecurity.vgscollect.view.card.validation.*
-import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText.Companion.TAG
@@ -77,9 +78,8 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     override fun applyFieldType() {
         inputConnection = InputCardNumberConnection(id, validator, this, divider).apply {
             this.canOverrideDefaultValidation = this@CardInputField.allowToOverrideDefaultValidation
+            this.addFilter(cardBrandFilter)
         }
-
-        inputConnection!!.addFilter(cardBrandFilter)
 
         val str = text.toString()
         val stateContent = FieldContent.CardNumberContent().apply {
@@ -331,14 +331,8 @@ internal class CardInputField(context: Context) : BaseInputField(context),
 
     override fun applyValidationRule(rule: ValidationRule) {
         with(rule as PaymentCardNumberRule) {
-            allowToOverrideDefaultValidation = canOverrideDefaultValidation &&
-                    (length != null || algorithm != null || regex != null)
-
-            validator.clearRules()
-
-            if (length != null) validator.addRule(LengthValidator(length))
-            if (algorithm != null) validator.addRule(CheckSumValidator(algorithm))
-            if (regex != null) validator.addRule(RegexValidator(regex))
+            allowToOverrideDefaultValidation = overrideDefaultValidation && rule.isAnyRulePresent()
+            super.applyValidationRule(rule)
         }
     }
 

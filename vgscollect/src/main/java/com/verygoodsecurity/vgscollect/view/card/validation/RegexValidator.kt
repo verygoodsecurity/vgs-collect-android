@@ -4,23 +4,18 @@ import java.util.regex.Pattern
 
 /** @suppress */
 class RegexValidator(
-    regex: String? = null
+    internal val value: String,
+    override val errorMsg: String = DEFAULT_ERROR_MSG
 ) : VGSValidator {
-    private var m: Pattern? = null
 
-    init {
-        if (!regex.isNullOrEmpty()) {
-            m = Pattern.compile(regex)
-        }
+    private var pattern: Pattern = Pattern.compile(value)
+
+    override fun isValid(content: String): Boolean {
+        return pattern.matcher(content).matches()
     }
 
-    override fun isValid(content: String?): Boolean {
-        return m?.run {
-            !content.isNullOrEmpty() && m!!.matcher(content).matches()
-        } ?: true
-    }
+    internal companion object {
 
-    internal fun setRegex(regex: String) {
-        m = Pattern.compile(regex)
+        internal const val DEFAULT_ERROR_MSG = "REGEX_VALIDATION_ERROR"
     }
 }

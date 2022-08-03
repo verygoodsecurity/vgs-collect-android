@@ -1,70 +1,70 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.rules
 
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
+import kotlin.math.max
+import kotlin.math.min
+
+/**
+ * [com.verygoodsecurity.vgscollect.widget.VGSEditText] validation rule.
+ */
 class VGSInfoRule private constructor(
-    regex: String?,
-    length: Array<Int>?
-) : ValidationRule(regex, length) {
+    regex: RegexValidator?,
+    length: LengthValidator?,
+) : ValidationRule(null, regex, length, null) {
 
     /**
      * This class provides an API for set up rules for validation person name.
      */
     class ValidationBuilder {
 
-        /** The Regex for validation input. */
-        protected var regex: String? = null
+        /** The regex for validation input. */
+        private var regex: RegexValidator? = null
 
-        /** The minimum length of the person name which will support. */
-        protected var minLength = -1
+        /** The length range for validation input. */
+        private var length: LengthValidator? = null
 
-        /** The maximum length of the person name which will support. */
-        protected var maxLength = -1
+        /** Configure regex for validation input. */
+        fun setRegex(
+            regex: String,
+            errorMsg: String = RegexValidator.DEFAULT_ERROR_MSG
+        ) = this.apply { this.regex = RegexValidator(regex, errorMsg) }
 
-        /** Configure Regex for validation input. */
-        fun setRegex(regex: String): ValidationBuilder {
-            this.regex = regex
-            return this
+        /** Configure minimum length which will support. */
+        fun setAllowableMinLength(length: Int) = this.apply {
+            this.length = this.length?.let {
+                it.copy(min = min(it.max, length))
+            } ?: LengthValidator(length, MAX_LENGTH)
         }
 
-        /** Configure minimum length of the name which will support. */
-        fun setAllowableMinLength(length: Int): ValidationBuilder {
-            if (maxLength == -1) {
-                maxLength = 256
-            }
-            minLength = if (length > maxLength) {
-                maxLength
-            } else {
-                length
-            }
-            return this
+        /** Configure minimum length which will support. */
+        fun setAllowableMinLength(
+            length: Int,
+            errorMsg: String
+        ) = this.apply {
+            this.length = this.length?.let {
+                it.copy(min = min(it.max, length), errorMsg = errorMsg)
+            } ?: LengthValidator(length, MAX_LENGTH, errorMsg)
         }
 
-        /** Configure maximum length of the name which will support. */
-        fun setAllowableMaxLength(length: Int): ValidationBuilder {
-            if (minLength == -1) {
-                minLength = 1
-            }
-            if (length < minLength) {
-                minLength = length
-            }
-            maxLength = length
-            return this
+        /** Configure maximum length which will support. */
+        fun setAllowableMaxLength(length: Int) = this.apply {
+            this.length = this.length?.let {
+                it.copy(max = max(it.min, length))
+            } ?: LengthValidator(MIN_LENGTH, length)
         }
 
-        private fun getRange(): Array<Int>? {
-            return if (minLength != -1 && maxLength != -1) {
-                (minLength..maxLength).toList().toTypedArray()
-            } else {
-                null
-            }
+        /** Configure maximum length which will support. */
+        fun setAllowableMaxLength(
+            length: Int,
+            errorMsg: String
+        ) = this.apply {
+            this.length = this.length?.let {
+                it.copy(max = max(it.min, length), errorMsg = errorMsg)
+            } ?: LengthValidator(MIN_LENGTH, length, errorMsg)
         }
 
         /** Creates a rule. */
-        fun build(): VGSInfoRule {
-            return VGSInfoRule(
-                regex,
-                getRange()
-            )
-        }
+        fun build() = VGSInfoRule(regex, length)
     }
-
 }

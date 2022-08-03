@@ -1,19 +1,15 @@
 package com.verygoodsecurity.vgscollect.view.card.validation
 
-/** @suppress */
-internal class LengthValidator : VGSValidator {
+internal data class LengthValidator constructor(
+    internal val min: Int,
+    internal val max: Int,
+    override val errorMsg: String = DEFAULT_ERROR_MSG,
+) : VGSValidator {
 
-    private val length:Array<Int>
+    override fun isValid(content: String) = content.length in min..max
 
-    constructor(length:Int) {
-        this.length = arrayOf(length)
-    }
+    internal companion object {
 
-    constructor(length: Array<Int>) {
-        this.length = length
-    }
-
-    override fun isValid(content: String?): Boolean {
-        return !content.isNullOrEmpty() && length.contains(content.length)
+        internal const val DEFAULT_ERROR_MSG = "LENGTH_VALIDATION_ERROR"
     }
 }
