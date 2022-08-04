@@ -42,12 +42,14 @@ class PaymentCardNumberRule private constructor(
         private var overrideDefaultValidation = false
 
         /** Configure behavior for validation checkSum. */
+        @JvmOverloads
         fun setAlgorithm(
             algorithm: ChecksumAlgorithm,
             errorMsg: String = CheckSumValidator.DEFAULT_ERROR_MSG
         ) = this.apply { this.algorithm = CheckSumValidator(algorithm, errorMsg) }
 
         /** Configure regex for validation input. */
+        @JvmOverloads
         fun setRegex(
             regex: String,
             errorMsg: String = RegexValidator.DEFAULT_ERROR_MSG
@@ -88,6 +90,7 @@ class PaymentCardNumberRule private constructor(
         }
 
         /** Configure the array of lengths which will support. */
+        @JvmOverloads
         fun setAllowableNumberLength(
             length: Array<Int>,
             errorMsg: String = LengthMatchValidator.DEFAULT_ERROR_MSG
