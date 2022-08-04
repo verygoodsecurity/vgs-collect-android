@@ -47,3 +47,26 @@ val staticData = mutableMapOf<String, Any>()
 val content = mutableMapOf( "content" to "content_data" )
 staticData["data"] = content
 ```
+
+### Migrating from versions < v1.7.1
+Function `addRule` is now deprecated. It's still can be used, but **Android Studio** will highlight it. 
+
+**Before:**
+
+```
+view.addRule(
+    VGSInfoRule.ValidationBuilder()
+        .setRegex("^[0-9]{5}(?:-[0-9]{4})?\$")
+        .build()
+)
+```
+
+**Now:**
+
+```
+view.setRule(
+    VGSInfoRule.ValidationBuilder()
+        .setRegex("^[0-9]{5}(?:-[0-9]{4})?\$")
+        .build()
+)
+```
