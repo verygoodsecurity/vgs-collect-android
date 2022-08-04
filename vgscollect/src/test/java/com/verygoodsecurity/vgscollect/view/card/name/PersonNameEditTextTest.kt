@@ -9,11 +9,11 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
-import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.view.internal.PersonNameInputField
-import com.verygoodsecurity.vgscollect.view.internal.SSNInputField
 import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
 import org.junit.Assert.*
 import org.junit.Before
@@ -208,7 +208,7 @@ class PersonNameEditTextTest {
             .setAllowableMinLength(12)
             .setAllowableMaxLength(15)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
         view.setText("12312312312")
 
         child.refreshInternalState()
@@ -217,6 +217,7 @@ class PersonNameEditTextTest {
         assertNotNull(state)
         assertEquals(false, state!!.isValid)
         assertEquals(11, state.contentLength)
+        assertEquals(listOf(LengthValidator.DEFAULT_ERROR_MSG), state.validationErrors)
 
         view.setText("123123123123")
         child.refreshInternalState()
@@ -225,6 +226,7 @@ class PersonNameEditTextTest {
         assertNotNull(state)
         assertEquals(true, state2!!.isValid)
         assertEquals(12, state2.contentLength)
+        assertEquals(emptyList<String>(), state2.validationErrors)
 
         view.setText("123123123123123")
         child.refreshInternalState()
@@ -233,20 +235,22 @@ class PersonNameEditTextTest {
         assertNotNull(state)
         assertEquals(true, state3!!.isValid)
         assertEquals(15, state3.contentLength)
+        assertEquals(emptyList<String>(), state3.validationErrors)
     }
 
     @Test
-    fun test_length_min() {
+    fun test_length_min_with_custom_error() {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
+        val errorMsg = "Length incorrect."
         val rule = PersonNameRule.ValidationBuilder()
-            .setAllowableMinLength(7)
+            .setAllowableMinLength(7, errorMsg)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
         view.setText("123123")
 
         child.refreshInternalState()
@@ -255,6 +259,7 @@ class PersonNameEditTextTest {
         assertNotNull(state)
         assertEquals(false, state!!.isValid)
         assertEquals(6, state.contentLength)
+        assertEquals(listOf(errorMsg), state.validationErrors)
 
         view.setText("1231234")
 
@@ -264,6 +269,7 @@ class PersonNameEditTextTest {
         assertNotNull(state)
         assertEquals(true, state2!!.isValid)
         assertEquals(7, state2.contentLength)
+        assertEquals(emptyList<String>(), state2.validationErrors)
 
         view.setText("1231231231231231231")
 
@@ -273,6 +279,7 @@ class PersonNameEditTextTest {
         assertNotNull(state)
         assertEquals(true, state3!!.isValid)
         assertEquals(19, state3.contentLength)
+        assertEquals(emptyList<String>(), state2.validationErrors)
     }
 
 
@@ -287,7 +294,7 @@ class PersonNameEditTextTest {
         val rule = PersonNameRule.ValidationBuilder()
             .setAllowableMaxLength(17)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
         view.setText("")
 
         child.refreshInternalState()
@@ -347,7 +354,7 @@ class PersonNameEditTextTest {
             .setAllowableMaxLength(17)
             .setAllowableMinLength(15)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
         view.setText("12312312312312")
         child.refreshInternalState()
@@ -403,7 +410,7 @@ class PersonNameEditTextTest {
         val rule = PersonNameRule.ValidationBuilder()
             .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
         view.setText("")
         child.refreshInternalState()
@@ -412,6 +419,7 @@ class PersonNameEditTextTest {
         assertNotNull(state0)
         assertEquals(false, state0!!.isValid)
         assertEquals(0, state0.contentLength)
+        assertEquals(listOf(RegexValidator.DEFAULT_ERROR_MSG), state0.validationErrors)
 
 
         view.setText("0111111111111111")
@@ -421,6 +429,7 @@ class PersonNameEditTextTest {
         assertNotNull(state1)
         assertEquals(true, state1!!.isValid)
         assertEquals(16, state1.contentLength)
+        assertEquals(emptyList<String>(), state1.validationErrors)
 
         view.setText("0111111111111w111")
         child.refreshInternalState()
@@ -429,6 +438,7 @@ class PersonNameEditTextTest {
         assertNotNull(state2)
         assertEquals(false, state2!!.isValid)
         assertEquals(17, state2.contentLength)
+        assertEquals(listOf(RegexValidator.DEFAULT_ERROR_MSG), state2.validationErrors)
 
         view.setText("01111111111111")
         child.refreshInternalState()
@@ -437,6 +447,127 @@ class PersonNameEditTextTest {
         assertNotNull(state3)
         assertEquals(false, state3!!.isValid)
         assertEquals(14, state3.contentLength)
+        assertEquals(listOf(RegexValidator.DEFAULT_ERROR_MSG), state3.validationErrors)
+    }
+
+    @Test
+    fun test_regex_and_length_with_custom_errors() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val regexError = "Regex failed."
+        val regexRule = PersonNameRule.ValidationBuilder()
+            .setRegex("\\d+", errorMsg = regexError)
+            .build()
+
+        val lengthError = "Incorrect length."
+        val lengthRule = PersonNameRule.ValidationBuilder()
+            .setAllowableMinLength(15)
+            .setAllowableMaxLength(17, errorMsg = lengthError)
+            .build()
+
+        view.setRules(listOf(regexRule, lengthRule))
+
+        view.setText("f")
+        child.refreshInternalState()
+
+        val state1 = view.getState()
+        assertNotNull(state1)
+        assertEquals(true, state1!!.isValid)
+        assertEquals(1, state1.contentLength)
+        assertEquals(listOf(regexError, lengthError), state1.validationErrors)
+
+        view.setText("0111111111111111")
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        assertNotNull(state2)
+        assertEquals(false, state2!!.isValid)
+        assertEquals(16, state2.contentLength)
+        assertEquals(listOf(regexError, lengthError), state2.validationErrors)
+
+
+
+        view.setText("011111111111111111")
+        child.refreshInternalState()
+
+        val state3 = view.getState()
+        assertNotNull(state3)
+        assertEquals(false, state3!!.isValid)
+        assertEquals(18, state3.contentLength)
+        assertEquals(listOf(lengthError), state3.validationErrors)
+    }
+
+    @Test
+    fun test_default_validation() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        view.setText("")
+        child.refreshInternalState()
+
+        val state1 = view.getState()
+        assertNotNull(state1)
+        assertEquals(false, state1!!.isValid)
+        assertEquals(0, state1.contentLength)
+        assertEquals(listOf(RegexValidator.DEFAULT_ERROR_MSG), state1.validationErrors)
+
+        view.setText("A")
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        assertNotNull(state2)
+        assertEquals(true, state2!!.isValid)
+        assertEquals(1, state2.contentLength)
+        assertEquals(emptyList<String>(), state2.validationErrors)
+    }
+
+    @Test
+    fun test_default_validation_with_appended_rule() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val regexError = "Regex failed."
+        val regexRule = PersonNameRule.ValidationBuilder()
+            .setRegex("\\d+", errorMsg = regexError)
+            .build()
+        view.appendRule(regexRule)
+
+        view.setText("")
+        child.refreshInternalState()
+
+        val state1 = view.getState()
+        assertNotNull(state1)
+        assertEquals(false, state1!!.isValid)
+        assertEquals(0, state1.contentLength)
+        assertEquals(listOf(RegexValidator.DEFAULT_ERROR_MSG, regexError), state1.validationErrors)
+
+        view.setText("A")
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        assertNotNull(state2)
+        assertEquals(false, state2!!.isValid)
+        assertEquals(1, state2.contentLength)
+        assertEquals(listOf(regexError), state2.validationErrors)
+
+        view.setText("1")
+        child.refreshInternalState()
+
+        val state3 = view.getState()
+        assertNotNull(state3)
+        assertEquals(true, state3!!.isValid)
+        assertEquals(1, state3.contentLength)
+        assertEquals(emptyList<String>(), state3.validationErrors)
     }
 
     @Test
@@ -445,7 +576,10 @@ class PersonNameEditTextTest {
 
         val child = view.statePreparer.getView()
 
-        assertEquals((child as PersonNameInputField).vaultAliasFormat, VGSVaultAliasFormat.FPE_SIX_T_FOUR)
+        assertEquals(
+            (child as PersonNameInputField).vaultAliasFormat,
+            VGSVaultAliasFormat.FPE_SIX_T_FOUR
+        )
     }
 
     @Test
