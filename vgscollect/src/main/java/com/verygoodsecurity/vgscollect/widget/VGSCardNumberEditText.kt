@@ -19,6 +19,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNum
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
 
 /**
  * A user interface element that displays text to the user in bank card number format.
@@ -130,8 +131,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
             .setAllowableMinLength(16)
             .setAllowableMaxLength(19)
             .build()
-
-        addRule(rule)
+        setRule(rule)
     }
 
     /**
@@ -258,8 +258,30 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     /**
      * Adds a validation rule for the field.
      */
+    @Deprecated("Use setRule(rule) instead.", ReplaceWith("setRule(rule)"))
     fun addRule(rule: PaymentCardNumberRule) {
         applyValidationRule(rule)
+    }
+
+    /**
+     * Set a validation rule for the field.
+     */
+    fun setRule(rule: PaymentCardNumberRule) {
+        applyValidationRule(rule)
+    }
+
+    /**
+     * Set a validation rules for the field.
+     */
+    fun setRules(rules: List<PaymentCardNumberRule>) {
+        applyValidationRules(rules)
+    }
+
+    /**
+     * Adds a validation rule for the field.
+     */
+    fun appendRule(rule: PaymentCardNumberRule) {
+        appendValidationRule(rule)
     }
 
     /**

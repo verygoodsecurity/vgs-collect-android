@@ -13,6 +13,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultSto
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
 
 class PersonNameEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -94,8 +95,30 @@ class PersonNameEditText @JvmOverloads constructor(
     /**
      * Adds a validation rule for the field.
      */
+    @Deprecated("Use setRule(rule) instead.", ReplaceWith("setRule(rule)"))
     fun addRule(rule: PersonNameRule) {
         applyValidationRule(rule)
+    }
+
+    /**
+     * Set a validation rule for the field.
+     */
+    fun setRule(rule: PersonNameRule) {
+        applyValidationRule(rule)
+    }
+
+    /**
+     * Set a validation rules for the field.
+     */
+    fun setRules(rules: List<PersonNameRule>) {
+        applyValidationRules(rules)
+    }
+
+    /**
+     * Adds a validation rule for the field.
+     */
+    fun appendRule(rule: PersonNameRule) {
+        appendValidationRule(rule)
     }
 
     /**

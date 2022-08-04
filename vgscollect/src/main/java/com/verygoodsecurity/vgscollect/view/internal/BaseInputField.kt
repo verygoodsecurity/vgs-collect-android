@@ -407,8 +407,17 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         VGSCollectLogger.warn(tag, context.getString(resId))
     }
 
-    open fun applyValidationRule(rule: ValidationRule) {
+    open fun applyValidationRules(rules: List<ValidationRule>) {
         validator.clearRules()
+        rules.forEach { rule ->
+            rule.algorithm?.let { validator.addRule(it) }
+            rule.regex?.let { validator.addRule(it) }
+            rule.length?.let { validator.addRule(it) }
+            rule.lengthMatch?.let { validator.addRule(it) }
+        }
+    }
+
+    open fun appendValidationRule(rule: ValidationRule) {
         rule.algorithm?.let { validator.addRule(it) }
         rule.regex?.let { validator.addRule(it) }
         rule.length?.let { validator.addRule(it) }
