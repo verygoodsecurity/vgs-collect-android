@@ -211,11 +211,12 @@ class FragmentCaseInstrumentedTest {
     }
 
     private fun startMainScreen() {
-        val startWithActivityBtn = onView(withId(R.id.llCollectFragmentFlow))
-            .check(matches(isDisplayed()))
-
         onView(withId(R.id.tiedVaultId)).perform(typeText(Utils.DEFAULT_TENANT_ID))
         onView(withId(R.id.tiedPath)).perform(typeText(Utils.DEFAULT_PATH), closeSoftKeyboard())
+
+        val startWithActivityBtn = onView(withId(R.id.llCollectFragmentFlow))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
 
         startWithActivityBtn.perform(click())
     }
