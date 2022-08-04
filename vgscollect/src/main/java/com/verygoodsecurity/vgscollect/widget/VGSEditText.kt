@@ -132,7 +132,7 @@ open class VGSEditText @JvmOverloads constructor(
     }
 
     /**
-     * Set a validation rules for the field.
+     * Set validation rules for the field.
      */
     fun setRules(rules: List<VGSInfoRule>) {
         applyValidationRules(rules)

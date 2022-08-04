@@ -108,7 +108,7 @@ class PersonNameEditText @JvmOverloads constructor(
     }
 
     /**
-     * Set a validation rules for the field.
+     * Set validation rules for the field.
      */
     fun setRules(rules: List<PersonNameRule>) {
         applyValidationRules(rules)
