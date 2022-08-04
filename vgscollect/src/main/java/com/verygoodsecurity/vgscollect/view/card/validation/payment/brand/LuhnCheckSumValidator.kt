@@ -32,8 +32,8 @@ class LuhnCheckSumValidator constructor(
         return cardSum % 10 == 0
     }
 
-    private companion object {
+    internal companion object {
 
-        private const val DEFAULT_ERROR_MSG = "LUHN_ALGORITHM_CHECK_VALIDATION_ERROR"
+        internal  const val DEFAULT_ERROR_MSG = "LUHN_ALGORITHM_CHECK_VALIDATION_ERROR"
     }
 }

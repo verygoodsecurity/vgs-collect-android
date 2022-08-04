@@ -11,11 +11,12 @@ import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAli
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.validation.InfoValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
-import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.view.internal.InfoInputField
-import com.verygoodsecurity.vgscollect.view.internal.SSNInputField
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import org.junit.Assert.*
 import org.junit.Before
@@ -194,97 +195,100 @@ class VGSEditTextTest {
 
 
     @Test
-    fun test_length() {
+    fun test_length_custom_error_message() {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
+        val errorMessage = "Incorrect length."
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
         val rule = VGSInfoRule.ValidationBuilder()
             .setAllowableMinLength(12)
-            .setAllowableMaxLength(15)
+            .setAllowableMaxLength(15, errorMessage)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
         view.setText("12312312312")
         child.refreshInternalState()
-        view.getState().validateState(false, 11)
+        view.getState().validateState(false, 11, listOf(errorMessage))
 
         view.setText("123123123123")
         child.refreshInternalState()
-        view.getState().validateState(true, 12)
+        view.getState().validateState(true, 12, emptyList())
 
         view.setText("123123123123123")
         child.refreshInternalState()
-        view.getState().validateState(true, 15)
+        view.getState().validateState(true, 15, emptyList())
     }
 
     @Test
-    fun test_length_min() {
+    fun test_length_min_custom_error_message() {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
+        val errorMessage = "Less then min length."
         val rule = VGSInfoRule.ValidationBuilder()
             .setAllowableMinLength(7)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
         view.setText("123123")
         child.refreshInternalState()
-        view.getState().validateState(false, 6)
+        view.getState().validateState(false, 6, listOf(errorMessage))
 
         view.setText("1231234")
         child.refreshInternalState()
-        view.getState().validateState(true, 7)
+        view.getState().validateState(true, 7, emptyList())
 
         view.setText("1231231231231231231")
         child.refreshInternalState()
-        view.getState().validateState(true, 19)
+        view.getState().validateState(true, 19, emptyList())
     }
 
 
     @Test
-    fun test_length_max() {
+    fun test_length_max_with_custom_error_message() {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
+        val errorMessage = "Incorrect length."
         val rule = VGSInfoRule.ValidationBuilder()
             .setAllowableMaxLength(17)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
         view.setText("")
         child.refreshInternalState()
-        view.getState().validateState(false, 0)
+        view.getState().validateState(false, 0, listOf(errorMessage))
 
         view.setText("1")
         child.refreshInternalState()
-        view.getState().validateState(true, 1)
+        view.getState().validateState(true, 1, emptyList())
 
         view.setText("1231231231233")
         child.refreshInternalState()
-        view.getState().validateState(true, 13)
+        view.getState().validateState(true, 13, emptyList())
 
         view.setText("12312312312312312")
         child.refreshInternalState()
-        view.getState().validateState(true, 17)
+        view.getState().validateState(true, 17, emptyList())
 
         view.setText("123123123123123123")
         child.refreshInternalState()
-        view.getState().validateState(false, 18)
+        view.getState().validateState(false, 18, listOf(errorMessage))
 
     }
 
 
     @Test
-    fun test_length_min_max() {
+    fun test_length_min_max_with_default_error_message() {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
@@ -292,35 +296,35 @@ class VGSEditTextTest {
         child.applyInternalFieldStateChangeListener()
 
         val rule = VGSInfoRule.ValidationBuilder()
-            .setAllowableMaxLength(17)
             .setAllowableMinLength(15)
+            .setAllowableMaxLength(17)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
         view.setText("12312312312312")
         child.refreshInternalState()
-        view.getState().validateState(false, 14)
+        view.getState().validateState(false, 14, listOf(LengthValidator.DEFAULT_ERROR_MSG))
 
         view.setText("123123123123123")
         child.refreshInternalState()
-        view.getState().validateState(true, 15)
+        view.getState().validateState(true, 15, emptyList())
 
         view.setText("12312312312312312")
         child.refreshInternalState()
-        view.getState().validateState(true, 17)
+        view.getState().validateState(true, 17, emptyList())
 
         view.setText("12312312312312312")
         child.refreshInternalState()
-        view.getState().validateState(true, 17)
+        view.getState().validateState(true, 17, emptyList())
 
         view.setText("123123123123123123")
         child.refreshInternalState()
-        view.getState().validateState(false, 18)
+        view.getState().validateState(false, 18, listOf(LengthValidator.DEFAULT_ERROR_MSG))
     }
 
 
     @Test
-    fun test_regex() {
+    fun test_regex_with_default_error_message() {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
@@ -330,27 +334,62 @@ class VGSEditTextTest {
         val rule = VGSInfoRule.ValidationBuilder()
             .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
         view.setText("")
         child.refreshInternalState()
-        view.getState().validateState(false, 0)
+        view.getState().validateState(false, 0, listOf(RegexValidator.DEFAULT_ERROR_MSG))
 
         view.setText("011111111111111 ")
         child.refreshInternalState()
-        view.getState().validateState(false, 16)
+        view.getState().validateState(false, 16, listOf(RegexValidator.DEFAULT_ERROR_MSG))
 
         view.setText("0111111111111111")
         child.refreshInternalState()
-        view.getState().validateState(true, 16)
+        view.getState().validateState(true, 16, emptyList())
 
         view.setText("0111111111111w111")
         child.refreshInternalState()
-        view.getState().validateState(false, 17)
+        view.getState().validateState(false, 17, listOf(RegexValidator.DEFAULT_ERROR_MSG))
 
         view.setText("01111111111111")
         child.refreshInternalState()
-        view.getState().validateState(false, 14)
+        view.getState().validateState(false, 14, listOf(RegexValidator.DEFAULT_ERROR_MSG))
+    }
+
+    @Test
+    fun test_regex_and_length_with_custom_errors() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val regexError = "Regex failed."
+        val regexRule = VGSInfoRule.ValidationBuilder()
+            .setRegex("\\d+", errorMsg = regexError)
+            .build()
+
+        val lengthError = "Incorrect length."
+        val lengthRule = VGSInfoRule.ValidationBuilder()
+            .setAllowableMinLength(15)
+            .setAllowableMaxLength(17, errorMsg = lengthError)
+            .build()
+
+        view.setRules(listOf(regexRule, lengthRule))
+
+        view.setText("f")
+        child.refreshInternalState()
+        view.getState().validateState(false, 1, listOf(regexError, lengthError))
+
+
+        view.setText("0111111111111111")
+        child.refreshInternalState()
+        view.getState().validateState(true, 16, emptyList())
+
+        view.setText("011111111111111111")
+        child.refreshInternalState()
+        view.getState().validateState(false, 18, listOf(lengthError))
     }
 
     @Test
@@ -363,7 +402,7 @@ class VGSEditTextTest {
 
         view.setText("")
         child.refreshInternalState()
-        view.getState().validateState(false, 0)
+        view.getState().validateState(false, 0, listOf(InfoValidator.DEFAULT_ERROR_MSG))
 
         view.setText("1")
         child.refreshInternalState()
@@ -371,17 +410,48 @@ class VGSEditTextTest {
 
         view.setText("")
         child.refreshInternalState()
-        view.getState().validateState(false, 0)
+        view.getState().validateState(false, 0, listOf(InfoValidator.DEFAULT_ERROR_MSG))
+    }
+
+    @Test
+    fun test_default_validation_with_appended_rule() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        val regexError = "Regex failed."
+        val regexRule = VGSInfoRule.ValidationBuilder()
+            .setRegex("\\d+", errorMsg = regexError)
+            .build()
+        view.appendRule(regexRule)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        view.setText("")
+        child.refreshInternalState()
+        view.getState().validateState(false, 0, listOf(InfoValidator.DEFAULT_ERROR_MSG, regexError))
+
+        view.setText("d")
+        child.refreshInternalState()
+        view.getState().validateState(false, 1, listOf(regexError))
+
+        view.setText("1")
+        child.refreshInternalState()
+        view.getState().validateState(true, 1, emptyList())
     }
 
     private fun FieldState.InfoState?.validateState(
         isValid: Boolean,
-        contentLength: Int
+        contentLength: Int,
+        errorMessages: List<String>? = null
     ) {
         assertNotNull(this)
         if (this != null) {
             assertEquals(isValid, this.isValid)
             assertEquals(contentLength, this.contentLength)
+            if (errorMessages != null) {
+                assertEquals(errorMessages, this.validationErrors)
+            }
         }
     }
 
@@ -417,7 +487,6 @@ class VGSEditTextTest {
         assertEquals(child.vaultAliasFormat, VGSVaultAliasFormat.UUID)
         assertEquals(child.vaultStorage, VGSVaultStorageType.PERSISTENT)
     }
-
 
 
 }

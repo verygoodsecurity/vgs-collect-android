@@ -329,11 +329,14 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         }
     }
 
-    override fun applyValidationRule(rule: ValidationRule) {
-        with(rule as PaymentCardNumberRule) {
-            allowToOverrideDefaultValidation = overrideDefaultValidation && rule.isAnyRulePresent()
-            super.applyValidationRule(rule)
+    override fun applyValidationRules(rules: List<ValidationRule>) {
+        rules.forEach { rule ->
+            with(rule as PaymentCardNumberRule) {
+                allowToOverrideDefaultValidation =
+                    overrideDefaultValidation && rule.isAnyRulePresent()
+            }
         }
+        super.applyValidationRules(rules)
     }
 
     internal fun setMaxLength(length: Int) {

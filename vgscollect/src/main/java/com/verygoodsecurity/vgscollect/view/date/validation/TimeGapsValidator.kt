@@ -12,7 +12,7 @@ internal class TimeGapsValidator(
     private val maxDate:Long? = null
 ) : VGSValidator {
 
-    override val errorMsg: String = ERROR_MSG
+    override val errorMsg: String = DEFAULT_ERROR_MSG
 
     private val sdf by lazy {
         val sdf = SimpleDateFormat(pattern, Locale.US)
@@ -54,8 +54,8 @@ internal class TimeGapsValidator(
         return isBiggerThanMin && isLowerThanMax
     }
 
-    private companion object {
+    internal companion object {
 
-        private const val ERROR_MSG = "EXPIRATION_DATE_VALIDATION_ERROR"
+        internal const val DEFAULT_ERROR_MSG = "EXPIRATION_DATE_VALIDATION_ERROR"
     }
 }
