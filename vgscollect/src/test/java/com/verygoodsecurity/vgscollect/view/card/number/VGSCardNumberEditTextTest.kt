@@ -794,7 +794,7 @@ class VGSCardNumberEditTextTest {
         assertEquals(15, state2.contentLength)
         assertEquals(emptyList<String>(), state2.validationErrors)
 
-        view.setText("411111111111111")
+        view.setText("377400111111115")
         child.refreshInternalState()
 
         val state3 = view.getState()
@@ -875,9 +875,9 @@ class VGSCardNumberEditTextTest {
 
         val state3 = view.getState()
         assertNotNull(state2)
-        assertEquals(false, state3!!.isValid)
+        assertEquals(true, state3!!.isValid)
         assertEquals(16, state3.contentLength)
-        assertEquals(listOf(errorMessage), state3.validationErrors)
+        assertEquals(emptyList<String>(), state3.validationErrors)
     }
 
     @Test

@@ -232,7 +232,7 @@ class VGSEditTextTest {
 
         val errorMessage = "Less then min length."
         val rule = VGSInfoRule.ValidationBuilder()
-            .setAllowableMinLength(7)
+            .setAllowableMinLength(7, errorMessage)
             .build()
         view.setRule(rule)
 
@@ -260,7 +260,7 @@ class VGSEditTextTest {
 
         val errorMessage = "Incorrect length."
         val rule = VGSInfoRule.ValidationBuilder()
-            .setAllowableMaxLength(17)
+            .setAllowableMaxLength(17,errorMessage)
             .build()
         view.setRule(rule)
 

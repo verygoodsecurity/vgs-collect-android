@@ -476,7 +476,7 @@ class PersonNameEditTextTest {
 
         val state1 = view.getState()
         assertNotNull(state1)
-        assertEquals(true, state1!!.isValid)
+        assertEquals(false, state1!!.isValid)
         assertEquals(1, state1.contentLength)
         assertEquals(listOf(regexError, lengthError), state1.validationErrors)
 
@@ -485,9 +485,9 @@ class PersonNameEditTextTest {
 
         val state2 = view.getState()
         assertNotNull(state2)
-        assertEquals(false, state2!!.isValid)
+        assertEquals(true, state2!!.isValid)
         assertEquals(16, state2.contentLength)
-        assertEquals(listOf(regexError, lengthError), state2.validationErrors)
+        assertEquals(emptyList<String>(), state2.validationErrors)
 
 
 
