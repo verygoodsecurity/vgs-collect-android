@@ -11,7 +11,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
 
         <activity
             android:name=".StartActivity"
@@ -28,18 +29,31 @@
             </intent-filter>
         </activity>
 
-
         <activity
             android:name=".activity_case.VGSCollectActivity"
-            android:label="Activity Demo" />
+            android:label="Collect (Activity)" />
+
+        <!--        TODO(Think about resize)-->
+        <activity
+            android:name=".tokenization.TokenizationActivity"
+            android:label="Tokenization"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+
+        <activity
+            android:name=".tokenization.settings.TokenizationSettingsActivity"
+            android:label="Settings"
+            android:theme="@style/AppTheme.TokenizationSettings"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <activity
             android:name=".fragment_case.VGSCollectFragmentActivity"
-            android:label="Fragment Demo" />
+            android:label="Collect (Fragment)" />
 
         <activity
             android:name=".viewpager_case.VGSViewPagerActivity"
-            android:label="ViewPager Demo" />
+            android:label="Collect (ViewPager)" />
 
         <activity
             android:name=".instrumented.VGSEditTextInputTypeActivity"

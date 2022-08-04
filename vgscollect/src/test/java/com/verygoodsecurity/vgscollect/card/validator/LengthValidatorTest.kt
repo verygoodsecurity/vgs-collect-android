@@ -1,18 +1,18 @@
 package com.verygoodsecurity.vgscollect.card.validator
 
-import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthMatchValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
 class LengthValidatorTest {
-    private lateinit var validator: LengthValidator
+    private lateinit var validator: LengthMatchValidator
 
     @Before
     fun setupValidator() {
         val array = (7..12).toMutableList().toTypedArray()
-        validator = LengthValidator(array)
+        validator = LengthMatchValidator(array)
     }
 
     @Test

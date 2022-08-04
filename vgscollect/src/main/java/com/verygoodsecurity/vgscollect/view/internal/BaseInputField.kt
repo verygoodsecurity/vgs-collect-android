@@ -27,9 +27,6 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
 
 /** @suppress */
@@ -102,7 +99,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     protected abstract var fieldType: FieldType
 
     protected var inputConnection: InputRunnable? = null
-    protected var validator: MutableValidator = CompositeValidator()
+    protected val validator: CompositeValidator = CompositeValidator()
 
     protected var vgsParent: InputFieldView? = null
 
@@ -410,15 +407,21 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         VGSCollectLogger.warn(tag, context.getString(resId))
     }
 
-    open fun applyValidationRule(rule: ValidationRule) {
+    open fun applyValidationRules(rules: List<ValidationRule>) {
         validator.clearRules()
-        rule.length?.let {
-            validator.addRule(LengthValidator(it))
+        rules.forEach { rule ->
+            rule.algorithm?.let { validator.addRule(it) }
+            rule.regex?.let { validator.addRule(it) }
+            rule.length?.let { validator.addRule(it) }
+            rule.lengthMatch?.let { validator.addRule(it) }
         }
+    }
 
-        rule.regex?.let {
-            validator.addRule(RegexValidator(it))
-        }
+    open fun appendValidationRule(rule: ValidationRule) {
+        rule.algorithm?.let { validator.addRule(it) }
+        rule.regex?.let { validator.addRule(it) }
+        rule.length?.let { validator.addRule(it) }
+        rule.lengthMatch?.let { validator.addRule(it) }
     }
 
     fun isContentEquals(inputField: BaseInputField): Boolean {

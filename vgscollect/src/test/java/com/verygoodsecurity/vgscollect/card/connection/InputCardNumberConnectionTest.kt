@@ -7,11 +7,11 @@ import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardNumberConnection
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
-import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.MutableCardFilter
+import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -116,13 +116,13 @@ class InputCardNumberConnectionTest {
         val listener = mock(OnVgsViewStateChangeListener::class.java)
         connection.setOutputListener(listener)
 
-        Mockito.verify(listener).emit(0, VGSFieldState(isValid = false))
+        Mockito.verify(listener).emit(0, VGSFieldState(isValid = true))
     }
 
     @Test
     fun test_emit_item() {
         connection.run()
-        Mockito.verify(stateListener, Mockito.times(2)).emit(0, VGSFieldState(isValid = false))
+        Mockito.verify(stateListener, Mockito.times(2)).emit(0, VGSFieldState(isValid = true))
     }
 
     @Test
@@ -155,7 +155,7 @@ class InputCardNumberConnectionTest {
             content = content)
         connection.setOutput(state)
 
-        connection.addFilter(filter)
+        (connection as InputCardNumberConnection).addFilter(filter)
         connection.run()
         Mockito.verify(stateListener).emit(0, state)
     }
@@ -164,9 +164,9 @@ class InputCardNumberConnectionTest {
         return mock(InputCardNumberConnection.IDrawCardBrand::class.java)
     }
 
-    private fun getValidator():VGSValidator {
-        val client = mock(VGSValidator::class.java)
-        Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
+    private fun getValidator():CompositeValidator {
+        val client = mock(CompositeValidator::class.java)
+        Mockito.doReturn(emptyList<String>()).`when`(client).validate(Mockito.anyString())
 
         return client
     }
@@ -177,7 +177,7 @@ class InputCardNumberConnectionTest {
     ) {
         val filter = CardBrandFilter()
         filter.divider = divider
-        connection.addFilter(filter)
+        (connection as InputCardNumberConnection).addFilter(filter)
     }
 
     private fun setupListener(connection: InputRunnable) {

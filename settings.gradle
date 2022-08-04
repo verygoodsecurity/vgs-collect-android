@@ -5,11 +5,11 @@ include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-bouncer'
 dependencyResolutionManagement {
     versionCatalogs {
         gradleLibs {
-            library('tools', 'com.android.tools.build:gradle:7.2.1')
-            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10')
+            library('tools', 'com.android.tools.build:gradle:7.2.2')
+            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10')
             library('maven', 'com.github.dcendents:android-maven-gradle-plugin:2.1')
-            library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.19.0')
-            library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.6.10')
+            library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.21.0')
+            library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.7.10')
         }
         libs {
             // Libraries
@@ -19,7 +19,7 @@ dependencyResolutionManagement {
             library('androidx-multidex', 'androidx.multidex:multidex:2.0.1')
             library('material', 'com.google.android.material:material:1.6.1')
             library('okhttp', 'com.squareup.okhttp3:okhttp:4.10.0')
-            library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.6.10')
+            library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.7.10')
             library('bouncer-scan-payment-full', 'com.getbouncer:scan-payment-full:2.1.0016')
             library('bouncer-cardscan-ui', 'com.getbouncer:cardscan-ui:2.1.0016')
             library('bouncer-tensorflow-lite', 'com.getbouncer:tensorflow-lite:2.1.0016')

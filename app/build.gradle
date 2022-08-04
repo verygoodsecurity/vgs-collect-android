@@ -20,6 +20,7 @@ android {
 
         buildConfigField("String", "VAULT_ID", "\"${getLocalProperty("VGS_VAULT_ID")}\"")
         buildConfigField("String", "PATH", "\"${getLocalProperty("VGS_PATH")}\"")
+        buildConfigField("String", "ROUTE_ID", "\"${getLocalProperty("VGS_ROUTE_ID")}\"")
     }
 
     buildTypes {
@@ -53,6 +54,11 @@ android {
     }
 }
 
+repositories {
+
+    maven { url "https://jitpack.io" }
+}
+
 dependencies {
     implementation project(":vgscollect")
     implementation project(":vgscollect-cardio")
@@ -61,8 +67,10 @@ dependencies {
     implementation libs.androidx.core.ktx
     implementation libs.androidx.constraintlayout
     implementation libs.androidx.multidex
-
     implementation libs.material
+
+    implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'com.github.kbiakov:CodeView-Android:1.3.2'
 
     debugImplementation debugLibs.leakcanary
 

@@ -3,8 +3,6 @@ package com.verygoodsecurity.vgscollect.view.internal
 import android.content.Context
 import android.text.InputType
 import android.text.method.DigitsKeyListener
-import android.view.Gravity
-import android.view.View
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.util.extension.formatToMask
@@ -13,9 +11,7 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputSSNConnection
 import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.SSNumberFormatter
-import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.MutableValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthMatchValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.widget.SSNEditText.Companion.DIVIDER
 import com.verygoodsecurity.vgscollect.widget.SSNEditText.Companion.TAG
@@ -53,7 +49,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
 
     private fun prepareValidation() {
         validator.clearRules()
-        validator.addRule(LengthValidator(derivedNumberMask.length))
+        validator.addRule(LengthMatchValidator(derivedNumberMask.length))
         validator.addRule(RegexValidator(VALIDATION_REGEX))
     }
 

@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardCVCConnection
 import com.verygoodsecurity.vgscollect.view.card.text.CVCValidateFilter
-import com.verygoodsecurity.vgscollect.view.card.validation.CardCVCCodeValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthMatchValidator
 import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField.PreviewIconGravity.END
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField.PreviewIconGravity.START
@@ -30,7 +30,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
     private var previewIconGravity = END
 
     init {
-        validator.addRule(CardCVCCodeValidator(cardContent.rangeCVV))
+        validator.addRule(LengthMatchValidator(cardContent.rangeCVV))
     }
 
     override fun applyFieldType() {
@@ -118,8 +118,8 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         if (this.cardContent != cardContent) {
             this.cardContent = cardContent
             applyLengthFilter(cardContent.rangeCVV.last())
-            (inputConnection as? InputCardCVCConnection)?.defaultValidator =
-                CardCVCCodeValidator(cardContent.rangeCVV)
+            validator.clearRules()
+            validator.addRule(LengthMatchValidator(cardContent.rangeCVV))
             text = text
             refreshIcon()
         }

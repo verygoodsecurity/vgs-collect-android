@@ -119,8 +119,30 @@ open class VGSEditText @JvmOverloads constructor(
     /**
      * Adds a validation rule for the field.
      */
+    @Deprecated("Use setRule(rule) instead.", ReplaceWith("setRule(rule)"))
     fun addRule(rule: VGSInfoRule) {
         applyValidationRule(rule)
+    }
+
+    /**
+     * Set a validation rule for the field.
+     */
+    fun setRule(rule: VGSInfoRule) {
+        applyValidationRule(rule)
+    }
+
+    /**
+     * Set validation rules for the field.
+     */
+    fun setRules(rules: List<VGSInfoRule>) {
+        applyValidationRules(rules)
+    }
+
+    /**
+     * Adds a validation rule for the field.
+     */
+    fun appendRule(rule: VGSInfoRule) {
+        appendValidationRule(rule)
     }
 
     /**

@@ -3,22 +3,17 @@ package com.verygoodsecurity.vgscollect.card.connection
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.view.card.conection.BaseInputConnection
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardHolderConnection
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
-import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertTrue
-import org.junit.Assert
+import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mockito
 
 class InputCardHolderConnectionTest {
     val connection: InputRunnable by lazy {
-        val client = Mockito.mock(VGSValidator::class.java)
-        Mockito.doReturn(true).`when`(client).isValid(Mockito.anyString())
+        val client = Mockito.mock(CompositeValidator::class.java)
+        Mockito.doReturn(emptyList<String>()).`when`(client).validate(Mockito.anyString())
         InputCardHolderConnection(
             0,
             client

@@ -4,6 +4,7 @@ import android.widget.DatePicker
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -179,7 +180,8 @@ class ViewPagerCaseInstrumentedTest {
     }
 
     private fun startMainScreen() {
-        val startWithActivityBtn = onView(withId(R.id.startWithViewPagerBtn))
+        val startWithActivityBtn = onView(withId(R.id.llCollectViewPagerFlow))
+            .perform(scrollTo())
             .check(matches(isDisplayed()))
 
         startWithActivityBtn.perform(click())

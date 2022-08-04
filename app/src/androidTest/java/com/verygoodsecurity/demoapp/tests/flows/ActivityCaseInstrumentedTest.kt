@@ -8,7 +8,7 @@ import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.*
-import androidx.test.espresso.intent.matcher.IntentMatchers.*
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -196,14 +196,18 @@ class ActivityCaseInstrumentedTest {
     }
 
     private fun startMainScreen() {
-        val startWithActivityBtn = onView(withId(R.id.startWithActivityBtn))
-            .check(matches(isDisplayed()))
-
-        onView(withId(R.id.userVault)).perform(
+        onView(withId(R.id.tiedVaultId)).perform(
             typeText(Utils.DEFAULT_TENANT_ID),
             closeSoftKeyboard()
         )
-        onView(withId(R.id.userPath)).perform(typeText(Utils.DEFAULT_PATH), closeSoftKeyboard())
+        onView(withId(R.id.tiedPath)).perform(
+            typeText(Utils.DEFAULT_PATH),
+            closeSoftKeyboard()
+        )
+
+        val startWithActivityBtn = onView(withId(R.id.llCollectActivityFlow))
+            .perform(scrollTo())
+            .check(matches(isDisplayed()))
 
         performClick(startWithActivityBtn)
     }

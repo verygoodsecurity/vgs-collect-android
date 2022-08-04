@@ -11,16 +11,20 @@ internal class TimeGapsValidator(
     private val minDate:Long? = null,
     private val maxDate:Long? = null
 ) : VGSValidator {
+
+    override val errorMsg: String = DEFAULT_ERROR_MSG
+
     private val sdf by lazy {
         val sdf = SimpleDateFormat(pattern, Locale.US)
         sdf.isLenient = false
         sdf
     }
+
     private val calendar = Calendar.getInstance()
 
-    override fun isValid(content: String?): Boolean {
-        val str = content?.trim()
-        if(str.isNullOrEmpty()) {
+    override fun isValid(content: String): Boolean {
+        val str = content.trim()
+        if(str.isEmpty()) {
             return false
         }
         try {
@@ -48,5 +52,10 @@ internal class TimeGapsValidator(
         }?:true
 
         return isBiggerThanMin && isLowerThanMax
+    }
+
+    internal companion object {
+
+        internal const val DEFAULT_ERROR_MSG = "EXPIRATION_DATE_VALIDATION_ERROR"
     }
 }

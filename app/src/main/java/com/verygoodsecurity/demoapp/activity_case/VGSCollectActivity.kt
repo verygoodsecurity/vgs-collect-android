@@ -143,7 +143,7 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
 
             .build()
 
-        cardNumberField.addRule(rule)
+        cardNumberField.setRule(rule)
     }
 
     private fun addCustomBrands() {
@@ -229,14 +229,14 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
     }
 
     private fun retrieveSettings() {
-        VGSCollectLogger.logLevel = VGSCollectLogger.Level.WARN
+        VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
 
         val bndl = intent?.extras
 
-        vault_id = bndl?.getString(StartActivity.VAULT_ID, "") ?: ""
-        path = bndl?.getString(StartActivity.PATH, "/") ?: ""
+        vault_id = bndl?.getString(StartActivity.KEY_BUNDLE_VAULT_ID, "") ?: ""
+        path = bndl?.getString(StartActivity.KEY_BUNDLE_PATH, "/") ?: ""
 
-        val envId = bndl?.getInt(StartActivity.ENVIROMENT, 0) ?: 0
+        val envId = bndl?.getInt(StartActivity.KEY_BUNDLE_ENVIRONMENT, 0) ?: 0
         env = Environment.values()[envId]
 
         vgsForm = VGSCollect.Builder(this, vault_id)
@@ -329,6 +329,7 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
             is VGSResponse.SuccessResponse -> responseContainerView.text =
                 "Code: ${response.successCode}"
             is VGSResponse.ErrorResponse -> responseContainerView.text = response.toString()
+            else -> return
         }
     }
 

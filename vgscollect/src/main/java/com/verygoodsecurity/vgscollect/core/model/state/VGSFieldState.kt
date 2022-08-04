@@ -8,6 +8,7 @@ data class VGSFieldState(
     var isRequired: Boolean = true,
     var enableValidation: Boolean = true,
     var isValid: Boolean = true,
+    var validationErrors: List<String> = emptyList(),
     var type: FieldType = FieldType.INFO,
     var content: FieldContent? = null,
     var fieldName: String? = null,
@@ -20,6 +21,7 @@ data class VGSFieldState(
         return "isFocusable: $isFocusable\n" +
                 "isRequired: $isRequired\n" +
                 "isValid: $isValid\n" +
+                "validationErrors: $validationErrors\n" +
                 "type: $type\n" +
                 "content: ${content.toString()}\n" +
                 "fieldName: $fieldName\n"
@@ -41,6 +43,7 @@ internal fun VGSFieldState.mapToFieldState(): FieldState {
 
     f.fieldType = type
     f.isValid = isValid
+    f.validationErrors = validationErrors
 
     f.contentLength = content?.data?.length ?: 0
     f.isEmpty = f.contentLength == 0

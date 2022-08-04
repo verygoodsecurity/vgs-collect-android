@@ -16,6 +16,8 @@ import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.validation.CheckSumValidator
+import com.verygoodsecurity.vgscollect.view.card.validation.LengthMatchValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
@@ -264,7 +266,7 @@ class VGSCardNumberEditTextTest {
         stateResult.contentLength = text.length
         stateResult.fieldName = "number"
         stateResult.fieldType = FieldType.CARD_NUMBER
-        stateResult.bin = "411111"
+        stateResult.bin = "41111111"
         stateResult.last = "1111"
         stateResult.number = "411111######1111"
         stateResult.drawableBrandResId = R.drawable.ic_visa_dark
@@ -305,7 +307,7 @@ class VGSCardNumberEditTextTest {
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAllowableNumberLength(arrayOf(12, 15))
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
         view.setText("12312312312")
 
         child.refreshInternalState()
@@ -314,6 +316,7 @@ class VGSCardNumberEditTextTest {
         assertNotNull(state)
         assertEquals(false, state!!.isValid)
         assertEquals(11, state.contentLength)
+        assertEquals(listOf(LengthMatchValidator.DEFAULT_ERROR_MSG), state.validationErrors)
 
         view.setText("123123123123")
         child.refreshInternalState()
@@ -323,6 +326,7 @@ class VGSCardNumberEditTextTest {
         assertEquals(true, state2!!.isValid)
         assertEquals(12, state2.contentLength)
         assertEquals("123123", state2.bin)
+        assertEquals(emptyList<String>(), state2.validationErrors)
 
         view.setText("123123123123123")
         child.refreshInternalState()
@@ -332,20 +336,22 @@ class VGSCardNumberEditTextTest {
         assertEquals(true, state3!!.isValid)
         assertEquals(15, state3.contentLength)
         assertEquals("123123", state3.bin)
+        assertEquals(emptyList<String>(), state2.validationErrors)
     }
 
     @Test
-    fun test_length_min() {
+    fun test_length_min_with_custom_error_message() {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
+        val errorMessage = "Invalid length."
         val rule = PaymentCardNumberRule.ValidationBuilder()
-            .setAllowableMinLength(7)
+            .setAllowableMinLength(7, errorMessage)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
         view.setText("123123")
 
         child.refreshInternalState()
@@ -354,6 +360,7 @@ class VGSCardNumberEditTextTest {
         assertNotNull(state)
         assertEquals(false, state!!.isValid)
         assertEquals(6, state.contentLength)
+        assertEquals(listOf(errorMessage), state.validationErrors)
 
         view.setText("1231234")
 
@@ -364,6 +371,7 @@ class VGSCardNumberEditTextTest {
         assertEquals(true, state2!!.isValid)
         assertEquals(7, state2.contentLength)
         assertEquals("123123", state2.bin)
+        assertEquals(emptyList<String>(), state2.validationErrors)
 
         view.setText("1231231231231231231")
 
@@ -374,6 +382,7 @@ class VGSCardNumberEditTextTest {
         assertEquals(true, state3!!.isValid)
         assertEquals(19, state3.contentLength)
         assertEquals("123123", state3.bin)
+        assertEquals(emptyList<String>(), state3.validationErrors)
     }
 
 
@@ -388,7 +397,7 @@ class VGSCardNumberEditTextTest {
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAllowableMaxLength(17)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
         view.setText("1231231")
 
         child.refreshInternalState()
@@ -442,7 +451,7 @@ class VGSCardNumberEditTextTest {
             .setAllowableMaxLength(17)
             .setAllowableMinLength(15)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
         view.setText("12312312312312")
         child.refreshInternalState()
@@ -501,7 +510,7 @@ class VGSCardNumberEditTextTest {
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAlgorithm(ChecksumAlgorithm.LUHN)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
         view.setText("1111111111111117")
         child.refreshInternalState()
@@ -543,7 +552,7 @@ class VGSCardNumberEditTextTest {
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
 
         view.setText("4111111111111111")
@@ -553,7 +562,7 @@ class VGSCardNumberEditTextTest {
         assertNotNull(state0)
         assertEquals(true, state0!!.isValid)
         assertEquals(16, state0.contentLength)
-        assertEquals("411111", state0.bin)
+        assertEquals("41111111", state0.bin)
 
 
         view.setText("0111111111111111")
@@ -595,7 +604,7 @@ class VGSCardNumberEditTextTest {
             .setAllowableMaxLength(14)
             .setAllowToOverrideDefaultValidation(true)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
 
         view.setText("41111111111111")
@@ -637,7 +646,7 @@ class VGSCardNumberEditTextTest {
         val rule = PaymentCardNumberRule.ValidationBuilder()
             .setAllowToOverrideDefaultValidation(true)
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
 
         view.setText("41111111111111111")
@@ -655,7 +664,7 @@ class VGSCardNumberEditTextTest {
         assertNotNull(state1)
         assertEquals(true, state1!!.isValid)
         assertEquals(16, state1.contentLength)
-        assertEquals("411111", state1.bin)
+        assertEquals("41111111", state1.bin)
 
 
         view.setText("411111111111111")
@@ -679,7 +688,7 @@ class VGSCardNumberEditTextTest {
             .setAlgorithm(ChecksumAlgorithm.LUHN)
             .setAllowableNumberLength(arrayOf(16))
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
         view.setText("1111111111111117")
         child.refreshInternalState()
@@ -721,7 +730,7 @@ class VGSCardNumberEditTextTest {
             .setAllowableNumberLength(arrayOf(15))
             .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")
             .build()
-        view.addRule(rule)
+        view.setRule(rule)
 
         view.setText("4111111111111167")
         child.refreshInternalState()
@@ -730,6 +739,8 @@ class VGSCardNumberEditTextTest {
         assertNotNull(state)
         assertEquals(false, state!!.isValid)
         assertEquals(16, state.contentLength)
+        assertEquals(listOf(CheckSumValidator.DEFAULT_ERROR_MSG), state.validationErrors)
+
 
         view.setText("411111111111116")
         child.refreshInternalState()
@@ -738,6 +749,7 @@ class VGSCardNumberEditTextTest {
         assertNotNull(state)
         assertEquals(false, state2!!.isValid)
         assertEquals(15, state2.contentLength)
+        assertEquals(listOf(LengthMatchValidator.DEFAULT_ERROR_MSG), state2.validationErrors)
 
         view.setText("411111111111111")
         child.refreshInternalState()
@@ -746,6 +758,127 @@ class VGSCardNumberEditTextTest {
         assertNotNull(state)
         assertEquals(false, state3!!.isValid)
         assertEquals(15, state3.contentLength)
+        assertEquals(listOf(LengthMatchValidator.DEFAULT_ERROR_MSG, CheckSumValidator.DEFAULT_ERROR_MSG), state3.validationErrors)
+    }
+
+    @Test
+    fun test_luhn_length_regex_with_allow_override() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val rule = PaymentCardNumberRule.ValidationBuilder()
+            .setAlgorithm(ChecksumAlgorithm.LUHN)
+            .setAllowableNumberLength(arrayOf(15))
+            .setRegex("^[0-9]{15}(?:[0-9]{1})?\$")
+            .setAllowToOverrideDefaultValidation(true)
+            .build()
+        view.setRule(rule)
+
+        view.setText("4111111111111167")
+        child.refreshInternalState()
+
+        val state = view.getState()
+        assertNotNull(state)
+        assertEquals(false, state!!.isValid)
+        assertEquals(16, state.contentLength)
+        assertEquals(listOf(CheckSumValidator.DEFAULT_ERROR_MSG, LengthMatchValidator.DEFAULT_ERROR_MSG), state.validationErrors)
+
+        view.setText("411111111111116")
+        child.refreshInternalState()
+
+        val state2 = view.getState()
+        assertNotNull(state2)
+        assertEquals(true, state2!!.isValid)
+        assertEquals(15, state2.contentLength)
+        assertEquals(emptyList<String>(), state2.validationErrors)
+
+        view.setText("377400111111115")
+        child.refreshInternalState()
+
+        val state3 = view.getState()
+        assertNotNull(state3)
+        assertEquals(true, state3!!.isValid)
+        assertEquals(15, state3.contentLength)
+        assertEquals(emptyList<String>(), state3.validationErrors)
+    }
+
+    @Test
+    fun test_default_validation() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        view.setText("411111111111117")
+        child.refreshInternalState()
+
+        val state1 = view.getState()
+        assertNotNull(state1)
+        assertEquals(false, state1!!.isValid)
+        assertEquals(15, state1.contentLength)
+        assertEquals(
+            listOf(
+                LengthMatchValidator.DEFAULT_ERROR_MSG,
+                CheckSumValidator.DEFAULT_ERROR_MSG
+            ), state1.validationErrors
+        )
+
+        view.setText("4111111111111111")
+        child.refreshInternalState()
+
+        val state2= view.getState()
+        assertNotNull(state2)
+        assertEquals(true, state2!!.isValid)
+        assertEquals(16, state2.contentLength)
+        assertEquals(emptyList<String>(), state2.validationErrors)
+    }
+
+    @Test
+    fun test_default_validation_with_append() {
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+        view.enableValidation(true)
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
+
+        val errorMessage = "Only digits allowed."
+        val rule = PaymentCardNumberRule.ValidationBuilder()
+            .setRegex("\\d+", errorMessage)
+            .setAllowToOverrideDefaultValidation(true)
+            .build()
+        view.appendRule(rule)
+
+        view.setText("12345f")
+        child.refreshInternalState()
+
+        val state1 = view.getState()
+        assertNotNull(state1)
+        assertEquals(false, state1!!.isValid)
+        assertEquals(6, state1.contentLength)
+        assertEquals(listOf(errorMessage), state1.validationErrors)
+
+        view.setText("4111111f11111111")
+        child.refreshInternalState()
+
+        val state2= view.getState()
+        assertNotNull(state2)
+        assertEquals(false, state2!!.isValid)
+        assertEquals(16, state2.contentLength)
+        assertEquals(listOf(errorMessage), state1.validationErrors)
+
+        view.setText("4111111111111111")
+        child.refreshInternalState()
+
+        val state3 = view.getState()
+        assertNotNull(state2)
+        assertEquals(true, state3!!.isValid)
+        assertEquals(16, state3.contentLength)
+        assertEquals(emptyList<String>(), state3.validationErrors)
     }
 
     @Test
@@ -779,7 +912,7 @@ class VGSCardNumberEditTextTest {
         )
 
         val stateResult = FieldState.CardNumberState()
-        stateResult.bin = "411111"
+        stateResult.bin = "41111111"
         stateResult.last = "1111"
         stateResult.number = "411111######1111"
         stateResult.cardBrand = CardType.VISA.name
@@ -813,9 +946,9 @@ class VGSCardNumberEditTextTest {
         with(view.getState()) {
             assertNotNull(this)
 
-            assertEquals(stateResult.bin, this!!.bin)
-            assertEquals(stateResult.last, this.last)
+            assertEquals(stateResult.last, this!!.last)
             assertEquals(stateResult.number, this.number)
+            assertNotEquals(stateResult.bin, this.bin)
             assertNotEquals(stateResult.cardBrand, this.cardBrand)
             assertNotEquals(stateResult.drawableBrandResId, this.drawableBrandResId)
 
