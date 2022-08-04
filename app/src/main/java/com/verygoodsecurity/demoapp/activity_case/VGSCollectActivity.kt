@@ -143,7 +143,7 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
 
             .build()
 
-        cardNumberField.addRule(rule)
+        cardNumberField.setRule(rule)
     }
 
     private fun addCustomBrands() {

@@ -3,12 +3,12 @@ package com.verygoodsecurity.vgscollect.view.card.validation
 /** @suppress */
 class InfoValidator : VGSValidator {
 
-    override val errorMsg: String = ERROR_MESSAGE
+    override val errorMsg: String = DEFAULT_ERROR_MSG
 
     override fun isValid(content: String) = content.trim().isNotEmpty()
 
-    private companion object {
+    internal companion object {
 
-        private const val ERROR_MESSAGE = "INFO_FIELD_IS_EMPTY"
+        internal const val DEFAULT_ERROR_MSG = "INFO_FIELD_IS_EMPTY"
     }
 }

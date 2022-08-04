@@ -1317,7 +1317,15 @@ abstract class InputFieldView @JvmOverloads constructor(
     fun isContentEquals(view: InputFieldView): Boolean = inputField.isContentEquals(view.inputField)
 
     protected fun applyValidationRule(rule: ValidationRule) {
-        inputField.applyValidationRule(rule)
+        inputField.applyValidationRules(listOf(rule))
+    }
+
+    protected fun applyValidationRules(rules: List<ValidationRule>) {
+        inputField.applyValidationRules(rules)
+    }
+
+    protected fun appendValidationRule(rule: ValidationRule) {
+        inputField.appendValidationRule(rule)
     }
 
     override fun performClick(): Boolean {
