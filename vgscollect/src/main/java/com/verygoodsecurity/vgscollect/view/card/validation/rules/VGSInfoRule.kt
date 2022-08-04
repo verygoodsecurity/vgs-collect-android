@@ -25,6 +25,7 @@ class VGSInfoRule private constructor(
         private var length: LengthValidator? = null
 
         /** Configure regex for validation input. */
+        @JvmOverloads
         fun setRegex(
             regex: String,
             errorMsg: String = RegexValidator.DEFAULT_ERROR_MSG

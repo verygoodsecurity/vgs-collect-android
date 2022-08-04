@@ -25,13 +25,14 @@ class PersonNameRule private constructor(
         private var length: LengthValidator? = null
 
         /** Configure regex for validation input. */
+        @JvmOverloads
         fun setRegex(
             regex: String,
             errorMsg: String = RegexValidator.DEFAULT_ERROR_MSG
         ) = this.apply { this.regex = RegexValidator(regex, errorMsg) }
 
         /** Configure minimum length which will support. */
-        fun setAllowableMinLength(length: Int, ) = this.apply {
+        fun setAllowableMinLength(length: Int) = this.apply {
             this.length = this.length?.let {
                 it.copy(min = min(it.max, length))
             } ?: LengthValidator(length, MAX_LENGTH)
