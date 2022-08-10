@@ -13,7 +13,7 @@ dependencyResolutionManagement {
         }
         libs {
             // Libraries
-            library('androidx-appcompat', 'androidx.appcompat:appcompat:1.4.2')
+            library('androidx-appcompat', 'androidx.appcompat:appcompat:1.5.0')
             library('androidx-core-ktx', 'androidx.core:core-ktx:1.8.0')
             library('androidx-constraintlayout', 'androidx.constraintlayout:constraintlayout:2.1.4')
             library('androidx-multidex', 'androidx.multidex:multidex:2.0.1')
