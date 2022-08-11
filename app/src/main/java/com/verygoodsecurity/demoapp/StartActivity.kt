@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
 import com.verygoodsecurity.demoapp.fragment_case.VGSCollectFragmentActivity
+import com.verygoodsecurity.demoapp.payopt.PaymentOptimizationActivity
 import com.verygoodsecurity.demoapp.tokenization.TokenizationActivity
 import com.verygoodsecurity.demoapp.viewpager_case.VGSViewPagerActivity
 import kotlinx.android.synthetic.main.activity_start.*
@@ -31,6 +32,9 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         }
         llCollectViewPagerFlow?.setOnClickListener {
             startActivity(VGSViewPagerActivity::class.java)
+        }
+        llPayopt?.setOnClickListener {
+            startActivity(PaymentOptimizationActivity::class.java)
         }
     }
 
