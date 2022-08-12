@@ -163,59 +163,6 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/mbGroupResponse"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_padding_material_medium"
-        android:layout_marginTop="@dimen/margin_padding_material_medium"
-        android:layout_marginEnd="@dimen/margin_padding_material_medium"
-        app:checkedButton="@+id/mbFifty"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llInput"
-        app:selectionRequired="true"
-        app:singleSelection="true">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mbFifty"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Instrument"
-            android:textAppearance="?attr/textAppearanceSubtitle2" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/mbHundred"
-            style="?attr/materialButtonOutlinedStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Payment"
-            android:textAppearance="?attr/textAppearanceSubtitle2" />
-    </com.google.android.material.button.MaterialButtonToggleGroup>
-
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/margin_padding_material_medium"
-        android:layout_marginTop="@dimen/margin_padding_material_medium"
-        android:layout_marginEnd="@dimen/margin_padding_material_medium"
-        android:layout_marginBottom="@dimen/margin_padding_material_medium"
-        android:animateLayoutChanges="true"
-        app:cardBackgroundColor="@color/blackPearl"
-        app:cardElevation="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/mbPay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_default="wrap"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mbGroupResponse"
-        app:layout_constraintVertical_bias="0.0">
-
-        <include layout="@layout/code_example_layout" />
-    </com.google.android.material.card.MaterialCardView>
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mbPay"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
