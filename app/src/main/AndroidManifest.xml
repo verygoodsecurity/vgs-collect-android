@@ -65,5 +65,8 @@
         <activity
             android:name=".instrumented.CustomBrandsActivity"
             android:label="Instrumented Demo" />
+        <activity
+            android:name=".tokenization.settings.TokenizationSettingsActivity"
+            android:label="Settings" />
     </application>
 </manifest>
