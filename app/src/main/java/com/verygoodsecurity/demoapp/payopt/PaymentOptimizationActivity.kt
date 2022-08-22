@@ -12,6 +12,8 @@ import com.github.kittinunf.result.Result
 import com.google.android.material.snackbar.Snackbar
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
+import com.verygoodsecurity.demoapp.payopt.adapter.Card
+import com.verygoodsecurity.demoapp.payopt.adapter.CardsAdapter
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -68,8 +70,16 @@ class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_
     private fun initViews() {
         clRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         mbPay?.setOnClickListener { pay() }
-        initExpiry()
-        bindViews()
+        initCards()
+//        initExpiry()
+//        bindViews()
+    }
+
+    private fun initCards() {
+        rvCards?.adapter = CardsAdapter().also {
+            it.submitList(emptyList())
+//            it.submitList(listOf(Card("1", "Test", "4111", 11, 12, "VISA")))
+        }
     }
 
     private fun initExpiry() {
