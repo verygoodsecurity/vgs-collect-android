@@ -33,12 +33,16 @@
             android:name=".activity_case.VGSCollectActivity"
             android:label="Collect (Activity)" />
 
-        <!--        TODO(Think about resize)-->
+        <!--        TODO(Resize)-->
         <activity
             android:name=".tokenization.TokenizationActivity"
             android:label="Tokenization"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
+
+        <activity
+            android:name=".tokenization.settings.TokenizationSettingsActivity"
+            android:label="Settings" />
 
         <activity
             android:name=".payopt.PaymentOptimizationActivity"
@@ -65,8 +69,5 @@
         <activity
             android:name=".instrumented.CustomBrandsActivity"
             android:label="Instrumented Demo" />
-        <activity
-            android:name=".tokenization.settings.TokenizationSettingsActivity"
-            android:label="Settings" />
     </application>
 </manifest>
