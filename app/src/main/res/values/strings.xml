@@ -16,13 +16,13 @@
     <string name="start_tokenization_activity_description">Get tokenized data without additional backend setup required.</string>
 
     <string name="start_collect_with_activity_title">Collect (Activity)</string>
-    <string name="start_collect_with_activity_description">Basic example of collect usage setup with Activity.</string>
+    <string name="start_collect_with_activity_description">Basic example of collect usage with Activity.</string>
 
     <string name="start_collect_with_fragment_title">Collect (Fragment)</string>
-    <string name="start_collect_with_fragment_description">Basic example of collect usage setup with Fragment.</string>
+    <string name="start_collect_with_fragment_description">Basic example of collect usage with Fragment.</string>
 
     <string name="start_collect_with_view_pager_title">Collect (ViewPager)</string>
-    <string name="start_collect_with_view_pager_description">Basic example of collect usage setup with ViewPager.</string>
+    <string name="start_collect_with_view_pager_description">Basic example of collect usage with ViewPager.</string>
 
     <string name="start_payopt">Payopt</string>
     <string name="start_payopt_description">Collect with payment optimization example.</string>
