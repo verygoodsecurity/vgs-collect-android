@@ -109,10 +109,10 @@ class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_
                 try {
                     when (result) {
                         is Result.Success -> onSuccess.invoke(JSONObject(result.get()).getString("access_token"))
-                        is Result.Failure -> Log.d(TAG, result.error.toString())
+                        is Result.Failure -> handleError(result.error.toString())
                     }
                 } catch (e: Exception) {
-                    Log.d(TAG, e.toString())
+                    handleError(e.toString())
                 }
             }
     }
@@ -149,10 +149,10 @@ class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_
                         is Result.Success -> onSuccess.invoke(
                             JSONObject(result.get()).getJSONObject("data").getString("id")
                         )
-                        is Result.Failure -> Log.d(TAG, result.error.toString())
+                        is Result.Failure -> handleError(result.error.toString())
                     }
                 } catch (e: Exception) {
-                    Log.d(TAG, e.toString())
+                    handleError(e.toString())
                 }
             }
     }
@@ -194,12 +194,18 @@ class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_
                 try {
                     when (result) {
                         is Result.Success -> onSuccess.invoke(result.get())
-                        is Result.Failure -> Log.d(TAG, result.error.toString())
+                        is Result.Failure -> handleError(result.error.toString())
                     }
                 } catch (e: Exception) {
-                    Log.d(TAG, e.toString())
+                    handleError(e.toString())
                 }
             }
+    }
+
+    private fun handleError(message: String) {
+        Snackbar.make(clRoot, message, Snackbar.LENGTH_SHORT).show()
+        Log.d(TAG, message)
+        setLoading(false)
     }
 
     private fun setLoading(isLoading: Boolean) {
