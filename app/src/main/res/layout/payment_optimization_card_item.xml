@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="@dimen/margin_padding_material_micro"
     app:cardElevation="0dp"
-    app:strokeColor="@android:color/darker_gray"
+    app:rippleColor="@android:color/transparent"
+    app:strokeColor="@color/card_stroke_color"
     app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,25 +26,26 @@
             tools:src="@drawable/ic_visa_dark" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtvTitle"
+            android:id="@+id/mtvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_padding_material_medium"
-            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:fontFamily="sans-serif-medium"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
             app:layout_constraintStart_toEndOf="@+id/ivBrand"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="John Smith" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtvSubtitle"
+            android:id="@+id/mtvLastFourAndDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_padding_material_medium"
-            android:layout_marginTop="@dimen/margin_padding_material_small"
-            android:textAppearance="?attr/textAppearanceBody1"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            android:textAppearance="?attr/textAppearanceCaption"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivBrand"
-            app:layout_constraintTop_toBottomOf="@+id/mtvTitle"
+            app:layout_constraintTop_toBottomOf="@+id/mtvName"
             tools:text="**** 1234 | 11/22" />
 
         <com.google.android.material.radiobutton.MaterialRadioButton
@@ -51,6 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
+            android:buttonTint="@color/card_radio_btn_tint"
             android:clickable="false"
             android:focusable="false"
             android:minWidth="0dp"

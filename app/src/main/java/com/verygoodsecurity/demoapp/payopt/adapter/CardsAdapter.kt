@@ -1,16 +1,19 @@
 package com.verygoodsecurity.demoapp.payopt.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.DrawableRes
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.radiobutton.MaterialRadioButton
+import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.demoapp.R
+import com.verygoodsecurity.vgscollect.view.card.CardType
 
 internal class CardsAdapter : ListAdapter<Card, RecyclerView.ViewHolder>(DIFF_UTILS) {
 
@@ -57,16 +60,33 @@ internal class CardsAdapter : ListAdapter<Card, RecyclerView.ViewHolder>(DIFF_UT
 
     inner class CardViewHolder constructor(view: View) : RecyclerView.ViewHolder(view) {
 
+        private val ivBrand = view.findViewById<AppCompatImageView>(R.id.ivBrand)
         private val mrbIsSelected = view.findViewById<MaterialRadioButton>(R.id.mrbIsSelected)
+        private val mtvName = view.findViewById<MaterialTextView>(R.id.mtvName)
+        private val mtvLastFourAndDate =
+            view.findViewById<MaterialTextView>(R.id.mtvLastFourAndDate)
 
         init {
-
             view.setOnClickListener { selected = adapterPosition }
         }
 
         fun bind(card: Card) {
-            val isNewCardSelected = selected == adapterPosition
-            mrbIsSelected.isChecked = isNewCardSelected
+            val isSelected = selected == adapterPosition
+            itemView.isSelected = isSelected
+            mrbIsSelected.isChecked = isSelected
+            ivBrand.setImageResource(getBrandIcon(card.brand))
+            mtvName.text = card.holderName
+            mtvLastFourAndDate.text = getFormattedLastFourAndDate(card)
+        }
+
+        private fun getFormattedLastFourAndDate(card: Card): String {
+            return "•••• ${card.last4} | ${card.expiryMonth}/${card.expiryYear}"
+        }
+
+        @DrawableRes
+        private fun getBrandIcon(brand: String): Int {
+            return CardType.values().find { it.name.lowercase() == brand.lowercase() }?.resId
+                ?: CardType.UNKNOWN.resId
         }
     }
 
@@ -76,15 +96,14 @@ internal class CardsAdapter : ListAdapter<Card, RecyclerView.ViewHolder>(DIFF_UT
         private val llInput = view.findViewById<LinearLayoutCompat>(R.id.llInput)
 
         init {
-
             view.setOnClickListener { selected = adapterPosition }
         }
 
         fun bind() {
-            Log.d("Test", "bind new card item")
-            val isNewCardSelected = selected == adapterPosition
-            mrbIsSelected.isChecked = isNewCardSelected
-            llInput.isVisible = isNewCardSelected
+            val isSelected = selected == adapterPosition
+            itemView.isSelected = isSelected
+            mrbIsSelected.isChecked = isSelected
+            llInput.isVisible = isSelected
         }
     }
 

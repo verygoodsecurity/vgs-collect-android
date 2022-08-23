@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="@dimen/margin_padding_material_micro"
     app:cardElevation="0dp"
-    app:strokeColor="@android:color/darker_gray"
+    app:rippleColor="@android:color/transparent"
+    app:strokeColor="@color/card_stroke_color"
     app:strokeWidth="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,8 +20,9 @@
             android:id="@+id/mtvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
             android:text="Add credit or debit card"
-            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,16 +30,59 @@
             android:id="@+id/mtvSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_padding_material_small"
-            android:textAppearance="?attr/textAppearanceBody1"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            android:textAppearance="?attr/textAppearanceCaption"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mtvTitle" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivVisa"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="@+id/mtvSubtitle"
+            app:layout_constraintStart_toStartOf="@+id/mtvSubtitle"
+            app:layout_constraintTop_toTopOf="@+id/mtvSubtitle"
+            app:srcCompat="@drawable/ic_visa_dark" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivMasterCard"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/margin_padding_material_micro"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="@+id/ivVisa"
+            app:layout_constraintStart_toEndOf="@+id/ivVisa"
+            app:layout_constraintTop_toTopOf="@+id/ivVisa"
+            app:srcCompat="@drawable/ic_mastercard_light" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivAmex"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/margin_padding_material_micro"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="@+id/ivMasterCard"
+            app:layout_constraintStart_toEndOf="@+id/ivMasterCard"
+            app:layout_constraintTop_toTopOf="@+id/ivMasterCard"
+            app:srcCompat="@drawable/ic_amex_dark" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/margin_padding_material_micro"
+            android:adjustViewBounds="true"
+            app:layout_constraintBottom_toBottomOf="@+id/ivAmex"
+            app:layout_constraintStart_toEndOf="@+id/ivAmex"
+            app:layout_constraintTop_toTopOf="@+id/ivAmex"
+            app:srcCompat="@drawable/ic_discover_light" />
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/mrbIsSelected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
+            android:buttonTint="@color/card_radio_btn_tint"
             android:clickable="false"
             android:focusable="false"
             android:minWidth="0dp"
@@ -53,7 +98,7 @@
             android:layout_marginTop="@dimen/margin_padding_material_medium"
             android:animateLayoutChanges="true"
             android:orientation="vertical"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +129,8 @@
                     android:layout_height="wrap_content"
                     app:fieldName="card.name"
                     app:imeOptions="actionNext"
-                    app:text="John Doe" />
+                    app:text="John Doe"
+                    app:textAppearance="?attr/textAppearanceBody1" />
             </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
             <com.google.android.material.textview.MaterialTextView
@@ -114,7 +160,8 @@
                     app:fieldName="card.number"
                     app:imeOptions="actionNext"
                     app:numberDivider=" "
-                    app:text="4111111111111111" />
+                    app:text="4111111111111111"
+                    app:textAppearance="?attr/textAppearanceBody1" />
             </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -157,7 +204,8 @@
                             app:fieldName="card.expiry"
                             app:imeOptions="actionNext"
                             app:inputType="date"
-                            app:text="01/2030" />
+                            app:text="01/2030"
+                            app:textAppearance="?attr/textAppearanceBody1" />
                     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -196,7 +244,8 @@
                             android:layout_height="wrap_content"
                             app:fieldName="card.cvc"
                             app:imeOptions="actionDone"
-                            app:text="111" />
+                            app:text="111"
+                            app:textAppearance="?attr/textAppearanceBody1" />
                     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>

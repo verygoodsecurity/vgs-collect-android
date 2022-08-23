@@ -77,10 +77,15 @@ class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_
     }
 
     private fun initCards() {
+        rvCards?.itemAnimator = null
         rvCards?.addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_padding_material_medium)))
         rvCards?.adapter = CardsAdapter().also {
-//            it.submitList(emptyList())
-            it.submitList(listOf(Card("1", "Test", "4111", 11, 12, "VISA")))
+            it.submitList(
+                listOf(
+                    Card("1", "John Smith", "4111", 11, 12, "VISA"),
+                    Card("2", "John Smith", "2333", 11, 12, "MAESTRO"),
+                )
+            )
         }
     }
 
