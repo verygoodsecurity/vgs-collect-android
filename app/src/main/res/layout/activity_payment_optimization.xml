@@ -4,7 +4,8 @@
     android:id="@+id/clRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    android:clipChildren="false">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/llInput"
@@ -169,7 +170,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:overScrollMode="never"
-        android:clipChildren="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@+id/mbPay"
         app:layout_constraintEnd_toEndOf="parent"
@@ -189,6 +189,7 @@
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="Pay $50"
+        app:backgroundTint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
