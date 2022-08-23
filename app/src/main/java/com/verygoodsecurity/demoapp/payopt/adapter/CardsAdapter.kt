@@ -4,14 +4,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.radiobutton.MaterialRadioButton
 import com.verygoodsecurity.demoapp.R
 
 internal class CardsAdapter : ListAdapter<Card, RecyclerView.ViewHolder>(DIFF_UTILS) {
 
-    private val selected: Int = 0
+    private var selected: Int = 0
+        set(value) {
+            notifyItemChanged(field)
+            field = value
+            notifyItemChanged(value)
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -44,21 +52,39 @@ internal class CardsAdapter : ListAdapter<Card, RecyclerView.ViewHolder>(DIFF_UT
     override fun getItemCount() = super.getItemCount() + 1
 
     override fun getItemViewType(position: Int): Int {
-        Log.d("Test", "getItemViewType, position = $position")
         return if (position >= currentList.count()) NEW_CARD_VIEW_TYPE else CARD_VIEW_TYPE
     }
 
     inner class CardViewHolder constructor(view: View) : RecyclerView.ViewHolder(view) {
 
+        private val mrbIsSelected = view.findViewById<MaterialRadioButton>(R.id.mrbIsSelected)
+
+        init {
+
+            view.setOnClickListener { selected = adapterPosition }
+        }
+
         fun bind(card: Card) {
-            Log.d("Test", "bind card item [$card]")
+            val isNewCardSelected = selected == adapterPosition
+            mrbIsSelected.isChecked = isNewCardSelected
         }
     }
 
     inner class NewCardViewHolder constructor(view: View) : RecyclerView.ViewHolder(view) {
 
+        private val mrbIsSelected = view.findViewById<MaterialRadioButton>(R.id.mrbIsSelected)
+        private val llInput = view.findViewById<LinearLayoutCompat>(R.id.llInput)
+
+        init {
+
+            view.setOnClickListener { selected = adapterPosition }
+        }
+
         fun bind() {
             Log.d("Test", "bind new card item")
+            val isNewCardSelected = selected == adapterPosition
+            mrbIsSelected.isChecked = isNewCardSelected
+            llInput.isVisible = isNewCardSelected
         }
     }
 

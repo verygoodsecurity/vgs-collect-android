@@ -14,6 +14,7 @@ import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.demoapp.payopt.adapter.Card
 import com.verygoodsecurity.demoapp.payopt.adapter.CardsAdapter
+import com.verygoodsecurity.demoapp.payopt.decorator.MarginItemDecoration
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -76,9 +77,10 @@ class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_
     }
 
     private fun initCards() {
+        rvCards?.addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_padding_material_medium)))
         rvCards?.adapter = CardsAdapter().also {
-            it.submitList(emptyList())
-//            it.submitList(listOf(Card("1", "Test", "4111", 11, 12, "VISA")))
+//            it.submitList(emptyList())
+            it.submitList(listOf(Card("1", "Test", "4111", 11, 12, "VISA")))
         }
     }
 
