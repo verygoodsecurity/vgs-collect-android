@@ -188,7 +188,7 @@
         android:layout_weight="1"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        android:text="Pay $50"
+        android:text="Deposit"
         app:backgroundTint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
