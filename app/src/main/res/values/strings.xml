@@ -11,17 +11,21 @@
     <string name="start_activity_environment_Live">Live</string>
 
     <string name="start_activity_start_btn_title">Start</string>
+
     <string name="start_tokenization_activity_title">Tokenization</string>
-    <string name="start_tokenization_activity_description">Description (TODO)</string>
+    <string name="start_tokenization_activity_description">Tokenize data without additional backend setup required.</string>
 
     <string name="start_collect_with_activity_title">Collect (Activity)</string>
-    <string name="start_collect_with_activity_description">Description (TODO)</string>
+    <string name="start_collect_with_activity_description">Example of collecting data using Activity.</string>
 
     <string name="start_collect_with_fragment_title">Collect (Fragment)</string>
-    <string name="start_collect_with_fragment_description">Description (TODO)</string>
+    <string name="start_collect_with_fragment_description">Example of collecting data using Fragment.</string>
 
     <string name="start_collect_with_view_pager_title">Collect (ViewPager)</string>
-    <string name="start_collect_with_view_pager_description">Description (TODO)</string>
+    <string name="start_collect_with_view_pager_description">Example of collecting data using ViewPager.</string>
+
+    <string name="start_payopt">Payopt</string>
+    <string name="start_payopt_description">Collecting data with payment optimization example.</string>
 
     <string name="start_payopt">Payopt</string>
     <string name="start_payopt_description">Description (TODO)</string>
