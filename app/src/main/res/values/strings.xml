@@ -27,9 +27,6 @@
     <string name="start_payopt">Payopt</string>
     <string name="start_payopt_description">Collecting data with payment optimization example.</string>
 
-    <string name="start_payopt">Payopt</string>
-    <string name="start_payopt_description">Description (TODO)</string>
-
     <string name="tokenization_scan_card_menu_item_title">Scan</string>
     <string name="tokenization_settings_menu_item_title">Settings</string>
 
