@@ -73,10 +73,14 @@ class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_
                         true
                     )
                 }
-                is VGSResponse.ErrorResponse -> showSnackBar(response.localizeMessage)
+                is VGSResponse.ErrorResponse -> {
+                    setLoading(false)
+                    showSnackBar(response.localizeMessage)
+                }
                 else -> throw IllegalArgumentException("Not implemented")
             }
         } catch (e: JSONException) {
+            setLoading(false)
             showSnackBar("Reading financial instrument response error.")
         }
     }
