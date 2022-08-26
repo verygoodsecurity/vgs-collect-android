@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.payopt.adapter
+package com.verygoodsecurity.demoapp.payopt.model
 
 internal data class Card constructor(
     val finId: String,

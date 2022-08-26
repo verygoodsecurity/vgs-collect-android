@@ -2,37 +2,39 @@ package com.verygoodsecurity.demoapp.payopt
 
 import android.animation.LayoutTransition
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.result.Result
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.StartActivity
-import com.verygoodsecurity.demoapp.payopt.adapter.Card
+import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
+import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
 import com.verygoodsecurity.demoapp.payopt.adapter.CardsAdapter
 import com.verygoodsecurity.demoapp.payopt.decorator.MarginItemDecoration
+import com.verygoodsecurity.demoapp.payopt.model.Card
+import com.verygoodsecurity.demoapp.payopt.source.RemoteDataSource
+import com.verygoodsecurity.demoapp.payopt.source.ResponseListener
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
-import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import kotlinx.android.synthetic.main.activity_payment_optimization.*
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
 class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_optimization),
-    VgsCollectResponseListener {
+    CardsAdapter.NewCardBindListener, VgsCollectResponseListener {
+
+    private val vault by lazy { intent.extras?.getString(KEY_BUNDLE_VAULT_ID) ?: "" }
+    private val environment by lazy { intent.extras?.getString(KEY_BUNDLE_ENVIRONMENT) ?: "" }
+    private val source = RemoteDataSource()
+    private val adapter = CardsAdapter(this)
 
     private var collect: VGSCollect? = null
-    private var token: String? = null
-
-    private lateinit var vaultId: String
+    private var accessToken: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,202 +42,141 @@ class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_
         initViews()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        collect?.onDestroy()
+    }
+
+    override fun bind(inputs: Array<InputFieldView>) {
+        collect?.bindView(*inputs)
+    }
+
+    override fun unbind(inputs: Array<InputFieldView>) {
+        collect?.unbindView(*inputs)
+    }
+
     override fun onResponse(response: VGSResponse?) {
         try {
             when (response) {
                 is VGSResponse.SuccessResponse -> {
-                    val id = JSONObject(response.body!!).getJSONObject("data").getString("id")
-                    Log.d(TAG, "Instrument id = $id")
-                    transaction(id)
+                    val data = JSONObject(response.body!!).getJSONObject("data")
+                    val card = data.getJSONObject("card")
+                    transaction(
+                        Card(
+                            data.getString("id"),
+                            card.getString("name"),
+                            card.getString("last4"),
+                            card.getInt("exp_month"),
+                            card.getInt("exp_year"),
+                            card.getString("brand")
+                        ),
+                        true
+                    )
                 }
-                is VGSResponse.ErrorResponse -> TODO("Handle instrument not created")
+                is VGSResponse.ErrorResponse -> showSnackBar(response.localizeMessage)
                 else -> throw IllegalArgumentException("Not implemented")
             }
         } catch (e: JSONException) {
-            // TODO: Handle instrument null
+            showSnackBar("Reading financial instrument response error.")
         }
     }
 
     private fun initCollect() {
-        with(intent?.extras) {
-            vaultId = this?.getString(StartActivity.KEY_BUNDLE_VAULT_ID) ?: ""
-            collect = VGSCollect(
-                this@PaymentOptimizationActivity,
-                vaultId,
-                this?.getString(StartActivity.KEY_BUNDLE_ENVIRONMENT) ?: ""
-            )
-            collect?.addOnResponseListeners(this@PaymentOptimizationActivity)
-        }
+        collect = VGSCollect(this, vault, environment)
+        collect?.addOnResponseListeners(this@PaymentOptimizationActivity)
     }
 
     private fun initViews() {
         clRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         mbPay?.setOnClickListener { pay() }
         initCards()
-//        initExpiry()
-//        bindViews()
     }
 
     private fun initCards() {
-        rvCards?.itemAnimator = null
+        (rvCards?.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
         rvCards?.addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_padding_material_medium)))
-        rvCards?.adapter = CardsAdapter().also {
-            it.submitList(
-                listOf(
-                    Card("1", "John Smith", "4111", 11, 12, "VISA"),
-                    Card("2", "John Smith", "2333", 11, 12, "MAESTRO"),
-                )
-            )
-        }
-    }
-
-    private fun initExpiry() {
-        vgsTiedExpiry?.setSerializer(
-            VGSExpDateSeparateSerializer(
-                "card.exp_month",
-                "card.exp_year"
-            )
-        )
-    }
-
-    private fun bindViews() {
-        collect?.bindView(vgsTiedCardHolder)
-        collect?.bindView(vgsTiedCardNumber)
-        collect?.bindView(vgsTiedExpiry)
-        collect?.bindView(vgsTiedCvc)
+        rvCards?.adapter = adapter
     }
 
     private fun pay() {
         setLoading(true)
-        getAccessToken {
-            Log.d(TAG, "Token = $it")
-            token = it
-            collect?.asyncSubmit(
-                VGSRequest.VGSRequestBuilder()
-                    .setMethod(HTTPMethod.POST)
-                    .setPath("/financial_instruments")
-                    .setCustomHeader(mapOf("Authorization" to "Bearer $it"))
-                    .build()
-            )
-        }
-    }
+        source.fetchAccessToken(object : ResponseListener<String> {
 
-    private fun getAccessToken(onSuccess: (token: String) -> Unit) {
-        Fuel.post("https://multiplexing-demo.verygoodsecurity.io/get-auth-token")
-            .responseString { _, _, result ->
-                try {
-                    when (result) {
-                        is Result.Success -> onSuccess.invoke(JSONObject(result.get()).getString("access_token"))
-                        is Result.Failure -> handleError(result.error.toString())
-                    }
-                } catch (e: Exception) {
-                    handleError(e.toString())
-                }
+            override fun onSuccess(data: String) {
+                accessToken = data
+                val card = adapter.getSelected()
+                if (card == null) createFinInstrument() else transaction(card, false)
             }
-    }
 
-    private fun createOrder(
-        @Suppress("SameParameterValue") amount: Int,
-        token: String,
-        onSuccess: (id: String) -> Unit
-    ) {
-        val body = JSONObject().apply {
-            put("order", JSONObject().apply {
-                put("amount", amount)
-                put("currency", "USD")
-                put("financial_instrument_types", JSONArray().apply {
-                    put("card")
-                })
-            })
-            put("items", JSONArray().apply {
-                put(JSONObject().apply {
-                    put("name", "Test")
-                    put("price", amount)
-                    put("quantity", 1)
-                })
-            })
-        }.toString()
-
-        Fuel.post("https://multiplexing-demo.verygoodsecurity.io/orders")
-            .body(body)
-            .header("X-Auth-Token", token)
-            .header("Content-Type", "application/json")
-            .responseString { _, _, result ->
-                try {
-                    when (result) {
-                        is Result.Success -> onSuccess.invoke(
-                            JSONObject(result.get()).getJSONObject("data").getString("id")
-                        )
-                        is Result.Failure -> handleError(result.error.toString())
-                    }
-                } catch (e: Exception) {
-                    handleError(e.toString())
-                }
-            }
-    }
-
-    private fun transaction(instrumentId: String) {
-        with(token) {
-            if (isNullOrEmpty()) {
-                Log.d(TAG, "Access token is null.")
+            override fun onError(message: String) {
                 setLoading(false)
+                showSnackBar(message)
+            }
+        })
+    }
+
+    private fun createFinInstrument() {
+        collect?.asyncSubmit(
+            VGSRequest.VGSRequestBuilder()
+                .setMethod(HTTPMethod.POST)
+                .setPath("/financial_instruments")
+                .setCustomHeader(mapOf("Authorization" to "Bearer $accessToken"))
+                .build()
+        )
+    }
+
+    private fun transaction(card: Card, saveCard: Boolean) {
+        with(accessToken) {
+            if (isNullOrEmpty()) {
+                showSnackBar("Access token is null.")
                 return
             }
-            createOrder(DEFAULT_AMOUNT, this) { id ->
-                Log.d(TAG, "Order id = $id")
-                makeTransaction(this, instrumentId, id) { response ->
-                    Log.d(TAG, "Transfer response = $response")
-                    Snackbar.make(clRoot, "Payment successful", Snackbar.LENGTH_SHORT).show()
+            source.createOrder(this, object : ResponseListener<String> {
+
+                override fun onSuccess(data: String) {
+                    Log.d(TAG, "Order created, id = $data.")
+                    source.createPayment(
+                        vault,
+                        this@with,
+                        card.finId,
+                        data,
+                        object : ResponseListener<String> {
+
+                            override fun onSuccess(data: String) {
+                                if (saveCard) adapter.addItem(card)
+                                setLoading(false)
+                                showSnackBar("Payment successful")
+                            }
+
+                            override fun onError(message: String) {
+                                setLoading(false)
+                                showSnackBar("Payment failed, reason = $message")
+                            }
+                        })
                 }
-            }
+
+                override fun onError(message: String) {
+                    setLoading(false)
+                    showSnackBar(message)
+                }
+            })
         }
     }
 
-    private fun makeTransaction(
-        token: String,
-        instrumentId: String,
-        orderId: String,
-        onSuccess: (response: String?) -> Unit
-    ) {
-        val body = JSONObject().apply {
-            put("order_id", orderId)
-            put("source", instrumentId)
-        }.toString()
-
-        Fuel.post("https://$vaultId-4880868f-d88b-4333-ab70-d9deecdbffc4.sandbox.verygoodproxy.com/transfers")
-            .body(body)
-            .header("Authorization", "Bearer $token")
-            .header("Content-Type", "application/json")
-            .responseString { _, _, result ->
-                setLoading(false)
-                try {
-                    when (result) {
-                        is Result.Success -> onSuccess.invoke(result.get())
-                        is Result.Failure -> handleError(result.error.toString())
-                    }
-                } catch (e: Exception) {
-                    handleError(e.toString())
-                }
-            }
-    }
-
-    private fun handleError(message: String) {
-        Snackbar.make(clRoot, message, Snackbar.LENGTH_SHORT).show()
+    private fun showSnackBar(message: String) {
         Log.d(TAG, message)
-        setLoading(false)
+        Snackbar.make(clRoot, message, Snackbar.LENGTH_SHORT)
+            .setAnchorView(mbPay)
+            .show()
     }
 
     private fun setLoading(isLoading: Boolean) {
-        Handler(Looper.getMainLooper()).postDelayed({
-            viewOverlay.isVisible = isLoading
-            progressBar.isVisible = isLoading
-        }, 200)
+        viewOverlay.isVisible = isLoading
+        progressBar.isVisible = isLoading
     }
 
     companion object {
 
         private const val TAG = "PaymentOptActivity"
-
-        private const val DEFAULT_AMOUNT = 50
     }
 }

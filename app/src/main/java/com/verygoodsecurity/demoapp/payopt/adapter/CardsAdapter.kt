@@ -4,18 +4,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.annotation.LayoutRes
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.radiobutton.MaterialRadioButton
-import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.demoapp.R
+import com.verygoodsecurity.demoapp.payopt.model.Card
+import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.CardType
+import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
+import kotlinx.android.synthetic.main.payment_optimization_card_item.view.*
+import kotlinx.android.synthetic.main.payment_optimization_new_card_item.view.*
+import kotlinx.android.synthetic.main.payment_optimization_new_card_item.view.mrbIsSelected
 
-internal class CardsAdapter : ListAdapter<Card, RecyclerView.ViewHolder>(DIFF_UTILS) {
+internal class CardsAdapter constructor(
+    private val bindListener: NewCardBindListener
+) : ListAdapter<Card, RecyclerView.ViewHolder>(DIFF_UTILS) {
 
     private var selected: Int = 0
         set(value) {
@@ -25,58 +30,52 @@ internal class CardsAdapter : ListAdapter<Card, RecyclerView.ViewHolder>(DIFF_UT
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
+
+        fun inflate(@LayoutRes id: Int): View {
+            return LayoutInflater.from(parent.context).inflate(id, parent, false)
+        }
+
         return when (viewType) {
-            CARD_VIEW_TYPE -> CardViewHolder(
-                inflater.inflate(
-                    R.layout.payment_optimization_card_item,
-                    parent,
-                    false
-                )
-            )
-            NEW_CARD_VIEW_TYPE -> NewCardViewHolder(
-                inflater.inflate(
-                    R.layout.payment_optimization_new_card_item,
-                    parent,
-                    false
-                )
-            )
+            Type.EXISTING.value -> CardViewHolder(inflate(R.layout.payment_optimization_card_item))
+            Type.NEW.value -> NewCardViewHolder(inflate(R.layout.payment_optimization_new_card_item))
             else -> throw IllegalStateException("Not implemented!")
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val isSelected = position == selected
         when (holder) {
-            is CardViewHolder -> holder.bind(getItem(position))
-            is NewCardViewHolder -> holder.bind()
+            is CardViewHolder -> holder.bind(getItem(position), isSelected)
+            is NewCardViewHolder -> holder.bind(isSelected)
         }
     }
 
     override fun getItemCount() = super.getItemCount() + 1
 
     override fun getItemViewType(position: Int): Int {
-        return if (position >= currentList.count()) NEW_CARD_VIEW_TYPE else CARD_VIEW_TYPE
+        return if (position >= currentList.count()) Type.NEW.value else Type.EXISTING.value
+    }
+
+    fun getSelected(): Card? = if (selected >= currentList.count()) null else getItem(selected)
+
+    fun addItem(card: Card) {
+        submitList(listOf(card) + currentList) {
+            selected = selected.inc()
+        }
     }
 
     inner class CardViewHolder constructor(view: View) : RecyclerView.ViewHolder(view) {
 
-        private val ivBrand = view.findViewById<AppCompatImageView>(R.id.ivBrand)
-        private val mrbIsSelected = view.findViewById<MaterialRadioButton>(R.id.mrbIsSelected)
-        private val mtvName = view.findViewById<MaterialTextView>(R.id.mtvName)
-        private val mtvLastFourAndDate =
-            view.findViewById<MaterialTextView>(R.id.mtvLastFourAndDate)
-
         init {
-            view.setOnClickListener { selected = adapterPosition }
+            itemView.setOnClickListener { selected = adapterPosition }
         }
 
-        fun bind(card: Card) {
-            val isSelected = selected == adapterPosition
+        fun bind(card: Card, isSelected: Boolean) {
             itemView.isSelected = isSelected
-            mrbIsSelected.isChecked = isSelected
-            ivBrand.setImageResource(getBrandIcon(card.brand))
-            mtvName.text = card.holderName
-            mtvLastFourAndDate.text = getFormattedLastFourAndDate(card)
+            itemView.mrbIsSelected.isChecked = isSelected
+            itemView.ivBrand.setImageResource(getBrandIcon(card.brand))
+            itemView.mtvName.text = card.holderName
+            itemView.mtvLastFourAndDate.text = getFormattedLastFourAndDate(card)
         }
 
         private fun getFormattedLastFourAndDate(card: Card): String {
@@ -92,25 +91,35 @@ internal class CardsAdapter : ListAdapter<Card, RecyclerView.ViewHolder>(DIFF_UT
 
     inner class NewCardViewHolder constructor(view: View) : RecyclerView.ViewHolder(view) {
 
-        private val mrbIsSelected = view.findViewById<MaterialRadioButton>(R.id.mrbIsSelected)
-        private val llInput = view.findViewById<LinearLayoutCompat>(R.id.llInput)
-
         init {
-            view.setOnClickListener { selected = adapterPosition }
+            itemView.vgsTiedExpiry?.setSerializer(
+                VGSExpDateSeparateSerializer(
+                    "card.exp_month",
+                    "card.exp_year"
+                )
+            )
+            itemView.setOnClickListener { selected = adapterPosition }
         }
 
-        fun bind() {
-            val isSelected = selected == adapterPosition
+        fun bind(isSelected: Boolean) {
             itemView.isSelected = isSelected
-            mrbIsSelected.isChecked = isSelected
-            llInput.isVisible = isSelected
+            itemView.mrbIsSelected.isChecked = isSelected
+            itemView.llInput.isVisible = isSelected
+            notifyListener(isSelected)
+        }
+
+        private fun notifyListener(isSelected: Boolean) {
+            val inputs = arrayOf(
+                itemView.vgsTiedCardHolder,
+                itemView.vgsTiedCardNumber,
+                itemView.vgsTiedExpiry,
+                itemView.vgsTiedCvc
+            )
+            if (isSelected) bindListener.bind(inputs) else bindListener.unbind(inputs)
         }
     }
 
     private companion object {
-
-        private const val CARD_VIEW_TYPE = 0
-        private const val NEW_CARD_VIEW_TYPE = 1
 
         val DIFF_UTILS = object : DiffUtil.ItemCallback<Card>() {
 
@@ -118,5 +127,18 @@ internal class CardsAdapter : ListAdapter<Card, RecyclerView.ViewHolder>(DIFF_UT
 
             override fun areContentsTheSame(oldItem: Card, newItem: Card) = oldItem == newItem
         }
+    }
+
+    enum class Type constructor(val value: Int) {
+
+        EXISTING(1),
+        NEW(2)
+    }
+
+    interface NewCardBindListener {
+
+        fun bind(inputs: Array<InputFieldView>)
+
+        fun unbind(inputs: Array<InputFieldView>)
     }
 }
