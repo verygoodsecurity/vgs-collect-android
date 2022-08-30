@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.result.Result
+import com.verygoodsecurity.demoapp.BuildConfig
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -12,7 +13,7 @@ class RemoteDataSource {
     private val handler = Handler(Looper.getMainLooper())
 
     fun fetchAccessToken(listener: ResponseListener<String>) {
-        Fuel.post("https://multiplexing-demo.apps.verygood.systems/get-auth-token")
+        Fuel.post(BuildConfig.ACCESS_TOKEN_URL)
             .responseString { _, _, result ->
                 handler.post {
                     try {
@@ -48,7 +49,7 @@ class RemoteDataSource {
             })
         }.toString()
 
-        Fuel.post("https://multiplexing-demo.apps.verygood.systems/orders")
+        Fuel.post(BuildConfig.CREATE_ORDER_URL)
             .body(body)
             .header("X-Auth-Token", token)
             .header("Content-Type", "application/json")
@@ -71,7 +72,6 @@ class RemoteDataSource {
     }
 
     fun createPayment(
-        vault: String,
         token: String,
         instrumentId: String,
         orderId: String,
@@ -82,7 +82,7 @@ class RemoteDataSource {
             put("source", instrumentId)
         }.toString()
 
-        Fuel.post("https://$vault-4880868f-d88b-4333-ab70-d9deecdbffc4.sandbox.verygoodproxy.com/transfers")
+        Fuel.post(BuildConfig.PAYMENT_URL)
             .body(body)
             .header("Authorization", "Bearer $token")
             .header("Content-Type", "application/json")

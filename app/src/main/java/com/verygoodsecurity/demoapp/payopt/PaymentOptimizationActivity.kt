@@ -140,7 +140,6 @@ class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_
                 override fun onSuccess(data: String) {
                     Log.d(TAG, "Order created, id = $data.")
                     source.createPayment(
-                        vault,
                         this@with,
                         card.finId,
                         data,
