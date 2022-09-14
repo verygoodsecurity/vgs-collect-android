@@ -293,6 +293,16 @@ class VGSCardNumberEditText @JvmOverloads constructor(
         applyAliasFormat(format)
     }
 
+    /**
+     * Sets the vault storage type for storing.
+     *
+     * @param type The VGS storage type.
+     */
+    fun setVaultStorageType(type: VGSVaultStorageType) {
+        applyStorageType(type)
+    }
+
+
     companion object {
         internal val TAG: String = VGSCardNumberEditText::class.simpleName.toString()
     }

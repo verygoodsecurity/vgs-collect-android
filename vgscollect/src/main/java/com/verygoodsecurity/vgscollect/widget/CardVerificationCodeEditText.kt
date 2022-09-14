@@ -113,4 +113,13 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
     fun setPreviewIconAdapter(adapter: CVCIconAdapter?) {
         setCVCPreviewIconAdapter(adapter)
     }
+
+    /**
+     * Sets the vault alias format in which data stores on a backend.
+     *
+     * @param format The VGS alias format.
+     */
+    fun setVaultAliasFormat(format: VGSVaultAliasFormat) {
+        applyAliasFormat(format)
+    }
 }
