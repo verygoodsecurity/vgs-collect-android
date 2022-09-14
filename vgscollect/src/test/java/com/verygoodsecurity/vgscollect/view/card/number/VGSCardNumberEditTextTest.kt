@@ -1012,6 +1012,14 @@ class VGSCardNumberEditTextTest {
     }
 
     @Test
+    fun test_storage_type() {
+        view.setVaultStorageType(VGSVaultStorageType.VOLATILE)
+
+        val child = view.statePreparer.getView()
+        assertEquals((child as CardInputField).vaultStorage, VGSVaultStorageType.VOLATILE)
+    }
+
+    @Test
     fun test_default_tokenization_settings() {
         val child = view.statePreparer.getView()
         assertEquals((child as CardInputField).isEnabledTokenization, true)
