@@ -11,6 +11,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultSto
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
+import com.verygoodsecurity.vgscollect.view.internal.CardInputField
 import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import org.junit.Assert.*
@@ -37,14 +38,6 @@ class CardVerificationCodeEditTextTest {
         activity = activityController.get()
 
         view = CardVerificationCodeEditText(activity)
-    }
-
-    @Test
-    fun test_default_tokenization_settings() {
-        val child = view.statePreparer.getView()
-        assertEquals((child as CVCInputField).isEnabledTokenization, true)
-        assertEquals(child.vaultAliasFormat, VGSVaultAliasFormat.NUM_LENGTH_PRESERVING)
-        assertEquals(child.vaultStorage, VGSVaultStorageType.VOLATILE)
     }
 
     @Test
@@ -194,6 +187,24 @@ class CardVerificationCodeEditTextTest {
         assertEquals(view.getTypeface(), Typeface.DEFAULT_BOLD)
         view.setTypeface(null, Typeface.NORMAL)
         assertEquals(view.getTypeface(), Typeface.DEFAULT)
+    }
+
+
+    @Test
+    fun test_default_tokenization_settings() {
+        val child = view.statePreparer.getView()
+        assertEquals((child as CVCInputField).isEnabledTokenization, true)
+        assertEquals(child.vaultAliasFormat, VGSVaultAliasFormat.NUM_LENGTH_PRESERVING)
+        assertEquals(child.vaultStorage, VGSVaultStorageType.VOLATILE)
+    }
+
+    @Test
+    fun test_alias_format() {
+        view.setVaultAliasFormat(VGSVaultAliasFormat.UUID)
+
+        val child = view.statePreparer.getView()
+
+        assertEquals((child as CVCInputField).vaultAliasFormat, VGSVaultAliasFormat.UUID)
     }
 
 }
