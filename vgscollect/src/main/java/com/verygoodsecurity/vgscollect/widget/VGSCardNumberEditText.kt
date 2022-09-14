@@ -78,6 +78,10 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                     R.styleable.VGSCardNumberEditText_aliasFormat,
                     VGSVaultAliasFormat.FPE_SIX_T_FOUR.ordinal
                 )
+                val storageType = getInt(
+                    R.styleable.VGSCardNumberEditText_storageType,
+                    VGSVaultStorageType.PERSISTENT.ordinal
+                )
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -101,7 +105,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                 setInputType(inputType)
 
                 setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
-                applyStorageType(VGSVaultStorageType.PERSISTENT)
+                applyStorageType(VGSVaultStorageType.values()[storageType])
 
                 setNumberDivider(divider)
                 setOutputNumberDivider(outputNumberDivider)
