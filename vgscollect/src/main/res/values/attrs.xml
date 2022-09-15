@@ -470,6 +470,9 @@
             <!-- Align icon to end of view. -->
             <enum name="end" value="1" />
         </attr>
+
+        <!-- tokenization api-->
+        <attr name="aliasFormat"/>
     </declare-styleable>
 
     <declare-styleable name="VGSCardNumberEditText">
@@ -538,6 +541,7 @@
 
         <!-- tokenization api-->
         <attr name="aliasFormat"/>
+        <attr name="storageType"/>
     </declare-styleable>
 
     <declare-styleable name="SSNEditText">

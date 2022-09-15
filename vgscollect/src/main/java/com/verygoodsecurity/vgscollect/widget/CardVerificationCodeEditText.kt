@@ -63,6 +63,10 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
                     R.styleable.CardVerificationCodeEditText_previewIconGravity,
                     CVCInputField.PreviewIconGravity.END.ordinal
                 )
+                val aliasFormat = getInt(
+                    R.styleable.CardVerificationCodeEditText_aliasFormat,
+                    VGSVaultAliasFormat.NUM_LENGTH_PRESERVING.ordinal
+                )
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -87,7 +91,7 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
                 applyPreviewIconMode(previewCardVisibility)
                 applyPreviewIconGravity(previewCardGravity)
 
-                applyAliasFormat(VGSVaultAliasFormat.NUM_LENGTH_PRESERVING)
+                setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
                 applyStorageType(VGSVaultStorageType.VOLATILE)
             } finally {
                 recycle()
@@ -112,5 +116,14 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
      */
     fun setPreviewIconAdapter(adapter: CVCIconAdapter?) {
         setCVCPreviewIconAdapter(adapter)
+    }
+
+    /**
+     * Sets the vault alias format in which data stores on a backend.
+     *
+     * @param format The VGS alias format.
+     */
+    fun setVaultAliasFormat(format: VGSVaultAliasFormat) {
+        applyAliasFormat(format)
     }
 }
