@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.verygoodsecurity.demoapp"
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
 
@@ -19,8 +19,11 @@ android {
         multiDexEnabled true
 
         buildConfigField("String", "VAULT_ID", "\"${getLocalProperty("VGS_VAULT_ID")}\"")
-        buildConfigField("String", "PATH", "\"${getLocalProperty("VGS_PATH")}\"")
         buildConfigField("String", "ROUTE_ID", "\"${getLocalProperty("VGS_ROUTE_ID")}\"")
+        buildConfigField("String", "PATH", "\"${getLocalProperty("VGS_PATH")}\"")
+        buildConfigField("String", "ACCESS_TOKEN_URL", "\"${getLocalProperty("VGS_ACCESS_TOKEN_URL")}\"")
+        buildConfigField("String", "CREATE_ORDER_URL", "\"${getLocalProperty("VGS_CREATE_ORDER_URL")}\"")
+        buildConfigField("String", "PAYMENT_URL", "\"${getLocalProperty("VGS_PAYMENT_URL")}\"")
     }
 
     buildTypes {
@@ -55,7 +58,6 @@ android {
 }
 
 repositories {
-
     maven { url "https://jitpack.io" }
 }
 
@@ -65,12 +67,13 @@ dependencies {
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
-    implementation libs.androidx.constraintlayout
-    implementation libs.androidx.multidex
     implementation libs.material
 
-    implementation 'androidx.preference:preference-ktx:1.2.0'
-    implementation 'com.github.kbiakov:CodeView-Android:1.3.2'
+    implementation demoLibs.androidx.constraintlayout
+    implementation demoLibs.androidx.multidex
+    implementation demoLibs.androidx.preference.ktx
+    implementation demoLibs.codeview
+    implementation demoLibs.fuel
 
     debugImplementation debugLibs.leakcanary
 
