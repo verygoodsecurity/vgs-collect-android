@@ -166,7 +166,7 @@ class FileStorageTest {
             this
         }
 
-        provider.attachFile(fieldName)
+        provider.attachFile(activity, fieldName)
 
         verify(c).save(fieldName)
     }
