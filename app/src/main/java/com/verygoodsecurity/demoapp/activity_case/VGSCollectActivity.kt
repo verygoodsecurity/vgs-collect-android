@@ -387,7 +387,7 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
 
     private fun attachFile() {
         if (vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
-            vgsForm.getFileProvider().attachFile("attachments.file")
+            vgsForm.getFileProvider().attachFile(this, "attachments.file")
         } else {
             vgsForm.getFileProvider().detachAll()
         }
