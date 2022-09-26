@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.storage.content.file
 
+import android.app.Activity
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
 
 /**
@@ -21,14 +22,27 @@ interface VGSFileProvider {
      *
      * @param fieldName is a key under which the file for JSON will be saved before sending.
      */
-    fun attachFile(fieldName : String)
+    @Deprecated(
+        message = "Deprecated, overloaded function should be used.",
+        replaceWith = ReplaceWith("attachFile(activity, fieldName)")
+    )
+    fun attachFile(fieldName: String)
+
+    /**
+     * Mentioned below method allows to attach file to the temporary local file storage before
+     * its sending to the Server.
+     *
+     * @param activity current Activity.
+     * @param fieldName is a key under which the file for JSON will be saved before sending.
+     */
+    fun attachFile(activity: Activity, fieldName: String)
 
     /**
      * Method is used to get attached files for reviewing them before their further sending.
      *
      * @return list of [FileState]
      */
-    fun getAttachedFiles():List<FileState>
+    fun getAttachedFiles(): List<FileState>
 
     /**
      * The method is used for detaching all previously attached files.
