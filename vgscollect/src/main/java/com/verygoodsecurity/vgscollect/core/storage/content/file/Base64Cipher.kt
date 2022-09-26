@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscollect.core.storage.content.file
 
-import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
@@ -13,7 +12,7 @@ import com.verygoodsecurity.vgscollect.util.extension.useIfMemoryEnough
 import java.util.*
 
 internal class Base64Cipher(val context: Context):VgsFileCipher {
-    private var contentResolver = (context as Activity).contentResolver
+    private var contentResolver = context.contentResolver
     private var submitCode = -1L
     private var fieldName = ""
 

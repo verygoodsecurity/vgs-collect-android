@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card.conection
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
+import java.util.concurrent.CopyOnWriteArrayList
 
 /** @suppress */
 internal abstract class BaseInputConnection constructor(
@@ -10,7 +11,7 @@ internal abstract class BaseInputConnection constructor(
     protected val validator: CompositeValidator
 ) : InputRunnable {
 
-    private var stateListeners = mutableListOf<OnVgsViewStateChangeListener>()
+    private var stateListeners = CopyOnWriteArrayList<OnVgsViewStateChangeListener>()
 
     protected var state = VGSFieldState()
 
