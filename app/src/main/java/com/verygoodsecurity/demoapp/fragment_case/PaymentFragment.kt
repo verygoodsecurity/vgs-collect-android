@@ -249,7 +249,7 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
 
     private fun attachFile() {
         if (vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
-            vgsForm.getFileProvider().attachFile("attachments.file")
+            vgsForm.getFileProvider().attachFile(requireActivity(),"attachments.file")
         } else {
             vgsForm.getFileProvider().detachAll()
         }
