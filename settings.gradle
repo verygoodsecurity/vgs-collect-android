@@ -17,7 +17,7 @@ dependencyResolutionManagement {
             library('androidx-core-ktx', 'androidx.core:core-ktx:1.9.0')
             library('material', 'com.google.android.material:material:1.6.1')
             library('okhttp', 'com.squareup.okhttp3:okhttp:4.10.0')
-            library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.6.10')
+            library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.7.10')
             library('bouncer-scan-payment-full', 'com.getbouncer:scan-payment-full:2.1.0016')
             library('bouncer-cardscan-ui', 'com.getbouncer:cardscan-ui:2.1.0016')
             library('bouncer-tensorflow-lite', 'com.getbouncer:tensorflow-lite:2.1.0016')
