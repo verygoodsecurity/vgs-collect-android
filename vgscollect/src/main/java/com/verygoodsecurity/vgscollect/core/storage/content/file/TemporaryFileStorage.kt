@@ -31,11 +31,19 @@ internal class TemporaryFileStorage(
         encodedFileMaxSize = size.toLong()
     }
 
+    @Deprecated(
+        "Deprecated, overloaded function should be used.",
+        replaceWith = ReplaceWith("attachFile(activity, fieldName)")
+    )
     override fun attachFile(fieldName: String) {
         (context as? Activity)?.startActivityForResult(
             createFilePickerIntent(fieldName),
             REQUEST_CODE
         ) ?: errorListener?.onStorageError(VGSError.NOT_ACTIVITY_CONTEXT)
+    }
+
+    override fun attachFile(activity: Activity, fieldName: String) {
+        activity.startActivityForResult(createFilePickerIntent(fieldName), REQUEST_CODE)
     }
 
     override fun getAttachedFiles(): List<FileState> = fileInfoStore.values.toList()

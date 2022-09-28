@@ -20,12 +20,6 @@ allprojects {
         mavenCentral()
         google()
     }
-
-    plugins.withId("com.vanniktech.maven.publish") {
-        mavenPublishing {
-            publishToMavenCentral("S01")
-        }
-    }
 }
 
 task clean(type: Delete) {
