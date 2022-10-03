@@ -11,7 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.verygoodsecurity.api.cardio.ScanActivity
+import com.verygoodsecurity.api.blinkcard.BlinkCardIntent
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
@@ -264,18 +264,15 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
     }
 
     private fun scanCard() {
-        val intent = Intent(this, ScanActivity::class.java)
-
-        val scanSettings = hashMapOf<String?, Int>().apply {
-            this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
-            this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
-            this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
-            this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
-        }
-
-        intent.putExtra(ScanActivity.SCAN_CONFIGURATION, scanSettings)
-
-        startActivityForResult(intent, USER_SCAN_REQUEST_CODE)
+        BlinkCardIntent.Builder(this)
+            .setKey("<key>")
+            .setLicenseFile("<path-to-assets>")
+            .setCardNumberFieldName(cardNumberField.getFieldName())
+            .setCVCFieldName(cardCVCField.getFieldName())
+            .setCardHolderFieldName(cardHolderField.getFieldName())
+            .setExpirationDateFieldName(cardExpDateField.getFieldName())
+            .setRequestCode(USER_SCAN_REQUEST_CODE)
+            .start()
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
