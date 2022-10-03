@@ -12,6 +12,7 @@ buildscript {
         classpath gradleLibs.maven
         classpath gradleLibs.maven.publish
         classpath gradleLibs.dokka
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10'
     }
 }
 
