@@ -111,7 +111,7 @@ class TimeGapsValidatorTest {
     fun test_positive_format_yyyy_MM_dd_maxDate_and_minDate() {
         val validator = TimeGapsValidator("yyyy-MM-dd",  System.currentTimeMillis(), 2212471406000)
 
-        assertTrue(validator.isValid("2022-09-24"))
+        assertTrue(validator.isValid("2027-09-24"))
         assertTrue(validator.isValid("2039-12-01"))
     }
 
