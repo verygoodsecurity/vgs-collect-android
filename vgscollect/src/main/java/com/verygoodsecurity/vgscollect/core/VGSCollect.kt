@@ -457,6 +457,7 @@ class VGSCollect {
      * @param data An Intent, which can return result data to the caller
      *               (various data can be attached to Intent "extras").
      */
+    @Deprecated("This method has been deprecated in favor of changing native Android API (see Activity Result API)")
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         mapAnalyticEvent(data)
 
