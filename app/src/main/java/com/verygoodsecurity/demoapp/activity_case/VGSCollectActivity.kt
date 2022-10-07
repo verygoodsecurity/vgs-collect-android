@@ -307,12 +307,6 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
         super.onDestroy()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        vgsForm.onActivityResult(requestCode, resultCode, data)
-        checkAttachedFiles()
-    }
-
     private fun checkAttachedFiles() {
         if (vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
             attachBtn?.text = getString(R.string.collect_activity_attach_btn)
