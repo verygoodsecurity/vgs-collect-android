@@ -387,10 +387,16 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
 
     private fun attachFile() {
         if (vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
-            vgsForm.getFileProvider().attachFile(this, "attachments.file")
+            openFile.launch("FileName")
         } else {
             vgsForm.getFileProvider().detachAll()
         }
+        checkAttachedFiles()
+    }
+
+    private val openFile = registerForActivityResult(VGSCollect.openFileContract) { resultCode ->
+        if (resultCode == RESULT_OK) Log.e("test", "RESULT_OK")
+        else Log.e("test", "RESULT_NOT_OK")
         checkAttachedFiles()
     }
 }

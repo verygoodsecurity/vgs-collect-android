@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.R
@@ -89,6 +90,7 @@ class VGSCollect {
             CollectActionTracker(id, environment, UUID.randomUUID().toString(), isSatelliteMode)
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
+        openFileContract.storage = storage.getFileStorage() as TemporaryFileStorage
     }
 
     constructor(
@@ -358,7 +360,6 @@ class VGSCollect {
                 )
             else -> {
                 val data = prepareDataToSubmit(request)
-
                 submitEvent(
                     true,
                     request.requiresTokenization,
@@ -457,7 +458,9 @@ class VGSCollect {
      * @param data An Intent, which can return result data to the caller
      *               (various data can be attached to Intent "extras").
      */
-    @Deprecated("This method has been deprecated in favor of changing native Android API (see Activity Result API)")
+    //todo add description and notes about correct way of retrieving results.
+    //todo add warning about removing in v2
+    @Deprecated("This method has been deprecated in favor of changing native Android API (see Activity Result API).")
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         mapAnalyticEvent(data)
 
@@ -810,5 +813,39 @@ class VGSCollect {
          * builder.
          */
         fun create() = VGSCollect(context, id, environment, host, port)
+    }
+
+    class OpenFile internal constructor() : ActivityResultContract<String, Int>() {
+
+        internal var storage: TemporaryFileStorage? = null
+
+        override fun createIntent(context: Context, input: String): Intent {
+            if (storage == null) {
+                throw IllegalStateException("VGSCollect must be inited before attempting open a file.")
+            } else {
+                return storage!!.createFilePickerIntent(input, context)
+            }
+        }
+
+        override fun parseResult(resultCode: Int, intent: Intent?): Int {
+            if (resultCode == Activity.RESULT_OK) {
+                val map: VGSHashMapWrapper<String, Any?>? = intent?.extras?.getParcelable(
+                    BaseTransmitActivity.RESULT_DATA
+                )
+
+                map?.run {
+                    storage?.dispatch(mapOf())
+                }
+            }
+
+            return resultCode
+        }
+    }
+
+    companion object {
+        //todo document variable
+        val openFileContract: OpenFile by lazy {
+            OpenFile()
+        }
     }
 }

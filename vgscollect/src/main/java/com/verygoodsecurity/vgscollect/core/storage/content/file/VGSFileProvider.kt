@@ -35,6 +35,10 @@ interface VGSFileProvider {
      * @param activity current Activity.
      * @param fieldName is a key under which the file for JSON will be saved before sending.
      */
+    @Deprecated(
+        message = "Deprecated, overloaded function should be used.",
+        replaceWith = ReplaceWith("attachFile(activity, fieldName)")
+    )
     fun attachFile(activity: Activity, fieldName: String)
 
     /**
