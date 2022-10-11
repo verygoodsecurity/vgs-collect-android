@@ -37,12 +37,7 @@ internal class TemporaryFileStorage(
         encodedFileMaxSize = size.toLong()
     }
 
-    //todo add description and notes about new way of attaching files
-    //todo add warning about removing in v2
-    @Deprecated(
-        "Deprecated, overloaded function should be used.",
-        replaceWith = ReplaceWith("attachFile(activity, fieldName, callback)")
-    )
+    @Deprecated("This method has been deprecated in favor of changing native Android API. Please use Activity Result API to upload data working with Activity Result API.")
     override fun attachFile(fieldName: String) {
         (context as? Activity)?.startActivityForResult(
             createFilePickerIntent(fieldName),
@@ -50,12 +45,7 @@ internal class TemporaryFileStorage(
         ) ?: errorListener?.onStorageError(VGSError.NOT_ACTIVITY_CONTEXT)
     }
 
-    //todo add description and notes about new way of attaching files
-    //todo add warning about removing in v2
-    @Deprecated(
-        "Deprecated, overloaded function should be used.",
-        replaceWith = ReplaceWith("attachFile(activity, fieldName, callback)")
-    )
+    @Deprecated("This method has been deprecated in favor of changing native Android API. Please use Activity Result API to upload data working with Activity Result API.")
     override fun attachFile(activity: Activity, fieldName: String) {
         activity.startActivityForResult(createFilePickerIntent(fieldName), REQUEST_CODE)
     }

@@ -17,28 +17,28 @@ interface VGSFileProvider {
     fun resize(cacheSize: Int)
 
     /**
+     * @deprecated This method has been deprecated in favor of changing native Android API (see Activity Result API).
+     * Please use Activity Result API to upload data working with Activity Result API.
+     *
      * Mentioned below method allows to attach file to the temporary local file storage before
      * its sending to the Server.
      *
      * @param fieldName is a key under which the file for JSON will be saved before sending.
      */
-    @Deprecated(
-        message = "Deprecated, overloaded function should be used.",
-        replaceWith = ReplaceWith("attachFile(activity, fieldName)")
-    )
+    @Deprecated(message = "This method has been deprecated in favor of changing native Android API. Please use Activity Result API to upload data working with Activity Result API.")
     fun attachFile(fieldName: String)
 
     /**
+     * @deprecated This method has been deprecated in favor of changing native Android API (see Activity Result API).
+     * Please use Activity Result API to upload data working with Activity Result API.
+     *
      * Mentioned below method allows to attach file to the temporary local file storage before
      * its sending to the Server.
      *
      * @param activity current Activity.
      * @param fieldName is a key under which the file for JSON will be saved before sending.
      */
-    @Deprecated(
-        message = "Deprecated, overloaded function should be used.",
-        replaceWith = ReplaceWith("attachFile(activity, fieldName)")
-    )
+    @Deprecated(message = "This method has been deprecated in favor of changing native Android API. Please use Activity Result API to upload data working with Activity Result API.")
     fun attachFile(activity: Activity, fieldName: String)
 
     /**

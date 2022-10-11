@@ -445,6 +445,9 @@ class VGSCollect {
     }
 
     /**
+     * @deprecated This method has been deprecated in favor of changing native Android API (see Activity Result API).
+     * Please use [openFileContract] to start working with Activity Result API.
+     *
      * Called when an activity you launched exits,
      * giving you the requestCode you started it with, the resultCode is returned,
      * and any additional data for VGSCollect.
@@ -458,8 +461,6 @@ class VGSCollect {
      * @param data An Intent, which can return result data to the caller
      *               (various data can be attached to Intent "extras").
      */
-    //todo add description and notes about correct way of retrieving results.
-    //todo add warning about removing in v2
     @Deprecated("This method has been deprecated in favor of changing native Android API (see Activity Result API).")
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         mapAnalyticEvent(data)
@@ -815,7 +816,7 @@ class VGSCollect {
         fun create() = VGSCollect(context, id, environment, host, port)
     }
 
-    class OpenFile internal constructor() : ActivityResultContract<String, Int>() {
+    class OpenFileContract internal constructor() : ActivityResultContract<String, Int>() {
 
         internal var storage: TemporaryFileStorage? = null
 
@@ -843,9 +844,12 @@ class VGSCollect {
     }
 
     companion object {
-        //todo document variable
-        val openFileContract: OpenFile by lazy {
-            OpenFile()
+
+        /**
+         * An OpenFileContract helps a developer transmot a user file to VGS Proxy.
+         */
+        val openFileContract: OpenFileContract by lazy {
+            OpenFileContract()
         }
     }
 }
