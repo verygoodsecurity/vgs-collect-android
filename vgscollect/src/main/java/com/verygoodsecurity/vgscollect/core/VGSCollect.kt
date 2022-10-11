@@ -830,12 +830,10 @@ class VGSCollect {
 
         override fun parseResult(resultCode: Int, intent: Intent?): Int {
             if (resultCode == Activity.RESULT_OK) {
-                val map: VGSHashMapWrapper<String, Any?>? = intent?.extras?.getParcelable(
+                intent?.extras?.getParcelable<VGSHashMapWrapper<String, Any?>>(
                     BaseTransmitActivity.RESULT_DATA
-                )
-
-                map?.run {
-                    storage?.dispatch(mapOf())
+                )?.let {
+                    storage?.dispatch(it.mapOf())
                 }
             }
 
