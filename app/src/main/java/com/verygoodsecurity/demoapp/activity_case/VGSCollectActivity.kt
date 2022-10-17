@@ -9,12 +9,15 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.ActivityResultRegistry
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
+import com.verygoodsecurity.vgscollect.app.result.contract.VGSCollectAddFileContract
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -46,11 +49,15 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
 
     private lateinit var vgsForm: VGSCollect
 
+    private lateinit var openFile: ActivityResultLauncher<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collect_demo)
 
         retrieveSettings()
+
+        initializeContracts()
 
         submitBtn?.setOnClickListener(this)
         attachBtn?.setOnClickListener(this)
@@ -68,6 +75,12 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
         val staticData = mutableMapOf<String, String>()
         staticData["static_data"] = "static custom data"
         vgsForm.setCustomData(staticData)
+    }
+
+    private fun initializeContracts() {
+        openFile = registerForActivityResult(vgsForm.getAddFileContract()) { resultCode ->
+            checkAttachedFiles()
+        }
     }
 
     private fun setupCityField() {
@@ -307,12 +320,6 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
         super.onDestroy()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        vgsForm.onActivityResult(requestCode, resultCode, data)
-        checkAttachedFiles()
-    }
-
     private fun checkAttachedFiles() {
         if (vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
             attachBtn?.text = getString(R.string.collect_activity_attach_btn)
@@ -386,8 +393,9 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
     }
 
     private fun attachFile() {
+
         if (vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
-            vgsForm.getFileProvider().attachFile(this, "attachments.file")
+            openFile.launch("FileName")
         } else {
             vgsForm.getFileProvider().detachAll()
         }
