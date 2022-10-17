@@ -59,10 +59,12 @@ android {
 
 repositories {
     maven { url "https://jitpack.io" }
+    maven { url 'https://maven.microblink.com' }
 }
 
 dependencies {
     implementation project(":vgscollect")
+    implementation project(":vgscollect-blinkcard")
     implementation project(":vgscollect-cardio")
 
     implementation libs.androidx.appcompat
