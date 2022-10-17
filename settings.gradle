@@ -1,4 +1,4 @@
-include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-bouncer'
+include ':app', ':vgscollect', ':vgscollect-cardio'
 
 // Read more about dependencyResolutionManagement in gradle docs: https://docs.gradle.org/current/userguide/platforms.html
 // Currently dependabot doesn't recognize toml files and doesn't support versions references.
@@ -18,13 +18,7 @@ dependencyResolutionManagement {
             library('material', 'com.google.android.material:material:1.6.1')
             library('okhttp', 'com.squareup.okhttp3:okhttp:4.10.0')
             library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.7.10')
-            library('bouncer-scan-payment-full', 'com.getbouncer:scan-payment-full:2.1.0016')
-            library('bouncer-cardscan-ui', 'com.getbouncer:cardscan-ui:2.1.0016')
-            library('bouncer-tensorflow-lite', 'com.getbouncer:tensorflow-lite:2.1.0016')
             library('cardio', 'io.card:android-sdk:5.5.1')
-
-            // Bundles
-            bundle('bouncer', ['bouncer-scan-payment-full', 'bouncer-cardscan-ui', 'bouncer-tensorflow-lite'])
         }
         demoLibs {
             library('androidx-constraintlayout', 'androidx.constraintlayout:constraintlayout:2.1.4')
