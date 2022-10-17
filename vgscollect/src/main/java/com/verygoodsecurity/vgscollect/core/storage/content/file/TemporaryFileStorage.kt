@@ -63,9 +63,6 @@ internal class TemporaryFileStorage(
         encodedFile = null
     }
 
-    override fun getAddFileContractor(): VGSCollectAddFileContract {
-        return VGSCollectAddFileContract(this)
-    }
     //endregion
 
     //region FileStorage

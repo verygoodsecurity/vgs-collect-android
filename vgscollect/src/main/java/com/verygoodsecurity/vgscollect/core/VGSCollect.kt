@@ -11,6 +11,7 @@ import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
+import com.verygoodsecurity.vgscollect.app.result.contract.VGSCollectAddFileContract
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
@@ -545,6 +546,13 @@ class VGSCollect {
     fun getFileProvider(): VGSFileProvider {
         return storage.getFileProvider()
     }
+
+    /**
+     * Returns VGSCollectAddFileContract to help a developer transmit a user file to VGS Proxy.
+     */
+    fun getAddFileContract() = VGSCollectAddFileContract(
+        getFileProvider() as TemporaryFileStorage
+    )
 
     /**
      * If you want to disable collecting analytics from VGS Collect SDK, you can set the value to false.

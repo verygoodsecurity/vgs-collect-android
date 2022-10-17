@@ -60,9 +60,4 @@ interface VGSFileProvider {
      * @param [FileState]
      */
     fun detachFile(file: FileState)
-
-    /**
-     * Returns VGSCollectAddFileContract to help a developer transmit a user file to VGS Proxy.
-     */
-    fun getAddFileContractor(): VGSCollectAddFileContract
 }

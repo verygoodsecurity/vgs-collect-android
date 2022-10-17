@@ -47,6 +47,14 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
 
     private lateinit var vgsForm: VGSCollect
 
+    private val openFile by lazy {
+        registerForActivityResult(vgsForm.getAddFileContract()) { resultCode ->
+            if (resultCode == RESULT_OK) Log.e("test", "RESULT_OK")
+            else Log.e("test", "RESULT_NOT_OK")
+            checkAttachedFiles()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collect_demo)
@@ -389,10 +397,4 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
         }
         checkAttachedFiles()
     }
-
-    private val openFile = registerForActivityResult(vgsForm.getFileProvider().getAddFileContractor()) { resultCode ->
-            if (resultCode == RESULT_OK) Log.e("test", "RESULT_OK")
-            else Log.e("test", "RESULT_NOT_OK")
-            checkAttachedFiles()
-        }
 }
