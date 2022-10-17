@@ -9,6 +9,8 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.ActivityResultRegistry
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.api.cardio.ScanActivity
@@ -47,19 +49,15 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
 
     private lateinit var vgsForm: VGSCollect
 
-    private val openFile by lazy {
-        registerForActivityResult(vgsForm.getAddFileContract()) { resultCode ->
-            if (resultCode == RESULT_OK) Log.e("test", "RESULT_OK")
-            else Log.e("test", "RESULT_NOT_OK")
-            checkAttachedFiles()
-        }
-    }
+    private lateinit var openFile: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_collect_demo)
 
         retrieveSettings()
+
+        initializeContracts()
 
         submitBtn?.setOnClickListener(this)
         attachBtn?.setOnClickListener(this)
@@ -77,6 +75,12 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
         val staticData = mutableMapOf<String, String>()
         staticData["static_data"] = "static custom data"
         vgsForm.setCustomData(staticData)
+    }
+
+    private fun initializeContracts() {
+        openFile = registerForActivityResult(vgsForm.getAddFileContract()) { resultCode ->
+            checkAttachedFiles()
+        }
     }
 
     private fun setupCityField() {
