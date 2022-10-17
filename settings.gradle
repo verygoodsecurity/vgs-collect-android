@@ -1,4 +1,4 @@
-include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-bouncer'
+include ':app', ':vgscollect', ':vgscollect-cardio'
 
 // Read more about dependencyResolutionManagement in gradle docs: https://docs.gradle.org/current/userguide/platforms.html
 // Currently dependabot doesn't recognize toml files and doesn't support versions references.
