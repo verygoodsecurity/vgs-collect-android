@@ -90,7 +90,6 @@ class VGSCollect {
             CollectActionTracker(id, environment, UUID.randomUUID().toString(), isSatelliteMode)
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
-        openFileContract.storage = storage.getFileStorage() as TemporaryFileStorage
     }
 
     constructor(
@@ -446,7 +445,7 @@ class VGSCollect {
 
     /**
      * @deprecated This method has been deprecated in favor of changing native Android API (see Activity Result API).
-     * Please use [openFileContract] to start working with Activity Result API.
+     * Please use [VGSCollectAddFileContract] to start working with Activity Result API.
      *
      * Called when an activity you launched exits,
      * giving you the requestCode you started it with, the resultCode is returned,
@@ -816,38 +815,4 @@ class VGSCollect {
         fun create() = VGSCollect(context, id, environment, host, port)
     }
 
-    class OpenFileContract internal constructor() : ActivityResultContract<String, Int>() {
-
-        internal var storage: TemporaryFileStorage? = null
-
-        override fun createIntent(context: Context, input: String): Intent {
-            if (storage == null) {
-                throw IllegalStateException("VGSCollect must be inited before attempting open a file.")
-            } else {
-                return storage!!.createFilePickerIntent(input, context)
-            }
-        }
-
-        override fun parseResult(resultCode: Int, intent: Intent?): Int {
-            if (resultCode == Activity.RESULT_OK) {
-                intent?.extras?.getParcelable<VGSHashMapWrapper<String, Any?>>(
-                    BaseTransmitActivity.RESULT_DATA
-                )?.let {
-                    storage?.dispatch(it.mapOf())
-                }
-            }
-
-            return resultCode
-        }
-    }
-
-    companion object {
-
-        /**
-         * An OpenFileContract helps a developer transmot a user file to VGS Proxy.
-         */
-        val openFileContract: OpenFileContract by lazy {
-            OpenFileContract()
-        }
-    }
 }

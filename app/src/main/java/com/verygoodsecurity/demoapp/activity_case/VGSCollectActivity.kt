@@ -15,6 +15,7 @@ import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
+import com.verygoodsecurity.vgscollect.app.result.contract.VGSCollectAddFileContract
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -388,9 +389,9 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
         checkAttachedFiles()
     }
 
-    private val openFile = registerForActivityResult(VGSCollect.openFileContract) { resultCode ->
-        if (resultCode == RESULT_OK) Log.e("test", "RESULT_OK")
-        else Log.e("test", "RESULT_NOT_OK")
-        checkAttachedFiles()
-    }
+    private val openFile = registerForActivityResult(VGSCollectAddFileContract(vgsForm)) { resultCode ->
+            if (resultCode == RESULT_OK) Log.e("test", "RESULT_OK")
+            else Log.e("test", "RESULT_NOT_OK")
+            checkAttachedFiles()
+        }
 }
