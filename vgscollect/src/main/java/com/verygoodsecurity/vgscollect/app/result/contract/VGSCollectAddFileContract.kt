@@ -10,13 +10,11 @@ import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 
 /**
- * An VGSCollectAddFileContract helps a developer transmot a user file to VGS Proxy.
+ * An VGSCollectAddFileContract helps a developer transmit a user file to VGS Proxy.
  */
-class VGSCollectAddFileContract(
-    collect: VGSCollect
+class VGSCollectAddFileContract internal constructor(
+    private val storage: TemporaryFileStorage
 ) : ActivityResultContract<String, Int>() {
-
-    private val storage: TemporaryFileStorage = collect.getFileProvider() as TemporaryFileStorage
 
     override fun createIntent(context: Context, input: String): Intent {
         return storage.createFilePickerIntent(input, context)

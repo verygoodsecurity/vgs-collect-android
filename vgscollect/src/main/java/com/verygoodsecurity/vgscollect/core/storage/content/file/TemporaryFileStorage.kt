@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.app.FilePickerActivity
+import com.verygoodsecurity.vgscollect.app.result.contract.VGSCollectAddFileContract
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
@@ -60,6 +61,10 @@ internal class TemporaryFileStorage(
     override fun detachFile(file: FileState) {
         fileInfoStore.remove(file.fieldName)
         encodedFile = null
+    }
+
+    override fun getAddFileContractor(): VGSCollectAddFileContract {
+        return VGSCollectAddFileContract(this)
     }
     //endregion
 

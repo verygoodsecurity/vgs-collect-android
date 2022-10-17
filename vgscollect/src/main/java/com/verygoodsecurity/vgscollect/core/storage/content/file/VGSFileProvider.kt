@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.storage.content.file
 
 import android.app.Activity
+import com.verygoodsecurity.vgscollect.app.result.contract.VGSCollectAddFileContract
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
 
 /**
@@ -59,4 +60,9 @@ interface VGSFileProvider {
      * @param [FileState]
      */
     fun detachFile(file: FileState)
+
+    /**
+     * Returns VGSCollectAddFileContract to help a developer transmit a user file to VGS Proxy.
+     */
+    fun getAddFileContractor(): VGSCollectAddFileContract
 }
