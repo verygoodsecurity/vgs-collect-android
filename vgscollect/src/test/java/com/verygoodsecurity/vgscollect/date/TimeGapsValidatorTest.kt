@@ -15,11 +15,11 @@ class TimeGapsValidatorTest {
         val validator = createValidator(pattern)
         val currentTime = System.currentTimeMillis()
         val yearBeforeCurrentTime = currentTime.yearsRewind(1)
-        val threeYearsForwardCurrentTime = currentTime.yearsForward(3)
+        val twentyOneYearForwardCurrentTime = currentTime.yearsForward(21)
 
         assertTrue(validator.isValid(getFormattedDate(pattern, currentTime)))
         assertFalse(validator.isValid(getFormattedDate(pattern, yearBeforeCurrentTime)))
-        assertFalse(validator.isValid(getFormattedDate(pattern, threeYearsForwardCurrentTime)))
+        assertFalse(validator.isValid(getFormattedDate(pattern, twentyOneYearForwardCurrentTime)))
     }
 
     @Test
@@ -28,11 +28,11 @@ class TimeGapsValidatorTest {
         val validator = createValidator(pattern)
         val currentTime = System.currentTimeMillis()
         val yearBeforeCurrentTime = currentTime.yearsRewind(1)
-        val threeYearsForwardCurrentTime = currentTime.yearsForward(3)
+        val twentyOneYearForwardCurrentTime = currentTime.yearsForward(21)
 
         assertTrue(validator.isValid(getFormattedDate(pattern, currentTime)))
         assertFalse(validator.isValid(getFormattedDate(pattern, yearBeforeCurrentTime)))
-        assertFalse(validator.isValid(getFormattedDate(pattern, threeYearsForwardCurrentTime)))
+        assertFalse(validator.isValid(getFormattedDate(pattern, twentyOneYearForwardCurrentTime)))
     }
 
     @Test
@@ -75,12 +75,12 @@ class TimeGapsValidatorTest {
 
     /**
      * Creates [com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator] with default
-     * min(current time) and max(two years forward) date range.
+     * min(current time) and max(twenty years forward) date range.
      */
     private fun createValidator(
         pattern: String,
         min: Long = System.currentTimeMillis(),
-        max: Long = min.yearsForward(2)
+        max: Long = min.yearsForward(20)
     ): TimeGapsValidator = TimeGapsValidator(pattern, min, max)
 
     private fun Long.yearsForward(years: Int): Long = Calendar.getInstance().apply {
