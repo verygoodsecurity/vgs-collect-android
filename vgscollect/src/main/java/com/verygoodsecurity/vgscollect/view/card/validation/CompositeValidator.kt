@@ -22,6 +22,6 @@ class CompositeValidator {
 
     private companion object {
 
-        private const val ERROR_MSG = "NO_VALIDATION_RULES_ATTACHED_ATTACHED"
+        private const val ERROR_MSG = "NO_VALIDATION_RULES_ATTACHED"
     }
 }
