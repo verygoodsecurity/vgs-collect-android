@@ -4,122 +4,97 @@ import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TimeGapsValidatorTest {
 
     @Test
-    fun test_positive_format_dd_MM_yyyy() {
-        val validator = TimeGapsValidator("dd/MM/yyyy")
+    fun isValid_slash_dd_MM_yyyy_minMaxDetected() {
+        val pattern = "dd/MM/yyyy"
+        val validator = createValidator(pattern)
+        val currentTime = System.currentTimeMillis()
+        val yearBeforeCurrentTime = currentTime.yearsRewind(1)
+        val twentyOneYearForwardCurrentTime = currentTime.yearsForward(21)
 
-        assertTrue(validator.isValid("21/03/2021"))
-        assertTrue(validator.isValid("24/09/1990"))
+        assertTrue(validator.isValid(getFormattedDate(pattern, currentTime)))
+        assertFalse(validator.isValid(getFormattedDate(pattern, yearBeforeCurrentTime)))
+        assertFalse(validator.isValid(getFormattedDate(pattern, twentyOneYearForwardCurrentTime)))
     }
 
     @Test
-    fun test_positive_format_MM_yyyy() {
-        val validator = TimeGapsValidator("MM/yyyy")
+    fun isValid_dash_dd_MM_yyyy_minMaxDetected() {
+        val pattern = "dd-MM-yyyy"
+        val validator = createValidator(pattern)
+        val currentTime = System.currentTimeMillis()
+        val yearBeforeCurrentTime = currentTime.yearsRewind(1)
+        val twentyOneYearForwardCurrentTime = currentTime.yearsForward(21)
 
-        assertTrue(validator.isValid("03/2021"))
-        assertTrue(validator.isValid("09/1990"))
+        assertTrue(validator.isValid(getFormattedDate(pattern, currentTime)))
+        assertFalse(validator.isValid(getFormattedDate(pattern, yearBeforeCurrentTime)))
+        assertFalse(validator.isValid(getFormattedDate(pattern, twentyOneYearForwardCurrentTime)))
     }
 
     @Test
-    fun test_positive_format_MM_yy() {
-        val validator = TimeGapsValidator("MM/yy")
+    fun isValid_inputDateIncorrectFormat() {
+        val pattern = "dd-MM-yyyy"
+        val validator = createValidator(pattern)
+        val otherPattern = "dd/MM/yyyy"
 
-        assertTrue(validator.isValid("03/21"))
-        assertTrue(validator.isValid("09/25"))
+        assertFalse(validator.isValid(getFormattedDate(otherPattern, System.currentTimeMillis())))
     }
 
     @Test
-    fun test_positive_format_yyyy_MM_dd() {
-        val validator = TimeGapsValidator("yyyy-MM-dd")
+    fun isValid_inputDateShorter() {
+        val pattern = "dd-MM-yyyy"
+        val validator = createValidator(pattern)
+        val otherPattern = "MM-yyyy"
 
-        assertTrue(validator.isValid("2025-09-24"))
-        assertTrue(validator.isValid("1990-09-12"))
+        assertFalse(validator.isValid(getFormattedDate(otherPattern, System.currentTimeMillis())))
     }
 
     @Test
-    fun test_negative_format_dd_yy_yyyy() {
-        val validator = TimeGapsValidator("dd/MM/yyyy")
+    fun isValid_inputDateLonger() {
+        val pattern = "MM-yyyy"
+        val validator = createValidator(pattern)
+        val otherPattern = "dd-MM-yyyy"
 
-        assertFalse(validator.isValid("12/31/2021"))
-        assertFalse(validator.isValid("aaa"))
-        assertFalse(validator.isValid("12.03.2021"))
-        assertFalse(validator.isValid("12.03/2021"))
+        assertFalse(validator.isValid(getFormattedDate(otherPattern, System.currentTimeMillis())))
     }
 
     @Test
-    fun test_negative_format_MM_yyyy() {
-        val validator = TimeGapsValidator("MM/yyyy")
+    fun isValid_inputDateInvalid() {
+        val pattern = "dd-MM-yyyy"
+        val validator = createValidator(pattern)
 
-        assertFalse(validator.isValid("03-2021"))
-        assertFalse(validator.isValid("29/1990"))
-        assertFalse(validator.isValid("29/25"))
+        assertFalse(validator.isValid(""))
+        assertFalse(validator.isValid("test"))
+        assertFalse(validator.isValid("dd-MM-yyyy"))
+        assertFalse(validator.isValid("00-11-2222"))
     }
 
-    @Test
-    fun test_negative_format_MM_yy() {
-        val validator = TimeGapsValidator("MM/yy")
+    /**
+     * Creates [com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator] with default
+     * min(current time) and max(twenty years forward) date range.
+     */
+    private fun createValidator(
+        pattern: String,
+        min: Long = System.currentTimeMillis(),
+        max: Long = min.yearsForward(20)
+    ): TimeGapsValidator = TimeGapsValidator(pattern, min, max)
 
-        assertFalse(validator.isValid("23/21"))
-        assertFalse(validator.isValid("09-25"))
-    }
+    private fun Long.yearsForward(years: Int): Long = Calendar.getInstance().apply {
+        timeInMillis = this@yearsForward
+        add(Calendar.YEAR, years)
+    }.timeInMillis
 
-    @Test
-    fun test_negative_format_yyyy_MM_dd() {
-        val validator = TimeGapsValidator("yyyy-MM-dd")
+    private fun Long.yearsRewind(years: Int): Long = Calendar.getInstance().apply {
+        timeInMillis = this@yearsRewind
+        add(Calendar.YEAR, -years)
+    }.timeInMillis
 
-        assertFalse(validator.isValid("2021/09/24"))
-        assertFalse(validator.isValid("1990-29-12"))
-    }
-
-    @Test
-    fun test_positive_format_yyyy_MM_dd_minDate() {
-        val validator = TimeGapsValidator("yyyy-MM-dd", System.currentTimeMillis())
-
-        assertTrue(validator.isValid("2027-09-24"))
-        assertTrue(validator.isValid("2039-12-01"))
-    }
-
-    @Test
-    fun test_negative_format_yyyy_MM_dd_minDate() {
-        val validator = TimeGapsValidator("yyyy-MM-dd", System.currentTimeMillis())
-
-        assertFalse(validator.isValid("1990-09-24"))
-        assertFalse(validator.isValid("2019-12-01"))
-    }
-
-    @Test
-    fun test_positive_format_yyyy_MM_dd_maxDate() {
-        val validator = TimeGapsValidator("yyyy-MM-dd",  maxDate = 2212471406000)
-
-        assertTrue(validator.isValid("2021-09-24"))
-        assertTrue(validator.isValid("2039-12-01"))
-    }
-
-    @Test
-    fun test_negative_format_yyyy_MM_dd_maxDate() {
-        val validator = TimeGapsValidator("yyyy-MM-dd", maxDate = System.currentTimeMillis())
-
-        assertFalse(validator.isValid("2031-09-24"))
-        assertFalse(validator.isValid("2027-12-01"))
-    }
-
-
-    @Test
-    fun test_positive_format_yyyy_MM_dd_maxDate_and_minDate() {
-        val validator = TimeGapsValidator("yyyy-MM-dd",  System.currentTimeMillis(), 2212471406000)
-
-        assertTrue(validator.isValid("2027-09-24"))
-        assertTrue(validator.isValid("2039-12-01"))
-    }
-
-    @Test
-    fun test_negative_format_yyyy_MM_dd_maxDate_and_minDate() {
-        val validator = TimeGapsValidator("yyyy-MM-dd",  System.currentTimeMillis(), 2212471406000)
-
-        assertFalse(validator.isValid("2019-09-24"))
-        assertFalse(validator.isValid("2042-12-01"))
-    }
+    private fun getFormattedDate(
+        pattern: String,
+        time: Long
+    ): String = SimpleDateFormat(pattern).format(time)
 }
