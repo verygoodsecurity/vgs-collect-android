@@ -5,13 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
-import com.verygoodsecurity.vgscollect.app.result.contract.VGSCollectAddFileContract
 import com.verygoodsecurity.vgscollect.core.api.*
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
@@ -360,6 +358,7 @@ class VGSCollect {
                 )
             else -> {
                 val data = prepareDataToSubmit(request)
+
                 submitEvent(
                     true,
                     request.requiresTokenization,
@@ -445,9 +444,6 @@ class VGSCollect {
     }
 
     /**
-     * @deprecated This method has been deprecated in favor of changing native Android API (see Activity Result API).
-     * Please use [VGSCollectAddFileContract] to start working with Activity Result API.
-     *
      * Called when an activity you launched exits,
      * giving you the requestCode you started it with, the resultCode is returned,
      * and any additional data for VGSCollect.
@@ -461,7 +457,6 @@ class VGSCollect {
      * @param data An Intent, which can return result data to the caller
      *               (various data can be attached to Intent "extras").
      */
-    @Deprecated("This method has been deprecated in favor of changing native Android API (see Activity Result API).")
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         mapAnalyticEvent(data)
 
@@ -546,13 +541,6 @@ class VGSCollect {
     fun getFileProvider(): VGSFileProvider {
         return storage.getFileProvider()
     }
-
-    /**
-     * Returns VGSCollectAddFileContract to help a developer transmit a user file to VGS Proxy.
-     */
-    fun getAddFileContract() = VGSCollectAddFileContract(
-        getFileProvider() as TemporaryFileStorage
-    )
 
     /**
      * If you want to disable collecting analytics from VGS Collect SDK, you can set the value to false.
@@ -822,5 +810,4 @@ class VGSCollect {
          */
         fun create() = VGSCollect(context, id, environment, host, port)
     }
-
 }

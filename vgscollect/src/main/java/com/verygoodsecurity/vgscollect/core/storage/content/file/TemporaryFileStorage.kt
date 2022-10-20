@@ -6,16 +6,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.VisibleForTesting
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
-import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.app.FilePickerActivity
-import com.verygoodsecurity.vgscollect.app.result.contract.VGSCollectAddFileContract
-import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.state.FileState
 import com.verygoodsecurity.vgscollect.util.extension.NotEnoughMemoryException
@@ -38,7 +31,10 @@ internal class TemporaryFileStorage(
         encodedFileMaxSize = size.toLong()
     }
 
-    @Deprecated("This method has been deprecated in favor of changing native Android API. Please use Activity Result API to upload data working with Activity Result API.")
+    @Deprecated(
+        "Deprecated, overloaded function should be used.",
+        replaceWith = ReplaceWith("attachFile(activity, fieldName)")
+    )
     override fun attachFile(fieldName: String) {
         (context as? Activity)?.startActivityForResult(
             createFilePickerIntent(fieldName),
@@ -46,7 +42,6 @@ internal class TemporaryFileStorage(
         ) ?: errorListener?.onStorageError(VGSError.NOT_ACTIVITY_CONTEXT)
     }
 
-    @Deprecated("This method has been deprecated in favor of changing native Android API. Please use Activity Result API to upload data working with Activity Result API.")
     override fun attachFile(activity: Activity, fieldName: String) {
         activity.startActivityForResult(createFilePickerIntent(fieldName), REQUEST_CODE)
     }
@@ -62,7 +57,6 @@ internal class TemporaryFileStorage(
         fileInfoStore.remove(file.fieldName)
         encodedFile = null
     }
-
     //endregion
 
     //region FileStorage
@@ -107,11 +101,8 @@ internal class TemporaryFileStorage(
     override fun getItems(): MutableCollection<String> = fileInfoStore.keys
     //endregion
 
-    internal fun createFilePickerIntent(
-        fieldName: String,
-        actualContext: Context? = context
-    ): Intent {
-        return Intent(actualContext ?: context, FilePickerActivity::class.java).apply {
+    private fun createFilePickerIntent(fieldName: String): Intent {
+        return Intent(context, FilePickerActivity::class.java).apply {
             putExtras(Bundle().apply {
                 putString(FilePickerActivity.TAG, cipher.save(fieldName).toString())
             })
