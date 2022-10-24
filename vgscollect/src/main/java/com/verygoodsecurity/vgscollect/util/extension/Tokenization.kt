@@ -14,32 +14,25 @@ internal const val FIELD_NAME_KEY = "fieldName"
 internal const val ALIASES_KEY = "aliases"
 internal const val ALIAS_KEY = "alias"
 
-internal fun VGSFieldState.toTokenizationMap(): MutableMap<String, Any> {
-    val data = content?.data ?: ""
-    val isEnabledTokenization = content?.isEnabledTokenization ?: false
-    val format = content?.vaultAliasFormat?.name ?: ""
-    val storage = content?.vaultStorage?.name ?: ""
-    val fieldName = fieldName ?: ""
-
-    return mutableMapOf(
-        TOKENIZATION_REQUIRED_KEY to isEnabledTokenization,
-        VALUE_KEY to data,
-        FORMAT_KEY to format,
-        STORAGE_KEY to storage,
-        FIELD_NAME_KEY to fieldName
-    )
+internal fun VGSFieldState.toTokenizationData(): List<Map<String, Any>> {
+    return toTokenizationData(fieldName ?: "", content)
 }
 
-internal fun FieldContent.CreditCardExpDateContent.toTokenizationMap(fieldName: String): List<Map<String, Any>> {
-    return handleExpirationDateContent(fieldName, this).map {
+private fun toTokenizationData(fieldName: String, content: FieldContent?): List<Map<String, Any>> {
+    return getData(fieldName, content).map {
         mapOf(
-            TOKENIZATION_REQUIRED_KEY to isEnabledTokenization,
+            TOKENIZATION_REQUIRED_KEY to (content?.isEnabledTokenization ?: false),
             VALUE_KEY to it.second,
-            FORMAT_KEY to vaultAliasFormat.name,
-            STORAGE_KEY to vaultStorage.name,
+            FORMAT_KEY to (content?.vaultAliasFormat?.name ?: ""),
+            STORAGE_KEY to (content?.vaultStorage?.name ?: ""),
             FIELD_NAME_KEY to it.first
         )
     }
+}
+
+private fun getData(fieldName: String, content: FieldContent?): List<Pair<String, String>> = when(content) {
+    is FieldContent.CreditCardExpDateContent -> handleExpirationDateContent(fieldName, content)
+    else -> listOf(fieldName to (content?.data ?: ""))
 }
 
 private fun handleExpirationDateContent(

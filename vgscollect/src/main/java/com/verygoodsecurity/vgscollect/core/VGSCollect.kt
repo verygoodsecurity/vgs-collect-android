@@ -24,7 +24,6 @@ import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPoli
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 import com.verygoodsecurity.vgscollect.core.model.network.*
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
-import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.*
@@ -437,16 +436,11 @@ class VGSCollect {
         )
 
     private fun prepareDataForTokenization(): MutableMap<String, Any> {
-        val mappedItems = mutableListOf<Map<String, Any>>()
+        val tokenizationItems = mutableListOf<Map<String, Any>>()
         storage.getFieldsStorage().getItems().forEach {
-            val content = it.content
-            if (content is FieldContent.CreditCardExpDateContent) {
-                mappedItems.addAll(content.toTokenizationMap(it.fieldName ?: ""))
-            } else {
-                mappedItems.add(it.toTokenizationMap())
-            }
+            tokenizationItems.addAll(it.toTokenizationData())
         }
-        return mutableMapOf(DATA_KEY to mappedItems)
+        return mutableMapOf(DATA_KEY to tokenizationItems)
     }
 
     /**
