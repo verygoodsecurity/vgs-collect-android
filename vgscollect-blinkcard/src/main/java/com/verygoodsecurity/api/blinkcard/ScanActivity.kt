@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.microblink.blinkcard.MicroblinkSDK
 import com.microblink.blinkcard.entities.recognizers.RecognizerBundle
+import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardProcessingStatus
 import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardRecognizer
 import com.microblink.blinkcard.uisettings.ActivityRunner
 import com.microblink.blinkcard.uisettings.BlinkCardUISettings
@@ -69,25 +70,32 @@ class ScanActivity : BaseTransmitActivity() {
     private fun checkBlinkResults(requestCode: Int, resultCode: Int, data: Intent?) {
         if (this.requestCode == requestCode) {
             if (resultCode == RESULT_OK && data != null) {
-                mRecognizerBundle!!.loadFromIntent(data)
-
-                mRecognizer?.result?.let {
-                    mapData(ccFieldName, it.cardNumber)
-                    mapData(cvcFieldName, it.cvv)
-                    mapData(cHolderFieldName, it.owner)
-                    mapData(expDateFieldName, it.expiryDate.originalDateString)
-                }
-
-//                addAnalyticInfo(scanId, Status.SUCCESS)   //todo add analytic events
-//                addAnalyticInfo(scanId, Status.FAILED)
+                processRecognitionRelusts(data)
+            } else {
+                addAnalyticInfo(Status.CLOSE)
             }
         }
     }
 
-    private fun addAnalyticInfo(scanId: String?) {
+    private fun processRecognitionRelusts(data: Intent) {
+        mRecognizerBundle!!.loadFromIntent(data)
+        mRecognizer?.result?.let {
+            mapData(ccFieldName, it.cardNumber)
+            mapData(cvcFieldName, it.cvv)
+            mapData(cHolderFieldName, it.owner)
+            mapData(expDateFieldName, it.expiryDate.originalDateString)
+
+            when (it.processingStatus) {
+                BlinkCardProcessingStatus.Success -> addAnalyticInfo(Status.SUCCESS)
+                else -> addAnalyticInfo(Status.FAILED)
+            }
+        }
+    }
+
+    private fun addAnalyticInfo(status: Status) {
         mapData(RESULT_TYPE, SCAN)
         mapData(RESULT_NAME, NAME)
-        mapData(RESULT_ID, scanId)
+        mapData(RESULT_STATUS, status.raw)
     }
 
     companion object {
