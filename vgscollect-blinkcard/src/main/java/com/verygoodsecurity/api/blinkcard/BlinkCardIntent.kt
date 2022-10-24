@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import com.microblink.blinkcard.util.RecognizerCompatibility
+import com.microblink.blinkcard.util.RecognizerCompatibilityStatus
 import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.CC
 import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.CVC
 import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.C_HOLDER
@@ -59,24 +61,33 @@ class BlinkCardIntent {
         }
 
         fun start() {
-            if (key.isNullOrEmpty() && path.isNullOrEmpty()) {
-                Log.e("BlinkCard", "licence key is missed")
-                return
-            }
-
-            with(Intent(activity, ScanActivity::class.java)) {
-                putExtras(Bundle().apply {
-                    putString(CC, ccFieldName)
-                    putString(CVC, cvcFieldName)
-                    putString(C_HOLDER, cHolderFieldName)
-                    putString(EXP_DATE, expDateFieldName)
-                    putString(KEY, key)
-                    putString(PATH, path)
-                    putInt(REQUEST_CODE, requestCode)
-                })
-                activity.startActivityForResult(this, requestCode)
+            val status = RecognizerCompatibility.getRecognizerCompatibilityStatus(activity)
+            when {
+                status == RecognizerCompatibilityStatus.PROCESSOR_ARCHITECTURE_NOT_SUPPORTED -> Log.e(
+                    "BlinkCard",
+                    "BlinkCard is not supported on current processor architecture!"
+                )
+                status == RecognizerCompatibilityStatus.NO_CAMERA -> Log.e(
+                    "BlinkCard",
+                    "BlinkCard is supported only via Direct API!"
+                )
+                key.isNullOrEmpty() && path.isNullOrEmpty() -> Log.e("BlinkCard", "licence key is missed")
+                status == RecognizerCompatibilityStatus.RECOGNIZER_SUPPORTED -> {
+                    with(Intent(activity, ScanActivity::class.java)) {
+                        putExtras(Bundle().apply {
+                            putString(CC, ccFieldName)
+                            putString(CVC, cvcFieldName)
+                            putString(C_HOLDER, cHolderFieldName)
+                            putString(EXP_DATE, expDateFieldName)
+                            putString(KEY, key)
+                            putString(PATH, path)
+                            putInt(REQUEST_CODE, requestCode)
+                        })
+                        activity.startActivityForResult(this, requestCode)
+                    }
+                }
+                else -> Log.e("BlinkCard", "BlinkCard is not supported! Reason: ${status.name}")
             }
         }
-
     }
 }
