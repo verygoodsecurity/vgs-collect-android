@@ -33,13 +33,22 @@ class ScanActivity : BaseTransmitActivity() {
         parseSettings()
         configureKey()
 
-        mRecognizer = BlinkCardRecognizer()
+        mRecognizer = configureBlinkCardRecognizer()
         mRecognizerBundle = RecognizerBundle(mRecognizer)
-        settings = BlinkCardUISettings(mRecognizerBundle).apply {
-            if (styleId != null) setOverlayViewStyle(styleId!!)
-        }
+        settings = configureBlinkCardUISettings()
 
         scanCard()
+    }
+
+    private fun configureBlinkCardRecognizer() = BlinkCardRecognizer().apply {
+        setExtractIban(false)
+        if (!cvcFieldName.isNullOrEmpty()) setExtractCvv(false)
+        if (!expDateFieldName.isNullOrEmpty()) setExtractExpiryDate(false)
+        if (!cHolderFieldName.isNullOrEmpty()) setExtractOwner(false)
+    }
+
+    private fun configureBlinkCardUISettings() = BlinkCardUISettings(mRecognizerBundle).apply {
+        if (styleId != null) setOverlayViewStyle(styleId!!)
     }
 
     private fun parseSettings() {
