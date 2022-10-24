@@ -4,6 +4,7 @@
     <application>
         <activity
             android:name=".ScanActivity"
+            android:screenOrientation="portrait"
             android:launchMode="singleTask" />
     </application>
 
