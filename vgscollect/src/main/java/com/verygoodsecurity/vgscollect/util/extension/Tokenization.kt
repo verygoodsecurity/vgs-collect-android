@@ -1,6 +1,9 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
+import android.util.Log
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 
 internal const val TOKENIZATION_PATH = "/tokens"
 internal const val DATA_KEY = "data"
@@ -26,4 +29,37 @@ internal fun VGSFieldState.toTokenizationMap(): MutableMap<String, Any> {
         STORAGE_KEY to storage,
         FIELD_NAME_KEY to fieldName
     )
+}
+
+internal fun FieldContent.CreditCardExpDateContent.toTokenizationMap(fieldName: String): List<Map<String, Any>> {
+    Log.d("Test", "CreditCardExpDateContent::isEnabledTokenization = $isEnabledTokenization")
+    return handleExpirationDateContent(fieldName, this).map {
+        mapOf(
+            TOKENIZATION_REQUIRED_KEY to isEnabledTokenization,
+            VALUE_KEY to it.second,
+            FORMAT_KEY to vaultAliasFormat.name,
+            STORAGE_KEY to vaultStorage.name,
+            FIELD_NAME_KEY to it.first
+        )
+    }
+}
+
+private fun handleExpirationDateContent(
+    fieldName: String,
+    content: FieldContent.CreditCardExpDateContent
+): List<Pair<String, String>> {
+    val result = mutableListOf<Pair<String, String>>()
+    val data = (content.rawData ?: content.data!!)
+    if (content.serializers != null) {
+        content.serializers?.forEach {
+            if (it is VGSExpDateSeparateSerializer) {
+                result.addAll(
+                    it.serialize(VGSExpDateSeparateSerializer.Params(data, content.dateFormat))
+                )
+            }
+        }
+    } else {
+        result.add(fieldName to data)
+    }
+    return result
 }
