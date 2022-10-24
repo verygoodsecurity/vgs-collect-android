@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
-import android.util.Log
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
@@ -32,7 +31,6 @@ internal fun VGSFieldState.toTokenizationMap(): MutableMap<String, Any> {
 }
 
 internal fun FieldContent.CreditCardExpDateContent.toTokenizationMap(fieldName: String): List<Map<String, Any>> {
-    Log.d("Test", "CreditCardExpDateContent::isEnabledTokenization = $isEnabledTokenization")
     return handleExpirationDateContent(fieldName, this).map {
         mapOf(
             TOKENIZATION_REQUIRED_KEY to isEnabledTokenization,
