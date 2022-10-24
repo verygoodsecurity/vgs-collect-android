@@ -13,13 +13,15 @@ import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 
 class ScanActivity : BaseTransmitActivity() {
 
-    private var mRecognizer: BlinkCardRecognizer? = null
-    private var mRecognizerBundle: RecognizerBundle? = null
+    private lateinit var mRecognizer: BlinkCardRecognizer
+    private lateinit var mRecognizerBundle: RecognizerBundle
+    private lateinit var settings: BlinkCardUISettings
 
     private var requestCode = CODE
 
     private var key: String? = null
     private var path: String? = null
+    private var styleId: Int? = null
     private var ccFieldName: String? = null
     private var cvcFieldName: String? = null
     private var expDateFieldName: String? = null
@@ -27,11 +29,15 @@ class ScanActivity : BaseTransmitActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         parseSettings()
         configureKey()
 
         mRecognizer = BlinkCardRecognizer()
         mRecognizerBundle = RecognizerBundle(mRecognizer)
+        settings = BlinkCardUISettings(mRecognizerBundle).apply {
+            if (styleId != null) setOverlayViewStyle(styleId!!)
+        }
 
         scanCard()
     }
@@ -44,6 +50,7 @@ class ScanActivity : BaseTransmitActivity() {
             cvcFieldName = it.getString(CVC, "")
             expDateFieldName = it.getString(EXP_DATE, "")
             cHolderFieldName = it.getString(C_HOLDER, "")
+            styleId = it.getInt(STYLE_RES_ID)
             requestCode = it.getInt(REQUEST_CODE, CODE)
         }
     }
@@ -57,7 +64,6 @@ class ScanActivity : BaseTransmitActivity() {
     }
 
     private fun scanCard() {
-        val settings = BlinkCardUISettings(mRecognizerBundle)
         ActivityRunner.startActivityForResult(this, requestCode, settings)
     }
 
@@ -78,8 +84,8 @@ class ScanActivity : BaseTransmitActivity() {
     }
 
     private fun processRecognitionRelusts(data: Intent) {
-        mRecognizerBundle!!.loadFromIntent(data)
-        mRecognizer?.result?.let {
+        mRecognizerBundle.loadFromIntent(data)
+        mRecognizer.result.let {
             mapData(ccFieldName, it.cardNumber)
             mapData(cvcFieldName, it.cvv)
             mapData(cHolderFieldName, it.owner)
@@ -106,6 +112,7 @@ class ScanActivity : BaseTransmitActivity() {
         internal const val EXP_DATE = "vgs-exp-date"
         internal const val KEY = "blink-key"
         internal const val PATH = "blink-path"
+        internal const val STYLE_RES_ID = "style-res-id"
         internal const val REQUEST_CODE = "request-code"
         private const val CODE = 0
         private const val NAME = "BlinkCard"
