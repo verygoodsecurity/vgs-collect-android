@@ -26,7 +26,10 @@ internal fun VGSFieldState.toTokenizationData(): List<Map<String, Any>> {
     }
 }
 
-private fun getData(fieldName: String, content: FieldContent?): List<Pair<String, String>> = when(content) {
+private fun getData(
+    fieldName: String,
+    content: FieldContent?
+): List<Pair<String, String>> = when (content) {
     is FieldContent.CreditCardExpDateContent -> handleExpirationDateContent(fieldName, content)
     else -> listOf(fieldName to (content?.data ?: ""))
 }
@@ -37,16 +40,12 @@ private fun handleExpirationDateContent(
 ): List<Pair<String, String>> {
     val result = mutableListOf<Pair<String, String>>()
     val data = (content.rawData ?: content.data!!)
-    if (content.serializers != null) {
-        content.serializers?.forEach {
-            if (it is VGSExpDateSeparateSerializer) {
-                result.addAll(
-                    it.serialize(VGSExpDateSeparateSerializer.Params(data, content.dateFormat))
-                )
-            }
+    content.serializers?.forEach {
+        if (it is VGSExpDateSeparateSerializer) {
+            result.addAll(
+                it.serialize(VGSExpDateSeparateSerializer.Params(data, content.dateFormat))
+            )
         }
-    } else {
-        result.add(fieldName to data)
-    }
+    } ?: result.add(fieldName to data)
     return result
 }
