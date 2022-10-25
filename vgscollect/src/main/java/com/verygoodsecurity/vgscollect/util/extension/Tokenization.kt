@@ -15,11 +15,7 @@ internal const val ALIASES_KEY = "aliases"
 internal const val ALIAS_KEY = "alias"
 
 internal fun VGSFieldState.toTokenizationData(): List<Map<String, Any>> {
-    return toTokenizationData(fieldName ?: "", content)
-}
-
-private fun toTokenizationData(fieldName: String, content: FieldContent?): List<Map<String, Any>> {
-    return getData(fieldName, content).map {
+    return getData(fieldName ?: "", content).map {
         mapOf(
             TOKENIZATION_REQUIRED_KEY to (content?.isEnabledTokenization ?: false),
             VALUE_KEY to it.second,
