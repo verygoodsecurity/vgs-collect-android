@@ -30,12 +30,12 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_cards"
                         android:textColor="@color/title_color"
                         android:drawablePadding="@dimen/margin_padding_material_small"
                         android:textSize="@dimen/collect_activity_cards_title_text_size"
                         android:text="@string/collect_activity_cards_title"
-                        android:layout_marginBottom="@dimen/margin_padding_material_medium"/>
+                        android:layout_marginBottom="@dimen/margin_padding_material_medium"
+                        app:drawableStartCompat="@drawable/ic_cards" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/previewCard"
