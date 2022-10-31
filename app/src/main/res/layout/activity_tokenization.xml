@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progressBar"
-        layout="@layout/defaut_card_input_layout"/>
+        layout="@layout/card_input_layout"/>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -32,7 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_default="wrap"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/llInput"
+        app:layout_constraintTop_toBottomOf="@+id/includeCardView"
         app:layout_constraintVertical_bias="0.0">
 
         <include layout="@layout/code_example_layout" />
@@ -40,6 +41,7 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/llButtons"
+        android:background="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_padding_material_medium"
@@ -60,7 +62,8 @@
             android:layout_weight="1"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            android:text="Tokenize" />
+            android:text="Tokenize"
+            tools:ignore="HardcodedText" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbReset"
@@ -73,7 +76,8 @@
             android:layout_weight="1"
             android:insetBottom="0dp"
             android:text="Reset"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="HardcodedText" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <ProgressBar

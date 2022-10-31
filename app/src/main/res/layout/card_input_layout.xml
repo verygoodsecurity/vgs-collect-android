@@ -166,4 +166,91 @@
             app:imeOptions="actionDone"
             app:text="111" />
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtvCityHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_material_small"
+        android:layout_marginEnd="@dimen/margin_padding_material_small"
+        android:fontFamily="sans-serif-medium"
+        android:text="City"
+        android:textAppearance="?attr/textAppearanceCaption"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHalf"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vgsTilExpiry"
+        tools:ignore="HardcodedText" />
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:id="@+id/vgsTilCity"
+        style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_material_micro"
+        android:layout_marginEnd="@dimen/margin_padding_material_small"
+        app:boxBackgroundColor="@color/fiord_20"
+        app:boxStrokeColor="@color/invisible_input_border"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineHalf"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtvCityHint">
+
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:id="@+id/vgsTiedCity"
+            style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card.address.city"
+            app:imeOptions="actionNext"
+            app:isRequired="false"
+            app:text="Kyiv" />
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtvPostalCodeHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_material_small"
+        android:layout_marginTop="@dimen/margin_padding_material_small"
+        android:fontFamily="sans-serif-medium"
+        android:text="Postal Code"
+        android:textAppearance="?attr/textAppearanceCaption"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/guidelineHalf"
+        app:layout_constraintTop_toBottomOf="@+id/vgsTilCvc"
+        tools:ignore="HardcodedText" />
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:id="@+id/vgsTilPostalCode"
+        style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_material_small"
+        android:layout_marginTop="@dimen/margin_padding_material_micro"
+        app:boxBackgroundColor="@color/fiord_20"
+        app:boxStrokeColor="@color/invisible_input_border"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guidelineHalf"
+        app:layout_constraintTop_toBottomOf="@+id/mtvPostalCodeHint">
+
+        <com.verygoodsecurity.vgscollect.widget.VGSEditText
+            android:id="@+id/vgsTiedPostalCode"
+            style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:fieldName="card.address.postal_code"
+            app:imeOptions="actionDone"
+            app:isRequired="false"
+            app:text="12345" />
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="mtvCityHint, vgsTilCity, mtvPostalCodeHint, vgsTilPostalCode" />
 </androidx.constraintlayout.widget.ConstraintLayout>

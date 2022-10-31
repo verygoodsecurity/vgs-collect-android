@@ -20,8 +20,8 @@ import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityTokenizationBinding
+import com.verygoodsecurity.demoapp.databinding.CardInputLayoutBinding
 import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
-import com.verygoodsecurity.demoapp.databinding.DefaultCardInputLayoutBinding
 import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettingsActivity
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -57,7 +57,7 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
 
     private lateinit var binding: ActivityTokenizationBinding
     private lateinit var codeExampleBinding: CodeExampleLayoutBinding
-    private lateinit var cardViewBinding: DefaultCardInputLayoutBinding
+    private lateinit var cardViewBinding: CardInputLayoutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
