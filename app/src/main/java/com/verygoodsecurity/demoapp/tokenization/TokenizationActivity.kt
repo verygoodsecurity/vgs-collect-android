@@ -19,6 +19,9 @@ import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
+import com.verygoodsecurity.demoapp.databinding.ActivityTokenizationBinding
+import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
+import com.verygoodsecurity.demoapp.databinding.DefautCardInputLayoutBinding
 import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettingsActivity
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -30,14 +33,11 @@ import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 import io.github.kbiakov.codeview.adapters.Options
 import io.github.kbiakov.codeview.highlight.ColorThemeData
 import io.github.kbiakov.codeview.highlight.SyntaxColors
-import kotlinx.android.synthetic.main.activity_tokenization.*
-import kotlinx.android.synthetic.main.code_example_layout.*
 import org.json.JSONObject
 import kotlin.properties.Delegates
 
-class TokenizationActivity :
-    AppCompatActivity(R.layout.activity_tokenization),
-    InputFieldView.OnTextChangedListener, VgsCollectResponseListener {
+class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedListener,
+    VgsCollectResponseListener {
 
     private val defaultHintTextColor by lazy { ContextCompat.getColor(this, R.color.fiord) }
     private val defaultInputBackgroundColor by lazy {
@@ -51,12 +51,20 @@ class TokenizationActivity :
     private var collect: VGSCollect? = null
 
     private var response: String? by Delegates.observable(null) { _, _, new ->
-        mbReset.isVisible = !new.isNullOrBlank()
+        binding.mbReset.isVisible = !new.isNullOrBlank()
         updateCodeExample(response)
     }
 
+    private lateinit var binding: ActivityTokenizationBinding
+    private lateinit var codeExampleBinding: CodeExampleLayoutBinding
+    private lateinit var cardViewBinding: DefautCardInputLayoutBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityTokenizationBinding.inflate(layoutInflater)
+        codeExampleBinding = CodeExampleLayoutBinding.bind(binding.root)
+        cardViewBinding = binding.includeCardView
+        setContentView(binding.root)
         initCollect()
         initViews()
     }
@@ -87,8 +95,7 @@ class TokenizationActivity :
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        @Suppress("DEPRECATION")
-        super.onActivityResult(requestCode, resultCode, data)
+        @Suppress("DEPRECATION") super.onActivityResult(requestCode, resultCode, data)
         collect?.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -99,14 +106,16 @@ class TokenizationActivity :
     }
 
     override fun onTextChange(view: InputFieldView, isEmpty: Boolean) {
-        val (title, layout) = (when (view.id) {
-            R.id.vgsTiedCardHolder -> mtvCardHolderHint to vgsTilCardHolder
-            R.id.vgsTiedCardNumber -> mtvCardNumberHint to vgsTilCardNumber
-            R.id.vgsTiedExpiry -> mtvExpiryHint to vgsTilExpiry
-            R.id.vgsTiedCvc -> mtvCvcHint to vgsTilCvc
-            else -> throw IllegalArgumentException("Not implemented.")
-        })
-        setInputValid(title, layout)
+        with(cardViewBinding) {
+            val (title, layout) = (when (view.id) {
+                R.id.vgsTiedCardHolder -> mtvCardHolderHint to vgsTilCardHolder
+                R.id.vgsTiedCardNumber -> mtvCardNumberHint to vgsTilCardNumber
+                R.id.vgsTiedExpiry -> mtvExpiryHint to vgsTilExpiry
+                R.id.vgsTiedCvc -> mtvCvcHint to vgsTilCvc
+                else -> throw IllegalArgumentException("Not implemented.")
+            })
+            setInputValid(title, layout)
+        }
     }
 
     override fun onResponse(response: VGSResponse?) {
@@ -130,7 +139,7 @@ class TokenizationActivity :
     }
 
     private fun initViews() {
-        clRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+        binding.clRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         bindViews()
         configureTokenization()
         initTextChangeListener()
@@ -140,73 +149,69 @@ class TokenizationActivity :
     }
 
     private fun bindViews() {
-        collect?.bindView(vgsTiedCardHolder)
-        collect?.bindView(vgsTiedCardNumber)
-        collect?.bindView(vgsTiedExpiry)
-        collect?.bindView(vgsTiedCvc)
+        collect?.bindView(cardViewBinding.vgsTiedCardHolder)
+        collect?.bindView(cardViewBinding.vgsTiedCardNumber)
+        collect?.bindView(cardViewBinding.vgsTiedExpiry)
+        collect?.bindView(cardViewBinding.vgsTiedCvc)
     }
 
     private fun configureTokenization() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        vgsTiedCardHolder.setEnabledTokenization(
+        cardViewBinding.vgsTiedCardHolder.setEnabledTokenization(
             preferences.getBoolean(
-                getString(R.string.tokenization_card_holder_enabled_key),
-                true
+                getString(R.string.tokenization_card_holder_enabled_key), true
             )
         )
         preferences.getString(getString(R.string.tokenization_card_holder_storage_key), null)?.let {
-            vgsTiedCardHolder.setVaultStorageType(parseStorage(it))
+            cardViewBinding.vgsTiedCardHolder.setVaultStorageType(parseStorage(it))
         }
         preferences.getString(getString(R.string.tokenization_card_holder_alias_format_key), null)
             ?.let {
-                vgsTiedCardHolder.setVaultAliasFormat(parseAliasFormat(it))
+                cardViewBinding.vgsTiedCardHolder.setVaultAliasFormat(parseAliasFormat(it))
             }
 
         preferences.getString(getString(R.string.tokenization_card_number_alias_format_key), null)
             ?.let {
-                vgsTiedCardNumber.setVaultAliasFormat(parseAliasFormat(it))
+                cardViewBinding.vgsTiedCardNumber.setVaultAliasFormat(parseAliasFormat(it))
             }
 
-        vgsTiedExpiry.setEnabledTokenization(
+        cardViewBinding.vgsTiedExpiry.setEnabledTokenization(
             preferences.getBoolean(
-                getString(R.string.tokenization_expiry_enabled_key),
-                true
+                getString(R.string.tokenization_expiry_enabled_key), true
             )
         )
         preferences.getString(getString(R.string.tokenization_expiry_storage_key), null)?.let {
-            vgsTiedExpiry.setVaultStorageType(parseStorage(it))
+            cardViewBinding.vgsTiedExpiry.setVaultStorageType(parseStorage(it))
         }
-        preferences.getString(getString(R.string.tokenization_expiry_alias_format_key), null)
-            ?.let {
-                vgsTiedExpiry.setVaultAliasFormat(parseAliasFormat(it))
+        preferences.getString(getString(R.string.tokenization_expiry_alias_format_key), null)?.let {
+                cardViewBinding.vgsTiedExpiry.setVaultAliasFormat(parseAliasFormat(it))
             }
     }
 
     private fun initTextChangeListener() {
-        vgsTiedCardHolder.addOnTextChangeListener(this)
-        vgsTiedCardNumber.addOnTextChangeListener(this)
-        vgsTiedExpiry.addOnTextChangeListener(this)
-        vgsTiedCvc.addOnTextChangeListener(this)
+        cardViewBinding.vgsTiedCardHolder.addOnTextChangeListener(this)
+        cardViewBinding.vgsTiedCardNumber.addOnTextChangeListener(this)
+        cardViewBinding.vgsTiedExpiry.addOnTextChangeListener(this)
+        cardViewBinding.vgsTiedCvc.addOnTextChangeListener(this)
     }
 
     private fun initClickListeners() {
-        mbTokenize.setOnClickListener {
+        binding.mbTokenize.setOnClickListener {
             runIfInputsValid {
                 tokenize()
             }
         }
-        ivCopyCodeExample?.setOnClickListener { copyResponseToClipboard() }
-        mbReset.setOnClickListener { resetView() }
+        codeExampleBinding.ivCopyCodeExample.setOnClickListener { copyResponseToClipboard() }
+        binding.mbReset.setOnClickListener { resetView() }
     }
 
     private fun initCodeExampleView() {
         val syntaxColor = ContextCompat.getColor(this, R.color.veryLightGray)
         val bgColor = ContextCompat.getColor(this, R.color.blackPearl)
         val lineNumberColor = ContextCompat.getColor(this, R.color.nobel)
-        cvResponse.setOptions(
+        codeExampleBinding.cvResponse.setOptions(
             Options(
-                context = this.applicationContext,
-                theme = ColorThemeData(
+                context = this.applicationContext, theme = ColorThemeData(
                     SyntaxColors(
                         string = syntaxColor,
                         punctuation = syntaxColor,
@@ -218,11 +223,11 @@ class TokenizationActivity :
                 )
             )
         )
-        cvResponse.alpha = 1f
+        codeExampleBinding.cvResponse.alpha = 1f
     }
 
     private fun updateCodeExample(response: String?) {
-        cvResponse.setCode(formatJson(response))
+        codeExampleBinding.cvResponse.setCode(formatJson(response))
     }
 
     private fun tokenize() {
@@ -243,14 +248,16 @@ class TokenizationActivity :
     private fun scanCard() {
         val intent = Intent(this, ScanActivity::class.java).apply {
             putExtra(ScanActivity.SCAN_CONFIGURATION, hashMapOf<String?, Int>().apply {
-                this[vgsTiedCardNumber?.getFieldName()] = ScanActivity.CARD_NUMBER
-                this[vgsTiedCardHolder?.getFieldName()] = ScanActivity.CARD_HOLDER
-                this[vgsTiedExpiry?.getFieldName()] = ScanActivity.CARD_EXP_DATE
-                this[vgsTiedCvc?.getFieldName()] = ScanActivity.CARD_CVC
+                this[cardViewBinding.vgsTiedCardNumber.getFieldName()] = ScanActivity.CARD_NUMBER
+                this[cardViewBinding.vgsTiedCardHolder.getFieldName()] = ScanActivity.CARD_HOLDER
+                this[cardViewBinding.vgsTiedExpiry.getFieldName()] = ScanActivity.CARD_EXP_DATE
+                this[cardViewBinding.vgsTiedCvc.getFieldName()] = ScanActivity.CARD_CVC
             })
         }
-        @Suppress("DEPRECATION")
-        startActivityForResult(intent, VGSCollectActivity.USER_SCAN_REQUEST_CODE)
+        @Suppress("DEPRECATION") startActivityForResult(
+            intent,
+            VGSCollectActivity.USER_SCAN_REQUEST_CODE
+        )
     }
 
     private fun openSettings() {
@@ -258,24 +265,26 @@ class TokenizationActivity :
     }
 
     private fun runIfInputsValid(action: () -> Unit) {
-        var isValid = true
-        if (vgsTiedCardHolder.getState()?.isValid == false) {
-            setInputInvalid(mtvCardHolderHint, vgsTilCardHolder)
-            isValid = false
+        with(cardViewBinding) {
+            var isValid = true
+            if (vgsTiedCardHolder.getState()?.isValid == false) {
+                setInputInvalid(mtvCardHolderHint, vgsTilCardHolder)
+                isValid = false
+            }
+            if (vgsTiedCardNumber.getState()?.isValid == false) {
+                setInputInvalid(mtvCardNumberHint, vgsTilCardNumber)
+                isValid = false
+            }
+            if (vgsTiedExpiry.getState()?.isValid == false) {
+                setInputInvalid(mtvExpiryHint, vgsTilExpiry)
+                isValid = false
+            }
+            if (vgsTiedCvc.getState()?.isValid == false) {
+                setInputInvalid(mtvCvcHint, vgsTilCvc)
+                isValid = false
+            }
+            if (isValid) action.invoke()
         }
-        if (vgsTiedCardNumber.getState()?.isValid == false) {
-            setInputInvalid(mtvCardNumberHint, vgsTilCardNumber)
-            isValid = false
-        }
-        if (vgsTiedExpiry.getState()?.isValid == false) {
-            setInputInvalid(mtvExpiryHint, vgsTilExpiry)
-            isValid = false
-        }
-        if (vgsTiedCvc.getState()?.isValid == false) {
-            setInputInvalid(mtvCvcHint, vgsTilCvc)
-            isValid = false
-        }
-        if (isValid) action.invoke()
     }
 
     private fun setInputValid(title: MaterialTextView, layout: VGSTextInputLayout) {
@@ -289,13 +298,13 @@ class TokenizationActivity :
     }
 
     private fun setLoading(isLoading: Boolean) {
-        viewOverlay.isVisible = isLoading
-        progressBar?.isVisible = isLoading
+        binding.viewOverlay.isVisible = isLoading
+        binding.progressBar.isVisible = isLoading
     }
 
     private fun showSnackBar(message: String) {
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).apply {
-            anchorView = mbTokenize
+            anchorView = binding.mbTokenize
             animationMode = Snackbar.ANIMATION_MODE_SLIDE
         }.show()
     }

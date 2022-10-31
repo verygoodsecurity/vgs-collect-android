@@ -39,15 +39,11 @@
         <item name="android:tint">@color/fiord</item>
     </style>
 
-    <style name="CustomButtonText" />
-
-    <style name="CustomButtonText.Title" parent="TextAppearance.MaterialComponents.Subtitle2" />
-
-    <style name="CustomButtonText.Description" parent="TextAppearance.MaterialComponents.Caption" />
-
-    <style name="CustomButtonText.Action" parent="TextAppearance.MaterialComponents.Body2">
+    <style name="GridButtonActionStyle">
         <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/navyBlue</item>
+        <item name="textAppearance">?attr/textAppearanceBody2</item>
+        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
     </style>
 
     <style name="EditText">
