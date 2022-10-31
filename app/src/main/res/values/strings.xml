@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">VGS Collect Demo</string>
-    <!--    Start screen-->
-    <string name="start_activity_app_bar_title">Very Good Security</string>
 
+    <!--    Start screen-->
     <string name="start_activity_vault_id_hint">Vault id</string>
     <string name="start_activity_path_hint">Path (Only for collect flow)</string>
 
