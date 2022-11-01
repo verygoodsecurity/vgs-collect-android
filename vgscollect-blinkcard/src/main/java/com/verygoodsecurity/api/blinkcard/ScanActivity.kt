@@ -6,9 +6,12 @@ import com.microblink.blinkcard.MicroblinkSDK
 import com.microblink.blinkcard.entities.recognizers.RecognizerBundle
 import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardProcessingStatus
 import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardRecognizer
+import com.microblink.blinkcard.results.date.DateResult
 import com.microblink.blinkcard.uisettings.ActivityRunner
 import com.microblink.blinkcard.uisettings.BlinkCardUISettings
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class ScanActivity : BaseTransmitActivity() {
@@ -42,9 +45,9 @@ class ScanActivity : BaseTransmitActivity() {
 
     private fun configureBlinkCardRecognizer() = BlinkCardRecognizer().apply {
         setExtractIban(false)
-        if (!cvcFieldName.isNullOrEmpty()) setExtractCvv(false)
-        if (!expDateFieldName.isNullOrEmpty()) setExtractExpiryDate(false)
-        if (!cHolderFieldName.isNullOrEmpty()) setExtractOwner(false)
+        setExtractCvv(!cvcFieldName.isNullOrEmpty())
+        setExtractExpiryDate(!expDateFieldName.isNullOrEmpty())
+        setExtractOwner(!cHolderFieldName.isNullOrEmpty())
     }
 
     private fun configureBlinkCardUISettings() = BlinkCardUISettings(mRecognizerBundle).apply {
@@ -98,13 +101,25 @@ class ScanActivity : BaseTransmitActivity() {
             mapData(ccFieldName, it.cardNumber)
             mapData(cvcFieldName, it.cvv)
             mapData(cHolderFieldName, it.owner)
-            mapData(expDateFieldName, it.expiryDate.originalDateString)
+            mapData(expDateFieldName, parseDate(it.expiryDate))
+
+
 
             when (it.processingStatus) {
                 BlinkCardProcessingStatus.Success -> addAnalyticInfo(Status.SUCCESS)
                 else -> addAnalyticInfo(Status.FAILED)
             }
         }
+    }
+
+    private fun parseDate(originalDate: DateResult): Any {
+        return originalDate.date.takeIf { it != null && it.month > 0 && it.year > 0 }
+            ?.run {
+                Calendar.getInstance().run {
+                    set(year, month, day)
+                    time.time
+                }
+            } ?: originalDate.originalDateString
     }
 
     private fun addAnalyticInfo(status: Status) {
