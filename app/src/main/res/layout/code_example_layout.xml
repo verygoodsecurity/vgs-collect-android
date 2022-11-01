@@ -20,7 +20,8 @@
             android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="@color/blackPearl"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivCopyCodeExample"

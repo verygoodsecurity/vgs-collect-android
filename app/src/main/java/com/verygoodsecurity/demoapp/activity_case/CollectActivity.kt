@@ -1,5 +1,6 @@
 package com.verygoodsecurity.demoapp.activity_case
 
+import android.animation.LayoutTransition
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.RecyclerView
 import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
@@ -29,6 +31,7 @@ import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import io.github.kbiakov.codeview.adapters.Options
 import io.github.kbiakov.codeview.highlight.ColorThemeData
 import io.github.kbiakov.codeview.highlight.SyntaxColors
+import org.json.JSONObject
 
 class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
     OnFieldStateChangeListener {
@@ -95,7 +98,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
     override fun onResponse(response: VGSResponse?) {
         setLoading(false)
         this.response = when (response) {
-            is VGSResponse.SuccessResponse -> response.body
+            is VGSResponse.SuccessResponse -> createShortResponse(response.body)
             is VGSResponse.ErrorResponse -> response.body ?: response.localizeMessage
             else -> throw IllegalArgumentException("Not implemented.")
         }
@@ -113,6 +116,8 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         binding.mbFilesManage.setOnClickListener { handleFileClickedManageButtonClicked() }
         binding.mbSubmit.setOnClickListener { submit() }
         binding.mbGroupCodeExampleType.addOnButtonCheckedListener { _, _, _ -> updateCodeExample() }
+
+        binding.ccInputsRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
     }
 
     private fun initCodeExampleView() {
@@ -134,6 +139,8 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
             )
         )
         codeExampleBinding.cvResponse.alpha = 1f
+        codeExampleBinding.cvResponse.findViewById<RecyclerView>(R.id.rv_code_content).isNestedScrollingEnabled =
+            false
     }
 
     private fun initCardView() {
@@ -203,7 +210,15 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
 
     private fun setLoading(isLoading: Boolean) {
         binding.progressBar.isVisible = isLoading
-        binding.root.isEnabled = !isLoading
+        binding.viewDisableTouch.isVisible = isLoading
+    }
+
+    private fun createShortResponse(body: String?): String {
+        return try {
+            JSONObject(body ?: "").getJSONObject("json").toString(4)
+        } catch (e: Exception) {
+            ""
+        }
     }
 
     private fun AppCompatActivity.getStringExtra(key: String, defaultValue: String = ""): String {
