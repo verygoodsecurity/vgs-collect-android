@@ -31,6 +31,7 @@ import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import io.github.kbiakov.codeview.adapters.Options
 import io.github.kbiakov.codeview.highlight.ColorThemeData
 import io.github.kbiakov.codeview.highlight.SyntaxColors
+import org.json.JSONArray
 import org.json.JSONObject
 
 class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
@@ -107,6 +108,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
 
     // Use this callback to track input fields state change
     override fun onStateChange(state: FieldState) {
+        updateState()
         updateCodeExample()
     }
 
@@ -116,7 +118,6 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         binding.mbFilesManage.setOnClickListener { handleFileClickedManageButtonClicked() }
         binding.mbSubmit.setOnClickListener { submit() }
         binding.mbGroupCodeExampleType.addOnButtonCheckedListener { _, _, _ -> updateCodeExample() }
-
         binding.ccInputsRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
     }
 
@@ -206,6 +207,22 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
             if (binding.mbGroupCodeExampleType.checkedButtonId == R.id.mbInputState) states else response
         Log.d("Test", example.toString())
         codeExampleBinding.cvResponse.setCode(example ?: "")
+    }
+
+    private fun updateState() {
+        val states = collect.getAllStates()
+        val statesJson = JSONObject()
+        val statesJsonArray = JSONArray()
+        states.forEach {
+            statesJsonArray.put(JSONObject().apply {
+                put("fieldName", it.fieldName)
+                put("hasFocus", it.hasFocus)
+                put("contentLength", it.contentLength)
+                put("isValid", it.isValid)
+            })
+        }
+        statesJson.put("states", statesJsonArray)
+        this.states = statesJson.toString(4)
     }
 
     private fun setLoading(isLoading: Boolean) {
