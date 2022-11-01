@@ -33,6 +33,12 @@
             android:name=".activity_case.VGSCollectActivity"
             android:label="Collect (Activity)" />
 
+        <activity
+            android:name=".activity_case.CollectActivity"
+            android:screenOrientation="portrait"
+            android:label="Collect (Activity)"
+            tools:ignore="LockedOrientationActivity" />
+
         <!--        TODO(Resize)-->
         <activity
             android:name=".tokenization.TokenizationActivity"
