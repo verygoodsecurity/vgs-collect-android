@@ -2,13 +2,14 @@ package com.verygoodsecurity.demoapp.activity_case
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.R
@@ -17,13 +18,20 @@ import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_PATH
 import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
 import com.verygoodsecurity.demoapp.databinding.ActivityCollectBinding
 import com.verygoodsecurity.demoapp.databinding.CardInputLayoutBinding
+import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import io.github.kbiakov.codeview.adapters.Options
+import io.github.kbiakov.codeview.highlight.ColorThemeData
+import io.github.kbiakov.codeview.highlight.SyntaxColors
 
-class CollectActivity : AppCompatActivity(), VgsCollectResponseListener {
+class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
+    OnFieldStateChangeListener {
 
     private val path: String by lazy { getStringExtra(KEY_BUNDLE_PATH) }
 
@@ -32,21 +40,29 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener {
             this,
             getStringExtra(KEY_BUNDLE_VAULT_ID, ""),
             getStringExtra(KEY_BUNDLE_ENVIRONMENT, "")
-        ).apply { addOnResponseListeners(this@CollectActivity) }
+        ).apply {
+            addOnResponseListeners(this@CollectActivity)
+            addOnFieldStateChangeListener(this@CollectActivity)
+        }
     }
 
     private lateinit var binding: ActivityCollectBinding
     private lateinit var cardBinding: CardInputLayoutBinding
+    private lateinit var codeExampleBinding: CodeExampleLayoutBinding
 
     private val scanResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             collect.onActivityResult(0, it.resultCode, it.data)
         }
 
+    private var response: String? = null
+    private var states: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCollectBinding.inflate(layoutInflater)
-        cardBinding = CardInputLayoutBinding.bind(binding.root)
+        cardBinding = CardInputLayoutBinding.bind(binding.ccInputsRoot)
+        codeExampleBinding = CodeExampleLayoutBinding.bind(binding.ccInputsRoot)
         setContentView(binding.root)
         initViews()
     }
@@ -78,17 +94,46 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener {
     // Handle VGSCollect submit responses
     override fun onResponse(response: VGSResponse?) {
         setLoading(false)
-        when (response) {
-            is VGSResponse.SuccessResponse -> updateResponseView(response.body)
-            is VGSResponse.ErrorResponse -> showToast(response.body ?: response.localizeMessage)
+        this.response = when (response) {
+            is VGSResponse.SuccessResponse -> response.body
+            is VGSResponse.ErrorResponse -> response.body ?: response.localizeMessage
             else -> throw IllegalArgumentException("Not implemented.")
         }
+        updateCodeExample()
+    }
+
+    // Use this callback to track input fields state change
+    override fun onStateChange(state: FieldState) {
+        updateCodeExample()
     }
 
     private fun initViews() {
+        initCodeExampleView()
         initCardView()
         binding.mbFilesManage.setOnClickListener { handleFileClickedManageButtonClicked() }
         binding.mbSubmit.setOnClickListener { submit() }
+        binding.mbGroupCodeExampleType.addOnButtonCheckedListener { _, _, _ -> updateCodeExample() }
+    }
+
+    private fun initCodeExampleView() {
+        val syntaxColor = ContextCompat.getColor(this, R.color.veryLightGray)
+        val bgColor = ContextCompat.getColor(this, R.color.blackPearl)
+        val lineNumberColor = ContextCompat.getColor(this, R.color.nobel)
+        codeExampleBinding.cvResponse.setOptions(
+            Options(
+                context = this.applicationContext, theme = ColorThemeData(
+                    SyntaxColors(
+                        string = syntaxColor,
+                        punctuation = syntaxColor,
+                    ),
+                    numColor = lineNumberColor,
+                    bgContent = bgColor,
+                    bgNum = bgColor,
+                    noteColor = syntaxColor,
+                )
+            )
+        )
+        codeExampleBinding.cvResponse.alpha = 1f
     }
 
     private fun initCardView() {
@@ -149,17 +194,16 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener {
             if (collect.getFileProvider().getAttachedFiles().isEmpty()) "Attach" else "Detach"
     }
 
+    private fun updateCodeExample() {
+        val example =
+            if (binding.mbGroupCodeExampleType.checkedButtonId == R.id.mbInputState) states else response
+        Log.d("Test", example.toString())
+        codeExampleBinding.cvResponse.setCode(example ?: "")
+    }
+
     private fun setLoading(isLoading: Boolean) {
         binding.progressBar.isVisible = isLoading
         binding.root.isEnabled = !isLoading
-    }
-
-    private fun updateResponseView(body: String?) {
-        showToast(body ?: "Success")
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun AppCompatActivity.getStringExtra(key: String, defaultValue: String = ""): String {
