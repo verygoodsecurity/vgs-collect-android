@@ -1,7 +1,9 @@
 package com.verygoodsecurity.api.blinkcard
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.microblink.blinkcard.MicroblinkSDK
 import com.microblink.blinkcard.entities.recognizers.RecognizerBundle
 import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardProcessingStatus
@@ -9,6 +11,8 @@ import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardRecogniz
 import com.microblink.blinkcard.results.date.DateResult
 import com.microblink.blinkcard.uisettings.ActivityRunner
 import com.microblink.blinkcard.uisettings.BlinkCardUISettings
+import com.microblink.blinkcard.util.RecognizerCompatibility
+import com.microblink.blinkcard.util.RecognizerCompatibilityStatus
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,13 +38,55 @@ class ScanActivity : BaseTransmitActivity() {
         super.onCreate(savedInstanceState)
 
         parseSettings()
-        configureKey()
 
-        mRecognizer = configureBlinkCardRecognizer()
-        mRecognizerBundle = RecognizerBundle(mRecognizer)
-        settings = configureBlinkCardUISettings()
+        if (checkCompatibility() && checkLicenseKey()) {
+            mRecognizer = configureBlinkCardRecognizer()
+            mRecognizerBundle = RecognizerBundle(mRecognizer)
+            settings = configureBlinkCardUISettings()
 
-        scanCard()
+            ActivityRunner.startActivityForResult(this, requestCode, settings)
+        } else {
+            finish()
+        }
+    }
+
+    private fun checkLicenseKey(): Boolean {
+        return when {
+            key.isNullOrEmpty() && path.isNullOrEmpty() -> {
+                notifyFailedStatus("Licence key is missed!")
+                return false
+            }
+            !key.isNullOrEmpty() -> {
+                MicroblinkSDK.setLicenseKey(key!!, this)
+                return true
+            }
+            !path.isNullOrEmpty() -> {
+                MicroblinkSDK.setLicenseKey(path!!, this)
+                return true
+            }
+            else -> return true
+        }
+    }
+
+    private fun checkCompatibility(): Boolean {
+        when (RecognizerCompatibility.getRecognizerCompatibilityStatus(this)) {
+            RecognizerCompatibilityStatus.NO_CAMERA -> notifyFailedStatus("BlinkCard is supported only via Direct API!")
+            RecognizerCompatibilityStatus.PROCESSOR_ARCHITECTURE_NOT_SUPPORTED -> notifyFailedStatus(
+                "BlinkCard is not supported on current processor architecture!"
+            )
+            RecognizerCompatibilityStatus.DEVICE_BLACKLISTED -> notifyFailedStatus("BlinkCard is not supported! Reason: ${RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name}")
+            RecognizerCompatibilityStatus.UNSUPPORTED_ANDROID_VERSION -> notifyFailedStatus("BlinkCard is not supported! Reason: ${RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name}")
+            RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED -> notifyFailedStatus("BlinkCard is not supported! Reason: ${RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name}")
+            RecognizerCompatibilityStatus.RECOGNIZER_SUPPORTED -> return true
+        }
+        return false
+    }
+
+    private fun notifyFailedStatus(message: String) = with(message) {
+        Log.e("VGS BlinkCard module", this)
+
+        addAnalyticInfo(Status.FAILED, this)
+        setScanResult(Activity.RESULT_OK)
     }
 
     private fun configureBlinkCardRecognizer() = BlinkCardRecognizer().apply {
@@ -67,18 +113,6 @@ class ScanActivity : BaseTransmitActivity() {
         }
     }
 
-    private fun configureKey() {
-        when {
-            !key.isNullOrEmpty() -> MicroblinkSDK.setLicenseKey(key!!, this)
-            !path.isNullOrEmpty() -> MicroblinkSDK.setLicenseKey(path!!, this)
-            else -> finish()
-        }
-    }
-
-    private fun scanCard() {
-        ActivityRunner.startActivityForResult(this, requestCode, settings)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         checkBlinkResults(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
@@ -103,8 +137,6 @@ class ScanActivity : BaseTransmitActivity() {
             mapData(cHolderFieldName, it.owner)
             mapData(expDateFieldName, parseDate(it.expiryDate))
 
-
-
             when (it.processingStatus) {
                 BlinkCardProcessingStatus.Success -> addAnalyticInfo(Status.SUCCESS)
                 else -> addAnalyticInfo(Status.FAILED)
@@ -122,10 +154,11 @@ class ScanActivity : BaseTransmitActivity() {
             } ?: originalDate.originalDateString
     }
 
-    private fun addAnalyticInfo(status: Status) {
+    private fun addAnalyticInfo(status: Status, details: String? = null) {
         mapData(RESULT_TYPE, SCAN)
         mapData(RESULT_NAME, NAME)
         mapData(RESULT_STATUS, status.raw)
+        mapData(RESULT_DETAILS, details)
     }
 
     companion object {
