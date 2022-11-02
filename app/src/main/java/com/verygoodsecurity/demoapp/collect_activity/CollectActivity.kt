@@ -172,7 +172,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         bindViewsToCollect()
     }
 
-    // Configure card holder inout field behaviour
+    // Configure card holder input field behaviour
     private fun setupCardHolderNameView() {
         // Specify card holder name validation rule and error messages
         cardBinding.vgsTiedCardHolder.setRule(
@@ -193,7 +193,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         })
     }
 
-    // Configure card number inout field behaviour
+    // Configure card number input field behaviour
     private fun setupCardNumberView() {
         // Set CardIconAdapter to be able to override default card icons
         cardBinding.vgsTiedCardNumber.setCardIconAdapter(object : CardIconAdapter(this) {
@@ -245,7 +245,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         })
     }
 
-    // Configure expiry inout field behaviour
+    // Configure expiry input field behaviour
     private fun setupExpiryView() {
         // Specify VGSExpDateSeparateSerializer to send expiry month and year separately in json structure
         cardBinding.vgsTiedExpiry.setSerializer(
@@ -263,7 +263,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         })
     }
 
-    // Configure cvc inout field behaviour
+    // Configure cvc input field behaviour
     private fun setupCvcView() {
         cardBinding.vgsTiedCvc.setOnFieldStateChangeListener(object :
             OnFieldStateChangeListener {
@@ -274,7 +274,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         })
     }
 
-    // Configure postal code inout field behaviour
+    // Configure postal code input field behaviour
     private fun setupPostalCodeView() {
         // Specify postal code validation rule and error messages
         cardBinding.vgsTiedPostalCode.setRule(
