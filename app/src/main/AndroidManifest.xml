@@ -33,12 +33,9 @@
             android:name=".collect_activity.CollectActivity"
             android:label="Collect (Activity)" />
 
-        <!--        TODO(Resize)-->
         <activity
             android:name=".tokenization.TokenizationActivity"
-            android:label="Tokenization"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
+            android:label="Tokenization" />
 
         <activity
             android:name=".tokenization.settings.TokenizationSettingsActivity"

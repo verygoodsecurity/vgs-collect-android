@@ -4,43 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="com.google.android.material.card.MaterialCardView">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <io.github.kbiakov.codeview.CodeView
+        android:id="@+id/cvResponse"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/mtvLanguage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_padding_material_medium"
-            android:background="@drawable/bg_code_example_badge"
-            android:paddingStart="@dimen/margin_padding_material_small"
-            android:paddingEnd="@dimen/margin_padding_material_small"
-            android:text="JSON"
-            android:textAppearance="?attr/textAppearanceCaption"
-            android:textColor="@color/blackPearl"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="HardcodedText" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivCopyCodeExample"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_padding_material_medium"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/copy_code_example_ic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <io.github.kbiakov.codeview.CodeView
-            android:id="@+id/cvResponse"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/margin_padding_material_medium"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCopyCodeExample" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </merge>

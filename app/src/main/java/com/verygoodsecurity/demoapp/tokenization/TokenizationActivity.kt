@@ -1,9 +1,6 @@
 package com.verygoodsecurity.demoapp.tokenization
 
 import android.animation.LayoutTransition
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -205,7 +202,6 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
                 tokenize()
             }
         }
-        codeExampleBinding.ivCopyCodeExample.setOnClickListener { copyResponseToClipboard() }
         binding.mbReset.setOnClickListener { resetView() }
     }
 
@@ -237,12 +233,6 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
     private fun tokenize() {
         setLoading(true)
         collect?.tokenize()
-    }
-
-    private fun copyResponseToClipboard() {
-        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.setPrimaryClip(ClipData.newPlainText("", formatJson(response)))
-        showSnackBar("Tokenized card response copied.")
     }
 
     private fun resetView() {
@@ -304,10 +294,7 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
     }
 
     private fun showSnackBar(message: String) {
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).apply {
-            anchorView = binding.mbTokenize
-            animationMode = Snackbar.ANIMATION_MODE_SLIDE
-        }.show()
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun formatJson(json: String?): String = try {
