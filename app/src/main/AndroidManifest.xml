@@ -35,9 +35,7 @@
 
         <activity
             android:name=".activity_case.CollectActivity"
-            android:screenOrientation="portrait"
-            android:label="Collect (Activity)"
-            tools:ignore="LockedOrientationActivity" />
+            android:label="Collect (Activity)" />
 
         <!--        TODO(Resize)-->
         <activity
