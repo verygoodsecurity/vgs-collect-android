@@ -18,7 +18,6 @@ import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
-import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityTokenizationBinding
 import com.verygoodsecurity.demoapp.databinding.CardInputLayoutBinding
 import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
@@ -38,6 +37,11 @@ import kotlin.properties.Delegates
 
 class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedListener,
     VgsCollectResponseListener {
+
+    companion object {
+
+        private const val SCAN_REQUEST_CODE = 1
+    }
 
     private val defaultHintTextColor by lazy { ContextCompat.getColor(this, R.color.fiord) }
     private val defaultInputBackgroundColor by lazy {
@@ -184,8 +188,8 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
             cardViewBinding.vgsTiedExpiry.setVaultStorageType(parseStorage(it))
         }
         preferences.getString(getString(R.string.tokenization_expiry_alias_format_key), null)?.let {
-                cardViewBinding.vgsTiedExpiry.setVaultAliasFormat(parseAliasFormat(it))
-            }
+            cardViewBinding.vgsTiedExpiry.setVaultAliasFormat(parseAliasFormat(it))
+        }
     }
 
     private fun initTextChangeListener() {
@@ -254,10 +258,7 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
                 this[cardViewBinding.vgsTiedCvc.getFieldName()] = ScanActivity.CARD_CVC
             })
         }
-        @Suppress("DEPRECATION") startActivityForResult(
-            intent,
-            VGSCollectActivity.USER_SCAN_REQUEST_CODE
-        )
+        @Suppress("DEPRECATION") startActivityForResult(intent, SCAN_REQUEST_CODE)
     }
 
     private fun openSettings() {
