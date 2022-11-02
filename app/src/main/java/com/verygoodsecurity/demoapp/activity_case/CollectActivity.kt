@@ -2,7 +2,10 @@ package com.verygoodsecurity.demoapp.activity_case
 
 import android.animation.LayoutTransition
 import android.content.Intent
+import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -27,6 +30,12 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscollect.view.card.BrandParams
+import com.verygoodsecurity.vgscollect.view.card.CardBrand
+import com.verygoodsecurity.vgscollect.view.card.CardType
+import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
+import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
+import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import io.github.kbiakov.codeview.adapters.Options
 import io.github.kbiakov.codeview.highlight.ColorThemeData
 import io.github.kbiakov.codeview.highlight.SyntaxColors
@@ -146,7 +155,74 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
 
     private fun initCardView() {
         cardBinding.groupAddress.visibility = View.VISIBLE
+        setupCardHolderNameView()
+        setupCardNumberView()
+        setupExpiryView()
+        setupCvcView()
         bindViewsToCollect()
+    }
+
+    // Configure card number inout field behaviour
+    private fun setupCardHolderNameView() {
+        // Set CardIconAdapter to be able to override default card icons
+        cardBinding.vgsTiedCardNumber.setCardIconAdapter(object : CardIconAdapter(this) {
+
+            override fun getIcon(
+                cardType: CardType,
+                name: String?,
+                resId: Int,
+                r: Rect
+            ): Drawable = when (cardType) {
+                CardType.VISA -> getDrawable(R.drawable.ic_visa) // Provide your custom icon for VISA cards here
+                else -> super.getIcon(cardType, name, resId, r)
+            }
+        })
+        // Set CardMaskAdapter to be able to specify custom card number masks
+        cardBinding.vgsTiedCardNumber.setCardMaskAdapter(object : CardMaskAdapter() {
+
+            override fun getMask(
+                cardType: CardType,
+                name: String,
+                bin: String,
+                mask: String
+            ): String = when (cardType) {
+                CardType.VISA -> "## ## #### #### ## ##" // Specify mask for VISA cards here
+                else -> super.getMask(cardType, name, bin, mask)
+            }
+        })
+        // Add card brand which is not specified in VGSCollect
+        cardBinding.vgsTiedCardNumber.addCardBrand(
+            CardBrand(
+                "^7777",
+                "<BRAND_NAME>",
+                R.drawable.ic_custom_brand,
+                BrandParams(
+                    "#### #### #### ####",
+                    ChecksumAlgorithm.LUHN,
+                    rangeNumber = arrayOf(16),
+                    rangeCVV = arrayOf(3)
+                )
+            )
+        )
+        // Add field state change listener
+        cardBinding.vgsTiedCardNumber.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
+
+            override fun onStateChange(state: FieldState) {
+                Log.d(CollectActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")
+            }
+        })
+    }
+
+    private fun setupCardNumberView() {
+
+    }
+
+    private fun setupExpiryView() {
+
+    }
+
+    private fun setupCvcView() {
+
     }
 
     // Bind all view to VGSCollect, otherwise input data not be sent to proxy

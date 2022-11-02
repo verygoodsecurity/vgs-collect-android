@@ -80,6 +80,7 @@
             style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:cardBrandIconGravity="end"
             app:fieldName="card.number"
             app:imeOptions="actionNext"
             app:numberDivider=" "
