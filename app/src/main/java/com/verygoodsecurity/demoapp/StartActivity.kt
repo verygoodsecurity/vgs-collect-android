@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.verygoodsecurity.demoapp.activity_case.CollectActivity
+import com.verygoodsecurity.demoapp.collect_activity.CollectActivity
 import com.verygoodsecurity.demoapp.fragment_case.VGSCollectFragmentActivity
 import com.verygoodsecurity.demoapp.payopt.PaymentOptimizationActivity
 import com.verygoodsecurity.demoapp.tokenization.TokenizationActivity

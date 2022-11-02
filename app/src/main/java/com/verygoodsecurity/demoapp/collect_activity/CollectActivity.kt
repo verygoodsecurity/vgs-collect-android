@@ -1,6 +1,7 @@
-package com.verygoodsecurity.demoapp.activity_case
+package com.verygoodsecurity.demoapp.collect_activity
 
 import android.animation.LayoutTransition
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
@@ -37,10 +38,12 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 import io.github.kbiakov.codeview.adapters.Options
 import io.github.kbiakov.codeview.highlight.ColorThemeData
 import io.github.kbiakov.codeview.highlight.SyntaxColors
+import kotlinx.android.synthetic.main.activity_collect_demo.*
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -107,7 +110,10 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
     }
 
     // Handle VGSCollect submit responses
+    @SuppressLint("SetTextI18n")
     override fun onResponse(response: VGSResponse?) {
+        Log.d("Test", "CODE: ${response?.code.toString()}")
+        binding.tvResponseCode.text = "CODE: ${response?.code.toString()}"
         setLoading(false)
         this.response = when (response) {
             is VGSResponse.SuccessResponse -> readShortResponse(response.body)
@@ -161,6 +167,8 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         setupCardNumberView()
         setupExpiryView()
         setupCvcView()
+        setupCvcView()
+        setupPostalCodeView()
         bindViewsToCollect()
     }
 
@@ -264,6 +272,16 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
                 Log.d(CollectActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")
             }
         })
+    }
+
+    // Configure postal code inout field behaviour
+    private fun setupPostalCodeView() {
+        // Specify postal code validation rule and error messages
+        cardBinding.vgsTiedPostalCode.setRule(
+            VGSInfoRule.ValidationBuilder()
+                .setRegex("^[0-9]{5}(?:-[0-9]{4})?\$", "Invalid postal code.")
+                .build()
+        )
     }
 
     // Bind all view to VGSCollect, otherwise input data not be sent to proxy

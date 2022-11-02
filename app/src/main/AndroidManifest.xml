@@ -30,11 +30,7 @@
         </activity>
 
         <activity
-            android:name=".activity_case.VGSCollectActivity"
-            android:label="Collect (Activity)" />
-
-        <activity
-            android:name=".activity_case.CollectActivity"
+            android:name=".collect_activity.CollectActivity"
             android:label="Collect (Activity)" />
 
         <!--        TODO(Resize)-->
