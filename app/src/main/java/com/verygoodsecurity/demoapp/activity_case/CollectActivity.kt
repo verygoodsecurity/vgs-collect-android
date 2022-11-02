@@ -36,6 +36,8 @@ import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
+import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
+import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 import io.github.kbiakov.codeview.adapters.Options
 import io.github.kbiakov.codeview.highlight.ColorThemeData
 import io.github.kbiakov.codeview.highlight.SyntaxColors
@@ -162,8 +164,29 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         bindViewsToCollect()
     }
 
-    // Configure card number inout field behaviour
+    // Configure card holder inout field behaviour
     private fun setupCardHolderNameView() {
+        // Specify card holder name validation rule and error messages
+        cardBinding.vgsTiedCardHolder.setRule(
+            PersonNameRule.ValidationBuilder()
+                .setAllowableMinLength(3, "Card holder name is to short.")
+                .setAllowableMaxLength(20, "Card holder name is to long.")
+                .build()
+        )
+        cardBinding.vgsTiedCardHolder.setOnFieldStateChangeListener(object :
+            OnFieldStateChangeListener {
+
+            override fun onStateChange(state: FieldState) {
+                Log.d(
+                    CollectActivity::class.java.simpleName,
+                    "onStateChange: ${state.fieldName}, errors: ${state.validationErrors}"
+                )
+            }
+        })
+    }
+
+    // Configure card number inout field behaviour
+    private fun setupCardNumberView() {
         // Set CardIconAdapter to be able to override default card icons
         cardBinding.vgsTiedCardNumber.setCardIconAdapter(object : CardIconAdapter(this) {
 
@@ -205,7 +228,8 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
             )
         )
         // Add field state change listener
-        cardBinding.vgsTiedCardNumber.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
+        cardBinding.vgsTiedCardNumber.setOnFieldStateChangeListener(object :
+            OnFieldStateChangeListener {
 
             override fun onStateChange(state: FieldState) {
                 Log.d(CollectActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")
@@ -213,16 +237,33 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         })
     }
 
-    private fun setupCardNumberView() {
-
-    }
-
+    // Configure expiry inout field behaviour
     private fun setupExpiryView() {
+        // Specify VGSExpDateSeparateSerializer to send expiry month and year separately in json structure
+        cardBinding.vgsTiedExpiry.setSerializer(
+            VGSExpDateSeparateSerializer(
+                "card.expiry.month",
+                "card.expiry.year",
+            )
+        )
+        cardBinding.vgsTiedExpiry.setOnFieldStateChangeListener(object :
+            OnFieldStateChangeListener {
 
+            override fun onStateChange(state: FieldState) {
+                Log.d(CollectActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")
+            }
+        })
     }
 
+    // Configure cvc inout field behaviour
     private fun setupCvcView() {
+        cardBinding.vgsTiedCvc.setOnFieldStateChangeListener(object :
+            OnFieldStateChangeListener {
 
+            override fun onStateChange(state: FieldState) {
+                Log.d(CollectActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")
+            }
+        })
     }
 
     // Bind all view to VGSCollect, otherwise input data not be sent to proxy
