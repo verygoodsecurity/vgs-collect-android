@@ -3,7 +3,6 @@ package com.verygoodsecurity.demoapp.activity_case
 import android.animation.LayoutTransition
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -54,6 +53,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
     private lateinit var cardBinding: CardInputLayoutBinding
     private lateinit var codeExampleBinding: CodeExampleLayoutBinding
 
+    // Used to start and receive result from scan activity
     private val scanResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             collect.onActivityResult(0, it.resultCode, it.data)
@@ -99,7 +99,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
     override fun onResponse(response: VGSResponse?) {
         setLoading(false)
         this.response = when (response) {
-            is VGSResponse.SuccessResponse -> createShortResponse(response.body)
+            is VGSResponse.SuccessResponse -> readShortResponse(response.body)
             is VGSResponse.ErrorResponse -> response.body ?: response.localizeMessage
             else -> throw IllegalArgumentException("Not implemented.")
         }
@@ -149,7 +149,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         bindViewsToCollect()
     }
 
-    // Bind all view to VGSCollect, otherwise they not be sent to proxy
+    // Bind all view to VGSCollect, otherwise input data not be sent to proxy
     private fun bindViewsToCollect() {
         collect.bindView(cardBinding.vgsTiedCardHolder)
         collect.bindView(cardBinding.vgsTiedCardNumber)
@@ -205,7 +205,6 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
     private fun updateCodeExample() {
         val example =
             if (binding.mbGroupCodeExampleType.checkedButtonId == R.id.mbInputState) states else response
-        Log.d("Test", example.toString())
         codeExampleBinding.cvResponse.setCode(example ?: "")
     }
 
@@ -230,7 +229,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         binding.viewDisableTouch.isVisible = isLoading
     }
 
-    private fun createShortResponse(body: String?): String {
+    private fun readShortResponse(body: String?): String {
         return try {
             JSONObject(body ?: "").getJSONObject("json").toString(4)
         } catch (e: Exception) {
