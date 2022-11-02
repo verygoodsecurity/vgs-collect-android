@@ -43,7 +43,6 @@ import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateS
 import io.github.kbiakov.codeview.adapters.Options
 import io.github.kbiakov.codeview.highlight.ColorThemeData
 import io.github.kbiakov.codeview.highlight.SyntaxColors
-import kotlinx.android.synthetic.main.activity_collect_demo.*
 import org.json.JSONArray
 import org.json.JSONObject
 
