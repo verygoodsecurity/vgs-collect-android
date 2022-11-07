@@ -34,11 +34,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_padding_material_medium"
-                        android:drawableStart="@drawable/ic_cards"
                         android:drawablePadding="@dimen/margin_padding_material_small"
                         android:text="@string/collect_activity_cards_title"
                         android:textColor="@color/title_color"
-                        android:textSize="@dimen/collect_activity_cards_title_text_size" />
+                        android:textSize="@dimen/collect_activity_cards_title_text_size"
+                        app:drawableStartCompat="@drawable/ic_cards" />
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/vgsFormView"
