@@ -41,12 +41,12 @@ repositories {
 dependencies {
     api project(':vgscollect')
 
-    implementation libs.androidx.appcompat
-    implementation libs.androidx.core.ktx
-
-    implementation('com.microblink:blinkcard:2.6.0@aar') {
+    api('com.microblink:blinkcard:2.6.0@aar') {
         transitive = true
     }
+
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
 
     dokkaHtmlPlugin(libs.dokka.base)
 }
