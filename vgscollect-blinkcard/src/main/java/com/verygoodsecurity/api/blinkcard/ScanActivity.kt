@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import com.microblink.blinkcard.MicroblinkSDK
 import com.microblink.blinkcard.entities.recognizers.RecognizerBundle
 import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardProcessingStatus
 import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardRecognizer
@@ -14,11 +13,9 @@ import com.microblink.blinkcard.uisettings.BlinkCardUISettings
 import com.microblink.blinkcard.util.RecognizerCompatibility
 import com.microblink.blinkcard.util.RecognizerCompatibilityStatus
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
-import java.text.SimpleDateFormat
 import java.util.*
 
-
-class ScanActivity : BaseTransmitActivity() {
+internal class ScanActivity : BaseTransmitActivity() {
 
     private lateinit var mRecognizer: BlinkCardRecognizer
     private lateinit var mRecognizerBundle: RecognizerBundle
@@ -26,8 +23,6 @@ class ScanActivity : BaseTransmitActivity() {
 
     private var requestCode = CODE
 
-    private var key: String? = null
-    private var path: String? = null
     private var styleId: Int? = null
     private var ccFieldName: String? = null
     private var cvcFieldName: String? = null
@@ -39,7 +34,7 @@ class ScanActivity : BaseTransmitActivity() {
 
         parseSettings()
 
-        if (checkCompatibility() && checkLicenseKey()) {
+        if (checkCompatibility()) {
             mRecognizer = configureBlinkCardRecognizer()
             mRecognizerBundle = RecognizerBundle(mRecognizer)
             settings = configureBlinkCardUISettings()
@@ -47,24 +42,6 @@ class ScanActivity : BaseTransmitActivity() {
             ActivityRunner.startActivityForResult(this, requestCode, settings)
         } else {
             finish()
-        }
-    }
-
-    private fun checkLicenseKey(): Boolean {
-        return when {
-            key.isNullOrEmpty() && path.isNullOrEmpty() -> {
-                notifyFailedStatus("Licence key is missed!")
-                return false
-            }
-            !key.isNullOrEmpty() -> {
-                MicroblinkSDK.setLicenseKey(key!!, this)
-                return true
-            }
-            !path.isNullOrEmpty() -> {
-                MicroblinkSDK.setLicenseKey(path!!, this)
-                return true
-            }
-            else -> return true
         }
     }
 
@@ -102,8 +79,6 @@ class ScanActivity : BaseTransmitActivity() {
 
     private fun parseSettings() {
         intent.extras?.let {
-            key = it.getString(KEY, "")
-            path = it.getString(PATH, "")
             ccFieldName = it.getString(CC, "")
             cvcFieldName = it.getString(CVC, "")
             expDateFieldName = it.getString(EXP_DATE, "")
@@ -113,6 +88,7 @@ class ScanActivity : BaseTransmitActivity() {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         checkBlinkResults(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
@@ -122,14 +98,14 @@ class ScanActivity : BaseTransmitActivity() {
     private fun checkBlinkResults(requestCode: Int, resultCode: Int, data: Intent?) {
         if (this.requestCode == requestCode) {
             if (resultCode == RESULT_OK && data != null) {
-                processRecognitionRelusts(data)
+                processRecognitionResults(data)
             } else {
                 addAnalyticInfo(Status.CLOSE)
             }
         }
     }
 
-    private fun processRecognitionRelusts(data: Intent) {
+    private fun processRecognitionResults(data: Intent) {
         mRecognizerBundle.loadFromIntent(data)
         mRecognizer.result.let {
             mapData(ccFieldName, it.cardNumber)
@@ -167,8 +143,6 @@ class ScanActivity : BaseTransmitActivity() {
         internal const val CVC = "vgs-cvc"
         internal const val C_HOLDER = "vgsc-c-owner"
         internal const val EXP_DATE = "vgs-exp-date"
-        internal const val KEY = "blink-key"
-        internal const val PATH = "blink-path"
         internal const val STYLE_RES_ID = "style-res-id"
         internal const val REQUEST_CODE = "request-code"
         private const val CODE = 0
