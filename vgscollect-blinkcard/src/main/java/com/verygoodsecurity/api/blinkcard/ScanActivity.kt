@@ -47,20 +47,39 @@ internal class ScanActivity : BaseTransmitActivity() {
 
     private fun checkCompatibility(): Boolean {
         when (RecognizerCompatibility.getRecognizerCompatibilityStatus(this)) {
-            RecognizerCompatibilityStatus.NO_CAMERA -> notifyFailedStatus("BlinkCard is supported only via Direct API!")
-            RecognizerCompatibilityStatus.PROCESSOR_ARCHITECTURE_NOT_SUPPORTED -> notifyFailedStatus(
-                "BlinkCard is not supported on current processor architecture!"
+            RecognizerCompatibilityStatus.NO_CAMERA ->
+                notifyFailedStatus(
+                    getString(R.string.vgs_bc_warning_direct_api)
+                )
+            RecognizerCompatibilityStatus.PROCESSOR_ARCHITECTURE_NOT_SUPPORTED ->
+                notifyFailedStatus(
+                    getString(R.string.vgs_bc_warning_arch_not_supported)
+                )
+            RecognizerCompatibilityStatus.DEVICE_BLACKLISTED -> notifyFailedStatus(
+                getString(
+                    R.string.vgs_bc_warning_blacklisted_device,
+                    RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name
+                )
             )
-            RecognizerCompatibilityStatus.DEVICE_BLACKLISTED -> notifyFailedStatus("BlinkCard is not supported! Reason: ${RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name}")
-            RecognizerCompatibilityStatus.UNSUPPORTED_ANDROID_VERSION -> notifyFailedStatus("BlinkCard is not supported! Reason: ${RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name}")
-            RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED -> notifyFailedStatus("BlinkCard is not supported! Reason: ${RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name}")
+            RecognizerCompatibilityStatus.UNSUPPORTED_ANDROID_VERSION -> notifyFailedStatus(
+                getString(
+                    R.string.vgs_bc_warning_unsupported_android_version,
+                    RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name
+                )
+            )
+            RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED -> notifyFailedStatus(
+                getString(
+                    R.string.vgs_bc_warning_unsupported_recognizer,
+                    RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name
+                )
+            )
             RecognizerCompatibilityStatus.RECOGNIZER_SUPPORTED -> return true
         }
         return false
     }
 
     private fun notifyFailedStatus(message: String) = with(message) {
-        Log.e("VGS BlinkCard module", this)
+        Log.e(getString(R.string.module_name), this)
 
         addAnalyticInfo(Status.FAILED, this)
         setScanResult(Activity.RESULT_OK)
@@ -74,7 +93,7 @@ internal class ScanActivity : BaseTransmitActivity() {
     }
 
     private fun configureBlinkCardUISettings() = BlinkCardUISettings(mRecognizerBundle).apply {
-        if (styleId != null) setOverlayViewStyle(styleId!!)
+        setOverlayViewStyle(styleId ?: return@apply)
     }
 
     private fun parseSettings() {
@@ -139,13 +158,13 @@ internal class ScanActivity : BaseTransmitActivity() {
 
     companion object {
 
-        internal const val CC = "vgs-cc"
-        internal const val CVC = "vgs-cvc"
-        internal const val C_HOLDER = "vgsc-c-owner"
-        internal const val EXP_DATE = "vgs-exp-date"
-        internal const val STYLE_RES_ID = "style-res-id"
-        internal const val REQUEST_CODE = "request-code"
-        private const val CODE = 0
-        private const val NAME = "BlinkCard"
+        internal const val CC: String = "VgsCc"
+        internal const val CVC: String = "VgsCvc"
+        internal const val C_HOLDER: String = "VgsOwner"
+        internal const val EXP_DATE: String = "VgsExpDate"
+        internal const val STYLE_RES_ID: String = "StyleResId"
+        internal const val REQUEST_CODE: String = "RequestCode"
+        private const val CODE: Int = 0
+        private const val NAME: String = "BlinkCard"
     }
 }
