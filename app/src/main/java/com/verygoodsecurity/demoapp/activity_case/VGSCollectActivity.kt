@@ -11,7 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.verygoodsecurity.api.blinkcard.BlinkCardIntent
+import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntent
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
@@ -264,11 +264,9 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
     }
 
     private fun scanCard() {
-        BlinkCardIntent.Builder(this)
-            .setKey("<key>")
-            .setLicenseFile("<path-to-assets>")
+        VGSBlinkCardIntent.Builder(this)
             .setCardNumberFieldName(cardNumberField.getFieldName())
-            .setCVCFieldName(cardCVCField.getFieldName())
+//            .setCVCFieldName(cardCVCField.getFieldName())
             .setCardHolderFieldName(cardHolderField.getFieldName())
             .setExpirationDateFieldName(cardExpDateField.getFieldName())
             .setRequestCode(USER_SCAN_REQUEST_CODE)
@@ -304,6 +302,7 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
         super.onDestroy()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         vgsForm.onActivityResult(requestCode, resultCode, data)
