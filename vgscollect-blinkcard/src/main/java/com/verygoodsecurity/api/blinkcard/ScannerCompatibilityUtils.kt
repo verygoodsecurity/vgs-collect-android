@@ -17,13 +17,13 @@ internal fun Activity.isScannerCompatible(notifyFailedStatus: (String) -> Unit):
         RecognizerCompatibilityStatus.DEVICE_BLACKLISTED -> notifyFailedStatus(
             getString(
                 R.string.vgs_bc_warning_blacklisted_device,
-                RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name
+                RecognizerCompatibilityStatus.DEVICE_BLACKLISTED.name
             )
         )
         RecognizerCompatibilityStatus.UNSUPPORTED_ANDROID_VERSION -> notifyFailedStatus(
             getString(
                 R.string.vgs_bc_warning_unsupported_android_version,
-                RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name
+                RecognizerCompatibilityStatus.UNSUPPORTED_ANDROID_VERSION.name
             )
         )
         RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED -> notifyFailedStatus(
