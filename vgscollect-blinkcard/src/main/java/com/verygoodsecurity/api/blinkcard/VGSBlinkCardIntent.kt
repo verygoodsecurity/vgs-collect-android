@@ -8,7 +8,6 @@ import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.CC
 import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.CVC
 import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.C_HOLDER
 import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.EXP_DATE
-import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.REQUEST_CODE
 import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.STYLE_RES_ID
 
 class VGSBlinkCardIntent {
@@ -19,7 +18,6 @@ class VGSBlinkCardIntent {
         private var expDateFieldName: String? = null
         private var cHolderFieldName: String? = null
         private var styleId: Int? = null
-        private var requestCode: Int = 0
 
         fun setOverlayViewStyle(@StyleRes resId: Int): Builder = apply {
             styleId = resId
@@ -41,21 +39,15 @@ class VGSBlinkCardIntent {
             this.cHolderFieldName = fieldName
         }
 
-        fun setRequestCode(requestCode: Int): Builder = apply {
-            this.requestCode = requestCode
-        }
-
-        fun start() {
-            with(Intent(activity, ScanActivity::class.java)) {
+        fun build(): Intent {
+            return with(Intent(activity, ScanActivity::class.java)) {
                 putExtras(Bundle().apply {
                     putString(CC, ccFieldName)
                     putString(CVC, cvcFieldName)
                     putString(C_HOLDER, cHolderFieldName)
                     putString(EXP_DATE, expDateFieldName)
                     styleId?.let { putInt(STYLE_RES_ID, it) }
-                    putInt(REQUEST_CODE, requestCode)
                 })
-                activity.startActivityForResult(this, requestCode)
             }
         }
     }
