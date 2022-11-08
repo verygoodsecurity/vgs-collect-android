@@ -264,13 +264,13 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
     }
 
     private fun scanCard() {
-        VGSBlinkCardIntent.Builder(this)
+        val scantIntent = VGSBlinkCardIntent.Builder(this)
             .setCardNumberFieldName(cardNumberField.getFieldName())
-//            .setCVCFieldName(cardCVCField.getFieldName())
             .setCardHolderFieldName(cardHolderField.getFieldName())
             .setExpirationDateFieldName(cardExpDateField.getFieldName())
-            .setRequestCode(USER_SCAN_REQUEST_CODE)
-            .start()
+            .build()
+
+        startActivityForResult(scantIntent, USER_SCAN_REQUEST_CODE)
     }
 
     private fun getOnFieldStateChangeListener(): OnFieldStateChangeListener {
