@@ -1,17 +1,17 @@
 package com.verygoodsecurity.api.blinkcard
 
-import android.app.Activity
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
+import com.microblink.blinkcard.activity.result.ScanResult
+import com.microblink.blinkcard.activity.result.contract.MbScan
 import com.microblink.blinkcard.entities.recognizers.RecognizerBundle
 import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardProcessingStatus
 import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardRecognizer
 import com.microblink.blinkcard.results.date.DateResult
-import com.microblink.blinkcard.uisettings.ActivityRunner
 import com.microblink.blinkcard.uisettings.BlinkCardUISettings
-import com.microblink.blinkcard.util.RecognizerCompatibility
-import com.microblink.blinkcard.util.RecognizerCompatibilityStatus
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import java.util.*
 
@@ -21,68 +21,62 @@ internal class ScanActivity : BaseTransmitActivity() {
     private lateinit var mRecognizerBundle: RecognizerBundle
     private lateinit var settings: BlinkCardUISettings
 
-    private var requestCode = CODE
-
     private var styleId: Int? = null
     private var ccFieldName: String? = null
     private var cvcFieldName: String? = null
     private var expDateFieldName: String? = null
     private var cHolderFieldName: String? = null
 
+    private val blinkCardScanLauncher = registerForActivityResult(MbScan()) {
+        checkBlinkResults(it)
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         parseSettings()
 
-        if (checkCompatibility()) {
+        if (isScannerCompatible(::notifyFailedStatus)) {
             mRecognizer = configureBlinkCardRecognizer()
             mRecognizerBundle = RecognizerBundle(mRecognizer)
             settings = configureBlinkCardUISettings()
 
-            ActivityRunner.startActivityForResult(this, requestCode, settings)
+            blinkCardScanLauncher.launch(settings)
         } else {
             finish()
         }
     }
 
-    private fun checkCompatibility(): Boolean {
-        when (RecognizerCompatibility.getRecognizerCompatibilityStatus(this)) {
-            RecognizerCompatibilityStatus.NO_CAMERA ->
-                notifyFailedStatus(
-                    getString(R.string.vgs_bc_warning_direct_api)
-                )
-            RecognizerCompatibilityStatus.PROCESSOR_ARCHITECTURE_NOT_SUPPORTED ->
-                notifyFailedStatus(
-                    getString(R.string.vgs_bc_warning_arch_not_supported)
-                )
-            RecognizerCompatibilityStatus.DEVICE_BLACKLISTED -> notifyFailedStatus(
-                getString(
-                    R.string.vgs_bc_warning_blacklisted_device,
-                    RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name
-                )
+    private fun checkBlinkResults(result: ScanResult) {
+        when (result.resultStatus) {
+            ScanResult.ResultStatus.FINISHED -> parseScanResult(
+                RESULT_OK,
+                result.data
             )
-            RecognizerCompatibilityStatus.UNSUPPORTED_ANDROID_VERSION -> notifyFailedStatus(
-                getString(
-                    R.string.vgs_bc_warning_unsupported_android_version,
-                    RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name
-                )
+            ScanResult.ResultStatus.CANCELLED -> parseScanResult(
+                RESULT_CANCELED
             )
-            RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED -> notifyFailedStatus(
-                getString(
-                    R.string.vgs_bc_warning_unsupported_recognizer,
-                    RecognizerCompatibilityStatus.RECOGNIZER_NOT_SUPPORTED.name
-                )
-            )
-            RecognizerCompatibilityStatus.RECOGNIZER_SUPPORTED -> return true
+            else -> parseScanResult(RESULT_OK)
         }
-        return false
+    }
+
+    private fun parseScanResult(resultCode: Int, data: Intent? = null) {
+        when (resultCode) {
+            RESULT_OK -> data?.let {
+                processRecognitionResults(data)
+            } ?: notifyFailedStatus(getString(R.string.vgs_bc_warning_exception))
+            RESULT_CANCELED -> addAnalyticInfo(Status.CLOSE)
+        }
+        setScanResult(resultCode)
+        finish()
     }
 
     private fun notifyFailedStatus(message: String) = with(message) {
         Log.e(getString(R.string.module_name), this)
-
         addAnalyticInfo(Status.FAILED, this)
-        setScanResult(Activity.RESULT_OK)
     }
 
     private fun configureBlinkCardRecognizer() = BlinkCardRecognizer().apply {
@@ -103,24 +97,6 @@ internal class ScanActivity : BaseTransmitActivity() {
             expDateFieldName = it.getString(EXP_DATE, "")
             cHolderFieldName = it.getString(C_HOLDER, "")
             styleId = it.getInt(STYLE_RES_ID)
-            requestCode = it.getInt(REQUEST_CODE, CODE)
-        }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        checkBlinkResults(requestCode, resultCode, data)
-        super.onActivityResult(requestCode, resultCode, data)
-        finish()
-    }
-
-    private fun checkBlinkResults(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (this.requestCode == requestCode) {
-            if (resultCode == RESULT_OK && data != null) {
-                processRecognitionResults(data)
-            } else {
-                addAnalyticInfo(Status.CLOSE)
-            }
         }
     }
 
@@ -163,8 +139,6 @@ internal class ScanActivity : BaseTransmitActivity() {
         internal const val C_HOLDER: String = "VgsOwner"
         internal const val EXP_DATE: String = "VgsExpDate"
         internal const val STYLE_RES_ID: String = "StyleResId"
-        internal const val REQUEST_CODE: String = "RequestCode"
-        private const val CODE: Int = 0
         private const val NAME: String = "BlinkCard"
     }
 }

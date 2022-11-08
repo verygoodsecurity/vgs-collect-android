@@ -6,4 +6,5 @@
     <string name="vgs_bc_warning_blacklisted_device">BlinkCard is not supported! Reason: %1$s</string>
     <string name="vgs_bc_warning_unsupported_android_version">BlinkCard is not supported! Reason: %1$s</string>
     <string name="vgs_bc_warning_unsupported_recognizer">BlinkCard is not supported! Reason: %1$s</string>
+    <string name="vgs_bc_warning_exception">BlinkCard finished with exception.</string>
 </resources>
