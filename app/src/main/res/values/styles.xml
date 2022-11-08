@@ -22,14 +22,6 @@
         <item name="animationMode">slide</item>
     </style>
 
-    <style name="AppTheme.StartActivity">
-        <item name="actionBarStyle">@style/ActionBarStyle.StartActivity</item>
-    </style>
-
-    <style name="ActionBarStyle.StartActivity">
-        <item name="title">@string/start_activity_app_bar_title</item>
-    </style>
-
     <style name="AppTheme.TokenizationSettings">
         <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Primary</item>
         <item name="preferenceTheme">@style/TokenizationPreferenceTheme</item>
@@ -39,15 +31,11 @@
         <item name="android:tint">@color/fiord</item>
     </style>
 
-    <style name="CustomButtonText" />
-
-    <style name="CustomButtonText.Title" parent="TextAppearance.MaterialComponents.Subtitle2" />
-
-    <style name="CustomButtonText.Description" parent="TextAppearance.MaterialComponents.Caption" />
-
-    <style name="CustomButtonText.Action" parent="TextAppearance.MaterialComponents.Body2">
+    <style name="GridButtonActionStyle">
         <item name="fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/navyBlue</item>
+        <item name="textAppearance">?attr/textAppearanceBody2</item>
+        <item name="android:textAppearance">?attr/textAppearanceBody2</item>
     </style>
 
     <style name="EditText">
