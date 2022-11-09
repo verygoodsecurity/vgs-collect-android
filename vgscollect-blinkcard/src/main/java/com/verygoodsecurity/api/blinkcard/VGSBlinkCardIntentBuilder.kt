@@ -13,6 +13,7 @@ import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.STYLE_RES_ID
 /**
  * Used to create Intent instance which is required to start scanner.
  */
+@Suppress("unused")
 class VGSBlinkCardIntentBuilder(
     private val activity: Activity
 ) {
