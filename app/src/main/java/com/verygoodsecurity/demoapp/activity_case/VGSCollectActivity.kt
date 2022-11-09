@@ -11,7 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntent
+import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
@@ -264,7 +264,7 @@ class VGSCollectActivity : AppCompatActivity(), VgsCollectResponseListener, View
     }
 
     private fun scanCard() {
-        val scantIntent = VGSBlinkCardIntent.Builder(this)
+        val scantIntent = VGSBlinkCardIntentBuilder(this)
             .setCardNumberFieldName(cardNumberField.getFieldName())
             .setCardHolderFieldName(cardHolderField.getFieldName())
             .setExpirationDateFieldName(cardExpDateField.getFieldName())
