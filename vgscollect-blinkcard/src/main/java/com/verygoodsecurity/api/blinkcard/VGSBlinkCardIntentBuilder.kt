@@ -25,7 +25,7 @@ class VGSBlinkCardIntentBuilder(
     private var styleId: Int? = null
 
     /**
-     * Allows to set customize UI by configuring style resource for labels, appearance, etc..
+     * Allows to customize UI by configuring style resource for labels, appearance, etc..
      *
      * @param resId resource id
      */
@@ -34,7 +34,7 @@ class VGSBlinkCardIntentBuilder(
     }
 
     /**
-     * Sets card number field name. The name is used for data data mapping after scan.
+     * Sets card number field name. The name is used for data mapping after scan.
      *
      * @param fieldName the name of the card number field
      */
@@ -43,7 +43,7 @@ class VGSBlinkCardIntentBuilder(
     }
 
     /**
-     * Sets expiration date field name. The name is used for data data mapping after scan.
+     * Sets expiration date field name. The name is used for data mapping after scan.
      *
      * @param fieldName the name of the expiration date field
      */
@@ -52,7 +52,7 @@ class VGSBlinkCardIntentBuilder(
     }
 
     /**
-     * Sets cvc field name. The name is used for data data mapping after scan.
+     * Sets cvc field name. The name is used for data mapping after scan.
      *
      * @param fieldName the name of the cvc field
      */
@@ -61,7 +61,7 @@ class VGSBlinkCardIntentBuilder(
     }
 
     /**
-     * Sets card holder field name. The name is used for data data mapping after scan.
+     * Sets card holder field name. The name is used for data mapping after scan.
      *
      * @param fieldName the name of the card holder field
      */
