@@ -1,7 +1,6 @@
 package com.verygoodsecurity.api.blinkcard
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
@@ -27,8 +26,42 @@ internal class ScanActivity : BaseTransmitActivity() {
     private var expDateFieldName: String? = null
     private var cHolderFieldName: String? = null
 
-    private val blinkCardScanLauncher = registerForActivityResult(MbScan()) {
-        checkBlinkResults(it)
+    private val blinkCardScanLauncher = registerForActivityResult(MbScan()) { results ->
+        results.resultStatus.run {
+            when (this) {
+                null -> RESULT_OK
+                ScanResult.ResultStatus.FINISHED -> {
+                    results.data?.let { mRecognizerBundle.loadFromIntent(it) }
+                    processRecognitionResults()
+                    RESULT_OK
+                }
+                ScanResult.ResultStatus.CANCELLED -> {
+                    addAnalyticInfo(Status.CLOSE)
+                    RESULT_CANCELED
+                }
+                ScanResult.ResultStatus.EXCEPTION -> {
+                    notifyFailedStatus(getString(R.string.vgs_bc_warning_exception))
+                    RESULT_OK
+                }
+            }
+        }.also {
+            setScanResult(it)
+        }
+        finish()
+    }
+
+    private fun processRecognitionResults() {
+        mRecognizer.result.let {
+            mapData(ccFieldName, it.cardNumber)
+            mapData(cvcFieldName, it.cvv)
+            mapData(cHolderFieldName, it.owner)
+            mapData(expDateFieldName, it.expiryDate.parseDate())
+
+            when (it.processingStatus) {
+                BlinkCardProcessingStatus.Success -> addAnalyticInfo(Status.SUCCESS)
+                else -> addAnalyticInfo(Status.FAILED)
+            }
+        }
     }
 
     @SuppressLint("SourceLockedOrientationActivity")
@@ -46,32 +79,19 @@ internal class ScanActivity : BaseTransmitActivity() {
 
             blinkCardScanLauncher.launch(settings)
         } else {
+            setScanResult(RESULT_OK)
             finish()
         }
     }
 
-    private fun checkBlinkResults(result: ScanResult) {
-        when (result.resultStatus) {
-            ScanResult.ResultStatus.FINISHED -> parseScanResult(
-                RESULT_OK,
-                result.data
-            )
-            ScanResult.ResultStatus.CANCELLED -> parseScanResult(
-                RESULT_CANCELED
-            )
-            else -> parseScanResult(RESULT_OK)
+    private fun parseSettings() {
+        intent.extras?.let {
+            ccFieldName = it.getString(CC, "")
+            cvcFieldName = it.getString(CVC, "")
+            expDateFieldName = it.getString(EXP_DATE, "")
+            cHolderFieldName = it.getString(C_HOLDER, "")
+            styleId = it.getInt(STYLE_RES_ID)
         }
-    }
-
-    private fun parseScanResult(resultCode: Int, data: Intent? = null) {
-        when (resultCode) {
-            RESULT_OK -> data?.let {
-                processRecognitionResults(data)
-            } ?: notifyFailedStatus(getString(R.string.vgs_bc_warning_exception))
-            RESULT_CANCELED -> addAnalyticInfo(Status.CLOSE)
-        }
-        setScanResult(resultCode)
-        finish()
     }
 
     private fun notifyFailedStatus(message: String) = with(message) {
@@ -90,40 +110,6 @@ internal class ScanActivity : BaseTransmitActivity() {
         setOverlayViewStyle(styleId ?: return@apply)
     }
 
-    private fun parseSettings() {
-        intent.extras?.let {
-            ccFieldName = it.getString(CC, "")
-            cvcFieldName = it.getString(CVC, "")
-            expDateFieldName = it.getString(EXP_DATE, "")
-            cHolderFieldName = it.getString(C_HOLDER, "")
-            styleId = it.getInt(STYLE_RES_ID)
-        }
-    }
-
-    private fun processRecognitionResults(data: Intent) {
-        mRecognizerBundle.loadFromIntent(data)
-        mRecognizer.result.let {
-            mapData(ccFieldName, it.cardNumber)
-            mapData(cvcFieldName, it.cvv)
-            mapData(cHolderFieldName, it.owner)
-            mapData(expDateFieldName, parseDate(it.expiryDate))
-
-            when (it.processingStatus) {
-                BlinkCardProcessingStatus.Success -> addAnalyticInfo(Status.SUCCESS)
-                else -> addAnalyticInfo(Status.FAILED)
-            }
-        }
-    }
-
-    private fun parseDate(originalDate: DateResult): Any {
-        return originalDate.date.takeIf { it != null && it.month > 0 && it.year > 0 }
-            ?.run {
-                Calendar.getInstance().run {
-                    set(year, month, day)
-                    time.time
-                }
-            } ?: originalDate.originalDateString
-    }
 
     private fun addAnalyticInfo(status: Status, details: String? = null) {
         mapData(RESULT_TYPE, SCAN)
@@ -140,5 +126,15 @@ internal class ScanActivity : BaseTransmitActivity() {
         internal const val EXP_DATE: String = "VgsExpDate"
         internal const val STYLE_RES_ID: String = "StyleResId"
         private const val NAME: String = "BlinkCard"
+
+        internal fun DateResult.parseDate(): Any {
+            return date.takeIf { it != null && it.month > 0 && it.year > 0 }
+                ?.run {
+                    Calendar.getInstance().run {
+                        set(year, month, day)
+                        time.time
+                    }
+                } ?: originalDateString
+        }
     }
 }
