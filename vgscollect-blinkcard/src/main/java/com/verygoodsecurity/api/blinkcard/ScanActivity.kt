@@ -57,9 +57,12 @@ internal class ScanActivity : BaseTransmitActivity() {
             mapData(cHolderFieldName, it.owner)
             mapData(expDateFieldName, it.expiryDate.parseDate())
 
-            when (it.processingStatus) {
-                BlinkCardProcessingStatus.Success -> addAnalyticInfo(Status.SUCCESS)
-                else -> addAnalyticInfo(Status.FAILED)
+            if (it.processingStatus == BlinkCardProcessingStatus.Success) {
+                addAnalyticInfo(Status.SUCCESS)
+            } else {
+                notifyFailedStatus(
+                    getString(R.string.vgs_bc_warning_exception_details, it.processingStatus)
+                )
             }
         }
     }
@@ -95,7 +98,7 @@ internal class ScanActivity : BaseTransmitActivity() {
     }
 
     private fun notifyFailedStatus(message: String) = with(message) {
-        Log.e(getString(R.string.module_name), this)
+        Log.w(getString(R.string.module_name), this)
         addAnalyticInfo(Status.FAILED, this)
     }
 
