@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.card.CardType
 
 /**
- * You can use this class to create custom Drawables as a preview image for the [CardVerificationCodeEditText].
+ * You can use this class to create custom Drawables as a preview image for the [com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText].
  */
 open class CVCIconAdapter(private val context: Context) {
 
@@ -27,7 +27,7 @@ open class CVCIconAdapter(private val context: Context) {
         AppCompatResources.getDrawable(context, resId) ?: defaultIcon
 
     /**
-     * Returns prepared Drawable to display in [CardVerificationCodeEditText]
+     * Returns prepared Drawable to display in [com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText].
      *
      * @param cardType detected card brand type
      * @param cardBrand card brand name
