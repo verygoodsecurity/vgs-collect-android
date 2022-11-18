@@ -240,8 +240,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     override fun setText(text: CharSequence?, type: BufferType?) {
-        if(datePickerMode == DatePickerMode.SPINNER ||
-            datePickerMode == DatePickerMode.CALENDAR) {
+        if (!text.isNullOrEmpty() && (datePickerMode == DatePickerMode.SPINNER || datePickerMode == DatePickerMode.CALENDAR)) {
             try {
                 fieldDateFormat?.parse(text.toString())
                 super.setText(text, type)
