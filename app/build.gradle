@@ -83,6 +83,7 @@ dependencies {
 
     testImplementation testLibs.junit
 
+    androidTestImplementation androidTestLibs.androidx.core
     androidTestImplementation androidTestLibs.androidx.runner
     androidTestImplementation androidTestLibs.androidx.rules
     androidTestImplementation androidTestLibs.androidx.junit.ext
