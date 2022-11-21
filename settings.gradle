@@ -41,7 +41,7 @@ dependencyResolutionManagement {
         }
         androidTestLibs {
             library('androidx-core', 'androidx.test:core:1.5.0')
-            library('androidx-runner', 'androidx.test:runner:1.4.0')
+            library('androidx-runner', 'androidx.test:runner:1.5.1')
             library('androidx-rules', 'androidx.test:rules:1.5.0')
             library('androidx-junit-ext', 'androidx.test.ext:junit:1.1.4')
             library('androidx-junit-ext-ktx', 'androidx.test.ext:junit-ktx:1.1.4')
