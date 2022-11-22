@@ -55,6 +55,14 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+repositories {
+    maven { url "https://jitpack.io" }
 }
 
 repositories {
@@ -79,6 +87,7 @@ dependencies {
 
     testImplementation testLibs.junit
 
+    androidTestImplementation androidTestLibs.androidx.core
     androidTestImplementation androidTestLibs.androidx.runner
     androidTestImplementation androidTestLibs.androidx.rules
     androidTestImplementation androidTestLibs.androidx.junit.ext

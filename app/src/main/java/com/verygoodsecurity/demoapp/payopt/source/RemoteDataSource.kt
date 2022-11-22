@@ -13,22 +13,13 @@ class RemoteDataSource {
     private val handler = Handler(Looper.getMainLooper())
 
     fun fetchAccessToken(listener: ResponseListener<String>) {
-        Fuel.post(BuildConfig.ACCESS_TOKEN_URL)
-            .responseString { _, _, result ->
-                handler.post {
-                    try {
-                        when (result) {
-                            is Result.Success -> {
-                                val token = JSONObject(result.get()).getString("access_token")
-                                listener.onSuccess(token)
-                            }
-                            is Result.Failure -> listener.onError(result.error.toString())
-                        }
-                    } catch (e: Exception) {
-                        listener.onError(e.toString())
-                    }
-                }
+        makeRequest(BuildConfig.ACCESS_TOKEN_URL, null, emptyList(), {
+            try {
+                listener.onSuccess(JSONObject(it).getString("access_token"))
+            } catch (e: Exception) {
+                listener.onError(e.toString())
             }
+        }, listener::onError)
     }
 
     fun createOrder(token: String, listener: ResponseListener<String>) {
@@ -49,50 +40,57 @@ class RemoteDataSource {
             })
         }.toString()
 
-        Fuel.post(BuildConfig.CREATE_ORDER_URL)
-            .body(body)
-            .header("X-Auth-Token", token)
-            .header("Content-Type", "application/json")
-            .responseString { _, _, result ->
-                handler.post {
-                    try {
-                        when (result) {
-                            is Result.Success -> {
-                                val id =
-                                    JSONObject(result.get()).getJSONObject("data").getString("id")
-                                listener.onSuccess(id)
-                            }
-                            is Result.Failure -> listener.onError(result.error.toString())
-                        }
-                    } catch (e: Exception) {
-                        listener.onError(e.toString())
-                    }
+        makeRequest(
+            BuildConfig.CREATE_ORDER_URL,
+            body,
+            listOf("X-Auth-Token" to token, "Content-Type" to "application/json"),
+            {
+                try {
+                    listener.onSuccess(JSONObject(it).getJSONObject("data").getString("id"))
+                } catch (e: Exception) {
+                    listener.onError(e.toString())
                 }
-            }
+            },
+            listener::onError
+        )
     }
 
     fun createPayment(
-        token: String,
-        instrumentId: String,
-        orderId: String,
-        listener: ResponseListener<String>
+        token: String, instrumentId: String, orderId: String, listener: ResponseListener<String>
     ) {
-        val body = JSONObject().apply {
-            put("order_id", orderId)
-            put("source", instrumentId)
-        }.toString()
+        makeRequest(
+            BuildConfig.PAYMENT_URL,
+            JSONObject().apply {
+                put("order_id", orderId)
+                put("source", instrumentId)
+            }.toString(),
+            listOf("Authorization" to "Bearer $token"),
+            listener::onSuccess,
+            listener::onError
+        )
+    }
 
-        Fuel.post(BuildConfig.PAYMENT_URL)
-            .body(body)
-            .header("Authorization", "Bearer $token")
-            .header("Content-Type", "application/json")
-            .responseString { _, _, result ->
-                handler.post {
-                    when (result) {
-                        is Result.Success -> listener.onSuccess(result.value)
-                        is Result.Failure -> listener.onError(result.error.toString())
-                    }
+    private fun makeRequest(
+        url: String,
+        body: String?,
+        headers: List<Pair<String, Any>>,
+        onSuccess: (response: String) -> Unit,
+        onError: (message: String) -> Unit
+    ) {
+        if (url.isEmpty()) {
+            onError.invoke("Invalid url!")
+            return
+        }
+        val request = Fuel.post(url)
+        body?.let { request.body(it) }
+        headers.forEach { request.header(it.first, it.second) }
+        request.responseString { _, _, result ->
+            handler.post {
+                when (result) {
+                    is Result.Success -> onSuccess.invoke(result.value)
+                    is Result.Failure -> onError.invoke(result.error.toString())
                 }
             }
+        }
     }
 }

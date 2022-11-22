@@ -8,18 +8,22 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.card.CardType
 
 /**
- * You can use this class to create custom Drawables as a preview image for the [VGSCardNumberEditText].
+ * You can use this class to create custom Drawables as a preview image for the [com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText].
  */
-open class CardIconAdapter(
-    private val context: Context
-) {
+open class CardIconAdapter(private val context: Context) {
+
+    private val defaultIcon: Drawable by lazy {
+        AppCompatResources.getDrawable(context, R.drawable.ic_card_back_preview_dark)!!
+    }
+
+    private val defaultWidth: Int = context.resources.getDimension(R.dimen.c_icon_size_w).toInt()
+    private val defaultHeight: Int = context.resources.getDimension(R.dimen.c_icon_size_h).toInt()
 
     /**
      * Returns a drawable object associated with a particular resource ID.
      */
-    protected fun getDrawable(resId: Int): Drawable {
-        return AppCompatResources.getDrawable(context, resId) ?: AppCompatResources.getDrawable(context, R.drawable.ic_card_back_preview_dark)!!
-    }
+    protected fun getDrawable(resId: Int): Drawable =
+        AppCompatResources.getDrawable(context, resId) ?: defaultIcon
 
     /**
      * Return the Rect object for the drawable's bounds. You may change the object returned by this
@@ -29,31 +33,10 @@ open class CardIconAdapter(
      *
      * @return The bounds for the drawable.
      */
-    private fun getBounds(): Rect {
-        val c_icon_size_w = context.resources.getDimension(R.dimen.c_icon_size_w).toInt()
-        val c_icon_size_h = context.resources.getDimension(R.dimen.c_icon_size_h).toInt()
-
-        return Rect(0, 0, c_icon_size_w, c_icon_size_h)
-    }
-
-    /** @suppress */
-    internal fun getItem(
-        cardType: CardType,
-        name: String?,
-        resId: Int,
-        r:Rect
-    ):Drawable {
-
-        val icon = getIcon(cardType, name, resId, r)
-        if(icon.bounds.isEmpty) {
-            icon.bounds = getBounds()
-        }
-
-        return icon
-    }
+    protected open fun getDefaultBounds(): Rect = Rect(0, 0, defaultWidth, defaultHeight)
 
     /**
-     * Returns prepared Drawable to display in [VGSCardNumberEditText]
+     * Returns prepared Drawable to display in [com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText]
      * This method trigger when field detect new cardBrand.
      *
      * @param cardType detected card brand type
@@ -67,12 +50,24 @@ open class CardIconAdapter(
         cardType: CardType,
         name: String?,
         resId: Int,
-        r:Rect
-    ):Drawable {
+        r: Rect
+    ): Drawable {
         val drawable = getDrawable(resId)
-
-        drawable.bounds = getBounds()
-
+        drawable.bounds = getDefaultBounds()
         return drawable
+    }
+
+    /** @suppress */
+    internal fun getItem(
+        cardType: CardType,
+        name: String?,
+        resId: Int,
+        r: Rect
+    ): Drawable {
+        val icon = getIcon(cardType, name, resId, r)
+        if (icon.bounds.isEmpty) {
+            icon.bounds = getDefaultBounds()
+        }
+        return icon
     }
 }

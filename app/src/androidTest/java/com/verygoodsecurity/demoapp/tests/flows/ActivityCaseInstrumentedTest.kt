@@ -18,7 +18,7 @@ import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.demoapp.Utils
 import com.verygoodsecurity.demoapp.actions.SetTextAction
-import com.verygoodsecurity.demoapp.activity_case.VGSCollectActivity
+import com.verygoodsecurity.demoapp.collect_activity.CollectActivity
 import com.verygoodsecurity.demoapp.matchers.withCardCVCState
 import com.verygoodsecurity.demoapp.matchers.withCardExpDateState
 import com.verygoodsecurity.demoapp.matchers.withCardHolderState
@@ -28,6 +28,7 @@ import io.card.payment.CreditCard
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.notNullValue
 import org.hamcrest.core.StringContains.containsString
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -56,8 +57,8 @@ class ActivityCaseInstrumentedTest {
 
         const val CITY = "new city"
 
-        const val CODE_200 = "Code: 200"
-        const val CODE_1001 = "Code: 1001"
+        const val CODE_200 = "CODE: 200"
+        const val CODE_1001 = "CODE: 1001"
     }
 
     @get:Rule
@@ -67,15 +68,20 @@ class ActivityCaseInstrumentedTest {
 
     @Before
     fun prepareDevice() {
+        init()
         device = UiDevice.getInstance(getInstrumentation())
+        device.setOrientationNatural()
+    }
+
+    @After
+    fun teardown() {
+        release()
     }
 
     @Test
     fun test_scan_card() {
-        init()
-
         startMainScreen()
-        intended(hasComponent(VGSCollectActivity::class.qualifiedName))
+        intended(hasComponent(CollectActivity::class.qualifiedName))
 
         interactWithScanner()
 
@@ -84,10 +90,7 @@ class ActivityCaseInstrumentedTest {
 
         pauseTestFor(7000)
 
-        val responseContainer = interactWithResponseContainer()
-        responseContainer.check(matches(withText(containsString(CODE_200))))
-
-        release()
+        interactWithResponseContainer().check(matches(withText(containsString(CODE_200))))
     }
 
 
@@ -100,7 +103,7 @@ class ActivityCaseInstrumentedTest {
         intending(hasComponent(CardIOActivity::class.qualifiedName))
             .respondWith(ActivityResult(Activity.RESULT_OK, intent))
 
-        performClick(onView(withId(R.id.scan_card)))
+        onView(withId(R.id.scan_card)).perform(click())
     }
 
     @Test
@@ -138,15 +141,15 @@ class ActivityCaseInstrumentedTest {
     fun test_submit_flow() {
         startMainScreen()
 
-        val responseContainer = interactWithResponseContainer()
-        val submitBtn = interactWithSubmitButton()
-
-        val postalCode = interactWithPostalCode()
-        val city = interactWithCity()
-        val cardInputField = interactWithCardNumber()
         val cardHolderNameInputField = interactWithCardHolderName()
+        val cardInputField = interactWithCardNumber()
+        val postalCode = interactWithPostalCode()
         val cardExpDateInputField = interactWithCardExpDate()
         val cardCVCInputField = interactWithCardCVC()
+        val city = interactWithCity()
+
+        val submitBtn = interactWithSubmitButton()
+        val responseContainer = interactWithResponseContainer()
 
         cardInputField.perform(SetTextAction(CARD_NUMBER_WRONG_1))
         cardHolderNameInputField.perform(SetTextAction(CARD_HOLDER_WRONG))
@@ -190,9 +193,7 @@ class ActivityCaseInstrumentedTest {
     }
 
     private fun interactWithResponseContainer(): ViewInteraction {
-        return onView(withId(R.id.responseContainerView))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+        return onView(withId(R.id.tvResponseCode))
     }
 
     private fun startMainScreen() {
@@ -213,59 +214,60 @@ class ActivityCaseInstrumentedTest {
     }
 
     private fun interactWithCardCVC(): ViewInteraction {
-        val cardCVCField = onView(withId(R.id.cardCVCField))
+        val cardCVCField = onView(withId(R.id.vgsTiedCvc))
             .check(matches(not(isDisplayed())))
-        onView(withId(R.id.cardCVCFieldLay))
+        onView(withId(R.id.vgsTilCvc))
             .check(matches(isDisplayed()))
 
         return cardCVCField
     }
 
     private fun interactWithCardExpDate(): ViewInteraction {
-        val cardExpDateField = onView(withId(R.id.cardExpDateField))
+        val cardExpDateField = onView(withId(R.id.vgsTiedExpiry))
             .check(matches(not(isDisplayed())))
-        onView(withId(R.id.cardExpDateFieldLay))
+        onView(withId(R.id.vgsTilExpiry))
             .check(matches(isDisplayed()))
 
         return cardExpDateField
     }
 
     private fun interactWithCardHolderName(): ViewInteraction {
-        val cardHolderField = onView(withId(R.id.cardHolderField))
+        val cardHolderField = onView(withId(R.id.vgsTiedCardHolder))
             .check(matches(not(isDisplayed())))
-        onView(withId(R.id.cardHolderFieldLay))
+        onView(withId(R.id.vgsTilCardHolder))
             .check(matches(isDisplayed()))
 
         return cardHolderField
     }
 
     private fun interactWithCity(): ViewInteraction {
-        return onView(withId(R.id.cityField))
+        return onView(withId(R.id.vgsTiedCity))
             .check(matches(not(isDisplayed())))
     }
 
     private fun interactWithPostalCode(): ViewInteraction {
-        return onView(withId(R.id.postalCodeField))
+        return onView(withId(R.id.vgsTiedPostalCode))
             .check(matches(not(isDisplayed())))
     }
 
     private fun interactWithCardNumber(): ViewInteraction {
-        val cardInputField = onView(withId(R.id.cardNumberField))
+        val cardInputField = onView(withId(R.id.vgsTiedCardNumber))
             .check(matches(not(isDisplayed())))
-        onView(withId(R.id.cardNumberFieldLay))
+        onView(withId(R.id.vgsTilCardNumber))
             .check(matches(isDisplayed()))
 
         return cardInputField
     }
 
     private fun interactWithSubmitButton(): ViewInteraction {
-        return onView(withId(R.id.submitBtn))
+        return onView(withId(R.id.mbSubmit))
             .perform(scrollTo())
             .check(matches(isDisplayed()))
     }
 
     private fun performClick(interaction: ViewInteraction) {
         pauseTestFor(200)
+        interaction.perform(scrollTo())
         interaction.perform(click())
     }
 

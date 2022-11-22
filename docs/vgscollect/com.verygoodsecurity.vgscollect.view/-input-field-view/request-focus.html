@@ -6,10 +6,18 @@
     <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
     <script>var pathToRoot = "../../../";</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-const savedDarkMode = storage ? JSON.parse(storage) : false
-if(savedDarkMode === true){
-    document.getElementsByTagName("html")[0].classList.add("theme-dark")
-}</script>
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
@@ -21,6 +29,7 @@ if(savedDarkMode === true){
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
 </head>
 <body>
 <div class="navigation-wrapper" id="navigation-wrapper">
@@ -31,7 +40,7 @@ if(savedDarkMode === true){
             </a>
     </div>
     <div>
-1.7.3    </div>
+1.7.4    </div>
     <div class="pull-right d-flex">
         <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
@@ -43,11 +52,11 @@ if(savedDarkMode === true){
     </div>
     <div id="main">
 <div class="main-content" id="content" pageIds="vgscollect::com.verygoodsecurity.vgscollect.view/InputFieldView/requestFocus/#kotlin.Int#android.graphics.Rect?/PointingToDeclaration//1122815226">
-  <div class="breadcrumbs"><a href="../../../index.html">vgscollect</a><span class="delimiter">/</span><a href="../index.html">com.verygoodsecurity.vgscollect.view</a><span class="delimiter">/</span><a href="index.html">InputFieldView</a><span class="delimiter">/</span><a href="request-focus.html">requestFocus</a></div>
+  <div class="breadcrumbs"><a href="../../../index.html">vgscollect</a><span class="delimiter">/</span><a href="../index.html">com.verygoodsecurity.vgscollect.view</a><span class="delimiter">/</span><a href="index.html">InputFieldView</a><span class="delimiter">/</span><span class="current">requestFocus</span></div>
   <div class="cover ">
     <h1 class="cover"><span>request</span><wbr></wbr><span><span>Focus</span></span></h1>
   </div>
-  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="request-focus.html"><span class="token function">requestFocus</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">direction<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">previouslyFocusedRect<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Rect.html">Rect</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Call this to try to give focus to a specific view or to one of its descendants and give it hints about the direction and a specific rectangle that the focus is coming from.  The rectangle can help give larger views a finer grained hint about where focus is coming from, and therefore, where to show selection, or forward focus change internally.</p><p class="paragraph">A view will not actually take focus if it is not focusable (isFocusable} returns false), or if it is focusable and it is not focusable in touch mode (isFocusableInTouchMode) while the device is in touch mode.</p><p class="paragraph">A View will not take focus if it is not visible.</p><p class="paragraph">See also focusSearch(int), which is what you call to say that you have focus, and you want your parent to look for the next one.</p><p class="paragraph">You may wish to override this method if your custom {@link View} has an internal View that it wishes to forward the request to.</p><h4 class="">Return</h4><p class="paragraph">Whether this view or one of its descendants actually took focus.</p><h2 class="">Parameters</h2><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>direction</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">One of FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, and FOCUS_RIGHT</p></div></div></div></div></div><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span>previously</span><wbr></wbr><span>Focused</span><wbr></wbr><span><span>Rect</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The rectangle (in this View's coordinate system)     to give a finer grained hint about where focus is coming from.  May be null     if there is no hint.</p></div></div></div></div></div></div></div></div></div>
+  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="request-focus.html"><span class="token function">requestFocus</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">direction<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">previouslyFocusedRect<span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/android/graphics/Rect.html">Rect</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><p class="paragraph">Call this to try to give focus to a specific view or to one of its descendants and give it hints about the direction and a specific rectangle that the focus is coming from.  The rectangle can help give larger views a finer grained hint about where focus is coming from, and therefore, where to show selection, or forward focus change internally.</p><p class="paragraph">A view will not actually take focus if it is not focusable (isFocusable} returns false), or if it is focusable and it is not focusable in touch mode (isFocusableInTouchMode) while the device is in touch mode.</p><p class="paragraph">A View will not take focus if it is not visible.</p><p class="paragraph">See also focusSearch(int), which is what you call to say that you have focus, and you want your parent to look for the next one.</p><p class="paragraph">You may wish to override this method if your custom {@link View} has an internal View that it wishes to forward the request to.</p><span class="kdoc-tag"><h4 class="">Return</h4><p class="paragraph">Whether this view or one of its descendants actually took focus.</p></span><h4 class="">Parameters</h4><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><u><span><span>direction</span></span></u></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">One of FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, and FOCUS_RIGHT</p></div></div></div></div></div><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><u><span>previously</span><wbr></wbr><span>Focused</span><wbr></wbr><span><span>Rect</span></span></u></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The rectangle (in this View's coordinate system)     to give a finer grained hint about where focus is coming from.  May be null     if there is no hint.</p></div></div></div></div></div></div></div></div></div>
 </div>
       <div class="footer">
         <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span

@@ -3,8 +3,7 @@ package com.verygoodsecurity.demoapp.tests.flows
 import android.widget.DatePicker
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -180,20 +179,15 @@ class ViewPagerCaseInstrumentedTest {
     }
 
     private fun startMainScreen() {
-        val startWithActivityBtn = onView(withId(R.id.llCollectViewPagerFlow))
-            .perform(scrollTo())
+        val startViewPagerFlor = onView(withId(R.id.llCollectViewPagerFlow))
+            .perform(closeSoftKeyboard(), scrollTo())
             .check(matches(isDisplayed()))
 
-        startWithActivityBtn.perform(click())
+        startViewPagerFlor.perform(click())
     }
 
     private fun interactWithNextButton(): ViewInteraction {
         return onView(withId(R.id.nextBtn))
-            .check(matches(isDisplayed()))
-    }
-
-    private fun interactWithBackButton(): ViewInteraction {
-        return onView(withId(R.id.backBtn))
             .check(matches(isDisplayed()))
     }
 

@@ -119,25 +119,25 @@
                 android:padding="@dimen/margin_padding_material_small">
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:text="@string/start_payopt" />
+                    android:text="@string/start_payopt"
+                    android:textAppearance="?attr/textAppearanceSubtitle2" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_material_micro"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:lines="2"
-                    android:text="@string/start_payopt_description" />
+                    android:text="@string/start_payopt_description"
+                    android:textAppearance="?attr/textAppearanceCaption" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Action"
+                    style="@style/GridButtonActionStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_material_micro"
@@ -158,25 +158,25 @@
                 android:padding="@dimen/margin_padding_material_small">
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:text="@string/start_tokenization_activity_title" />
+                    android:text="@string/start_tokenization_activity_title"
+                    android:textAppearance="?attr/textAppearanceSubtitle2" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_material_micro"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:lines="2"
-                    android:text="@string/start_tokenization_activity_description" />
+                    android:text="@string/start_tokenization_activity_description"
+                    android:textAppearance="?attr/textAppearanceCaption" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Action"
+                    style="@style/GridButtonActionStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_material_micro"
@@ -198,25 +198,25 @@
                 android:padding="@dimen/margin_padding_material_small">
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:text="@string/start_collect_with_activity_title" />
+                    android:text="@string/start_collect_with_activity_title"
+                    android:textAppearance="?attr/textAppearanceSubtitle2" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_material_micro"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:lines="2"
-                    android:text="@string/start_collect_with_activity_description" />
+                    android:text="@string/start_collect_with_activity_description"
+                    android:textAppearance="?attr/textAppearanceCaption" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Action"
+                    style="@style/GridButtonActionStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_material_micro"
@@ -239,25 +239,25 @@
                 android:padding="@dimen/margin_padding_material_small">
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:text="@string/start_collect_with_fragment_title" />
+                    android:text="@string/start_collect_with_fragment_title"
+                    android:textAppearance="?attr/textAppearanceSubtitle2" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_material_micro"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:lines="2"
-                    android:text="@string/start_collect_with_fragment_description" />
+                    android:text="@string/start_collect_with_fragment_description"
+                    android:textAppearance="?attr/textAppearanceCaption" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Action"
+                    style="@style/GridButtonActionStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_material_micro"
@@ -279,25 +279,25 @@
                 android:padding="@dimen/margin_padding_material_small">
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:text="@string/start_collect_with_view_pager_title" />
+                    android:text="@string/start_collect_with_view_pager_title"
+                    android:textAppearance="?attr/textAppearanceSubtitle2" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_material_micro"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:lines="2"
-                    android:text="@string/start_collect_with_view_pager_description" />
+                    android:text="@string/start_collect_with_view_pager_description"
+                    android:textAppearance="?attr/textAppearanceCaption" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    style="@style/CustomButtonText.Action"
+                    style="@style/GridButtonActionStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_padding_material_micro"
