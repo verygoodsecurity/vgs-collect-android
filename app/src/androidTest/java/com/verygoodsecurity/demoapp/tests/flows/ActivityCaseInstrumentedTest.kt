@@ -28,6 +28,7 @@ import io.card.payment.CreditCard
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.notNullValue
 import org.hamcrest.core.StringContains.containsString
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -67,14 +68,18 @@ class ActivityCaseInstrumentedTest {
 
     @Before
     fun prepareDevice() {
+        init()
         device = UiDevice.getInstance(getInstrumentation())
         device.setOrientationNatural()
     }
 
+    @After
+    fun teardown() {
+        release()
+    }
+
     @Test
     fun test_scan_card() {
-        init()
-
         startMainScreen()
         intended(hasComponent(CollectActivity::class.qualifiedName))
 
@@ -86,8 +91,6 @@ class ActivityCaseInstrumentedTest {
         pauseTestFor(7000)
 
         interactWithResponseContainer().check(matches(withText(containsString(CODE_200))))
-
-        release()
     }
 
 
@@ -100,7 +103,7 @@ class ActivityCaseInstrumentedTest {
         intending(hasComponent(CardIOActivity::class.qualifiedName))
             .respondWith(ActivityResult(Activity.RESULT_OK, intent))
 
-        performClick(onView(withId(R.id.scan_card)))
+        onView(withId(R.id.scan_card)).perform(click())
     }
 
     @Test
@@ -138,15 +141,15 @@ class ActivityCaseInstrumentedTest {
     fun test_submit_flow() {
         startMainScreen()
 
-        val responseContainer = interactWithResponseContainer()
-        val submitBtn = interactWithSubmitButton()
-
-        val postalCode = interactWithPostalCode()
-        val city = interactWithCity()
-        val cardInputField = interactWithCardNumber()
         val cardHolderNameInputField = interactWithCardHolderName()
+        val cardInputField = interactWithCardNumber()
+        val postalCode = interactWithPostalCode()
         val cardExpDateInputField = interactWithCardExpDate()
         val cardCVCInputField = interactWithCardCVC()
+        val city = interactWithCity()
+
+        val submitBtn = interactWithSubmitButton()
+        val responseContainer = interactWithResponseContainer()
 
         cardInputField.perform(SetTextAction(CARD_NUMBER_WRONG_1))
         cardHolderNameInputField.perform(SetTextAction(CARD_HOLDER_WRONG))
@@ -264,6 +267,7 @@ class ActivityCaseInstrumentedTest {
 
     private fun performClick(interaction: ViewInteraction) {
         pauseTestFor(200)
+        interaction.perform(scrollTo())
         interaction.perform(click())
     }
 
