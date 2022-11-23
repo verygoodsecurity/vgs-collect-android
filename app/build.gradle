@@ -65,6 +65,10 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
 dependencies {
     implementation project(":vgscollect")
     implementation project(":vgscollect-cardio")

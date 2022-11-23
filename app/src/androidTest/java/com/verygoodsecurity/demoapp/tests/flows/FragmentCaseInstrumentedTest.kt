@@ -27,6 +27,7 @@ import io.card.payment.CreditCard
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.core.StringContains
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -50,8 +51,8 @@ class FragmentCaseInstrumentedTest {
         const val CARD_CVC_WRONG = "12"
         const val CARD_CVC= "123"
 
-        const val CODE_200= "Code: 200"
-        const val CODE_1001= "Code: 1001"
+        const val CODE_200= "CODE: 200"
+        const val CODE_1001= "CODE: 1001"
     }
 
     @get:Rule
@@ -61,14 +62,17 @@ class FragmentCaseInstrumentedTest {
 
     @Before
     fun prepareDevice() {
+        init()
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
     }
 
+    @After
+    fun teardown() {
+        release()
+    }
 
     @Test
     fun test_scan_card() {
-        init()
-
         startMainScreen()
 
         interactWithScanner()
@@ -80,8 +84,6 @@ class FragmentCaseInstrumentedTest {
 
         val responseContainer  = interactWithResponseContainer()
         responseContainer.check(matches(withText(containsString(ActivityCaseInstrumentedTest.CODE_200))))
-
-        release()
     }
 
     private fun interactWithScanner() = apply {

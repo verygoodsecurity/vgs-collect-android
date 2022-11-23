@@ -1,5 +1,6 @@
 package com.verygoodsecurity.demoapp.fragment_case
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
@@ -155,15 +156,11 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
         super.onDestroy()
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResponse(response: VGSResponse?) {
         setEnabledResponseHeader(true)
         setStateLoading(false)
-
-        when (response) {
-            is VGSResponse.SuccessResponse -> responseContainerView?.text = response.toString()
-            is VGSResponse.ErrorResponse -> responseContainerView?.text = response.toString()
-            else -> return
-        }
+        responseContainerView?.text = "CODE: ${response?.code.toString()}"
     }
 
     override fun onStateChange(state: FieldState) {
