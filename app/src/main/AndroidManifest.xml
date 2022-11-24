@@ -15,7 +15,7 @@
         tools:replace="android:allowBackup">
 
         <activity
-            android:name=".StartActivity"
+            android:name=".GooglePayDemo"
             android:exported="true"
             android:screenOrientation="portrait"
             android:label="Very Good Security"
@@ -28,6 +28,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+<!--        <activity-->
+<!--            android:name=".StartActivity"-->
+<!--            android:exported="true"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            android:label="Very Good Security"-->
+<!--            tools:ignore="LockedOrientationActivity">-->
+
+<!--            <intent-filter>-->
+
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
         <activity
             android:name=".collect_activity.CollectActivity"
@@ -66,5 +81,9 @@
         <activity
             android:name=".instrumented.CustomBrandsActivity"
             android:label="Instrumented Demo" />
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
     </application>
 </manifest>
