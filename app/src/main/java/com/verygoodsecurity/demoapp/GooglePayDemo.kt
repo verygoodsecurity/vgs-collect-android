@@ -77,17 +77,9 @@ class GooglePayDemo : AppCompatActivity() {
 
             val signature = tokenJson.getString("signature")
 
-            val signedKeyValue = JSONObject(
-                tokenJson
-                    .getJSONObject("intermediateSigningKey")
-                    .getString("signedKey")
-            ).getString("keyValue")
-
-            val keyExpiration = JSONObject(
-                tokenJson
-                    .getJSONObject("intermediateSigningKey")
-                    .getString("signedKey")
-            ).getString("keyExpiration")
+            val signedKey =   tokenJson
+                .getJSONObject("intermediateSigningKey")
+                .getString("signedKey")
 
             val signaturesJsonArray =
                 tokenJson.getJSONObject("intermediateSigningKey").getJSONArray("signatures")
@@ -95,34 +87,16 @@ class GooglePayDemo : AppCompatActivity() {
             val protocolVersion = tokenJson.getString("protocolVersion")
 
 
-            val encryptedMessage = JSONObject(
-                tokenJson.getString("signedMessage")
-            ).getString("encryptedMessage")
-
-
-            val ephemeralPublicKey = JSONObject(
-                tokenJson.getString("signedMessage")
-            ).getString("ephemeralPublicKey")
-
-            val tag = JSONObject(
-                tokenJson.getString("signedMessage")
-            ).getString("tag")
+            val signedMessage =  tokenJson.getString("signedMessage")
 
             val result = JSONObject().apply {
                 put("signature", signature)
                 put("intermediateSigningKey", JSONObject().apply {
-                    put("signedKey", JSONObject().apply {
-                        put("keyValue", signedKeyValue)
-                        put("keyExpiration", keyExpiration)
-                    })
+                    put("signedKey", signedKey)
                     put("signatures", signaturesJsonArray)
                 })
                 put("protocolVersion", protocolVersion)
-                put("signedMessage", JSONObject().apply {
-                    put("encryptedMessage", encryptedMessage)
-                    put("ephemeralPublicKey", ephemeralPublicKey)
-                    put("tag", tag)
-                })
+                put("signedMessage", signedMessage)
             }
 
             Log.d("GooglePaymentToken", result.toString(4))
