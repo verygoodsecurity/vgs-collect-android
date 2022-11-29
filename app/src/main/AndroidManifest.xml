@@ -15,7 +15,7 @@
         tools:replace="android:allowBackup">
 
         <activity
-            android:name=".GooglePayDemo"
+            android:name=".google_pay.GooglePayDemoActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:label="Very Good Security"

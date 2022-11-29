@@ -84,6 +84,7 @@ dependencies {
     implementation demoLibs.androidx.preference.ktx
     implementation demoLibs.codeview
     implementation demoLibs.fuel
+    implementation demoLibs.gson
 
     debugImplementation debugLibs.leakcanary
 

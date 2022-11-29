@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp
+package com.verygoodsecurity.demoapp.google_pay
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,11 +9,16 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.wallet.*
 import com.verygoodsecurity.demoapp.databinding.GooglePayDemoActvityBinding
+import com.verygoodsecurity.vgscollect.core.Environment
+import com.verygoodsecurity.vgscollect.core.VGSCollect
+import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
+import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-class GooglePayDemo : AppCompatActivity() {
+class GooglePayDemoActivity : AppCompatActivity(), VgsCollectResponseListener {
 
     private lateinit var binding: GooglePayDemoActvityBinding
     private lateinit var paymentsClient: PaymentsClient
@@ -44,12 +49,15 @@ class GooglePayDemo : AppCompatActivity() {
 
     private val merchantInfo: JSONObject = JSONObject().put("merchantName", "Example Merchant")
 
+    private var collect: VGSCollect? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = GooglePayDemoActvityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         paymentsClient = createPaymentsClient()
         possiblyShowGooglePayButton()
+        initCollect()
     }
 
     @Suppress("OVERRIDE_DEPRECATION", "DEPRECATION")
@@ -65,6 +73,10 @@ class GooglePayDemo : AppCompatActivity() {
         }
     }
 
+    override fun onResponse(response: VGSResponse?) {
+        Log.d("Test", response.toString())
+    }
+
     private fun handlePaymentSuccess(data: Intent?) {
         try {
             val paymentData = data?.let { PaymentData.getFromIntent(it) }?.toJson()
@@ -77,17 +89,21 @@ class GooglePayDemo : AppCompatActivity() {
 
             val signature = tokenJson.getString("signature")
 
-            val signedKey =   tokenJson
+            val signedKey = tokenJson
                 .getJSONObject("intermediateSigningKey")
                 .getString("signedKey")
 
             val signaturesJsonArray =
                 tokenJson.getJSONObject("intermediateSigningKey").getJSONArray("signatures")
 
+            val signatures = arrayListOf<String>()
+            for (i in 0 until signaturesJsonArray.length()) {
+                signatures.add(signaturesJsonArray.getString(i))
+            }
+
             val protocolVersion = tokenJson.getString("protocolVersion")
 
-
-            val signedMessage =  tokenJson.getString("signedMessage")
+            val signedMessage = tokenJson.getString("signedMessage")
 
             val result = JSONObject().apply {
                 put("signature", signature)
@@ -98,6 +114,29 @@ class GooglePayDemo : AppCompatActivity() {
                 put("protocolVersion", protocolVersion)
                 put("signedMessage", signedMessage)
             }
+
+            collect?.asyncSubmit(
+                VGSRequest.VGSRequestBuilder()
+                    .setPath("post")
+                    .setCustomData(
+                        mapOf(
+                            "google_pay_payload" to mapOf(
+                                "token" to mapOf(
+                                    "signature" to signature,
+                                    "intermediateSigningKey" to mapOf(
+                                        "signedKey" to signedKey,
+                                        "signatures" to signatures
+                                    ),
+                                    "protocolVersion" to protocolVersion,
+                                    "signedMessage" to signedMessage
+                                )
+                            )
+                        ).also {
+                            Log.d("Test", it.toString())
+                        }
+                    )
+                    .build()
+            )
 
             Log.d("GooglePaymentToken", result.toString(4))
         } catch (e: JSONException) {
@@ -123,6 +162,17 @@ class GooglePayDemo : AppCompatActivity() {
                 // Process error
                 Log.w("isReadyToPay failed", exception)
             }
+        }
+    }
+
+    private fun initCollect() {
+        with(intent?.extras) {
+            collect = VGSCollect(
+                this@GooglePayDemoActivity,
+                "tnt6mrrzrrp",
+                Environment.SANDBOX
+            )
+            collect?.addOnResponseListeners(this@GooglePayDemoActivity)
         }
     }
 
