@@ -15,7 +15,7 @@
         tools:replace="android:allowBackup">
 
         <activity
-            android:name=".google_pay.GooglePayDemoActivity"
+            android:name=".StartActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:label="Very Good Security"
@@ -29,20 +29,9 @@
             </intent-filter>
         </activity>
 
-<!--        <activity-->
-<!--            android:name=".StartActivity"-->
-<!--            android:exported="true"-->
-<!--            android:screenOrientation="portrait"-->
-<!--            android:label="Very Good Security"-->
-<!--            tools:ignore="LockedOrientationActivity">-->
-
-<!--            <intent-filter>-->
-
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+        <activity
+            android:name=".google_pay.GooglePayActivity"
+            android:label="Google Pay" />
 
         <activity
             android:name=".collect_activity.CollectActivity"

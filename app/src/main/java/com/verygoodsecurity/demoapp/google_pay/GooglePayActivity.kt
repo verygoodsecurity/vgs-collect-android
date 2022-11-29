@@ -18,7 +18,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-class GooglePayDemoActivity : AppCompatActivity(), VgsCollectResponseListener {
+class GooglePayActivity : AppCompatActivity(), VgsCollectResponseListener {
 
     private lateinit var binding: GooglePayDemoActvityBinding
     private lateinit var paymentsClient: PaymentsClient
@@ -35,7 +35,6 @@ class GooglePayDemoActivity : AppCompatActivity(), VgsCollectResponseListener {
             "INTERAC",
             "JCB",
             "MASTERCARD",
-            "MIR",
             "VISA"
         )
     )
@@ -168,11 +167,11 @@ class GooglePayDemoActivity : AppCompatActivity(), VgsCollectResponseListener {
     private fun initCollect() {
         with(intent?.extras) {
             collect = VGSCollect(
-                this@GooglePayDemoActivity,
+                this@GooglePayActivity,
                 "tnt6mrrzrrp",
                 Environment.SANDBOX
             )
-            collect?.addOnResponseListeners(this@GooglePayDemoActivity)
+            collect?.addOnResponseListeners(this@GooglePayActivity)
         }
     }
 
