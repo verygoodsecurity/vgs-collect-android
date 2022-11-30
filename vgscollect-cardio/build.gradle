@@ -28,8 +28,8 @@ android {
 }
 
 detekt {
-    buildUponDefaultConfig = true
-    allRules = true
+    buildUponDefaultConfig = false
+    allRules = false
     config = files("$project.rootDir/.circleci/detekt.yml")
 }
 
