@@ -20,140 +20,71 @@ import org.json.JSONObject
 
 class GooglePayActivity : AppCompatActivity(), VgsCollectResponseListener {
 
+    companion object {
+
+        private const val PAYMENT_REQUEST_CODE = 999
+    }
+
     private lateinit var binding: GooglePayDemoActvityBinding
-    private lateinit var paymentsClient: PaymentsClient
+
+    private val client: PaymentsClient by lazy {
+        Wallet.getPaymentsClient(
+            this, Wallet.WalletOptions.Builder()
+                .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
+                .build()
+        )
+    }
+
+    private val collect: VGSCollect by lazy {
+        VGSCollect(this, "tnt6mrrzrrp", Environment.SANDBOX).also {
+            it.addOnResponseListeners(this)
+        }
+    }
 
     private val baseRequest = JSONObject().apply {
         put("apiVersion", 2)
         put("apiVersionMinor", 0)
     }
 
-    private val allowedCardNetworks = JSONArray(
-        listOf(
-            "AMEX",
-            "DISCOVER",
-            "INTERAC",
-            "JCB",
-            "MASTERCARD",
-            "VISA"
-        )
-    )
-
-    private val allowedCardAuthMethods = JSONArray(
-        listOf(
-            "PAN_ONLY",
-            "CRYPTOGRAM_3DS"
-        )
-    )
-
-    private val merchantInfo: JSONObject = JSONObject().put("merchantName", "Example Merchant")
-
-    private var collect: VGSCollect? = null
+    private val baseCardPaymentMethod = JSONObject().apply {
+        put("type", "CARD")
+        put("parameters", JSONObject().apply {
+            put("allowedAuthMethods", JSONArray(listOf("PAN_ONLY", "CRYPTOGRAM_3DS")))
+            put(
+                "allowedCardNetworks",
+                JSONArray(listOf("AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"))
+            )
+        })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = GooglePayDemoActvityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        paymentsClient = createPaymentsClient()
         possiblyShowGooglePayButton()
-        initCollect()
     }
 
     @Suppress("OVERRIDE_DEPRECATION", "DEPRECATION")
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 999) {
-            binding.mbGooglePay.isClickable = true
-            when (resultCode) {
-                RESULT_OK -> handlePaymentSuccess(data)
-                RESULT_CANCELED -> showToast("Payment canceled")
-                AutoResolveHelper.RESULT_ERROR -> {}
-            }
+        if (requestCode == PAYMENT_REQUEST_CODE) {
+            handlePaymentRequestResult(resultCode, data)
         }
     }
 
     override fun onResponse(response: VGSResponse?) {
-        Log.d("Test", response.toString())
-    }
-
-    private fun handlePaymentSuccess(data: Intent?) {
-        try {
-            val paymentData = data?.let { PaymentData.getFromIntent(it) }?.toJson()
-                ?: throw IllegalStateException("Payment data is null")
-            val paymentMethodData = JSONObject(paymentData).getJSONObject("paymentMethodData")
-            val token = paymentMethodData.getJSONObject("tokenizationData").getString("token")
-
-
-            val tokenJson = JSONObject(token)
-
-            val signature = tokenJson.getString("signature")
-
-            val signedKey = tokenJson
-                .getJSONObject("intermediateSigningKey")
-                .getString("signedKey")
-
-            val signaturesJsonArray =
-                tokenJson.getJSONObject("intermediateSigningKey").getJSONArray("signatures")
-
-            val signatures = arrayListOf<String>()
-            for (i in 0 until signaturesJsonArray.length()) {
-                signatures.add(signaturesJsonArray.getString(i))
-            }
-
-            val protocolVersion = tokenJson.getString("protocolVersion")
-
-            val signedMessage = tokenJson.getString("signedMessage")
-
-            val result = JSONObject().apply {
-                put("signature", signature)
-                put("intermediateSigningKey", JSONObject().apply {
-                    put("signedKey", signedKey)
-                    put("signatures", signaturesJsonArray)
-                })
-                put("protocolVersion", protocolVersion)
-                put("signedMessage", signedMessage)
-            }
-
-            collect?.asyncSubmit(
-                VGSRequest.VGSRequestBuilder()
-                    .setPath("post")
-                    .setCustomData(
-                        mapOf(
-                            "google_pay_payload" to mapOf(
-                                "token" to mapOf(
-                                    "signature" to signature,
-                                    "intermediateSigningKey" to mapOf(
-                                        "signedKey" to signedKey,
-                                        "signatures" to signatures
-                                    ),
-                                    "protocolVersion" to protocolVersion,
-                                    "signedMessage" to signedMessage
-                                )
-                            )
-                        ).also {
-                            Log.d("Test", it.toString())
-                        }
-                    )
-                    .build()
-            )
-
-            Log.d("GooglePaymentToken", result.toString(4))
-        } catch (e: JSONException) {
-            Log.e("handlePaymentSuccess", "Error: $e")
+        when (response) {
+            is VGSResponse.SuccessResponse -> showToast("Payment data successfully decrypted and saved")
+            is VGSResponse.ErrorResponse -> showToast("Payment data decryption failed")
+            else -> throw IllegalArgumentException("Not implemented")
         }
-    }
-
-    private fun createPaymentsClient(): PaymentsClient {
-        val walletOptions = Wallet.WalletOptions.Builder()
-            .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
-            .build()
-        return Wallet.getPaymentsClient(this, walletOptions)
+        Log.d(this::class.java.simpleName, response.toString())
     }
 
     private fun possiblyShowGooglePayButton() {
-        val isReadyToPayJson = isReadyToPayRequest() ?: return
+        val isReadyToPayJson = isReadyToPayRequest()
         val request = IsReadyToPayRequest.fromJson(isReadyToPayJson.toString())
-        val task = paymentsClient.isReadyToPay(request)
+        val task = client.isReadyToPay(request)
         task.addOnCompleteListener { completedTask ->
             try {
                 completedTask.getResult(ApiException::class.java)?.let(::setGooglePayAvailable)
@@ -164,25 +95,9 @@ class GooglePayActivity : AppCompatActivity(), VgsCollectResponseListener {
         }
     }
 
-    private fun initCollect() {
-        with(intent?.extras) {
-            collect = VGSCollect(
-                this@GooglePayActivity,
-                "tnt6mrrzrrp",
-                Environment.SANDBOX
-            )
-            collect?.addOnResponseListeners(this@GooglePayActivity)
-        }
-    }
-
-    private fun isReadyToPayRequest(): JSONObject? {
-        return try {
-            baseRequest.apply {
-                put("allowedPaymentMethods", JSONArray().put(baseCardPaymentMethod()))
-            }
-
-        } catch (e: JSONException) {
-            null
+    private fun isReadyToPayRequest(): JSONObject {
+        return baseRequest.apply {
+            put("allowedPaymentMethods", JSONArray().put(baseCardPaymentMethod))
         }
     }
 
@@ -191,84 +106,110 @@ class GooglePayActivity : AppCompatActivity(), VgsCollectResponseListener {
             binding.mbGooglePay.visibility = View.VISIBLE
             binding.mbGooglePay.setOnClickListener { requestPayment() }
         } else {
-            showToast("Google pay unavailable")
+            showToast("Google pay unavailable.")
         }
     }
 
     private fun requestPayment() {
         binding.mbGooglePay.isClickable = false
-        val paymentDataRequest: JSONObject? = getPaymentDataRequest()
-        if (paymentDataRequest != null) {
-            val request = PaymentDataRequest.fromJson(paymentDataRequest.toString())
-            AutoResolveHelper.resolveTask(paymentsClient.loadPaymentData(request), this, 999)
-        } else {
-            showToast("Can't proceed payment")
-        }
+        val request = PaymentDataRequest.fromJson(paymentDataRequest().toString())
+        AutoResolveHelper.resolveTask(client.loadPaymentData(request), this, PAYMENT_REQUEST_CODE)
     }
 
-    private fun getPaymentDataRequest(): JSONObject? {
-        try {
-            return baseRequest.apply {
-                put("allowedPaymentMethods", JSONArray().put(cardPaymentMethod()))
-                put("transactionInfo", getTransactionInfo())
-                put("merchantInfo", merchantInfo)
-            }
-        } catch (e: JSONException) {
-            return null
-        }
-    }
-
-    private fun getTransactionInfo(): JSONObject {
-        return JSONObject().apply {
-            put("totalPrice", "0.10")
-            put("totalPriceStatus", "FINAL")
-            put("totalPriceLabel", "Total")
-            put("countryCode", "US")
-            put("currencyCode", "USD")
-            put("displayItems", JSONArray().apply {
-                put(JSONObject().apply {
-                    put("label", "Subtotal")
-                    put("type", "SUBTOTAL")
-                    put("price", "11.00")
+    private fun paymentDataRequest(): JSONObject {
+        return baseRequest.apply {
+            put("merchantInfo", JSONObject().put("merchantName", "Example Merchant"))
+            put("allowedPaymentMethods", JSONArray().put(baseCardPaymentMethod.apply {
+                put("tokenizationSpecification", JSONObject().apply {
+                    put("type", "PAYMENT_GATEWAY")
+                    put(
+                        "parameters", JSONObject(
+                            mapOf(
+                                "gateway" to "verygoodsecurity",
+                                "gatewayMerchantId" to "ACk4FamfFXgF8vRTqsuEPvvw"
+                            )
+                        )
+                    )
                 })
-                put(JSONObject().apply {
-                    put("label", "Tax")
-                    put("type", "TAX")
-                    put("price", "0.10")
+            }))
+            put("transactionInfo", JSONObject().apply {
+                put("totalPrice", "11.10")
+                put("totalPriceStatus", "FINAL")
+                put("totalPriceLabel", "Total")
+                put("countryCode", "US")
+                put("currencyCode", "USD")
+                put("displayItems", JSONArray().apply {
+                    put(JSONObject().apply {
+                        put("label", "Subtotal")
+                        put("type", "SUBTOTAL")
+                        put("price", "11.00")
+                    })
+                    put(JSONObject().apply {
+                        put("label", "Tax")
+                        put("type", "TAX")
+                        put("price", "0.10")
+                    })
                 })
             })
         }
     }
 
-    private fun cardPaymentMethod(): JSONObject {
-        val cardPaymentMethod = baseCardPaymentMethod()
-        cardPaymentMethod.put("tokenizationSpecification", gatewayTokenizationSpecification())
-        return cardPaymentMethod
-    }
-
-    private fun baseCardPaymentMethod(): JSONObject {
-        return JSONObject().apply {
-            val parameters = JSONObject().apply {
-                put("allowedAuthMethods", allowedCardAuthMethods)
-                put("allowedCardNetworks", allowedCardNetworks)
+    private fun handlePaymentRequestResult(resultCode: Int, data: Intent?) {
+        binding.mbGooglePay.isClickable = true
+        when (resultCode) {
+            RESULT_OK -> handlePaymentSuccess(data)
+            RESULT_CANCELED -> showToast("Payment canceled")
+            AutoResolveHelper.RESULT_ERROR -> AutoResolveHelper.getStatusFromIntent(data)?.let {
+                showToast("Payment request failed. Code: ${it.statusCode}")
             }
-            put("type", "CARD")
-            put("parameters", parameters)
         }
     }
 
-    private fun gatewayTokenizationSpecification(): JSONObject {
-        return JSONObject().apply {
-            put("type", "PAYMENT_GATEWAY")
-            put(
-                "parameters", JSONObject(
-                    mapOf(
-                        "gateway" to "verygoodsecurity",
-                        "gatewayMerchantId" to "ACk4FamfFXgF8vRTqsuEPvvw"
+    private fun handlePaymentSuccess(data: Intent?) {
+        try {
+            val paymentData = data?.let { PaymentData.getFromIntent(it) }?.toJson()
+                ?: throw IllegalStateException("Payment data is null")
+
+            val paymentMethodData = JSONObject(paymentData).getJSONObject("paymentMethodData")
+            val tokenizationData = paymentMethodData.getJSONObject("tokenizationData")
+            val token = JSONObject(tokenizationData.getString("token"))
+            Log.d(this::class.java.simpleName, token.toString(4))
+            val intermediateSigningKey = token.getJSONObject("intermediateSigningKey")
+            val signaturesJsonArray = intermediateSigningKey.getJSONArray("signatures")
+
+            val signatures = arrayListOf<String>()
+            for (i in 0 until signaturesJsonArray.length()) {
+                signatures.add(signaturesJsonArray.getString(i))
+            }
+
+            decryptAndSaveToken(
+                mapOf(
+                    "google_pay_payload" to mapOf(
+                        "token" to mapOf(
+                            "signature" to token.getString("signature"),
+                            "intermediateSigningKey" to mapOf(
+                                "signedKey" to token.getJSONObject("intermediateSigningKey")
+                                    .getString("signedKey"),
+                                "signatures" to signatures
+                            ),
+                            "protocolVersion" to token.getString("protocolVersion"),
+                            "signedMessage" to token.getString("signedMessage")
+                        )
                     )
                 )
             )
+        } catch (e: JSONException) {
+            showToast("Payment request failed. Error: $e")
         }
+    }
+
+    private fun decryptAndSaveToken(data: Map<String, Any>) {
+        collect.asyncSubmit(
+            VGSRequest.VGSRequestBuilder()
+                .setPath("post")
+                .setCustomData(data)
+                .build()
+        )
     }
 
     private fun showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
