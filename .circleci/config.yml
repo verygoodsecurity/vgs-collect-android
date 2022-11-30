@@ -26,7 +26,7 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: Run Detekt
-          run: ./gradlew app:detekt vgscollect:detekt vgscollect-cardio:detekt --continue --parallel
+          command: ./gradlew app:detekt vgscollect:detekt vgscollect-cardio:detekt --continue --parallel
       - run:
           name: Run Unit tests
           command: ./gradlew testDebugUnitTest
