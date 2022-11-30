@@ -103,15 +103,15 @@ class GooglePayActivity : AppCompatActivity(), VgsCollectResponseListener {
 
     private fun setGooglePayAvailable(available: Boolean) {
         if (available) {
-            binding.mbGooglePay.visibility = View.VISIBLE
-            binding.mbGooglePay.setOnClickListener { requestPayment() }
+            binding.flGooglePayButton.visibility = View.VISIBLE
+            binding.flGooglePayButton.setOnClickListener { requestPayment() }
         } else {
             showToast("Google pay unavailable.")
         }
     }
 
     private fun requestPayment() {
-        binding.mbGooglePay.isClickable = false
+        binding.flGooglePayButton.isClickable = false
         val request = PaymentDataRequest.fromJson(paymentDataRequest().toString())
         AutoResolveHelper.resolveTask(client.loadPaymentData(request), this, PAYMENT_REQUEST_CODE)
     }
@@ -155,7 +155,7 @@ class GooglePayActivity : AppCompatActivity(), VgsCollectResponseListener {
     }
 
     private fun handlePaymentRequestResult(resultCode: Int, data: Intent?) {
-        binding.mbGooglePay.isClickable = true
+        binding.flGooglePayButton.isClickable = true
         when (resultCode) {
             RESULT_OK -> handlePaymentSuccess(data)
             RESULT_CANCELED -> showToast("Payment canceled")
