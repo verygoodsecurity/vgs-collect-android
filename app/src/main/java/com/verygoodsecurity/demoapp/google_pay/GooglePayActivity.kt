@@ -8,8 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.wallet.*
+import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.demoapp.databinding.GooglePayDemoActvityBinding
-import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
@@ -36,8 +36,12 @@ class GooglePayActivity : AppCompatActivity(), VgsCollectResponseListener {
     }
 
     private val collect: VGSCollect by lazy {
-        VGSCollect(this, "tnt6mrrzrrp", Environment.SANDBOX).also {
-            it.addOnResponseListeners(this)
+        with(intent?.extras) {
+            VGSCollect(
+                this@GooglePayActivity,
+                this?.getString(StartActivity.KEY_BUNDLE_VAULT_ID) ?: "",
+                this?.getString(StartActivity.KEY_BUNDLE_ENVIRONMENT) ?: ""
+            ).apply { addOnResponseListeners(this@GooglePayActivity) }
         }
     }
 
