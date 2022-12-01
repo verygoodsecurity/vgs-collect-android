@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
+    id 'io.gitlab.arturbosch.detekt'
 }
 
 android {
@@ -61,8 +62,10 @@ android {
     }
 }
 
-repositories {
-    maven { url "https://jitpack.io" }
+detekt {
+    buildUponDefaultConfig = false
+    allRules = false
+    config = files("$project.rootDir/.detekt/config.yml")
 }
 
 repositories {

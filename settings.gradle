@@ -10,6 +10,7 @@ dependencyResolutionManagement {
             library('maven', 'com.github.dcendents:android-maven-gradle-plugin:2.1')
             library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.22.0')
             library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.7.20')
+            library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.22.0')
         }
         libs {
             // Libraries
