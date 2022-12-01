@@ -65,7 +65,7 @@ jobs:
               --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
               --device model=hammerhead,version=23,locale=en,orientation=portrait \
               --device model=walleye,version=27,locale=en,orientation=portrait \
-              --device model=Pixel3,version=30,locale=en,orientation=portrait \
+              --device model=redfin,version=30,locale=en,orientation=portrait \
               --device model=panther,version=33,locale=en,orientation=portrait \
 
 workflows:
