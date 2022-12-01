@@ -188,7 +188,7 @@ class ActivityCaseInstrumentedTest {
         city.perform(SetTextAction(CITY))
         performClick(submitBtn)
 
-        pauseTestFor(7000)
+        pauseTestFor(10000)
         responseContainer.check(matches(withText(containsString(CODE_200))))
     }
 
