@@ -36,8 +36,8 @@ jobs:
       - when:
           condition:
             equal: [ develop, << pipeline.git.branch >> ]
-            steps:
-              - run: echo "I am on develop"
+          steps:
+            - run: echo "I am on develop"
       - persist_to_workspace:
           root: ~/code
           paths:
