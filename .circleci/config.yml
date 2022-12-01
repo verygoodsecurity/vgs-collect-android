@@ -37,6 +37,12 @@ jobs:
           root: ~/code
           paths:
             - app
+  "Test":
+    - when:
+        condition:
+          equal: [ develop, << pipeline.git.branch >> ]
+          steps:
+            - run: echo "I am on develop"
   "Run_UI_Test":
     <<: *environment
     steps:
@@ -45,7 +51,6 @@ jobs:
       - run:
           name: Check if release branch
           command: |
-            echo $CIRCLE_BRANCH
 #            if [[ $CIRCLE_BRANCH != *"release/"* ]] && [ $CIRCLE_BRANCH != master* ]; then
 #              echo "Skipped, reason: UI tests should be running only on release branches or master!"
 #              circleci-agent step halt
@@ -64,12 +69,13 @@ jobs:
             sudo gcloud firebase test android run \
               --app app/build/outputs/apk/debug/app-debug.apk \
               --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
-              --device model=sailfish,version=21,locale=en,orientation=portrait # Pixel 1 (Android 5, Lollipop) \ 
+              --device model=hammerhead,version=23,locale=en,orientation=portrait # Nexus 5 (Android 6, Marshmallow) \ 
 
 workflows:
   main:
     jobs:
       - "Run_Unit_Test_And_Build"
+      - "Test"
       - "Run_UI_Test":
           requires:
             - "Run_Unit_Test_And_Build"
