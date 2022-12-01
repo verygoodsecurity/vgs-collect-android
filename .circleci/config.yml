@@ -47,9 +47,13 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/code
-#      - run:
-#          name: Check if release branch
-#          command: |
+      - run:
+          name: Check if release branch
+          command: |
+            HEAD_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json headRefName --jq '.headRefName')
+            TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
+
+            echo "$HEAD_BRANCH -> $TARGET_BRANCH"
 #            if [[ $CIRCLE_BRANCH != *"release/"* ]] && [ $CIRCLE_BRANCH != master* ]; then
 #              echo "Skipped, reason: UI tests should be running only on release branches or master!"
 #              circleci-agent step halt
@@ -69,6 +73,7 @@ jobs:
               --app app/build/outputs/apk/debug/app-debug.apk \
               --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
               --device model=hammerhead,version=23,locale=en,orientation=portrait # Nexus 5 (Android 6, Marshmallow) \ 
+              --device model=Pixel2,version=29,locale=en,orientation=portrait # Pixel 2 (Android 10, Quince Tart) \ 
 
 workflows:
   main:
