@@ -72,6 +72,7 @@ jobs:
                     --device model=hammerhead,version=23,locale=en,orientation=portrait \ 
                     --device model=Pixel2,version=29,locale=en,orientation=portrait \ 
                     --device model=panther,version=33,locale=en,orientation=portrait \
+      - run: echo 0
 #    steps:
 #      - attach_workspace:
 #          at: ~/code
