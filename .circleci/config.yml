@@ -35,9 +35,11 @@ jobs:
           command: ./gradlew assembleDebug assembleAndroidTest
       - when:
           condition:
-            equal: [ feature/CSDK-347, << pipeline.git.branch >> ]
+            matches:
+              pattern: "^feature\/.+$"
+              value: << pipeline.git.branch >>
           steps:
-            - run: echo "I am on develop"
+            - run: echo "I am on feature branch"
       - persist_to_workspace:
           root: ~/code
           paths:
@@ -68,9 +70,10 @@ jobs:
             sudo gcloud firebase test android run \
               --app app/build/outputs/apk/debug/app-debug.apk \
               --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
-              --device model=hammerhead,version=23,locale=en,orientation=portrait # Nexus 5 (Android 6, Marshmallow) \ 
-              --device model=Pixel2,version=29,locale=en,orientation=portrait # Pixel 2 (Android 10, Quince Tart) \ 
-              --device model=panther,version=33,locale=en,orientation=portrait # Pixel 7 (Android 13, Tiramisu) \ 
+              --device model=Nexus6,version=21,locale=en,orientation=portrait # Nexus 6 (Android 5, Lollipop, Virtual) \ 
+              --device model=hammerhead,version=23,locale=en,orientation=portrait # Nexus 5 (Android 6, Marshmallow, Physical) \ 
+              --device model=Pixel2,version=29,locale=en,orientation=portrait # Pixel 2 (Android 10, Quince Tart, Physical) \ 
+              --device model=panther,version=33,locale=en,orientation=portrait # Pixel 7 (Android 13, Tiramisu, Physical) \ 
 
 workflows:
   main:
