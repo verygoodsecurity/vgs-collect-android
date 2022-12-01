@@ -35,7 +35,7 @@ jobs:
           command: ./gradlew assembleDebug assembleAndroidTest
       - when:
           condition:
-            equal: [ develop, << pipeline.git.branch >> ]
+            equal: [ feature/CSDK-347, << pipeline.git.branch >> ]
           steps:
             - run: echo "I am on develop"
       - persist_to_workspace:
@@ -47,9 +47,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/code
-      - run:
-          name: Check if release branch
-          command: |
+#      - run:
+#          name: Check if release branch
+#          command: |
 #            if [[ $CIRCLE_BRANCH != *"release/"* ]] && [ $CIRCLE_BRANCH != master* ]; then
 #              echo "Skipped, reason: UI tests should be running only on release branches or master!"
 #              circleci-agent step halt
