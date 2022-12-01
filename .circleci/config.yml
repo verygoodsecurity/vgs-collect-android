@@ -33,16 +33,15 @@ jobs:
       - run:
           name: Generate apk
           command: ./gradlew assembleDebug assembleAndroidTest
+      - when:
+          condition:
+            equal: [ develop, << pipeline.git.branch >> ]
+            steps:
+              - run: echo "I am on develop"
       - persist_to_workspace:
           root: ~/code
           paths:
             - app
-  "Test":
-    - when:
-        condition:
-          equal: [ develop, << pipeline.git.branch >> ]
-          steps:
-            - run: echo "I am on develop"
   "Run_UI_Test":
     <<: *environment
     steps:
@@ -75,7 +74,6 @@ workflows:
   main:
     jobs:
       - "Run_Unit_Test_And_Build"
-      - "Test"
       - "Run_UI_Test":
           requires:
             - "Run_Unit_Test_And_Build"
