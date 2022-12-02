@@ -1,29 +1,18 @@
 package com.verygoodsecurity.demoapp.google_pay.util
 
 import android.app.Activity
-import com.google.android.gms.wallet.PaymentsClient
-import com.google.android.gms.wallet.Wallet
-import com.google.android.gms.wallet.WalletConstants
+import android.content.Intent
+import android.util.Log
+import com.google.android.gms.wallet.*
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
 
 object Payments {
-
-    private const val MERCHANT_NAME = "Example Merchant"
 
     private val baseRequest = JSONObject().apply {
         put("apiVersion", 2)
         put("apiVersionMinor", 0)
     }
-
-    private val allowedCardNetworks =
-        JSONArray(listOf("AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"))
-
-    private val allowedCardAuthMethods = JSONArray(listOf("PAN_ONLY", "CRYPTOGRAM_3DS"))
-
-    private val merchantInfo: JSONObject =
-        JSONObject().put("merchantName", "Example Merchant")
 
     fun createPaymentsClient(
         activity: Activity,
@@ -35,42 +24,72 @@ object Payments {
         return Wallet.getPaymentsClient(activity, walletOptions)
     }
 
-    fun isReadyToPayRequest(): JSONObject? {
-        return try {
-            baseRequest.apply {
-                put("allowedPaymentMethods", JSONArray().put(baseCardPaymentMethod()))
-            }
-
-        } catch (e: JSONException) {
-            null
-        }
+    fun isReadyToPayRequest(): String {
+        return baseRequest.apply {
+            put("allowedPaymentMethods", JSONArray().put(baseCardPaymentMethod()))
+        }.toString()
     }
 
-    fun getPaymentDataRequest(price: String): JSONObject? {
-        return try {
-            baseRequest.apply {
-                put("merchantInfo", getMerchantInfo())
-                put("allowedPaymentMethods", cardPaymentMethod())
-                put("transactionInfo", getTransactionInfo(price))
-            }
-        } catch (e: JSONException) {
-            null
-        }
+    fun paymentDataRequestPayload(price: String): String {
+        return baseRequest.apply {
+            put("merchantInfo", merchantInfo())
+            put("allowedPaymentMethods", JSONArray().put(cardPaymentMethod()))
+            put("transactionInfo", transactionInfo(price))
+        }.toString()
     }
 
-    private fun cardPaymentMethod(): JSONObject {
-        return baseCardPaymentMethod().apply {
-            put("tokenizationSpecification", gatewayTokenizationSpecification())
+    @Throws(Exception::class)
+    fun parsePaymentDataResponse(data: Intent?): Map<Any, Any> {
+        val paymentData = data?.let { PaymentData.getFromIntent(it) }?.toJson()
+            ?: throw IllegalStateException("Payment data is null")
+
+        val paymentMethodData = JSONObject(paymentData).getJSONObject("paymentMethodData")
+        val tokenizationData = paymentMethodData.getJSONObject("tokenizationData")
+        val token = JSONObject(tokenizationData.getString("token"))
+        Log.d(this::class.java.simpleName, token.toString(4))
+        val intermediateSigningKey = token.getJSONObject("intermediateSigningKey")
+        val signaturesJsonArray = intermediateSigningKey.getJSONArray("signatures")
+
+        val signatures = arrayListOf<String>()
+        for (i in 0 until signaturesJsonArray.length()) {
+            signatures.add(signaturesJsonArray.getString(i))
         }
+
+        return mapOf(
+            "token" to mapOf(
+                "signature" to token.getString("signature"),
+                "intermediateSigningKey" to mapOf(
+                    "signedKey" to token.getJSONObject("intermediateSigningKey")
+                        .getString("signedKey"),
+                    "signatures" to signatures
+                ),
+                "protocolVersion" to token.getString("protocolVersion"),
+                "signedMessage" to token.getString("signedMessage")
+            )
+        )
     }
 
     private fun baseCardPaymentMethod(): JSONObject {
         return JSONObject().apply {
             put("type", "CARD")
             put("parameters", JSONObject().apply {
-                put("allowedAuthMethods", allowedCardAuthMethods)
-                put("allowedCardNetworks", allowedCardNetworks)
+                put("allowedAuthMethods", allowedCardAuthMethods())
+                put("allowedCardNetworks", allowedCardNetworks())
             })
+        }
+    }
+
+    private fun allowedCardAuthMethods(): JSONArray {
+        return JSONArray(listOf("PAN_ONLY", "CRYPTOGRAM_3DS"))
+    }
+
+    private fun allowedCardNetworks(): JSONArray {
+        return JSONArray(listOf("AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"))
+    }
+
+    private fun cardPaymentMethod(): JSONObject {
+        return baseCardPaymentMethod().apply {
+            put("tokenizationSpecification", gatewayTokenizationSpecification())
         }
     }
 
@@ -88,7 +107,7 @@ object Payments {
         }
     }
 
-    private fun getTransactionInfo(price: String): JSONObject {
+    private fun transactionInfo(price: String): JSONObject {
         return JSONObject().apply {
             put("totalPrice", price)
             put("totalPriceStatus", "FINAL")
@@ -98,7 +117,7 @@ object Payments {
         }
     }
 
-    private fun getMerchantInfo(): JSONObject {
+    private fun merchantInfo(): JSONObject {
         return JSONObject().put("merchantName", "Example Merchant")
     }
 }
