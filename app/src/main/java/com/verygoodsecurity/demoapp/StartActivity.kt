@@ -5,48 +5,56 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoapp.collect_activity.CollectActivity
+import com.verygoodsecurity.demoapp.databinding.ActivityStartBinding
 import com.verygoodsecurity.demoapp.fragment_case.VGSCollectFragmentActivity
+import com.verygoodsecurity.demoapp.google_pay.GooglePayActivity
 import com.verygoodsecurity.demoapp.payopt.PaymentOptimizationActivity
 import com.verygoodsecurity.demoapp.tokenization.TokenizationActivity
 import com.verygoodsecurity.demoapp.viewpager_case.VGSViewPagerActivity
-import kotlinx.android.synthetic.main.activity_start.*
 
 class StartActivity : AppCompatActivity(R.layout.activity_start) {
 
+    private lateinit var binding: ActivityStartBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityStartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setupViews()
     }
 
     private fun setupViews() {
-        tiedVaultId?.setText(BuildConfig.VAULT_ID)
-        tiedPath?.setText(BuildConfig.PATH)
-        llTokenizationFlow?.setOnClickListener {
+        binding.tiedVaultId.setText(BuildConfig.VAULT_ID)
+        binding.tiedPath.setText(BuildConfig.PATH)
+        binding.llPayopt.setOnClickListener {
+            startActivity(PaymentOptimizationActivity::class.java)
+        }
+        binding.llTokenizationFlow.setOnClickListener {
             startActivity(TokenizationActivity::class.java)
         }
-        llCollectActivityFlow?.setOnClickListener {
+        binding.llGooglePayActivityFlow.setOnClickListener {
+            startActivity(GooglePayActivity::class.java)
+        }
+        binding.llCollectActivityFlow.setOnClickListener {
             startActivity(CollectActivity::class.java)
         }
-        llCollectFragmentFlow?.setOnClickListener {
+        binding.llCollectFragmentFlow.setOnClickListener {
             startActivity(VGSCollectFragmentActivity::class.java)
         }
-        llCollectViewPagerFlow?.setOnClickListener {
+        binding.llCollectViewPagerFlow.setOnClickListener {
             startActivity(VGSViewPagerActivity::class.java)
-        }
-        llPayopt?.setOnClickListener {
-            startActivity(PaymentOptimizationActivity::class.java)
         }
     }
 
     private fun startActivity(activity: Class<out Activity>) {
         startActivity(Intent(this, activity).apply {
-            putExtra(KEY_BUNDLE_VAULT_ID, tiedVaultId.text.toString())
-            putExtra(KEY_BUNDLE_PATH, tiedPath.text.toString())
+            putExtra(KEY_BUNDLE_VAULT_ID, binding.tiedVaultId.text.toString())
+            putExtra(KEY_BUNDLE_PATH, binding.tiedPath.text.toString())
             putExtra(KEY_BUNDLE_ENVIRONMENT, getEnvironment())
         })
     }
 
-    private fun getEnvironment() = when (mbGroupEnvironment.checkedButtonId) {
+    private fun getEnvironment() = when (binding.mbGroupEnvironment.checkedButtonId) {
         R.id.mbSandbox -> SANDBOX
         R.id.mbLive -> LIVE
         else -> throw IllegalArgumentException("Not implemented")
