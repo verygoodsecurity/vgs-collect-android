@@ -202,7 +202,7 @@ class FragmentCaseInstrumentedTest {
 
         performClick(submitBtn)
 
-        pauseTestFor(7000)
+        pauseTestFor(10000)
         responseContainer.check(matches(withText(StringContains.containsString(CODE_200))))
     }
 
