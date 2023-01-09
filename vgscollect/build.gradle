@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
+    id 'kotlin-parcelize'
     id 'org.jetbrains.dokka'
     id 'com.vanniktech.maven.publish'
     id 'io.gitlab.arturbosch.detekt'
@@ -42,10 +42,6 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-
-    androidExtensions {
-        experimental = true
     }
 
     testOptions {

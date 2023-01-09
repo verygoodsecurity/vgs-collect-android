@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
+import com.verygoodsecurity.demoapp.databinding.ActivityViewpagerCollectDemoBinding
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -17,13 +18,14 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-import kotlinx.android.synthetic.main.activity_viewpager_collect_demo.*
 
 class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
 
     companion object {
         const val USER_SCAN_REQUEST_CODE = 0x7
     }
+
+    private lateinit var binding: ActivityViewpagerCollectDemoBinding
 
     private lateinit var vault_id: String
     private lateinit var path: String
@@ -35,7 +37,8 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_viewpager_collect_demo)
+        binding = ActivityViewpagerCollectDemoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         retrieveSettings()
 
@@ -43,8 +46,9 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
         setupViewPager()
         setupTopCardPreview()
 
-        nextBtn?.setOnClickListener(this)
-        backBtn?.setOnClickListener(this)
+
+        binding.nextBtn.setOnClickListener(this)
+        binding.backBtn.setOnClickListener(this)
 
         vgsForm.addOnResponseListeners(this)
 
@@ -54,8 +58,8 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
     }
 
     private fun setupTopCardPreview() {
-        cardPreviewLayout?.setOnClickListener {
-            val view = viewPager.getChildAt(viewPager.currentItem)
+        binding.cardPreviewLayout.setOnClickListener {
+            val view = binding.viewPager.getChildAt(binding.viewPager.currentItem)
             val layV = view?.findViewById<VGSTextInputLayout>(R.id.cardNumberFieldLay)
             layV?.setError(null)
         }
@@ -74,8 +78,8 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
     }
 
     private fun setupViewPager() {
-        viewPager.adapter = adapter
-        viewPager.isUserInputEnabled = false
+        binding.viewPager.adapter = adapter
+        binding.viewPager.isUserInputEnabled = false
     }
 
     private fun initAdapter() {
@@ -91,12 +95,12 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
         return object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
                 cardValid = state.isValid
-                previewCardNumber?.text = (state as FieldState.CardNumberState).number
+                binding.previewCardNumber.text = (state as FieldState.CardNumberState).number
 
                 if (state.cardBrand == CardType.VISA.name) {
-                    previewCardBrand?.setImageResource(R.drawable.ic_custom_visa)
+                    binding.previewCardBrand.setImageResource(R.drawable.ic_custom_visa)
                 } else {
-                    previewCardBrand?.setImageResource(state.drawableBrandResId)
+                    binding.previewCardBrand.setImageResource(state.drawableBrandResId)
                 }
             }
         }
@@ -154,17 +158,17 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
     }
 
     private fun turnBackPage() {
-        val position = viewPager.currentItem - 1
+        val position = binding.viewPager.currentItem - 1
         if (position < 0) {
-            viewPager?.setCurrentItem(0, false)
+            binding.viewPager.setCurrentItem(0, false)
         } else {
-            viewPager?.setCurrentItem(position, true)
+            binding.viewPager.setCurrentItem(position, true)
         }
 
-        nextBtn?.setText("Next")
-        nextBtn?.icon = AppCompatResources.getDrawable(this, R.drawable.ic_arrow_right)
+        binding.nextBtn.text = "Next"
+        binding.nextBtn.icon = AppCompatResources.getDrawable(this, R.drawable.ic_arrow_right)
 
-        backBtn?.visibility = if (position == 0) {
+        binding.backBtn.visibility = if (position == 0) {
             View.INVISIBLE
         } else {
             View.VISIBLE
@@ -177,7 +181,7 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
     var cardExpDateValid = false
 
     private fun turnPageOn() {
-        val position = viewPager.currentItem + 1
+        val position = binding.viewPager.currentItem + 1
         val isValid: Boolean = when (position) {
             1 -> cardValid
             2 -> cardHolderValid
@@ -186,19 +190,19 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
         }
 
         if (isValid) {
-            backBtn?.visibility = View.VISIBLE
+            binding.backBtn.visibility = View.VISIBLE
             if (position == adapter.itemCount - 1) {
-                nextBtn?.setText("Submit")
-                nextBtn?.icon = null
+                binding.nextBtn.setText("Submit")
+                binding.nextBtn.icon = null
             }
 
             when {
-                position > adapter.itemCount -> viewPager?.setCurrentItem(
-                    viewPager.currentItem,
+                position > adapter.itemCount -> binding.viewPager.setCurrentItem(
+                    binding.viewPager.currentItem,
                     false
                 )
                 position == adapter.itemCount -> submitData()
-                else -> viewPager?.setCurrentItem(position, true)
+                else -> binding.viewPager.setCurrentItem(position, true)
             }
         }
     }
