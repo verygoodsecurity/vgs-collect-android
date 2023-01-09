@@ -3,16 +3,12 @@ package com.verygoodsecurity.demoapp.viewpager_case
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
+import com.verygoodsecurity.demoapp.databinding.ActivityViewpagerCollectDemoBinding
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -29,6 +25,8 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
         const val USER_SCAN_REQUEST_CODE = 0x7
     }
 
+    private lateinit var binding: ActivityViewpagerCollectDemoBinding
+
     private lateinit var vault_id: String
     private lateinit var path: String
     private lateinit var env: Environment
@@ -37,16 +35,10 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
 
     private lateinit var adapter: VGSPageAdapter
 
-    private val cardPreviewLayout: FrameLayout? by lazy { findViewById(R.id.cardPreviewLayout) }
-    private val viewPager: ViewPager2? by lazy { findViewById(R.id.viewPager) }
-    private val previewCardNumber: TextView? by lazy { findViewById(R.id.previewCardNumber) }
-    private val previewCardBrand: ImageView? by lazy { findViewById(R.id.previewCardBrand) }
-    private val nextBtn: MaterialButton? by lazy { findViewById(R.id.nextBtn) }
-    private val backBtn: MaterialButton? by lazy { findViewById(R.id.backBtn) }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_viewpager_collect_demo)
+        binding = ActivityViewpagerCollectDemoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         retrieveSettings()
 
@@ -54,8 +46,9 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
         setupViewPager()
         setupTopCardPreview()
 
-        nextBtn?.setOnClickListener(this)
-        backBtn?.setOnClickListener(this)
+
+        binding.nextBtn.setOnClickListener(this)
+        binding.backBtn.setOnClickListener(this)
 
         vgsForm.addOnResponseListeners(this)
 
@@ -65,12 +58,10 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
     }
 
     private fun setupTopCardPreview() {
-        cardPreviewLayout?.setOnClickListener {
-            viewPager?.let {
-                val view = it.getChildAt(it.currentItem)
-                val layV = view?.findViewById<VGSTextInputLayout>(R.id.cardNumberFieldLay)
-                layV?.setError(null)
-            }
+        binding.cardPreviewLayout.setOnClickListener {
+            val view = binding.viewPager.getChildAt(binding.viewPager.currentItem)
+            val layV = view?.findViewById<VGSTextInputLayout>(R.id.cardNumberFieldLay)
+            layV?.setError(null)
         }
     }
 
@@ -87,8 +78,8 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
     }
 
     private fun setupViewPager() {
-        viewPager?.adapter = adapter
-        viewPager?.isUserInputEnabled = false
+        binding.viewPager.adapter = adapter
+        binding.viewPager.isUserInputEnabled = false
     }
 
     private fun initAdapter() {
@@ -104,12 +95,12 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
         return object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
                 cardValid = state.isValid
-                previewCardNumber?.text = (state as FieldState.CardNumberState).number
+                binding.previewCardNumber.text = (state as FieldState.CardNumberState).number
 
                 if (state.cardBrand == CardType.VISA.name) {
-                    previewCardBrand?.setImageResource(R.drawable.ic_custom_visa)
+                    binding.previewCardBrand.setImageResource(R.drawable.ic_custom_visa)
                 } else {
-                    previewCardBrand?.setImageResource(state.drawableBrandResId)
+                    binding.previewCardBrand.setImageResource(state.drawableBrandResId)
                 }
             }
         }
@@ -167,17 +158,17 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
     }
 
     private fun turnBackPage() {
-        val position = (viewPager?.currentItem ?: 0) - 1
+        val position = binding.viewPager.currentItem - 1
         if (position < 0) {
-            viewPager?.setCurrentItem(0, false)
+            binding.viewPager.setCurrentItem(0, false)
         } else {
-            viewPager?.setCurrentItem(position, true)
+            binding.viewPager.setCurrentItem(position, true)
         }
 
-        nextBtn?.text = "Next"
-        nextBtn?.icon = AppCompatResources.getDrawable(this, R.drawable.ic_arrow_right)
+        binding.nextBtn.text = "Next"
+        binding.nextBtn.icon = AppCompatResources.getDrawable(this, R.drawable.ic_arrow_right)
 
-        backBtn?.visibility = if (position == 0) {
+        binding.backBtn.visibility = if (position == 0) {
             View.INVISIBLE
         } else {
             View.VISIBLE
@@ -190,7 +181,7 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
     var cardExpDateValid = false
 
     private fun turnPageOn() {
-        val position = (viewPager?.currentItem ?: 0) + 1
+        val position = binding.viewPager.currentItem + 1
         val isValid: Boolean = when (position) {
             1 -> cardValid
             2 -> cardHolderValid
@@ -199,19 +190,19 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
         }
 
         if (isValid) {
-            backBtn?.visibility = View.VISIBLE
+            binding.backBtn.visibility = View.VISIBLE
             if (position == adapter.itemCount - 1) {
-                nextBtn?.setText("Submit")
-                nextBtn?.icon = null
+                binding.nextBtn.setText("Submit")
+                binding.nextBtn.icon = null
             }
 
             when {
-                position > adapter.itemCount -> viewPager?.setCurrentItem(
-                    viewPager?.currentItem ?: 0,
+                position > adapter.itemCount -> binding.viewPager.setCurrentItem(
+                    binding.viewPager.currentItem,
                     false
                 )
                 position == adapter.itemCount -> submitData()
-                else -> viewPager?.setCurrentItem(position, true)
+                else -> binding.viewPager.setCurrentItem(position, true)
             }
         }
     }
