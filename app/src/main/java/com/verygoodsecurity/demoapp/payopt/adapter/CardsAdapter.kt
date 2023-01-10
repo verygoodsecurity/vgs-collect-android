@@ -3,20 +3,25 @@ package com.verygoodsecurity.demoapp.payopt.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.radiobutton.MaterialRadioButton
+import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.payopt.model.Card
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
-import kotlinx.android.synthetic.main.payment_optimization_card_item.view.*
-import kotlinx.android.synthetic.main.payment_optimization_new_card_item.view.*
-import kotlinx.android.synthetic.main.payment_optimization_new_card_item.view.mrbIsSelected
+import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
+import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 
 internal class CardsAdapter constructor(
     private val bindListener: NewCardBindListener
@@ -66,16 +71,22 @@ internal class CardsAdapter constructor(
 
     inner class CardViewHolder constructor(view: View) : RecyclerView.ViewHolder(view) {
 
+        private val mrbIsSelected: MaterialRadioButton = view.findViewById(R.id.mrbIsSelected)
+        private val ivBrand: ImageView = view.findViewById(R.id.ivBrand)
+        private val mtvName: MaterialTextView = view.findViewById(R.id.mtvName)
+        private val mtvLastFourAndDate: MaterialTextView =
+            view.findViewById(R.id.mtvLastFourAndDate)
+
         init {
             itemView.setOnClickListener { selected = adapterPosition }
         }
 
         fun bind(card: Card, isSelected: Boolean) {
             itemView.isSelected = isSelected
-            itemView.mrbIsSelected.isChecked = isSelected
-            itemView.ivBrand.setImageResource(getBrandIcon(card.brand))
-            itemView.mtvName.text = card.holderName
-            itemView.mtvLastFourAndDate.text = getFormattedLastFourAndDate(card)
+            mrbIsSelected.isChecked = isSelected
+            ivBrand.setImageResource(getBrandIcon(card.brand))
+            mtvName.text = card.holderName
+            mtvLastFourAndDate.text = getFormattedLastFourAndDate(card)
         }
 
         private fun getFormattedLastFourAndDate(card: Card): String {
@@ -91,8 +102,18 @@ internal class CardsAdapter constructor(
 
     inner class NewCardViewHolder constructor(view: View) : RecyclerView.ViewHolder(view) {
 
+        private val vgsTiedCardHolder: PersonNameEditText =
+            view.findViewById(R.id.vgsTiedCardHolder)
+        private val vgsTiedCardNumber: VGSCardNumberEditText =
+            view.findViewById(R.id.vgsTiedCardNumber)
+        private val vgsTiedExpiry: ExpirationDateEditText = view.findViewById(R.id.vgsTiedExpiry)
+        private val vgsTiedCvc: CardVerificationCodeEditText = view.findViewById(R.id.vgsTiedCvc)
+
+        private val mrbIsSelected: MaterialRadioButton = view.findViewById(R.id.mrbIsSelected)
+        private val llInput: LinearLayoutCompat = view.findViewById(R.id.llInput)
+
         init {
-            itemView.vgsTiedExpiry?.setSerializer(
+            vgsTiedExpiry.setSerializer(
                 VGSExpDateSeparateSerializer(
                     "card.exp_month",
                     "card.exp_year"
@@ -103,17 +124,17 @@ internal class CardsAdapter constructor(
 
         fun bind(isSelected: Boolean) {
             itemView.isSelected = isSelected
-            itemView.mrbIsSelected.isChecked = isSelected
-            itemView.llInput.isVisible = isSelected
+            mrbIsSelected.isChecked = isSelected
+            llInput.isVisible = isSelected
             notifyListener(isSelected)
         }
 
         private fun notifyListener(isSelected: Boolean) {
             val inputs = arrayOf(
-                itemView.vgsTiedCardHolder,
-                itemView.vgsTiedCardNumber,
-                itemView.vgsTiedExpiry,
-                itemView.vgsTiedCvc
+                vgsTiedCardHolder,
+                vgsTiedCardNumber,
+                vgsTiedExpiry,
+                vgsTiedCvc
             )
             if (isSelected) bindListener.bind(inputs) else bindListener.unbind(inputs)
         }
