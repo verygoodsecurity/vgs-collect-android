@@ -6,29 +6,32 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoapp.R
+import com.verygoodsecurity.demoapp.databinding.InstrumentedActivityCustomBrandBinding
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
-import kotlinx.android.synthetic.main.instrumented_activity_custom_brand.*
 
 class CustomBrandsActivity : AppCompatActivity(), View.OnClickListener {
+
+    private lateinit var binding: InstrumentedActivityCustomBrandBinding
 
     var cardNumber: VGSCardNumberEditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.instrumented_activity_custom_brand)
+        binding = InstrumentedActivityCustomBrandBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        cardNumber = xmlCardNumber
+        cardNumber = binding.xmlCardNumber
         cardNumber?.requestFocus()
 
-        createCardNumber?.setOnClickListener(this)
-        addBrandBtn?.setOnClickListener(this)
-        applyDividerBtn?.setOnClickListener(this)
-        inflateCardNumberLay?.setOnClickListener(this)
-        attachInflatedCardNumberLay?.setOnClickListener(this)
-        overrideExistedBrandBtn?.setOnClickListener(this)
+        binding.createCardNumber.setOnClickListener(this)
+        binding.addBrandBtn.setOnClickListener(this)
+        binding.applyDividerBtn.setOnClickListener(this)
+        binding.inflateCardNumberLay.setOnClickListener(this)
+        binding.attachInflatedCardNumberLay.setOnClickListener(this)
+        binding.overrideExistedBrandBtn.setOnClickListener(this)
     }
 
     private fun createCardNumber() {
@@ -52,7 +55,7 @@ class CustomBrandsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun attachInflatedCardNumberLayout() {
-        parentLay?.addView(cardNumber, 0)
+        binding.parentLay.addView(cardNumber, 0)
         cardNumber?.requestFocus()
     }
 
