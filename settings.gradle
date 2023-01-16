@@ -47,7 +47,7 @@ dependencyResolutionManagement {
             library('androidx-junit-ext', 'androidx.test.ext:junit:1.1.5')
             library('androidx-junit-ext-ktx', 'androidx.test.ext:junit-ktx:1.1.5')
             library('androidx-uiautomator', 'androidx.test.uiautomator:uiautomator:2.2.0')
-            library('androidx-espresso-core', 'androidx.test.espresso:espresso-core:3.5.0')
+            library('androidx-espresso-core', 'androidx.test.espresso:espresso-core:3.5.1')
             library('androidx-espresso-intents', 'androidx.test.espresso:espresso-intents:3.5.1')
             library('espresso-contrib', 'com.android.support.test.espresso:espresso-contrib:3.0.2')
         }
