@@ -5,6 +5,8 @@ import com.verygoodsecurity.vgscollect.core.api.isEnvironmentValid
 import com.verygoodsecurity.vgscollect.core.api.isTennantIdValid
 import com.verygoodsecurity.vgscollect.core.api.isURLValid
 import com.verygoodsecurity.vgscollect.core.api.setupURL
+import com.verygoodsecurity.vgscollect.core.isLive
+import com.verygoodsecurity.vgscollect.core.isSandbox
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -185,5 +187,57 @@ class UrlExtensionTest {
 
         val url5 = tennant.setupURL("SANDBOX-EU-1")
         assertTrue(Pattern.compile(URL_REGEX).matcher(url5).matches())
+    }
+
+    @Test
+    fun isLive_trueReturned() {
+        // Arrange
+        val environmentOne = "live"
+        val environmentTwo = "live-eu"
+        // Act
+        val resultOne = environmentOne.isLive()
+        val resultTwo = environmentTwo.isLive()
+        // Assert
+        assertTrue(resultOne)
+        assertTrue(resultTwo)
+    }
+
+    @Test
+    fun isLive_falseReturned() {
+        // Arrange
+        val environmentOne = "li-ve-eu"
+        val environmentTwo = "sandbox"
+        // Act
+        val resultOne = environmentOne.isLive()
+        val resultTwo = environmentTwo.isLive()
+        // Assert
+        assertFalse(resultOne)
+        assertFalse(resultTwo)
+    }
+
+    @Test
+    fun isSandbox_trueReturned() {
+        // Arrange
+        val environmentOne = "sandbox"
+        val environmentTwo = "sandbox-eu"
+        // Act
+        val resultOne = environmentOne.isSandbox()
+        val resultTwo = environmentTwo.isSandbox()
+        // Assert
+        assertTrue(resultOne)
+        assertTrue(resultTwo)
+    }
+
+    @Test
+    fun isSandbox_falseReturned() {
+        // Arrange
+        val environmentOne = "sand-box-eu"
+        val environmentTwo = "live"
+        // Act
+        val resultOne = environmentOne.isSandbox()
+        val resultTwo = environmentTwo.isSandbox()
+        // Assert
+        assertFalse(resultOne)
+        assertFalse(resultTwo)
     }
 }
