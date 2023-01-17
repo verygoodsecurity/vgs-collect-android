@@ -69,11 +69,13 @@ detekt {
 
 repositories {
     maven { url "https://jitpack.io" }
+    maven { url 'https://maven.microblink.com' }
 }
 
 dependencies {
     implementation project(":vgscollect")
     implementation project(":vgscollect-cardio")
+    implementation project(":vgscollect-blinkcard")
 
     implementation 'com.google.android.gms:play-services-wallet:19.1.0'
 
