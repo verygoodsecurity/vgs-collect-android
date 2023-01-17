@@ -76,9 +76,6 @@ dependencies {
     implementation project(":vgscollect")
     implementation project(":vgscollect-cardio")
     implementation project(":vgscollect-blinkcard")
-    implementation('com.microblink:blinkcard:2.6.0@aar') {
-        transitive = true
-    }
 
     implementation 'com.google.android.gms:play-services-wallet:19.1.0'
 
