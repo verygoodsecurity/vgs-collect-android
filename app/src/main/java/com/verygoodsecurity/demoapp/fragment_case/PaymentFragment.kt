@@ -1,15 +1,14 @@
 package com.verygoodsecurity.demoapp.fragment_case
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.R
+import com.verygoodsecurity.demoapp.databinding.FragmentPaymentBinding
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -18,13 +17,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
-import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.CardType
-import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
-import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
-import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
-import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
-import kotlinx.android.synthetic.main.activity_collect_demo.*
 
 class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChangeListener,
     View.OnClickListener {
@@ -41,15 +34,7 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
 
     private lateinit var vgsForm: VGSCollect
 
-    private var cardNumberField: InputFieldView? = null
-    private var cardCVCField: InputFieldView? = null
-    private var cardHolderField: InputFieldView? = null
-    private var cardExpDateField: InputFieldView? = null
-
-    private var responseContainerView: TextView? = null
-    private var stateContainerView: TextView? = null
-    private var previewCardNumber: TextView? = null
-    private var previewCardBrand: ImageView? = null
+    private lateinit var binding: FragmentPaymentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,10 +73,10 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
         val intent = Intent(activity, ScanActivity::class.java)
 
         val scanSettings = hashMapOf<String?, Int>().apply {
-            this[cardNumberField?.getFieldName()] = ScanActivity.CARD_NUMBER
-            this[cardCVCField?.getFieldName()] = ScanActivity.CARD_CVC
-            this[cardHolderField?.getFieldName()] = ScanActivity.CARD_HOLDER
-            this[cardExpDateField?.getFieldName()] = ScanActivity.CARD_EXP_DATE
+            this[binding.cardNumberField.getFieldName()] = ScanActivity.CARD_NUMBER
+            this[binding.cardCVCField.getFieldName()] = ScanActivity.CARD_CVC
+            this[binding.cardHolderField.getFieldName()] = ScanActivity.CARD_HOLDER
+            this[binding.cardExpDateField.getFieldName()] = ScanActivity.CARD_EXP_DATE
         }
 
         intent.putExtra(ScanActivity.SCAN_CONFIGURATION, scanSettings)
@@ -116,8 +101,9 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_payment, container, false)
+    ): View {
+        binding = FragmentPaymentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -127,22 +113,13 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
     }
 
     private fun initializeViews() {
-        cardNumberField = view?.findViewById<VGSCardNumberEditText>(R.id.cardNumberField)
-        vgsForm.bindView(cardNumberField)
-        cardCVCField = view?.findViewById<CardVerificationCodeEditText>(R.id.cardCVCField)
-        vgsForm.bindView(cardCVCField)
-        cardHolderField = view?.findViewById<PersonNameEditText>(R.id.cardHolderField)
-        vgsForm.bindView(cardHolderField)
-        cardExpDateField = view?.findViewById<ExpirationDateEditText>(R.id.cardExpDateField)
-        vgsForm.bindView(cardExpDateField)
+        vgsForm.bindView(binding.cardNumberField)
+        vgsForm.bindView(binding.cardCVCField)
+        vgsForm.bindView(binding.cardHolderField)
+        vgsForm.bindView(binding.cardExpDateField)
 
-        responseContainerView = view?.findViewById(R.id.responseContainerView)
-        stateContainerView = view?.findViewById(R.id.stateContainerView)
-        previewCardNumber = view?.findViewById(R.id.previewCardNumber)
-        previewCardBrand = view?.findViewById(R.id.previewCardBrand)
-
-        view?.findViewById<MaterialButton>(R.id.submitBtn)?.setOnClickListener(this)
-        view?.findViewById<MaterialButton>(R.id.attachBtn)?.setOnClickListener(this)
+        binding.submitBtn.setOnClickListener(this)
+        binding.attachBtn.setOnClickListener(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -155,15 +132,11 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
         super.onDestroy()
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResponse(response: VGSResponse?) {
         setEnabledResponseHeader(true)
         setStateLoading(false)
-
-        when (response) {
-            is VGSResponse.SuccessResponse -> responseContainerView?.text = response.toString()
-            is VGSResponse.ErrorResponse -> responseContainerView?.text = response.toString()
-            else -> return
-        }
+        binding.responseContainerView.text = "CODE: ${response?.code.toString()}"
     }
 
     override fun onStateChange(state: FieldState) {
@@ -172,11 +145,11 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
     }
 
     private fun handleCardNumberState(state: FieldState.CardNumberState) {
-        previewCardNumber?.text = state.number
+        binding.previewCardNumber.text = state.number
         if (state.cardBrand == CardType.VISA.name) {
-            previewCardBrand?.setImageResource(R.drawable.ic_custom_visa)
+            binding.previewCardBrand.setImageResource(R.drawable.ic_custom_visa)
         } else {
-            previewCardBrand?.setImageResource(state.drawableBrandResId)
+            binding.previewCardBrand.setImageResource(state.drawableBrandResId)
         }
     }
 
@@ -186,7 +159,7 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
         states.forEach {
             builder.append(it.toString()).append("\n\n")
         }
-        stateContainerView?.text = builder.toString()
+        binding.stateContainerView.text = builder.toString()
     }
 
     override fun onClick(v: View) {
@@ -218,15 +191,15 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
 
     private fun setEnabledResponseHeader(isEnabled: Boolean) {
         if (isEnabled) {
-            attachBtn.setTextColor(
+            binding.attachBtn.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.state_active
                 )
             )
         } else {
-            responseContainerView?.text = ""
-            attachBtn.setTextColor(
+            binding.responseContainerView.text = ""
+            binding.attachBtn.setTextColor(
                 ContextCompat.getColor(
                     requireActivity(),
                     R.color.state_unactive
@@ -237,19 +210,19 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
 
     private fun setStateLoading(state: Boolean) {
         if (state) {
-            progressBar?.visibility = View.VISIBLE
-            submitBtn?.isEnabled = false
-            attachBtn?.isEnabled = false
+            binding.progressBar.visibility = View.VISIBLE
+            binding.submitBtn.isEnabled = false
+            binding.attachBtn.isEnabled = false
         } else {
-            progressBar?.visibility = View.INVISIBLE
-            submitBtn?.isEnabled = true
-            attachBtn?.isEnabled = true
+            binding.progressBar.visibility = View.INVISIBLE
+            binding.submitBtn.isEnabled = true
+            binding.attachBtn.isEnabled = true
         }
     }
 
     private fun attachFile() {
         if (vgsForm.getFileProvider().getAttachedFiles().isEmpty()) {
-            vgsForm.getFileProvider().attachFile(requireActivity(),"attachments.file")
+            vgsForm.getFileProvider().attachFile(requireActivity(), "attachments.file")
         } else {
             vgsForm.getFileProvider().detachAll()
         }

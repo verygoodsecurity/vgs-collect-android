@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
+    id 'io.gitlab.arturbosch.detekt'
 }
 
 android {
@@ -55,6 +55,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+detekt {
+    buildUponDefaultConfig = false
+    allRules = false
+    config = files("$project.rootDir/.detekt/config.yml")
 }
 
 repositories {
@@ -70,6 +80,8 @@ dependencies {
         transitive = true
     }
 
+    implementation 'com.google.android.gms:play-services-wallet:19.1.0'
+
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
     implementation libs.material
@@ -84,6 +96,7 @@ dependencies {
 
     testImplementation testLibs.junit
 
+    androidTestImplementation androidTestLibs.androidx.core
     androidTestImplementation androidTestLibs.androidx.runner
     androidTestImplementation androidTestLibs.androidx.rules
     androidTestImplementation androidTestLibs.androidx.junit.ext

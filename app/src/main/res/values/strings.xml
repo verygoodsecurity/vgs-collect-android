@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">VGS Collect Demo</string>
-    <!--    Start screen-->
-    <string name="start_activity_app_bar_title">Very Good Security</string>
 
+    <!--    Start screen-->
     <string name="start_activity_vault_id_hint">Vault id</string>
     <string name="start_activity_path_hint">Path (Only for collect flow)</string>
 
@@ -14,6 +13,9 @@
 
     <string name="start_tokenization_activity_title">Tokenization</string>
     <string name="start_tokenization_activity_description">Tokenize data without additional backend setup required.</string>
+
+    <string name="start_google_pay_activity_title">Google Pay</string>
+    <string name="start_google_pay_activity_description">Example of decrypting google pay token.</string>
 
     <string name="start_collect_with_activity_title">Collect (Activity)</string>
     <string name="start_collect_with_activity_description">Example of collecting data using Activity.</string>

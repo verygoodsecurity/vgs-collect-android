@@ -19,7 +19,7 @@
             android:name=".StartActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.StartActivity"
+            android:label="Very Good Security"
             tools:ignore="LockedOrientationActivity">
 
             <intent-filter>
@@ -31,15 +31,16 @@
         </activity>
 
         <activity
-            android:name=".activity_case.VGSCollectActivity"
+            android:name=".google_pay.GooglePayActivity"
+            android:label="Google Pay" />
+
+        <activity
+            android:name=".collect_activity.CollectActivity"
             android:label="Collect (Activity)" />
 
-        <!--        TODO(Resize)-->
         <activity
             android:name=".tokenization.TokenizationActivity"
-            android:label="Tokenization"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
+            android:label="Tokenization" />
 
         <activity
             android:name=".tokenization.settings.TokenizationSettingsActivity"
@@ -70,5 +71,9 @@
         <activity
             android:name=".instrumented.CustomBrandsActivity"
             android:label="Instrumented Demo" />
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
     </application>
 </manifest>
