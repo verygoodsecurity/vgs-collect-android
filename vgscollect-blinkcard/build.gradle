@@ -41,7 +41,7 @@ repositories {
 dependencies {
     api project(':vgscollect')
 
-    api('com.microblink:blinkcard:2.6.0@aar') {
+    api('com.microblink:blinkcard:2.7.0@aar') {
         transitive = true
     }
 

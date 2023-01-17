@@ -4,12 +4,12 @@ import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
-import com.microblink.blinkcard.activity.result.ScanResult
+import com.microblink.blinkcard.activity.result.ResultStatus
 import com.microblink.blinkcard.activity.result.contract.MbScan
+import com.microblink.blinkcard.results.date.Date
 import com.microblink.blinkcard.entities.recognizers.RecognizerBundle
 import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardProcessingStatus
 import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardRecognizer
-import com.microblink.blinkcard.results.date.DateResult
 import com.microblink.blinkcard.uisettings.BlinkCardUISettings
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import java.util.*
@@ -30,16 +30,16 @@ internal class ScanActivity : BaseTransmitActivity() {
         results.resultStatus.run {
             when (this) {
                 null -> RESULT_OK
-                ScanResult.ResultStatus.FINISHED -> {
-                    results.data?.let { mRecognizerBundle.loadFromIntent(it) }
+                ResultStatus.FINISHED -> {
+                    results.result?.let { mRecognizerBundle.loadFromIntent(it) }
                     processRecognitionResults()
                     RESULT_OK
                 }
-                ScanResult.ResultStatus.CANCELLED -> {
+                ResultStatus.CANCELLED -> {
                     addAnalyticInfo(Status.CLOSE)
                     RESULT_CANCELED
                 }
-                ScanResult.ResultStatus.EXCEPTION -> {
+                ResultStatus.EXCEPTION -> {
                     notifyFailedStatus(getString(R.string.vgs_bc_warning_exception))
                     RESULT_OK
                 }
@@ -130,7 +130,8 @@ internal class ScanActivity : BaseTransmitActivity() {
         internal const val STYLE_RES_ID: String = "StyleResId"
         private const val NAME: String = "BlinkCard"
 
-        internal fun DateResult.parseDate(): Any {
+        internal fun Date.parseDate(): Any {
+
             return date.takeIf { it != null && it.month > 0 && it.year > 0 }
                 ?.run {
                     Calendar.getInstance().run {
