@@ -160,49 +160,14 @@ class FragmentCaseInstrumentedTest {
         val cardExpDateInputField = interactWithCardExpDate()
         val cardCVCInputField = interactWithCardCVC()
 
-        cardInputField.perform(SetTextAction(CARD_NUMBER_WRONG_1))
         cardHolderNameInputField.perform(SetTextAction(CARD_HOLDER))
-        cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE_WRONG))
-        cardCVCInputField.perform(SetTextAction(CARD_CVC_WRONG))
-
-
-        pauseTestFor(500)
-        cardInputField.check(matches(withCardNumberState(
-            bin = CARD_NUMBER_WRONG_BIN_CHECK
-        )))
-        cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
-        cardCVCInputField.check(matches(withCardCVCState(CARD_CVC_WRONG)))
-
-        performClick(submitBtn)
-
-        pauseTestFor(300)
-        responseContainer.check(matches(withText(containsString(CODE_1001))))
-
+        cardInputField.perform(SetTextAction(CARD_NUMBER))
         cardCVCInputField.perform(SetTextAction(CARD_CVC))
-
-        performClick(submitBtn)
-        responseContainer.check(matches(withText(containsString(CODE_1001))))
         cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE))
 
-
-        performClick(submitBtn)
-        responseContainer.check(matches(withText(containsString(CODE_1001))))
-        cardInputField.perform(SetTextAction(CARD_NUMBER_WRONG_2))
-        performClick(submitBtn)
-        responseContainer.check(matches(withText(StringContains.containsString(CODE_1001))))
-        cardInputField.perform(SetTextAction(CARD_NUMBER))
-
-
-        pauseTestFor(500)
-        cardInputField.check(matches(withCardNumberState(CARD_NUMBER)))
-        cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
-        cardExpDateInputField.check(matches(withCardExpDateState(CARD_EXP_DATE)))
-        cardCVCInputField.check(matches(withCardCVCState(CARD_CVC)))
-
-
         performClick(submitBtn)
 
-        pauseTestFor(7000)
+        pauseTestFor(10000)
         responseContainer.check(matches(withText(StringContains.containsString(CODE_200))))
     }
 

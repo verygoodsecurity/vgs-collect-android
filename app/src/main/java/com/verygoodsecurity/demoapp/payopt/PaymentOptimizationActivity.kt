@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
 import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
+import com.verygoodsecurity.demoapp.databinding.ActivityPaymentOptimizationBinding
 import com.verygoodsecurity.demoapp.payopt.adapter.CardsAdapter
 import com.verygoodsecurity.demoapp.payopt.decorator.MarginItemDecoration
 import com.verygoodsecurity.demoapp.payopt.model.Card
@@ -21,11 +22,10 @@ import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.view.InputFieldView
-import kotlinx.android.synthetic.main.activity_payment_optimization.*
 import org.json.JSONException
 import org.json.JSONObject
 
-class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_optimization),
+class PaymentOptimizationActivity : AppCompatActivity(),
     CardsAdapter.NewCardBindListener, VgsCollectResponseListener {
 
     private val vault by lazy { intent.extras?.getString(KEY_BUNDLE_VAULT_ID) ?: "" }
@@ -36,8 +36,12 @@ class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_
     private var collect: VGSCollect? = null
     private var accessToken: String? = null
 
+    private lateinit var binding: ActivityPaymentOptimizationBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityPaymentOptimizationBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         initCollect()
         initViews()
     }
@@ -91,15 +95,15 @@ class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_
     }
 
     private fun initViews() {
-        clRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
-        mbPay?.setOnClickListener { pay() }
+        binding.clRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+        binding.mbPay.setOnClickListener { pay() }
         initCards()
     }
 
     private fun initCards() {
-        (rvCards?.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
-        rvCards?.addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_padding_material_medium)))
-        rvCards?.adapter = adapter
+        (binding.rvCards.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
+        binding.rvCards.addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_padding_material_medium)))
+        binding.rvCards.adapter = adapter
     }
 
     private fun pay() {
@@ -168,14 +172,14 @@ class PaymentOptimizationActivity : AppCompatActivity(R.layout.activity_payment_
 
     private fun showSnackBar(message: String) {
         Log.d(TAG, message)
-        Snackbar.make(clRoot, message, Snackbar.LENGTH_SHORT)
-            .setAnchorView(mbPay)
+        Snackbar.make(binding.clRoot, message, Snackbar.LENGTH_SHORT)
+            .setAnchorView(binding.mbPay)
             .show()
     }
 
     private fun setLoading(isLoading: Boolean) {
-        viewOverlay.isVisible = isLoading
-        progressBar.isVisible = isLoading
+        binding.viewOverlay.isVisible = isLoading
+        binding.progressBar.isVisible = isLoading
     }
 
     companion object {

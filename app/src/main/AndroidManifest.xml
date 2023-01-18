@@ -6,6 +6,7 @@
     <uses-sdk tools:overrideLibrary="android.support.test.uiautomator.v18" />
 
     <application
+        android:name=".VGSSampleApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -28,6 +29,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".google_pay.GooglePayActivity"
+            android:label="Google Pay" />
 
         <activity
             android:name=".collect_activity.CollectActivity"
@@ -66,5 +71,9 @@
         <activity
             android:name=".instrumented.CustomBrandsActivity"
             android:label="Instrumented Demo" />
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
     </application>
 </manifest>

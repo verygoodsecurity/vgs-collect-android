@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
+    id 'io.gitlab.arturbosch.detekt'
 }
 
 android {
@@ -61,17 +61,23 @@ android {
     }
 }
 
-repositories {
-    maven { url "https://jitpack.io" }
+detekt {
+    buildUponDefaultConfig = false
+    allRules = false
+    config = files("$project.rootDir/.detekt/config.yml")
 }
 
 repositories {
     maven { url "https://jitpack.io" }
+    maven { url 'https://maven.microblink.com' }
 }
 
 dependencies {
     implementation project(":vgscollect")
     implementation project(":vgscollect-cardio")
+    implementation project(":vgscollect-blinkcard")
+
+    implementation 'com.google.android.gms:play-services-wallet:19.1.0'
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx

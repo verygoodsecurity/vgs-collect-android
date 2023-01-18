@@ -1,0 +1,11 @@
+<resources>
+    <string name="module_name">VGS BlinkCard module</string>
+
+    <string name="vgs_bc_warning_direct_api">BlinkCard is supported only via Direct API!</string>
+    <string name="vgs_bc_warning_arch_not_supported">BlinkCard is not supported on current processor architecture!</string>
+    <string name="vgs_bc_warning_blacklisted_device">BlinkCard is not supported! Reason: %1$s</string>
+    <string name="vgs_bc_warning_unsupported_android_version">BlinkCard is not supported! Reason: %1$s</string>
+    <string name="vgs_bc_warning_unsupported_recognizer">BlinkCard is not supported! Reason: %1$s</string>
+    <string name="vgs_bc_warning_exception">BlinkCard finished with exception.</string>
+    <string name="vgs_bc_warning_exception_details">BlinkCard finished with exception: %1$s</string>
+</resources>

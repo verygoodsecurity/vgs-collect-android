@@ -11,10 +11,11 @@ import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
  *
  * @since 1.0.2
  */
-abstract class BaseTransmitActivity:AppCompatActivity() {
+abstract class BaseTransmitActivity : AppCompatActivity() {
     companion object {
         const val RESULT_DATA = "vgs_result_settings"
         const val RESULT_STATUS = "com.vgs.collect.status"
+        const val RESULT_DETAILS = "com.vgs.collect.scan-details"
         const val RESULT_TYPE = "com.vgs.collect.type"
         const val RESULT_NAME = "com.vgs.collect.sw"
         const val RESULT_ID = "com.vgs.collect.id"
@@ -23,7 +24,7 @@ abstract class BaseTransmitActivity:AppCompatActivity() {
         const val ATTACH = "com.vgs.attach_f_type"
     }
 
-    enum class Status(val raw:String) {
+    enum class Status(val raw: String) {
         SUCCESS("Ok"),
         FAILED("Failed"),
         CLOSE("Cancel")
@@ -44,16 +45,21 @@ abstract class BaseTransmitActivity:AppCompatActivity() {
      * @param value value to be associated with the specified key
      */
     protected fun mapData(key: String?, value: Any?) {
-        if(!key.isNullOrEmpty() && value != null) {
+        if (!key.isNullOrEmpty() && value != null) {
             storage.put(key, value)
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        setScanResult(resultCode)
+    }
+
+    protected fun setScanResult(resultCode: Int) {
         resultIntent.putExtra(RESULT_DATA, storage)
-        if(resultCode != Activity.RESULT_CANCELED) {
+        if (resultCode != Activity.RESULT_CANCELED) {
             setResult(Activity.RESULT_OK, resultIntent)
         } else {
             setResult(Activity.RESULT_CANCELED, resultIntent)
