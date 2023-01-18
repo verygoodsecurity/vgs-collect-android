@@ -7,7 +7,7 @@ class VGSSampleApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        MicroblinkSDK.setLicenseKey("<key>", this)
-        MicroblinkSDK.setLicenseKey("<path>", this)
+//        MicroblinkSDK.setLicenseKey("<key>", this)
+//        MicroblinkSDK.setLicenseKey("<path>", this)
     }
 }
