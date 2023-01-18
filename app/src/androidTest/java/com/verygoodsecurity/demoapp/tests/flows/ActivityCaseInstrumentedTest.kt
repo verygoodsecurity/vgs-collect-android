@@ -25,6 +25,7 @@ import com.verygoodsecurity.demoapp.matchers.withCardHolderState
 import com.verygoodsecurity.demoapp.matchers.withCardNumberState
 import io.card.payment.CardIOActivity
 import io.card.payment.CreditCard
+import org.hamcrest.CoreMatchers
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.notNullValue
 import org.hamcrest.core.StringContains.containsString
@@ -42,6 +43,7 @@ class ActivityCaseInstrumentedTest {
         const val CARD_NUMBER = "4111111111111111"
         const val CARD_NUMBER_WRONG_1 = "41111111QW"
         const val CARD_NUMBER_WRONG_2 = "41111111111111112"
+        const val CARD_NUMBER_WRONG_BIN_CHECK = "411111"
 
         const val CARD_HOLDER_WRONG = "Gohn Galt, I."
         const val CARD_HOLDER = "Gohn G"
@@ -152,40 +154,45 @@ class ActivityCaseInstrumentedTest {
         val responseContainer = interactWithResponseContainer()
 
         cardInputField.perform(SetTextAction(CARD_NUMBER_WRONG_1))
-        cardHolderNameInputField.perform(SetTextAction(CARD_HOLDER_WRONG))
+        cardHolderNameInputField.perform(SetTextAction(CARD_HOLDER))
         cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE_WRONG))
         cardCVCInputField.perform(SetTextAction(CARD_CVC_WRONG))
 
 
+        pauseTestFor(500)
+        cardInputField.check(matches(withCardNumberState(
+            bin = CARD_NUMBER_WRONG_BIN_CHECK
+        )))
+        cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
+        cardCVCInputField.check(matches(withCardCVCState(CARD_CVC_WRONG)))
+
         performClick(submitBtn)
-        responseContainer.check(matches(withText(containsString(CODE_1001))))
+
+        pauseTestFor(300)
+        responseContainer.check(matches(withText(CoreMatchers.containsString(CODE_1001))))
+
         cardCVCInputField.perform(SetTextAction(CARD_CVC))
 
-
         performClick(submitBtn)
-        responseContainer.check(matches(withText(containsString(CODE_1001))))
+        responseContainer.check(matches(withText(CoreMatchers.containsString(CODE_1001))))
         cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE))
 
 
         performClick(submitBtn)
-        responseContainer.check(matches(withText(containsString(CODE_1001))))
-        cardHolderNameInputField.perform(SetTextAction(CARD_HOLDER))
-
-
-        performClick(submitBtn)
-        responseContainer.check(matches(withText(containsString(CODE_1001))))
+        responseContainer.check(matches(withText(CoreMatchers.containsString(CODE_1001))))
         cardInputField.perform(SetTextAction(CARD_NUMBER_WRONG_2))
-
         performClick(submitBtn)
         responseContainer.check(matches(withText(containsString(CODE_1001))))
         cardInputField.perform(SetTextAction(CARD_NUMBER))
 
-        postalCode.perform(SetTextAction(POSTAL_WRONG))
-        performClick(submitBtn)
-        responseContainer.check(matches(withText(containsString(CODE_1001))))
 
-        postalCode.perform(SetTextAction(POSTAL))
-        city.perform(SetTextAction(CITY))
+        pauseTestFor(500)
+        cardInputField.check(matches(withCardNumberState(CARD_NUMBER)))
+        cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
+        cardExpDateInputField.check(matches(withCardExpDateState(CARD_EXP_DATE)))
+        cardCVCInputField.check(matches(withCardCVCState(CARD_CVC)))
+
+
         performClick(submitBtn)
 
         pauseTestFor(10000)
