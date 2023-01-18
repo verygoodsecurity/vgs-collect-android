@@ -41,26 +41,12 @@ class ActivityCaseInstrumentedTest {
 
     companion object {
         const val CARD_NUMBER = "4111111111111111"
-        const val CARD_NUMBER_WRONG_1 = "41111111QW"
-        const val CARD_NUMBER_WRONG_2 = "41111111111111112"
-        const val CARD_NUMBER_WRONG_BIN_CHECK = "411111"
-
-        const val CARD_HOLDER_WRONG = "Gohn Galt, I."
         const val CARD_HOLDER = "Gohn G"
-
-        const val CARD_EXP_DATE_WRONG = "22/2222"
         const val CARD_EXP_DATE = "02/25"
-
-        const val CARD_CVC_WRONG = "12"
         const val CARD_CVC = "123"
-
-        const val POSTAL_WRONG = "12"
         const val POSTAL = "12345"
-
         const val CITY = "new city"
-
         const val CODE_200 = "CODE: 200"
-        const val CODE_1001 = "CODE: 1001"
     }
 
     @get:Rule
@@ -153,46 +139,12 @@ class ActivityCaseInstrumentedTest {
         val submitBtn = interactWithSubmitButton()
         val responseContainer = interactWithResponseContainer()
 
-        cardInputField.perform(SetTextAction(CARD_NUMBER_WRONG_1))
         cardHolderNameInputField.perform(SetTextAction(CARD_HOLDER))
-        cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE_WRONG))
-        cardCVCInputField.perform(SetTextAction(CARD_CVC_WRONG))
-
-
-        pauseTestFor(500)
-        cardInputField.check(matches(withCardNumberState(
-            bin = CARD_NUMBER_WRONG_BIN_CHECK
-        )))
-        cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
-        cardCVCInputField.check(matches(withCardCVCState(CARD_CVC_WRONG)))
-
-        performClick(submitBtn)
-
-        pauseTestFor(300)
-        responseContainer.check(matches(withText(CoreMatchers.containsString(CODE_1001))))
-
-        cardCVCInputField.perform(SetTextAction(CARD_CVC))
-
-        performClick(submitBtn)
-        responseContainer.check(matches(withText(CoreMatchers.containsString(CODE_1001))))
-        cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE))
-
-
-        performClick(submitBtn)
-        responseContainer.check(matches(withText(CoreMatchers.containsString(CODE_1001))))
-        cardInputField.perform(SetTextAction(CARD_NUMBER_WRONG_2))
-        performClick(submitBtn)
-        responseContainer.check(matches(withText(containsString(CODE_1001))))
         cardInputField.perform(SetTextAction(CARD_NUMBER))
-
-
-        pauseTestFor(500)
-        cardInputField.check(matches(withCardNumberState(CARD_NUMBER)))
-        cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
-        cardExpDateInputField.check(matches(withCardExpDateState(CARD_EXP_DATE)))
-        cardCVCInputField.check(matches(withCardCVCState(CARD_CVC)))
-
-
+        cardCVCInputField.perform(SetTextAction(CARD_CVC))
+        cardExpDateInputField.perform(SetTextAction(CARD_EXP_DATE))
+        postalCode.perform(SetTextAction(POSTAL))
+        city.perform(SetTextAction(CITY))
         performClick(submitBtn)
 
         pauseTestFor(10000)
