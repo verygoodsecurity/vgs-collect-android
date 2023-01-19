@@ -27,9 +27,13 @@ For integration you need to install the [Android Studio](http://developer.androi
 #### Add the SDK to your project
 To use the SDK in project you just simply need to add the following line of dependency in your module `gradle.gradle` file:
 ```
+repositories {
+    maven { url 'https://maven.microblink.com' }
+}
+
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:1.7.5’ //required version 1.7.5 or above
-   implementation 'com.verygoodsecurity.api:adapter-blinkcard:<latest-version>’
+   implementation 'com.verygoodsecurity:vgscollect:1.7.5' // required version 1.7.5 or above
+   implementation 'com.verygoodsecurity.api:adapter-blinkcard:<latest-version>'
 }
 ```
 
