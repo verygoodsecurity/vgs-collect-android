@@ -2,6 +2,8 @@
 
 Module based on [blinkcard-android](https://github.com/blinkcard/blinkcard-android). It allows to secure integrate scanner with [VGSCollect](https://github.com/verygoodsecurity/vgs-collect-android)
 
+BlinkCard module is a paid integration. Please [contact](https://microblink.com/contact-us/) Microblink for more details.
+
 Table of contents
 =================
 
@@ -41,7 +43,18 @@ dependencies {
 
 **Important**: VGSCollect should be configured too. Check [here](https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk#step-2-configure-your-app) how to do it.
 
-Create intent:
+Configure Microblink license in `Application.onCreate` callback:
+```
+class App: Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+        MicroblinkSDK.setLicenseKey("<KEY>", this)
+    }
+}
+```
+
+Create scanning intent:
 ```
 val intent = VGSBlinkCardIntentBuilder(this)
      .setCardNumberFieldName(vgsTiedCardNumber.getFieldName())
@@ -51,7 +64,7 @@ val intent = VGSBlinkCardIntentBuilder(this)
      build()
 ```
 
-To start scanning you need create intent and start this intent for result:
+Pass scanning intent to `startActivityForResult`:
 ```
 public void scanCard() {
      val intent = VGSBlinkCardIntentBuilder(this)
@@ -64,7 +77,7 @@ public void scanCard() {
 }
 ```
 
-Also very important to call [VGSCollect](https://github.com/verygoodsecurity/vgs-collect-android) **onActivityResult** method inside Activity onActivityResult callback:
+Handle result by passing scanning result to [VGSCollect](https://github.com/verygoodsecurity/vgs-collect-android) `onActivityResult`:
 ```
 @Override 
 public void onActivityResult(int requestCode, int resultCode, Intent data) {
