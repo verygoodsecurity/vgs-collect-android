@@ -16,7 +16,7 @@ dependencyResolutionManagement {
             // Libraries
             library('androidx-appcompat', 'androidx.appcompat:appcompat:1.6.0-rc01')
             library('androidx-core-ktx', 'androidx.core:core-ktx:1.9.0')
-            library('material', 'com.google.android.material:material:1.7.0')
+            library('material', 'com.google.android.material:material:1.8.0')
             library('okhttp', 'com.squareup.okhttp3:okhttp:4.10.0')
             library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.7.20')
             library('cardio', 'io.card:android-sdk:5.5.1')
@@ -33,8 +33,8 @@ dependencyResolutionManagement {
         }
         testLibs {
             library('junit', 'junit:junit:4.13.2')
-            library('mockito-core', 'org.mockito:mockito-core:5.0.0')
-            library('mockito-inline', 'org.mockito:mockito-inline:5.0.0')
+            library('mockito-core', 'org.mockito:mockito-core:5.1.0')
+            library('mockito-inline', 'org.mockito:mockito-inline:5.1.0')
             library('robolectric', 'org.robolectric:robolectric:4.9.2')
             library('mockk', 'io.mockk:mockk:1.12.4')
             library('json', 'org.json:json:20220924')
