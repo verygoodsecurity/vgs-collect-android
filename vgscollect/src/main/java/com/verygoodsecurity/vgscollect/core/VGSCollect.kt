@@ -35,6 +35,7 @@ import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyD
 import com.verygoodsecurity.vgscollect.util.extension.*
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
+import kotlinx.coroutines.*
 import java.util.*
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -289,6 +290,33 @@ class VGSCollect {
      */
     fun tokenize(request: VGSTokenizationRequest) {
         submitAsyncRequest(request)
+    }
+
+    /**
+     * This suspend method executes and send data on VGS Server on IO dispatcher.
+     *
+     * @param path path for a request
+     * @param method HTTP method
+     */
+    suspend fun submitAsync(
+        path: String,
+        method: HTTPMethod = HTTPMethod.POST
+    ): VGSResponse = submitAsync(
+        VGSRequest.VGSRequestBuilder()
+            .setPath(path)
+            .setMethod(method)
+            .build()
+    )
+
+    /**
+     * This suspend method executes and send data on VGS Server on IO dispatcher.
+     *
+     * @param request data class with attributes for submit
+     */
+    suspend fun submitAsync(
+        request: VGSRequest
+    ): VGSResponse = withContext(Dispatchers.IO) {
+        submit(request)
     }
 
     /**
