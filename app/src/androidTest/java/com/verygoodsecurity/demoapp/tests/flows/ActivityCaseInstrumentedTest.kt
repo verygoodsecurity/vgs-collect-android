@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -23,9 +24,11 @@ import com.verygoodsecurity.demoapp.matchers.withCardCVCState
 import com.verygoodsecurity.demoapp.matchers.withCardExpDateState
 import com.verygoodsecurity.demoapp.matchers.withCardHolderState
 import com.verygoodsecurity.demoapp.matchers.withCardNumberState
+import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
 import io.card.payment.CardIOActivity
 import io.card.payment.CreditCard
-import org.hamcrest.CoreMatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.*
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.notNullValue
 import org.hamcrest.core.StringContains.containsString
@@ -35,7 +38,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
+@ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 class ActivityCaseInstrumentedTest {
 
@@ -59,11 +62,13 @@ class ActivityCaseInstrumentedTest {
         init()
         device = UiDevice.getInstance(getInstrumentation())
         device.setOrientationNatural()
+        IdlingRegistry.getInstance().register(GlobalIdlingResource.getResource())
     }
 
     @After
     fun teardown() {
         release()
+        IdlingRegistry.getInstance().unregister(GlobalIdlingResource.getResource())
     }
 
     @Test
@@ -71,18 +76,6 @@ class ActivityCaseInstrumentedTest {
         startMainScreen()
         intended(hasComponent(CollectActivity::class.qualifiedName))
 
-        interactWithScanner()
-
-        val submitBtn = interactWithSubmitButton()
-        performClick(submitBtn)
-
-        pauseTestFor(7000)
-
-        interactWithResponseContainer().check(matches(withText(containsString(CODE_200))))
-    }
-
-
-    fun interactWithScanner() = apply {
         val intent = Intent()
         val card = CreditCard("4111111111111111", 5, 2033, "123", null, "John B")
         intent.putExtra(CardIOActivity.EXTRA_SCAN_RESULT, card)
@@ -92,6 +85,11 @@ class ActivityCaseInstrumentedTest {
             .respondWith(ActivityResult(Activity.RESULT_OK, intent))
 
         onView(withId(R.id.scan_card)).perform(click())
+
+        val submitBtn = interactWithSubmitButton()
+        performClick(submitBtn)
+
+        interactWithResponseContainer().check(matches(withText(containsString(CODE_200))))
     }
 
     @Test
@@ -147,7 +145,6 @@ class ActivityCaseInstrumentedTest {
         city.perform(SetTextAction(CITY))
         performClick(submitBtn)
 
-        pauseTestFor(10000)
         responseContainer.check(matches(withText(containsString(CODE_200))))
     }
 
@@ -225,16 +222,7 @@ class ActivityCaseInstrumentedTest {
     }
 
     private fun performClick(interaction: ViewInteraction) {
-        pauseTestFor(200)
         interaction.perform(scrollTo())
         interaction.perform(click())
-    }
-
-    private fun pauseTestFor(milliseconds: Long) {
-        try {
-            Thread.sleep(milliseconds)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
     }
 }

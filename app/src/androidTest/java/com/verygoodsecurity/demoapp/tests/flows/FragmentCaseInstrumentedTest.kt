@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Instrumentation
 import android.content.Intent
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -22,6 +23,7 @@ import com.verygoodsecurity.demoapp.matchers.withCardCVCState
 import com.verygoodsecurity.demoapp.matchers.withCardExpDateState
 import com.verygoodsecurity.demoapp.matchers.withCardHolderState
 import com.verygoodsecurity.demoapp.matchers.withCardNumberState
+import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
 import io.card.payment.CardIOActivity
 import io.card.payment.CreditCard
 import org.hamcrest.CoreMatchers.containsString
@@ -38,21 +40,11 @@ class FragmentCaseInstrumentedTest {
 
     companion object {
         const val CARD_NUMBER = "4111111111111111"
-        const val CARD_NUMBER_WRONG_1 = "41111111QW"
-        const val CARD_NUMBER_WRONG_BIN_CHECK = "411111"
-        const val CARD_NUMBER_WRONG_LAST_CHECK = "1111"
-        const val CARD_NUMBER_WRONG_2 = "41111111111111112"
-
         const val CARD_HOLDER = "Gohn Galt"
-
-        const val CARD_EXP_DATE_WRONG = "99/9999"
         const val CARD_EXP_DATE= "02/32"
-
-        const val CARD_CVC_WRONG = "12"
         const val CARD_CVC= "123"
 
         const val CODE_200= "CODE: 200"
-        const val CODE_1001= "CODE: 1001"
     }
 
     @get:Rule
@@ -64,11 +56,14 @@ class FragmentCaseInstrumentedTest {
     fun prepareDevice() {
         init()
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        device.setOrientationNatural()
+        IdlingRegistry.getInstance().register(GlobalIdlingResource.getResource())
     }
 
     @After
     fun teardown() {
         release()
+        IdlingRegistry.getInstance().unregister(GlobalIdlingResource.getResource())
     }
 
     @Test
@@ -80,10 +75,8 @@ class FragmentCaseInstrumentedTest {
         val submitBtn  = interactWithSubmitButton()
         performClick(submitBtn)
 
-        pauseTestFor(7000)
-
         val responseContainer  = interactWithResponseContainer()
-        responseContainer.check(matches(withText(containsString(ActivityCaseInstrumentedTest.CODE_200))))
+        responseContainer.check(matches(withText(containsString(CODE_200))))
     }
 
     private fun interactWithScanner() = apply {
@@ -116,7 +109,6 @@ class FragmentCaseInstrumentedTest {
         cardCVCInputField.perform(SetTextAction(CARD_CVC))
 
 
-        pauseTestFor(500)
         cardInputField.check(matches(withCardNumberState(CARD_NUMBER)))
         cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
         cardExpDateInputField.check(matches(withCardExpDateState(CARD_EXP_DATE)))
@@ -124,16 +116,12 @@ class FragmentCaseInstrumentedTest {
 
         performClick(submitBtn)
 
-        pauseTestFor(7000)
         responseContainer.check(matches(withText(containsString(CODE_200))))
 
         performClick(onView(withId(R.id.details_item)))
 
-        pauseTestFor(500)
-
         device.pressBack()
 
-        pauseTestFor(500)
         cardInputField.check(matches(withCardNumberState(CARD_NUMBER)))
         cardHolderNameInputField.check(matches(withCardHolderState(CARD_HOLDER)))
         cardExpDateInputField.check(matches(withCardExpDateState(CARD_EXP_DATE)))
@@ -142,8 +130,6 @@ class FragmentCaseInstrumentedTest {
 
         submitBtn.perform(scrollTo())
         performClick(submitBtn)
-
-        pauseTestFor(7000)
 
         responseContainer.check(matches(withText(containsString(CODE_200))))
     }
@@ -167,7 +153,6 @@ class FragmentCaseInstrumentedTest {
 
         performClick(submitBtn)
 
-        pauseTestFor(10000)
         responseContainer.check(matches(withText(StringContains.containsString(CODE_200))))
     }
 
@@ -223,15 +208,6 @@ class FragmentCaseInstrumentedTest {
     }
 
     private fun performClick(interaction: ViewInteraction) {
-        pauseTestFor(300)
         interaction.perform(click())
-    }
-
-    private fun pauseTestFor(milliseconds: Long) {
-        try {
-            Thread.sleep(milliseconds)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
     }
 }

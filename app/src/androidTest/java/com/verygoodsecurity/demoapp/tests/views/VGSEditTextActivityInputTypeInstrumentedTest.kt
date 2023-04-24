@@ -31,8 +31,6 @@ class VGSEditTextActivityInputTypeInstrumentedTest {
     @Before
     fun prepareDevice() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-
-        pauseTestFor(500)
     }
 
     @Test
@@ -103,17 +101,7 @@ class VGSEditTextActivityInputTypeInstrumentedTest {
 
     private fun openKeyboard(field: ViewInteraction) {
         field.perform(click())
-        pauseTestFor(300)
         check(isKeyboardOpened())
-        pauseTestFor(300)
-    }
-
-    private fun pauseTestFor(milliseconds: Long) {
-        try {
-            Thread.sleep(milliseconds)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
     }
 
     companion object {

@@ -6,6 +6,7 @@ import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions
+import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -81,8 +82,6 @@ class ViewPagerCaseInstrumentedTest {
         val cvc = interactWithCardCVC()
         cvc.perform(SetTextAction(CARD_CVC_WRONG))
         cvc.check(matches(withCardCVCState(CARD_CVC)))
-
-        pauseTestFor(3000)
     }
 
     @Test
@@ -117,12 +116,9 @@ class ViewPagerCaseInstrumentedTest {
         val expDate = interactWithCardExpDate()
         expDate.perform(FieldClickAction())
 
-        pauseTestFor(300)
-
         onView(withClassName(Matchers.equalTo(DatePicker::class.java.name)))
+            .inRoot(RootMatchers.isDialog())
             .perform(PickerActions.setDate(CARD_EXP_DATE_Y, CARD_EXP_DATE_M, CARD_EXP_DATE_D))
-
-        pauseTestFor(3000)
 
         val mBtn = onView(Matchers.allOf(withId(android.R.id.button1), withText("Done")))
         performClick(mBtn)
@@ -132,15 +128,11 @@ class ViewPagerCaseInstrumentedTest {
         val cvc = interactWithCardCVC()
         cvc.perform(SetTextAction(CARD_CVC_WRONG))
         cvc.check(matches(withCardCVCState(CARD_CVC)))
-
-        pauseTestFor(3000)
     }
 
     private fun performClick(interaction: ViewInteraction) {
-        pauseTestFor(200)
         interaction.perform(click())
     }
-
 
     private fun interactWithCardCVC(): ViewInteraction {
         val cardCVCField = onView(withId(R.id.cardCVCField))
@@ -189,13 +181,5 @@ class ViewPagerCaseInstrumentedTest {
     private fun interactWithNextButton(): ViewInteraction {
         return onView(withId(R.id.nextBtn))
             .check(matches(isDisplayed()))
-    }
-
-    private fun pauseTestFor(milliseconds: Long) {
-        try {
-            Thread.sleep(milliseconds)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
     }
 }
