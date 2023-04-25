@@ -12,7 +12,6 @@ import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.actions.SetTextAction
 import com.verygoodsecurity.demoapp.instrumented.VGSEditTextActivity
 import com.verygoodsecurity.demoapp.matchers.validation.WithValidationStateMatcher
-import com.verygoodsecurity.demoapp.matchers.withEditTextState
 import org.hamcrest.CoreMatchers
 import org.junit.Before
 import org.junit.Rule
@@ -30,8 +29,6 @@ class VGSEditTextActivityValidationInstrumentedTest {
     @Before
     fun prepareDevice() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-
-        pauseTestFor(500)
     }
 
     @Test
@@ -64,14 +61,6 @@ class VGSEditTextActivityValidationInstrumentedTest {
 
         field.perform(SetTextAction(NAME_CORRECT))
         field.check(ViewAssertions.matches(WithValidationStateMatcher()))
-    }
-
-    private fun pauseTestFor(milliseconds: Long) {
-        try {
-            Thread.sleep(milliseconds)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
     }
 
     companion object {

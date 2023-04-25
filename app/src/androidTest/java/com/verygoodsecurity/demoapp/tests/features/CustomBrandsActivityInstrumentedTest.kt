@@ -86,7 +86,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -108,7 +107,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -127,7 +125,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardNumberState(NUMBER_CUSTOM)))
         field.check(
             ViewAssertions.matches(
@@ -151,7 +148,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardNumberState(NUMBER_CUSTOM)))
         field.check(
             ViewAssertions.matches(
@@ -164,7 +160,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.perform(SetCardNumberDividerAction('-'))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardNumberState(NUMBER_CUSTOM)))
         field.check(
             ViewAssertions.matches(
@@ -192,7 +187,6 @@ class CustomBrandsActivityInstrumentedTest {
         )
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -226,7 +220,6 @@ class CustomBrandsActivityInstrumentedTest {
         )
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -254,7 +247,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -290,7 +282,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -324,7 +315,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -357,7 +347,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardNumberState(NUMBER_CUSTOM)))
         field.check(
             ViewAssertions.matches(
@@ -401,7 +390,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardNumberState(NUMBER_CUSTOM)))
         field.check(
             ViewAssertions.matches(
@@ -443,7 +431,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardNumberState(NUMBER_CUSTOM)))
         field.check(
             ViewAssertions.matches(
@@ -485,7 +472,6 @@ class CustomBrandsActivityInstrumentedTest {
         )
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -529,7 +515,6 @@ class CustomBrandsActivityInstrumentedTest {
         )
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -570,7 +555,6 @@ class CustomBrandsActivityInstrumentedTest {
         )
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -599,7 +583,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -635,7 +618,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -669,7 +651,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -702,7 +683,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardNumberState(NUMBER_CUSTOM)))
         field.check(
             ViewAssertions.matches(
@@ -746,7 +726,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardNumberState(NUMBER_CUSTOM)))
         field.check(
             ViewAssertions.matches(
@@ -788,7 +767,6 @@ class CustomBrandsActivityInstrumentedTest {
         field.check(ViewAssertions.matches(withCardBrand(CardType.VISA.name)))
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardNumberState(NUMBER_CUSTOM)))
         field.check(
             ViewAssertions.matches(
@@ -830,7 +808,6 @@ class CustomBrandsActivityInstrumentedTest {
         )
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -866,7 +843,6 @@ class CustomBrandsActivityInstrumentedTest {
 
         field.perform(SetTextAction(""))
         field.perform(SetTextAction(NUMBER_VISA_OVERRIDE))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardNumberState(NUMBER_VISA_OVERRIDE)))
         field.check(
             ViewAssertions.matches(
@@ -875,7 +851,6 @@ class CustomBrandsActivityInstrumentedTest {
         )
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -916,7 +891,6 @@ class CustomBrandsActivityInstrumentedTest {
         )
 
         field.perform(SetTextAction(NUMBER_CUSTOM))
-        pauseTestFor(500)
         field.check(ViewAssertions.matches(withCardBrand(CardType.UNKNOWN.name)))
     }
 
@@ -926,22 +900,9 @@ class CustomBrandsActivityInstrumentedTest {
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
-    private fun pauseTestFor(milliseconds: Long) {
-        try {
-            Thread.sleep(milliseconds)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-    }
-
     companion object {
         const val NUMBER_VISA = "4242424242424242"
         const val NUMBER_VISA_OVERRIDE = "4111111111111111"
         const val NUMBER_CUSTOM = "777712345678909"
-
-
-        val DIVIDER: Char = '-'
-
-        var activeViewId = -1
     }
 }

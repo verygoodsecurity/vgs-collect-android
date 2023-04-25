@@ -59,6 +59,10 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    testOptions {
+        animationsDisabled = true
+    }
 }
 
 detekt {
@@ -88,6 +92,8 @@ dependencies {
     implementation demoLibs.androidx.preference.ktx
     implementation demoLibs.codeview
     implementation demoLibs.fuel
+
+    implementation demoLibs.espresso.idling.resource
 
     debugImplementation debugLibs.leakcanary
 
