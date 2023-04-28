@@ -573,40 +573,38 @@
         <attr name="enableTokenization"/>
     </declare-styleable>
 
+<!--    <declare-styleable name="DateTextField">-->
+<!--        <attr name="fieldName"/>-->
 
+<!--        <attr name="inputType"/>-->
 
-    <declare-styleable name="DateTextField">
-        <attr name="fieldName"/>
+<!--        <attr name="text"/>-->
+<!--        <attr name="enabled"/>-->
+<!--        <attr name="textSize"/>-->
+<!--        <attr name="textColor" />-->
+<!--        <attr name="ellipsize"/>-->
 
-        <attr name="inputType"/>
+<!--        <attr name="textStyle" />-->
 
-        <attr name="text"/>
-        <attr name="enabled"/>
-        <attr name="textSize"/>
-        <attr name="textColor" />
-        <attr name="ellipsize"/>
+<!--        <attr name="cursorVisible" />-->
+<!--        <attr name="singleLine"  />-->
+<!--        <attr name="isRequired"/>-->
 
-        <attr name="textStyle" />
+<!--        <attr name="gravity" />-->
+<!--        <attr name="scrollHorizontally"/>-->
 
-        <attr name="cursorVisible" />
-        <attr name="singleLine"  />
-        <attr name="isRequired"/>
+<!--        <attr name="hint" />-->
 
-        <attr name="gravity" />
-        <attr name="scrollHorizontally"/>
+<!--        <attr name="maxDate" format="string"/>-->
+<!--        <attr name="minDate" format="string"/>-->
+<!--        <attr name="datePattern"/>-->
+<!--        <attr name="datePickerModes"/>-->
 
-        <attr name="hint" />
-
-        <attr name="maxDate" format="string"/>
-        <attr name="minDate" format="string"/>
-        <attr name="datePattern"/>
-        <attr name="datePickerModes"/>
-
-        <!-- tokenization api-->
-        <attr name="storageType"/>
-        <attr name="aliasFormat"/>
-        <attr name="enableTokenization"/>
-    </declare-styleable>
+<!--        &lt;!&ndash; tokenization api&ndash;&gt;-->
+<!--        <attr name="storageType"/>-->
+<!--        <attr name="aliasFormat"/>-->
+<!--        <attr name="enableTokenization"/>-->
+<!--    </declare-styleable>-->
 
     <declare-styleable name="ExpirationDateEditText">
 
@@ -644,6 +642,52 @@
 
         <attr name="datePattern"/>
         <attr name="outputPattern"/>
+        <attr name="datePickerModes"/>
+
+        <!-- tokenization api-->
+        <attr name="storageType"/>
+        <attr name="aliasFormat"/>
+        <attr name="enableTokenization"/>
+    </declare-styleable>
+
+    <declare-styleable name="DateRangeEditText">
+
+        <attr name="datePattern"/>
+        <attr name="outputPattern"/>
+
+        <!-- Specifies rules on how to format the user input. Currently, it has an impact only on datePickerModes as input.
+             By default, field apply strict mode. -->
+        <attr name="rangeFormatterMode" format="enum">
+
+            <!-- Ignore any incorrect user input. -->
+            <enum name="strict" value="0"/>
+
+            <!-- Apply any digits in user input. -->
+            <enum name="flexible" value="1"/>
+        </attr>
+
+        <attr name="fieldName"/>
+
+        <attr name="inputType"/>
+
+        <attr name="text"/>
+        <attr name="enabled"/>
+        <attr name="textSize"/>
+        <attr name="textColor" />
+        <attr name="ellipsize"/>
+
+        <attr name="textStyle" />
+
+        <attr name="cursorVisible" />
+        <attr name="singleLine"  />
+        <attr name="isRequired"/>
+
+        <attr name="gravity" />
+        <attr name="scrollHorizontally"/>
+
+        <attr name="hint" />
+
+
         <attr name="datePickerModes"/>
 
         <!-- tokenization api-->

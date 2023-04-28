@@ -35,6 +35,7 @@ internal fun VGSFieldState.mapToFieldState(): FieldState {
         FieldType.CVC -> FieldState.CVCState()
         FieldType.CARD_HOLDER_NAME -> FieldState.CardHolderNameState()
         FieldType.CARD_EXPIRATION_DATE -> FieldState.CardExpirationDateState()
+        FieldType.DATE_RANGE -> FieldState.DateRangeState()
         FieldType.CARD_NUMBER -> prepareCardNumberState(
             isValid, content as? FieldContent.CardNumberContent
         )

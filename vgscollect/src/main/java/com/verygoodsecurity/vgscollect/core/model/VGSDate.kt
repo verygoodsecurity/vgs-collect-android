@@ -1,0 +1,37 @@
+package com.verygoodsecurity.vgscollect.core.model
+
+import java.time.LocalDate
+import java.util.Calendar
+import java.util.Date
+import java.util.GregorianCalendar
+
+public class VGSDate private constructor(
+    val day: Int,
+    val month: Int,
+    val year: Int
+) {
+
+    companion object {
+
+        fun createDate(day: Int, month: Int, year: Int): VGSDate? {
+            // Create a calendar and set the components to create the date
+            val calendar = GregorianCalendar.getInstance()
+            calendar.set(Calendar.DAY_OF_MONTH, day)
+            calendar.set(Calendar.MONTH, month)
+            calendar.set(Calendar.YEAR, year)
+
+            // Get the values stored in the calendar
+            val calDay = calendar.get(Calendar.DAY_OF_MONTH)
+            val calMonth = calendar.get(Calendar.MONTH)
+            val calYear = calendar.get(Calendar.YEAR)
+            
+            // If the calendar has the same values sent by parameter, the date is valid
+            if (day == calDay && month == calMonth && year == calYear) {
+                return VGSDate(day, month, year)
+            }
+
+            // If the date is not valid, return null
+            return null
+        }
+    }
+}

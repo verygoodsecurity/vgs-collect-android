@@ -39,6 +39,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
                 FieldType.CARD_NUMBER -> CardInputField(context)
                 FieldType.CVC -> CVCInputField(context)
                 FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
+                FieldType.DATE_RANGE -> DateRangeInputField(context)
                 FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
                 FieldType.SSN -> SSNInputField(context)
                 FieldType.INFO -> InfoInputField(context)

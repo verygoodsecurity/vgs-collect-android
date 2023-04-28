@@ -134,6 +134,8 @@ sealed class FieldState {
      */
     class CardExpirationDateState : FieldState()
 
+    class DateRangeState : FieldState()
+
     /**
      * Class definition for a Info field state.
      *

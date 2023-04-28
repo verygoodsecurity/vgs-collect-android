@@ -982,14 +982,47 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     protected fun setOutputPattern(pattern: String?) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setOutputPattern(pattern)
+        when (fieldType) {
+            FieldType.CARD_EXPIRATION_DATE -> {
+                (inputField as? DateInputField)?.setOutputPattern(pattern)
+            }
+            FieldType.DATE_RANGE -> {
+                (inputField as? DateRangeInputField)?.outputPattern = pattern
+            }
+            else -> {
+                // Do nothing
+            }
         }
     }
 
     protected fun setDatePattern(pattern: String?) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setDatePattern(pattern)
+        when (fieldType) {
+            FieldType.CARD_EXPIRATION_DATE -> {
+                (inputField as? DateInputField)?.setDatePattern(pattern)
+            }
+            FieldType.DATE_RANGE -> {
+                (inputField as? DateRangeInputField)?.inputPattern = pattern
+            }
+            else -> {
+                // Do nothing
+            }
+        }
+    }
+
+    protected fun showPickerDialog(
+        dialogMode: DatePickerMode,
+        ignoreFieldMode: Boolean
+    ) {
+        when (fieldType) {
+            FieldType.CARD_EXPIRATION_DATE -> {
+                (inputField as? DateInputField)?.showDatePickerDialog(dialogMode, ignoreFieldMode)
+            }
+            FieldType.DATE_RANGE -> {
+                (inputField as? DateRangeInputField)?.showDatePickerDialog(dialogMode, ignoreFieldMode)
+            }
+            else -> {
+                // Do nothing
+            }
         }
     }
 
@@ -998,8 +1031,16 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     protected fun setDatePickerMode(type: Int) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setDatePickerMode(type)
+        when (fieldType) {
+            FieldType.CARD_EXPIRATION_DATE -> {
+                (inputField as? DateInputField)?.setDatePickerMode(type)
+            }
+            FieldType.DATE_RANGE -> {
+                (inputField as? DateRangeInputField)?.pickerMode = type
+            }
+            else -> {
+                // Do nothing
+            }
         }
     }
 
@@ -1022,15 +1063,6 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun setMinDate(date: Long) {
         if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setMinDate(date)
-        }
-    }
-
-    protected fun showPickerDialog(
-        dialogMode: DatePickerMode,
-        ignoreFieldMode: Boolean
-    ) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.showDatePickerDialog(dialogMode, ignoreFieldMode)
         }
     }
 
