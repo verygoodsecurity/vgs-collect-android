@@ -41,7 +41,7 @@
             tools:ignore="HardcodedText" />
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-            android:id="@+id/vgsTilDateRange"
+            android:id="@+id/vgsTiedDateRangeStrict"
             style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -55,17 +55,104 @@
             app:layout_constraintTop_toBottomOf="@+id/mtvDateRangeHint">
 
             <com.verygoodsecurity.vgscollect.widget.DateRangeEditText
-                android:id="@+id/vgsTiedDateRange"
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:datePattern="MM/dd/yyyy"
+                app:formatterMode="strict"
+                app:datePickerModes="input"
+                app:fieldName="card.expiry"
+                app:imeOptions="actionNext"
+                app:inputType="date"
+                app:hint="Donald"
+                app:text="01/303" />
+
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTiedDateRangeFlexible"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_material_small"
+            android:layout_marginTop="@dimen/margin_padding_material_large"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vgsTiedDateRangeStrict">
+
+            <com.verygoodsecurity.vgscollect.widget.DateRangeEditText
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:datePattern="MM/dd/yyyy"
+                app:formatterMode="flexible"
+                app:datePickerModes="input"
+                app:fieldName="card.expiry"
+                app:imeOptions="actionNext"
+                app:inputType="date"
+                app:hint="Donald"
+                app:text="01/303" />
+
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTiedExpirationDateStrict"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_material_small"
+            android:layout_marginTop="@dimen/margin_padding_material_large"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vgsTiedDateRangeFlexible">
+
+            <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
                 style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:datePattern="MM/yy"
-                app:datePickerModes="spinner"
+                app:formatterMode="strict"
+                app:datePickerModes="input"
                 app:fieldName="card.expiry"
                 app:imeOptions="actionNext"
                 app:inputType="date"
                 app:hint="Donald"
                 app:text="01/30" />
+
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTiedExpirationDateFlexible"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_material_small"
+            android:layout_marginTop="@dimen/margin_padding_material_large"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vgsTiedExpirationDateStrict">
+
+            <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:datePattern="MM/yy"
+                app:formatterMode="flexible"
+                app:datePickerModes="input"
+                app:fieldName="card.expiry"
+                app:imeOptions="actionNext"
+                app:inputType="date"
+                app:hint="Donald"
+                app:text="01/80" />
 
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 

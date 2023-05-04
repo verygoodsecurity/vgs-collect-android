@@ -981,6 +981,22 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.isEnabled = enabled
     }
 
+    //region - Date fields (DateInputField and DateRangeInputField)
+    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
+    internal fun setFormatterMode(mode: Int) {
+        when (fieldType) {
+            FieldType.CARD_EXPIRATION_DATE -> {
+                (inputField as? DateInputField)?.setFormatterMode(mode)
+            }
+            FieldType.DATE_RANGE -> {
+                (inputField as? DateRangeInputField)?.formatterModeRaw = mode
+            }
+            else -> {
+                // Do nothing
+            }
+        }
+    }
+
     protected fun setOutputPattern(pattern: String?) {
         when (fieldType) {
             FieldType.CARD_EXPIRATION_DATE -> {
@@ -1026,10 +1042,6 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    protected fun getDatePattern(): String? {
-        return (inputField as? DateInputField)?.getDatePattern()
-    }
-
     protected fun setDatePickerMode(type: Int) {
         when (fieldType) {
             FieldType.CARD_EXPIRATION_DATE -> {
@@ -1044,9 +1056,26 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
+    protected fun getDatePattern(): String? {
+        return when (fieldType) {
+            FieldType.CARD_EXPIRATION_DATE -> {
+                (inputField as? DateInputField)?.getDatePattern()
+            }
+            FieldType.DATE_RANGE -> {
+                (inputField as? DateRangeInputField)?.inputPattern
+            }
+            else -> {
+                null
+            }
+        }
+    }
+
     protected fun getDateMode(): DatePickerMode? {
         return (inputField as? DateInputField)?.getDatePickerMode()
     }
+    //endregion
+
+
 
     protected fun maxDate(date: String) {
         if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
@@ -1362,13 +1391,6 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     override fun performClick(): Boolean {
         return inputField.performClick()
-    }
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
-    internal fun setFormatterMode(mode: Int) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setFormatterMode(mode)
-        }
     }
 
     internal fun getFormatterMode(): Int {

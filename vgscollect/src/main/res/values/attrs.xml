@@ -24,6 +24,18 @@
         <enum name="input" value="2" />
     </attr>
 
+    <!-- Specifies rules on how to format the user input. Currently, it has an impact only on datePickerModes as input.
+         By default, field apply strict mode. -->
+    <attr name="formatterMode" format="enum">
+
+        <!-- Ignore any incorrect user input. -->
+        <enum name="strict" value="0"/>
+
+        <!-- Apply any digits in user input. -->
+        <enum name="flexible" value="1"/>
+
+    </attr>
+
     <!-- Size of text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp).
          Supported values include the following:<p/>
     <ul>
@@ -607,18 +619,7 @@
 <!--    </declare-styleable>-->
 
     <declare-styleable name="ExpirationDateEditText">
-
-        <!-- Specifies rules on how to format the user input. Currently, it has an impact only on datePickerModes as input.
-             By default, field apply strict mode. -->
-        <attr name="formatterMode" format="enum">
-
-            <!-- Ignore any incorrect user input. -->
-            <enum name="strict" value="0"/>
-
-            <!-- Apply any digits in user input. -->
-            <enum name="flexible" value="1"/>
-        </attr>
-
+        <attr name="formatterMode"/>
         <attr name="fieldName"/>
 
         <attr name="inputType"/>
@@ -654,17 +655,7 @@
 
         <attr name="datePattern"/>
         <attr name="outputPattern"/>
-
-        <!-- Specifies rules on how to format the user input. Currently, it has an impact only on datePickerModes as input.
-             By default, field apply strict mode. -->
-        <attr name="rangeFormatterMode" format="enum">
-
-            <!-- Ignore any incorrect user input. -->
-            <enum name="strict" value="0"/>
-
-            <!-- Apply any digits in user input. -->
-            <enum name="flexible" value="1"/>
-        </attr>
+        <attr name="formatterMode"/>
 
         <attr name="fieldName"/>
 

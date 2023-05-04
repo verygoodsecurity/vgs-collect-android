@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
 import android.util.Base64
+import com.verygoodsecurity.vgscollect.view.date.formatter.FlexibleDateRangeFormatter
 import kotlin.text.StringBuilder
 
 private const val NUMBER_REGEX = "[^\\d]"
@@ -81,3 +82,9 @@ internal fun String.applyLimitOnMask(limit: Int): String {
         builder.toString().trim()
     }
 }
+
+internal val String.digits: String
+    get() {
+        val digitsRegex = Regex("\\D")
+        return digitsRegex.replace(this, "")
+    }
