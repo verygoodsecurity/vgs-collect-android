@@ -27,6 +27,7 @@ import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
 import com.verygoodsecurity.vgscollect.view.date.validation.isInputDatePatternValid
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.OnDatePickerVisibilityChangeListener
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -62,7 +63,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     private var datePickerMode:DatePickerMode = DatePickerMode.INPUT
     private var isDaysVisible = true
 
-    private var datePickerVisibilityChangeListener:ExpirationDateEditText.OnDatePickerVisibilityChangeListener? = null
+    private var datePickerVisibilityChangeListener: OnDatePickerVisibilityChangeListener? = null
 
     override var fieldType: FieldType = FieldType.CARD_EXPIRATION_DATE
 
@@ -356,7 +357,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
     }
 
-    internal fun setDatePickerVisibilityListener(listener: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
+    internal fun setDatePickerVisibilityListener(listener: OnDatePickerVisibilityChangeListener?) {
         datePickerVisibilityChangeListener = listener
     }
 

@@ -46,7 +46,9 @@ import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.*
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
+import com.verygoodsecurity.vgscollect.widget.DateRangeEditText
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.OnDatePickerVisibilityChangeListener
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
@@ -1003,7 +1005,7 @@ abstract class InputFieldView @JvmOverloads constructor(
                 (inputField as? DateInputField)?.setOutputPattern(pattern)
             }
             FieldType.DATE_RANGE -> {
-                (inputField as? DateRangeInputField)?.outputPattern = pattern
+                (inputField as? DateRangeInputField)?.outputFormatRaw = pattern
             }
             else -> {
                 // Do nothing
@@ -1017,7 +1019,7 @@ abstract class InputFieldView @JvmOverloads constructor(
                 (inputField as? DateInputField)?.setDatePattern(pattern)
             }
             FieldType.DATE_RANGE -> {
-                (inputField as? DateRangeInputField)?.inputPattern = pattern
+                (inputField as? DateRangeInputField)?.inputFormatRaw = pattern
             }
             else -> {
                 // Do nothing
@@ -1034,7 +1036,10 @@ abstract class InputFieldView @JvmOverloads constructor(
                 (inputField as? DateInputField)?.showDatePickerDialog(dialogMode, ignoreFieldMode)
             }
             FieldType.DATE_RANGE -> {
-                (inputField as? DateRangeInputField)?.showDatePickerDialog(dialogMode, ignoreFieldMode)
+                (inputField as? DateRangeInputField)?.showDatePickerDialog(
+                    dialogMode,
+                    ignoreFieldMode
+                )
             }
             else -> {
                 // Do nothing
@@ -1048,7 +1053,7 @@ abstract class InputFieldView @JvmOverloads constructor(
                 (inputField as? DateInputField)?.setDatePickerMode(type)
             }
             FieldType.DATE_RANGE -> {
-                (inputField as? DateRangeInputField)?.pickerMode = type
+                (inputField as? DateRangeInputField)?.datePickerModeRaw = type
             }
             else -> {
                 // Do nothing
@@ -1062,7 +1067,7 @@ abstract class InputFieldView @JvmOverloads constructor(
                 (inputField as? DateInputField)?.getDatePattern()
             }
             FieldType.DATE_RANGE -> {
-                (inputField as? DateRangeInputField)?.inputPattern
+                (inputField as? DateRangeInputField)?.inputFormatRaw
             }
             else -> {
                 null
@@ -1071,21 +1076,72 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     protected fun getDateMode(): DatePickerMode? {
-        return (inputField as? DateInputField)?.getDatePickerMode()
+        return when (fieldType) {
+            FieldType.CARD_EXPIRATION_DATE -> {
+                (inputField as? DateInputField)?.getDatePickerMode()
+            }
+            FieldType.DATE_RANGE -> {
+                (inputField as? DateRangeInputField)?.datePickerMode
+            }
+            else -> {
+                null
+            }
+        }
     }
-    //endregion
 
+    protected fun setDatePickerVisibilityListener(l: OnDatePickerVisibilityChangeListener?) {
+        when (fieldType) {
+            FieldType.CARD_EXPIRATION_DATE -> {
+                (inputField as? DateInputField)?.setDatePickerVisibilityListener(l)
+            }
+            FieldType.DATE_RANGE -> {
+                (inputField as? DateRangeInputField)?.datePickerVisibilityChangeListener = l
+            }
+            else -> {
+                // Do nothing
+            }
+        }
+    }
 
-
-    protected fun maxDate(date: String) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setMaxDate(date)
+    protected fun setFieldDataSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
+        when (fieldType) {
+            FieldType.CARD_EXPIRATION_DATE -> {
+                (inputField as? DateInputField)?.setFieldDataSerializers(serializers)
+            }
+            FieldType.DATE_RANGE -> {
+                (inputField as? DateRangeInputField)?.fieldDataSerializers = serializers
+            }
+            else -> {
+                // Do nothing
+            }
         }
     }
 
     protected fun minDate(date: String) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setMinDate(date)
+        when (fieldType) {
+            FieldType.CARD_EXPIRATION_DATE -> {
+                (inputField as? DateInputField)?.setMinDate(date)
+            }
+            FieldType.DATE_RANGE -> {
+                (inputField as? DateRangeInputField)?.startDateRaw = date
+            }
+            else -> {
+                // Do nothing
+            }
+        }
+    }
+
+    protected fun maxDate(date: String) {
+        when (fieldType) {
+            FieldType.CARD_EXPIRATION_DATE -> {
+                (inputField as? DateInputField)?.setMaxDate(date)
+            }
+            FieldType.DATE_RANGE -> {
+                (inputField as? DateRangeInputField)?.endDateRaw = date
+            }
+            else -> {
+                // Do nothing
+            }
         }
     }
 
@@ -1095,17 +1151,36 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    protected fun setDatePickerVisibilityListener(l: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setDatePickerVisibilityListener(l)
+    internal fun getFormatterMode(): Int {
+        return when (fieldType) {
+            FieldType.CARD_EXPIRATION_DATE -> {
+                (inputField as? DateInputField)?.getFormatterMode() ?: -1
+            }
+            FieldType.DATE_RANGE -> {
+                (inputField as? DateRangeInputField)?.formatterModeRaw ?: -1
+            }
+            else -> {
+                -1
+            }
         }
     }
 
-    protected fun setFieldDataSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setFieldDataSerializers(serializers)
+    protected fun getExpirationDate(): FieldState.CardExpirationDateState? {
+        return if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.getState() as? FieldState.CardExpirationDateState
+        } else {
+            null
         }
     }
+
+    protected fun getDateState(): FieldState.DateRangeState? {
+        return if (fieldType == FieldType.DATE_RANGE) {
+            (inputField as? DateRangeInputField)?.getState() as? FieldState.DateRangeState
+        } else {
+            null
+        }
+    }
+    //endregion
 
     /**
      * Sets the id of the view to use when the next focus is FOCUS_FORWARD.
@@ -1339,14 +1414,6 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    protected fun getExpirationDate(): FieldState.CardExpirationDateState? {
-        return if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.getState() as? FieldState.CardExpirationDateState
-        } else {
-            null
-        }
-    }
-
     protected fun getInfoState(): FieldState.InfoState? {
         return (inputField as? InfoInputField)?.getState() as? FieldState.InfoState
     }
@@ -1391,14 +1458,6 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     override fun performClick(): Boolean {
         return inputField.performClick()
-    }
-
-    internal fun getFormatterMode(): Int {
-        return if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.getFormatterMode() ?: -1
-        } else {
-            -1
-        }
     }
 
     /**

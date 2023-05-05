@@ -6,6 +6,14 @@
      -->
     <attr name="datePattern" format="string"/>
 
+    <!-- Representation of start date. The method uses the ISO 8601 standard.
+     -->
+    <attr name="startDate" format="string" />
+
+    <!-- Representation of end date. The method uses the ISO 8601 standard.
+     -->
+    <attr name="endDate" format="string" />
+
     <!-- Representation of date and times which will be sent to the Vault Proxy Server.
          The method uses the ISO 8601 standard.
      -->
@@ -585,65 +593,28 @@
         <attr name="enableTokenization"/>
     </declare-styleable>
 
-<!--    <declare-styleable name="DateTextField">-->
-<!--        <attr name="fieldName"/>-->
-
-<!--        <attr name="inputType"/>-->
-
-<!--        <attr name="text"/>-->
-<!--        <attr name="enabled"/>-->
-<!--        <attr name="textSize"/>-->
-<!--        <attr name="textColor" />-->
-<!--        <attr name="ellipsize"/>-->
-
-<!--        <attr name="textStyle" />-->
-
-<!--        <attr name="cursorVisible" />-->
-<!--        <attr name="singleLine"  />-->
-<!--        <attr name="isRequired"/>-->
-
-<!--        <attr name="gravity" />-->
-<!--        <attr name="scrollHorizontally"/>-->
-
-<!--        <attr name="hint" />-->
-
-<!--        <attr name="maxDate" format="string"/>-->
-<!--        <attr name="minDate" format="string"/>-->
-<!--        <attr name="datePattern"/>-->
-<!--        <attr name="datePickerModes"/>-->
-
-<!--        &lt;!&ndash; tokenization api&ndash;&gt;-->
-<!--        <attr name="storageType"/>-->
-<!--        <attr name="aliasFormat"/>-->
-<!--        <attr name="enableTokenization"/>-->
-<!--    </declare-styleable>-->
-
     <declare-styleable name="ExpirationDateEditText">
+
         <attr name="formatterMode"/>
+        <attr name="datePattern"/>
+        <attr name="outputPattern"/>
+        <attr name="datePickerModes"/>
         <attr name="fieldName"/>
-
         <attr name="inputType"/>
-
         <attr name="text"/>
         <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />
         <attr name="ellipsize"/>
-
         <attr name="textStyle" />
-
         <attr name="cursorVisible" />
         <attr name="singleLine"  />
         <attr name="isRequired"/>
-
         <attr name="gravity" />
         <attr name="scrollHorizontally"/>
-
         <attr name="hint" />
-
-        <attr name="datePattern"/>
-        <attr name="outputPattern"/>
-        <attr name="datePickerModes"/>
+        <attr name="startDate" />
+        <attr name="endDate" />
 
         <!-- tokenization api-->
         <attr name="storageType"/>
@@ -656,35 +627,28 @@
         <attr name="datePattern"/>
         <attr name="outputPattern"/>
         <attr name="formatterMode"/>
-
         <attr name="fieldName"/>
-
         <attr name="inputType"/>
-
         <attr name="text"/>
         <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />
         <attr name="ellipsize"/>
-
         <attr name="textStyle" />
-
         <attr name="cursorVisible" />
         <attr name="singleLine"  />
         <attr name="isRequired"/>
-
         <attr name="gravity" />
         <attr name="scrollHorizontally"/>
-
         <attr name="hint" />
-
-
         <attr name="datePickerModes"/>
-
+        <attr name="startDate"/>
+        <attr name="endDate"/>
         <!-- tokenization api-->
         <attr name="storageType"/>
         <attr name="aliasFormat"/>
         <attr name="enableTokenization"/>
+
     </declare-styleable>
 
     <declare-styleable name="VGSTextInputLayout">

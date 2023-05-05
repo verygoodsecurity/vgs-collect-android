@@ -9,7 +9,7 @@ internal class FlexibleDateRangeFormatter(
     override var pickerMode: DatePickerMode
 ) : BaseDateRangeFormatter(), DateRangePickerFormatter {
 
-    //region: Properties
+    //region - Properties
     private var runtimeData = ""
     //endregion
 

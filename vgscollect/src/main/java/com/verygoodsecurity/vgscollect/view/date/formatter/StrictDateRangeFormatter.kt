@@ -2,8 +2,6 @@ package com.verygoodsecurity.vgscollect.view.date.formatter
 
 import android.text.Editable
 import android.widget.EditText
-import com.verygoodsecurity.vgscollect.core.model.VGSDate
-import com.verygoodsecurity.vgscollect.view.card.formatter.date.StrictDateFormatter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import java.util.regex.Pattern
 
@@ -14,7 +12,7 @@ internal class StrictDateRangeFormatter(
     private val source: EditText? = null
 ) : BaseDateRangeFormatter(), DateRangePickerFormatter {
 
-    //region: Properties
+    //region - Properties
     private var runtimeData = ""
     private var isDeleteAction = false
     private var skipStep = false
@@ -37,13 +35,14 @@ internal class StrictDateRangeFormatter(
                 // Skip deleting if divider will be removed, and divider not the last character
                 skipStep = it.contains(divider) && s.lastIndexOf(divider) + 1 != s.length
             }?.also {
-                tempString = when {                                // handle String state before removing
-                    !skipStep -> s
-                    s.toString() == it -> ""
-                    else -> it.replace(divider, "").run {
-                        s.replace(this.toRegex(), "")
+                tempString =
+                    when {                                // handle String state before removing
+                        !skipStep -> s
+                        s.toString() == it -> ""
+                        else -> it.replace(divider, "").run {
+                            s.replace(this.toRegex(), "")
+                        }
                     }
-                }
             }
         } else {
             tempString = s ?: ""
@@ -70,10 +69,10 @@ internal class StrictDateRangeFormatter(
                 generateMMDDYYYY(str)
             }
             dateFormatter == VGSDateFormat.DD_MM_YYYY -> {
-                ""
+                generateDDMMYYYY(str)
             }
             dateFormatter == VGSDateFormat.YYYY_MM_DD -> {
-                ""
+                generateYYYYMMDD(str)
             }
             else -> "".also {
                 cacheMonth = it
@@ -118,7 +117,72 @@ internal class StrictDateRangeFormatter(
                 result += divider + formattedDay
             }
             if (formattedYear.isNotEmpty()) {
-                result +=  divider + formattedYear
+                result += divider + formattedYear
+            }
+            return result
+        }
+    }
+
+    private fun generateDDMMYYYY(str: CharSequence): String {
+        val dateComponents = dateFormatter.dateComponentsString(str.toString())
+        val formattedDay = formatDay(dateComponents.day)
+        if (dateComponents.isDayValid && !dateComponents.isMonthValid && !dateComponents.isYearValid) {
+            cacheMonth = ""
+            cacheYear = ""
+            return when {
+                isDeleteAction -> formattedDay
+                formattedDay == "3" -> formattedDay
+                formattedDay == "2" -> formattedDay
+                formattedDay == "1" -> formattedDay
+                formattedDay == "0" -> formattedDay
+                else -> formattedDay + divider
+            }
+        } else {
+            val formattedMonth = formatMonth(dateComponents.month)
+            val formattedYear = formatYear(dateComponents.year)
+
+            var result = ""
+            if (formattedDay.isNotEmpty()) {
+                result = formattedDay
+            }
+            if (formattedMonth.isNotEmpty()) {
+                result += divider + formattedMonth
+            }
+            if (formattedYear.isNotEmpty()) {
+                if (formattedMonth.isEmpty()) {
+                    result += divider + divider + formattedYear
+                } else {
+                    result += divider + formattedYear
+                }
+            }
+            return result
+        }
+    }
+
+    private fun generateYYYYMMDD(str: CharSequence): String {
+        val dateComponents = dateFormatter.dateComponentsString(str.toString())
+        val formattedYear = formatYear(dateComponents.year)
+        if (dateComponents.isYearValid && !dateComponents.isMonthValid && !dateComponents.isDayValid) {
+            cacheMonth = ""
+            cacheDay = ""
+            return when {
+                isDeleteAction -> formattedYear
+                formattedYear.length < dateFormatter.yearCharacters -> formattedYear
+                else -> formattedYear + divider
+            }
+        } else {
+            val formattedMonth = formatMonth(dateComponents.month)
+            val formattedDay = formatDay(dateComponents.day)
+
+            var result = ""
+            if (formattedYear.isNotEmpty()) {
+                result = formattedYear
+            }
+            if (formattedMonth.isNotEmpty()) {
+                result += divider + formattedMonth
+            }
+            if (formattedDay.isNotEmpty()) {
+                result += divider + formattedDay
             }
             return result
         }
@@ -132,10 +196,6 @@ internal class StrictDateRangeFormatter(
             isDeleteAction -> "".also { moveCursorToEnd_D() }
             else -> DayFormatter.validateDay(day) ?: cacheDay
         }
-    }
-
-    private fun moveCursorToEnd_D() {
-
     }
 
     private fun formatMonth(month: String): String {
@@ -153,8 +213,25 @@ internal class StrictDateRangeFormatter(
         return when {
             year.isEmpty() -> "".also { cacheYear = "" }
             isValid -> year.also { cacheYear = it }
-            isDeleteAction -> "" //.also { moveCursorToEnd_Year() }
+            isDeleteAction -> "".also { moveCursorToEnd_Year() }
             else -> cacheYear
+        }
+    }
+
+    private fun moveCursorToEnd_D() {
+        when (dateFormatter) {
+            VGSDateFormat.MM_DD_YYYY,
+            VGSDateFormat.YYYY_MM_DD -> {
+                val index = if (runtimeData.isNotEmpty()) {
+                    runtimeData.length - 1
+                } else {
+                    0
+                }
+                source?.setSelection(index)
+            }
+            VGSDateFormat.DD_MM_YYYY -> {
+                source?.setSelection(0)
+            }
         }
     }
 
@@ -163,11 +240,31 @@ internal class StrictDateRangeFormatter(
             VGSDateFormat.MM_DD_YYYY -> {
                 source?.setSelection(0)
             }
+            VGSDateFormat.DD_MM_YYYY,
+            VGSDateFormat.YYYY_MM_DD -> {
+                val index = if (runtimeData.isNotEmpty()) {
+                    runtimeData.length - 1
+                } else {
+                    0
+                }
+                source?.setSelection(index)
+            }
+        }
+    }
+
+    private fun moveCursorToEnd_Year() {
+        when (dateFormatter) {
+            VGSDateFormat.MM_DD_YYYY,
             VGSDateFormat.DD_MM_YYYY -> {
-                source?.setSelection(runtimeData.length - 1)
+                val index = if (runtimeData.isNotEmpty()) {
+                    runtimeData.length - 1
+                } else {
+                    0
+                }
+                source?.setSelection(index)
             }
             VGSDateFormat.YYYY_MM_DD -> {
-                source?.setSelection(runtimeData.length - 1)
+                source?.setSelection(0)
             }
         }
     }
@@ -178,9 +275,9 @@ internal class DayFormatter {
 
     companion object {
 
-        private val patternDay = Pattern.compile("^([1-9]|[12]\\d|3[01])\$")
+        private val patternDay = Pattern.compile("^([0123]|0[1-9]|1[0-9]|2[0-9]|3[01])\$")
 
-        fun isValidDay(day: String) : Boolean {
+        fun isValidDay(day: String): Boolean {
             return patternDay.matcher(day).matches()
         }
 
@@ -205,24 +302,20 @@ internal class MonthFormatter {
 
         private val patternMounts = Pattern.compile("^([10]|0[1-9]|1[012])\$")
 
-        fun isValidMonth(month: String) : Boolean {
+        fun isValidMonth(month: String): Boolean {
             return patternMounts.matcher(month).matches()
         }
 
         fun validateMonth(month: String): String? {
-            return when (month) {
-                "2" -> "02"
-                "3" -> "03"
-                "4" -> "04"
-                "5" -> "05"
-                "6" -> "06"
-                "7" -> "07"
-                "8" -> "08"
-                "9" -> "09"
-                "10" -> "10"
-                "11" -> "11"
-                "12" -> "12"
-                else -> null
+            return try {
+                val monthInt = month.toInt()
+                if (monthInt in 1..12) {
+                    return String.format("%02d", monthInt)
+                } else {
+                    return null
+                }
+            } catch (e: Exception) {
+                null
             }
         }
     }

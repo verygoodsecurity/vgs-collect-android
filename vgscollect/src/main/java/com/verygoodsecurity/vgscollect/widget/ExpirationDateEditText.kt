@@ -162,22 +162,6 @@ class ExpirationDateEditText @JvmOverloads constructor(
     }
 
     /**
-     * Interface definition for a callback to be invoked when the DatePicker Dialog changes
-     * visibility.
-     */
-    interface OnDatePickerVisibilityChangeListener {
-        /**
-         * Called when the DatePicker Dialog was shown.
-         */
-        fun onShow()
-
-        /**
-         * Called when the DatePicker Dialog was dismissed.
-         */
-        fun onDismiss()
-    }
-
-    /**
      * Sets a listener to be invoked when the DatePicker dialog visibility is changing.
      */
     fun setDatePickerVisibilityChangeListener(l: OnDatePickerVisibilityChangeListener?) {
@@ -237,5 +221,20 @@ class ExpirationDateEditText @JvmOverloads constructor(
     fun setEnabledTokenization(isEnabled: Boolean) {
         enableTokenization(isEnabled)
     }
+}
 
+/**
+ * Interface definition for a callback to be invoked when the DatePicker Dialog changes
+ * visibility.
+ */
+interface OnDatePickerVisibilityChangeListener {
+    /**
+     * Called when the DatePicker Dialog was shown.
+     */
+    fun onShow()
+
+    /**
+     * Called when the DatePicker Dialog was dismissed.
+     */
+    fun onDismiss()
 }

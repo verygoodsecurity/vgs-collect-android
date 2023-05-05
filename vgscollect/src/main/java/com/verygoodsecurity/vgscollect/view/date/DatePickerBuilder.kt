@@ -18,6 +18,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.NonNull
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.OnDatePickerVisibilityChangeListener
 import java.util.*
 
 /** @suppress */
@@ -30,7 +31,7 @@ internal class DatePickerBuilder(private val context: Context, mode:DatePickerMo
     private var listener: DatePicker.OnDateChangedListener? = null
     private var positiveListener: DialogInterface.OnClickListener? = null
     private var negativeListener: DialogInterface.OnClickListener? = null
-    private var visibilityChangeListener: ExpirationDateEditText.OnDatePickerVisibilityChangeListener? = null
+    private var visibilityChangeListener: OnDatePickerVisibilityChangeListener? = null
 
     private var isDateVisible = true
 
@@ -159,7 +160,7 @@ internal class DatePickerBuilder(private val context: Context, mode:DatePickerMo
         }
     }
 
-    fun setOnVisibilityChangeListener(listener: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?): DatePickerBuilder {
+    fun setOnVisibilityChangeListener(listener: OnDatePickerVisibilityChangeListener?): DatePickerBuilder {
         visibilityChangeListener = listener
         return this
     }

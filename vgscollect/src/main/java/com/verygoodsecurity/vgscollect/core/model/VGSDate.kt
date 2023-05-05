@@ -14,7 +14,7 @@ public class VGSDate private constructor(
             // Create a calendar and set the components to create the date
             val calendar = GregorianCalendar.getInstance()
             calendar.set(Calendar.DAY_OF_MONTH, day)
-            calendar.set(Calendar.MONTH, month)
+            calendar.set(Calendar.MONTH, month - 1)
             calendar.set(Calendar.YEAR, year)
 
             // Get the values stored in the calendar
@@ -23,7 +23,7 @@ public class VGSDate private constructor(
             val calYear = calendar.get(Calendar.YEAR)
 
             // If the calendar has the same values sent by parameter, the date is valid
-            if (day == calDay && month == calMonth && year == calYear) {
+            if (day == calDay && month == (calMonth + 1) && year == calYear) {
                 return VGSDate(day, month, year)
             }
 

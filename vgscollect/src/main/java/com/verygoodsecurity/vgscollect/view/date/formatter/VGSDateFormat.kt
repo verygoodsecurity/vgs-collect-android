@@ -137,7 +137,7 @@ internal enum class VGSDateFormat(val displayFormat: String) {
                     result.month = monthPrefix.first
 
                     // Get day
-                    if (result.isDayValid) {
+                    if (result.isMonthValid) {
                         val dayPrefix = digitsInput.prefix(daysCharacters)
                         result.day = dayPrefix.first
                     }
@@ -207,16 +207,39 @@ internal enum class VGSDateFormat(val displayFormat: String) {
         val default = MM_DD_YYYY
         const val defaultDivider = "-"
 
-        fun parseInputToDateFormat(input: String?): VGSDateFormat? {
-            // Try to parse to each of the formats
-            return if (MM_DD_YYYY.dateFromInput(input) != null) {
-                MM_DD_YYYY
-            } else if (DD_MM_YYYY.dateFromInput(input) != null) {
-                DD_MM_YYYY
-            } else if (YYYY_MM_DD.dateFromInput(input) != null) {
-                YYYY_MM_DD
-            } else {
-                null
+        fun findDividerInInput(input: String?): String? {
+            // Make sure if is a valid pattern string
+            if (input.isNullOrEmpty()) {
+                return null
+            }
+            // Remove all date components to get the divider
+            val allDividers = input
+                .replace("M", "", true)
+                .replace("y", "", true)
+                .replace("d", "", true)
+            // If not divider, return
+            if (allDividers.isEmpty()) {
+                return null
+            }
+            // Replace dividers with the default
+            return allDividers.first().toString()
+        }
+
+        fun parsePatternToDateFormat(pattern: String?): VGSDateFormat? {
+            // Make sure if is a valid pattern string
+            if (pattern.isNullOrEmpty()) {
+                return null
+            }
+
+            // Find divider
+            val divider = findDividerInInput(pattern) ?: return null
+
+            // Replace dividers with the default
+            return when (pattern.replace(divider, defaultDivider, true)) {
+                MM_DD_YYYY.displayFormat -> MM_DD_YYYY
+                DD_MM_YYYY.displayFormat -> DD_MM_YYYY
+                YYYY_MM_DD.displayFormat -> YYYY_MM_DD
+                else -> null
             }
         }
     }

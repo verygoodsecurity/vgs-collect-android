@@ -58,14 +58,16 @@
                 style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:datePattern="MM/dd/yyyy"
+                app:datePattern="yyyy/MM/dd"
                 app:formatterMode="strict"
                 app:datePickerModes="input"
                 app:fieldName="card.expiry"
                 app:imeOptions="actionNext"
                 app:inputType="date"
-                app:hint="Donald"
-                app:text="01/303" />
+                app:hint="yyyy/MM/dd"
+                app:startDate="2010/01/01"
+                app:endDate="2020/01/01"
+                app:text="2010^12^24" />
 
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -116,14 +118,14 @@
                 style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:datePattern="MM/yy"
+                app:datePattern="MM/yyyy"
                 app:formatterMode="strict"
                 app:datePickerModes="input"
                 app:fieldName="card.expiry"
                 app:imeOptions="actionNext"
                 app:inputType="date"
                 app:hint="Donald"
-                app:text="01/30" />
+                app:text="01/2030" />
 
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
