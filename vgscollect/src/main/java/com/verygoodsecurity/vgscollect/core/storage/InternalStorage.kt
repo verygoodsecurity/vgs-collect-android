@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.core.storage
 
 import android.content.Context
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.*
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.content.field.FieldStateContractor
@@ -15,6 +16,7 @@ import com.verygoodsecurity.vgscollect.util.extension.isArraysIgnored
 import com.verygoodsecurity.vgscollect.util.extension.merge
 import com.verygoodsecurity.vgscollect.util.extension.toFlatMap
 import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.core.serializers.VGSDateRangeSeparateSerializer
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 
 /** @suppress */
@@ -124,6 +126,9 @@ internal class InternalStorage(
                     is CreditCardExpDateContent -> {
                         result.addAll(handleExpirationDateContent(state.fieldName!!, this))
                     }
+                    is DateRangeContent -> {
+                        result.addAll(handleDateRangeContent(state.fieldName!!, this))
+                    }
                     else -> result.add(state.fieldName!! to data!!)
                 }
             }
@@ -142,6 +147,26 @@ internal class InternalStorage(
                 if (it is VGSExpDateSeparateSerializer) {
                     result.addAll(
                         it.serialize(VGSExpDateSeparateSerializer.Params(data, content.dateFormat))
+                    )
+                }
+            }
+        } else {
+            result.add(fieldName to data)
+        }
+        return result
+    }
+
+    private fun handleDateRangeContent(
+        fieldName: String,
+        content: DateRangeContent
+    ): List<Pair<String, String>> {
+        val result = mutableListOf<Pair<String, String>>()
+        val data = (content.rawData ?: content.data!!)
+        if (content.serializers != null) {
+            content.serializers?.forEach {
+                if (it is VGSDateRangeSeparateSerializer) {
+                    result.addAll(
+                        it.serialize(VGSDateRangeSeparateSerializer.Params(data, content.dateFormat?.format))
                     )
                 }
             }

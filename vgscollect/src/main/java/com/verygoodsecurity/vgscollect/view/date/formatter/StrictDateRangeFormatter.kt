@@ -35,8 +35,9 @@ internal class StrictDateRangeFormatter(
                 // Skip deleting if divider will be removed, and divider not the last character
                 skipStep = it.contains(divider) && s.lastIndexOf(divider) + 1 != s.length
             }?.also {
+                // handle String state before removing
                 tempString =
-                    when {                                // handle String state before removing
+                    when {
                         !skipStep -> s
                         s.toString() == it -> ""
                         else -> it.replace(divider, "").run {
@@ -65,13 +66,13 @@ internal class StrictDateRangeFormatter(
                 cacheMonth = it
                 cacheYear = it
             }
-            dateFormatter == VGSDateFormat.MM_DD_YYYY -> {
+            dateFormatter is VGSDateFormat.mmddyyyy -> {
                 generateMMDDYYYY(str)
             }
-            dateFormatter == VGSDateFormat.DD_MM_YYYY -> {
+            dateFormatter is VGSDateFormat.ddmmyyyy -> {
                 generateDDMMYYYY(str)
             }
-            dateFormatter == VGSDateFormat.YYYY_MM_DD -> {
+            dateFormatter is VGSDateFormat.yyyymmdd -> {
                 generateYYYYMMDD(str)
             }
             else -> "".also {
@@ -149,11 +150,7 @@ internal class StrictDateRangeFormatter(
                 result += divider + formattedMonth
             }
             if (formattedYear.isNotEmpty()) {
-                if (formattedMonth.isEmpty()) {
-                    result += divider + divider + formattedYear
-                } else {
-                    result += divider + formattedYear
-                }
+                result += divider + formattedYear
             }
             return result
         }
@@ -220,8 +217,8 @@ internal class StrictDateRangeFormatter(
 
     private fun moveCursorToEnd_D() {
         when (dateFormatter) {
-            VGSDateFormat.MM_DD_YYYY,
-            VGSDateFormat.YYYY_MM_DD -> {
+            is VGSDateFormat.mmddyyyy,
+            is VGSDateFormat.yyyymmdd -> {
                 val index = if (runtimeData.isNotEmpty()) {
                     runtimeData.length - 1
                 } else {
@@ -229,7 +226,7 @@ internal class StrictDateRangeFormatter(
                 }
                 source?.setSelection(index)
             }
-            VGSDateFormat.DD_MM_YYYY -> {
+            is VGSDateFormat.ddmmyyyy -> {
                 source?.setSelection(0)
             }
         }
@@ -237,11 +234,11 @@ internal class StrictDateRangeFormatter(
 
     private fun moveCursorToEnd_M() {
         when (dateFormatter) {
-            VGSDateFormat.MM_DD_YYYY -> {
+            is VGSDateFormat.mmddyyyy -> {
                 source?.setSelection(0)
             }
-            VGSDateFormat.DD_MM_YYYY,
-            VGSDateFormat.YYYY_MM_DD -> {
+            is VGSDateFormat.ddmmyyyy,
+            is VGSDateFormat.yyyymmdd -> {
                 val index = if (runtimeData.isNotEmpty()) {
                     runtimeData.length - 1
                 } else {
@@ -254,8 +251,8 @@ internal class StrictDateRangeFormatter(
 
     private fun moveCursorToEnd_Year() {
         when (dateFormatter) {
-            VGSDateFormat.MM_DD_YYYY,
-            VGSDateFormat.DD_MM_YYYY -> {
+            is VGSDateFormat.mmddyyyy,
+            is VGSDateFormat.ddmmyyyy -> {
                 val index = if (runtimeData.isNotEmpty()) {
                     runtimeData.length - 1
                 } else {
@@ -263,7 +260,7 @@ internal class StrictDateRangeFormatter(
                 }
                 source?.setSelection(index)
             }
-            VGSDateFormat.YYYY_MM_DD -> {
+            is VGSDateFormat.yyyymmdd -> {
                 source?.setSelection(0)
             }
         }

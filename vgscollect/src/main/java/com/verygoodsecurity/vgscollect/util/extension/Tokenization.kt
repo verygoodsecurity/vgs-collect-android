@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.util.extension
 
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.view.core.serializers.VGSDateRangeSeparateSerializer
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 
 internal const val TOKENIZATION_PATH = "/tokens"
@@ -31,6 +32,7 @@ private fun getData(
     content: FieldContent?
 ): List<Pair<String, String>> = when (content) {
     is FieldContent.CreditCardExpDateContent -> handleExpirationDateContent(fieldName, content)
+    is FieldContent.DateRangeContent -> handleDateRangeContent(fieldName, content)
     else -> listOf(fieldName to (content?.data ?: ""))
 }
 
@@ -44,6 +46,22 @@ private fun handleExpirationDateContent(
         if (it is VGSExpDateSeparateSerializer) {
             result.addAll(
                 it.serialize(VGSExpDateSeparateSerializer.Params(data, content.dateFormat))
+            )
+        }
+    } ?: result.add(fieldName to data)
+    return result
+}
+
+private fun handleDateRangeContent(
+    fieldName: String,
+    content: FieldContent.DateRangeContent
+): List<Pair<String, String>> {
+    val result = mutableListOf<Pair<String, String>>()
+    val data = (content.rawData ?: content.data!!)
+    content.serializers?.forEach {
+        if (it is VGSDateRangeSeparateSerializer) {
+            result.addAll(
+                it.serialize(VGSDateRangeSeparateSerializer.Params(data, content.dateFormat?.format))
             )
         }
     } ?: result.add(fieldName to data)

@@ -1,13 +1,11 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
-import com.verygoodsecurity.vgscollect.core.model.VGSDate
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.date.formatter.VGSDateFormat
-import com.verygoodsecurity.vgscollect.view.internal.DateRangeInputField
 import java.lang.Integer.min
 import java.text.SimpleDateFormat
 import java.util.*
@@ -108,16 +106,14 @@ internal fun FieldContent.CreditCardExpDateContent.handleOutputFormat(
 
 /** @suppress */
 internal fun FieldContent.DateRangeContent.handleOutputFormat(
-    selectedDate: VGSDate?,
-    divider: String,
-    outputDivider: String,
+    selectedDate: Date?,
     inputDateFormat: VGSDateFormat,
     outputDateFormat: VGSDateFormat,
     serializers: List<FieldDataSerializer<*, *>>?
 ) {
     selectedDate?.let {
-        data = inputDateFormat.format(it, divider)
-        rawData = outputDateFormat.format(selectedDate, outputDivider)
+        data = inputDateFormat.stringFromDate(it)
+        rawData = outputDateFormat.stringFromDate(selectedDate)
     }
     dateFormat = outputDateFormat
     this.serializers = serializers

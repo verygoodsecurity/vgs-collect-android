@@ -134,9 +134,15 @@ internal class DatePickerBuilder(private val context: Context, mode:DatePickerMo
     }
 
     private fun setupPickerControl() {
-        datePickerControl.init(currentDate!!.get(Calendar.YEAR),
+        val dayOfMonth = if (isDateVisible) {
+            currentDate!!.get(Calendar.DAY_OF_MONTH)
+        } else {
+            currentDate!!.getActualMaximum(Calendar.DAY_OF_MONTH)
+        }
+        datePickerControl.init(
+            currentDate!!.get(Calendar.YEAR),
             currentDate!!.get(Calendar.MONTH),
-            currentDate!!.getActualMaximum(Calendar.DAY_OF_MONTH),
+            dayOfMonth,
             listener
         )
     }

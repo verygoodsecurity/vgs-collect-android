@@ -84,7 +84,7 @@ class DateRangeEditText @JvmOverloads constructor(
                 setCursorVisible(cursorVisible)
 
                 val enabled = getBoolean(R.styleable.DateRangeEditText_enabled, true)
-                setEnabled(enabled)
+                isEnabled = enabled
 
                 val isRequired = getBoolean(R.styleable.DateRangeEditText_isRequired, true)
                 setIsRequired(isRequired)

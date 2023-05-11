@@ -1,14 +1,13 @@
 package com.verygoodsecurity.vgscollect.view.date.validation
 
-import com.verygoodsecurity.vgscollect.core.model.VGSDate
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import com.verygoodsecurity.vgscollect.view.date.formatter.VGSDateFormat
-import com.verygoodsecurity.vgscollect.view.internal.DateRangeInputField
+import java.util.*
 
 internal class DateRangeValidator(
     private val dateFormat: VGSDateFormat,
-    private val startDate: VGSDate?,
-    private val endDate: VGSDate?
+    private val startDate: Date?,
+    private val endDate: Date?
 ) : VGSValidator {
 
     //region - VGSValidator implementation
@@ -21,21 +20,21 @@ internal class DateRangeValidator(
         }
 
         // Format input date match selected format
-        val inputDate = dateFormat.dateFromInput(content) ?: return false
+        val inputDate = dateFormat.dateFromString(content) ?: return false
 
         // When startDate and endDate are set, validate that startDate `<=` inputDate `<=` endDate
         if (startDate != null && endDate != null) {
-            return startDate <= inputDate && inputDate <= endDate
+            return inputDate.after(startDate) && inputDate.before(endDate)
         }
 
         // When startDate is set, validate that startDate `<=` inputDate
         if (startDate != null) {
-            return startDate <= inputDate
+            return inputDate.after(startDate)
         }
 
         // When endDate is set, validate that inputDate `<=` endDate
         if (endDate != null) {
-            return endDate <= inputDate
+            return inputDate.before(endDate)
         }
 
         // Positive validation

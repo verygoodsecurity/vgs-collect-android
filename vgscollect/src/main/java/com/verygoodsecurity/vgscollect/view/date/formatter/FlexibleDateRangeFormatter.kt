@@ -51,11 +51,11 @@ internal class FlexibleDateRangeFormatter(
         repeat(textCount) { charIndex ->
             val maskIndex = charIndex + indexSpace
 
-            if (maskIndex < dateFormatter.formatPattern.length) {
-                val maskChar = dateFormatter.formatPattern[maskIndex]
+            if (maskIndex < dateFormatter.pattern.length) {
+                val maskChar = dateFormatter.pattern[maskIndex]
                 val char = text[charIndex]
 
-                if (maskChar == dateFormatter.formatPatternItem) {
+                if (maskChar == dateFormatter.patternItem) {
                     builder.append(char)
                 } else {
                     indexSpace += 1

@@ -1,13 +1,12 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
-import android.content.DialogInterface
+import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
-import android.widget.DatePicker
-import com.verygoodsecurity.vgscollect.core.model.VGSDate
+import android.view.autofill.AutofillValue
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
@@ -15,13 +14,11 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
-import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.date.connection.InputDateRangeConnection
+import com.verygoodsecurity.vgscollect.view.date.formatter.*
 import com.verygoodsecurity.vgscollect.view.date.formatter.DateRangePickerFormatter
-import com.verygoodsecurity.vgscollect.view.date.formatter.FlexibleDateRangeFormatter
 import com.verygoodsecurity.vgscollect.view.date.formatter.StrictDateRangeFormatter
-import com.verygoodsecurity.vgscollect.view.date.formatter.VGSDateFormat
 import com.verygoodsecurity.vgscollect.view.date.validation.DateRangeValidator
 import com.verygoodsecurity.vgscollect.widget.OnDatePickerVisibilityChangeListener
 import java.util.*
@@ -30,18 +27,16 @@ internal class DateRangeInputField(context: Context) : BaseInputField(context),
     View.OnClickListener {
 
     //region - Private properties
-    private var inputFormat = VGSDateFormat.default
-    private var outputFormat = VGSDateFormat.default
+    private var inputFormat: VGSDateFormat = VGSDateFormat.default
+    private var outputFormat: VGSDateFormat = VGSDateFormat.default
     private var formatterMode = FormatMode.STRICT
     private var formatter: DateRangePickerFormatter? = null
     internal var datePickerMode: DatePickerMode = DatePickerMode.INPUT
-    private var selectedDate: VGSDate? = null
+    private var selectedDate: Date? = null
     internal var datePickerVisibilityChangeListener: OnDatePickerVisibilityChangeListener? = null
     internal var fieldDataSerializers: List<FieldDataSerializer<*, *>>? = null
-    private var startDate: VGSDate? = null
-    private var endDate: VGSDate? = null
-    private var inputDivider: String = VGSDateFormat.defaultDivider
-    private var outputDivider: String = VGSDateFormat.defaultDivider
+    private var startDate: Date? = null
+    private var endDate: Date? = null
 
     private var isActive: Boolean = true
         set(value) {
@@ -52,7 +47,7 @@ internal class DateRangeInputField(context: Context) : BaseInputField(context),
             isListeningPermitted = true
             filters = if (value) {
                 setOnClickListener(null)
-                val filterLength = InputFilter.LengthFilter(inputFormat.formatPattern.length)
+                val filterLength = InputFilter.LengthFilter(inputFormat.pattern.length)
                 arrayOf(filterLength)
             } else {
                 setOnClickListener(this)
@@ -65,7 +60,7 @@ internal class DateRangeInputField(context: Context) : BaseInputField(context),
     //region - Internal properties and methods accessed from `InputFieldView`
     internal var inputFormatRaw: String?
         get() {
-            return inputFormat.displayFormat
+            return inputFormat.format
         }
         set(value) {
             // Try to parse the date format
@@ -81,7 +76,7 @@ internal class DateRangeInputField(context: Context) : BaseInputField(context),
 
     internal var outputFormatRaw: String?
         get() {
-            return outputFormat.displayFormat
+            return outputFormat.format
         }
         set(value) {
             // Try to parse the date format
@@ -94,12 +89,12 @@ internal class DateRangeInputField(context: Context) : BaseInputField(context),
 
     internal var startDateRaw: String? = null
         set(value) {
-            startDate = inputFormat.dateFromInput(value)
+            startDate = inputFormat.dateFromString(value)
         }
 
     internal var endDateRaw: String? = null
         set(value) {
-            endDate = inputFormat.dateFromInput(value)
+            endDate = inputFormat.dateFromString(value)
         }
 
     internal var formatterModeRaw: Int
@@ -150,12 +145,10 @@ internal class DateRangeInputField(context: Context) : BaseInputField(context),
         inputConnection = InputDateRangeConnection(id, validator)
 
         val stateContent = FieldContent.DateRangeContent().apply {
-            val inputDate = inputFormat.dateFromInput(text.toString())
+            val inputDate = inputFormat.dateFromString(text.toString())
             if (!text.isNullOrEmpty() && inputDate != null) {
                 handleOutputFormat(
                     selectedDate,
-                    inputDivider,
-                    outputDivider,
                     inputFormat,
                     outputFormat,
                     fieldDataSerializers
@@ -191,20 +184,51 @@ internal class DateRangeInputField(context: Context) : BaseInputField(context),
     }
 
     override fun setText(text: CharSequence?, type: BufferType?) {
-        if (!text.isNullOrEmpty() && (datePickerMode == DatePickerMode.SPINNER || datePickerMode == DatePickerMode.CALENDAR)) {
-            val inputDate = inputFormat.dateFromInput(text.toString())
+        var formattedText = text
+        if (!text.isNullOrEmpty()) {
+            val inputDate = inputFormat.dateFromString(text.toString())
             if (inputDate != null) {
-                super.setText(text, type)
+                selectedDate = inputDate
+                formattedText = inputFormat.stringFromDate(inputDate)
             }
-        } else {
-            super.setText(text, type)
         }
+        super.setText(formattedText, type)
     }
 
     override fun setInputType(type: Int) {
         val validType = validateInputType(type)
         super.setInputType(validType)
         refreshInput()
+    }
+
+    override fun setupAutofill() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setAutofillHints(
+                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DATE,
+                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_MONTH,
+                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DAY,
+                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_YEAR
+            )
+        }
+    }
+
+    override fun autofill(value: AutofillValue?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            when {
+                value == null -> {}
+                value.isDate -> {
+//                    val tempDate = VGSDateFormat
+//                    selectedDate.time = Date(value.dateValue)
+                }
+                value.isText -> {
+//                    val newValue = parseTextDate(value)
+//                    super.autofill(newValue)
+                }
+                else -> {
+                    super.autofill(value)
+                }
+            }
+        }
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {
@@ -229,7 +253,7 @@ internal class DateRangeInputField(context: Context) : BaseInputField(context),
             FormatMode.STRICT -> StrictDateRangeFormatter(
                 inputFormat,
                 datePickerMode,
-                inputDivider,
+                VGSDateFormat.divider,
                 this
             )
             FormatMode.FLEXIBLE -> FlexibleDateRangeFormatter(inputFormat, datePickerMode)
@@ -277,8 +301,6 @@ internal class DateRangeInputField(context: Context) : BaseInputField(context),
             }
             else -> c.handleOutputFormat(
                 selectedDate,
-                inputDivider,
-                outputDivider,
                 inputFormat,
                 outputFormat,
                 fieldDataSerializers
@@ -288,9 +310,9 @@ internal class DateRangeInputField(context: Context) : BaseInputField(context),
     }
 
     private fun handleInputMode(str: String): Boolean {
-        val currentDate = inputFormat.dateFromInput(str)
+        val currentDate = inputFormat.dateFromString(str)
         return if (currentDate != null) {
-            selectedDate = VGSDate.createDate(currentDate.day, currentDate.month, currentDate.year)
+            selectedDate = currentDate
             true
         } else {
             false
@@ -298,47 +320,54 @@ internal class DateRangeInputField(context: Context) : BaseInputField(context),
     }
 
     private fun showDatePickerDialog(dialogMode: DatePickerMode) {
-
+/*
         val pickerMode: DatePickerMode = when (dialogMode) {
             DatePickerMode.INPUT -> return
             DatePickerMode.DEFAULT -> datePickerMode
             else -> dialogMode
         }
 
-        val pickerCalendar = GregorianCalendar.getInstance()
-        selectedDate?.let {
-            pickerCalendar.set(Calendar.DAY_OF_MONTH, it.day)
-            pickerCalendar.set(Calendar.MONTH, it.month)
-            pickerCalendar.set(Calendar.YEAR, it.year)
+        var pickerDate: VGSDate? = null
+        val clickListener = DatePicker.OnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
+            pickerDate = VGSDate.createDate(dayOfMonth, monthOfYear + 1, year)
         }
 
-        val clickListener =
-            DatePicker.OnDateChangedListener { _, year, monthOfYear, dayOfMonth ->
-                pickerCalendar.set(Calendar.YEAR, year)
-                pickerCalendar.set(Calendar.MONTH, monthOfYear)
-                pickerCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            }
-
         val positiveListener = DialogInterface.OnClickListener { _, _ ->
-//            selectedDate.time = tempC.time
-//            applyDate()
+            selectedDate = pickerDate
+            applyDate()
         }
 
         val negativeListener = DialogInterface.OnClickListener { _, _ ->
             // Do nothing
         }
 
-        DatePickerBuilder(context, pickerMode)
-            // .setMinDate() // TODO
-            // setMaxDate() // TODO
-            .setCurrentDate(pickerCalendar.timeInMillis)
-            .setDayFieldVisibility(true)
-            .setOnDateChangedListener(clickListener)
-            .setOnPositiveButtonClick(positiveListener)
-            .setOnNegativeButtonClick(negativeListener)
-            // .setOnVisibilityChangeListener(datePickerVisibilityChangeListener)
-            .build()
-            .show()
+        val pickerBuilder = DatePickerBuilder(context, pickerMode).apply {
+            startDate?.let { startDate ->
+                setMinDate(startDate.timeInMillis)
+            }
+            endDate?.let { endDate ->
+                setMaxDate(endDate.timeInMillis)
+            }
+            selectedDate?.let { selectedDate ->
+                setCurrentDate(selectedDate.timeInMillis)
+            }
+            setDayFieldVisibility(true)
+            setOnDateChangedListener(clickListener)
+            setOnPositiveButtonClick(positiveListener)
+            setOnNegativeButtonClick(negativeListener)
+            setOnVisibilityChangeListener(datePickerVisibilityChangeListener)
+        }
+        pickerBuilder.build().show()
+ */
+    }
+
+    private fun applyDate() {
+        selectedDate?.let {
+            val strDate = inputFormat.stringFromDate(it)
+            setText(strDate)
+        } ?: run {
+            setText("")
+        }
     }
     //endregion
 }
