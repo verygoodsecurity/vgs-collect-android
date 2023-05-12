@@ -95,6 +95,8 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
             str.formatToMask(this)
         }
         c.data = str
+        c.vaultStorage = vaultStorage
+        c.vaultAliasFormat = vaultAliasFormat
         return c
     }
 
