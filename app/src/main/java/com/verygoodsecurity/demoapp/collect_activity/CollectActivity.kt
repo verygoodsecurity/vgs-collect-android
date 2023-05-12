@@ -24,6 +24,7 @@ import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
 import com.verygoodsecurity.demoapp.databinding.ActivityCollectBinding
 import com.verygoodsecurity.demoapp.databinding.CardInputLayoutBinding
 import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
+import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -120,6 +121,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
             else -> throw IllegalArgumentException("Not implemented.")
         }
         updateCodeExample()
+        GlobalIdlingResource.decrement()
     }
 
     // Use this callback to track input fields state change
@@ -306,6 +308,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
 
     // Send data to VGS proxy
     private fun submit() {
+        GlobalIdlingResource.increment()
         setLoading(true)
         val request: VGSRequest = VGSRequest.VGSRequestBuilder()
             .setMethod(HTTPMethod.POST)

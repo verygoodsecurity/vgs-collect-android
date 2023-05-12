@@ -28,8 +28,6 @@ class VGSEditTextActivityMaxLengthInstrumentedTest {
     @Before
     fun prepareDevice() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-
-        pauseTestFor(500)
     }
 
     @Test
@@ -43,14 +41,6 @@ class VGSEditTextActivityMaxLengthInstrumentedTest {
 
         field.perform(SetTextAction(NUMBER_WRONG))
         field.check(ViewAssertions.matches(withEditTextState(NUMBER_CORRECT)))
-    }
-
-    private fun pauseTestFor(milliseconds: Long) {
-        try {
-            Thread.sleep(milliseconds)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
     }
 
     companion object {

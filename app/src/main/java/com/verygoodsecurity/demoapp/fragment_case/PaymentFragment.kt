@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.verygoodsecurity.api.cardio.ScanActivity
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.databinding.FragmentPaymentBinding
+import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -137,6 +138,7 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
         setEnabledResponseHeader(true)
         setStateLoading(false)
         binding.responseContainerView.text = "CODE: ${response?.code.toString()}"
+        GlobalIdlingResource.decrement()
     }
 
     override fun onStateChange(state: FieldState) {
@@ -170,6 +172,7 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
     }
 
     private fun submitData() {
+        GlobalIdlingResource.increment()
         setEnabledResponseHeader(false)
         setStateLoading(true)
 
