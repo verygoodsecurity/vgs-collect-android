@@ -16,7 +16,7 @@ dependencyResolutionManagement {
             // Libraries
             library('androidx-appcompat', 'androidx.appcompat:appcompat:1.6.1')
             library('androidx-core-ktx', 'androidx.core:core-ktx:1.10.1')
-            library('material', 'com.google.android.material:material:1.8.0')
+            library('material', 'com.google.android.material:material:1.9.0')
             library('okhttp', 'com.squareup.okhttp3:okhttp:4.10.0')
             library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.8.10')
             library('cardio', 'io.card:android-sdk:5.5.1')
