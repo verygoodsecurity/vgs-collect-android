@@ -42,6 +42,9 @@
     <div>
     </div>
     <div class="pull-right d-flex">
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":vgscollect:dokkaHtml/release">androidJvm</button>
+        </div>
         <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
         <div id="searchBar"></div>
     </div>
@@ -51,71 +54,73 @@
         <div id="sideMenu"></div>
     </div>
     <div id="main">
-<div class="main-content" id="content" pageIds="vgscollect::com.verygoodsecurity.vgscollect.view.card////PointingToDeclaration//1122815226">
+<div class="main-content" data-page-type="package" id="content" pageIds="vgscollect::com.verygoodsecurity.vgscollect.view.card////PointingToDeclaration//1122815226">
   <div class="breadcrumbs"><a href="../../index.html">vgscollect</a><span class="delimiter">/</span><span class="current">com.verygoodsecurity.vgscollect.view.card</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
   </div>
   <div class="tabbedcontent">
-    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Types">Types</button></div>
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button></div>
     <div class="tabs-section-body">
-      <h2 class="">Types</h2>
-      <div class="table" data-togglable="Types"><a data-name="222684626%2FClasslikes%2F1122815226" anchor-label="BrandParams" id="222684626%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-brand-params/index.html"><span>Brand</span><wbr></wbr><span><span>Params</span></span></a></div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="222684626%2FClasslikes%2F1122815226" anchor-label="BrandParams" id="222684626%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-brand-params/index.html"><span>Brand</span><wbr></wbr><span><span>Params</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="222684626%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-brand-params/index.html">BrandParams</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>mask<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;#### #### #### #### ###&quot;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>algorithm<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.view.card.validation.payment/-checksum-algorithm/index.html">ChecksumAlgorithm</a><span class="token operator"> = </span>ChecksumAlgorithm.NONE<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rangeNumber<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html">IntArray</a><span class="token operator"> = </span>CardType.UNKNOWN.rangeNumber<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rangeCVV<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html">IntArray</a><span class="token operator"> = </span>CardType.UNKNOWN.rangeCVV</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Creates a new set of card brand parameters.</p></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-brand-params/index.html">BrandParams</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>mask<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;#### #### #### #### ###&quot;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>algorithm<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.view.card.validation.payment/-checksum-algorithm/index.html">ChecksumAlgorithm</a><span class="token operator"> = </span>ChecksumAlgorithm.NONE<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rangeNumber<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html">IntArray</a><span class="token operator"> = </span>CardType.UNKNOWN.rangeNumber<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rangeCVV<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html">IntArray</a><span class="token operator"> = </span>CardType.UNKNOWN.rangeCVV</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Creates a new set of card brand parameters.</p></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-1592698328%2FClasslikes%2F1122815226" anchor-label="CardBrand" id="-1592698328%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-card-brand/index.html"><span>Card</span><wbr></wbr><span><span>Brand</span></span></a></div>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-card-brand/index.html"><span>Card</span><wbr></wbr><span><span>Brand</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1592698328%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-card-brand/index.html">CardBrand</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>regex<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>cardBrandName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>drawableResId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>params<span class="token operator">: </span><a href="-brand-params/index.html">BrandParams</a><span class="token operator"> = </span>BrandParams()</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">The data class definition for represent custom card brand. It may be useful to add new brands in addition to already defined brands or override existing ones.</p></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-card-brand/index.html">CardBrand</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>regex<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>cardBrandName<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>drawableResId<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>params<span class="token operator">: </span><a href="-brand-params/index.html">BrandParams</a><span class="token operator"> = </span>BrandParams()</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">The data class definition for represent custom card brand. It may be useful to add new brands in addition to already defined brands or override existing ones.</p></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-134564135%2FClasslikes%2F1122815226" anchor-label="CardType" id="-134564135%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-card-type/index.html"><span>Card</span><wbr></wbr><span><span>Type</span></span></a></div>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-card-type/index.html"><span>Card</span><wbr></wbr><span><span>Type</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-134564135%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-card-type/index.html">CardType</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-card-type/index.html">CardType</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Standard constants of credit card brands that are supported by SDK.</p></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-card-type/index.html">CardType</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-card-type/index.html">CardType</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Standard constants of credit card brands that are supported by SDK.</p></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="1269281739%2FClasslikes%2F1122815226" anchor-label="FieldType" id="1269281739%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-field-type/index.html"><span>Field</span><wbr></wbr><span><span>Type</span></span></a></div>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-field-type/index.html"><span>Field</span><wbr></wbr><span><span>Type</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1269281739%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-field-type/index.html">FieldType</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-field-type/index.html">FieldType</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">The enum class represents all available type of VGS input fields.</p></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-field-type/index.html">FieldType</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="-field-type/index.html">FieldType</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">The enum class represents all available type of VGS input fields.</p></div></div></div>
+                </div>
               </div>
             </div>
           </div>
