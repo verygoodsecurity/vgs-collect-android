@@ -154,6 +154,8 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
                 fieldDataSerializers
             )
         }
+        c.vaultStorage = vaultStorage
+        c.vaultAliasFormat = vaultAliasFormat
         return c
     }
 
