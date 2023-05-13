@@ -6,6 +6,12 @@
      -->
     <attr name="datePattern" format="string"/>
 
+    <!-- Representation of start date. The method uses the ISO 8601 standard. -->
+    <attr name="startDate" format="string" />
+
+    <!-- Representation of end date. The method uses the ISO 8601 standard. -->
+    <attr name="endDate" format="string" />
+
     <!-- Representation of date and times which will be sent to the Vault Proxy Server.
          The method uses the ISO 8601 standard.
      -->
@@ -608,7 +614,7 @@
         <attr name="enableTokenization"/>
     </declare-styleable>
 
-    <declare-styleable name="ExpirationDateEditText">
+    <declare-styleable name="DateEditText">
 
         <!-- Specifies rules on how to format the user input. Currently, it has an impact only on datePickerModes as input.
              By default, field apply strict mode. -->
@@ -650,6 +656,11 @@
         <attr name="storageType"/>
         <attr name="aliasFormat"/>
         <attr name="enableTokenization"/>
+    </declare-styleable>
+
+    <declare-styleable name="RangeDateEditText">
+        <attr name="startDate"/>
+        <attr name="endDate"/>
     </declare-styleable>
 
     <declare-styleable name="VGSTextInputLayout">

@@ -28,6 +28,7 @@ import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
+import com.verygoodsecurity.vgscollect.view.date.VGSDateFormat
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),
@@ -38,6 +39,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             val field = when (parent.getFieldType()) {
                 FieldType.CARD_NUMBER -> CardInputField(context)
                 FieldType.CVC -> CVCInputField(context)
+                FieldType.DATE_RANGE -> DateInputField(context)
                 FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
                 FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
                 FieldType.SSN -> SSNInputField(context)

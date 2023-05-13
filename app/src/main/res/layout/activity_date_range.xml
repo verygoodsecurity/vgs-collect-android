@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingBottom="@dimen/margin_padding_material_medium">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ccInputsRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:minHeight="0dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvDateRangeHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_material_small"
+            android:layout_marginTop="@dimen/margin_padding_material_small"
+            android:fontFamily="sans-serif-medium"
+            android:text="Date Range"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTilDateRange"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_padding_material_small"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mtvDateRangeHint">
+
+            <com.verygoodsecurity.vgscollect.widget.RangeDateEditText
+                android:id="@+id/vgsTiedDateRange"
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:datePattern="dd/MM/yyyy"
+                app:datePickerModes="spinner"
+                app:fieldName="date"
+                app:formatterMode="strict"
+                app:hint="Date range"
+                app:imeOptions="actionNext"
+                app:inputType="date"
+                app:outputPattern="dd/MM/yyyy"
+                app:startDate="10/10/2024"
+                app:endDate="10/10/2025"
+                app:text="" />
+
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTilExpirationDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            app:boxBackgroundModes="outline"
+            app:hint="@string/exp_date"
+            app:hintEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vgsTilDateRange">
+
+            <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+                android:id="@+id/cardExpDateField"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nextFocusDown="@+id/cardCVCField"
+                app:datePattern="MM/yy"
+                app:datePickerModes="spinner"
+                app:enableValidation="false"
+                app:fieldName="card_data.personal_data.secret.expDate"
+                app:fontFamily="@font/robotomono_light"
+                app:imeOptions="actionNext"
+                app:inputType="date"
+                app:outputPattern="yyyy-MM-dd'T'HH:mm:ss.SSSSSSS" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mbSubmit"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Submit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vgsTilExpirationDate"
+            tools:ignore="HardcodedText"
+            tools:layout_editor_absoluteX="313dp"
+            tools:layout_editor_absoluteY="346dp" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/mbGroupCodeExampleType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_material_medium"
+            app:checkedButton="@+id/mbInputState"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mbSubmit"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbInputState"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="States"
+                android:textAppearance="?attr/textAppearanceSubtitle2"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbResponse"
+                style="?attr/materialButtonOutlinedStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Response"
+                android:textAppearance="?attr/textAppearanceSubtitle2"
+                tools:ignore="HardcodedText" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_material_medium"
+            app:cardBackgroundColor="@color/blackPearl"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mbGroupCodeExampleType">
+
+            <include layout="@layout/code_example_layout" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvResponseCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/viewDisableTouch"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

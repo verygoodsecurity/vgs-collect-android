@@ -24,12 +24,16 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
+import com.verygoodsecurity.vgscollect.view.date.VGSDateFormat
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
 import com.verygoodsecurity.vgscollect.view.date.validation.isInputDatePatternValid
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.core.DateEditText
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+
+
 
 /** @suppress */
 internal class DateInputField(context: Context): BaseInputField(context), View.OnClickListener {
@@ -37,17 +41,19 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     companion object {
         private const val MM_YYYY = "MM/yyyy"
         private const val MM_YY = "MM/yy"
-        private const val DD = "dd"
+        //private const val DD = "dd"
         private const val SDF = "MM/dd/yyyy"
     }
 
-    private var datePattern:String = MM_YYYY
-    private var outputPattern:String = datePattern
+    private var inputFormat: VGSDateFormat = VGSDateFormat.mmddyyyy()
+
+//    private var datePattern:String = MM_YYYY
+    private var outputPattern:String = MM_YYYY //datePattern
 
     private var formatterMode = FormatMode.STRICT
     private var formatter: DatePickerFormatter? = null
 
-    private var charLimit = datePattern.length
+//    private var charLimit = datePattern.length
 
     private var minDate:Long = 0
     private var maxDate:Long = 0
@@ -60,11 +66,13 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     private var fieldDataSerializers: List<FieldDataSerializer<*, *>>? = null
 
     private var datePickerMode:DatePickerMode = DatePickerMode.INPUT
-    private var isDaysVisible = true
+//    private var isDaysVisible = true
 
-    private var datePickerVisibilityChangeListener:ExpirationDateEditText.OnDatePickerVisibilityChangeListener? = null
+    private var datePickerVisibilityChangeListener:DateEditText.OnDatePickerVisibilityChangeListener? = null
 
     override var fieldType: FieldType = FieldType.CARD_EXPIRATION_DATE
+
+    private var timeGapsValidator: TimeGapsValidator? = null
 
     init {
         minDate = System.currentTimeMillis()
@@ -72,7 +80,9 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     override fun applyFieldType() {
-        validator.addRule(TimeGapsValidator(datePattern, minDate, maxDate))
+        timeGapsValidator = TimeGapsValidator(inputFormat.format, minDate, maxDate).also {
+            validator.addRule(it)
+        }
         inputConnection = InputCardExpDateConnection(id, validator)
 
         val stateContent = FieldContent.CreditCardExpDateContent().apply {
@@ -104,7 +114,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
 
         this.formatter = with(baseFormatter) {
-            setMask(datePattern)
+            setMask(inputFormat.format)
             setMode(datePickerMode)
             applyNewTextWatcher(this)
             this
@@ -162,9 +172,14 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     private fun handleInputMode(str:String):Boolean {
         return try {
             val currentDate = fieldDateFormat!!.parse(str)
-            return if(fieldDateFormat!!.format(currentDate) == str) {
+            return if (fieldDateFormat!!.format(currentDate) == str) {
                 selectedDate.time = currentDate
-                selectedDate.set(Calendar.DAY_OF_MONTH, selectedDate.getActualMaximum(Calendar.DATE))
+                if (!inputFormat.daysVisible) {
+                    selectedDate.set(
+                        Calendar.DAY_OF_MONTH,
+                        selectedDate.getActualMaximum(Calendar.DATE)
+                    )
+                }
                 selectedDate.set(Calendar.HOUR, 23)
                 selectedDate.set(Calendar.MINUTE, 59)
                 selectedDate.set(Calendar.SECOND, 59)
@@ -223,7 +238,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             .setMinDate(minDate)
             .setMaxDate(maxDate)
             .setCurrentDate(tempC.timeInMillis)
-            .setDayFieldVisibility(isDaysVisible)
+            .setDayFieldVisibility(inputFormat.daysVisible)
             .setOnDateChangedListener(ls)
             .setOnPositiveButtonClick(pos)
             .setOnNegativeButtonClick(neg)
@@ -233,9 +248,11 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     }
 
     private fun applyDate() {
-        if(!isDaysVisible) {
-            val dayLast = selectedDate.getActualMaximum(Calendar.DAY_OF_MONTH)
-            selectedDate.set(Calendar.DAY_OF_MONTH, dayLast)
+        if (!inputFormat.daysVisible) {
+            selectedDate.set(
+                Calendar.DAY_OF_MONTH,
+                selectedDate.getActualMaximum(Calendar.DAY_OF_MONTH)
+            )
         }
         val strDate = fieldDateFormat?.format(selectedDate.time)?:""
         setText(strDate)
@@ -255,7 +272,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     internal fun setOutputPattern(pattern:String?) {
         outputPattern = if(pattern.isNullOrEmpty() ||
             (pattern.contains('T') && !pattern.contains("'T'"))) {
-            datePattern
+            inputFormat.format
         } else {
             pattern
         }
@@ -263,47 +280,67 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         fieldDateOutPutFormat = SimpleDateFormat(outputPattern, Locale.US)
     }
 
-    internal fun setDatePattern(pattern:String?) {
-        datePattern = when {
-            pattern.isNullOrEmpty() -> MM_YYYY
-            datePickerMode == DatePickerMode.INPUT && pattern.isInputDatePatternValid().not() -> MM_YYYY
-            else -> pattern
+    internal fun getInputFormat() : String {
+        return inputFormat.format
+    }
+
+    internal fun setInputFormat(pattern: String?, default: VGSDateFormat) {
+        val parsedFormat = VGSDateFormat.parsePatternToDateFormat(pattern)
+        inputFormat = when(parsedFormat) {
+            null -> default
+            else -> parsedFormat
         }
 
-        isDaysVisible = datePattern.contains(DD)
-        fieldDateFormat = SimpleDateFormat(datePattern, Locale.US)
-
+        fieldDateFormat = SimpleDateFormat(inputFormat.format, Locale.US)
         isListeningPermitted = true
-
-        formatter?.setMask(datePattern)
+        formatter?.setMask(inputFormat.format)
         isListeningPermitted = false
     }
 
-    internal fun getDatePattern():String? = datePattern
+//    internal fun setDatePattern(pattern: String?) {
+//        datePattern = when {
+//            pattern.isNullOrEmpty() -> MM_YYYY
+//            datePickerMode == DatePickerMode.INPUT && pattern.isInputDatePatternValid().not() -> MM_YYYY
+//            else -> pattern
+//        }
+//
+//        isDaysVisible = datePattern.contains(DD)
+//        fieldDateFormat = SimpleDateFormat(datePattern, Locale.US)
+//
+//        isListeningPermitted = true
+//
+//        formatter?.setMask(datePattern)
+//        isListeningPermitted = false
+//    }
+
+    internal fun getDatePattern():String? = inputFormat.format
 
     internal fun setDatePickerMode(mode:Int) {
-        val pickerMode = DatePickerMode.values()[mode]
+        datePickerMode = DatePickerMode.values()[mode]
 
-        when(pickerMode) {
-            DatePickerMode.CALENDAR -> setupDialogMode(pickerMode)
-            DatePickerMode.SPINNER -> setupDialogMode(pickerMode)
-            DatePickerMode.DEFAULT -> setupInputMode()
-            DatePickerMode.INPUT -> setupInputMode()
+        when(datePickerMode) {
+            DatePickerMode.CALENDAR, DatePickerMode.SPINNER -> {
+                setIsActive(false)
+            }
+            DatePickerMode.INPUT, DatePickerMode.DEFAULT -> {
+                datePickerMode = DatePickerMode.INPUT
+                setIsActive(true)
+            }
         }
         formatter?.setMode(datePickerMode)
     }
 
-    private fun setupDialogMode(pickerMode: DatePickerMode) {
-        datePickerMode = pickerMode
-        setIsActive(false)
-    }
-
-    private fun setupInputMode() {
-        datePickerMode = DatePickerMode.INPUT
-        val p = datePattern
-        setDatePattern(p)
-        setIsActive(true)
-    }
+//    private fun setupDialogMode(pickerMode: DatePickerMode) {
+//        datePickerMode = pickerMode
+//        setIsActive(false)
+//    }
+//
+//    private fun setupInputMode() {
+//        datePickerMode = DatePickerMode.INPUT
+//        val p = datePattern
+//        setDatePattern(p)
+//        setIsActive(true)
+//    }
 
     internal fun getDatePickerMode() = datePickerMode
 
@@ -313,13 +350,13 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         isFocusableInTouchMode = isActive
         isListeningPermitted = true
         if(isActive) {
-            charLimit = datePattern.length
+//            charLimit = datePattern.length
 
             setOnClickListener(null)
-            val filterLength = InputFilter.LengthFilter(charLimit)
+            val filterLength = InputFilter.LengthFilter(inputFormat.size)
             filters = arrayOf(filterLength)
         } else {
-            charLimit = 255
+            // charLimit = 255
 
             setOnClickListener(this)
             filters = arrayOf()
@@ -336,8 +373,21 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         minDate = dateLimitationFormat.parse(date).time
     }
 
+    fun setMaxDate(date: Long) {
+        maxDate = date
+        updateTimeGapsValidator()
+    }
+
     fun setMinDate(date: Long) {
         minDate = date
+        updateTimeGapsValidator()
+    }
+
+    private fun updateTimeGapsValidator() {
+        timeGapsValidator?.let { validator.removeRule(it) }
+        timeGapsValidator = TimeGapsValidator(inputFormat.format, minDate, maxDate).also {
+            validator.addRule(it)
+        }
     }
 
     override fun setInputType(type: Int) {
@@ -358,7 +408,7 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
         }
     }
 
-    internal fun setDatePickerVisibilityListener(listener: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
+    internal fun setDatePickerVisibilityListener(listener: DateEditText.OnDatePickerVisibilityChangeListener?) {
         datePickerVisibilityChangeListener = listener
     }
 
@@ -394,10 +444,10 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
     @SuppressLint("NewApi")
     private fun parseTextDate(value: AutofillValue):AutofillValue {
         val str = value.textValue.toString()
-        return if(str.length == datePattern.length) {
+        return if(str.length == inputFormat.size) {
             value
         } else {
-            val newDateStr = value.textValue.toString().handleDate(MM_YY, datePattern)
+            val newDateStr = value.textValue.toString().handleDate(MM_YY, inputFormat.format)
             if(newDateStr.isNullOrEmpty()) {
                 value
             } else {
@@ -412,7 +462,12 @@ internal class DateInputField(context: Context): BaseInputField(context), View.O
             val currentDate = income.parse(this)
             val selectedDate = Calendar.getInstance()
             selectedDate.time = currentDate
-            selectedDate.set(Calendar.DAY_OF_MONTH, selectedDate.getActualMaximum(Calendar.DATE))
+            if (!inputFormat.daysVisible) {
+                selectedDate.set(
+                    Calendar.DAY_OF_MONTH,
+                    selectedDate.getActualMaximum(Calendar.DATE)
+                )
+            }
             selectedDate.set(Calendar.HOUR, 23)
             selectedDate.set(Calendar.MINUTE, 59)
             selectedDate.set(Calendar.SECOND, 59)
