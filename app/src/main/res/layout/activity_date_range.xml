@@ -66,9 +66,7 @@
                 app:hint="Date range"
                 app:imeOptions="actionNext"
                 app:inputType="date"
-                app:outputPattern="dd/MM/yyyy"
-                app:startDate="10/10/2024"
-                app:endDate="10/10/2025"
+                app:outputPattern="MM-yyyy-dd'T'HH:mm:ss.SSSSSSS"
                 app:text="" />
 
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>

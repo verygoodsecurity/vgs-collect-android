@@ -1,21 +1,25 @@
 package com.verygoodsecurity.vgscollect.view.date.validation
 
+import com.verygoodsecurity.vgscollect.core.model.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
+import com.verygoodsecurity.vgscollect.view.date.VGSDateFormat
+import com.verygoodsecurity.vgscollect.view.date.daysVisible
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
 /** @suppress */
 internal class TimeGapsValidator(
-    pattern:String,
-    private val minDate:Long? = null,
-    private val maxDate:Long? = null
+    private val dateFormat: VGSDateFormat,
+    private val inclusive: Boolean,
+    private val minDate: Long? = null,
+    private val maxDate: Long? = null
 ) : VGSValidator {
 
     override val errorMsg: String = DEFAULT_ERROR_MSG
 
     private val sdf by lazy {
-        val sdf = SimpleDateFormat(pattern, Locale.US)
+        val sdf = SimpleDateFormat(dateFormat.format, Locale.US)
         sdf.isLenient = false
         sdf
     }
@@ -24,38 +28,49 @@ internal class TimeGapsValidator(
 
     override fun isValid(content: String): Boolean {
         val str = content.trim()
-        if(str.isEmpty()) {
+        if (str.isEmpty()) {
             return false
         }
+
         try {
-            val date = sdf.parse(str).time
-            calendar.timeInMillis = date
-            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-            calendar.set(Calendar.HOUR_OF_DAY,  calendar.getActualMaximum(Calendar.HOUR_OF_DAY))
-            calendar.set(Calendar.MINUTE,  calendar.getActualMaximum(Calendar.MINUTE))
-            calendar.set(Calendar.SECOND,  calendar.getActualMaximum(Calendar.SECOND))
-            calendar.set(Calendar.MILLISECOND,  calendar.getActualMaximum(Calendar.MILLISECOND))
+            val date = sdf.parse(str)
+            if (date != null) {
+                calendar.apply {
+                    timeInMillis = date.time
+                    if (!dateFormat.daysVisible) {
+                        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+                    }
+                    setMaximumTime()
+                }
+            } else {
+                return false
+            }
         } catch (e: ParseException) {
             return false
         }
 
         val isBiggerThanMin:Boolean = minDate?.run {
-            calendar.timeInMillis > this
-        }?:true
+            when (inclusive) {
+                true -> calendar.timeInMillis >= this
+                false -> calendar.timeInMillis > this
+            }
+        } ?: true
 
         val isLowerThanMax:Boolean = maxDate?.run {
-            if(minDate != null && minDate < this || minDate == null) {
-                calendar.timeInMillis < this
+            if (minDate != null && minDate < this || minDate == null) {
+                when (inclusive) {
+                    true -> calendar.timeInMillis <= this
+                    else -> calendar.timeInMillis < this
+                }
             } else {
                 true
             }
-        }?:true
+        } ?: true
 
         return isBiggerThanMin && isLowerThanMax
     }
 
     internal companion object {
-
         internal const val DEFAULT_ERROR_MSG = "EXPIRATION_DATE_VALIDATION_ERROR"
     }
 }

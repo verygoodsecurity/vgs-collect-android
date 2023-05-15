@@ -18,6 +18,7 @@ import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
+import com.verygoodsecurity.vgscollect.core.model.VGSDate
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
@@ -101,6 +102,14 @@ class DateRangeActivity : AppCompatActivity(), VgsCollectResponseListener, OnFie
         binding.mbGroupCodeExampleType.addOnButtonCheckedListener { _, _, _ -> updateCodeExample() }
         binding.ccInputsRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         collect.bindView(binding.vgsTiedDateRange)
+        collect.bindView(binding.cardExpDateField)
+
+        VGSDate.create(10, 10, 2020)?.let {
+            binding.vgsTiedDateRange.setMinDate(it)
+        }
+        VGSDate.create(10, 10, 2026)?.let {
+            binding.vgsTiedDateRange.setMaxDate(it)
+        }
     }
 
     private fun initCodeExampleView() {

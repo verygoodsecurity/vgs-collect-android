@@ -17,7 +17,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.NonNull
 import com.verygoodsecurity.vgscollect.R
-import com.verygoodsecurity.vgscollect.widget.core.DateEditText.OnDatePickerVisibilityChangeListener
+import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText.OnDatePickerVisibilityChangeListener
 import java.util.*
 
 /** @suppress */

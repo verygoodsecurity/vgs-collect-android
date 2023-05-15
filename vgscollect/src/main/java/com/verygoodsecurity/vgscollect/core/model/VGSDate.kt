@@ -2,34 +2,37 @@ package com.verygoodsecurity.vgscollect.core.model
 
 import java.util.*
 
+// TODO: Move this method to a better place
+fun Calendar.setMaximumTime() {
+    this.apply {
+        set(Calendar.HOUR_OF_DAY, getActualMaximum(Calendar.HOUR_OF_DAY))
+        set(Calendar.MINUTE,  getActualMaximum(Calendar.MINUTE))
+        set(Calendar.SECOND,  getActualMaximum(Calendar.SECOND))
+        set(Calendar.MILLISECOND,  getActualMaximum(Calendar.MILLISECOND))
+    }
+}
+
 class VGSDate private constructor(
     val day: Int,
     val month: Int,
     val year: Int
 ) {
     val timeInMillis: Long = Calendar.getInstance().apply {
-        set(Calendar.MILLISECOND, getActualMinimum(Calendar.MILLISECOND))
-        set(Calendar.SECOND, getActualMinimum(Calendar.SECOND))
-        set(Calendar.MINUTE, getActualMinimum(Calendar.MINUTE))
-        set(Calendar.HOUR_OF_DAY, getActualMinimum(Calendar.HOUR_OF_DAY))
         set(Calendar.DAY_OF_MONTH, day)
-        set(Calendar.MONTH, month)
+        set(Calendar.MONTH, month - 1)
         set(Calendar.YEAR, year)
+        setMaximumTime()
     }.timeInMillis
-
 
     companion object {
 
         fun create(day: Int, month: Int, year: Int): VGSDate? {
             // Create a calendar and set the components to create the date
             val calendar = Calendar.getInstance().apply {
-                set(Calendar.MILLISECOND, getActualMinimum(Calendar.MILLISECOND))
-                set(Calendar.SECOND, getActualMinimum(Calendar.SECOND))
-                set(Calendar.MINUTE, getActualMinimum(Calendar.MINUTE))
-                set(Calendar.HOUR_OF_DAY, getActualMinimum(Calendar.HOUR_OF_DAY))
                 set(Calendar.DAY_OF_MONTH, day)
                 set(Calendar.MONTH, month - 1)
                 set(Calendar.YEAR, year)
+                setMaximumTime()
             }
 
             // Get calendar values stored in the calendar

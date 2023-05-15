@@ -96,9 +96,8 @@ abstract class DateEditText @JvmOverloads internal constructor(
 
                 setFormatterMode(formatterMode)
                 setDatePickerMode(datePickerMode)
-//                setDatePattern(datePattern)
                 setDateFormat(datePattern)
-                setOutputPattern(outputPattern)
+                setOutputFormat(outputPattern)
 
                 setEnabledTokenization(enableTokenization)
                 setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
@@ -107,23 +106,6 @@ abstract class DateEditText @JvmOverloads internal constructor(
                 recycle()
             }
         }
-        setMinDate(System.currentTimeMillis())
-    }
-
-    /**
-     * Interface definition for a callback to be invoked when the DatePicker Dialog changes
-     * visibility.
-     */
-    interface OnDatePickerVisibilityChangeListener {
-        /**
-         * Called when the DatePicker Dialog was shown.
-         */
-        fun onShow()
-
-        /**
-         * Called when the DatePicker Dialog was dismissed.
-         */
-        fun onDismiss()
     }
 
     /**
@@ -132,7 +114,7 @@ abstract class DateEditText @JvmOverloads internal constructor(
      * @param regex Specifies date representation format
      */
     fun setOutputRegex(regex: String) {
-        setOutputPattern(regex)
+        setOutputFormat(regex)
     }
 
     /**
@@ -151,7 +133,7 @@ abstract class DateEditText @JvmOverloads internal constructor(
      *
      * @return regex
      */
-    fun getDateRegex(): String? = getDatePattern()
+    fun getDateRegex(): String? = getDateFormat()
 
     /**
      * Sets type of exact appearance and interaction model of this widget.
@@ -187,7 +169,7 @@ abstract class DateEditText @JvmOverloads internal constructor(
     /**
      * Sets a listener to be invoked when the DatePicker dialog visibility is changing.
      */
-    fun setDatePickerVisibilityChangeListener(l: OnDatePickerVisibilityChangeListener?) {
+    fun setDatePickerVisibilityChangeListener(l: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
         setDatePickerVisibilityListener(l)
     }
 

@@ -4,10 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.VGSDate
+import com.verygoodsecurity.vgscollect.core.model.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.date.VGSDateFormat
 import com.verygoodsecurity.vgscollect.widget.core.DateEditText
+import java.util.*
 
 class RangeDateEditText @JvmOverloads constructor(
     context: Context,
@@ -22,19 +23,29 @@ class RangeDateEditText @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
-                val inputFormatValue = getDateFormat()
-                val inputFormat = VGSDateFormat.parsePatternToDateFormat(inputFormatValue)
+                val inputFormat = VGSDateFormat.parsePatternToDateFormat(getDateFormat())
+                val calendar = Calendar.getInstance()
 
                 val startDateValue = getString(R.styleable.RangeDateEditText_startDate)
                 val startDate = inputFormat?.dateFromString(startDateValue)
                 if (startDate != null) {
-                    setMinDate(startDate.time)
+                    setMinDate(
+                        calendar.apply {
+                            time = startDate
+                            setMaximumTime()
+                        }.timeInMillis
+                    )
                 }
 
                 val endDateValue = getString(R.styleable.RangeDateEditText_endDate)
                 val endDate = inputFormat?.dateFromString(endDateValue)
                 if (endDate != null) {
-                    setMaxDate(endDate.time)
+                    setMaxDate(
+                        calendar.apply {
+                            time = endDate
+                            setMaximumTime()
+                        }.timeInMillis
+                    )
                 }
             } finally {
                 recycle()
@@ -49,6 +60,9 @@ class RangeDateEditText @JvmOverloads constructor(
         setMinDate(date.timeInMillis)
     }
 
+    /**
+     * Set maximum date allowed
+     */
     fun setMaxDate(date: VGSDate) {
         setMaxDate(date.timeInMillis)
     }

@@ -1,64 +1,14 @@
 package com.verygoodsecurity.vgscollect.view.date
 
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
-internal sealed interface IDateFormat {
-    val format: String
-}
-
-sealed class VGSDateFormat : IDateFormat {
-
-    class mmyyyy : VGSDateFormat() {
-        override val format = "MM/yyyy"
-    }
-
-    class mmyy : VGSDateFormat() {
-        override val format = "MM/yy"
-    }
-
-    class mmddyyyy : VGSDateFormat() {
-        override val format = "MM/dd/yyyy"
-    }
-
-    class ddmmyyyy : VGSDateFormat() {
-        override val format = "dd/MM/yyyy"
-    }
-
-    class yyyymmdd : VGSDateFormat() {
-        override val format = "yyyy/MM/dd"
-    }
-
-    internal val daysVisible: Boolean
-        get() {
-            return this is mmddyyyy || this is ddmmyyyy || this is yyyymmdd
-        }
-
-    internal val daysCharacters: Int
-        get() {
-            return when (this) {
-                is mmddyyyy, is ddmmyyyy, is yyyymmdd -> 1
-                else -> 0
-            }
-        }
-    internal val monthCharacters = 2
-    internal val yearCharacters: Int
-        get() {
-            return when (this) {
-                is mmyyyy, is mmddyyyy, is ddmmyyyy, is yyyymmdd -> 4
-                else -> 2
-            }
-        }
-    internal val dividerCharacters: Int
-        get() {
-            return when (this) {
-                is mmyyyy, is mmyy -> 1
-                else -> 2
-            }
-        }
-
-    internal val size: Int = daysCharacters + monthCharacters + yearCharacters + dividerCharacters
+internal enum class VGSDateFormat(val format: String) {
+    mmyyyy("MM/yyyy"),
+    mmyy("MM/yy"),
+    mmddyyyy("MM/dd/yyyy"),
+    ddmmyyyy("dd/MM/yyyy"),
+    yyyymmdd("yyyy/MM/dd");
 
     fun dateFromString(input: String?): Date? {
         // Make sure if is a valid input string
@@ -110,13 +60,53 @@ sealed class VGSDateFormat : IDateFormat {
 
             // Replace dividers with the default
             return when (pattern.replace(currentDivider, divider, true)) {
-                mmyyyy().format -> mmyyyy()
-                mmyy().format -> mmyy()
-                mmddyyyy().format -> mmddyyyy()
-                ddmmyyyy().format -> ddmmyyyy()
-                yyyymmdd().format -> yyyymmdd()
+                mmyyyy.format -> mmyyyy
+                mmyy.format -> mmyy
+                mmddyyyy.format -> mmddyyyy
+                ddmmyyyy.format -> ddmmyyyy
+                yyyymmdd.format -> yyyymmdd
                 else -> null
             }
         }
     }
 }
+
+internal val VGSDateFormat.daysVisible: Boolean
+    get() {
+        return when (this) {
+            VGSDateFormat.mmyyyy, VGSDateFormat.mmyy -> false
+            VGSDateFormat.mmddyyyy, VGSDateFormat.ddmmyyyy, VGSDateFormat.yyyymmdd -> true
+        }
+    }
+
+internal val VGSDateFormat.daysCharacters: Int
+    get() {
+        return when (this) {
+            VGSDateFormat.mmyyyy, VGSDateFormat.mmyy -> 0
+            VGSDateFormat.mmddyyyy, VGSDateFormat.ddmmyyyy, VGSDateFormat.yyyymmdd -> 1
+        }
+    }
+
+internal val VGSDateFormat.monthCharacters: Int
+    get() = 2
+
+internal val VGSDateFormat.yearCharacters: Int
+    get() {
+        return when (this) {
+            VGSDateFormat.mmyyyy, VGSDateFormat.mmddyyyy, VGSDateFormat.ddmmyyyy, VGSDateFormat.yyyymmdd -> 4
+            VGSDateFormat.mmyy -> 2
+        }
+    }
+
+internal val VGSDateFormat.dividerCharacters: Int
+    get() {
+        return when (this) {
+            VGSDateFormat.mmyyyy, VGSDateFormat.mmyy -> 1
+            VGSDateFormat.mmddyyyy, VGSDateFormat.ddmmyyyy, VGSDateFormat.yyyymmdd -> 2
+        }
+    }
+
+internal val VGSDateFormat.size: Int
+    get() {
+        return this.daysCharacters + this.monthCharacters + this.yearCharacters + this.dividerCharacters
+    }
