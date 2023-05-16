@@ -4,6 +4,7 @@ import android.content.Context
 import com.verygoodsecurity.vgscollect.core.model.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.date.DateFormat
+import com.verygoodsecurity.vgscollect.view.internal.core.DateInputField
 import java.util.*
 
 internal class DateRangeInputField(context: Context) : DateInputField(context) {
@@ -11,6 +12,8 @@ internal class DateRangeInputField(context: Context) : DateInputField(context) {
     override var fieldType: FieldType = FieldType.DATE_RANGE
 
     override var inclusiveRangeValidation: Boolean = true
+
+    override var validDateFormats = listOf(DateFormat.MM_DD_YYYY, DateFormat.DD_MM_YYYY, DateFormat.YYYY_MM_DD)
 
     override var inputDateFormat: DateFormat = DateFormat.MM_DD_YYYY
 

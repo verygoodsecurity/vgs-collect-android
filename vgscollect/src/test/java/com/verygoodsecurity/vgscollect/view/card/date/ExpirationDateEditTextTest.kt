@@ -14,9 +14,7 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
-import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
-import com.verygoodsecurity.vgscollect.view.internal.DateInputField
-import com.verygoodsecurity.vgscollect.view.internal.SSNInputField
+import com.verygoodsecurity.vgscollect.view.internal.core.DateInputField
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 import org.junit.Assert.*
 import org.junit.Before

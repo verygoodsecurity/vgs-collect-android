@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.view.internal
+package com.verygoodsecurity.vgscollect.view.internal.core
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -14,15 +14,18 @@ import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
+import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardExpDateConnection
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.BaseDateFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.DatePickerFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.FlexibleDateFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.StrictExpirationDateFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.base.StrictDateRangeFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.date.*
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
+import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -34,6 +37,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     //region - Abstract properties
     internal abstract var inputDateFormat: DateFormat
     internal abstract var inclusiveRangeValidation: Boolean
+    internal abstract var validDateFormats: List<DateFormat>
     internal abstract var datePickerMinDate: Long?
     internal abstract var datePickerMaxDate: Long?
     //endregion
@@ -52,11 +56,13 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
             field = value
             updateTimeGapsValidator()
         }
-    private var formatterMode = FormatMode.STRICT
-    private var formatter: DatePickerFormatter? = null
-    private var fieldDataSerializers: List<FieldDataSerializer<*, *>>? = null
     private var datePickerMode: DatePickerMode = DatePickerMode.INPUT
     private var datePickerVisibilityChangeListener: VisibilityChangeListener? = null
+    private var formatterMode = FormatMode.STRICT
+
+    private var formatter: DatePickerFormatter? = null
+    private var fieldDataSerializers: List<FieldDataSerializer<*, *>>? = null
+
     private var timeGapsValidator: TimeGapsValidator? = null
 
     override fun applyFieldType() {
@@ -89,7 +95,13 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
 
     private fun applyFormatter() {
         val baseFormatter: BaseDateFormatter = when (formatterMode) {
-            FormatMode.STRICT -> StrictExpirationDateFormatter(this)
+            FormatMode.STRICT -> {
+                if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
+                    StrictExpirationDateFormatter(this)
+                } else {
+                    StrictDateRangeFormatter(inputDateFormat, datePickerMode, this)
+                }
+            }
             FormatMode.FLEXIBLE -> FlexibleDateFormatter()
         }
 
@@ -281,7 +293,8 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
 
     internal fun setInputFormat(pattern: String?) {
         val parsedFormat = DateFormat.parsePatternToDateFormat(pattern)
-        if (parsedFormat != null) {
+        // Make sure the format is valid for the field type
+        if (parsedFormat != null && validDateFormats.contains(parsedFormat)) {
             inputDateFormat = parsedFormat
         }
 

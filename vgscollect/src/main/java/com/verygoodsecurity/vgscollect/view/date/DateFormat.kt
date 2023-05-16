@@ -1,7 +1,20 @@
 package com.verygoodsecurity.vgscollect.view.date
 
+import com.verygoodsecurity.vgscollect.util.extension.digits
+import com.verygoodsecurity.vgscollect.util.extension.substringOrNull
 import java.text.SimpleDateFormat
 import java.util.*
+
+// TODO: Move this method to a better place
+internal data class DateComponentsString(
+    var day: String,
+    var month: String,
+    var year: String
+) {
+    val isDayValid = day.isNotEmpty()
+    val isMonthValid = month.isNotEmpty()
+    val isYearValid = year.isNotEmpty()
+}
 
 internal enum class DateFormat(val format: String) {
     MM_YYYY("MM/yyyy"),
@@ -10,7 +23,68 @@ internal enum class DateFormat(val format: String) {
     DD_MM_YYYY("dd/MM/yyyy"),
     YYYY_MM_DD("yyyy/MM/dd");
 
-    fun dateFromString(input: String?): Date? {
+    internal val formatPatternItem = '#'
+
+    internal val formatPattern: String
+        get() {
+            val patternItem = formatPatternItem.toString()
+            return format
+                .replace("M", patternItem, true)
+                .replace("y", patternItem, true)
+                .replace("d", patternItem, true)
+        }
+
+    fun dateComponentsString(input: String): DateComponentsString {
+        val result = DateComponentsString("", "", "")
+
+        // Get only digits
+        var digits = input.digits
+        when (this) {
+            // Get month, day and year
+            MM_DD_YYYY -> {
+                // Get month
+                result.month = digits.take(monthCharacters)
+                digits = digits.removePrefix(result.month)
+                // Get day
+                result.day = digits.take(daysCharacters)
+                digits = digits.removePrefix(result.day)
+                // Get year
+                result.year = digits.take(yearCharacters)
+            }
+            // Get day, month and year
+            DD_MM_YYYY -> {
+                // Get day
+                result.day = digits.take(daysCharacters)
+                digits = digits.removePrefix(result.day)
+                // Get month
+                result.month = digits.take(monthCharacters)
+                digits = digits.removePrefix(result.month)
+                // Get year
+                result.year = digits.take(yearCharacters)
+            }
+            // Get year, month and day
+            YYYY_MM_DD -> {
+                // Get year
+                result.year = digits.take(yearCharacters)
+                digits = digits.removePrefix(result.year)
+                // Get month
+                result.month = digits.take(monthCharacters)
+                digits = digits.removePrefix(result.month)
+                // Get day
+                result.day = digits.take(daysCharacters)
+            }
+            MM_YY, MM_YYYY -> {
+                // Get month
+                result.month = digits.take(monthCharacters)
+                digits = digits.removePrefix(result.month)
+                // Get year
+                result.year = digits.take(yearCharacters)
+            }
+        }
+        return result
+    }
+
+    internal fun dateFromString(input: String?): Date? {
         // Make sure if is a valid input string
         if (input.isNullOrEmpty()) {
             return null
@@ -83,7 +157,7 @@ internal val DateFormat.daysCharacters: Int
     get() {
         return when (this) {
             DateFormat.MM_YYYY, DateFormat.MM_YY -> 0
-            DateFormat.MM_DD_YYYY, DateFormat.DD_MM_YYYY, DateFormat.YYYY_MM_DD -> 1
+            DateFormat.MM_DD_YYYY, DateFormat.DD_MM_YYYY, DateFormat.YYYY_MM_DD -> 2
         }
     }
 
