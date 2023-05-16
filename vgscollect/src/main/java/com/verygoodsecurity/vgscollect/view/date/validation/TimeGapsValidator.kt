@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscollect.view.date.validation
 
 import com.verygoodsecurity.vgscollect.core.model.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
-import com.verygoodsecurity.vgscollect.view.date.VGSDateFormat
+import com.verygoodsecurity.vgscollect.view.date.DateFormat
 import com.verygoodsecurity.vgscollect.view.date.daysVisible
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -10,7 +10,7 @@ import java.util.*
 
 /** @suppress */
 internal class TimeGapsValidator(
-    private val dateFormat: VGSDateFormat,
+    private val dateFormat: DateFormat,
     private val inclusive: Boolean,
     private val minDate: Long? = null,
     private val maxDate: Long? = null
@@ -49,18 +49,20 @@ internal class TimeGapsValidator(
             return false
         }
 
-        val isBiggerThanMin:Boolean = minDate?.run {
-            when (inclusive) {
-                true -> calendar.timeInMillis >= this
-                false -> calendar.timeInMillis > this
+        val isBiggerThanMin: Boolean = minDate?.run {
+            if (inclusive) {
+                calendar.timeInMillis >= this
+            } else {
+                calendar.timeInMillis > this
             }
         } ?: true
 
         val isLowerThanMax:Boolean = maxDate?.run {
             if (minDate != null && minDate < this || minDate == null) {
-                when (inclusive) {
-                    true -> calendar.timeInMillis <= this
-                    else -> calendar.timeInMillis < this
+                if (inclusive) {
+                    calendar.timeInMillis <= this
+                } else {
+                    calendar.timeInMillis < this
                 }
             } else {
                 true

@@ -3,12 +3,12 @@ package com.verygoodsecurity.vgscollect.view.date
 import java.text.SimpleDateFormat
 import java.util.*
 
-internal enum class VGSDateFormat(val format: String) {
-    mmyyyy("MM/yyyy"),
-    mmyy("MM/yy"),
-    mmddyyyy("MM/dd/yyyy"),
-    ddmmyyyy("dd/MM/yyyy"),
-    yyyymmdd("yyyy/MM/dd");
+internal enum class DateFormat(val format: String) {
+    MM_YYYY("MM/yyyy"),
+    MM_YY("MM/yy"),
+    MM_DD_YYYY("MM/dd/yyyy"),
+    DD_MM_YYYY("dd/MM/yyyy"),
+    YYYY_MM_DD("yyyy/MM/dd");
 
     fun dateFromString(input: String?): Date? {
         // Make sure if is a valid input string
@@ -49,7 +49,7 @@ internal enum class VGSDateFormat(val format: String) {
             return allDividers.first().toString()
         }
 
-        internal fun parsePatternToDateFormat(pattern: String?): VGSDateFormat? {
+        internal fun parsePatternToDateFormat(pattern: String?): DateFormat? {
             // Make sure if is a valid pattern string
             if (pattern.isNullOrEmpty()) {
                 return null
@@ -60,53 +60,53 @@ internal enum class VGSDateFormat(val format: String) {
 
             // Replace dividers with the default
             return when (pattern.replace(currentDivider, divider, true)) {
-                mmyyyy.format -> mmyyyy
-                mmyy.format -> mmyy
-                mmddyyyy.format -> mmddyyyy
-                ddmmyyyy.format -> ddmmyyyy
-                yyyymmdd.format -> yyyymmdd
+                MM_YYYY.format -> MM_YYYY
+                MM_YY.format -> MM_YY
+                MM_DD_YYYY.format -> MM_DD_YYYY
+                DD_MM_YYYY.format -> DD_MM_YYYY
+                YYYY_MM_DD.format -> YYYY_MM_DD
                 else -> null
             }
         }
     }
 }
 
-internal val VGSDateFormat.daysVisible: Boolean
+internal val DateFormat.daysVisible: Boolean
     get() {
         return when (this) {
-            VGSDateFormat.mmyyyy, VGSDateFormat.mmyy -> false
-            VGSDateFormat.mmddyyyy, VGSDateFormat.ddmmyyyy, VGSDateFormat.yyyymmdd -> true
+            DateFormat.MM_YYYY, DateFormat.MM_YY -> false
+            DateFormat.MM_DD_YYYY, DateFormat.DD_MM_YYYY, DateFormat.YYYY_MM_DD -> true
         }
     }
 
-internal val VGSDateFormat.daysCharacters: Int
+internal val DateFormat.daysCharacters: Int
     get() {
         return when (this) {
-            VGSDateFormat.mmyyyy, VGSDateFormat.mmyy -> 0
-            VGSDateFormat.mmddyyyy, VGSDateFormat.ddmmyyyy, VGSDateFormat.yyyymmdd -> 1
+            DateFormat.MM_YYYY, DateFormat.MM_YY -> 0
+            DateFormat.MM_DD_YYYY, DateFormat.DD_MM_YYYY, DateFormat.YYYY_MM_DD -> 1
         }
     }
 
-internal val VGSDateFormat.monthCharacters: Int
+internal val DateFormat.monthCharacters: Int
     get() = 2
 
-internal val VGSDateFormat.yearCharacters: Int
+internal val DateFormat.yearCharacters: Int
     get() {
         return when (this) {
-            VGSDateFormat.mmyyyy, VGSDateFormat.mmddyyyy, VGSDateFormat.ddmmyyyy, VGSDateFormat.yyyymmdd -> 4
-            VGSDateFormat.mmyy -> 2
+            DateFormat.MM_YYYY, DateFormat.MM_DD_YYYY, DateFormat.DD_MM_YYYY, DateFormat.YYYY_MM_DD -> 4
+            DateFormat.MM_YY -> 2
         }
     }
 
-internal val VGSDateFormat.dividerCharacters: Int
+internal val DateFormat.dividerCharacters: Int
     get() {
         return when (this) {
-            VGSDateFormat.mmyyyy, VGSDateFormat.mmyy -> 1
-            VGSDateFormat.mmddyyyy, VGSDateFormat.ddmmyyyy, VGSDateFormat.yyyymmdd -> 2
+            DateFormat.MM_YYYY, DateFormat.MM_YY -> 1
+            DateFormat.MM_DD_YYYY, DateFormat.DD_MM_YYYY, DateFormat.YYYY_MM_DD -> 2
         }
     }
 
-internal val VGSDateFormat.size: Int
+internal val DateFormat.size: Int
     get() {
         return this.daysCharacters + this.monthCharacters + this.yearCharacters + this.dividerCharacters
     }

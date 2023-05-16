@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.view.internal
 import android.content.Context
 import com.verygoodsecurity.vgscollect.core.model.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.date.VGSDateFormat
+import com.verygoodsecurity.vgscollect.view.date.DateFormat
 import java.util.*
 
 internal class DateRangeInputField(context: Context) : DateInputField(context) {
@@ -12,7 +12,7 @@ internal class DateRangeInputField(context: Context) : DateInputField(context) {
 
     override var inclusiveRangeValidation: Boolean = true
 
-    override var inputDateFormat: VGSDateFormat = VGSDateFormat.mmddyyyy
+    override var inputDateFormat: DateFormat = DateFormat.MM_DD_YYYY
 
     override var datePickerMinDate: Long? = Calendar.getInstance().apply {
         set(Calendar.YEAR, this.get(Calendar.YEAR) - 100)

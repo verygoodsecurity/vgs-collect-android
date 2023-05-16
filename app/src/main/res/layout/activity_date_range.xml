@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:datePattern="dd/MM/yyyy"
-                app:datePickerModes="spinner"
+                app:datePickerModes="input"
                 app:fieldName="date"
                 app:formatterMode="strict"
                 app:hint="Date range"
@@ -91,13 +91,15 @@
                 android:layout_height="match_parent"
                 android:nextFocusDown="@+id/cardCVCField"
                 app:datePattern="MM/yy"
-                app:datePickerModes="spinner"
+                app:datePickerModes="input"
                 app:enableValidation="false"
                 app:fieldName="card_data.personal_data.secret.expDate"
                 app:fontFamily="@font/robotomono_light"
+                app:formatterMode="strict"
                 app:imeOptions="actionNext"
                 app:inputType="date"
                 app:outputPattern="yyyy-MM-dd'T'HH:mm:ss.SSSSSSS" />
+
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.google.android.material.button.MaterialButton

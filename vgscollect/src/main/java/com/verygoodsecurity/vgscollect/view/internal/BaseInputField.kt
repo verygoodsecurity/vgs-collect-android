@@ -28,7 +28,6 @@ import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
-import com.verygoodsecurity.vgscollect.view.date.VGSDateFormat
 
 /** @suppress */
 internal abstract class BaseInputField(context: Context) : TextInputEditText(context),

@@ -6,8 +6,9 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.VGSDate
 import com.verygoodsecurity.vgscollect.core.model.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.date.VGSDateFormat
+import com.verygoodsecurity.vgscollect.view.date.DateFormat
 import com.verygoodsecurity.vgscollect.widget.core.DateEditText
+import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
 import java.util.*
 
 class RangeDateEditText @JvmOverloads constructor(
@@ -23,7 +24,7 @@ class RangeDateEditText @JvmOverloads constructor(
             0, 0
         ).apply {
             try {
-                val inputFormat = VGSDateFormat.parsePatternToDateFormat(getDateFormat())
+                val inputFormat = DateFormat.parsePatternToDateFormat(getDateFormat())
                 val calendar = Calendar.getInstance()
 
                 val startDateValue = getString(R.styleable.RangeDateEditText_startDate)
@@ -66,4 +67,10 @@ class RangeDateEditText @JvmOverloads constructor(
     fun setMaxDate(date: VGSDate) {
         setMaxDate(date.timeInMillis)
     }
+
+    /**
+     * Interface definition for a callback to be invoked when the DatePicker Dialog changes
+     * visibility.
+     */
+    interface OnDatePickerVisibilityChangeListener: VisibilityChangeListener
 }

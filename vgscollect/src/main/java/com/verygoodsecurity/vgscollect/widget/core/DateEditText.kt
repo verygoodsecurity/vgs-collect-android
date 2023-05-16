@@ -169,7 +169,7 @@ abstract class DateEditText @JvmOverloads internal constructor(
     /**
      * Sets a listener to be invoked when the DatePicker dialog visibility is changing.
      */
-    fun setDatePickerVisibilityChangeListener(l: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
+    fun setDatePickerVisibilityChangeListener(l: VisibilityChangeListener?) {
         setDatePickerVisibilityListener(l)
     }
 

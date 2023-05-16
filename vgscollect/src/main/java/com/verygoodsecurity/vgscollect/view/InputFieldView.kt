@@ -31,7 +31,6 @@ import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
-import com.verygoodsecurity.vgscollect.core.model.VGSDate
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
@@ -44,13 +43,11 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
+import com.verygoodsecurity.vgscollect.view.date.DateFormat
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
-import com.verygoodsecurity.vgscollect.view.date.VGSDateFormat
-import com.verygoodsecurity.vgscollect.view.date.monthCharacters
 import com.verygoodsecurity.vgscollect.view.internal.*
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
-import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
-import com.verygoodsecurity.vgscollect.widget.core.DateEditText
+import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
@@ -1002,10 +999,13 @@ abstract class InputFieldView @JvmOverloads constructor(
     protected fun setOutputFormat(pattern: String?) {
         when (fieldType) {
             FieldType.DATE_RANGE -> {
-                (inputField as? DateInputField)?.setOutputFormat(pattern, VGSDateFormat.mmddyyyy.format)
+                (inputField as? DateInputField)?.setOutputFormat(
+                    pattern,
+                    DateFormat.MM_DD_YYYY.format
+                )
             }
             FieldType.CARD_EXPIRATION_DATE -> {
-                (inputField as? DateInputField)?.setOutputFormat(pattern, VGSDateFormat.mmyyyy.format)
+                (inputField as? DateInputField)?.setOutputFormat(pattern, DateFormat.MM_YYYY.format)
             }
             else -> {
                 // Do nothing
@@ -1076,7 +1076,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    protected fun setDatePickerVisibilityListener(l: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
+    protected fun setDatePickerVisibilityListener(l: VisibilityChangeListener?) {
         when (fieldType) {
             FieldType.CARD_EXPIRATION_DATE, FieldType.DATE_RANGE -> {
                 (inputField as? DateInputField)?.setDatePickerVisibilityListener(l)

@@ -14,7 +14,6 @@ import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
-import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardExpDateConnection
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.BaseDateFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.DatePickerFormatter
@@ -24,17 +23,16 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.date.*
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
-import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 /** @suppress */
 internal abstract class DateInputField(context: Context) : BaseInputField(context), View.OnClickListener {
 
     //region - Abstract properties
-    internal abstract var inputDateFormat: VGSDateFormat
+    internal abstract var inputDateFormat: DateFormat
     internal abstract var inclusiveRangeValidation: Boolean
     internal abstract var datePickerMinDate: Long?
     internal abstract var datePickerMaxDate: Long?
@@ -58,7 +56,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     private var formatter: DatePickerFormatter? = null
     private var fieldDataSerializers: List<FieldDataSerializer<*, *>>? = null
     private var datePickerMode: DatePickerMode = DatePickerMode.INPUT
-    private var datePickerVisibilityChangeListener: ExpirationDateEditText.OnDatePickerVisibilityChangeListener? = null
+    private var datePickerVisibilityChangeListener: VisibilityChangeListener? = null
     private var timeGapsValidator: TimeGapsValidator? = null
 
     override fun applyFieldType() {
@@ -282,7 +280,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     }
 
     internal fun setInputFormat(pattern: String?) {
-        val parsedFormat = VGSDateFormat.parsePatternToDateFormat(pattern)
+        val parsedFormat = DateFormat.parsePatternToDateFormat(pattern)
         if (parsedFormat != null) {
             inputDateFormat = parsedFormat
         }
@@ -352,7 +350,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
         }
     }
 
-    internal fun setDatePickerVisibilityListener(listener: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
+    internal fun setDatePickerVisibilityListener(listener: VisibilityChangeListener?) {
         datePickerVisibilityChangeListener = listener
     }
 

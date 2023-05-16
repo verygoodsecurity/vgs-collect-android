@@ -2,7 +2,7 @@ package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.date.VGSDateFormat
+import com.verygoodsecurity.vgscollect.view.date.DateFormat
 
 internal class ExpirationDateInputField(context: Context) : DateInputField(context) {
 
@@ -10,7 +10,7 @@ internal class ExpirationDateInputField(context: Context) : DateInputField(conte
 
     override var inclusiveRangeValidation: Boolean = false
 
-    override var inputDateFormat: VGSDateFormat = VGSDateFormat.mmyyyy
+    override var inputDateFormat: DateFormat = DateFormat.MM_YYYY
 
     override var datePickerMinDate: Long? = null
 

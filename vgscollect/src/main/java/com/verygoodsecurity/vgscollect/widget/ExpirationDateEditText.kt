@@ -5,6 +5,7 @@ import android.text.format.DateUtils
 import android.util.AttributeSet
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.widget.core.DateEditText
+import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
 
 /**
  * Provides a user interface element for date input. The range of dates supported by this field is not configurable.
@@ -27,15 +28,5 @@ class ExpirationDateEditText @JvmOverloads constructor(
      * Interface definition for a callback to be invoked when the DatePicker Dialog changes
      * visibility.
      */
-    interface OnDatePickerVisibilityChangeListener {
-        /**
-         * Called when the DatePicker Dialog was shown.
-         */
-        fun onShow()
-
-        /**
-         * Called when the DatePicker Dialog was dismissed.
-         */
-        fun onDismiss()
-    }
+    interface OnDatePickerVisibilityChangeListener: VisibilityChangeListener
 }

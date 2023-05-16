@@ -26,7 +26,7 @@ enum class FieldType(
      */
     CVC("cvc"),
 
-    /** The input field provides date limitations with format ddmmyyyy, mmddyyyy and yyyymmdd */
+    /** The input field provides date limitations with format DD_MM_YYYY, MM_DD_YYYY and YYYY_MM_DD */
     DATE_RANGE("dateRange"),
 
     /** The input field provides date limitations with format MM/yy . */

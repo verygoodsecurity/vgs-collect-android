@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.core.model
 import java.util.*
 
 // TODO: Move this method to a better place
-fun Calendar.setMaximumTime() {
+internal fun Calendar.setMaximumTime() {
     this.apply {
         set(Calendar.HOUR_OF_DAY, getActualMaximum(Calendar.HOUR_OF_DAY))
         set(Calendar.MINUTE,  getActualMaximum(Calendar.MINUTE))
