@@ -659,8 +659,8 @@
     </declare-styleable>
 
     <declare-styleable name="RangeDateEditText">
-        <attr name="startDate"/>
-        <attr name="endDate"/>
+        <attr name="minDate"/>
+        <attr name="maxDate"/>
     </declare-styleable>
 
     <declare-styleable name="VGSTextInputLayout">

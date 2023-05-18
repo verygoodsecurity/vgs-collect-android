@@ -13,8 +13,6 @@ import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
-import com.verygoodsecurity.vgscollect.view.internal.CardInputField
-import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.view.internal.SSNInputField
 import com.verygoodsecurity.vgscollect.widget.SSNEditText
 import org.junit.Assert.*

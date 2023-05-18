@@ -22,7 +22,6 @@ import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgo
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CardInputField
-import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 import org.junit.Assert.*
 import org.junit.Before

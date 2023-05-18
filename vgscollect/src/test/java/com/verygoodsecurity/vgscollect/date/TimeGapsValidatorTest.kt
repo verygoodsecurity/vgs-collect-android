@@ -81,7 +81,7 @@ class TimeGapsValidatorTest {
         pattern: String,
         min: Long = System.currentTimeMillis(),
         max: Long = min.yearsForward(20)
-    ): TimeGapsValidator = TimeGapsValidator(pattern, min, max)
+    ): TimeGapsValidator = TimeGapsValidator(pattern, false, false, min, max)
 
     private fun Long.yearsForward(years: Int): Long = Calendar.getInstance().apply {
         timeInMillis = this@yearsForward

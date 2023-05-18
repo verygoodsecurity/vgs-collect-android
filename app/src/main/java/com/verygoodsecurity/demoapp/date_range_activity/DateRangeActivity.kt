@@ -105,13 +105,6 @@ class DateRangeActivity : AppCompatActivity(), VgsCollectResponseListener, OnFie
         binding.ccInputsRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         collect.bindView(binding.vgsTiedDateRange)
         collect.bindView(binding.vgsTiedExpiry)
-
-        VGSDate.create(10, 10, 2020)?.let {
-            binding.vgsTiedDateRange.setMinDate(it)
-        }
-        VGSDate.create(10, 10, 2026)?.let {
-            binding.vgsTiedDateRange.setMaxDate(it)
-        }
     }
 
     private fun initCodeExampleView() {
@@ -137,6 +130,20 @@ class DateRangeActivity : AppCompatActivity(), VgsCollectResponseListener, OnFie
     }
 
     private fun setupDateRangesView() {
+        binding.vgsTiedExpiry.setSerializer(
+            VGSExpDateSeparateSerializer(
+                "card.expiry.month",
+                "card.expiry.year",
+            )
+        )
+        // Specify VGSDateRangeSeparateSerializer to send day, month and year separately in json structure
+        binding.vgsTiedDateRange.setSerializer(
+            VGSDateRangeSeparateSerializer(
+                "date.day",
+                "date.month",
+                "date.year"
+            )
+        )
         binding.vgsTiedDateRange.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
                 Log.d(CollectActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")

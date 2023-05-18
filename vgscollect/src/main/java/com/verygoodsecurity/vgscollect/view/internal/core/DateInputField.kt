@@ -54,12 +54,12 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
             updateTimeGapsValidator()
         }
     private var timeGapsValidator: TimeGapsValidator? = null
-    private val selectedDate = Calendar.getInstance()
+    protected val selectedDate: Calendar = Calendar.getInstance()
     private var fieldDateFormat: SimpleDateFormat? = null
     private var fieldDateOutputFormat: SimpleDateFormat? = null
     private var fieldDataSerializers: List<FieldDataSerializer<*, *>>? = null
     private var datePickerMode: DatePickerMode = DatePickerMode.INPUT
-    private val isDaysVisible: Boolean
+    protected val isDaysVisible: Boolean
         get() {
             return fieldType == FieldType.DATE_RANGE
         }
@@ -395,72 +395,6 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
 
     internal fun setFieldDataSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
         this.fieldDataSerializers = serializers
-    }
-
-    override fun setupAutofill() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setAutofillHints(
-                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DATE,
-                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_MONTH,
-                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_DAY,
-                View.AUTOFILL_HINT_CREDIT_CARD_EXPIRATION_YEAR
-            )
-        }
-    }
-
-    override fun autofill(value: AutofillValue?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            when {
-                value == null -> {}
-                value.isDate -> selectedDate.time = Date(value.dateValue)
-                value.isText -> {
-                    val newValue = parseTextDate(value)
-                    super.autofill(newValue)
-                }
-                else -> {
-                    super.autofill(value)
-                }
-            }
-        }
-    }
-
-    @SuppressLint("NewApi")
-    private fun parseTextDate(value: AutofillValue): AutofillValue {
-        val str = value.textValue.toString()
-        return if (str.length == inputDatePattern.length) {
-            value
-        } else {
-            // TODO: NEED HELP with the format "MM/yy"
-            val newDateStr = value.textValue.toString().handleDate("MM/yy", inputDatePattern)
-            if (newDateStr.isNullOrEmpty()) {
-                value
-            } else {
-                AutofillValue.forText(newDateStr)
-            }
-        }
-    }
-
-    private fun String.handleDate(incomePattern: String, outcomePattern: String): String? {
-        return try {
-            val income = SimpleDateFormat(incomePattern, Locale.US)
-            val currentDate = income.parse(this)
-            val selectedDate = Calendar.getInstance()
-            selectedDate.time = currentDate
-            if (!isDaysVisible) {
-                selectedDate.set(
-                    Calendar.DAY_OF_MONTH,
-                    selectedDate.getActualMaximum(Calendar.DATE)
-                )
-            }
-            selectedDate.set(Calendar.HOUR, 23)
-            selectedDate.set(Calendar.MINUTE, 59)
-            selectedDate.set(Calendar.SECOND, 59)
-            selectedDate.set(Calendar.MILLISECOND, 999)
-            val outcome = SimpleDateFormat(outcomePattern, Locale.US)
-            outcome.format(selectedDate.time)
-        } catch (e: ParseException) {
-            null
-        }
     }
 
     override fun dispatchDependencySetting(dependency: Dependency) {

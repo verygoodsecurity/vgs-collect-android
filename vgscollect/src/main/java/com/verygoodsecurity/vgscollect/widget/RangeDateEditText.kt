@@ -27,23 +27,23 @@ class RangeDateEditText @JvmOverloads constructor(
                 val inputFormat = DateRangeFormat.parsePatternToDateFormat(getDatePattern())
                 val calendar = Calendar.getInstance()
 
-                val startDateValue = getString(R.styleable.RangeDateEditText_startDate)
-                val startDate = inputFormat?.dateFromString(startDateValue)
-                if (startDate != null) {
+                val minDateValue = getString(R.styleable.RangeDateEditText_minDate)
+                val minDate = inputFormat?.dateFromString(minDateValue)
+                if (minDate != null) {
                     setMinDate(
                         calendar.apply {
-                            time = startDate
+                            time = minDate
                             setMaximumTime()
                         }.timeInMillis
                     )
                 }
 
-                val endDateValue = getString(R.styleable.RangeDateEditText_endDate)
-                val endDate = inputFormat?.dateFromString(endDateValue)
-                if (endDate != null) {
+                val maxDateValue = getString(R.styleable.RangeDateEditText_maxDate)
+                val maxDate = inputFormat?.dateFromString(maxDateValue)
+                if (maxDate != null) {
                     setMaxDate(
                         calendar.apply {
-                            time = endDate
+                            time = maxDate
                             setMaximumTime()
                         }.timeInMillis
                     )
