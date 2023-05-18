@@ -86,4 +86,16 @@ internal enum class DateRangeFormat(val format: String) {
         }
     }
     //endregion
+
+    //region - Inner classes
+    internal data class DateComponentsString(
+        var day: String,
+        var month: String,
+        var year: String
+    ) {
+        val isDayValid = day.isNotEmpty()
+        val isMonthValid = month.isNotEmpty()
+        val isYearValid = year.isNotEmpty()
+    }
+    //endregion
 }

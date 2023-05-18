@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.date.validation
 
-import com.verygoodsecurity.vgscollect.core.model.setMaximumTime
+import com.verygoodsecurity.vgscollect.util.extension.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
 import java.text.ParseException
 import java.text.SimpleDateFormat

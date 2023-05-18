@@ -1,17 +1,11 @@
 package com.verygoodsecurity.vgscollect.core.model
 
+import com.verygoodsecurity.vgscollect.util.extension.setMaximumTime
 import java.util.*
 
-// TODO: Move this method to a better place
-internal fun Calendar.setMaximumTime() {
-    this.apply {
-        set(Calendar.HOUR_OF_DAY, getActualMaximum(Calendar.HOUR_OF_DAY))
-        set(Calendar.MINUTE,  getActualMaximum(Calendar.MINUTE))
-        set(Calendar.SECOND,  getActualMaximum(Calendar.SECOND))
-        set(Calendar.MILLISECOND,  getActualMaximum(Calendar.MILLISECOND))
-    }
-}
-
+/**
+ * Date representation that includes a day, month and year.
+ */
 class VGSDate private constructor(
     val day: Int,
     val month: Int,

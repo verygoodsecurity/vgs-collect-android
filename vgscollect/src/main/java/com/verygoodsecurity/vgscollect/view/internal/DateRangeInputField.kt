@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
-import com.verygoodsecurity.vgscollect.core.model.setMaximumTime
+import com.verygoodsecurity.vgscollect.util.extension.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.date.DateRangeFormat
 import com.verygoodsecurity.vgscollect.view.internal.core.DateInputField

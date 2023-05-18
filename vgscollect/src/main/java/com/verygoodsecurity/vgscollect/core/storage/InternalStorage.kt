@@ -15,6 +15,7 @@ import com.verygoodsecurity.vgscollect.util.extension.isArraysIgnored
 import com.verygoodsecurity.vgscollect.util.extension.merge
 import com.verygoodsecurity.vgscollect.util.extension.toFlatMap
 import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.core.serializers.VGSDateRangeSeparateSerializer
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 
 /** @suppress */
@@ -122,7 +123,7 @@ internal class InternalStorage(
                     is CardNumberContent -> result.add(state.fieldName!! to (rawData ?: data!!))
                     is SSNContent -> result.add(state.fieldName!! to (rawData ?: data!!))
                     is DateContent -> {
-                        result.addAll(handleExpirationDateContent(state.fieldName!!, this))
+                        result.addAll(handleDateContent(state.fieldName!!, this))
                     }
                     else -> result.add(state.fieldName!! to data!!)
                 }
@@ -131,7 +132,7 @@ internal class InternalStorage(
         return result
     }
 
-    private fun handleExpirationDateContent(
+    private fun handleDateContent(
         fieldName: String,
         content: DateContent
     ): List<Pair<String, String>> {
@@ -142,6 +143,11 @@ internal class InternalStorage(
                 if (it is VGSExpDateSeparateSerializer) {
                     result.addAll(
                         it.serialize(VGSExpDateSeparateSerializer.Params(data, content.dateFormat))
+                    )
+                }
+                if (it is VGSDateRangeSeparateSerializer) {
+                    result.addAll(
+                        it.serialize(VGSDateRangeSeparateSerializer.Params(data, content.dateFormat))
                     )
                 }
             }

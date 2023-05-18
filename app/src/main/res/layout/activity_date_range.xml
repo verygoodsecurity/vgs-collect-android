@@ -85,7 +85,7 @@
             app:layout_constraintTop_toBottomOf="@+id/vgsTilDateRange">
 
             <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
-                android:id="@+id/cardExpDateField"
+                android:id="@+id/vgsTiedExpiry"
                 style="@style/EditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

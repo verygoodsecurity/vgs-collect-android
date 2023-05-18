@@ -9,15 +9,14 @@ import android.text.InputType
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.widget.DatePicker
-import com.verygoodsecurity.vgscollect.core.model.setMaximumTime
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
+import com.verygoodsecurity.vgscollect.util.extension.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputCardDateConnection
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.*
-import com.verygoodsecurity.vgscollect.view.card.formatter.date.StrictDateRangeFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.date.*

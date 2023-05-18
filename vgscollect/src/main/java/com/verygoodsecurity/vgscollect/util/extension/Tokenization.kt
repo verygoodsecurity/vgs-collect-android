@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.util.extension
 
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.view.core.serializers.VGSDateRangeSeparateSerializer
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 
 internal const val TOKENIZATION_PATH = "/tokens"
@@ -30,11 +31,11 @@ private fun getData(
     fieldName: String,
     content: FieldContent?
 ): List<Pair<String, String>> = when (content) {
-    is FieldContent.DateContent -> handleExpirationDateContent(fieldName, content)
+    is FieldContent.DateContent -> handleDateContent(fieldName, content)
     else -> listOf(fieldName to (content?.data ?: ""))
 }
 
-private fun handleExpirationDateContent(
+private fun handleDateContent(
     fieldName: String,
     content: FieldContent.DateContent
 ): List<Pair<String, String>> {
@@ -44,6 +45,11 @@ private fun handleExpirationDateContent(
         if (it is VGSExpDateSeparateSerializer) {
             result.addAll(
                 it.serialize(VGSExpDateSeparateSerializer.Params(data, content.dateFormat))
+            )
+        }
+        if (it is VGSDateRangeSeparateSerializer) {
+            result.addAll(
+                it.serialize(VGSDateRangeSeparateSerializer.Params(data, content.dateFormat))
             )
         }
     } ?: result.add(fieldName to data)

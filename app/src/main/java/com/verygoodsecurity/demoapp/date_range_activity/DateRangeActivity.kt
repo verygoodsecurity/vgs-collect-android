@@ -23,6 +23,8 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscollect.view.core.serializers.VGSDateRangeSeparateSerializer
+import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 import io.github.kbiakov.codeview.adapters.Options
 import io.github.kbiakov.codeview.highlight.ColorThemeData
 import io.github.kbiakov.codeview.highlight.SyntaxColors
@@ -102,7 +104,7 @@ class DateRangeActivity : AppCompatActivity(), VgsCollectResponseListener, OnFie
         binding.mbGroupCodeExampleType.addOnButtonCheckedListener { _, _, _ -> updateCodeExample() }
         binding.ccInputsRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         collect.bindView(binding.vgsTiedDateRange)
-        collect.bindView(binding.cardExpDateField)
+        collect.bindView(binding.vgsTiedExpiry)
 
         VGSDate.create(10, 10, 2020)?.let {
             binding.vgsTiedDateRange.setMinDate(it)
@@ -135,14 +137,6 @@ class DateRangeActivity : AppCompatActivity(), VgsCollectResponseListener, OnFie
     }
 
     private fun setupDateRangesView() {
-        // Specify VGSExpDateSeparateSerializer to send expiry month and year separately in json structure
-//        binding.vgsTiedDateRange.setSerializer(
-//            VGSDateRangeSeparateSerializer(
-//                "date.day",
-//                "date.month",
-//                "date.year"
-//            )
-//        )
         binding.vgsTiedDateRange.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
                 Log.d(CollectActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")
