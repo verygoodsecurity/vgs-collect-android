@@ -2,15 +2,14 @@ package com.verygoodsecurity.vgscollect.view.date.validation
 
 import com.verygoodsecurity.vgscollect.core.model.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.validation.VGSValidator
-import com.verygoodsecurity.vgscollect.view.date.DateFormat
-import com.verygoodsecurity.vgscollect.view.date.daysVisible
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
 /** @suppress */
 internal class TimeGapsValidator(
-    private val dateFormat: DateFormat,
+    private val pattern: String,
+    private val daysVisible: Boolean,
     private val inclusive: Boolean,
     private val minDate: Long? = null,
     private val maxDate: Long? = null
@@ -19,7 +18,7 @@ internal class TimeGapsValidator(
     override val errorMsg: String = DEFAULT_ERROR_MSG
 
     private val sdf by lazy {
-        val sdf = SimpleDateFormat(dateFormat.format, Locale.US)
+        val sdf = SimpleDateFormat(pattern, Locale.US)
         sdf.isLenient = false
         sdf
     }
@@ -37,7 +36,7 @@ internal class TimeGapsValidator(
             if (date != null) {
                 calendar.apply {
                     timeInMillis = date.time
-                    if (!dateFormat.daysVisible) {
+                    if (!daysVisible) {
                         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
                     }
                     setMaximumTime()

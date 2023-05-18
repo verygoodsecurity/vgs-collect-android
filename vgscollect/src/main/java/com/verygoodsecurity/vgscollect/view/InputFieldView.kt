@@ -43,7 +43,6 @@ import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
-import com.verygoodsecurity.vgscollect.view.date.DateFormat
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.*
 import com.verygoodsecurity.vgscollect.view.internal.core.DateInputField
@@ -983,58 +982,30 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.isEnabled = enabled
     }
 
-    protected fun setDateFormat(pattern: String?) {
-        when (fieldType) {
-            FieldType.DATE_RANGE -> {
-                (inputField as? DateInputField)?.setInputFormat(pattern)
-            }
-            FieldType.CARD_EXPIRATION_DATE -> {
-                (inputField as? DateInputField)?.setInputFormat(pattern)
-            }
-            else -> {
-                // Do nothing
-            }
+    protected fun setDatePattern(pattern: String?) {
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setDatePattern(pattern)
         }
     }
 
-    protected fun setOutputFormat(pattern: String?) {
-        when (fieldType) {
-            FieldType.DATE_RANGE -> {
-                (inputField as? DateInputField)?.setOutputFormat(
-                    pattern,
-                    DateFormat.MM_DD_YYYY.format
-                )
-            }
-            FieldType.CARD_EXPIRATION_DATE -> {
-                (inputField as? DateInputField)?.setOutputFormat(pattern, DateFormat.MM_YYYY.format)
-            }
-            else -> {
-                // Do nothing
-            }
+    protected fun setOutputPattern(pattern: String?) {
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setOutputPattern(pattern)
         }
     }
 
-    protected fun getDateFormat(): String? {
-        return when (fieldType) {
-            FieldType.DATE_RANGE, FieldType.CARD_EXPIRATION_DATE -> {
-                (inputField as? DateInputField)?.getInputFormat()
-            }
-            else -> {
-                null
-            }
+    protected fun getDatePattern(): String? {
+        return if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.getDatePattern()
+        } else {
+            null
         }
     }
 
     protected fun setDatePickerMode(type: Int) {
-        when (fieldType) {
-            FieldType.CARD_EXPIRATION_DATE, FieldType.DATE_RANGE -> {
-                (inputField as? DateInputField)?.setDatePickerMode(type)
-            }
-            else -> {
-                // Do nothing
-            }
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setDatePickerMode(type)
         }
-
     }
 
     protected fun getDateMode(): DatePickerMode? {
@@ -1042,24 +1013,14 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     protected fun setMinDate(date: Long) {
-        when (fieldType) {
-            FieldType.CARD_EXPIRATION_DATE, FieldType.DATE_RANGE -> {
-                (inputField as? DateInputField)?.minDate = date
-            }
-            else -> {
-                // Do nothing
-            }
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.minDate = date
         }
     }
 
     protected fun setMaxDate(date: Long) {
-        when (fieldType) {
-            FieldType.CARD_EXPIRATION_DATE, FieldType.DATE_RANGE -> {
-                (inputField as? DateInputField)?.maxDate = date
-            }
-            else -> {
-                // Do nothing
-            }
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.maxDate = date
         }
     }
 
@@ -1067,35 +1028,20 @@ abstract class InputFieldView @JvmOverloads constructor(
         dialogMode: DatePickerMode,
         ignoreFieldMode: Boolean
     ) {
-        when (fieldType) {
-            FieldType.CARD_EXPIRATION_DATE, FieldType.DATE_RANGE -> {
-                (inputField as? DateInputField)?.showDatePickerDialog(dialogMode, ignoreFieldMode)
-            }
-            else -> {
-                // Do nothing
-            }
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.showDatePickerDialog(dialogMode, ignoreFieldMode)
         }
     }
 
     protected fun setDatePickerVisibilityListener(l: VisibilityChangeListener?) {
-        when (fieldType) {
-            FieldType.CARD_EXPIRATION_DATE, FieldType.DATE_RANGE -> {
-                (inputField as? DateInputField)?.setDatePickerVisibilityListener(l)
-            }
-            else -> {
-                // Do nothing
-            }
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setDatePickerVisibilityListener(l)
         }
     }
 
     protected fun setFieldDataSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
-        when (fieldType) {
-            FieldType.CARD_EXPIRATION_DATE, FieldType.DATE_RANGE -> {
-                (inputField as? DateInputField)?.setFieldDataSerializers(serializers)
-            }
-            else -> {
-                // Do nothing
-            }
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setFieldDataSerializers(serializers)
         }
     }
 
@@ -1332,13 +1278,10 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     protected fun getExpirationDate(): FieldState.CardExpirationDateState? {
-        return when (fieldType) {
-            FieldType.CARD_EXPIRATION_DATE, FieldType.DATE_RANGE -> {
-                (inputField as? DateInputField)?.getState() as? FieldState.CardExpirationDateState
-            }
-            else -> {
-                null
-            }
+        return if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.getState() as? FieldState.CardExpirationDateState
+        } else {
+            null
         }
     }
 
@@ -1390,24 +1333,16 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     internal fun setFormatterMode(mode: Int) {
-        when (fieldType) {
-            FieldType.CARD_EXPIRATION_DATE, FieldType.DATE_RANGE -> {
-                (inputField as? DateInputField)?.setFormatterMode(mode)
-            }
-            else -> {
-                // Do nothing
-            }
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setFormatterMode(mode)
         }
     }
 
     internal fun getFormatterMode(): Int {
-        return when (fieldType) {
-            FieldType.CARD_EXPIRATION_DATE, FieldType.DATE_RANGE -> {
-                (inputField as? DateInputField)?.getFormatterMode() ?: -1
-            }
-            else -> {
-                -1
-            }
+        return if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.getFormatterMode() ?: -1
+        } else {
+            -1
         }
     }
 

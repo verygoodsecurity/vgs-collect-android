@@ -15,7 +15,6 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
-import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 
 /**
  * Provides a user interface element for date input. The range of dates supported by this field is not configurable.
@@ -96,8 +95,8 @@ abstract class DateEditText @JvmOverloads internal constructor(
 
                 setFormatterMode(formatterMode)
                 setDatePickerMode(datePickerMode)
-                setDateFormat(datePattern)
-                setOutputFormat(outputPattern)
+                setDatePattern(datePattern)
+                setOutputPattern(outputPattern)
 
                 setEnabledTokenization(enableTokenization)
                 setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
@@ -114,7 +113,7 @@ abstract class DateEditText @JvmOverloads internal constructor(
      * @param regex Specifies date representation format
      */
     fun setOutputRegex(regex: String) {
-        setOutputFormat(regex)
+        setOutputPattern(regex)
     }
 
     /**
@@ -125,7 +124,7 @@ abstract class DateEditText @JvmOverloads internal constructor(
      *
      */
     fun setDateRegex(regex: String) {
-        setDateFormat(regex)
+        setDatePattern(regex)
     }
 
     /**
@@ -133,7 +132,7 @@ abstract class DateEditText @JvmOverloads internal constructor(
      *
      * @return regex
      */
-    fun getDateRegex(): String? = getDateFormat()
+    fun getDateRegex(): String? = getDatePattern()
 
     /**
      * Sets type of exact appearance and interaction model of this widget.

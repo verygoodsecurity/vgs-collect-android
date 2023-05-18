@@ -1,33 +1,20 @@
-package com.verygoodsecurity.vgscollect.view.card.formatter.date.base
+package com.verygoodsecurity.vgscollect.view.card.formatter.date
 
 import android.text.Editable
 import android.widget.EditText
-import com.verygoodsecurity.vgscollect.view.card.formatter.date.BaseDateFormatter
-import com.verygoodsecurity.vgscollect.view.date.DateFormat
-import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
-import com.verygoodsecurity.vgscollect.view.date.yearCharacters
+import com.verygoodsecurity.vgscollect.util.extension.digits
+import com.verygoodsecurity.vgscollect.view.date.*
+import com.verygoodsecurity.vgscollect.view.date.DateRangeFormat
 import java.util.regex.Pattern
 
 internal class StrictDateRangeFormatter(
-    var dateFormatter: DateFormat,
-    var pickerMode: DatePickerMode,
     private val source: EditText? = null
 ) : BaseDateFormatter() {
 
-    override fun setMode(mode: DatePickerMode) {
-        // This method is not required in new implementation
-    }
-
-    override fun setMask(mask: String) {
-        // This method is not required in new implementation
-    }
-
-    override fun getMask(): String {
-        return dateFormatter.formatPattern
-    }
-
     //region - Properties
-    private var divider = "/"
+    private var dateFormat = DateRangeFormat.MM_DD_YYYY
+    private var mode: DatePickerMode = DatePickerMode.INPUT
+    private var divider = DateRangeFormat.divider
     private var runtimeData = ""
     private var isDeleteAction = false
     private var skipStep = false
@@ -35,6 +22,21 @@ internal class StrictDateRangeFormatter(
     private var cacheDay = ""
     private var cacheMonth = ""
     private var cacheYear = ""
+    //endregion
+
+    //region - Overrides
+    override fun setMode(mode: DatePickerMode) {
+        this.mode = mode
+    }
+
+    override fun getMask(): String = dateFormat.formatPattern
+
+    override fun setMask(mask: String) {
+        val parsedFormat = DateRangeFormat.parsePatternToDateFormat(mask)
+        if (parsedFormat != null) {
+            dateFormat = parsedFormat
+        }
+    }
     //endregion
 
     //region - TextWatcher implementation
@@ -80,22 +82,14 @@ internal class StrictDateRangeFormatter(
                 cacheMonth = it
                 cacheYear = it
             }
-            dateFormatter == DateFormat.MM_DD_YYYY -> {
+            dateFormat == DateRangeFormat.MM_DD_YYYY -> {
                 generateMMDDYYYY(str)
             }
-            dateFormatter == DateFormat.DD_MM_YYYY -> {
+            dateFormat == DateRangeFormat.DD_MM_YYYY -> {
                 generateDDMMYYYY(str)
             }
-            dateFormatter == DateFormat.YYYY_MM_DD -> {
+            dateFormat == DateRangeFormat.YYYY_MM_DD -> {
                 generateYYYYMMDD(str)
-            }
-            dateFormatter == DateFormat.MM_YYYY -> {
-                // TODO: Pending implementation
-                ""
-            }
-            dateFormatter == DateFormat.MM_YYYY -> {
-                // TODO: Pending implementation
-                ""
             }
             else -> "".also {
                 cacheMonth = it
@@ -105,7 +99,7 @@ internal class StrictDateRangeFormatter(
     }
 
     override fun afterTextChanged(s: Editable?) {
-        if (pickerMode == DatePickerMode.INPUT) {
+        if (mode == DatePickerMode.INPUT) {
             s?.apply {
                 if (s.toString() != runtimeData) {
                     replace(0, s.length, runtimeData)
@@ -118,7 +112,7 @@ internal class StrictDateRangeFormatter(
     //region - Private methods
     private fun generateMMDDYYYY(str: CharSequence): String {
         // Get date components
-        val dateComponents = dateFormatter.dateComponentsString(str.toString())
+        val dateComponents = dateComponentsString(str.toString())
         // Format month
         val formattedMonth = formatMonth(dateComponents.month)
         // Only month is valid
@@ -152,7 +146,7 @@ internal class StrictDateRangeFormatter(
 
     private fun generateDDMMYYYY(str: CharSequence): String {
         // Get date components
-        val dateComponents = dateFormatter.dateComponentsString(str.toString())
+        val dateComponents = dateComponentsString(str.toString())
         // Format day
         val formattedDay = formatDay(dateComponents.day)
         // Only day is valid
@@ -188,7 +182,7 @@ internal class StrictDateRangeFormatter(
 
     private fun generateYYYYMMDD(str: CharSequence): String {
         // Get date components
-        val dateComponents = dateFormatter.dateComponentsString(str.toString())
+        val dateComponents = dateComponentsString(str.toString())
         // Format year
         val formattedYear = formatYear(dateComponents.year)
         // Only year is valid
@@ -197,7 +191,7 @@ internal class StrictDateRangeFormatter(
             cacheDay = ""
             return when {
                 isDeleteAction -> formattedYear
-                formattedYear.length < dateFormatter.yearCharacters -> formattedYear
+                formattedYear.length < dateFormat.yearCharacters -> formattedYear
                 else -> formattedYear + divider
             }
         } else {
@@ -250,9 +244,9 @@ internal class StrictDateRangeFormatter(
     }
 
     private fun moveCursorToEndOfDay() {
-        when (dateFormatter) {
-            DateFormat.MM_DD_YYYY,
-            DateFormat.YYYY_MM_DD -> {
+        when (dateFormat) {
+            DateRangeFormat.MM_DD_YYYY,
+            DateRangeFormat.YYYY_MM_DD -> {
                 val index = if (runtimeData.isNotEmpty()) {
                     runtimeData.length - 1
                 } else {
@@ -260,24 +254,19 @@ internal class StrictDateRangeFormatter(
                 }
                 source?.setSelection(index)
             }
-            DateFormat.DD_MM_YYYY -> {
+            DateRangeFormat.DD_MM_YYYY -> {
                 source?.setSelection(0)
-            }
-            DateFormat.MM_YY, DateFormat.MM_YYYY -> {
-                // Do nothing
             }
         }
     }
 
     private fun moveCursorToEndOfMonth() {
-        when (dateFormatter) {
-            DateFormat.MM_DD_YYYY,
-            DateFormat.MM_YYYY,
-            DateFormat.MM_YY -> {
+        when (dateFormat) {
+            DateRangeFormat.MM_DD_YYYY -> {
                 source?.setSelection(0)
             }
-            DateFormat.DD_MM_YYYY,
-            DateFormat.YYYY_MM_DD -> {
+            DateRangeFormat.DD_MM_YYYY,
+            DateRangeFormat.YYYY_MM_DD -> {
                 val index = if (runtimeData.isNotEmpty()) {
                     runtimeData.length - 1
                 } else {
@@ -289,11 +278,9 @@ internal class StrictDateRangeFormatter(
     }
 
     private fun moveCursorToEndOfYear() {
-        when (dateFormatter) {
-            DateFormat.MM_DD_YYYY,
-            DateFormat.DD_MM_YYYY,
-            DateFormat.MM_YYYY,
-            DateFormat.MM_YY-> {
+        when (dateFormat) {
+            DateRangeFormat.MM_DD_YYYY,
+            DateRangeFormat.DD_MM_YYYY -> {
                 val index = if (runtimeData.isNotEmpty()) {
                     runtimeData.length - 1
                 } else {
@@ -301,73 +288,127 @@ internal class StrictDateRangeFormatter(
                 }
                 source?.setSelection(index)
             }
-            DateFormat.YYYY_MM_DD -> {
+            DateRangeFormat.YYYY_MM_DD -> {
                 source?.setSelection(0)
             }
         }
     }
+
+    private fun dateComponentsString(input: String): DateComponentsString {
+        val result = DateComponentsString("", "", "")
+
+        // Get only digits
+        var digits = input.digits
+        when (dateFormat) {
+            // Get month, day and year
+            DateRangeFormat.MM_DD_YYYY -> {
+                // Get month
+                result.month = digits.take(dateFormat.monthCharacters)
+                digits = digits.removePrefix(result.month)
+                // Get day
+                result.day = digits.take(dateFormat.daysCharacters)
+                digits = digits.removePrefix(result.day)
+                // Get year
+                result.year = digits.take(dateFormat.yearCharacters)
+            }
+            // Get day, month and year
+            DateRangeFormat.DD_MM_YYYY -> {
+                // Get day
+                result.day = digits.take(dateFormat.daysCharacters)
+                digits = digits.removePrefix(result.day)
+                // Get month
+                result.month = digits.take(dateFormat.monthCharacters)
+                digits = digits.removePrefix(result.month)
+                // Get year
+                result.year = digits.take(dateFormat.yearCharacters)
+            }
+            // Get year, month and day
+            DateRangeFormat.YYYY_MM_DD -> {
+                // Get year
+                result.year = digits.take(dateFormat.yearCharacters)
+                digits = digits.removePrefix(result.year)
+                // Get month
+                result.month = digits.take(dateFormat.monthCharacters)
+                digits = digits.removePrefix(result.month)
+                // Get day
+                result.day = digits.take(dateFormat.daysCharacters)
+            }
+        }
+        return result
+    }
     //endregion
-}
 
+    //region - Inner classes
+    private data class DateComponentsString(
+        var day: String,
+        var month: String,
+        var year: String
+    ) {
+        val isDayValid = day.isNotEmpty()
+        val isMonthValid = month.isNotEmpty()
+        val isYearValid = year.isNotEmpty()
+    }
 
-internal class DayFormatter {
+    private class DayFormatter {
 
-    companion object {
+        companion object {
 
-        private val patternDay = Pattern.compile("^([0123]|0[1-9]|1[0-9]|2[0-9]|3[01])\$")
+            private val patternDay = Pattern.compile("^([0123]|0[1-9]|1\\d|2\\d|3[01])\$")
 
-        fun isValidDay(day: String): Boolean {
-            return patternDay.matcher(day).matches()
-        }
+            fun isValidDay(day: String): Boolean {
+                return patternDay.matcher(day).matches()
+            }
 
-        fun validateDay(day: String): String? {
-            return try {
-                val dayInt = day.toInt()
-                if (dayInt in 1..30) {
-                    return String.format("%02d", dayInt)
-                } else {
-                    return null
+            fun validateDay(day: String): String? {
+                return try {
+                    val dayInt = day.toInt()
+                    if (dayInt in 1..30) {
+                        return String.format("%02d", dayInt)
+                    } else {
+                        return null
+                    }
+                } catch (e: Exception) {
+                    null
                 }
-            } catch (e: Exception) {
-                null
             }
         }
     }
-}
 
-internal class MonthFormatter {
+    private class MonthFormatter {
 
-    companion object {
+        companion object {
 
-        private val patternMounts = Pattern.compile("^([10]|0[1-9]|1[012])\$")
+            private val patternMounts = Pattern.compile("^([10]|0[1-9]|1[012])\$")
 
-        fun isValidMonth(month: String): Boolean {
-            return patternMounts.matcher(month).matches()
-        }
+            fun isValidMonth(month: String): Boolean {
+                return patternMounts.matcher(month).matches()
+            }
 
-        fun validateMonth(month: String): String? {
-            return try {
-                val monthInt = month.toInt()
-                if (monthInt in 1..12) {
-                    return String.format("%02d", monthInt)
-                } else {
-                    return null
+            fun validateMonth(month: String): String? {
+                return try {
+                    val monthInt = month.toInt()
+                    if (monthInt in 1..12) {
+                        return String.format("%02d", monthInt)
+                    } else {
+                        return null
+                    }
+                } catch (e: Exception) {
+                    null
                 }
-            } catch (e: Exception) {
-                null
             }
         }
     }
-}
 
-internal class YearFormatter {
+    private class YearFormatter {
 
-    companion object {
+        companion object {
 
-        private val patternYear = Pattern.compile("^((1|1[9]|1[9]\\d|1[9]\\d\\d)|(2|2[0]|2[0]\\d|2[0]\\d\\d))\$")
+            private val patternYear = Pattern.compile("^((1|19|19\\d|19\\d\\d)|(2|20|20\\d|20\\d\\d))\$")
 
-        fun isValidYear(year: String): Boolean {
-            return patternYear.matcher(year).matches()
+            fun isValidYear(year: String): Boolean {
+                return patternYear.matcher(year).matches()
+            }
         }
     }
+    //endregion
 }

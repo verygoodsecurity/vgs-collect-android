@@ -148,7 +148,7 @@ class VGSFieldStateTest {
         val fieldDateOutPutFormat: SimpleDateFormat =
             SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
-        val content = FieldContent.CreditCardExpDateContent()
+        val content = FieldContent.DateContent()
         content.data = date
 
 
@@ -165,7 +165,7 @@ class VGSFieldStateTest {
         val fieldDateFormat = SimpleDateFormat("dd-MM-yy", Locale.US)
         val fieldDateOutPutFormat = SimpleDateFormat("MM/yyyy", Locale.US)
 
-        val content = FieldContent.CreditCardExpDateContent()
+        val content = FieldContent.DateContent()
         content.data = date
 
 

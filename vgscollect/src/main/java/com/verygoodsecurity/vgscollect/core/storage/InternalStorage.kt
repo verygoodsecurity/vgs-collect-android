@@ -121,7 +121,7 @@ internal class InternalStorage(
                 when (this) {
                     is CardNumberContent -> result.add(state.fieldName!! to (rawData ?: data!!))
                     is SSNContent -> result.add(state.fieldName!! to (rawData ?: data!!))
-                    is CreditCardExpDateContent -> {
+                    is DateContent -> {
                         result.addAll(handleExpirationDateContent(state.fieldName!!, this))
                     }
                     else -> result.add(state.fieldName!! to data!!)
@@ -133,7 +133,7 @@ internal class InternalStorage(
 
     private fun handleExpirationDateContent(
         fieldName: String,
-        content: CreditCardExpDateContent
+        content: DateContent
     ): List<Pair<String, String>> {
         val result = mutableListOf<Pair<String, String>>()
         val data = (content.rawData ?: content.data!!)

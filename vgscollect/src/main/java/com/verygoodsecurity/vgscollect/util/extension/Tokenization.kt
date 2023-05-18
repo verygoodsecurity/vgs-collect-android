@@ -30,13 +30,13 @@ private fun getData(
     fieldName: String,
     content: FieldContent?
 ): List<Pair<String, String>> = when (content) {
-    is FieldContent.CreditCardExpDateContent -> handleExpirationDateContent(fieldName, content)
+    is FieldContent.DateContent -> handleExpirationDateContent(fieldName, content)
     else -> listOf(fieldName to (content?.data ?: ""))
 }
 
 private fun handleExpirationDateContent(
     fieldName: String,
-    content: FieldContent.CreditCardExpDateContent
+    content: FieldContent.DateContent
 ): List<Pair<String, String>> {
     val result = mutableListOf<Pair<String, String>>()
     val data = (content.rawData ?: content.data!!)
