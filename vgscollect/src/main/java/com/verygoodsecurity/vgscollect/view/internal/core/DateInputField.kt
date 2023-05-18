@@ -325,18 +325,25 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     internal fun getDatePattern(): String = inputDatePattern
 
     internal fun setDatePickerMode(mode: Int) {
-        datePickerMode = DatePickerMode.values()[mode]
 
-        when (datePickerMode) {
-            DatePickerMode.CALENDAR, DatePickerMode.SPINNER -> {
-                setIsActive(false)
-            }
-            DatePickerMode.INPUT, DatePickerMode.DEFAULT -> {
-                datePickerMode = DatePickerMode.INPUT
-                setIsActive(true)
-            }
+        when(val pickerMode = DatePickerMode.values()[mode]) {
+            DatePickerMode.CALENDAR, DatePickerMode.SPINNER -> setupDialogMode(pickerMode)
+            DatePickerMode.DEFAULT, DatePickerMode.INPUT -> setupInputMode()
         }
+
         formatter?.setMode(datePickerMode)
+    }
+
+    private fun setupDialogMode(pickerMode: DatePickerMode) {
+        datePickerMode = pickerMode
+        setIsActive(false)
+    }
+
+    private fun setupInputMode() {
+        datePickerMode = DatePickerMode.INPUT
+        val p = inputDatePattern
+        setDatePattern(p)
+        setIsActive(true)
     }
 
     internal fun getDatePickerMode() = datePickerMode

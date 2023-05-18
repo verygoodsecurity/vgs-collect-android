@@ -12,20 +12,11 @@ abstract class FieldDataSerializer<P, R> {
     private lateinit var monthSDF: SimpleDateFormat
     private lateinit var yearSDF: SimpleDateFormat
 
-    protected fun getDayFormat(dateFormat: String?): SimpleDateFormat {
+    protected fun getDayFormat(): SimpleDateFormat {
         return if (this::daySDF.isInitialized) {
             daySDF
         } else {
-            try {
-                val monthFormat = when {
-                    dateFormat?.contains("dd") == true -> "dd"
-                    else -> DEFAULT_DAY_FORMAT
-                }
-                SimpleDateFormat(monthFormat, Locale.US)
-            } catch (e: Exception) {
-                logException(e)
-                SimpleDateFormat(DEFAULT_MONTH_FORMAT, Locale.US)
-            }
+            SimpleDateFormat(DEFAULT_DAY_FORMAT, Locale.US)
         }
     }
 
@@ -33,7 +24,19 @@ abstract class FieldDataSerializer<P, R> {
         return if (this::monthSDF.isInitialized) {
             monthSDF
         } else {
-            SimpleDateFormat(DEFAULT_MONTH_FORMAT, Locale.US)
+            try {
+                val monthFormat = when {
+                    dateFormat?.contains("MMMM") == true -> "MMMM"
+                    dateFormat?.contains("MMM") == true -> "MMM"
+                    dateFormat?.contains("MM") == true -> "MM"
+                    dateFormat?.contains("M") == true -> "M"
+                    else -> DEFAULT_MONTH_FORMAT
+                }
+                SimpleDateFormat(monthFormat, Locale.US)
+            } catch (e: Exception) {
+                logException(e)
+                SimpleDateFormat(DEFAULT_MONTH_FORMAT, Locale.US)
+            }
         }
     }
 

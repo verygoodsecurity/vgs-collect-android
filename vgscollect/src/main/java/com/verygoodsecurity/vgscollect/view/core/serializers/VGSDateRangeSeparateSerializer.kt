@@ -31,7 +31,7 @@ class VGSDateRangeSeparateSerializer constructor(
                 return emptyList()
             }
             listOf(
-                dayFieldName to getDayFormat(params.dateFormat).format(date),
+                dayFieldName to getDayFormat().format(date),
                 monthFieldName to getMonthFormat(params.dateFormat).format(date),
                 yearFieldName to getYearFormat(params.dateFormat).format(date)
             )
