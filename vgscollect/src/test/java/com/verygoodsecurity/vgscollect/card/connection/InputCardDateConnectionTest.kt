@@ -11,7 +11,7 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mockito
 
-class InputCardExpDateConnectionTest {
+class InputCardDateConnectionTest {
     val connection: InputRunnable by lazy {
         val client = Mockito.mock(CompositeValidator::class.java)
         Mockito.doReturn(emptyList<String>()).`when`(client).validate(Mockito.anyString())

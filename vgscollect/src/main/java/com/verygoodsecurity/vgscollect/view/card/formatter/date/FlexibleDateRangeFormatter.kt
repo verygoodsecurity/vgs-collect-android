@@ -22,8 +22,10 @@ internal class FlexibleDateRangeFormatter : BaseDateFormatter() {
 
     override fun setMask(mask: String) {
         val parsedFormat = DateRangeFormat.parsePatternToDateFormat(mask)
-        if (parsedFormat != null) {
-            dateFormat = parsedFormat
+        dateFormat = if (parsedFormat != null) {
+            parsedFormat
+        } else {
+            DateRangeFormat.MM_DD_YYYY
         }
     }
     //endregion

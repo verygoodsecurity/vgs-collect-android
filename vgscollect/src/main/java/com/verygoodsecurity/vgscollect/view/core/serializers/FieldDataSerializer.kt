@@ -12,11 +12,21 @@ abstract class FieldDataSerializer<P, R> {
     private lateinit var monthSDF: SimpleDateFormat
     private lateinit var yearSDF: SimpleDateFormat
 
-    protected fun getDayFormat(): SimpleDateFormat {
+    protected fun getDayFormat(dateFormat: String?): SimpleDateFormat {
         return if (this::daySDF.isInitialized) {
             daySDF
         } else {
-            SimpleDateFormat(DEFAULT_DAY_FORMAT, Locale.US)
+            try {
+                val dayFormat = when {
+                    dateFormat?.contains("dd") == true -> "dd"
+                    dateFormat?.contains("d") == true -> "d"
+                    else -> DEFAULT_DAY_FORMAT
+                }
+                SimpleDateFormat(dayFormat, Locale.US)
+            } catch (e: Exception) {
+                logException(e)
+                SimpleDateFormat(DEFAULT_MONTH_FORMAT, Locale.US)
+            }
         }
     }
 
