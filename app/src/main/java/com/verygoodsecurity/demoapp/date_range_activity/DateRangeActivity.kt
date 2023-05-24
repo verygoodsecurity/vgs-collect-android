@@ -104,7 +104,6 @@ class DateRangeActivity : AppCompatActivity(), VgsCollectResponseListener, OnFie
         binding.mbGroupCodeExampleType.addOnButtonCheckedListener { _, _, _ -> updateCodeExample() }
         binding.ccInputsRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         collect.bindView(binding.vgsTiedDateRange)
-        collect.bindView(binding.vgsTiedExpiry)
     }
 
     private fun initCodeExampleView() {
@@ -130,12 +129,6 @@ class DateRangeActivity : AppCompatActivity(), VgsCollectResponseListener, OnFie
     }
 
     private fun setupDateRangesView() {
-        binding.vgsTiedExpiry.setSerializer(
-            VGSExpDateSeparateSerializer(
-                "card.expiry.month",
-                "card.expiry.year",
-            )
-        )
         // Specify VGSDateRangeSeparateSerializer to send day, month and year separately in json structure
         binding.vgsTiedDateRange.setSerializer(
             VGSDateRangeSeparateSerializer(

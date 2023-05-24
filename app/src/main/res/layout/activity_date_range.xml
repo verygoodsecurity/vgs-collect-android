@@ -73,38 +73,6 @@
 
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
-        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-            android:id="@+id/vgsTilExpirationDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_padding_material_small"
-            android:layout_marginTop="20dp"
-            android:layout_weight="1"
-            app:boxBackgroundModes="outline"
-            app:hint="@string/exp_date"
-            app:hintEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/vgsTilDateRange">
-
-            <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
-                android:id="@+id/vgsTiedExpiry"
-                style="@style/EditText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:nextFocusDown="@+id/cardCVCField"
-                app:datePattern="MM/yyyy"
-                app:datePickerModes="input"
-                app:enableValidation="false"
-                app:fieldName="card_data.personal_data.secret.expDate"
-                app:fontFamily="@font/robotomono_light"
-                app:formatterMode="strict"
-                app:imeOptions="actionNext"
-                app:inputType="date"
-                app:outputPattern="yyyy-MM-dd'T'HH:mm:ss.SSSSSSS" />
-
-        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbSubmit"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -116,7 +84,7 @@
             android:insetBottom="0dp"
             android:text="Submit"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vgsTilExpirationDate"
+            app:layout_constraintTop_toBottomOf="@id/vgsTilDateRange"
             tools:ignore="HardcodedText"
             tools:layout_editor_absoluteX="313dp"
             tools:layout_editor_absoluteY="346dp" />
