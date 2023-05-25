@@ -1,5 +1,8 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.CreditCardExpDateContent
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.CardNumberContent
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.SSNContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
@@ -30,13 +33,18 @@ private fun getData(
     fieldName: String,
     content: FieldContent?
 ): List<Pair<String, String>> = when (content) {
-    is FieldContent.CreditCardExpDateContent -> handleExpirationDateContent(fieldName, content)
-    else -> listOf(fieldName to (content?.data ?: ""))
+    is CreditCardExpDateContent -> {
+        handleExpirationDateContent(fieldName, content)
+    }
+    is CardNumberContent, is SSNContent -> {
+        listOf(fieldName to (content.rawData ?: content.data ?: ""))
+    }
+    else -> listOf(fieldName to (content?.rawData ?: ""))
 }
 
 private fun handleExpirationDateContent(
     fieldName: String,
-    content: FieldContent.CreditCardExpDateContent
+    content: CreditCardExpDateContent
 ): List<Pair<String, String>> {
     val result = mutableListOf<Pair<String, String>>()
     val data = (content.rawData ?: content.data!!)
