@@ -177,8 +177,8 @@ abstract class DateEditText @JvmOverloads internal constructor(
      *
      * @return current state.
      */
-    fun getState(): FieldState.CardExpirationDateState? {
-        return getExpirationDate()
+    fun getState(): FieldState.DateState? {
+        return getDateState()
     }
 
     /**

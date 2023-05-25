@@ -1,13 +1,10 @@
 package com.verygoodsecurity.vgscollect.view.internal.core
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
-import android.os.Build
 import android.text.InputFilter
 import android.text.InputType
 import android.view.View
-import android.view.autofill.AutofillValue
 import android.widget.DatePicker
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
@@ -15,7 +12,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.handleOutputFormat
 import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.util.extension.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.conection.InputCardDateConnection
+import com.verygoodsecurity.vgscollect.view.card.conection.InputDateConnection
 import com.verygoodsecurity.vgscollect.view.card.formatter.date.*
 import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
@@ -76,7 +73,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
         ).also {
             validator.addRule(it)
         }
-        inputConnection = InputCardDateConnection(id, validator)
+        inputConnection = InputDateConnection(id, validator)
 
         val stateContent = FieldContent.DateContent().apply {
             if (!text.isNullOrEmpty() && handleInputMode(text.toString())) {

@@ -282,7 +282,7 @@ class ExpirationDateEditTextTest {
     @Test
     fun test_state_valid() {
         val text = "12/2023"
-        val stateResult = FieldState.CardExpirationDateState()
+        val stateResult = FieldState.DateState()
         stateResult.hasFocus = false
         stateResult.isEmpty = false
         stateResult.isValid = true
@@ -315,7 +315,7 @@ class ExpirationDateEditTextTest {
     @Test
     fun test_state_invalid() {
         val text = "12/9999"
-        val stateResult = FieldState.CardExpirationDateState()
+        val stateResult = FieldState.DateState()
         stateResult.hasFocus = false
         stateResult.isEmpty = false
         stateResult.isValid = false

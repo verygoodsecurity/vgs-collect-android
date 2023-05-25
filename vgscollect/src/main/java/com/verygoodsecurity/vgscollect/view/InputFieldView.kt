@@ -1277,9 +1277,9 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    protected fun getExpirationDate(): FieldState.CardExpirationDateState? {
+    protected fun getDateState(): FieldState.DateState? {
         return if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.getState() as? FieldState.CardExpirationDateState
+            (inputField as? DateInputField)?.getState() as? FieldState.DateState
         } else {
             null
         }

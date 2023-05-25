@@ -294,7 +294,7 @@ class RangeDateEditTextTest {
     fun test_state_valid() {
         val text = "12/03/2023"
 
-        val stateResult = FieldState.CardExpirationDateState()
+        val stateResult = FieldState.DateState()
         stateResult.hasFocus = false
         stateResult.isEmpty = false
         stateResult.isValid = true
@@ -327,7 +327,7 @@ class RangeDateEditTextTest {
     fun test_state_invalid_min_date() {
         val text = "01/02/2010"
 
-        val stateResult = FieldState.CardExpirationDateState()
+        val stateResult = FieldState.DateState()
         stateResult.hasFocus = false
         stateResult.isEmpty = false
         stateResult.isValid = false
@@ -361,7 +361,7 @@ class RangeDateEditTextTest {
     fun test_state_invalid_max_date() {
         val text = "02/03/2010"
 
-        val stateResult = FieldState.CardExpirationDateState()
+        val stateResult = FieldState.DateState()
         stateResult.hasFocus = false
         stateResult.isEmpty = false
         stateResult.isValid = false
