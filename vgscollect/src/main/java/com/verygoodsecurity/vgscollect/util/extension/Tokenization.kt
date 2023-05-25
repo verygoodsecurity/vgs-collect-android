@@ -39,7 +39,7 @@ private fun getData(
     is CardNumberContent, is SSNContent -> {
         listOf(fieldName to (content.rawData ?: content.data ?: ""))
     }
-    else -> listOf(fieldName to (content?.rawData ?: ""))
+    else -> listOf(fieldName to (content?.data ?: ""))
 }
 
 private fun handleExpirationDateContent(
