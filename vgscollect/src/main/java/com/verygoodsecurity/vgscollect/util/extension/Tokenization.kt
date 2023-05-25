@@ -1,5 +1,8 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.DateContent
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.CardNumberContent
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.SSNContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSDateRangeSeparateSerializer
@@ -31,13 +34,18 @@ private fun getData(
     fieldName: String,
     content: FieldContent?
 ): List<Pair<String, String>> = when (content) {
-    is FieldContent.DateContent -> handleDateContent(fieldName, content)
+    is DateContent -> {
+        handleDateContent(fieldName, content)
+    }
+    is CardNumberContent, is SSNContent -> {
+        listOf(fieldName to (content.rawData ?: content.data ?: ""))
+    }
     else -> listOf(fieldName to (content?.data ?: ""))
 }
 
 private fun handleDateContent(
     fieldName: String,
-    content: FieldContent.DateContent
+    content: DateContent
 ): List<Pair<String, String>> {
     val result = mutableListOf<Pair<String, String>>()
     val data = (content.rawData ?: content.data!!)

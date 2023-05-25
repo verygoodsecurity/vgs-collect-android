@@ -117,4 +117,62 @@ class TokenizationKtTest {
         // Assert
         Assert.assertEquals(expected, result)
     }
+
+    @Test
+    fun toTokenizationMap_cardNumber() {
+        // Arrange
+        val fieldContent = FieldContent.CardNumberContent().apply {
+            this.isEnabledTokenization = false
+            this.vaultAliasFormat = VGSVaultAliasFormat.NUM_LENGTH_PRESERVING
+            this.vaultStorage = VGSVaultStorageType.VOLATILE
+            this.data = "4111 1111 1111 1111"
+            this.rawData = "4111111111111111"
+        }
+        val fieldName = "test"
+        val expected = listOf(
+            mapOf<String, Any>(
+                "is_required_tokenization" to fieldContent.isEnabledTokenization,
+                "value" to (fieldContent.rawData ?: ""),
+                "format" to fieldContent.vaultAliasFormat.name,
+                "storage" to fieldContent.vaultStorage.name,
+                "fieldName" to fieldName,
+            )
+        )
+        val fieldState = VGSFieldState(
+            content = fieldContent, fieldName = fieldName
+        )
+        // Act
+        val result = fieldState.toTokenizationData()
+        // Assert
+        Assert.assertEquals(expected, result)
+    }
+
+    @Test
+    fun toTokenizationMap_ssn() {
+        // Arrange
+        val fieldContent = FieldContent.SSNContent().apply {
+            this.isEnabledTokenization = false
+            this.vaultAliasFormat = VGSVaultAliasFormat.NUM_LENGTH_PRESERVING
+            this.vaultStorage = VGSVaultStorageType.VOLATILE
+            this.data = "55 555"
+            this.rawData = "55555"
+        }
+        val fieldName = "test"
+        val expected = listOf(
+            mapOf<String, Any>(
+                "is_required_tokenization" to fieldContent.isEnabledTokenization,
+                "value" to (fieldContent.rawData ?: ""),
+                "format" to fieldContent.vaultAliasFormat.name,
+                "storage" to fieldContent.vaultStorage.name,
+                "fieldName" to fieldName,
+            )
+        )
+        val fieldState = VGSFieldState(
+            content = fieldContent, fieldName = fieldName
+        )
+        // Act
+        val result = fieldState.toTokenizationData()
+        // Assert
+        Assert.assertEquals(expected, result)
+    }
 }
