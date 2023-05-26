@@ -17,7 +17,7 @@ dependencyResolutionManagement {
             library('androidx-appcompat', 'androidx.appcompat:appcompat:1.6.1')
             library('androidx-core-ktx', 'androidx.core:core-ktx:1.10.1')
             library('material', 'com.google.android.material:material:1.9.0')
-            library('okhttp', 'com.squareup.okhttp3:okhttp:4.10.0')
+            library('okhttp', 'com.squareup.okhttp3:okhttp:4.11.0')
             library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.8.10')
             library('cardio', 'io.card:android-sdk:5.5.1')
         }
@@ -30,13 +30,13 @@ dependencyResolutionManagement {
             library('espresso-idling-resource', 'androidx.test.espresso:espresso-idling-resource:3.5.1')
         }
         debugLibs {
-            library('leakcanary', 'com.squareup.leakcanary:leakcanary-android:2.10')
+            library('leakcanary', 'com.squareup.leakcanary:leakcanary-android:2.11')
         }
         testLibs {
             library('junit', 'junit:junit:4.13.2')
             library('mockito-core', 'org.mockito:mockito-core:5.3.1')
             library('mockito-inline', 'org.mockito:mockito-inline:5.2.0')
-            library('robolectric', 'org.robolectric:robolectric:4.10.2')
+            library('robolectric', 'org.robolectric:robolectric:4.10.3')
             library('mockk', 'io.mockk:mockk:1.12.4')
             library('json', 'org.json:json:20230227')
             library('jsonassert', 'org.skyscreamer:jsonassert:1.5.1')
