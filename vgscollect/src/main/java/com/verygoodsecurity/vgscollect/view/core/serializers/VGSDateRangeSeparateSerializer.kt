@@ -6,17 +6,19 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * Represents [com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText] date split serializer.
- * Note: [com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText] fieldName will be ignored.
+ * Represents [com.verygoodsecurity.vgscollect.widget.RangeDateEditText] date split serializer.
+ * Note: [com.verygoodsecurity.vgscollect.widget.RangeDateEditText] fieldName will be ignored.
  *
  * @constructor primary constructor.
+ * @param dayFieldName - this field name will be used for day in request json.
  * @param monthFieldName - this field name will be used for month in request json.
  * @param yearFieldName - this field name will be used for year in request json.
  */
-class VGSExpDateSeparateSerializer constructor(
+class VGSDateRangeSeparateSerializer constructor(
+    private val dayFieldName: String,
     private val monthFieldName: String,
-    private val yearFieldName: String,
-) : FieldDataSerializer<VGSExpDateSeparateSerializer.Params, List<Pair<String, String>>>() {
+    private val yearFieldName: String
+) : FieldDataSerializer<VGSDateRangeSeparateSerializer.Params, List<Pair<String, String>>>() {
 
     override fun serialize(params: Params): List<Pair<String, String>> {
         return try {
@@ -29,6 +31,7 @@ class VGSExpDateSeparateSerializer constructor(
                 return emptyList()
             }
             listOf(
+                dayFieldName to getDayFormat(params.dateFormat).format(date),
                 monthFieldName to getMonthFormat(params.dateFormat).format(date),
                 yearFieldName to getYearFormat(params.dateFormat).format(date)
             )

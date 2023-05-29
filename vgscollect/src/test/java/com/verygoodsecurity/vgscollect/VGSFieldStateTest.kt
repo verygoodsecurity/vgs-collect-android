@@ -22,7 +22,15 @@ class VGSFieldStateTest {
         val ce = VGSFieldState(type = FieldType.CARD_EXPIRATION_DATE)
 
         val ce1 = ce.mapToFieldState()
-        assertTrue(ce1 is FieldState.CardExpirationDateState)
+        assertTrue(ce1 is FieldState.DateState)
+    }
+
+    @Test
+    fun map_VGSFieldStateTo_DateRange() {
+        val ce = VGSFieldState(type = FieldType.DATE_RANGE)
+
+        val ce1 = ce.mapToFieldState()
+        assertTrue(ce1 is FieldState.DateState)
     }
 
     @Test
@@ -148,7 +156,7 @@ class VGSFieldStateTest {
         val fieldDateOutPutFormat: SimpleDateFormat =
             SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
-        val content = FieldContent.CreditCardExpDateContent()
+        val content = FieldContent.DateContent()
         content.data = date
 
 
@@ -165,7 +173,7 @@ class VGSFieldStateTest {
         val fieldDateFormat = SimpleDateFormat("dd-MM-yy", Locale.US)
         val fieldDateOutPutFormat = SimpleDateFormat("MM/yyyy", Locale.US)
 
-        val content = FieldContent.CreditCardExpDateContent()
+        val content = FieldContent.DateContent()
         content.data = date
 
 
@@ -245,4 +253,26 @@ class VGSFieldStateTest {
         assertTrue(newState.fieldName == oldState.fieldName)
     }
 
+    @Test
+    fun test_map_to_field_state_date_range() {
+        val content = FieldContent.InfoContent()
+        content.data = "12/01/1990"
+        val oldState = VGSFieldState(
+            isFocusable = true,
+            isRequired = true,
+            isValid = true,
+            type = FieldType.DATE_RANGE,
+            content = content,
+            fieldName = "date_range"
+        )
+
+        val newState = oldState.mapToFieldState()
+
+        assertTrue(newState.hasFocus == oldState.isFocusable)
+        assertTrue(newState.isRequired == oldState.isRequired)
+        assertTrue(newState.isEmpty == oldState.content?.data.isNullOrEmpty())
+        assertTrue(newState.contentLength == oldState.content?.data?.length)
+        assertTrue(newState.isValid == oldState.isValid)
+        assertTrue(newState.fieldName == oldState.fieldName)
+    }
 }

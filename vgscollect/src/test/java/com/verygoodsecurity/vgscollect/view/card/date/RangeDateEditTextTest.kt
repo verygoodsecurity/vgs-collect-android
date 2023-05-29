@@ -6,6 +6,7 @@ import android.text.InputType
 import android.view.View
 import com.verygoodsecurity.vgscollect.TestApplication
 import com.verygoodsecurity.vgscollect.any
+import com.verygoodsecurity.vgscollect.core.model.VGSDate
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
@@ -15,10 +16,9 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.core.DateInputField
-import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.RangeDateEditText
+import org.junit.*
 import org.junit.Assert.*
-import org.junit.Before
-import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.*
 import org.robolectric.Robolectric
@@ -28,19 +28,19 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = TestApplication::class)
-class ExpirationDateEditTextTest {
+class RangeDateEditTextTest {
 
     private lateinit var activityController: ActivityController<Activity>
     private lateinit var activity: Activity
 
-    private lateinit var view: ExpirationDateEditText
+    private lateinit var view: RangeDateEditText
 
     @Before
     fun setUp() {
         activityController = Robolectric.buildActivity(Activity::class.java)
         activity = activityController.get()
 
-        view = ExpirationDateEditText(activity)
+        view = RangeDateEditText(activity)
     }
 
     @Test
@@ -69,16 +69,43 @@ class ExpirationDateEditTextTest {
     @Test
     fun test_field_type() {
         val type = view.getFieldType()
-        assertEquals(FieldType.CARD_EXPIRATION_DATE, type)
+        assertEquals(FieldType.DATE_RANGE, type)
     }
 
     @Test
-    fun test_dd_MM_yy() {
-        view.setDateRegex("dd/MM/yy")
-        assertEquals("dd/MM/yy", view.getDateRegex())
+    fun test_MM_dd_yyyy() {
+        view.setDateRegex("MM/dd/yyyy")
+        assertEquals("MM/dd/yyyy", view.getDateRegex())
 
-        view.setDateRegex("dd MMMM yyyy")
-        assertEquals("dd MMMM yyyy", view.getDateRegex())
+        view.setDateRegex("MM dd yyyy")
+        assertEquals("MM/dd/yyyy", view.getDateRegex())
+
+        view.setDateRegex("MM-dd-yyyy")
+        assertEquals("MM/dd/yyyy", view.getDateRegex())
+    }
+
+    @Test
+    fun test_dd_MM_yyyy() {
+        view.setDateRegex("dd/MM/yyyy")
+        assertEquals("dd/MM/yyyy", view.getDateRegex())
+
+        view.setDateRegex("dd MM yyyy")
+        assertEquals("dd/MM/yyyy", view.getDateRegex())
+
+        view.setDateRegex("dd-MM-yyyy")
+        assertEquals("dd/MM/yyyy", view.getDateRegex())
+    }
+
+    @Test
+    fun test_yyyy_MM_dd() {
+        view.setDateRegex("yyyy/MM/dd")
+        assertEquals("yyyy/MM/dd", view.getDateRegex())
+
+        view.setDateRegex("yyyy MM dd")
+        assertEquals("yyyy/MM/dd", view.getDateRegex())
+
+        view.setDateRegex("yyyy-MM-dd")
+        assertEquals("yyyy/MM/dd", view.getDateRegex())
     }
 
     @Test
@@ -97,21 +124,8 @@ class ExpirationDateEditTextTest {
     }
 
     @Test
-    fun test_input_picker_mode_failure() {
-        val defaultPattern = "MM/yyyy"
-
-        view.setDateRegex("HH:mm dd/yy")
-        assertEquals("HH:mm dd/yy", view.getDateRegex())
-
-        view.setDatePickerMode(DatePickerMode.INPUT)
-        assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
-
-        assertEquals(defaultPattern, view.getDateRegex())
-    }
-
-    @Test
     fun test_input_picker_mode_failure2() {
-        val defaultPattern = "MM/yyyy"
+        val defaultPattern = "MM/dd/yyyy"
 
         view.setDatePickerMode(DatePickerMode.INPUT)
         assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
@@ -143,17 +157,14 @@ class ExpirationDateEditTextTest {
         view.setDatePickerMode(DatePickerMode.INPUT)
         assertEquals(DatePickerMode.INPUT, view.getDatePickerMode())
 
-        view.setDateRegex("dd/MM/yy")
-        assertEquals("dd/MM/yy", view.getDateRegex())
+        view.setDateRegex("MM/dd/yyyy")
+        assertEquals("MM/dd/yyyy", view.getDateRegex())
 
         view.setDateRegex("dd/MM/yyyy")
         assertEquals("dd/MM/yyyy", view.getDateRegex())
 
-        view.setDateRegex("MM/yy")
-        assertEquals("MM/yy", view.getDateRegex())
-
-        view.setDateRegex("MM/yy")
-        assertEquals("MM/yy", view.getDateRegex())
+        view.setDateRegex("yyyy/MM/dd")
+        assertEquals("yyyy/MM/dd", view.getDateRegex())
     }
 
     @Test
@@ -161,8 +172,8 @@ class ExpirationDateEditTextTest {
         view.setDatePickerMode(DatePickerMode.CALENDAR)
         assertEquals(DatePickerMode.CALENDAR, view.getDatePickerMode())
 
-        view.setDateRegex("HH:mm dd/MMMM/yy")
-        assertEquals("HH:mm dd/MMMM/yy", view.getDateRegex())
+        view.setDateRegex("dd/MM/yyyy")
+        assertEquals("dd/MM/yyyy", view.getDateRegex())
     }
 
     @Test
@@ -170,8 +181,8 @@ class ExpirationDateEditTextTest {
         view.setDatePickerMode(DatePickerMode.SPINNER)
         assertEquals(DatePickerMode.SPINNER, view.getDatePickerMode())
 
-        view.setDateRegex("HH:mm dd/MMMM/yy")
-        assertEquals("HH:mm dd/MMMM/yy", view.getDateRegex())
+        view.setDateRegex("dd/MM/yyyy")
+        assertEquals("dd/MM/yyyy", view.getDateRegex())
     }
 
     @Test
@@ -281,7 +292,8 @@ class ExpirationDateEditTextTest {
 
     @Test
     fun test_state_valid() {
-        val text = "12/2023"
+        val text = "12/03/2023"
+
         val stateResult = FieldState.DateState()
         stateResult.hasFocus = false
         stateResult.isEmpty = false
@@ -289,7 +301,7 @@ class ExpirationDateEditTextTest {
         stateResult.isRequired = true
         stateResult.contentLength = text.length
         stateResult.fieldName = "date"
-        stateResult.fieldType = FieldType.CARD_EXPIRATION_DATE
+        stateResult.fieldType = FieldType.DATE_RANGE
 
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
@@ -299,7 +311,6 @@ class ExpirationDateEditTextTest {
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
-
 
         val state = view.getState()
         assertNotNull(state)
@@ -313,8 +324,9 @@ class ExpirationDateEditTextTest {
     }
 
     @Test
-    fun test_state_invalid() {
-        val text = "12/9999"
+    fun test_state_invalid_min_date() {
+        val text = "01/02/2010"
+
         val stateResult = FieldState.DateState()
         stateResult.hasFocus = false
         stateResult.isEmpty = false
@@ -322,17 +334,51 @@ class ExpirationDateEditTextTest {
         stateResult.isRequired = true
         stateResult.contentLength = text.length
         stateResult.fieldName = "date"
-        stateResult.fieldType = FieldType.CARD_EXPIRATION_DATE
+        stateResult.fieldType = FieldType.DATE_RANGE
 
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
+        view.setMinDate(VGSDate.create(2, 2, 2010)!!)
         view.setText(text)
         view.setFieldName("date")
 
         (child as BaseInputField).prepareFieldTypeConnection()
         child.applyInternalFieldStateChangeListener()
 
+        val state = view.getState()
+        assertNotNull(state)
+        assertEquals(stateResult.hasFocus, state!!.hasFocus)
+        assertEquals(stateResult.isEmpty, state.isEmpty)
+        assertEquals(stateResult.isValid, state.isValid)
+        assertEquals(stateResult.isRequired, state.isRequired)
+        assertEquals(stateResult.contentLength, state.contentLength)
+        assertEquals(stateResult.fieldName, state.fieldName)
+        assertEquals(stateResult.fieldType, state.fieldType)
+    }
+
+    @Test
+    fun test_state_invalid_max_date() {
+        val text = "02/03/2010"
+
+        val stateResult = FieldState.DateState()
+        stateResult.hasFocus = false
+        stateResult.isEmpty = false
+        stateResult.isValid = false
+        stateResult.isRequired = true
+        stateResult.contentLength = text.length
+        stateResult.fieldName = "date"
+        stateResult.fieldType = FieldType.DATE_RANGE
+
+        val child = view.statePreparer.getView()
+        assertTrue(child is BaseInputField)
+
+        view.setMaxDate(VGSDate.create(2, 2, 2010)!!)
+        view.setText(text)
+        view.setFieldName("date")
+
+        (child as BaseInputField).prepareFieldTypeConnection()
+        child.applyInternalFieldStateChangeListener()
 
         val state = view.getState()
         assertNotNull(state)
@@ -398,5 +444,4 @@ class ExpirationDateEditTextTest {
         assertEquals(child.vaultAliasFormat, VGSVaultAliasFormat.UUID)
         assertEquals(child.vaultStorage, VGSVaultStorageType.PERSISTENT)
     }
-
 }

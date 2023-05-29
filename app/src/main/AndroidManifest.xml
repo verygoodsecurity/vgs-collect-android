@@ -39,6 +39,10 @@
             android:label="Collect (Activity)" />
 
         <activity
+            android:name=".date_range_activity.DateRangeActivity"
+            android:label="Date Range" />
+
+        <activity
             android:name=".tokenization.TokenizationActivity"
             android:label="Tokenization" />
 
