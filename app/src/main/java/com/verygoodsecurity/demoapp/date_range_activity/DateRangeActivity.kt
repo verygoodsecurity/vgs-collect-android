@@ -12,19 +12,16 @@ import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
 import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_PATH
 import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
-import com.verygoodsecurity.demoapp.collect_activity.CollectActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityDateRangeBinding
 import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
-import com.verygoodsecurity.vgscollect.core.model.VGSDate
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSDateRangeSeparateSerializer
-import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 import io.github.kbiakov.codeview.adapters.Options
 import io.github.kbiakov.codeview.highlight.ColorThemeData
 import io.github.kbiakov.codeview.highlight.SyntaxColors
@@ -139,7 +136,7 @@ class DateRangeActivity : AppCompatActivity(), VgsCollectResponseListener, OnFie
         )
         binding.vgsTiedDateRange.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                Log.d(CollectActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")
+                Log.d(DateRangeActivity::class.java.simpleName, "onStateChange: ${state}")
             }
         })
     }
