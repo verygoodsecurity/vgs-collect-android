@@ -6,10 +6,10 @@ dependencyResolutionManagement {
     versionCatalogs {
         gradleLibs {
             library('tools', 'com.android.tools.build:gradle:7.4.2')
-            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21')
+            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.22')
             library('maven', 'com.github.dcendents:android-maven-gradle-plugin:2.1')
             library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.25.2')
-            library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.8.10')
+            library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.8.20')
             library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.0')
         }
         libs {
@@ -18,7 +18,7 @@ dependencyResolutionManagement {
             library('androidx-core-ktx', 'androidx.core:core-ktx:1.10.1')
             library('material', 'com.google.android.material:material:1.9.0')
             library('okhttp', 'com.squareup.okhttp3:okhttp:4.11.0')
-            library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.8.10')
+            library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.8.20')
             library('cardio', 'io.card:android-sdk:5.5.1')
         }
         demoLibs {
