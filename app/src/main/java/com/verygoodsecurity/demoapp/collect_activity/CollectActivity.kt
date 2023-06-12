@@ -163,13 +163,12 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
     }
 
     private fun initCardView() {
-        cardBinding.groupAddress.visibility = View.VISIBLE
         setupCardHolderNameView()
         setupCardNumberView()
         setupExpiryView()
         setupCvcView()
-        setupCvcView()
         setupPostalCodeView()
+        setupSsnView()
         bindViewsToCollect()
     }
 
@@ -277,12 +276,17 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
 
     // Configure postal code input field behaviour
     private fun setupPostalCodeView() {
+        cardBinding.groupAddress.visibility = View.VISIBLE
         // Specify postal code validation rule and error messages
         cardBinding.vgsTiedPostalCode.setRule(
             VGSInfoRule.ValidationBuilder()
                 .setRegex("^[0-9]{5}(?:-[0-9]{4})?\$", "Invalid postal code.")
                 .build()
         )
+    }
+
+    private fun setupSsnView() {
+        cardBinding.groupSsn.visibility = View.VISIBLE
     }
 
     // Bind all view to VGSCollect, otherwise input data not be sent to proxy
@@ -293,6 +297,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         collect.bindView(cardBinding.vgsTiedCvc)
         collect.bindView(cardBinding.vgsTiedCity)
         collect.bindView(cardBinding.vgsTiedPostalCode)
+        collect.bindView(cardBinding.vgsTiedSsn)
     }
 
     private fun handleFileClickedManageButtonClicked() {
