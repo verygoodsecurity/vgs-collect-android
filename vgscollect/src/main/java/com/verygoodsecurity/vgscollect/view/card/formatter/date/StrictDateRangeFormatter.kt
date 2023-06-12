@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card.formatter.date
 import android.text.Editable
 import android.widget.EditText
 import com.verygoodsecurity.vgscollect.util.extension.digits
+import com.verygoodsecurity.vgscollect.util.extension.replaceIgnoreFilters
 import com.verygoodsecurity.vgscollect.view.date.*
 import com.verygoodsecurity.vgscollect.view.date.DateRangeFormat
 import java.util.regex.Pattern
@@ -102,7 +103,7 @@ internal class StrictDateRangeFormatter(
         if (mode == DatePickerMode.INPUT) {
             s?.apply {
                 if (s.toString() != runtimeData) {
-                    replace(0, s.length, runtimeData)
+                    replaceIgnoreFilters(0, s.length, runtimeData)
                 }
             }
         }

@@ -290,7 +290,7 @@
             app:enableValidation="false"
             app:fieldName="address.ssn"
             app:imeOptions="actionDone"
-            app:numberDivider=" "
+            app:numberDivider="-"
             app:text="111111111" />
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -298,6 +298,6 @@
         android:id="@+id/groupSsn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         app:constraint_referenced_ids="mtvSsnHint,vgsTilSsn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
