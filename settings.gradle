@@ -9,7 +9,7 @@ dependencyResolutionManagement {
             library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21')
             library('maven', 'com.github.dcendents:android-maven-gradle-plugin:2.1')
             library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.25.2')
-            library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.8.10')
+            library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.8.20')
             library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.0')
         }
         libs {
