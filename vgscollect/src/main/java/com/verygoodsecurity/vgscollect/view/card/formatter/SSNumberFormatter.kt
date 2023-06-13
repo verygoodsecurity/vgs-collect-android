@@ -4,6 +4,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.util.extension.formatToMask
+import com.verygoodsecurity.vgscollect.util.extension.replaceIgnoreFilters
 
 class SSNumberFormatter : TextWatcher, Formatter {
 
@@ -18,7 +19,7 @@ class SSNumberFormatter : TextWatcher, Formatter {
     override fun afterTextChanged(s: Editable?) {
         s?.apply {
             if (s.toString() != runtimeData) {
-                replace(0, s.length, runtimeData)
+                replaceIgnoreFilters(0, s.length, runtimeData)
             }
         }
     }
