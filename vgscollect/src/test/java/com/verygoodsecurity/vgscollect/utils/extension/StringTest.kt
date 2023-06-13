@@ -7,6 +7,7 @@ import com.verygoodsecurity.vgscollect.core.api.toHttps
 import com.verygoodsecurity.vgscollect.util.extension.applyLimitOnMask
 import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
+import com.verygoodsecurity.vgscollect.util.extension.digits
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -104,6 +105,13 @@ class StringTest {
             assertEquals(this, this.applyLimitOnMask(-10))
             assertEquals(this, this.applyLimitOnMask(this.length))
             assertEquals(this, this.applyLimitOnMask(77))
+        }
+    }
+
+    @Test
+    fun test_digits() {
+        "a23frt4FTG".run {
+            assertEquals("234", this.digits)
         }
     }
 }

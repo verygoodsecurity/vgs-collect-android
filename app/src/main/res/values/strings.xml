@@ -26,6 +26,9 @@
     <string name="start_collect_with_view_pager_title">Collect (ViewPager)</string>
     <string name="start_collect_with_view_pager_description">Example of collecting data using ViewPager.</string>
 
+    <string name="start_date_range_pager_title">Date Range (Activity)</string>
+    <string name="start_date_range_pager_description">Example of collecting date range using Activity.</string>
+
     <string name="start_payopt">Payopt</string>
     <string name="start_payopt_description">Collecting data with payment optimization example.</string>
 

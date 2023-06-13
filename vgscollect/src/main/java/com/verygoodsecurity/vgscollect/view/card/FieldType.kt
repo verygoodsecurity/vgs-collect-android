@@ -26,6 +26,9 @@ enum class FieldType(
      */
     CVC("cvc"),
 
+    /** The input field provides date limitations with format DD_MM_YYYY, MM_DD_YYYY and YYYY_MM_DD */
+    DATE_RANGE("dateRange"),
+
     /** The input field provides date limitations with format MM/yy . */
     CARD_EXPIRATION_DATE("expDate"),
 
@@ -46,6 +49,7 @@ internal fun FieldType.getAnalyticName(): String {
     return when (this) {
         FieldType.CARD_NUMBER -> "card-number"
         FieldType.CVC -> "card-security-code"
+        FieldType.DATE_RANGE -> "date-range"
         FieldType.CARD_EXPIRATION_DATE -> "card-expiration-date"
         FieldType.CARD_HOLDER_NAME -> "card-holder-name"
         FieldType.SSN -> "ssn"

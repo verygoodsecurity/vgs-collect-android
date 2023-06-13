@@ -8,6 +8,10 @@ class CompositeValidator {
         validators.add(validator)
     }
 
+    fun removeRule(validator: VGSValidator) {
+        validators.remove(validator)
+    }
+
     fun clearRules() {
         validators.clear()
     }
