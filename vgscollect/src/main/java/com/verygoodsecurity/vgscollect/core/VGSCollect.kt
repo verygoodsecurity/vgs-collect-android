@@ -358,7 +358,13 @@ class VGSCollect {
         }
     }
 
-    private fun collectUserData(
+    /**
+     * Send data to tokenization service
+     *
+     * @param request data class with attributes for submit
+     * @param submitRequest closure which will be called when the data is ready to be sent to a tokenization service
+     */
+    fun collectUserData(
         request: VGSBaseRequest,
         submitRequest: (Map<String, Any>) -> Unit
     ) {
