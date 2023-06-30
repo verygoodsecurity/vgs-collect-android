@@ -30,7 +30,7 @@ dependencyResolutionManagement {
             library('espresso-idling-resource', 'androidx.test.espresso:espresso-idling-resource:3.5.1')
         }
         debugLibs {
-            library('leakcanary', 'com.squareup.leakcanary:leakcanary-android:2.11')
+            library('leakcanary', 'com.squareup.leakcanary:leakcanary-android:2.12')
         }
         testLibs {
             library('junit', 'junit:junit:4.13.2')
