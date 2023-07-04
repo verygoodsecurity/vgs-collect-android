@@ -83,6 +83,9 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                     VGSVaultStorageType.PERSISTENT.ordinal
                 )
 
+                val importantForAccessibility = getInteger(R.styleable.VGSCardNumberEditText_importantForAccessibility, 0)
+                val contentDescription = getString(R.styleable.VGSCardNumberEditText_contentDescription)
+
                 setFieldName(fieldName)
                 setHint(hint)
                 setTextColor(textColor)
@@ -115,6 +118,9 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                 if (!isValidationPredefined()) {
                     predefineValidationRule(validationRule)
                 }
+
+                setImportantForAccessibility(importantForAccessibility)
+                setContentDescription(contentDescription)
             } finally {
                 recycle()
             }

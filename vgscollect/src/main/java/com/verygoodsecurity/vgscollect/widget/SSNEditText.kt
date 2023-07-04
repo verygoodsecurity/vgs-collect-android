@@ -53,6 +53,9 @@ class SSNEditText @JvmOverloads constructor(
                 val storageType = getInt(R.styleable.SSNEditText_storageType, VGSVaultStorageType.PERSISTENT.ordinal)
                 val enableTokenization = getBoolean(R.styleable.SSNEditText_enableTokenization, true)
 
+                val importantForAccessibility = getInteger(R.styleable.SSNEditText_importantForAccessibility, 0)
+                val contentDescription = getString(R.styleable.SSNEditText_contentDescription)
+
                 setFieldName(fieldName)
                 setHint(hint)
                 setTextColor(textColor)
@@ -78,6 +81,10 @@ class SSNEditText @JvmOverloads constructor(
                 setEnabledTokenization(enableTokenization)
                 setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
                 setVaultStorageType(VGSVaultStorageType.values()[storageType])
+
+                setImportantForAccessibility(importantForAccessibility)
+                setContentDescription(contentDescription)
+
             } finally {
                 recycle()
             }

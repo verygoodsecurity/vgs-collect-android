@@ -43,8 +43,10 @@
             style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:contentDescription="Card holder name"
             app:fieldName="card.name"
             app:imeOptions="actionNext"
+            app:importantForAccessibility="yes"
             app:text="John Doe" />
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 

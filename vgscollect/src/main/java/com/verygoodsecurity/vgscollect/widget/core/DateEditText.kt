@@ -74,6 +74,9 @@ abstract class DateEditText @JvmOverloads internal constructor(
                 val enableTokenization =
                     getBoolean(R.styleable.DateEditText_enableTokenization, true)
 
+                val importantForAccessibility = getInteger(R.styleable.DateEditText_importantForAccessibility, 0)
+                val contentDescription = getString(R.styleable.DateEditText_contentDescription)
+
                 setFieldName(fieldName)
                 setHint(hint)
                 setTextColor(textColor)
@@ -101,6 +104,9 @@ abstract class DateEditText @JvmOverloads internal constructor(
                 setEnabledTokenization(enableTokenization)
                 setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
                 setVaultStorageType(VGSVaultStorageType.values()[storageType])
+
+                setImportantForAccessibility(importantForAccessibility)
+                setContentDescription(contentDescription)
             } finally {
                 recycle()
             }

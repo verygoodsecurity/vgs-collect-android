@@ -67,6 +67,8 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
                     R.styleable.CardVerificationCodeEditText_aliasFormat,
                     VGSVaultAliasFormat.NUM_LENGTH_PRESERVING.ordinal
                 )
+                val importantForAccessibility = getInteger(R.styleable.CardVerificationCodeEditText_importantForAccessibility, 0)
+                val contentDescription = getString(R.styleable.CardVerificationCodeEditText_contentDescription)
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -93,6 +95,9 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
 
                 setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
                 applyStorageType(VGSVaultStorageType.VOLATILE)
+
+                setImportantForAccessibility(importantForAccessibility)
+                setContentDescription(contentDescription)
             } finally {
                 recycle()
             }

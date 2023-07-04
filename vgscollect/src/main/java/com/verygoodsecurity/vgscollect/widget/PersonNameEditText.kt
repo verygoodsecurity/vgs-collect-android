@@ -54,6 +54,8 @@ class PersonNameEditText @JvmOverloads constructor(
                 val aliasFormat = getInt(R.styleable.PersonNameEditText_aliasFormat, VGSVaultAliasFormat.UUID.ordinal)
                 val storageType = getInt(R.styleable.PersonNameEditText_storageType, VGSVaultStorageType.PERSISTENT.ordinal)
                 val enableTokenization = getBoolean(R.styleable.PersonNameEditText_enableTokenization, true)
+                val importantForAccessibility = getInteger(R.styleable.PersonNameEditText_importantForAccessibility, 0)
+                val contentDescription = getString(R.styleable.PersonNameEditText_contentDescription)
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -77,6 +79,10 @@ class PersonNameEditText @JvmOverloads constructor(
                 setEnabledTokenization(enableTokenization)
                 setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
                 setVaultStorageType(VGSVaultStorageType.values()[storageType])
+
+                setImportantForAccessibility(importantForAccessibility)
+                setContentDescription(contentDescription)
+
             } finally {
                 recycle()
             }
@@ -147,5 +153,4 @@ class PersonNameEditText @JvmOverloads constructor(
     fun setEnabledTokenization(isEnabled: Boolean) {
         enableTokenization(isEnabled)
     }
-
 }

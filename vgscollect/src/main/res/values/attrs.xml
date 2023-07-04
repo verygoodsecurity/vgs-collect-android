@@ -57,6 +57,21 @@
     <!-- Text to display. -->
     <attr name="text" format="string"  localization="suggested"/>
 
+    <!-- Description of the purpose of the field. This is used for TalkBack and accessibility. -->
+    <attr name="contentDescription" format="string" localization="suggested"/>
+
+    <!-- Describes whether or not this view is important for accessibility. -->
+    <attr name="importantForAccessibility" format="integer">
+        <!-- The system determines whether the view is important for accessibility - default (recommended). -->
+        <enum name="auto" value="0" />
+        <!-- The view is important for accessibility. -->
+        <enum name="yes" value="1" />
+        <!-- The view is not important for accessibility. -->
+        <enum name="no" value="2" />
+        <!-- The view is not important for accessibility, nor are any of its descendant views. -->
+        <enum name="noHideDescendants" value="4" />
+    </attr>
+
     <attr name="maxLines" format="integer"/>
     <attr name="minLines" format="integer"/>
 
@@ -379,6 +394,8 @@
         <attr name="inputType"/>
 
         <attr name="text"/>
+        <attr name="importantForAccessibility"/>
+        <attr name="contentDescription"/>
         <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />
@@ -409,6 +426,8 @@
         <attr name="inputType"/>
 
         <attr name="text"/>
+        <attr name="importantForAccessibility"/>
+        <attr name="contentDescription"/>
         <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />
@@ -439,6 +458,8 @@
         <attr name="inputType"/>
 
         <attr name="text"/>
+        <attr name="importantForAccessibility"/>
+        <attr name="contentDescription"/>
         <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />
@@ -501,6 +522,8 @@
         <attr name="inputType"/>
 
         <attr name="text"/>
+        <attr name="importantForAccessibility"/>
+        <attr name="contentDescription"/>
         <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />
@@ -559,6 +582,8 @@
         <attr name="textSize" />
         <attr name="textColor" />
         <attr name="text" />
+        <attr name="importantForAccessibility"/>
+        <attr name="contentDescription"/>
         <attr name="textStyle" />
         <attr name="cursorVisible" />
         <attr name="enabled" />
@@ -632,6 +657,8 @@
         <attr name="inputType"/>
 
         <attr name="text"/>
+        <attr name="importantForAccessibility"/>
+        <attr name="contentDescription"/>
         <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />

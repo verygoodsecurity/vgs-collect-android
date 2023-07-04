@@ -740,6 +740,35 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
+     * Describes how to determinate if this input field is important for accessibility.
+     *
+     * @param mode How to determine whether this input field is important for accessibility.
+     *
+     * @attr ref android.R.styleable#View_importantForAccessibility
+     *
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_YES
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+     */
+    override fun setImportantForAccessibility(mode: Int) {
+        inputField.importantForAccessibility = mode
+        super.setImportantForAccessibility(mode)
+    }
+
+    /**
+     * Set the description of the purpose of the field. This is used for TalkBack and accessibility.
+     *
+     * @param contentDescription Content description.
+     * @see View.getContentDescription()
+     * @attr ref android.R.styleable#View_contentDescription
+     */
+    override fun setContentDescription(contentDescription: CharSequence?) {
+        inputField.contentDescription = contentDescription
+        super.setContentDescription(contentDescription)
+    }
+
+    /**
      * Gets the current field type of the InputFieldView.
      *
      * @return FieldType
