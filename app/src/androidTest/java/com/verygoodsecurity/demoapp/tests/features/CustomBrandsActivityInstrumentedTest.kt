@@ -47,7 +47,7 @@ class CustomBrandsActivityInstrumentedTest {
         CardBrand(
             "^41111",
             "newVisa-Brand",
-            R.drawable.ic_card_back_preview_dark,
+            com.verygoodsecurity.vgscollect.R.drawable.ic_card_back_preview_dark,
             params
         )
     }
@@ -62,7 +62,7 @@ class CustomBrandsActivityInstrumentedTest {
         CardBrand(
             "^777",
             "newBrand",
-            R.drawable.ic_card_back_preview_dark_4,
+            com.verygoodsecurity.vgscollect.R.drawable.ic_card_back_preview_dark_4,
             params
         )
     }
