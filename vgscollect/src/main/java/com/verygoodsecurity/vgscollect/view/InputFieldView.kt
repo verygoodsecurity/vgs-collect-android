@@ -758,7 +758,7 @@ abstract class InputFieldView @JvmOverloads constructor(
             inputField.importantForAccessibility = mode
         }
         fieldImportantForAccessibilityMode = mode
-        super.setImportantForAccessibility(mode)
+        super.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO)
     }
 
     /**
