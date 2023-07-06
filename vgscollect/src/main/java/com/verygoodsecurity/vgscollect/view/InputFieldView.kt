@@ -80,8 +80,6 @@ abstract class InputFieldView @JvmOverloads constructor(
                         R.styleable.InputFieldView_imeOptions -> setupImeOptions(this)
                         R.styleable.InputFieldView_enableValidation -> setupEnableValidation(this)
                         R.styleable.InputFieldView_fontFamily -> setupFont(this)
-                        R.styleable.InputFieldView_importantForAccessibility -> setupImportantForAccessibilityMode(this)
-                        R.styleable.InputFieldView_contentDescription -> setupContentDescription(this)
                     }
                 }
 
@@ -122,14 +120,6 @@ abstract class InputFieldView @JvmOverloads constructor(
                 Typeface.create(s, Typeface.NORMAL)
             }
         }
-    }
-
-    private fun setupImportantForAccessibilityMode(typedArray: TypedArray) {
-        fieldImportantForAccessibilityMode = typedArray.getInteger(R.styleable.InputFieldView_importantForAccessibility, 0)
-    }
-
-    private fun setupContentDescription(typedArray: TypedArray) {
-        fieldContentDescription = typedArray.getString(R.styleable.InputFieldView_contentDescription)
     }
 
     /**
@@ -761,10 +751,13 @@ abstract class InputFieldView @JvmOverloads constructor(
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
      *
-     * @attr [R.styleable.InputFieldView_importantForAccessibility]
+     * @attr [R.styleable.InputFieldView_android_importantForAccessibility]
      */
     override fun setImportantForAccessibility(mode: Int) {
-        inputField.importantForAccessibility = mode
+        if (::inputField.isInitialized) {
+            inputField.importantForAccessibility = mode
+        }
+        fieldImportantForAccessibilityMode = mode
         super.setImportantForAccessibility(mode)
     }
 
@@ -775,10 +768,13 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @see View.getContentDescription()
      *
-     * @attr [R.styleable.InputFieldView_contentDescription]
+     * @attr [R.styleable.InputFieldView_android_contentDescription]
      */
     override fun setContentDescription(contentDescription: CharSequence?) {
-        inputField.contentDescription = contentDescription
+        if (::inputField.isInitialized) {
+            inputField.contentDescription = contentDescription
+        }
+        fieldContentDescription = contentDescription
         super.setContentDescription(contentDescription)
     }
 

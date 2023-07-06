@@ -43,10 +43,10 @@
             style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentDescription="Card holder name"
+            android:contentDescription="@string/card_holder_name_desc"
+            android:importantForAccessibility="yes"
             app:fieldName="card.name"
             app:imeOptions="actionNext"
-            app:importantForAccessibility="yes"
             app:text="John Doe" />
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
@@ -82,6 +82,7 @@
             style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/card_number_desc"
             app:cardBrandIconGravity="end"
             app:fieldName="card.number"
             app:imeOptions="actionNext"

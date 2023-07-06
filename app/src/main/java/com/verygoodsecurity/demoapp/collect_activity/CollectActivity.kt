@@ -140,7 +140,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
 
         // Setup accessibility example
         binding.includeCardInputView.vgsTiedSsn.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
-        binding.includeCardInputView.vgsTiedSsn.contentDescription = "Social security number"
+        binding.includeCardInputView.vgsTiedSsn.contentDescription = getString(R.string.social_security_number_desc)
     }
 
     private fun initCodeExampleView() {
