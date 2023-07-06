@@ -14,9 +14,7 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
-import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
-import com.verygoodsecurity.vgscollect.view.internal.DateInputField
-import com.verygoodsecurity.vgscollect.view.internal.SSNInputField
+import com.verygoodsecurity.vgscollect.view.internal.core.DateInputField
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 import org.junit.Assert.*
 import org.junit.Before
@@ -284,7 +282,7 @@ class ExpirationDateEditTextTest {
     @Test
     fun test_state_valid() {
         val text = "12/2023"
-        val stateResult = FieldState.CardExpirationDateState()
+        val stateResult = FieldState.DateState()
         stateResult.hasFocus = false
         stateResult.isEmpty = false
         stateResult.isValid = true
@@ -317,7 +315,7 @@ class ExpirationDateEditTextTest {
     @Test
     fun test_state_invalid() {
         val text = "12/9999"
-        val stateResult = FieldState.CardExpirationDateState()
+        val stateResult = FieldState.DateState()
         stateResult.hasFocus = false
         stateResult.isEmpty = false
         stateResult.isValid = false

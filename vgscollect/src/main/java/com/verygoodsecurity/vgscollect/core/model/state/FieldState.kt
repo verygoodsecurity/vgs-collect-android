@@ -132,7 +132,7 @@ sealed class FieldState {
      *
      * @version 1.0.1
      */
-    class CardExpirationDateState : FieldState()
+    class DateState : FieldState()
 
     /**
      * Class definition for a Info field state.

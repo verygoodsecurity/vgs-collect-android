@@ -1,10 +1,11 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
-import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.CreditCardExpDateContent
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.DateContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.CardNumberContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.SSNContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.view.core.serializers.VGSDateRangeSeparateSerializer
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 
 internal const val TOKENIZATION_PATH = "/tokens"
@@ -33,8 +34,8 @@ private fun getData(
     fieldName: String,
     content: FieldContent?
 ): List<Pair<String, String>> = when (content) {
-    is CreditCardExpDateContent -> {
-        handleExpirationDateContent(fieldName, content)
+    is DateContent -> {
+        handleDateContent(fieldName, content)
     }
     is CardNumberContent, is SSNContent -> {
         listOf(fieldName to (content.rawData ?: content.data ?: ""))
@@ -42,9 +43,9 @@ private fun getData(
     else -> listOf(fieldName to (content?.data ?: ""))
 }
 
-private fun handleExpirationDateContent(
+private fun handleDateContent(
     fieldName: String,
-    content: CreditCardExpDateContent
+    content: DateContent
 ): List<Pair<String, String>> {
     val result = mutableListOf<Pair<String, String>>()
     val data = (content.rawData ?: content.data!!)
@@ -52,6 +53,11 @@ private fun handleExpirationDateContent(
         if (it is VGSExpDateSeparateSerializer) {
             result.addAll(
                 it.serialize(VGSExpDateSeparateSerializer.Params(data, content.dateFormat))
+            )
+        }
+        if (it is VGSDateRangeSeparateSerializer) {
+            result.addAll(
+                it.serialize(VGSDateRangeSeparateSerializer.Params(data, content.dateFormat))
             )
         }
     } ?: result.add(fieldName to data)

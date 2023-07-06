@@ -38,7 +38,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             val field = when (parent.getFieldType()) {
                 FieldType.CARD_NUMBER -> CardInputField(context)
                 FieldType.CVC -> CVCInputField(context)
-                FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
+                FieldType.DATE_RANGE -> DateRangeInputField(context)
+                FieldType.CARD_EXPIRATION_DATE -> ExpirationDateInputField(context)
                 FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
                 FieldType.SSN -> SSNInputField(context)
                 FieldType.INFO -> InfoInputField(context)

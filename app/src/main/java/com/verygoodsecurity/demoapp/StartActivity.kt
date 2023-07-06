@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoapp.collect_activity.CollectActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityStartBinding
+import com.verygoodsecurity.demoapp.date_range_activity.DateRangeActivity
 import com.verygoodsecurity.demoapp.fragment_case.VGSCollectFragmentActivity
 import com.verygoodsecurity.demoapp.google_pay.GooglePayActivity
 import com.verygoodsecurity.demoapp.payopt.PaymentOptimizationActivity
@@ -43,6 +44,9 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         }
         binding.llCollectViewPagerFlow.setOnClickListener {
             startActivity(VGSViewPagerActivity::class.java)
+        }
+        binding.llDateRangeViewPagerFlow.setOnClickListener {
+            startActivity(DateRangeActivity::class.java)
         }
     }
 

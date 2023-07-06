@@ -254,4 +254,50 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:constraint_referenced_ids="mtvCityHint, vgsTilCity, mtvPostalCodeHint, vgsTilPostalCode" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtvSsnHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_material_small"
+        android:fontFamily="sans-serif-medium"
+        android:text="SSN"
+        android:textAppearance="?attr/textAppearanceCaption"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vgsTilCity"
+        tools:ignore="HardcodedText" />
+
+    <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+        android:id="@+id/vgsTilSsn"
+        style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_material_micro"
+        app:boxBackgroundColor="@color/fiord_20"
+        app:boxStrokeColor="@color/invisible_input_border"
+        app:hintEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtvSsnHint">
+
+        <com.verygoodsecurity.vgscollect.widget.SSNEditText
+            android:id="@+id/vgsTiedSsn"
+            style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:enableValidation="false"
+            app:fieldName="address.ssn"
+            app:imeOptions="actionDone"
+            app:numberDivider="-"
+            app:text="111111111" />
+    </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupSsn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="mtvSsnHint,vgsTilSsn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

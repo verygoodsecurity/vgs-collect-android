@@ -81,3 +81,9 @@ internal fun String.applyLimitOnMask(limit: Int): String {
         builder.toString().trim()
     }
 }
+
+internal val String.digits: String
+    get() {
+        val digitsRegex = Regex("\\D")
+        return digitsRegex.replace(this, "")
+    }

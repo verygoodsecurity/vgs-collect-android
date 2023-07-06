@@ -86,7 +86,7 @@ class TokenizationKtTest {
         val fieldName = "test"
         val monthFieldName = "month_test"
         val yearFieldName = "year_test"
-        val fieldContent = FieldContent.CreditCardExpDateContent().apply {
+        val fieldContent = FieldContent.DateContent().apply {
             this.isEnabledTokenization = false
             this.vaultAliasFormat = VGSVaultAliasFormat.NUM_LENGTH_PRESERVING
             this.vaultStorage = VGSVaultStorageType.VOLATILE
