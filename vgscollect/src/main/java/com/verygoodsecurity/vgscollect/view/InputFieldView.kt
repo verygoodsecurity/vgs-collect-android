@@ -63,6 +63,8 @@ abstract class InputFieldView @JvmOverloads constructor(
     private var textAppearance: Int = 0
     private var fontFamily: Typeface? = null
     private var enableValidation: Boolean? = null
+    private var fieldImportantForAccessibilityMode: Int = 0
+    private var fieldContentDescription: CharSequence? = null
 
     init {
         context.theme.obtainStyledAttributes(
@@ -78,6 +80,8 @@ abstract class InputFieldView @JvmOverloads constructor(
                         R.styleable.InputFieldView_imeOptions -> setupImeOptions(this)
                         R.styleable.InputFieldView_enableValidation -> setupEnableValidation(this)
                         R.styleable.InputFieldView_fontFamily -> setupFont(this)
+                        R.styleable.InputFieldView_importantForAccessibility -> setupImportantForAccessibilityMode(this)
+                        R.styleable.InputFieldView_contentDescription -> setupContentDescription(this)
                     }
                 }
 
@@ -118,6 +122,14 @@ abstract class InputFieldView @JvmOverloads constructor(
                 Typeface.create(s, Typeface.NORMAL)
             }
         }
+    }
+
+    private fun setupImportantForAccessibilityMode(typedArray: TypedArray) {
+        fieldImportantForAccessibilityMode = typedArray.getInteger(R.styleable.InputFieldView_importantForAccessibility, 0)
+    }
+
+    private fun setupContentDescription(typedArray: TypedArray) {
+        fieldContentDescription = typedArray.getString(R.styleable.InputFieldView_contentDescription)
     }
 
     /**
@@ -744,12 +756,12 @@ abstract class InputFieldView @JvmOverloads constructor(
      *
      * @param mode How to determine whether this input field is important for accessibility.
      *
-     * @attr ref android.R.styleable#View_importantForAccessibility
-     *
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_YES
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+     *
+     * @attr [R.styleable.InputFieldView_importantForAccessibility]
      */
     override fun setImportantForAccessibility(mode: Int) {
         inputField.importantForAccessibility = mode
@@ -760,8 +772,10 @@ abstract class InputFieldView @JvmOverloads constructor(
      * Set the description of the purpose of the field. This is used for TalkBack and accessibility.
      *
      * @param contentDescription Content description.
+     *
      * @see View.getContentDescription()
-     * @attr ref android.R.styleable#View_contentDescription
+     *
+     * @attr [R.styleable.InputFieldView_contentDescription]
      */
     override fun setContentDescription(contentDescription: CharSequence?) {
         inputField.contentDescription = contentDescription
@@ -835,6 +849,10 @@ abstract class InputFieldView @JvmOverloads constructor(
             bgDraw = this
             inputField.background = this
         }
+
+        // Setup accessibility
+        importantForAccessibility = fieldImportantForAccessibilityMode
+        contentDescription = fieldContentDescription
     }
 
     private var bgDraw: Drawable? = null

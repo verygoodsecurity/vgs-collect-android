@@ -386,6 +386,12 @@
 
         <!-- Sets the text color, size, style, hint color, and highlight color from the specified TextAppearance resource.-->
         <attr name="textAppearance" format="reference"/>
+
+        <!-- Describes whether or not this view is important for accessibility. -->
+        <attr name="importantForAccessibility"/>
+
+        <!-- Description of the purpose of the field. This is used for TalkBack and accessibility. -->
+        <attr name="contentDescription"/>
     </declare-styleable>
 
     <declare-styleable name="PersonNameEditText">
@@ -394,8 +400,6 @@
         <attr name="inputType"/>
 
         <attr name="text"/>
-        <attr name="importantForAccessibility"/>
-        <attr name="contentDescription"/>
         <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />
@@ -426,8 +430,6 @@
         <attr name="inputType"/>
 
         <attr name="text"/>
-        <attr name="importantForAccessibility"/>
-        <attr name="contentDescription"/>
         <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />
@@ -458,8 +460,6 @@
         <attr name="inputType"/>
 
         <attr name="text"/>
-        <attr name="importantForAccessibility"/>
-        <attr name="contentDescription"/>
         <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />
@@ -522,8 +522,6 @@
         <attr name="inputType"/>
 
         <attr name="text"/>
-        <attr name="importantForAccessibility"/>
-        <attr name="contentDescription"/>
         <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />
@@ -582,8 +580,6 @@
         <attr name="textSize" />
         <attr name="textColor" />
         <attr name="text" />
-        <attr name="importantForAccessibility"/>
-        <attr name="contentDescription"/>
         <attr name="textStyle" />
         <attr name="cursorVisible" />
         <attr name="enabled" />
@@ -657,8 +653,6 @@
         <attr name="inputType"/>
 
         <attr name="text"/>
-        <attr name="importantForAccessibility"/>
-        <attr name="contentDescription"/>
         <attr name="enabled"/>
         <attr name="textSize"/>
         <attr name="textColor" />

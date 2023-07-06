@@ -6,14 +6,13 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.inputmethod.EditorInfo
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
-import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
 
 class PersonNameEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -54,8 +53,6 @@ class PersonNameEditText @JvmOverloads constructor(
                 val aliasFormat = getInt(R.styleable.PersonNameEditText_aliasFormat, VGSVaultAliasFormat.UUID.ordinal)
                 val storageType = getInt(R.styleable.PersonNameEditText_storageType, VGSVaultStorageType.PERSISTENT.ordinal)
                 val enableTokenization = getBoolean(R.styleable.PersonNameEditText_enableTokenization, true)
-                val importantForAccessibility = getInteger(R.styleable.PersonNameEditText_importantForAccessibility, 0)
-                val contentDescription = getString(R.styleable.PersonNameEditText_contentDescription)
 
                 setFieldName(fieldName)
                 setHint(hint)
@@ -79,9 +76,6 @@ class PersonNameEditText @JvmOverloads constructor(
                 setEnabledTokenization(enableTokenization)
                 setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
                 setVaultStorageType(VGSVaultStorageType.values()[storageType])
-
-                setImportantForAccessibility(importantForAccessibility)
-                setContentDescription(contentDescription)
 
             } finally {
                 recycle()

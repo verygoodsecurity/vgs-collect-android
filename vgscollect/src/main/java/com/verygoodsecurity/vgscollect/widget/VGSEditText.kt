@@ -64,10 +64,6 @@ open class VGSEditText @JvmOverloads constructor(
                 )
                 val enableTokenization =
                     getBoolean(R.styleable.VGSEditText_enableTokenization, true)
-
-                val importantForAccessibility = getInteger(R.styleable.VGSEditText_importantForAccessibility, 0)
-                val contentDescription = getString(R.styleable.VGSEditText_contentDescription)
-
                 setFieldName(fieldName)
                 setHint(hint)
                 setTextColor(textColor)
@@ -91,9 +87,6 @@ open class VGSEditText @JvmOverloads constructor(
                 enableTokenization(enableTokenization)
 
                 setInputType(inputType)
-
-                setImportantForAccessibility(importantForAccessibility)
-                setContentDescription(contentDescription)
             } finally {
                 recycle()
             }
