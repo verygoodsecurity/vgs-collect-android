@@ -63,8 +63,6 @@ abstract class InputFieldView @JvmOverloads constructor(
     private var textAppearance: Int = 0
     private var fontFamily: Typeface? = null
     private var enableValidation: Boolean? = null
-    private var fieldImportantForAccessibilityMode: Int = 0
-    private var fieldContentDescription: CharSequence? = null
 
     init {
         context.theme.obtainStyledAttributes(
@@ -331,7 +329,8 @@ abstract class InputFieldView @JvmOverloads constructor(
                 addView(inputField)
             }
             inputField.setPadding(leftP, topP, rightP, bottomP)
-
+            inputField.contentDescription = this.contentDescription
+            inputField.importantForAccessibility = this.importantForAccessibility
             isAttachPermitted = false
         }
     }
@@ -742,39 +741,46 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Describes how to determinate if this input field is important for accessibility.
+     * Sets how to determine whether this view is important for accessibility
+     * which is if it fires accessibility events and if it is reported to
+     * accessibility services that query the screen.
      *
-     * @param mode How to determine whether this input field is important for accessibility.
+     * @param mode How to determine whether this view is important for accessibility.
+     *
+     * @attr [android.R.attr.importantForAccessibility]
      *
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_YES
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
      * @see View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
-     *
-     * @attr [R.styleable.InputFieldView_android_importantForAccessibility]
      */
     override fun setImportantForAccessibility(mode: Int) {
         if (::inputField.isInitialized) {
-            inputField.importantForAccessibility = mode
+            this.inputField.importantForAccessibility = mode
         }
-        fieldImportantForAccessibilityMode = mode
-        super.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO)
+        super.setImportantForAccessibility(mode)
     }
 
     /**
-     * Set the description of the purpose of the field. This is used for TalkBack and accessibility.
+     * Sets the [View]'s content description.
+     * <p>
+     * A content description briefly describes the view and is primarily used
+     * for accessibility support to determine how a view should be presented to
+     * the user. In the case of a view with no textual representation, such as
+     * [android.widget.ImageButton], a useful content description
+     * explains what the view does. For example, an image button with a phone
+     * icon that is used to place a call may use "Call" as its content
+     * description. An image of a floppy disk that is used to save a file may
+     * use "Save".
      *
-     * @param contentDescription Content description.
-     *
-     * @see View.getContentDescription()
-     *
-     * @attr [R.styleable.InputFieldView_android_contentDescription]
+     * @param contentDescription The content description.
+     * @see getContentDescription
+     * @attr [android.R.attr.contentDescription]
      */
     override fun setContentDescription(contentDescription: CharSequence?) {
         if (::inputField.isInitialized) {
-            inputField.contentDescription = contentDescription
+            this.inputField.contentDescription = contentDescription
         }
-        fieldContentDescription = contentDescription
         super.setContentDescription(contentDescription)
     }
 
@@ -845,10 +851,6 @@ abstract class InputFieldView @JvmOverloads constructor(
             bgDraw = this
             inputField.background = this
         }
-
-        // Setup accessibility
-        importantForAccessibility = fieldImportantForAccessibilityMode
-        contentDescription = fieldContentDescription
     }
 
     private var bgDraw: Drawable? = null
