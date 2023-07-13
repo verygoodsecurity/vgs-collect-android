@@ -146,5 +146,5 @@ class PersonNameEditText @JvmOverloads constructor(
     fun setEnabledTokenization(isEnabled: Boolean) {
         enableTokenization(isEnabled)
     }
-    
+
 }
