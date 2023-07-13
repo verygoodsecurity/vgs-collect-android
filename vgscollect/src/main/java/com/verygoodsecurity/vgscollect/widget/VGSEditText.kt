@@ -64,6 +64,7 @@ open class VGSEditText @JvmOverloads constructor(
                 )
                 val enableTokenization =
                     getBoolean(R.styleable.VGSEditText_enableTokenization, true)
+
                 setFieldName(fieldName)
                 setHint(hint)
                 setTextColor(textColor)

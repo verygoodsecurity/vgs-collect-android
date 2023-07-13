@@ -371,12 +371,6 @@
 
         <!-- Sets the text color, size, style, hint color, and highlight color from the specified TextAppearance resource.-->
         <attr name="textAppearance" format="reference"/>
-
-        <!-- Describes whether or not this view is important for accessibility. -->
-        <attr name="android:importantForAccessibility"/>
-
-        <!-- Description of the purpose of the field. This is used for TalkBack and accessibility. -->
-        <attr name="android:contentDescription"/>
     </declare-styleable>
 
     <declare-styleable name="PersonNameEditText">

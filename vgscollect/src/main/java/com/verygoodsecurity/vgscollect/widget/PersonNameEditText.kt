@@ -76,7 +76,6 @@ class PersonNameEditText @JvmOverloads constructor(
                 setEnabledTokenization(enableTokenization)
                 setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
                 setVaultStorageType(VGSVaultStorageType.values()[storageType])
-
             } finally {
                 recycle()
             }
@@ -147,4 +146,5 @@ class PersonNameEditText @JvmOverloads constructor(
     fun setEnabledTokenization(isEnabled: Boolean) {
         enableTokenization(isEnabled)
     }
+    
 }
