@@ -605,4 +605,10 @@ class PersonNameEditTextTest {
         assertEquals(child.vaultAliasFormat, VGSVaultAliasFormat.UUID)
         assertEquals(child.vaultStorage, VGSVaultStorageType.PERSISTENT)
     }
+
+    @Test
+    fun test_accessibility() {
+        view.contentDescription = "person name"
+        assertEquals(view.contentDescription, "person name")
+    }
 }

@@ -205,4 +205,9 @@ class CardVerificationCodeEditTextTest {
         assertEquals((child as CVCInputField).vaultAliasFormat, VGSVaultAliasFormat.UUID)
     }
 
+    @Test
+    fun test_accessibility() {
+        view.contentDescription = "cvc"
+        assertEquals(view.contentDescription, "cvc")
+    }
 }
