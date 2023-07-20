@@ -399,4 +399,9 @@ class ExpirationDateEditTextTest {
         assertEquals(child.vaultStorage, VGSVaultStorageType.PERSISTENT)
     }
 
+    @Test
+    fun test_accessibility() {
+        view.contentDescription = "expiration date"
+        assertEquals(view.contentDescription, "expiration date")
+    }
 }
