@@ -13,7 +13,6 @@ import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultSto
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
-import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
 
 class PersonNameEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
