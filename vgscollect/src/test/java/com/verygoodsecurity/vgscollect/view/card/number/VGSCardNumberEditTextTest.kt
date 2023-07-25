@@ -1026,4 +1026,9 @@ class VGSCardNumberEditTextTest {
         assertEquals(child.vaultStorage, VGSVaultStorageType.PERSISTENT)
     }
 
+    @Test
+    fun test_accessibility() {
+        view.contentDescription = "card number"
+        assertEquals(view.contentDescription, "card number")
+    }
 }

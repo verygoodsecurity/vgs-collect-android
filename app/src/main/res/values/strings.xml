@@ -62,4 +62,10 @@
     <string name="tokenization_expiry_enabled_key">key_expiry_tokenization_enabled</string>
     <string name="tokenization_expiry_storage_key">key_expiry_tokenization_storage</string>
     <string name="tokenization_expiry_alias_format_key">key_expiry_tokenization_alias_format</string>
+
+    <!-- Accessibility -->
+    <string name="card_holder_name_desc">Card holder name description</string>
+    <string name="card_number_desc">Card number description</string>
+    <string name="social_security_number_desc">Social security number description</string>
+
 </resources>

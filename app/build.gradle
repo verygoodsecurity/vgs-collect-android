@@ -5,7 +5,8 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    namespace 'com.verygoodsecurity.demoapp'
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.verygoodsecurity.demoapp"
@@ -24,6 +25,10 @@ android {
         buildConfigField("String", "ACCESS_TOKEN_URL", "\"${getLocalProperty("VGS_ACCESS_TOKEN_URL")}\"")
         buildConfigField("String", "CREATE_ORDER_URL", "\"${getLocalProperty("VGS_CREATE_ORDER_URL")}\"")
         buildConfigField("String", "PAYMENT_URL", "\"${getLocalProperty("VGS_PAYMENT_URL")}\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -81,7 +86,7 @@ dependencies {
     implementation project(":vgscollect-cardio")
     implementation project(":vgscollect-blinkcard")
 
-    implementation 'com.google.android.gms:play-services-wallet:19.1.0'
+    implementation 'com.google.android.gms:play-services-wallet:19.2.0'
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx

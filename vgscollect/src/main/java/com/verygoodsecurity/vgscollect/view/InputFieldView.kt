@@ -329,7 +329,8 @@ abstract class InputFieldView @JvmOverloads constructor(
                 addView(inputField)
             }
             inputField.setPadding(leftP, topP, rightP, bottomP)
-
+            inputField.contentDescription = this.contentDescription
+            inputField.importantForAccessibility = this.importantForAccessibility
             isAttachPermitted = false
         }
     }
@@ -737,6 +738,50 @@ abstract class InputFieldView @JvmOverloads constructor(
      */
     open fun isRequired(): Boolean {
         return inputField.isRequired
+    }
+
+    /**
+     * Sets how to determine whether this view is important for accessibility
+     * which is if it fires accessibility events and if it is reported to
+     * accessibility services that query the screen.
+     *
+     * @param mode How to determine whether this view is important for accessibility.
+     *
+     * @attr [android.R.attr.importantForAccessibility]
+     *
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_YES
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+     */
+    override fun setImportantForAccessibility(mode: Int) {
+        if (::inputField.isInitialized) {
+            this.inputField.importantForAccessibility = mode
+        }
+        super.setImportantForAccessibility(mode)
+    }
+
+    /**
+     * Sets the [View]'s content description.
+     * <p>
+     * A content description briefly describes the view and is primarily used
+     * for accessibility support to determine how a view should be presented to
+     * the user. In the case of a view with no textual representation, such as
+     * [android.widget.ImageButton], a useful content description
+     * explains what the view does. For example, an image button with a phone
+     * icon that is used to place a call may use "Call" as its content
+     * description. An image of a floppy disk that is used to save a file may
+     * use "Save".
+     *
+     * @param contentDescription The content description.
+     * @see getContentDescription
+     * @attr [android.R.attr.contentDescription]
+     */
+    override fun setContentDescription(contentDescription: CharSequence?) {
+        if (::inputField.isInitialized) {
+            this.inputField.contentDescription = contentDescription
+        }
+        super.setContentDescription(contentDescription)
     }
 
     /**

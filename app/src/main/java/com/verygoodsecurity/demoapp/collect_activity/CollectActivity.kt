@@ -137,6 +137,10 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         binding.mbSubmit.setOnClickListener { submit() }
         binding.mbGroupCodeExampleType.addOnButtonCheckedListener { _, _, _ -> updateCodeExample() }
         binding.ccInputsRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+
+        // Setup accessibility example
+        binding.includeCardInputView.vgsTiedSsn.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+        binding.includeCardInputView.vgsTiedSsn.contentDescription = getString(R.string.social_security_number_desc)
     }
 
     private fun initCodeExampleView() {

@@ -444,4 +444,10 @@ class RangeDateEditTextTest {
         assertEquals(child.vaultAliasFormat, VGSVaultAliasFormat.UUID)
         assertEquals(child.vaultStorage, VGSVaultStorageType.PERSISTENT)
     }
+
+    @Test
+    fun test_accessibility() {
+        view.contentDescription = "date"
+        assertEquals(view.contentDescription, "date")
+    }
 }
