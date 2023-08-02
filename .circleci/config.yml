@@ -33,15 +33,15 @@ jobs:
       - run:
           name: Generate Code Coverage Report
           command: |
-            if [ "<< pipeline.git.branch >>" == "main" ]; then
+            if [ "<< pipeline.git.branch >>" == "master" ]; then
               ./gradlew koverHtmlReportDebug
             else
-              echo "Code coverage will only be generated on the main branch."
+              echo "Code coverage will only be generated on the master branch."
             fi
       - run:
           name: Publish Code Coverage Report
           command: |
-            if [ "<< pipeline.git.branch >>" == "main" ]; then
+            if [ "<< pipeline.git.branch >>" == "master" ]; then
               COVERAGE=$(sed -n '51p' vgscollect/build/reports/kover/htmlDebug/index.html)
               METRIC_VALUE=`echo ${COVERAGE//[[:space:]]/} | sed 's/.$//'`
 
@@ -54,7 +54,7 @@ jobs:
                 --header "Content-Type: application/json" \
                 --data "{\"metricSourceId\":\"$COMPASS_COMPONENT_URL\",\"value\":\"$METRIC_VALUE\",\"timestamp\":\"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"}"
             else
-              echo "Code coverage will only be pushed to compass on the main branch."
+              echo "Code coverage will only be pushed to compass on the master branch."
             fi
       - run:
           name: Generate apk
@@ -71,7 +71,7 @@ jobs:
       - run:
           name: Check if release branch
           command: |
-            if [[ "<< pipeline.git.branch >>" != "main" ]; then
+            if [[ "<< pipeline.git.branch >>" != "master" ]; then
               echo "Skipped, reason: UI tests should be running only on master branch!"
               circleci-agent step halt
             fi
