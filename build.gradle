@@ -13,6 +13,7 @@ buildscript {
         classpath gradleLibs.maven.publish
         classpath gradleLibs.dokka
         classpath gradleLibs.detekt
+        classpath gradleLibs.kover
     }
 }
 
