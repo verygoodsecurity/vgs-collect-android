@@ -35,7 +35,7 @@ dependencyResolutionManagement {
         }
         testLibs {
             library('junit', 'junit:junit:4.13.2')
-            library('mockito-core', 'org.mockito:mockito-core:5.4.0')
+            library('mockito-core', 'org.mockito:mockito-core:5.5.0')
             library('mockito-inline', 'org.mockito:mockito-inline:5.2.0')
             library('robolectric', 'org.robolectric:robolectric:4.10.3')
             library('mockk', 'io.mockk:mockk:1.12.4')
