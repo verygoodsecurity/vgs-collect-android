@@ -74,7 +74,6 @@ jobs:
               --device model=bluejay,version=32,locale=en,orientation=portrait \
 
   scan-sast-pr:
-    <<: *environment
     parameters:
       default_branch:
         type: string
@@ -83,6 +82,7 @@ jobs:
       SEMGREP_REPO_URL: << pipeline.project.git_url >>
       SEMGREP_BRANCH: << pipeline.git.branch >>
       SEMGREP_BASELINE_REF: << parameters.default_branch >>
+    <<: *environment
     docker:
       - image: returntocorp/semgrep
     steps:
