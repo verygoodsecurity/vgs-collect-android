@@ -74,6 +74,7 @@ jobs:
               --device model=bluejay,version=32,locale=en,orientation=portrait \
 
   scan-sast-pr:
+    <<: *environment
     parameters:
       default_branch:
         type: string
@@ -105,6 +106,7 @@ jobs:
           command: semgrep ci
 
   scan-sast-full:
+    <<: *environment
     parameters:
       default_branch:
         type: string
