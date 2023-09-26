@@ -86,6 +86,20 @@ jobs:
       - image: returntocorp/semgrep
     steps:
       - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: |
+            sudo chmod +x gradlew
+            ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Run Detekt
+          command: ./gradlew app:detekt vgscollect:detekt vgscollect-cardio:detekt --continue --parallel
       - run:
           name: "Semgrep diff scan"
           command: semgrep ci
