@@ -74,15 +74,19 @@ jobs:
               --device model=bluejay,version=32,locale=en,orientation=portrait \
 
   scan-sast-pr:
-    <<: *environment
+    working_directory: ~/code
     parameters:
       default_branch:
         type: string
         default: master
     environment:
+      JVM_OPTS: -Xmx3200m
       SEMGREP_REPO_URL: << pipeline.project.git_url >>
       SEMGREP_BRANCH: << pipeline.git.branch >>
       SEMGREP_BASELINE_REF: << parameters.default_branch >>
+    docker:
+      - image: cimg/android:2023.06.1
+      - image: returntocorp/semgrep
     steps:
       - checkout
       - restore_cache:
@@ -99,10 +103,6 @@ jobs:
       - run:
           name: Run Detekt
           command: ./gradlew app:detekt vgscollect:detekt vgscollect-cardio:detekt --continue --parallel
-      - run: 
-          name: "Install Sempreg"
-          command: |
-            python3 -m pip install semgrep
       - run:
           name: "Semgrep diff scan"
           command: semgrep ci
