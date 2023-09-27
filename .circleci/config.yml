@@ -86,7 +86,7 @@ jobs:
       SEMGREP_BASELINE_REF: << parameters.default_branch >>
     docker:
       - image: cimg/android:2023.06.1
-      - image: returntocorp/semgrep
+      # - image: returntocorp/semgrep
     steps:
       - checkout
       - restore_cache:
