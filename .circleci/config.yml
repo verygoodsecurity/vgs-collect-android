@@ -107,7 +107,6 @@ jobs:
             curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
             python3 get-pip.py 
             python3 -m pip install semgrep
-            cd ~/code
       - run:
           name: "Semgrep diff scan"
           command: semgrep ci
