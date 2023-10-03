@@ -5,7 +5,7 @@ include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-blinkcard'
 dependencyResolutionManagement {
     versionCatalogs {
         gradleLibs {
-            library('tools', 'com.android.tools.build:gradle:8.1.1')
+            library('tools', 'com.android.tools.build:gradle:8.1.2')
             library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.10')
             library('maven', 'com.github.dcendents:android-maven-gradle-plugin:2.1')
             library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.25.3')
@@ -16,7 +16,7 @@ dependencyResolutionManagement {
         libs {
             // Libraries
             library('androidx-appcompat', 'androidx.appcompat:appcompat:1.6.1')
-            library('androidx-core-ktx', 'androidx.core:core-ktx:1.10.1')
+            library('androidx-core-ktx', 'androidx.core:core-ktx:1.12.0')
             library('material', 'com.google.android.material:material:1.9.0')
             library('okhttp', 'com.squareup.okhttp3:okhttp:4.11.0')
             library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.9.0')
