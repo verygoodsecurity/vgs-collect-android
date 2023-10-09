@@ -7,11 +7,11 @@ plugins {
 
 android {
     namespace 'com.verygoodsecurity.api.blinkcard'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
