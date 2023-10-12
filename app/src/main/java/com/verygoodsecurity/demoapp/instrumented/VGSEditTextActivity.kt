@@ -25,7 +25,7 @@ class VGSEditTextActivity : AppCompatActivity() {
                 .setAllowableMinLength(2)
                 .setRegex("^([a-zA-Z]{2,}\\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\\s?([a-zA-Z]{1,})?)")
                 .build()
-            binding.vgsEditText.addRule(rule)
+            binding.vgsEditText.setRule(rule)
         }
     }
 }

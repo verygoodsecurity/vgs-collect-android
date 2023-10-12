@@ -11,7 +11,7 @@ class VGSCollectFragmentActivity: AppCompatActivity() {
         const val USER_SCAN_REQUEST_CODE = 0x8
     }
 
-    private lateinit var vault_id:String
+    private lateinit var vaultId:String
     private lateinit var path:String
     private var envId: Int = 0
 
@@ -27,9 +27,9 @@ class VGSCollectFragmentActivity: AppCompatActivity() {
     private fun attachMainFragment() {
         val paymentFragment = PaymentFragment().apply {
             val bndl = Bundle()
-            bndl.putString(PaymentFragment.VAULT_ID, vault_id)
+            bndl.putString(PaymentFragment.VAULT_ID, vaultId)
             bndl.putString(PaymentFragment.PATH, path)
-            bndl.putString(PaymentFragment.VAULT_ID, vault_id)
+            bndl.putString(PaymentFragment.VAULT_ID, vaultId)
 
             arguments = bndl
         }
@@ -42,7 +42,7 @@ class VGSCollectFragmentActivity: AppCompatActivity() {
     private fun retrieveSettings() {
         val bndl = intent?.extras
 
-        vault_id = bndl?.getString(StartActivity.KEY_BUNDLE_VAULT_ID, "")?:""
+        vaultId = bndl?.getString(StartActivity.KEY_BUNDLE_VAULT_ID, "")?:""
         path = bndl?.getString(StartActivity.KEY_BUNDLE_PATH,"/")?:""
 
         envId = bndl?.getInt(StartActivity.KEY_BUNDLE_ENVIRONMENT, 0)?:0

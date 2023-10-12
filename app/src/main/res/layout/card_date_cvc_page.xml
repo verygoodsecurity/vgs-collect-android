@@ -16,7 +16,7 @@
         android:layout_marginBottom="@dimen/margin_padding_material_medium"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="@+id/cardExpDateFieldLay"
-        android:text="Expiration date"/>
+        android:text="@string/expiration_date_title"/>
 
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
         android:id="@+id/cardExpDateFieldLay"
@@ -39,7 +39,7 @@
             app:datePickerModes="spinner"
             android:singleLine="true"
             app:datePattern="MM/yy"
-            android:hint="MM/YY"
+            android:hint="@string/expiration_date_default_placeholder"
             android:paddingStart="@dimen/margin_padding_material_medium"
             android:paddingEnd="@dimen/margin_padding_material_medium"
             android:layout_marginStart="@dimen/margin_padding_material_medium"
@@ -57,7 +57,7 @@
         android:layout_marginEnd="@dimen/margin_padding_material_small"
         android:layout_marginTop="@dimen/margin_padding_material_medium"
         android:layout_marginBottom="@dimen/margin_padding_material_medium"
-        android:text="CVC"/>
+        android:text="@string/cvc_title"/>
 
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
         android:id="@+id/cardCVCFieldLay"

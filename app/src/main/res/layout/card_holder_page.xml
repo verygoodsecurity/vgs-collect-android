@@ -13,7 +13,7 @@
         android:layout_marginEnd="@dimen/margin_padding_material_small"
         android:layout_marginTop="@dimen/margin_padding_material_medium"
         android:layout_marginBottom="@dimen/margin_padding_material_medium"
-        android:text="Card owner(Name on the card)"/>
+        android:text="@string/card_owner_default_value"/>
 
     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
         android:id="@+id/cardHolderFieldLay"
@@ -33,7 +33,7 @@
             android:singleLine="true"
             android:paddingStart="@dimen/margin_padding_material_medium"
             android:paddingEnd="@dimen/margin_padding_material_medium"
-            android:hint="Card owner(Name on the card)"
+            android:hint="@string/card_owner_default_value"
             android:layout_marginStart="@dimen/margin_padding_material_medium"
             android:layout_marginEnd="@dimen/margin_padding_material_medium"/>
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>

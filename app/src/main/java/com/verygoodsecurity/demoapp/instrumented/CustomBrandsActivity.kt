@@ -1,5 +1,6 @@
 package com.verygoodsecurity.demoapp.instrumented
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -42,6 +43,7 @@ class CustomBrandsActivity : AppCompatActivity(), View.OnClickListener {
         cardNumber?.id = VIEW_ID
     }
 
+    @SuppressLint("InflateParams")
     private fun inflateCardNumberLayout() {
         cardNumber = LayoutInflater.from(this).inflate(
             R.layout.instrumented_card_number_layout,
@@ -84,7 +86,7 @@ class CustomBrandsActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
 
-        val DIVIDER: Char = '-'
+        const val DIVIDER: Char = '-'
 
         val VIEW_ID = View.generateViewId()
 
