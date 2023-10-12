@@ -16,9 +16,6 @@ class ExpirationDateTextWatcher(
         private const val MONTH_REGEX = "^([10]|0[1-9]|1[012])\$"
         private const val DAY_REGEX = "^([1230]|0[1-9]|1[012]|[12]\\d|3[01])\$"
         private const val DIVIDER_REGEX = "^[^0-9]\$"
-
-        private const val DEFAULT_PATTERN = "MM/yy"
-
         private const val YYYY = "yyyy"
         private const val YY = "yy"
         private const val MM = "MM"
@@ -65,7 +62,7 @@ class ExpirationDateTextWatcher(
 
 
         val fullYPosition = datePattern.lastIndexOf(YYYY)
-        val YPosition = datePattern.lastIndexOf(YY)
+        val yPosition = datePattern.lastIndexOf(YY)
         yearPattern = if(fullYPosition != -1) {
             yearPositionStart = fullYPosition
             yearPositionEnd = if(yearPositionStart >= 0) {
@@ -75,7 +72,7 @@ class ExpirationDateTextWatcher(
             }
             YEAR_FULL_REGEX
         } else {
-            yearPositionStart = YPosition
+            yearPositionStart = yPosition
             yearPositionEnd = if(yearPositionStart > 0) {
                 yearPositionStart+2
             } else {
@@ -113,34 +110,36 @@ class ExpirationDateTextWatcher(
 
         when (s.length-1) {
             in dayPositionStart until dayPositionEnd -> {
-                val last = s.substring(dayPositionStart).toIntOrNull()
-                when {
-                    last == null -> return s.substring(0, s.length-1)
-                    last in 4..9 -> {
-                        val str = s.substring(0,s.length-1)+"0"+s.substring(s.length-1,s.length)
-                        return str
+                return when (s.substring(dayPositionStart).toIntOrNull()) {
+                    null -> s.substring(0, s.length-1)
+                    in 4..9 -> {
+                        s.substring(0, s.length - 1) + "0" + s.substring(
+                            s.length - 1,
+                            s.length
+                        )
                     }
-                    else -> return s.substring(0, s.length-1)
+                    else -> s.substring(0, s.length-1)
                 }
             }
             in mountPositionStart until mountPositionEnd -> {
-                val last = s.substring(mountPositionStart).toIntOrNull()
-                when {
-                    last == null -> return s.substring(0, s.length-1)
-                    last in 2..9 -> {
-                        val str = s.substring(0,s.length-1)+"0"+s.substring(s.length-1,s.length)
-                        return str
+                return when (s.substring(mountPositionStart).toIntOrNull()) {
+                    null -> s.substring(0, s.length-1)
+                    in 2..9 -> {
+                        s.substring(0, s.length - 1) + "0" + s.substring(
+                            s.length - 1,
+                            s.length
+                        )
                     }
-                    else -> return s.substring(0, s.length-1)
+
+                    else -> s.substring(0, s.length-1)
                 }
             }
             in yearPositionStart until yearPositionEnd -> {
 
             }
             else -> {
-                val divider = datePattern.substring(s.length-1,s.length)
-                val str = s.substring(0,s.length-1)+divider+s.substring(s.length-1,s.length)
-                return str
+                val divider = datePattern.substring(s.length - 1, s.length)
+                return s.substring(0, s.length - 1) + divider + s.substring(s.length - 1, s.length)
             }
         }
 

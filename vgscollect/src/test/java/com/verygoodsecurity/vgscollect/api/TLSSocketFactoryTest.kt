@@ -9,14 +9,14 @@ class TLSSocketFactoryTest {
     @Test
     fun test_socket_factory() {
         val protocol = "custom_protocols"
-        val tls_1_1 = "TLSv1.1"
-        val tls_1_2 = "TLSv1.2"
+        val tls11 = "TLSv1.1"
+        val tls12 = "TLSv1.2"
 
         val connectionProtocols = arrayOf(protocol)
 
         val protocols = TLSSocketFactory().mergeProtocols(connectionProtocols)
 
-        assertTrue(arrayOf(protocol, tls_1_1, tls_1_2).contentEquals(protocols))
+        assertTrue(arrayOf(protocol, tls11, tls12).contentEquals(protocols))
     }
 
 }

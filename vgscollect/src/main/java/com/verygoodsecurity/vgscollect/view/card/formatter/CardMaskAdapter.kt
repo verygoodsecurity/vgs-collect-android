@@ -1,6 +1,5 @@
 package com.verygoodsecurity.vgscollect.view.card.formatter
 
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.view.card.CardType
 
 /**

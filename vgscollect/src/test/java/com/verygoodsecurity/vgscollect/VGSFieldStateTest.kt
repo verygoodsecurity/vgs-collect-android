@@ -152,9 +152,8 @@ class VGSFieldStateTest {
     @Test
     fun test_map_date_mm_yy() {
         val date = "12/24"
-        val fieldDateFormat: SimpleDateFormat = SimpleDateFormat("MM/yy", Locale.US)
-        val fieldDateOutPutFormat: SimpleDateFormat =
-            SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val fieldDateFormat = SimpleDateFormat("MM/yy", Locale.US)
+        val fieldDateOutPutFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 
         val content = FieldContent.DateContent()
         content.data = date

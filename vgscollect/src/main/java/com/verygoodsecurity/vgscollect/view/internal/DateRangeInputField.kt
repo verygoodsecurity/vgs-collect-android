@@ -1,13 +1,11 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context
-import android.os.Build
-import android.view.View
 import com.verygoodsecurity.vgscollect.util.extension.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.date.DateRangeFormat
 import com.verygoodsecurity.vgscollect.view.internal.core.DateInputField
-import java.util.*
+import java.util.Calendar
 
 internal class DateRangeInputField(context: Context) : DateInputField(context) {
 
@@ -29,9 +27,5 @@ internal class DateRangeInputField(context: Context) : DateInputField(context) {
         set(Calendar.MONTH, 0)
         setMaximumTime()
     }.timeInMillis
-
-    override fun setupAutofill() {
-        super.setupAutofill()
-    }
     //endregion
 }

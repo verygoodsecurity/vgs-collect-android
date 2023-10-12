@@ -99,7 +99,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
                 }
 
                 setText(text)
-                setEnabled(enabled)
+                isEnabled = enabled
 
                 setInputType(inputType)
 

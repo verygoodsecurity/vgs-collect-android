@@ -48,14 +48,14 @@ class FileStorageTest {
 
     @Test
     fun test_remove_item() {
-        val KEY = "file"
+        val key = "file"
         val store: VgsStore<String, String> = TemporaryFileStorage(activity)
 
-        store.addItem(KEY, "file:///tmp/user.txt")
+        store.addItem(key, "file:///tmp/user.txt")
 
         assertEquals(1, store.getItems().size)
 
-        store.remove(KEY)
+        store.remove(key)
 
         assertEquals(0, store.getItems().size)
     }

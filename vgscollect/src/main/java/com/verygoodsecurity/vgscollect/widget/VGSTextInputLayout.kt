@@ -55,7 +55,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
     init {
         context.theme.obtainStyledAttributes(
             attrs,
-            R.styleable.VGSTextInputLayout, 0, 0)?.apply {
+            R.styleable.VGSTextInputLayout, 0, 0).apply {
             try {
                 val passwordToggleEnabled = getBoolean(R.styleable.VGSTextInputLayout_passwordToggleEnabled, false)
                 val drawRef = getResourceId(R.styleable.VGSTextInputLayout_passwordToggleDrawable, 0)

@@ -20,95 +20,95 @@ class RequestTest {
 
     @Test
     fun test_create_request_with_custom_data() {
-        val METHOD = HTTPMethod.POST
-        val PATH = "/some/path"
+        val method = HTTPMethod.POST
+        val path = "/some/path"
         val headers = HashMap<String, String>()
         headers["HEADER-S"] = "some-data"
         val data = HashMap<String, String>()
         data["customdata"] = "some-data2"
 
         val r = VGSRequest.VGSRequestBuilder()
-            .setMethod(METHOD)
-            .setPath(PATH)
+            .setMethod(method)
+            .setPath(path)
             .setCustomData(data)
             .setCustomHeader(headers)
             .build()
 
-        assertEquals(PATH, r.path)
-        assertEquals(METHOD, r.method)
+        assertEquals(path, r.path)
+        assertEquals(method, r.method)
         assertEquals(headers, r.customHeader)
         assertEquals(data, r.customData)
     }
 
     @Test
     fun test_create_request_with_route_id() {
-        val ROUTE_ID = "route-id"
-        val METHOD = HTTPMethod.POST
-        val PATH = "/some/path"
+        val routeId = "route-id"
+        val method = HTTPMethod.POST
+        val path = "/some/path"
         val r = VGSRequest.VGSRequestBuilder()
-            .setMethod(METHOD)
-            .setPath(PATH)
-            .setRouteId(ROUTE_ID)
+            .setMethod(method)
+            .setPath(path)
+            .setRouteId(routeId)
             .build()
 
-        assertEquals(PATH, r.path)
-        assertEquals(METHOD, r.method)
-        assertEquals(ROUTE_ID, r.routeId)
+        assertEquals(path, r.path)
+        assertEquals(method, r.method)
+        assertEquals(routeId, r.routeId)
     }
 
     @Test
     fun test_create_request_without_custom_data() {
-        val METHOD = HTTPMethod.POST
-        val PATH = "/some/path"
+        val method = HTTPMethod.POST
+        val path = "/some/path"
         val r = VGSRequest.VGSRequestBuilder()
-            .setMethod(METHOD)
-            .setPath(PATH)
+            .setMethod(method)
+            .setPath(path)
             .build()
 
-        assertEquals(PATH, r.path)
-        assertEquals(METHOD, r.method)
+        assertEquals(path, r.path)
+        assertEquals(method, r.method)
     }
 
     @Test
     fun test_to_network_request() {
-        val BASE_URL = "base.url"
-        val METHOD = HTTPMethod.POST
-        val PATH = "/some/path"
+        val baseUrl = "base.url"
+        val method = HTTPMethod.POST
+        val path = "/some/path"
 
         val exampleRequest = NetworkRequest(
-            METHOD,
-            BASE_URL+PATH,
+            method,
+            baseUrl+path,
             emptyMap(),
             "{}",
             false,
-            false,
-            VGSHttpBodyFormat.JSON,
-            60000L,
-            false
+            fileIgnore = false,
+            format = VGSHttpBodyFormat.JSON,
+            requestTimeoutInterval = 60000L,
+            requiresTokenization = false
         )
 
         val r = VGSRequest.VGSRequestBuilder()
-            .setMethod(METHOD)
-            .setPath(PATH)
-            .build().toNetworkRequest(BASE_URL, emptyMap())
+            .setMethod(method)
+            .setPath(path)
+            .build().toNetworkRequest(baseUrl, emptyMap())
 
         assertEquals(exampleRequest, r)
     }
 
     @Test
     fun test_to_response_success() {
-        val BODY = "data"
-        val CODE = 200
+        val body = "data"
+        val code = 200
 
         val exampleRequest = VGSResponse.SuccessResponse(
-            rawResponse = BODY,
-            successCode = CODE
+            rawResponse = body,
+            successCode = code
         )
 
         val r = NetworkResponse(
             true,
-            BODY,
-            CODE
+            body,
+            code
         ).toVGSResponse() as VGSResponse.SuccessResponse
 
         assertEquals(exampleRequest.rawResponse, r.rawResponse)
@@ -118,17 +118,17 @@ class RequestTest {
 
     @Test
     fun test_to_response_failed() {
-        val MESSAGE = "error text"
-        val CODE = 401
+        val message = "error text"
+        val code = 401
 
         val exampleRequest = VGSResponse.ErrorResponse(
-            MESSAGE,
-            CODE
+            message,
+            code
         )
 
         val r = NetworkResponse(
-            code = CODE,
-            message = MESSAGE
+            code = code,
+            message = message
         ).toVGSResponse() as VGSResponse.ErrorResponse
 
         assertEquals(exampleRequest.localizeMessage, r.localizeMessage)

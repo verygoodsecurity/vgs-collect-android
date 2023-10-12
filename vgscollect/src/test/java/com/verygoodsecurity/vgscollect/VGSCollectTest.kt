@@ -427,11 +427,11 @@ class VGSCollectTest {
                     )
                 )
             ).toJSON().toString(),
-            false,
-            false,
-            VGSHttpBodyFormat.JSON,
-            60_000,
-            true
+            fieldsIgnore = false,
+            fileIgnore = false,
+            format = VGSHttpBodyFormat.JSON,
+            requestTimeoutInterval = 60_000,
+            requiresTokenization = true
         )
 
         assertEquals(expected, ac.value)

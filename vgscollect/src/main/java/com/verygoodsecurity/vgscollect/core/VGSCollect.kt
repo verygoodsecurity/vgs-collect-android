@@ -61,7 +61,7 @@ class VGSCollect {
             error.toVGSResponse(context).also { r ->
                 notifyAllListeners(r, false)
                 VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
-                submitEvent(false, false, code = r.errorCode)
+                submitEvent(isSuccess = false, requiresTokenization = false, code = r.errorCode)
             }
         }
     }

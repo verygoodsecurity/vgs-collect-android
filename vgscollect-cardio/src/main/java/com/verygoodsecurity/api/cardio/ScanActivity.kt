@@ -58,10 +58,10 @@ class ScanActivity : BaseTransmitActivity() {
             .putExtra(CardIOActivity.EXTRA_KEEP_APPLICATION_THEME, keepApplicationTheme)
 
 
-        suppressManualEnter?.let {
+        suppressManualEnter.let {
             scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, it)
         }
-        suppressConfirmation?.let {
+        suppressConfirmation.let {
             scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, it)
         }
 

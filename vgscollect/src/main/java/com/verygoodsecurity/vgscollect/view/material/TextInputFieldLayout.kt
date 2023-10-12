@@ -235,7 +235,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
      * <p>If the error functionality has not been enabled via setErrorEnabled(), then
      * it will be automatically enabled if {@code error} is not empty.
      *
-     * @param errorText Error messageResId to display, or null to clear
+     * @param resId Error messageResId to display, or null to clear
      * @see #getError()
      */
     open fun setError(resId:Int) {
@@ -494,7 +494,7 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
      * Set up the EndIconMode. When set, a button is placed at the end of the EditText which
      * enables the user to perform the specific icon's functionality.
      *
-     * @param endIconMode the EndIconMode to be set, or END_ICON_NONE to clear the current
+     * @param mode the EndIconMode to be set, or END_ICON_NONE to clear the current
      * icon if any
      */
     fun setEndIconMode(mode:Int) {

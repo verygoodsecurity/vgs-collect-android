@@ -44,7 +44,7 @@
 -keep public enum com.verygoodsecurity.vgscollect.view.card.FieldType  { *; }
 -keep public enum com.verygoodsecurity.vgscollect.view.date.DatePickerMode { *; }
 
--keep, allowobfuscation public interface com.verygoodsecurity.vgscollect.core.storage.OnVgsViewStateChangeListener { *; }
+-keep, allowobfuscation public interface com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener { *; }
 -keep, allowobfuscation public class com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper { *; }
 
 -keep public interface com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener { *; }
