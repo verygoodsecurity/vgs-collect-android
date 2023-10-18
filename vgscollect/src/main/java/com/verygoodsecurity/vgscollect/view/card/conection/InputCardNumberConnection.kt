@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.LengthMatchValidator
 internal class InputCardNumberConnection(
     id: Int,
     validator: CompositeValidator,
-    private val iCardBrand: IDrawCardBrand? = null,
+    private val cardBrand: IDrawCardBrand? = null,
     private val divider: String? = null
 ) : BaseInputConnection(id, validator), CardInputFilter {
 
@@ -38,7 +38,7 @@ internal class InputCardNumberConnection(
         val brand = detectBrand()
         mapValue(brand)
 
-        iCardBrand?.onCardBrandPreview(brand)
+        cardBrand?.onCardBrandPreview(brand)
 
         val errors = validate(brand)
         state.isValid = errors.isEmpty()
