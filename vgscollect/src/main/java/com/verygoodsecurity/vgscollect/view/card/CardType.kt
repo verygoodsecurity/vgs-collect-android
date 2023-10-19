@@ -43,7 +43,7 @@ enum class CardType(val regex:String,
         R.drawable.ic_maestro_dark,
         "#### #### #### ####",
         ChecksumAlgorithm.LUHN,
-        (13..19).toList().toTypedArray(),
+        (12..19).toList().toTypedArray(),
         arrayOf(3)
     ),
 
@@ -70,12 +70,12 @@ enum class CardType(val regex:String,
         R.drawable.ic_visa_dark,
         "#### #### #### #### ###",
         ChecksumAlgorithm.LUHN,
-        arrayOf(13,16,19),
+        arrayOf(13, 16),
         arrayOf(3)
     ),
 
     MASTERCARD(
-        "^(5[1-5][0-9]{4}|677189)|^(222[1-9]|22[3-9]|2[3-6]\\d{2}|27[0-1]\\d|2720)([0-9]{2})",
+        "^(5[1-5][0-9]{4})|^(222[1-9]|22[3-9]|2[3-6]\\d{2}|27[0-1]\\d|2720)([0-9]{2})",
         R.drawable.ic_mastercard_dark,
         "#### #### #### ####",
         ChecksumAlgorithm.LUHN,
@@ -128,11 +128,11 @@ enum class CardType(val regex:String,
     ),
 
     JCB(
-        "^35",
+        "^(2131|1800|35)",
         R.drawable.ic_jcb_dark,
         "#### #### #### #### ###",
         ChecksumAlgorithm.LUHN,
-        (16..19).toList().toTypedArray(),
+        arrayOf(15, 16),
         arrayOf(3)
     ),
 
