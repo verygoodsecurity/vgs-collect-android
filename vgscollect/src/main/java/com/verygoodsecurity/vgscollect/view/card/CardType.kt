@@ -70,7 +70,7 @@ enum class CardType(val regex:String,
         R.drawable.ic_visa_dark,
         "#### #### #### #### ###",
         ChecksumAlgorithm.LUHN,
-        arrayOf(13, 16),
+        arrayOf(13, 16, 19),
         arrayOf(3)
     ),
 
