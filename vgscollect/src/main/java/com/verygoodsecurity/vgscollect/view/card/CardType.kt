@@ -39,7 +39,7 @@ enum class CardType(val regex:String,
     ),
 
     MAESTRO(
-        "^(5018|5020|5038|56|57|58|6304|6390[0-9]{2}|67[0-9]{4})",
+        "^(5018|5020|5038|6304|6390[0-9]{2}|67[0-9]{4})",
         R.drawable.ic_maestro_dark,
         "#### #### #### ####",
         ChecksumAlgorithm.LUHN,
