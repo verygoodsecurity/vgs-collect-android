@@ -26,7 +26,6 @@ class HiperCardTest {
 
     private fun cards() = listOf(
         "6062826786276634",
-        "6062826786276634",
         "6062828888666688"
     )
 }
