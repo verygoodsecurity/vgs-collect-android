@@ -192,11 +192,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     companion object {
         private const val MASK = "###-##-####"
         private const val MASK_REGEX = "[^#]"
-        internal const val VALIDATION_REGEX = "^(?!\\b(\\d)\\1+\\b)" +
-                "(?!(123456789|219099999|457555462|" +
-                "123-45-6789|219-09-9999|457-55-5462))" +
-                "(?!(000|666|9))" +
-                "(\\d{3}\\D?(?!(00))\\d{2}\\D?(?!(0000))\\d{4})\$"
+        internal const val VALIDATION_REGEX = "^(?!(000|666|9))(\\d{3}(-|\\s)?(?!(00))\\d{2}(-|\\s)?(?!(0000))\\d{4})\$"
         private const val EMPTY_CHAR = ""
     }
 }
