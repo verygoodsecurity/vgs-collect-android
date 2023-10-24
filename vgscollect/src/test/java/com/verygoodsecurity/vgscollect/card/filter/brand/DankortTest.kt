@@ -9,16 +9,26 @@ import org.junit.Test
 
 class DankortTest {
 
-    private lateinit var filter: VGSCardFilter
-
-    @Before
-    fun setupFilter() {
-        filter = CardBrandFilter()
-    }
+    private var filter: VGSCardFilter = CardBrandFilter()
 
     @Test
-    fun test_1() {
-        val brand = filter.detect("5019")
-        Assert.assertEquals(brand.name, CardType.DANKORT.name)
+    fun detect() {
+        val expectedCardBrand = CardType.DANKORT.name
+
+        cards().forEach {
+            val actualCardBrand = filter.detect(it).name
+            Assert.assertEquals(
+                "CARD: $it",
+                expectedCardBrand,
+                actualCardBrand
+            )
+        }
     }
+
+    private fun cards() = listOf(
+        "5019717010103742",
+        "5019555544445555",
+        "5019200000000004",
+        "5019356488230958"
+    )
 }
