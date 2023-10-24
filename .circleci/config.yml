@@ -1,5 +1,11 @@
 version: 2.1
 
+# === Scheduled Pipeline Parameters ===
+parameters:
+  nightly-security-scan:
+    type: boolean
+    default: false
+
 aliases:
   - &environment
     working_directory: ~/code
@@ -93,10 +99,66 @@ jobs:
               --device model=redfin,version=30,locale=en,orientation=portrait \
               --device model=bluejay,version=32,locale=en,orientation=portrait \
 
+  scan-sast-pr:
+    parameters:
+      default_branch:
+        type: string
+        default: master
+    environment:
+      SEMGREP_REPO_URL: << pipeline.project.git_url >>
+      SEMGREP_BRANCH: << pipeline.git.branch >>
+      SEMGREP_BASELINE_REF: << parameters.default_branch >>
+    docker:
+      - image: returntocorp/semgrep
+    steps:
+      - checkout
+      - run:
+          name: "Semgrep diff scan"
+          command: semgrep ci
+
+  scan-sast-full:
+    parameters:
+      default_branch:
+        type: string
+        default: master
+    environment:
+      SEMGREP_REPO_URL: << pipeline.project.git_url >>
+      SEMGREP_BRANCH: << pipeline.git.branch >>
+    docker:
+      - image: returntocorp/semgrep
+    steps:
+      - checkout
+      - run:
+          name: "Semgrep full scan"
+          command: semgrep ci
 workflows:
   main:
+    when:
+      not: << pipeline.parameters.nightly-security-scan >>
     jobs:
       - "Run_Unit_Test_And_Build"
+      - scan-sast-pr:
+          context:
+            - security-tools
+
+      - scan-sast-full:
+          filters:
+            # ignore any commit on any branch by default
+            branches:
+              ignore: /.*/
+            tags:
+              only:
+                - /production-.*/
+          context:
+            - security-tools
+
       - "Run_UI_Test":
           requires:
             - "Run_Unit_Test_And_Build"
+
+  scheduled-security-scan:
+    when: << pipeline.parameters.nightly-security-scan >>
+    jobs:
+      - scan-sast-full:
+          context:
+            - security-tools
