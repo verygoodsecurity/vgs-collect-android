@@ -9,16 +9,23 @@ import org.junit.Test
 
 class ForbTest {
 
-    private lateinit var filter: VGSCardFilter
-
-    @Before
-    fun setupFilter() {
-        filter = CardBrandFilter()
-    }
+    private var filter: VGSCardFilter = CardBrandFilter()
 
     @Test
-    fun test_1() {
-        val brand = filter.detect("600")
-        Assert.assertEquals(brand.name, CardType.FORBRUGSFORENINGEN.name)
+    fun detect() {
+        val expectedCardBrand = CardType.FORBRUGSFORENINGEN.name
+
+        cards().forEach {
+            val actualCardBrand = filter.detect(it).name
+            Assert.assertEquals(
+                "CARD: $it",
+                expectedCardBrand,
+                actualCardBrand
+            )
+        }
     }
+
+    private fun cards() = listOf(
+        "6007220000000004"
+    )
 }
