@@ -22,6 +22,7 @@ class ScanActivity : BaseTransmitActivity(), CardScanActivityResultHandler {
     private var enableEnterCardManually = false
     private var enableExpiryExtraction = false
     private var enableNameExtraction = false
+    private var forImmediateUse = false
     private var displayCardPan = false
     private var displayCardholderName = false
     private var displayCardScanLogo = false
@@ -32,18 +33,28 @@ class ScanActivity : BaseTransmitActivity(), CardScanActivityResultHandler {
 
         saveSettings()
 
+        Log.d("TEST", "forImmediateUse = $forImmediateUse")
+
         try {
             val initializeNameAndExpiryExtraction = enableNameExtraction || enableExpiryExtraction
-            CardScanActivity.warmUp(this, key, initializeNameAndExpiryExtraction)
+            CardScanActivity.prepareScan(
+                context = this,
+                apiKey = key,
+                initializeNameAndExpiryExtraction = initializeNameAndExpiryExtraction,
+                forImmediateUse = forImmediateUse
+            ) {
+                CardScanActivity.start(
+                    this,
+                    key,
+                    enableEnterCardManually,
+                    enableExpiryExtraction,
+                    enableNameExtraction
+                )
+            }
         } catch (e: InvalidBouncerApiKeyException) {
             printLog(e)
             finish()
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        runCardIO()
     }
 
     private fun saveSettings() {
@@ -58,6 +69,7 @@ class ScanActivity : BaseTransmitActivity(), CardScanActivityResultHandler {
             displayCardPan = it.getBoolean(DISPLAY_CARD_PAN)
             displayCardholderName = it.getBoolean(DISPLAY_CARD_HOLDER_NAME)
             displayCardScanLogo = it.getBoolean(DISPLAY_CARD_SCAN_LOGO)
+            forImmediateUse = it.getBoolean(FOR_IMMEDIATE_USE)
             enableDebug = it.getBoolean(ENABLE_DEBUG)
         }
     }
@@ -180,6 +192,11 @@ class ScanActivity : BaseTransmitActivity(), CardScanActivityResultHandler {
         If true, attempt to extract the cardholder name.
          */
         const val ENABLE_NAME_EXTRACTION = "enableNameExtraction"
+
+        /**
+         * if true, attempt to use cached models instead of downloading by default
+         */
+        const val FOR_IMMEDIATE_USE = "forImmediateUse"
 
         /**
         If true, display the card pan once the card has started to scan.
