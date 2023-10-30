@@ -33,8 +33,6 @@ class ScanActivity : BaseTransmitActivity(), CardScanActivityResultHandler {
 
         saveSettings()
 
-        Log.d("TEST", "forImmediateUse = $forImmediateUse")
-
         try {
             val initializeNameAndExpiryExtraction = enableNameExtraction || enableExpiryExtraction
             CardScanActivity.prepareScan(
