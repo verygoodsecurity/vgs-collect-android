@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo
@@ -24,6 +25,7 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.card.conection.BaseInputConnection
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
@@ -75,9 +77,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     internal var stateListener: OnVgsViewStateChangeListener? = null
         set(value) {
+            if (value == null) {
+                inputConnection?.removeOutputListener(field)
+            } else {
+                inputConnection?.addOutputListener(value)
+            }
             field = value
-            inputConnection?.setOutputListener(value)
-            inputConnection?.run()
         }
     internal var isRequired: Boolean = true
         set(value) {
@@ -342,7 +347,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun applyInternalFieldStateChangeListener() {
-        inputConnection?.setOutputListener(this)
+        inputConnection?.addOutputListener(this)
     }
 
     override fun emit(viewId: Int, state: VGSFieldState) {

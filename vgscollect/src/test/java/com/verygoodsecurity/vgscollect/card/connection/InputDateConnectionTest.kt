@@ -24,21 +24,21 @@ class InputDateConnectionTest {
     @Test
     fun setChangeListener() {
         val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
+        connection.addOutputListener(listener)
         Mockito.verify(listener).emit(anyInt(), any())
     }
 
     @Test
     fun emitItem() {
         val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
+        connection.addOutputListener(listener)
         Mockito.verify(listener).emit(anyInt(), any())
     }
 
     @Test
     fun setOutput() {
         val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
+        connection.addOutputListener(listener)
 
         val textItem = VGSFieldState(fieldName = "fieldName")
         connection.setOutput(textItem)
@@ -50,7 +50,7 @@ class InputDateConnectionTest {
     @Test
     fun emitEmptyNotRequired() {
         val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
+        connection.addOutputListener(listener)
 
         val content = FieldContent.InfoContent()
         content.data = ""
@@ -69,7 +69,7 @@ class InputDateConnectionTest {
     @Test
     fun emitNotRequired() {
         val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
+        connection.addOutputListener(listener)
 
         val content = FieldContent.InfoContent()
         content.data = "testStr"
