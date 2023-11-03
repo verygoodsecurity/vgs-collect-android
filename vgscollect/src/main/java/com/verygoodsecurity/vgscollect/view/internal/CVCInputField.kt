@@ -43,7 +43,7 @@ internal class CVCInputField(context: Context) : BaseInputField(context) {
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOutputListener(stateListener)
+        inputConnection?.addOutputListener(stateListener)
 
         applyNewTextWatcher(null)
         applyLengthFilter(cardContent.rangeCVV.last())
