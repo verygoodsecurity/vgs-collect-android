@@ -105,18 +105,40 @@ jobs:
         type: string
         default: master
     environment:
+      JVM_OPTS: -Xmx3200m
       SEMGREP_REPO_URL: << pipeline.project.git_url >>
       SEMGREP_BRANCH: << pipeline.git.branch >>
       SEMGREP_BASELINE_REF: << parameters.default_branch >>
     docker:
-      - image: returntocorp/semgrep
+      - image: cimg/android:2023.06.1
     steps:
       - checkout
+      - restore_cache:
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Download Dependencies
+          command: |
+            sudo chmod +x gradlew
+            ./gradlew androidDependencies
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+      - run:
+          name: Run Detekt
+          command: ./gradlew app:detekt vgscollect:detekt vgscollect-cardio:detekt --continue --parallel
+      - run:
+          name: Install Semprep
+          command: |
+            curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+            python3 get-pip.py 
+            python3 -m pip install semgrep
       - run:
           name: "Semgrep diff scan"
           command: semgrep ci
 
   scan-sast-full:
+    <<: *environment
     parameters:
       default_branch:
         type: string
