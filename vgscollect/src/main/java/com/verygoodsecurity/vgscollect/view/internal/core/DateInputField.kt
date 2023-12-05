@@ -91,7 +91,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOutputListener(stateListener)
+        inputConnection?.addOutputListener(stateListener)
 
         applyFormatter()
         applyInputType()

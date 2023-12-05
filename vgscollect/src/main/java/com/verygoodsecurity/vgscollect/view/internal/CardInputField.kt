@@ -90,7 +90,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOutputListener(stateListener)
+        inputConnection?.addOutputListener(stateListener)
 
         applyFormatter()
         applyInputType()

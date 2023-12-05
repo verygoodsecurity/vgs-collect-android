@@ -9,82 +9,28 @@ import org.junit.Test
 
 class MaestroTest {
 
-    private lateinit var filter: VGSCardFilter
-
-    @Before
-    fun setupFilter() {
-        filter = CardBrandFilter()
-    }
+    private var filter: VGSCardFilter = CardBrandFilter()
 
     @Test
-    fun test_1() {
-        val brand = filter.detect("670123")
-        Assert.assertEquals(brand.name, CardType.MAESTRO.name)
+    fun detect() {
+        val expectedCardBrand = CardType.MAESTRO.name
+
+        cards().forEach {
+            val actualCardBrand = filter.detect(it).name
+            Assert.assertEquals(
+                "CARD: $it",
+                expectedCardBrand,
+                actualCardBrand
+            )
+        }
     }
 
-    @Test
-    fun test_2() {
-        val brand = filter.detect("679123")
-        Assert.assertEquals(brand.name, CardType.MAESTRO.name)
-    }
-
-    @Test
-    fun test_3() {
-        val brand = filter.detect("5018123")
-        Assert.assertEquals(brand.name, CardType.MAESTRO.name)
-    }
-
-    @Test
-    fun test_4() {
-        val brand = filter.detect("5020123")
-        Assert.assertEquals(brand.name, CardType.MAESTRO.name)
-    }
-
-    @Test
-    fun test_5() {
-        val brand = filter.detect("5038123")
-        Assert.assertEquals(brand.name, CardType.MAESTRO.name)
-    }
-
-    @Test
-    fun test_6() {
-        val brand = filter.detect("63900123")
-        Assert.assertEquals(brand.name, CardType.MAESTRO.name)
-    }
-
-    @Test
-    fun test_7() {
-        val brand = filter.detect("6390912")
-        Assert.assertEquals(brand.name, CardType.MAESTRO.name)
-    }
-
-    @Test
-    fun test_8() {
-        val brand = filter.detect("50181")
-        Assert.assertEquals(brand.name, CardType.MAESTRO.name)
-    }
-
-    @Test
-    fun test_9() {
-        val brand = filter.detect("50201232")
-        Assert.assertEquals(brand.name, CardType.MAESTRO.name)
-    }
-
-    @Test
-    fun test_10() {
-        val brand = filter.detect("56111111")
-        Assert.assertEquals(brand.name, CardType.MAESTRO.name)
-    }
-
-    @Test
-    fun test_11() {
-        val brand = filter.detect("57111111")
-        Assert.assertEquals(brand.name, CardType.MAESTRO.name)
-    }
-
-    @Test
-    fun test_12() {
-        val brand = filter.detect("58111111")
-        Assert.assertEquals(brand.name, CardType.MAESTRO.name)
-    }
+    private fun cards() = listOf(
+        "6771798021000008",
+        "6771830999991239",
+        "6759649826438453",
+        "5020620000000000",
+        "6304000000000000",
+        "6723680000000000008",
+    )
 }

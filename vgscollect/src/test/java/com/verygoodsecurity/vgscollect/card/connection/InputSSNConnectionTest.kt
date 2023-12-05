@@ -51,7 +51,7 @@ class InputSSNConnectionTest {
     @Test
     fun test_set_change_listener() {
         val listener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
+        connection.addOutputListener(listener)
 
         Mockito.verify(listener).emit(0, VGSFieldState(isValid = true))
     }
@@ -80,7 +80,7 @@ class InputSSNConnectionTest {
 
     private fun setupListener(connection: InputRunnable) {
         stateListener = Mockito.mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(stateListener)
+        connection.addOutputListener(stateListener)
     }
 
     private fun createFieldState(): VGSFieldState {
