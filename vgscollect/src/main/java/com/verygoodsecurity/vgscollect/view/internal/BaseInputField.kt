@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
@@ -236,6 +237,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
+    @SuppressLint("InlinedApi")
     protected fun isRTL(): Boolean {
         val direction = getResolvedLayoutDirection()
         return direction == View.LAYOUT_DIRECTION_RTL
@@ -252,7 +254,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     protected fun refreshInput() {
         val currentSelection = selectionStart
-        setText(text)
+        text = text
         val textLength = text?.length ?: 0
 
         when {

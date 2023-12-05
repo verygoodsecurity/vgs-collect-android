@@ -21,36 +21,36 @@ class VGSTokenizationRequestTest {
 
     @Test
     fun test_to_network_request() {
-        val BASE_URL = "base.url"
-        val METHOD = HTTPMethod.POST
-        val PATH = TOKENIZATION_PATH
+        val baseUrl = "base.url"
+        val method = HTTPMethod.POST
+        val path = TOKENIZATION_PATH
 
         val exampleRequest = NetworkRequest(
-            METHOD,
-            BASE_URL + PATH,
+            method,
+            baseUrl + path,
             emptyMap(),
             "{}",
-            false,
-            false,
-            VGSHttpBodyFormat.JSON,
-            60000L,
-            true
+            fieldsIgnore = false,
+            fileIgnore = false,
+            format = VGSHttpBodyFormat.JSON,
+            requestTimeoutInterval = 60000L,
+            requiresTokenization = true
         )
 
         val r = VGSTokenizationRequest.VGSRequestBuilder()
-            .build().toNetworkRequest(BASE_URL, emptyMap())
+            .build().toNetworkRequest(baseUrl, emptyMap())
 
         Assert.assertEquals(exampleRequest, r)
     }
 
     @Test
     fun test_create_request_with_route_id() {
-        val ROUTE_ID = "route-id"
+        val routeId = "route-id"
         val r = VGSTokenizationRequest.VGSRequestBuilder()
-            .setRouteId(ROUTE_ID)
+            .setRouteId(routeId)
             .build()
 
-        Assert.assertEquals(ROUTE_ID, r.routeId)
+        Assert.assertEquals(routeId, r.routeId)
     }
 
 

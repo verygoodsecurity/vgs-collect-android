@@ -346,16 +346,16 @@ abstract class InputFieldView @JvmOverloads constructor(
                 currentGravity = currentGravity or Gravity.TOP
             }
 
-            val LP = LinearLayout.LayoutParams(
+            val lp = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-            LP.weight = 1.0f
-            LP.setMargins(0, 0, 0, 0)
-            if (LP.gravity == -1) {
-                LP.gravity = Gravity.CENTER_VERTICAL
+            lp.weight = 1.0f
+            lp.setMargins(0, 0, 0, 0)
+            if (lp.gravity == -1) {
+                lp.gravity = Gravity.CENTER_VERTICAL
             }
-            layoutParams = LP
+            layoutParams = lp
 
             this.gravity = currentGravity
         }

@@ -57,15 +57,15 @@ class NotifierTest {
         val state = createMASTERCARD()
         notifier.onRefreshState(state)
 
-        val argument_1: ArgumentCaptor<FieldType> = ArgumentCaptor.forClass(FieldType::class.java)
-        val argument_2: ArgumentCaptor<Dependency> = ArgumentCaptor.forClass(Dependency::class.java)
-        Mockito.verify(notifier).onDependencyDetected(capture(argument_1), capture(argument_2))
+        val argument1: ArgumentCaptor<FieldType> = ArgumentCaptor.forClass(FieldType::class.java)
+        val argument2: ArgumentCaptor<Dependency> = ArgumentCaptor.forClass(Dependency::class.java)
+        Mockito.verify(notifier).onDependencyDetected(capture(argument1), capture(argument2))
 
-        assertEquals(FieldType.CVC, argument_1.value)
+        assertEquals(FieldType.CVC, argument1.value)
 
-        assertEquals(DependencyType.CARD, argument_2.value.dependencyType)
+        assertEquals(DependencyType.CARD, argument2.value.dependencyType)
 
-        val cvcRange = (argument_2.value.value as FieldContent.CardNumberContent).rangeCVV
+        val cvcRange = (argument2.value.value as FieldContent.CardNumberContent).rangeCVV
         assertArrayEquals(CardType.MASTERCARD.rangeCVV, cvcRange)
     }
 
@@ -76,15 +76,15 @@ class NotifierTest {
         val state = createAmEx()
         notifier.onRefreshState(state)
 
-        val argument_1: ArgumentCaptor<FieldType> = ArgumentCaptor.forClass(FieldType::class.java)
-        val argument_2: ArgumentCaptor<Dependency> = ArgumentCaptor.forClass(Dependency::class.java)
-        Mockito.verify(notifier).onDependencyDetected(capture(argument_1), capture(argument_2))
+        val argument1: ArgumentCaptor<FieldType> = ArgumentCaptor.forClass(FieldType::class.java)
+        val argument2: ArgumentCaptor<Dependency> = ArgumentCaptor.forClass(Dependency::class.java)
+        Mockito.verify(notifier).onDependencyDetected(capture(argument1), capture(argument2))
 
-        assertEquals(FieldType.CVC, argument_1.value)
+        assertEquals(FieldType.CVC, argument1.value)
 
-        assertEquals(DependencyType.CARD, argument_2.value.dependencyType)
+        assertEquals(DependencyType.CARD, argument2.value.dependencyType)
 
-        val cvcRange = (argument_2.value.value as FieldContent.CardNumberContent).rangeCVV
+        val cvcRange = (argument2.value.value as FieldContent.CardNumberContent).rangeCVV
         assertArrayEquals(CardType.AMERICAN_EXPRESS.rangeCVV, cvcRange)
     }
 

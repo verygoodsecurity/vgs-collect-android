@@ -8,16 +8,16 @@ import java.util.regex.Pattern
 
 /** @suppress */
 internal fun String.setupLocalhostURL(port: Int?): String {
-    val DIVIDER = ":"
-    val SCHEME = "http://"
+    val divider = ":"
+    val scheme = "http://"
 
     val prt = if (!port.isValidPort()) {
         VGSCollectLogger.warn(message = "Port is not specified")
         ""
     } else {
-        DIVIDER + port
+        divider + port
     }
-    return StringBuilder(SCHEME)
+    return StringBuilder(scheme)
         .append(this)
         .append(prt)
         .toString()
@@ -39,14 +39,14 @@ internal fun String.setupURL(rawValue: String): String {
 }
 
 private fun String.buildURL(env: String): String {
-    val DOMEN = "verygoodproxy.com"
-    val DIVIDER = "."
-    val SCHEME = "https://"
+    val domain = "verygoodproxy.com"
+    val divider = "."
+    val scheme = "https://"
 
-    val builder = StringBuilder(SCHEME)
-        .append(this).append(DIVIDER)
-        .append(env).append(DIVIDER)
-        .append(DOMEN)
+    val builder = StringBuilder(scheme)
+        .append(this).append(divider)
+        .append(env).append(divider)
+        .append(domain)
 
     return builder.toString()
 }

@@ -86,12 +86,13 @@ class InputSSNConnectionTest {
     private fun createFieldState(): VGSFieldState {
         val content = FieldContent.SSNContent()
         content.data = "123-12-3123"
-        val textItem = VGSFieldState(isValid = false,
+
+        return VGSFieldState(
+            isValid = false,
             isRequired = true,
             fieldName = "fieldName",
-            content = content)
-
-        return textItem
+            content = content
+        )
     }
 
     private fun <T> any(): T = Mockito.any<T>()

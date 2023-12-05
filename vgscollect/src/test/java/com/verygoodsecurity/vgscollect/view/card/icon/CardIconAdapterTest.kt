@@ -121,10 +121,10 @@ class CardIconAdapterTest {
         }
 
         private fun handleAmex(): Drawable {
-            val c_icon_size_w = context.resources.getDimension(R.dimen.vgsfield_padding).toInt()
-            val c_icon_size_h = context.resources.getDimension(R.dimen.vgsfield_padding).toInt()
+            val cIconSizeW = context.resources.getDimension(R.dimen.vgsfield_padding).toInt()
+            val cIconSizeH = context.resources.getDimension(R.dimen.vgsfield_padding).toInt()
             val d = getDrawable(R.drawable.ic_amex_dark)
-            d.setBounds(0,0,c_icon_size_w, c_icon_size_h)
+            d.setBounds(0,0,cIconSizeW, cIconSizeH)
             return d
         }
 

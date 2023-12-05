@@ -25,11 +25,11 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
 
     companion object {
         const val VAULT_ID = "vault_id"
-        const val ENVIROMENT = "env_type"
+        const val ENVIRONMENT = "env_type"
         const val PATH = "path"
     }
 
-    private lateinit var vault_id: String
+    private lateinit var vaultId: String
     private lateinit var path: String
     private lateinit var env: Environment
 
@@ -43,7 +43,7 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
 
         retrieveAttributes()
 
-        vgsForm = VGSCollect(requireActivity(), vault_id, env)
+        vgsForm = VGSCollect(requireActivity(), vaultId, env)
 
         vgsForm.addOnResponseListeners(this)
         vgsForm.addOnFieldStateChangeListener(this)
@@ -90,10 +90,10 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
 
     private fun retrieveAttributes() {
         arguments?.let {
-            vault_id = it.getString(VAULT_ID, "")
+            vaultId = it.getString(VAULT_ID, "")
             path = it.getString(PATH, "/")
 
-            val envId = it.getInt(ENVIROMENT, 0)
+            val envId = it.getInt(ENVIRONMENT, 0)
             env = Environment.values()[envId]
         }
     }

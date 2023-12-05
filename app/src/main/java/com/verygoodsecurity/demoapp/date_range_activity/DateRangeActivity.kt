@@ -136,7 +136,7 @@ class DateRangeActivity : AppCompatActivity(), VgsCollectResponseListener, OnFie
         )
         binding.vgsTiedDateRange.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
             override fun onStateChange(state: FieldState) {
-                Log.d(DateRangeActivity::class.java.simpleName, "onStateChange: ${state}")
+                Log.d(DateRangeActivity::class.java.simpleName, "onStateChange: $state")
             }
         })
     }

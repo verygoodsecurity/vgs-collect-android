@@ -6,7 +6,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import org.hamcrest.Matcher
 
-class FieldClickAction() : BaseAction() {
+class FieldClickAction : BaseAction() {
     override fun getDescription(): String = "VGS input field click"
 
     override fun getConstraints(): Matcher<View> = isAssignableFrom(InputFieldView::class.java)

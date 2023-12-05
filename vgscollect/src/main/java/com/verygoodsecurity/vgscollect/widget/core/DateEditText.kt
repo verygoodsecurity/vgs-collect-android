@@ -89,7 +89,7 @@ abstract class DateEditText @JvmOverloads internal constructor(
                 }
 
                 setText(text)
-                setEnabled(enabled)
+                isEnabled = enabled
 
                 setInputType(inputType)
 

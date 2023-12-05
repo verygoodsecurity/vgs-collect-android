@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_padding_material_micro"
             android:fontFamily="sans-serif-medium"
-            android:text="Card Holder"
+            android:text="@string/card_holder_title"
             android:textAppearance="?attr/textAppearanceCaption" />
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -57,7 +57,7 @@
             android:layout_marginTop="@dimen/margin_padding_material_small"
             android:layout_marginBottom="@dimen/margin_padding_material_micro"
             android:fontFamily="sans-serif-medium"
-            android:text="Card Number"
+            android:text="@string/card_number_title"
             android:textAppearance="?attr/textAppearanceCaption" />
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_padding_material_micro"
                     android:fontFamily="sans-serif-medium"
-                    android:text="Expiry"
+                    android:text="@string/expiry_title"
                     android:textAppearance="?attr/textAppearanceCaption" />
 
                 <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_padding_material_micro"
                     android:fontFamily="sans-serif-medium"
-                    android:text="CVC"
+                    android:text="@string/cvc_title"
                     android:textAppearance="?attr/textAppearanceCaption" />
 
                 <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -188,7 +188,7 @@
         android:layout_weight="1"
         android:insetTop="0dp"
         android:insetBottom="0dp"
-        android:text="Deposit"
+        android:text="@string/deposit_title"
         app:backgroundTint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

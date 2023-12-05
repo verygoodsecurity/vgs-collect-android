@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.date
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -15,7 +16,6 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
-import androidx.annotation.NonNull
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
 import java.util.*
@@ -124,7 +124,7 @@ internal class DatePickerBuilder(private val context: Context, mode:DatePickerMo
 
     @ColorInt
     fun getThemeColor(
-        @NonNull context: Context,
+        context: Context,
         @AttrRes attributeColor: Int
     ): Int {
         val value = TypedValue()
@@ -145,6 +145,7 @@ internal class DatePickerBuilder(private val context: Context, mode:DatePickerMo
         )
     }
 
+    @SuppressLint("DiscouragedApi")
     private fun setupFieldVisibility() {
         if(!isDateVisible) {
             datePickerControl.findViewById<ViewGroup>(

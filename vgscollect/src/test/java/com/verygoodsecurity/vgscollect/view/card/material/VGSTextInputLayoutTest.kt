@@ -14,7 +14,6 @@ import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 import org.junit.Assert.*
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
@@ -94,48 +93,48 @@ class VGSTextInputLayoutTest {
     fun test_attach_first_set_error_string() {
         attachView()
 
-        val TAG = "test"
-        textInputLayout.setError(TAG)
+        val tag = "test"
+        textInputLayout.setError(tag)
         val state = textInputLayout.getFieldState()
 
-        assertEquals(TAG, state.error)
-        assertEquals(TAG, state.getInternalView().error)
+        assertEquals(tag, state.error)
+        assertEquals(tag, state.getInternalView().error)
     }
 
     @Test
     fun test_attach_first_set_error_res() {
         attachView()
 
-        val TAG = "VGSCollect"
+        val tag = "VGSCollect"
         textInputLayout.setError(R.string.sdk_name)
         val state = textInputLayout.getFieldState()
 
-        assertEquals(TAG, state.error)
-        assertEquals(TAG, state.getInternalView().error)
+        assertEquals(tag, state.error)
+        assertEquals(tag, state.getInternalView().error)
     }
 
     @Test
     fun test_attach_first_set_hint_string() {
         attachView()
 
-        val TAG = "test"
-        textInputLayout.setHint(TAG)
+        val tag = "test"
+        textInputLayout.setHint(tag)
         val state = textInputLayout.getFieldState()
 
-        assertEquals(TAG, state.hint)
-        assertEquals(TAG, state.getInternalView().hint)
+        assertEquals(tag, state.hint)
+        assertEquals(tag, state.getInternalView().hint)
     }
 
     @Test
     fun test_attach_first_set_hint_res() {
         attachView()
 
-        val TAG = "VGSCollect"
+        val tag = "VGSCollect"
         textInputLayout.setHint(R.string.sdk_name)
         val state = textInputLayout.getFieldState()
 
-        assertEquals(TAG, state.hint)
-        assertEquals(TAG, state.getInternalView().hint)
+        assertEquals(tag, state.hint)
+        assertEquals(tag, state.getInternalView().hint)
     }
 
     @Test
@@ -195,7 +194,6 @@ class VGSTextInputLayoutTest {
         attachView()
 
         val myList =  ColorStateList(arrayOf(intArrayOf()), intArrayOf(android.R.color.black))
-        val COLOR = android.R.color.black
 
         textInputLayout.setPasswordVisibilityToggleTintList(myList)
         val state = textInputLayout.getFieldState()
@@ -207,11 +205,11 @@ class VGSTextInputLayoutTest {
     fun test_attach_first_set_password_visibility_toggle_drawable() {
         attachView()
 
-        val DRAWABLE = R.drawable.ic_amex_dark
-        textInputLayout.setPasswordVisibilityToggleDrawable(DRAWABLE)
+        val drawable = R.drawable.ic_amex_dark
+        textInputLayout.setPasswordVisibilityToggleDrawable(drawable)
         val state = textInputLayout.getFieldState()
 
-        assertEquals(DRAWABLE, state.passwordVisibilityToggleDrawable)
+        assertEquals(drawable, state.passwordVisibilityToggleDrawable)
     }
 
     @Test
@@ -250,24 +248,24 @@ class VGSTextInputLayoutTest {
     fun test_attach_first_box_stroke_color() {
         attachView()
 
-        val COLOR = Color.BLUE
+        val color = Color.BLUE
         textInputLayout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE)
-        textInputLayout.setBoxStrokeColor(COLOR)
+        textInputLayout.setBoxStrokeColor(color)
         val state = textInputLayout.getFieldState()
         assertEquals(state.getInternalView().boxStrokeColor, state.boxStrokeColor)
-        assertEquals(COLOR, state.boxStrokeColor)
+        assertEquals(color, state.boxStrokeColor)
     }
 
     @Test
     fun test_attach_first_set_box_corner_radius() {
         attachView()
 
-        val TopStart = 10f
-        val TopEnd = 20f
-        val BottomStart = 30f
-        val BottomEnd = 40f
+        val topStart = 10f
+        val topEnd = 20f
+        val bottomStart = 30f
+        val bottomEnd = 40f
         textInputLayout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE)
-        textInputLayout.setBoxCornerRadius(TopStart, TopEnd, BottomStart, BottomEnd)
+        textInputLayout.setBoxCornerRadius(topStart, topEnd, bottomStart, bottomEnd)
 
         val state = textInputLayout.getFieldState()
         val iv = state.getInternalView()
@@ -278,42 +276,42 @@ class VGSTextInputLayoutTest {
         //getBoxCornerRadiusBottomStart return getBottomRightCornerResolvedSize
 
         assertEquals(iv.boxCornerRadiusBottomStart, state.boxCornerRadiusBottomStart)
-        assertEquals(BottomStart, state.boxCornerRadiusBottomStart)
+        assertEquals(bottomStart, state.boxCornerRadiusBottomStart)
 
         assertEquals(iv.boxCornerRadiusBottomEnd, state.boxCornerRadiusBottomEnd)
-        assertEquals(BottomEnd, state.boxCornerRadiusBottomEnd)
+        assertEquals(bottomEnd, state.boxCornerRadiusBottomEnd)
 
         assertEquals(iv.boxCornerRadiusTopStart, state.boxCornerRadiusTopStart)
-        assertEquals(TopStart, state.boxCornerRadiusTopStart)
+        assertEquals(topStart, state.boxCornerRadiusTopStart)
 
         assertEquals(iv.boxCornerRadiusTopEnd, state.boxCornerRadiusTopEnd)
-        assertEquals(TopEnd, state.boxCornerRadiusTopEnd)
+        assertEquals(topEnd, state.boxCornerRadiusTopEnd)
     }
 
     @Test
     fun test_attach_first_set_padding() {
         attachView()
 
-        val Start = 10
-        val Top = 20
-        val Bottom = 30
-        val End = 40
-        textInputLayout.setPadding(Start, Top, End, Bottom)
+        val start = 10
+        val top = 20
+        val bottom = 30
+        val end = 40
+        textInputLayout.setPadding(start, top, end, bottom)
 
         val state = textInputLayout.getFieldState()
         val iv = state.getInternalView()
 
         assertEquals(iv.paddingTop, state.top)
-        assertEquals(Top, state.top)
+        assertEquals(top, state.top)
 
         assertEquals(iv.paddingLeft, state.left)
-        assertEquals(Start, state.left)
+        assertEquals(start, state.left)
 
         assertEquals(iv.paddingRight, state.right)
-        assertEquals(End, state.right)
+        assertEquals(end, state.right)
 
         assertEquals(iv.paddingBottom, state.bottom)
-        assertEquals(Bottom, state.bottom)
+        assertEquals(bottom, state.bottom)
     }
 
 
@@ -333,50 +331,50 @@ class VGSTextInputLayoutTest {
 
     @Test
     fun test_attach_last_set_error_string() {
-        val TAG = "test"
-        textInputLayout.setError(TAG)
+        val tag = "test"
+        textInputLayout.setError(tag)
         attachView()
 
         val state = textInputLayout.getFieldState()
 
-        assertEquals(TAG, state.error)
-        assertEquals(TAG, state.getInternalView().error)
+        assertEquals(tag, state.error)
+        assertEquals(tag, state.getInternalView().error)
     }
 
     @Test
     fun test_attach_last_set_error_res() {
-        val TAG = "VGSCollect"
+        val tag = "VGSCollect"
         textInputLayout.setError(R.string.sdk_name)
         attachView()
 
         val state = textInputLayout.getFieldState()
 
-        assertEquals(TAG, state.error)
-        assertEquals(TAG, state.getInternalView().error)
+        assertEquals(tag, state.error)
+        assertEquals(tag, state.getInternalView().error)
     }
 
     @Test
     fun test_attach_last_set_hint_string() {
-        val TAG = "test"
-        textInputLayout.setHint(TAG)
+        val tag = "test"
+        textInputLayout.setHint(tag)
         attachView()
 
         val state = textInputLayout.getFieldState()
 
-        assertEquals(TAG, state.hint)
-        assertEquals(TAG, state.getInternalView().hint)
+        assertEquals(tag, state.hint)
+        assertEquals(tag, state.getInternalView().hint)
     }
 
     @Test
     fun test_attach_last_set_hint_res() {
-        val TAG = "VGSCollect"
+        val tag = "VGSCollect"
         textInputLayout.setHint(R.string.sdk_name)
         attachView()
 
         val state = textInputLayout.getFieldState()
 
-        assertEquals(TAG, state.hint)
-        assertEquals(TAG, state.getInternalView().hint)
+        assertEquals(tag, state.hint)
+        assertEquals(tag, state.getInternalView().hint)
     }
 
     @Test
@@ -415,7 +413,6 @@ class VGSTextInputLayoutTest {
     @Test
     fun test_attach_last_set_password_visibility_toggle_tint_list() {
         val myList =  ColorStateList(arrayOf(intArrayOf()), intArrayOf(android.R.color.black))
-        val COLOR = android.R.color.black
 
         textInputLayout.setPasswordVisibilityToggleTintList(myList)
         attachView()
@@ -427,13 +424,13 @@ class VGSTextInputLayoutTest {
 
     @Test
     fun test_attach_last_set_password_visibility_toggle_drawable() {
-        val DRAWABLE = R.drawable.ic_amex_dark
-        textInputLayout.setPasswordVisibilityToggleDrawable(DRAWABLE)
+        val drawable = R.drawable.ic_amex_dark
+        textInputLayout.setPasswordVisibilityToggleDrawable(drawable)
         attachView()
 
         val state = textInputLayout.getFieldState()
 
-        assertEquals(DRAWABLE, state.passwordVisibilityToggleDrawable)
+        assertEquals(drawable, state.passwordVisibilityToggleDrawable)
     }
 
     @Test
@@ -449,36 +446,36 @@ class VGSTextInputLayoutTest {
 
     @Test
     fun test_attach_last_box_background_color() {
-        val COLOR = Color.BLUE
+        val color = Color.BLUE
         textInputLayout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE)
-        textInputLayout.setBoxBackgroundColor(COLOR)
+        textInputLayout.setBoxBackgroundColor(color)
         attachView()
 
         val state = textInputLayout.getFieldState()
         assertEquals(state.getInternalView().boxBackgroundColor, state.boxBackgroundColor)
-        assertEquals(COLOR, state.boxBackgroundColor)
+        assertEquals(color, state.boxBackgroundColor)
     }
 
     @Test
     fun test_attach_last_box_stroke_color() {
-        val COLOR = Color.BLUE
+        val color = Color.BLUE
         textInputLayout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE)
-        textInputLayout.setBoxStrokeColor(COLOR)
+        textInputLayout.setBoxStrokeColor(color)
         attachView()
 
         val state = textInputLayout.getFieldState()
         assertEquals(state.getInternalView().boxStrokeColor, state.boxStrokeColor)
-        assertEquals(COLOR, state.boxStrokeColor)
+        assertEquals(color, state.boxStrokeColor)
     }
 
     @Test
     fun test_attach_last_set_box_corner_radius() {
-        val TopStart = 10f
-        val TopEnd = 20f
-        val BottomStart = 30f
-        val BottomEnd = 40f
+        val topStart = 10f
+        val topEnd = 20f
+        val bottomStart = 30f
+        val bottomEnd = 40f
         textInputLayout.setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE)
-        textInputLayout.setBoxCornerRadius(TopStart, TopEnd, BottomStart, BottomEnd)
+        textInputLayout.setBoxCornerRadius(topStart, topEnd, bottomStart, bottomEnd)
 
         attachView()
 
@@ -491,78 +488,78 @@ class VGSTextInputLayoutTest {
         //getBoxCornerRadiusBottomStart return getBottomRightCornerResolvedSize
 
         assertEquals(iv.boxCornerRadiusBottomStart, state.boxCornerRadiusBottomStart)
-        assertEquals(BottomStart, state.boxCornerRadiusBottomStart)
+        assertEquals(bottomStart, state.boxCornerRadiusBottomStart)
 
         assertEquals(iv.boxCornerRadiusBottomEnd, state.boxCornerRadiusBottomEnd)
-        assertEquals(BottomEnd, state.boxCornerRadiusBottomEnd)
+        assertEquals(bottomEnd, state.boxCornerRadiusBottomEnd)
 
         assertEquals(iv.boxCornerRadiusTopStart, state.boxCornerRadiusTopStart)
-        assertEquals(TopStart, state.boxCornerRadiusTopStart)
+        assertEquals(topStart, state.boxCornerRadiusTopStart)
 
         assertEquals(iv.boxCornerRadiusTopEnd, state.boxCornerRadiusTopEnd)
-        assertEquals(TopEnd, state.boxCornerRadiusTopEnd)
+        assertEquals(topEnd, state.boxCornerRadiusTopEnd)
     }
 
     @Test
     fun test_attach_end_set_padding() {
-        val Start = 10
-        val Top = 20
-        val Bottom = 30
-        val End = 40
-        textInputLayout.setPadding(Start, Top, End, Bottom)
+        val start = 10
+        val top = 20
+        val bottom = 30
+        val end = 40
+        textInputLayout.setPadding(start, top, end, bottom)
         attachView()
 
         val state = textInputLayout.getFieldState()
         val iv = state.getInternalView()
 
         assertEquals(iv.paddingTop, state.top)
-        assertEquals(Top, state.top)
+        assertEquals(top, state.top)
 
         assertEquals(iv.paddingLeft, state.left)
-        assertEquals(Start, state.left)
+        assertEquals(start, state.left)
 
         assertEquals(iv.paddingRight, state.right)
-        assertEquals(End, state.right)
+        assertEquals(end, state.right)
 
         assertEquals(iv.paddingBottom, state.bottom)
-        assertEquals(Bottom, state.bottom)
+        assertEquals(bottom, state.bottom)
     }
 
 
     @Test
     fun test_empty_container_set_error_string() {
-        val TAG = "test"
-        textInputLayout.setError(TAG)
+        val tag = "test"
+        textInputLayout.setError(tag)
         val state = textInputLayout.getFieldState()
 
-        assertEquals(TAG, state.error)
+        assertEquals(tag, state.error)
     }
 
     @Test
     fun test_empty_container_set_error_res() {
-        val TAG = "VGSCollect"
+        val tag = "VGSCollect"
         textInputLayout.setError(R.string.sdk_name)
         val state = textInputLayout.getFieldState()
 
-        assertEquals(TAG, state.error)
+        assertEquals(tag, state.error)
     }
 
     @Test
     fun test_empty_container_set_hint_string() {
-        val TAG = "test"
-        textInputLayout.setHint(TAG)
+        val tag = "test"
+        textInputLayout.setHint(tag)
         val state = textInputLayout.getFieldState()
 
-        assertEquals(TAG, state.hint)
+        assertEquals(tag, state.hint)
     }
 
     @Test
     fun test_empty_container_set_hint_res() {
-        val TAG = "VGSCollect"
+        val tag = "VGSCollect"
         textInputLayout.setHint(R.string.sdk_name)
         val state = textInputLayout.getFieldState()
 
-        assertEquals(TAG, state.hint)
+        assertEquals(tag, state.hint)
     }
 
     @Test
@@ -607,7 +604,6 @@ class VGSTextInputLayoutTest {
     @Test
     fun test_empty_container_set_password_visibility_toggle_tint_list() {
         val myList =  ColorStateList(arrayOf(intArrayOf()), intArrayOf(android.R.color.black))
-        val COLOR = android.R.color.black
 
         textInputLayout.setPasswordVisibilityToggleTintList(myList)
         val state = textInputLayout.getFieldState()
@@ -617,11 +613,11 @@ class VGSTextInputLayoutTest {
 
     @Test
     fun test_empty_container_set_password_visibility_toggle_drawable() {
-        val DRAWABLE = R.drawable.ic_amex_dark
-        textInputLayout.setPasswordVisibilityToggleDrawable(DRAWABLE)
+        val drawable = R.drawable.ic_amex_dark
+        textInputLayout.setPasswordVisibilityToggleDrawable(drawable)
         val state = textInputLayout.getFieldState()
 
-        assertEquals(DRAWABLE, state.passwordVisibilityToggleDrawable)
+        assertEquals(drawable, state.passwordVisibilityToggleDrawable)
     }
 
     @Test
@@ -641,18 +637,18 @@ class VGSTextInputLayoutTest {
 
     @Test
     fun test_empty_container_box_background_color() {
-        val COLOR = Color.BLUE
-        textInputLayout.setBoxBackgroundColor(COLOR)
+        val color = Color.BLUE
+        textInputLayout.setBoxBackgroundColor(color)
         val state = textInputLayout.getFieldState()
-        assertEquals(COLOR, state.boxBackgroundColor)
+        assertEquals(color, state.boxBackgroundColor)
     }
 
     @Test
     fun test_empty_container_box_stroke_color() {
-        val COLOR = Color.BLUE
-        textInputLayout.setBoxStrokeColor(COLOR)
+        val color = Color.BLUE
+        textInputLayout.setBoxStrokeColor(color)
         val state = textInputLayout.getFieldState()
-        assertEquals(COLOR, state.boxStrokeColor)
+        assertEquals(color, state.boxStrokeColor)
     }
 
     @Test
@@ -669,18 +665,18 @@ class VGSTextInputLayoutTest {
 
     @Test
     fun test_empty_container_set_padding() {
-        val Start = 10
-        val Top = 20
-        val Bottom = 30
-        val End = 40
-        textInputLayout.setPadding(Start, Top, End, Bottom)
+        val start = 10
+        val top = 20
+        val bottom = 30
+        val end = 40
+        textInputLayout.setPadding(start, top, end, bottom)
 
         val state = textInputLayout.getFieldState()
 
-        assertEquals(Top, state.top)
-        assertEquals(Start, state.left)
-        assertEquals(End, state.right)
-        assertEquals(Bottom, state.bottom)
+        assertEquals(top, state.top)
+        assertEquals(start, state.left)
+        assertEquals(end, state.right)
+        assertEquals(bottom, state.bottom)
     }
 
     @Test
