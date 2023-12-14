@@ -60,7 +60,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     private var previewIconMode: PreviewIconMode = PreviewIconMode.ALWAYS
 
     private var maskAdapter = CardMaskAdapter()
-    private var cardNumberFormatter: Formatter? = null
+    private var cardNumberFormatter: CardNumberFormatter? = null
 
     private var lengthLimit: Int = -1
 
@@ -97,10 +97,15 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     }
 
     private fun applyFormatter() {
-        cardNumberFormatter = CardNumberFormatter().also {
+        cardNumberFormatter = CardNumberFormatter(this).also {
             it.setMask(derivedCardNumberMask)
             applyNewTextWatcher(it)
         }
+    }
+
+    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
+        super.onSelectionChanged(selStart, selEnd)
+        cardNumberFormatter?.onSelectionChanged(selStart, selEnd)
     }
 
     private fun applyInputType() {
