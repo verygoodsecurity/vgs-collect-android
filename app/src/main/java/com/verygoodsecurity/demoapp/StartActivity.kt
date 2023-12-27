@@ -46,7 +46,7 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
             startActivity(VGSViewPagerActivity::class.java)
         }
         binding.llDateRangeViewPagerFlow.setOnClickListener {
-            startActivity(TestActivity::class.java)
+            startActivity(DateRangeActivity::class.java)
         }
     }
 

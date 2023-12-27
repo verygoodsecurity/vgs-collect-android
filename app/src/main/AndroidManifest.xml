@@ -75,10 +75,6 @@
             android:name=".instrumented.CustomBrandsActivity"
             android:label="Instrumented Demo" />
 
-        <activity
-            android:name=".TestActivity"
-            android:label="Test" />
-
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
