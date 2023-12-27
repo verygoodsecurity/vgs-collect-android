@@ -8,10 +8,35 @@ import com.verygoodsecurity.vgscollect.util.extension.applyLimitOnMask
 import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscollect.util.extension.digits
+import com.verygoodsecurity.vgscollect.util.extension.formatDigits
 import org.junit.Assert.*
 import org.junit.Test
 
 class StringTest {
+
+    @Test
+    fun test_formatDigits_text_formatted_valid_selector() {
+        val mask = "#### #### #### ####"
+        val text = "1111222233334444"
+        val selectorPosition = 5
+
+        val result = text.formatDigits(mask, selectorPosition)
+
+        assertEquals("1111 2222 3333 4444", result.first)
+        assertEquals(6, result.second)
+    }
+
+    @Test
+    fun test_formatDigits_text_formatted_valid_selector_default() {
+        val mask = "#### #### #### ####"
+        val text = "1111 2222 33334444"
+        val selectorPosition = 5
+
+        val result = text.formatDigits(mask, selectorPosition)
+
+        assertEquals("1111 2222 3333 4444", result.first)
+        assertEquals(null, result.second)
+    }
 
     @Test
     fun test_concat_with_dash() {
