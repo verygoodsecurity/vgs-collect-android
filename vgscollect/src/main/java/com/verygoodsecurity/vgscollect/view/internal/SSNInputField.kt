@@ -5,12 +5,11 @@ import android.text.InputType
 import android.text.method.DigitsKeyListener
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
-import com.verygoodsecurity.vgscollect.util.extension.formatToMask
+import com.verygoodsecurity.vgscollect.util.extension.formatDigits
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputSSNConnection
-import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
-import com.verygoodsecurity.vgscollect.view.card.formatter.SSNumberFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.digit.DigitInputFormatter
 import com.verygoodsecurity.vgscollect.view.card.validation.LengthMatchValidator
 import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 import com.verygoodsecurity.vgscollect.widget.SSNEditText.Companion.DIVIDER
@@ -24,7 +23,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     private var outputDivider: String = DIVIDER
     private var derivedNumberMask = MASK
 
-    private var numberFormatter: Formatter? = null
+    private var fromatter: DigitInputFormatter? = null
 
     override fun applyFieldType() {
         prepareValidation()
@@ -54,10 +53,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
     }
 
     private fun applyFormatter() {
-        numberFormatter = SSNumberFormatter().also {
-            it.setMask(derivedNumberMask)
-            applyNewTextWatcher(it)
-        }
+        fromatter = DigitInputFormatter(derivedNumberMask).also { applyNewTextWatcher(it) }
     }
 
     private fun applyDividerOnMask() {
@@ -65,9 +61,9 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
             replace(Regex(MASK_REGEX), divider)
         }
 
-        if (numberFormatter?.getMask() != newNumberMask) {
+        if (fromatter?.getMask() != newNumberMask) {
             derivedNumberMask = newNumberMask
-            numberFormatter?.setMask(newNumberMask)
+            fromatter?.setMask(newNumberMask)
             refreshOutputContent()
         }
     }
@@ -91,9 +87,7 @@ internal class SSNInputField(context: Context) : BaseInputField(context) {
 
     private fun createSSNContent(str: String): FieldContent.SSNContent {
         val c = FieldContent.SSNContent()
-        c.rawData = MASK.replace(DIVIDER, outputDivider).run {
-            str.formatToMask(this)
-        }
+        c.rawData = MASK.replace(DIVIDER, outputDivider).run { str.formatDigits(this).first }
         c.data = str
         c.vaultStorage = vaultStorage
         c.vaultAliasFormat = vaultAliasFormat
