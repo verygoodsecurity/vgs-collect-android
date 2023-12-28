@@ -85,7 +85,7 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
                 }
 
                 setText(text)
-                setEnabled(enabled)
+                isEnabled = enabled
                 setInputType(inputType)
 
                 applyPreviewIconMode(previewCardVisibility)

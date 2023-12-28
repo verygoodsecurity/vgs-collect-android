@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
-            android:text="Add credit or debit card"
+            android:text="@string/add_credit_or_debit_card_title"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_padding_material_micro"
                 android:fontFamily="sans-serif-medium"
-                android:text="Card Holder"
+                android:text="@string/card_holder_title"
                 android:textAppearance="?attr/textAppearanceCaption" />
 
             <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -140,7 +140,7 @@
                 android:layout_marginTop="@dimen/margin_padding_material_small"
                 android:layout_marginBottom="@dimen/margin_padding_material_micro"
                 android:fontFamily="sans-serif-medium"
-                android:text="Card Number"
+                android:text="@string/card_number_title"
                 android:textAppearance="?attr/textAppearanceCaption" />
 
             <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -182,7 +182,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_padding_material_micro"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Expiry"
+                        android:text="@string/expiry_title"
                         android:textAppearance="?attr/textAppearanceCaption" />
 
                     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -225,7 +225,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/margin_padding_material_micro"
                         android:fontFamily="sans-serif-medium"
-                        android:text="CVC"
+                        android:text="@string/cvc_title"
                         android:textAppearance="?attr/textAppearanceCaption" />
 
                     <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout

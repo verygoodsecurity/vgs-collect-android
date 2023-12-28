@@ -4,7 +4,6 @@ import com.verygoodsecurity.vgscollect.core.*
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
-import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import org.junit.Test
 import org.mockito.Mockito
 
@@ -24,11 +23,11 @@ class ApiClientTest {
             "https://www.test.com/post",
             headers,
             data,
-            false,
-            false,
-            VGSHttpBodyFormat.JSON,
-            60000L,
-             false
+            fieldsIgnore = false,
+            fileIgnore = false,
+            format = VGSHttpBodyFormat.JSON,
+            requestTimeoutInterval = 60000L,
+            requiresTokenization = false
         )
 
         client.execute(r)
@@ -50,11 +49,11 @@ class ApiClientTest {
             "https://www.test.com/post",
             headers,
             data,
-            false,
-            false,
-            VGSHttpBodyFormat.JSON,
-            60000L,
-            false
+            fieldsIgnore = false,
+            fileIgnore = false,
+            format = VGSHttpBodyFormat.JSON,
+            requestTimeoutInterval = 60000L,
+            requiresTokenization = false
         )
 
         client.enqueue(r)
@@ -77,11 +76,11 @@ class ApiClientTest {
             "https://www.test.com/post",
             headers,
             data,
-            false,
-            false,
-            VGSHttpBodyFormat.JSON,
-            60000L,
-            true
+            fieldsIgnore = false,
+            fileIgnore = false,
+            format = VGSHttpBodyFormat.JSON,
+            requestTimeoutInterval = 60000L,
+            requiresTokenization = true
         )
 
         client.enqueue(r)

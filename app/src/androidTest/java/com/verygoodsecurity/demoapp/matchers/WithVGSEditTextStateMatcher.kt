@@ -3,7 +3,6 @@ package com.verygoodsecurity.demoapp.matchers
 import android.view.View
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.remote.annotation.RemoteMsgConstructor
-import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
 import com.verygoodsecurity.vgscollect.widget.VGSEditText
 import org.hamcrest.Description
 

@@ -185,26 +185,28 @@ class InputCardNumberConnectionTest {
         connection.addOutputListener(stateListener)
     }
 
-    private fun createFieldStateMastercard(divider:String):VGSFieldState {
+    private fun createFieldStateMastercard(divider: String): VGSFieldState {
         val content = FieldContent.CardNumberContent()
         content.data = "5555${divider}5555${divider}5555${divider}4444"
-        val textItem = VGSFieldState(isValid = false,
+
+        return VGSFieldState(
+            isValid = false,
             isRequired = true,
             fieldName = "fieldName",
-            content = content)
-
-        return textItem
+            content = content
+        )
     }
 
-    private fun createFieldStateVisa(divider:String):VGSFieldState {
+    private fun createFieldStateVisa(divider: String): VGSFieldState {
         val content = FieldContent.CardNumberContent()
         content.data = "4111${divider}1111${divider}1111${divider}1111"
-        val textItem = VGSFieldState(isValid = false,
+
+        return VGSFieldState(
+            isValid = false,
             isRequired = false,
             fieldName = "fieldName",
-            content = content)
-
-        return textItem
+            content = content
+        )
     }
 
     private fun <T> any(): T = Mockito.any<T>()

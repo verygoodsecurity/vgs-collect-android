@@ -69,7 +69,7 @@ class PersonNameEditText @JvmOverloads constructor(
                 setTypeface(getTypeface(), textStyle)
 
                 setText(text)
-                setEnabled(enabled)
+                isEnabled = enabled
 
                 setInputType(inputType)
 

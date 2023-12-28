@@ -82,7 +82,7 @@ open class VGSEditText @JvmOverloads constructor(
                 }
 
                 setText(text)
-                setEnabled(enabled)
+                isEnabled = enabled
                 setVaultAliasFormat(VGSVaultAliasFormat.values()[aliasFormat])
                 setVaultStorageType(VGSVaultStorageType.values()[storageType])
                 enableTokenization(enableTokenization)

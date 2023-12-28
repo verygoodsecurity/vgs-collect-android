@@ -1,11 +1,10 @@
 package com.verygoodsecurity.vgscollect.core.model
 
-import com.verygoodsecurity.vgscollect.view.date.DateRangeFormatTest
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Test
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.time.Duration.Companion.milliseconds
+import java.util.Calendar
 
 class VGSDateTest {
 
@@ -17,11 +16,6 @@ class VGSDateTest {
         assertEquals(VGSDate.create(24, 10, 2025)?.timeInMillis, timeInMillis(24, 10, 2025))
         assertNull(VGSDate.create(3, 15, 2023))
         assertNull(VGSDate.create(40, 10, 2023))
-    }
-
-    @Test
-    fun test_create_failure() {
-        //VGSDate.create()
     }
 
     private fun timeInMillis(day: Int, month: Int, year: Int): Long = Calendar.getInstance().apply {

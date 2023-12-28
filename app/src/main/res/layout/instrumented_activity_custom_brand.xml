@@ -25,7 +25,7 @@
             android:id="@+id/applyDividerBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Apply Divider"
+            android:text="@string/apply_divider_title"
             android:layout_margin="5dp"
             android:layout_weight="1"/>
 
@@ -33,7 +33,7 @@
             android:id="@+id/addBrandBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="add brand"
+            android:text="@string/add_brand_title"
             android:layout_margin="5dp"
             android:layout_weight="1"/>
 
@@ -41,7 +41,7 @@
             android:id="@+id/overrideExistedBrandBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="override brand"
+            android:text="@string/override_brand_title"
             android:layout_margin="5dp"
             android:layout_weight="1"/>
 
@@ -56,7 +56,7 @@
             android:id="@+id/inflateCardNumberLay"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Inflate last Lay"
+            android:text="@string/inflate_last_lay_title"
             android:layout_margin="5dp"
             android:layout_weight="1"/>
 
@@ -64,7 +64,7 @@
             android:id="@+id/createCardNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Create last Lay"
+            android:text="@string/create_last_lay_title"
             android:layout_margin="5dp"
             android:layout_weight="1"/>
 
@@ -75,6 +75,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        android:text="attach Card Number"/>
+        android:text="@string/attach_card_number_title"/>
 
 </LinearLayout>

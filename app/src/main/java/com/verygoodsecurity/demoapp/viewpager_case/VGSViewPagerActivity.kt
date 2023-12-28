@@ -21,13 +21,9 @@ import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 
 class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
 
-    companion object {
-        const val USER_SCAN_REQUEST_CODE = 0x7
-    }
-
     private lateinit var binding: ActivityViewpagerCollectDemoBinding
 
-    private lateinit var vault_id: String
+    private lateinit var vaultId: String
     private lateinit var path: String
     private lateinit var env: Environment
 
@@ -68,13 +64,13 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
     private fun retrieveSettings() {
         val bndl = intent?.extras
 
-        vault_id = bndl?.getString(StartActivity.KEY_BUNDLE_VAULT_ID, "") ?: ""
+        vaultId = bndl?.getString(StartActivity.KEY_BUNDLE_VAULT_ID, "") ?: ""
         path = bndl?.getString(StartActivity.KEY_BUNDLE_PATH, "/") ?: ""
 
         val envId = bndl?.getInt(StartActivity.KEY_BUNDLE_ENVIRONMENT, 0) ?: 0
         env = Environment.values()[envId]
 
-        vgsForm = VGSCollect(this, vault_id, env)
+        vgsForm = VGSCollect(this, vaultId, env)
     }
 
     private fun setupViewPager() {
@@ -165,7 +161,7 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
             binding.viewPager.setCurrentItem(position, true)
         }
 
-        binding.nextBtn.text = "Next"
+        binding.nextBtn.text = getString(R.string.next_title)
         binding.nextBtn.icon = AppCompatResources.getDrawable(this, R.drawable.ic_arrow_right)
 
         binding.backBtn.visibility = if (position == 0) {
@@ -192,7 +188,7 @@ class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, Vi
         if (isValid) {
             binding.backBtn.visibility = View.VISIBLE
             if (position == adapter.itemCount - 1) {
-                binding.nextBtn.setText("Submit")
+                binding.nextBtn.text = getString(R.string.submit_title)
                 binding.nextBtn.icon = null
             }
 

@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="some details"
+        android:text="@string/some_details_default_value"
         android:gravity="center"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,13 +5,13 @@ include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-blinkcard'
 dependencyResolutionManagement {
     versionCatalogs {
         gradleLibs {
-            library('tools', 'com.android.tools.build:gradle:8.1.2')
-            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.20')
+            library('tools', 'com.android.tools.build:gradle:8.2.0')
+            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.21')
             library('maven', 'com.github.dcendents:android-maven-gradle-plugin:2.1')
             library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.25.3')
             library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.9.10')
-            library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.3')
-            library('kover', 'org.jetbrains.kotlinx:kover-gradle-plugin:0.7.4')
+            library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.4')
+            library('kover', 'org.jetbrains.kotlinx:kover-gradle-plugin:0.7.5')
         }
         libs {
             // Libraries
@@ -35,7 +35,7 @@ dependencyResolutionManagement {
         }
         testLibs {
             library('junit', 'junit:junit:4.13.2')
-            library('mockito-core', 'org.mockito:mockito-core:5.7.0')
+            library('mockito-core', 'org.mockito:mockito-core:5.8.0')
             library('mockito-inline', 'org.mockito:mockito-inline:5.2.0')
             library('robolectric', 'org.robolectric:robolectric:4.11.1')
             library('mockk', 'io.mockk:mockk:1.12.4')

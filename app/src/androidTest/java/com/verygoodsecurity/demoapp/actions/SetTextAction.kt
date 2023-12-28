@@ -2,12 +2,11 @@ package com.verygoodsecurity.demoapp.actions
 
 import android.view.View
 import androidx.test.espresso.UiController
-import androidx.test.espresso.ViewAction
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.remote.annotation.RemoteMsgField
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import org.hamcrest.Matcher
-import java.util.*
+import java.util.Locale
 
 
 class SetTextAction(
