@@ -21,6 +21,8 @@ dependencyResolutionManagement {
             library('okhttp', 'com.squareup.okhttp3:okhttp:4.12.0')
             library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.9.10')
             library('cardio', 'io.card:android-sdk:5.5.1')
+            library('compose-material', 'androidx.compose.material:material:1.5.4')
+            library('compose-ui-tooling-preview', 'androidx.compose.ui:ui-tooling-preview:1.5.4')
         }
         demoLibs {
             library('androidx-constraintlayout', 'androidx.constraintlayout:constraintlayout:2.1.4')
@@ -32,6 +34,7 @@ dependencyResolutionManagement {
         }
         debugLibs {
             library('leakcanary', 'com.squareup.leakcanary:leakcanary-android:2.12')
+            library('compose-ui-tooling', 'androidx.compose.ui:ui-tooling:1.5.4')
         }
         testLibs {
             library('junit', 'junit:junit:4.13.2')
