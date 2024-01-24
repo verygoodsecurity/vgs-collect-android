@@ -28,7 +28,6 @@ import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
 import io.card.payment.CardIOActivity
 import io.card.payment.CreditCard
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.*
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.notNullValue
 import org.hamcrest.core.StringContains.containsString

@@ -5,10 +5,10 @@ include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-blinkcard'
 dependencyResolutionManagement {
     versionCatalogs {
         gradleLibs {
-            library('tools', 'com.android.tools.build:gradle:8.2.0')
-            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.21')
+            library('tools', 'com.android.tools.build:gradle:8.2.2')
+            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22')
             library('maven', 'com.github.dcendents:android-maven-gradle-plugin:2.1')
-            library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.25.3')
+            library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.27.0')
             library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.9.10')
             library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.4')
             library('kover', 'org.jetbrains.kotlinx:kover-gradle-plugin:0.7.5')
@@ -17,7 +17,7 @@ dependencyResolutionManagement {
             // Libraries
             library('androidx-appcompat', 'androidx.appcompat:appcompat:1.6.1')
             library('androidx-core-ktx', 'androidx.core:core-ktx:1.12.0')
-            library('material', 'com.google.android.material:material:1.9.0')
+            library('material', 'com.google.android.material:material:1.11.0')
             library('okhttp', 'com.squareup.okhttp3:okhttp:4.12.0')
             library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.9.10')
             library('cardio', 'io.card:android-sdk:5.5.1')
@@ -34,7 +34,7 @@ dependencyResolutionManagement {
             library('espresso-idling-resource', 'androidx.test.espresso:espresso-idling-resource:3.5.1')
         }
         debugLibs {
-            library('leakcanary', 'com.squareup.leakcanary:leakcanary-android:2.12')
+            library('leakcanary', 'com.squareup.leakcanary:leakcanary-android:2.13')
             library('compose-ui-tooling', 'androidx.compose.ui:ui-tooling:1.5.4')
         }
         testLibs {
