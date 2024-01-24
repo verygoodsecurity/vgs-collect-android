@@ -281,7 +281,7 @@ class ExpirationDateEditTextTest {
 
     @Test
     fun test_state_valid() {
-        val text = "12/2023"
+        val text = "12/2025"
         val stateResult = FieldState.DateState()
         stateResult.hasFocus = false
         stateResult.isEmpty = false
