@@ -183,12 +183,12 @@ fun ExpirationDateEditTextWrapper(
 }
 
 /**
- *  [ExpirationDateEditText] compose wrapper.
+ *  [CardVerificationCodeEditText] compose wrapper.
  *
  *  @param collect - [VGSCollect] instance.
  *  @param fieldName - field-name in JSON path in inbound route filters.
  *  @param modifier - [AndroidView] wrapper compose modifier.
- *  @param onViewCreate - A callback to be invoked when [VGSTextInputLayout] and [ExpirationDateEditText] view is created.
+ *  @param onViewCreate - A callback to be invoked when [VGSTextInputLayout] and [CardVerificationCodeEditText] view is created.
  *  @param onViewUpdate - A callback to be invoked after the view is inflated and upon recomposition to update the information and state of the view.
  */
 @Composable
