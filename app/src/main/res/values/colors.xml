@@ -15,6 +15,7 @@
     <color name="state_active">@color/colorAccent</color>
 
     <color name="fiord">#4b5d69</color>
+    <color name="fiord_0">#004b5d69</color>
     <color name="fiord_20">#204b5d69</color>
     <color name="fiord_80">#804b5d69</color>
     <color name="elephant">#22343e</color>
