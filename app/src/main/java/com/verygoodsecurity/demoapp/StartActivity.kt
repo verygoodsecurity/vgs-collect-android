@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoapp.collect_activity.CollectActivity
+import com.verygoodsecurity.demoapp.compose.ComposeActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityStartBinding
 import com.verygoodsecurity.demoapp.date_range_activity.DateRangeActivity
 import com.verygoodsecurity.demoapp.fragment_case.VGSCollectFragmentActivity
@@ -48,6 +49,9 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         binding.llDateRangeViewPagerFlow.setOnClickListener {
             startActivity(DateRangeActivity::class.java)
         }
+        binding.llComposeFlow.setOnClickListener {
+            startActivity(ComposeActivity::class.java)
+        }
     }
 
     private fun startActivity(activity: Class<out Activity>) {
@@ -73,4 +77,8 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         const val KEY_BUNDLE_ENVIRONMENT = "user_env"
         const val KEY_BUNDLE_PATH = "user_path"
     }
+}
+
+fun AppCompatActivity.getStringExtra(key: String, defaultValue: String = ""): String {
+    return intent.extras?.getString(key) ?: defaultValue
 }
