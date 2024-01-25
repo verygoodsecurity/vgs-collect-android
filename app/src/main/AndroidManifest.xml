@@ -75,6 +75,10 @@
             android:name=".instrumented.CustomBrandsActivity"
             android:label="Instrumented Demo" />
 
+        <activity
+            android:name=".compose.ComposeActivity"
+            android:label="Compose Demo" />
+
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />

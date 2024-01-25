@@ -24,6 +24,7 @@ import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
 import com.verygoodsecurity.demoapp.databinding.ActivityCollectBinding
 import com.verygoodsecurity.demoapp.databinding.CardInputLayoutBinding
 import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
+import com.verygoodsecurity.demoapp.getStringExtra
 import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -381,9 +382,5 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         } catch (e: Exception) {
             ""
         }
-    }
-
-    private fun AppCompatActivity.getStringExtra(key: String, defaultValue: String = ""): String {
-        return intent.extras?.getString(key) ?: defaultValue
     }
 }

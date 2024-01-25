@@ -386,6 +386,48 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llComposeFlow"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_row="3"
+                android:layout_rowWeight="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
+                android:layout_marginStart="@dimen/margin_padding_material_micro"
+                android:layout_marginTop="@dimen/margin_padding_material_small"
+                android:layout_marginBottom="@dimen/margin_padding_material_micro"
+                android:background="@drawable/bg_custom_btn"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_padding_material_small">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/start_compose_title"
+                    android:textAppearance="?attr/textAppearanceSubtitle2" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_material_micro"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:lines="2"
+                    android:text="@string/start_compose_description"
+                    android:textAppearance="?attr/textAppearanceCaption" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/GridButtonActionStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_padding_material_micro"
+                    android:text="@string/start_activity_start_btn_title" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
         </GridLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
 </ScrollView>
