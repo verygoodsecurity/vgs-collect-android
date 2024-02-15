@@ -10,9 +10,7 @@ aliases:
   - &environment
     working_directory: ~/code
     docker:
-      - image: cimg/android:2023.06.1
-    environment:
-      JVM_OPTS: -Xmx3200m
+      - image: cimg/android:2024.01
 
 jobs:
   "Run_Unit_Test_And_Build":
