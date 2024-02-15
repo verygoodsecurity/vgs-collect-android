@@ -22,7 +22,7 @@ dependencyResolutionManagement {
             library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.9.10')
             library('cardio', 'io.card:android-sdk:5.5.1')
             library('compose-activity', 'androidx.activity:activity-compose:1.8.2')
-            library('compose-material', 'androidx.compose.material:material:1.6.0')
+            library('compose-material', 'androidx.compose.material:material:1.6.1')
             library('compose-ui-tooling-preview', 'androidx.compose.ui:ui-tooling-preview:1.6.1')
         }
         demoLibs {
