@@ -5,7 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoapp.collect_activity.CollectActivity
-import com.verygoodsecurity.demoapp.compose.ComposeActivity
+import com.verygoodsecurity.demoapp.compose.activity_case.ComposeActivity
+import com.verygoodsecurity.demoapp.compose.fragment_case.ComposeFragmentActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityStartBinding
 import com.verygoodsecurity.demoapp.date_range_activity.DateRangeActivity
 import com.verygoodsecurity.demoapp.fragment_case.VGSCollectFragmentActivity
@@ -51,6 +52,9 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         }
         binding.llComposeFlow.setOnClickListener {
             startActivity(ComposeActivity::class.java)
+        }
+        binding.llComposeFragmentFlow.setOnClickListener {
+            startActivity(ComposeFragmentActivity::class.java)
         }
     }
 
