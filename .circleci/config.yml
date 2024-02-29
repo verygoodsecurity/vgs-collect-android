@@ -28,38 +28,38 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-#      - run:
-#          name: Run Detekt
-#          command: ./gradlew app:detekt vgscollect:detekt vgscollect-cardio:detekt --continue --parallel
-#      - run:
-#          name: Run Unit tests
-#          command: ./gradlew testDebugUnitTest
-#      - run:
-#          name: Generate Code Coverage Report
-#          command: |
-#            if [ "<< pipeline.git.branch >>" == "master" ]; then
-#              ./gradlew koverHtmlReportDebug
-#            else
-#              echo "Code coverage will only be generated on the master branch."
-#            fi
-#      - run:
-#          name: Publish Code Coverage Report
-#          command: |
-#            if [ "<< pipeline.git.branch >>" == "master" ]; then
-#              COVERAGE=$(sed -n '51p' vgscollect/build/reports/kover/htmlDebug/index.html)
-#              METRIC_VALUE=`echo ${COVERAGE//[[:space:]]/} | sed 's/.$//'`
-#
-#              echo "$METRIC_VALUE"
-#
-#              curl --request POST \
-#                --url https://verygoodsecurity.atlassian.net/gateway/api/compass/v1/metrics \
-#                --user "$COMPASS_USER_EMAIL:$COMPASS_API_KEY" \
-#                --header "Accept: application/json" \
-#                --header "Content-Type: application/json" \
-#                --data "{\"metricSourceId\":\"$COMPASS_COMPONENT_URL\",\"value\":\"$METRIC_VALUE\",\"timestamp\":\"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"}"
-#            else
-#              echo "Code coverage will only be pushed to compass on the master branch."
-#            fi
+      - run:
+          name: Run Detekt
+          command: ./gradlew app:detekt vgscollect:detekt vgscollect-cardio:detekt --continue --parallel
+      - run:
+          name: Run Unit tests
+          command: ./gradlew testDebugUnitTest
+      - run:
+          name: Generate Code Coverage Report
+          command: |
+            if [ "<< pipeline.git.branch >>" == "master" ]; then
+              ./gradlew koverHtmlReportDebug
+            else
+              echo "Code coverage will only be generated on the master branch."
+            fi
+      - run:
+          name: Publish Code Coverage Report
+          command: |
+            if [ "<< pipeline.git.branch >>" == "master" ]; then
+              COVERAGE=$(sed -n '51p' vgscollect/build/reports/kover/htmlDebug/index.html)
+              METRIC_VALUE=`echo ${COVERAGE//[[:space:]]/} | sed 's/.$//'`
+
+              echo "$METRIC_VALUE"
+
+              curl --request POST \
+                --url https://verygoodsecurity.atlassian.net/gateway/api/compass/v1/metrics \
+                --user "$COMPASS_USER_EMAIL:$COMPASS_API_KEY" \
+                --header "Accept: application/json" \
+                --header "Content-Type: application/json" \
+                --data "{\"metricSourceId\":\"$COMPASS_COMPONENT_URL\",\"value\":\"$METRIC_VALUE\",\"timestamp\":\"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"}"
+            else
+              echo "Code coverage will only be pushed to compass on the master branch."
+            fi
       - run:
           name: Generate apk
           command: ./gradlew app:assembleDebug app:assembleAndroidTest --no-daemon
