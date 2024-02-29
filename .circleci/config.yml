@@ -62,7 +62,7 @@ jobs:
             fi
       - run:
           name: Generate apk
-          command: ./gradlew assembleDebug assembleAndroidTest --debug
+          command: ./gradlew assembleDebug assembleAndroidTest --no-daemon
       - persist_to_workspace:
           root: ~/code
           paths:
