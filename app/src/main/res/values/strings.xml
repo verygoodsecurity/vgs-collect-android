@@ -29,8 +29,11 @@
     <string name="start_date_range_pager_title">Date Range (Activity)</string>
     <string name="start_date_range_pager_description">Example of collecting date range using Activity.</string>
 
-    <string name="start_compose_title">Compose</string>
-    <string name="start_compose_description">Example of collecting date wit Jetpack Compose.</string>
+    <string name="start_compose_title">Compose (Activity)</string>
+    <string name="start_compose_description">Example of collecting date wit Jetpack Compose and Activity.</string>
+
+    <string name="start_compos_fragment_title">Compose (Fragment)</string>
+    <string name="start_compose_fragment_description">Example of collecting date wit Jetpack Compose and Fragment.</string>
 
     <string name="start_payopt">Payopt</string>
     <string name="start_payopt_description">Collecting data with payment optimization example.</string>

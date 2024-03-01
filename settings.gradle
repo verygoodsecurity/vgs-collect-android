@@ -10,8 +10,8 @@ dependencyResolutionManagement {
             library('maven', 'com.github.dcendents:android-maven-gradle-plugin:2.1')
             library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.27.0')
             library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.9.10')
-            library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.4')
-            library('kover', 'org.jetbrains.kotlinx:kover-gradle-plugin:0.7.5')
+            library('detekt', 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.5')
+            library('kover', 'org.jetbrains.kotlinx:kover-gradle-plugin:0.7.6')
         }
         libs {
             // Libraries
@@ -22,8 +22,8 @@ dependencyResolutionManagement {
             library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.9.10')
             library('cardio', 'io.card:android-sdk:5.5.1')
             library('compose-activity', 'androidx.activity:activity-compose:1.8.2')
-            library('compose-material', 'androidx.compose.material:material:1.5.4')
-            library('compose-ui-tooling-preview', 'androidx.compose.ui:ui-tooling-preview:1.5.4')
+            library('compose-material', 'androidx.compose.material:material:1.6.2')
+            library('compose-ui-tooling-preview', 'androidx.compose.ui:ui-tooling-preview:1.6.2')
         }
         demoLibs {
             library('androidx-constraintlayout', 'androidx.constraintlayout:constraintlayout:2.1.4')
@@ -35,7 +35,7 @@ dependencyResolutionManagement {
         }
         debugLibs {
             library('leakcanary', 'com.squareup.leakcanary:leakcanary-android:2.13')
-            library('compose-ui-tooling', 'androidx.compose.ui:ui-tooling:1.5.4')
+            library('compose-ui-tooling', 'androidx.compose.ui:ui-tooling:1.6.2')
         }
         testLibs {
             library('junit', 'junit:junit:4.13.2')
@@ -43,7 +43,7 @@ dependencyResolutionManagement {
             library('mockito-inline', 'org.mockito:mockito-inline:5.2.0')
             library('robolectric', 'org.robolectric:robolectric:4.11.1')
             library('mockk', 'io.mockk:mockk:1.12.4')
-            library('json', 'org.json:json:20231013')
+            library('json', 'org.json:json:20240205')
             library('jsonassert', 'org.skyscreamer:jsonassert:1.5.1')
         }
         androidTestLibs {
@@ -52,7 +52,7 @@ dependencyResolutionManagement {
             library('androidx-rules', 'androidx.test:rules:1.5.0')
             library('androidx-junit-ext', 'androidx.test.ext:junit:1.1.5')
             library('androidx-junit-ext-ktx', 'androidx.test.ext:junit-ktx:1.1.5')
-            library('androidx-uiautomator', 'androidx.test.uiautomator:uiautomator:2.2.0')
+            library('androidx-uiautomator', 'androidx.test.uiautomator:uiautomator:2.3.0')
             library('androidx-espresso-core', 'androidx.test.espresso:espresso-core:3.5.1')
             library('androidx-espresso-intents', 'androidx.test.espresso:espresso-intents:3.5.1')
             library('espresso-contrib', 'com.android.support.test.espresso:espresso-contrib:3.0.2')

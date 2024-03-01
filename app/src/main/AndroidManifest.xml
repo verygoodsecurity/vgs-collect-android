@@ -76,8 +76,12 @@
             android:label="Instrumented Demo" />
 
         <activity
-            android:name=".compose.ComposeActivity"
-            android:label="Compose Demo" />
+            android:name=".compose.activity_case.ComposeActivity"
+            android:label="Compose Demo (Activity)" />
+
+        <activity
+            android:name=".compose.fragment_case.ComposeFragmentActivity"
+            android:label="Compose Demo (Fragment)" />
 
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"

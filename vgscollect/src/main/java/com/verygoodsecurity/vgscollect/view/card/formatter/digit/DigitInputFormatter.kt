@@ -18,11 +18,9 @@ class DigitInputFormatter(private var mask: String) : TextWatcher, Formatter {
     }
 
     override fun afterTextChanged(s: Editable?) {
-        formatted?.let {
-            if (s?.toString() != it.first) {
-                s?.replaceIgnoreFilters(0, s.length, it.first)
-                it.second?.let { position -> Selection.setSelection(s, position) }
-            }
+        if (s?.toString() != formatted?.first) {
+            formatted?.first?.let { s?.replaceIgnoreFilters(0, s.length, it) }
+            formatted?.second?.let { position -> Selection.setSelection(s, position) }
         }
     }
 
