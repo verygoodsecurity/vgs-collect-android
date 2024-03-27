@@ -10,5 +10,6 @@
         <item>UUID</item>
         <item>FPE_SIX_T_FOUR</item>
         <item>NUM_LENGTH_PRESERVING</item>
+        <item>ALPHANUMERIC_SIX_T_FOUR</item>
     </array>
 </resources>

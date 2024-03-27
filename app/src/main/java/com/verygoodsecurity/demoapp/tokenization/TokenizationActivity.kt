@@ -313,6 +313,7 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
         VGSVaultAliasFormat.UUID.name -> VGSVaultAliasFormat.UUID
         VGSVaultAliasFormat.FPE_SIX_T_FOUR.name -> VGSVaultAliasFormat.FPE_SIX_T_FOUR
         VGSVaultAliasFormat.NUM_LENGTH_PRESERVING.name -> VGSVaultAliasFormat.NUM_LENGTH_PRESERVING
+        VGSVaultAliasFormat.ALPHANUMERIC_SIX_T_FOUR.name -> VGSVaultAliasFormat.ALPHANUMERIC_SIX_T_FOUR
         else -> throw IllegalArgumentException("Not implemented!")
     }
 }
