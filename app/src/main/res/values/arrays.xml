@@ -7,9 +7,20 @@
     </array>
 
     <array name="tokenization_alias_format">
-        <item>UUID</item>
+        <item>FPE_ACC_NUM_T_FOUR</item>
+        <item>FPE_ALPHANUMERIC_ACC_NUM_T_FOUR</item>
         <item>FPE_SIX_T_FOUR</item>
+        <item>FPE_SSN_T_FOUR</item>
+        <item>FPE_T_FOUR</item>
         <item>NUM_LENGTH_PRESERVING</item>
+        <item>PFPT</item>
+        <item>RAW_UUID</item>
+        <item>UUID</item>
+        <item>GENERIC_T_FOUR</item>
         <item>ALPHANUMERIC_SIX_T_FOUR</item>
+        <item>ALPHANUMERIC_LENGTH_PRESERVING</item>
+        <item>ALPHANUMERIC_LENGTH_PRESERVING_T_FOUR</item>
+        <item>ALPHANUMERIC_SSN_T_FOUR</item>
+        <item>ALPHANUMERIC_LENGTH_PRESERVING_SIX_T_FOUR</item>
     </array>
 </resources>
