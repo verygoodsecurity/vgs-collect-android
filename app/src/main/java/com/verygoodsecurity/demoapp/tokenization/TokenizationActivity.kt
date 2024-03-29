@@ -310,9 +310,21 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
     }
 
     private fun parseAliasFormat(format: String): VGSVaultAliasFormat = when (format) {
-        VGSVaultAliasFormat.UUID.name -> VGSVaultAliasFormat.UUID
+        VGSVaultAliasFormat.FPE_ACC_NUM_T_FOUR.name -> VGSVaultAliasFormat.FPE_ACC_NUM_T_FOUR
+        VGSVaultAliasFormat.FPE_ALPHANUMERIC_ACC_NUM_T_FOUR.name -> VGSVaultAliasFormat.FPE_ALPHANUMERIC_ACC_NUM_T_FOUR
         VGSVaultAliasFormat.FPE_SIX_T_FOUR.name -> VGSVaultAliasFormat.FPE_SIX_T_FOUR
+        VGSVaultAliasFormat.FPE_SSN_T_FOUR.name -> VGSVaultAliasFormat.FPE_SSN_T_FOUR
+        VGSVaultAliasFormat.FPE_T_FOUR.name -> VGSVaultAliasFormat.FPE_T_FOUR
         VGSVaultAliasFormat.NUM_LENGTH_PRESERVING.name -> VGSVaultAliasFormat.NUM_LENGTH_PRESERVING
+        VGSVaultAliasFormat.PFPT.name -> VGSVaultAliasFormat.PFPT
+        VGSVaultAliasFormat.RAW_UUID.name -> VGSVaultAliasFormat.RAW_UUID
+        VGSVaultAliasFormat.UUID.name -> VGSVaultAliasFormat.UUID
+        VGSVaultAliasFormat.GENERIC_T_FOUR.name -> VGSVaultAliasFormat.GENERIC_T_FOUR
+        VGSVaultAliasFormat.ALPHANUMERIC_SIX_T_FOUR.name -> VGSVaultAliasFormat.ALPHANUMERIC_SIX_T_FOUR
+        VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING.name -> VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING
+        VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING_T_FOUR.name -> VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING_T_FOUR
+        VGSVaultAliasFormat.ALPHANUMERIC_SSN_T_FOUR.name -> VGSVaultAliasFormat.ALPHANUMERIC_SSN_T_FOUR
+        VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING_SIX_T_FOUR.name -> VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING_SIX_T_FOUR
         else -> throw IllegalArgumentException("Not implemented!")
     }
 }
