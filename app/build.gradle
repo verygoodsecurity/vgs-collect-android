@@ -97,7 +97,7 @@ dependencies {
     implementation libs.androidx.core.ktx
     implementation libs.material
 
-    implementation platform('androidx.compose:compose-bom:2024.02.01')
+    implementation platform('androidx.compose:compose-bom:2024.04.00')
 
     implementation libs.compose.activity
     implementation libs.compose.material
