@@ -64,15 +64,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     //endregion
 
     override fun applyFieldType() {
-        timeGapsValidator = TimeGapsValidator(
-            inputDatePattern,
-            isDaysVisible,
-            inclusiveRangeValidation,
-            minDate,
-            maxDate
-        ).also {
-            validator.addRule(it)
-        }
+        updateTimeGapsValidator()
         inputConnection = InputDateConnection(id, validator)
 
         val stateContent = FieldContent.DateContent().apply {
