@@ -93,7 +93,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.scan_card -> true.also { scan() } // TODO: @Endorf, check this line, what you think?
+        R.id.scan_card -> true.also { scan() }
         else -> super.onOptionsItemSelected(item)
     }
 
