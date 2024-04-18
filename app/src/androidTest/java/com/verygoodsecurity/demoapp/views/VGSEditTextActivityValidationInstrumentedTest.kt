@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.tests.views
+package com.verygoodsecurity.demoapp.views
 
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
@@ -9,9 +9,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.actions.SetTextAction
+import com.verygoodsecurity.demoapp.utils.actions.SetTextAction
 import com.verygoodsecurity.demoapp.instrumented.VGSEditTextActivity
-import com.verygoodsecurity.demoapp.matchers.validation.WithValidationStateMatcher
+import com.verygoodsecurity.demoapp.utils.matchers.validation.WithValidationStateMatcher
 import org.hamcrest.CoreMatchers
 import org.junit.Before
 import org.junit.Rule

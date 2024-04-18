@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.matchers
+package com.verygoodsecurity.demoapp.utils.matchers
 
 import android.view.View
 import androidx.test.espresso.matcher.BoundedMatcher

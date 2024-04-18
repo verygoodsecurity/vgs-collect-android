@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.actions
+package com.verygoodsecurity.demoapp.utils.actions
 
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction

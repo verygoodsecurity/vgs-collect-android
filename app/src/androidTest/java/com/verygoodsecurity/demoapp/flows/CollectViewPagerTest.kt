@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.tests.flows
+package com.verygoodsecurity.demoapp.flows
 
 import android.widget.DatePicker
 import androidx.test.espresso.Espresso.onView
@@ -12,10 +12,10 @@ import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
-import com.verygoodsecurity.demoapp.actions.FieldClickAction
-import com.verygoodsecurity.demoapp.actions.SetTextAction
-import com.verygoodsecurity.demoapp.matchers.withCardCVCState
-import com.verygoodsecurity.demoapp.matchers.withCardExpDateState
+import com.verygoodsecurity.demoapp.utils.actions.FieldClickAction
+import com.verygoodsecurity.demoapp.utils.actions.SetTextAction
+import com.verygoodsecurity.demoapp.utils.matchers.withCardCVCState
+import com.verygoodsecurity.demoapp.utils.matchers.withCardExpDateState
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.not
 import org.junit.Rule

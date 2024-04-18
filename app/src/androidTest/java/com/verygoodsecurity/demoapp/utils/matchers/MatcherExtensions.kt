@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.matchers
+package com.verygoodsecurity.demoapp.utils.matchers
 
 fun withCardBrand(brandName: String): WithCardBrandMatcher {
     return WithCardBrandMatcher(brandName)

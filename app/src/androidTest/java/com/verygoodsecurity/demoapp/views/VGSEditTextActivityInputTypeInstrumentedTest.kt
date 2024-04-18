@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.tests.views
+package com.verygoodsecurity.demoapp.views
 
 import android.view.KeyEvent
 import android.view.accessibility.AccessibilityWindowInfo
@@ -12,9 +12,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.actions.SetTextAction
+import com.verygoodsecurity.demoapp.utils.actions.SetTextAction
 import com.verygoodsecurity.demoapp.instrumented.VGSEditTextInputTypeActivity
-import com.verygoodsecurity.demoapp.matchers.withEditTextState
+import com.verygoodsecurity.demoapp.utils.matchers.withEditTextState
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

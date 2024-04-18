@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.tests.features
+package com.verygoodsecurity.demoapp.features
 
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.ViewInteraction
@@ -11,13 +11,13 @@ import androidx.test.filters.SmallTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.actions.SetCardNumberDividerAction
-import com.verygoodsecurity.demoapp.actions.SetCustomBrandAction
-import com.verygoodsecurity.demoapp.actions.SetTextAction
+import com.verygoodsecurity.demoapp.utils.actions.SetCardNumberDividerAction
+import com.verygoodsecurity.demoapp.utils.actions.SetCustomBrandAction
+import com.verygoodsecurity.demoapp.utils.actions.SetTextAction
 import com.verygoodsecurity.demoapp.instrumented.CustomBrandsActivity
-import com.verygoodsecurity.demoapp.matchers.WithCardNumberDividerMatcher
-import com.verygoodsecurity.demoapp.matchers.withCardBrand
-import com.verygoodsecurity.demoapp.matchers.withCardNumberState
+import com.verygoodsecurity.demoapp.utils.matchers.WithCardNumberDividerMatcher
+import com.verygoodsecurity.demoapp.utils.matchers.withCardBrand
+import com.verygoodsecurity.demoapp.utils.matchers.withCardNumberState
 import com.verygoodsecurity.vgscollect.view.card.BrandParams
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.CardType

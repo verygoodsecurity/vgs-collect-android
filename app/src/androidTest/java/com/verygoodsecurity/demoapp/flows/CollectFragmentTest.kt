@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.tests.flows
+package com.verygoodsecurity.demoapp.flows
 
 import android.app.Activity
 import android.app.Instrumentation
@@ -17,11 +17,11 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
-import com.verygoodsecurity.demoapp.actions.SetTextAction
-import com.verygoodsecurity.demoapp.matchers.withCardCVCState
-import com.verygoodsecurity.demoapp.matchers.withCardExpDateState
-import com.verygoodsecurity.demoapp.matchers.withCardHolderState
-import com.verygoodsecurity.demoapp.matchers.withCardNumberState
+import com.verygoodsecurity.demoapp.utils.actions.SetTextAction
+import com.verygoodsecurity.demoapp.utils.matchers.withCardCVCState
+import com.verygoodsecurity.demoapp.utils.matchers.withCardExpDateState
+import com.verygoodsecurity.demoapp.utils.matchers.withCardHolderState
+import com.verygoodsecurity.demoapp.utils.matchers.withCardNumberState
 import com.verygoodsecurity.demoapp.test.BuildConfig
 import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
 import io.card.payment.CardIOActivity
