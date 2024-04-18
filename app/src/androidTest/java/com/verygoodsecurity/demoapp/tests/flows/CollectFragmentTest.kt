@@ -17,12 +17,12 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
-import com.verygoodsecurity.demoapp.Utils
 import com.verygoodsecurity.demoapp.actions.SetTextAction
 import com.verygoodsecurity.demoapp.matchers.withCardCVCState
 import com.verygoodsecurity.demoapp.matchers.withCardExpDateState
 import com.verygoodsecurity.demoapp.matchers.withCardHolderState
 import com.verygoodsecurity.demoapp.matchers.withCardNumberState
+import com.verygoodsecurity.demoapp.test.BuildConfig
 import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
 import io.card.payment.CardIOActivity
 import io.card.payment.CreditCard
@@ -163,8 +163,8 @@ class CollectFragmentTest {
     }
 
     private fun startMainScreen() {
-        onView(withId(R.id.tiedVaultId)).perform(typeText(Utils.DEFAULT_TENANT_ID))
-        onView(withId(R.id.tiedPath)).perform(typeText(Utils.DEFAULT_PATH), closeSoftKeyboard())
+        onView(withId(R.id.tiedVaultId)).perform(typeText(BuildConfig.VAULT_ID))
+        onView(withId(R.id.tiedPath)).perform(typeText(BuildConfig.PATH), closeSoftKeyboard())
 
         val startWithActivityBtn = onView(withId(R.id.llCollectFragmentFlow))
             .perform(scrollTo())
