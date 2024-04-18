@@ -23,7 +23,6 @@ import com.verygoodsecurity.demoapp.utils.matchers.withCardCVCState
 import com.verygoodsecurity.demoapp.utils.matchers.withCardExpDateState
 import com.verygoodsecurity.demoapp.utils.matchers.withCardHolderState
 import com.verygoodsecurity.demoapp.utils.matchers.withCardNumberState
-import com.verygoodsecurity.demoapp.test.BuildConfig
 import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
 import io.card.payment.CardIOActivity
 import io.card.payment.CreditCard
@@ -152,15 +151,6 @@ class CollectActivityTest {
     }
 
     private fun startMainScreen() {
-        onView(withId(R.id.tiedVaultId)).perform(
-            typeText(BuildConfig.VAULT_ID),
-            closeSoftKeyboard()
-        )
-        onView(withId(R.id.tiedPath)).perform(
-            typeText(BuildConfig.PATH),
-            closeSoftKeyboard()
-        )
-
         val startWithActivityBtn = onView(withId(R.id.llCollectActivityFlow))
             .perform(scrollTo())
             .check(matches(isDisplayed()))

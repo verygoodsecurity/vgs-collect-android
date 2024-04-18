@@ -163,9 +163,6 @@ class CollectFragmentTest {
     }
 
     private fun startMainScreen() {
-        onView(withId(R.id.tiedVaultId)).perform(typeText(BuildConfig.VAULT_ID))
-        onView(withId(R.id.tiedPath)).perform(typeText(BuildConfig.PATH), closeSoftKeyboard())
-
         val startWithActivityBtn = onView(withId(R.id.llCollectFragmentFlow))
             .perform(scrollTo())
             .check(matches(isDisplayed()))
