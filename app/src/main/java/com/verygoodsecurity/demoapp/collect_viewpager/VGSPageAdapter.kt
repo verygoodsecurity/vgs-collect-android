@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.viewpager_case
+package com.verygoodsecurity.demoapp.collect_viewpager
 
 import android.content.Context
 import android.view.LayoutInflater

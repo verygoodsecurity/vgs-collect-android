@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.viewpager_case
+package com.verygoodsecurity.demoapp.collect_viewpager
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,7 +19,7 @@ import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 
-class VGSViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
+class ViewPagerActivity : AppCompatActivity(), VgsCollectResponseListener, View.OnClickListener {
 
     private lateinit var binding: ActivityViewpagerCollectDemoBinding
 

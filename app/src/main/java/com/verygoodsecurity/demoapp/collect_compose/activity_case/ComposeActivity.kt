@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.compose.activity_case
+package com.verygoodsecurity.demoapp.collect_compose.activity_case
 
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.verygoodsecurity.demoapp.StartActivity
-import com.verygoodsecurity.demoapp.compose.components.BaseCollect
+import com.verygoodsecurity.demoapp.collect_compose.components.BaseCollect
 import com.verygoodsecurity.demoapp.getStringExtra
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.VGSCollect

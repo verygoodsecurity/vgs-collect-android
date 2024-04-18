@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.compose.fragment_case
+package com.verygoodsecurity.demoapp.collect_compose.fragment_case
 
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
-import com.verygoodsecurity.demoapp.compose.components.BaseCollect
+import com.verygoodsecurity.demoapp.collect_compose.components.BaseCollect
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse

@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.compose
+package com.verygoodsecurity.demoapp.collect_compose
 
 import android.content.res.ColorStateList
 import android.os.Bundle

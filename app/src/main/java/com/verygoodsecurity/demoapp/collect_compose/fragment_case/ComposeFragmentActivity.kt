@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.compose.fragment_case
+package com.verygoodsecurity.demoapp.collect_compose.fragment_case
 
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoapp.R

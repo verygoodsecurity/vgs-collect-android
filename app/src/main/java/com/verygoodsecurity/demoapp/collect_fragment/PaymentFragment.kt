@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.fragment_case
+package com.verygoodsecurity.demoapp.collect_fragment
 
 import android.annotation.SuppressLint
 import android.content.Intent

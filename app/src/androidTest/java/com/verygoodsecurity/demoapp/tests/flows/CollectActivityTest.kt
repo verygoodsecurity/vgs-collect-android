@@ -39,7 +39,7 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ActivityCaseInstrumentedTest {
+class CollectActivityTest {
 
     companion object {
         const val CARD_NUMBER = "4111111111111111"

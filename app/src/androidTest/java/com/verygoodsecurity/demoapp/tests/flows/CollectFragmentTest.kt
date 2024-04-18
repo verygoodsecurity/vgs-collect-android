@@ -36,7 +36,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class FragmentCaseInstrumentedTest {
+class CollectFragmentTest {
 
     companion object {
         const val CARD_NUMBER = "4111111111111111"

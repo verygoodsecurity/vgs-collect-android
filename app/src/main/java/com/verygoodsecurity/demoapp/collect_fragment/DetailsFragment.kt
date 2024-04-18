@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.fragment_case
+package com.verygoodsecurity.demoapp.collect_fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

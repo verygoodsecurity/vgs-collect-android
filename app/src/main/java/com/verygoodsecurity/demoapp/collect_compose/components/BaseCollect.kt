@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.compose.components
+package com.verygoodsecurity.demoapp.collect_compose.components
 
 import android.content.res.ColorStateList
 import android.view.Gravity
