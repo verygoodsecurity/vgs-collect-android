@@ -17,6 +17,11 @@ jobs:
     <<: *environment
     steps:
       - checkout
+      - run: echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
+      - run: echo "VGS_PATH=$VGS_PATH" >> local.properties
+      - run:
+          name: Local properties
+          command: echo local.properties
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
