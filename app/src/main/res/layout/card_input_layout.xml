@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/card_holder_name_desc"
             android:importantForAccessibility="yes"
-            app:fieldName="card.name"
+            app:fieldName="card.holderName"
             app:imeOptions="actionNext"
             app:text="John Doe" />
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
@@ -205,7 +205,7 @@
             style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:fieldName="card.address.city"
+            app:fieldName="address.city"
             app:imeOptions="actionNext"
             app:isRequired="false"
             app:text="Kyiv" />
@@ -245,7 +245,7 @@
             style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:fieldName="card.address.postal_code"
+            app:fieldName="address.postalCode"
             app:imeOptions="actionDone"
             app:isRequired="false"
             app:text="12345" />
@@ -291,7 +291,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:enableValidation="false"
-            app:fieldName="address.ssn"
+            app:fieldName="ssn"
             app:imeOptions="actionDone"
             app:numberDivider="-"
             app:text="111111111" />
