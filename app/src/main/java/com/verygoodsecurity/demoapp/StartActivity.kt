@@ -5,15 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.demoapp.collect_activity.CollectActivity
-import com.verygoodsecurity.demoapp.compose.activity_case.ComposeActivity
-import com.verygoodsecurity.demoapp.compose.fragment_case.ComposeFragmentActivity
+import com.verygoodsecurity.demoapp.collect_compose.activity_case.ComposeActivity
+import com.verygoodsecurity.demoapp.collect_compose.fragment_case.ComposeFragmentActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityStartBinding
 import com.verygoodsecurity.demoapp.date_range_activity.DateRangeActivity
-import com.verygoodsecurity.demoapp.fragment_case.VGSCollectFragmentActivity
+import com.verygoodsecurity.demoapp.collect_fragment.VGSCollectFragmentActivity
 import com.verygoodsecurity.demoapp.google_pay.GooglePayActivity
 import com.verygoodsecurity.demoapp.payopt.PaymentOptimizationActivity
 import com.verygoodsecurity.demoapp.tokenization.TokenizationActivity
-import com.verygoodsecurity.demoapp.viewpager_case.VGSViewPagerActivity
+import com.verygoodsecurity.demoapp.collect_viewpager.ViewPagerActivity
 
 class StartActivity : AppCompatActivity(R.layout.activity_start) {
 
@@ -45,7 +45,7 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
             startActivity(VGSCollectFragmentActivity::class.java)
         }
         binding.llCollectViewPagerFlow.setOnClickListener {
-            startActivity(VGSViewPagerActivity::class.java)
+            startActivity(ViewPagerActivity::class.java)
         }
         binding.llDateRangeViewPagerFlow.setOnClickListener {
             startActivity(DateRangeActivity::class.java)

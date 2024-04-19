@@ -1,7 +1,6 @@
 package com.verygoodsecurity.demoapp
 
 import android.app.Application
-import com.microblink.blinkcard.MicroblinkSDK
 
 class VGSSampleApplication: Application() {
 
