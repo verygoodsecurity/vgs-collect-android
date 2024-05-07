@@ -6,7 +6,7 @@ dependencyResolutionManagement {
     versionCatalogs {
         gradleLibs {
             library('tools', 'com.android.tools.build:gradle:8.2.2')
-            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22')
+            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24')
             library('maven', 'com.github.dcendents:android-maven-gradle-plugin:2.1')
             library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.27.0')
             library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.9.20')
