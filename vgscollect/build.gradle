@@ -64,6 +64,9 @@ android {
             }
         }
     }
+    dependencyLocking {
+        lockAllConfigurations()
+    }
 }
 
 detekt {
