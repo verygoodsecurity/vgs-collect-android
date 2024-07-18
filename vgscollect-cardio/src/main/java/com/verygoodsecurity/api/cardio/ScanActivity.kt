@@ -3,15 +3,18 @@ package com.verygoodsecurity.api.cardio
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
+import com.verygoodsecurity.api.cardio.extensions.parcelable
+import com.verygoodsecurity.api.cardio.extensions.serializable
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import io.card.payment.CardIOActivity
 import io.card.payment.CreditCard
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class ScanActivity : BaseTransmitActivity() {
 
-    private lateinit var settings: Map<String, Int>
+    private var settings: HashMap<*, *>? = null
     private var requirePostalCode: Boolean = false
     private var suppressConfirmation: Boolean = true
     private var suppressManualEnter: Boolean = true
@@ -20,20 +23,34 @@ class ScanActivity : BaseTransmitActivity() {
     private var configuredLocale: String? = null
     private var configuredColor: Int? = null
 
+    private val scanLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            configureInternalSettings(result.data)
+            result.data?.parcelable<CreditCard>(CardIOActivity.EXTRA_SCAN_RESULT)?.let { card ->
+                settings?.forEach {
+                    val key = it.key as? String
+                    when (it.value) {
+                        CARD_NUMBER -> mapData(key, card.cardNumber)
+                        CARD_CVC -> mapData(key, card.cvv)
+                        CARD_HOLDER -> mapData(key, card.cardholderName)
+                        CARD_EXP_DATE -> mapData(key, retrieveDate(card))
+                        POSTAL_CODE -> mapData(key, card.postalCode)
+                    }
+                }
+            }
+            setScanResult(result.resultCode)
+            finish()
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         saveSettings()
-
         runCardIO()
     }
 
     private fun saveSettings() {
         intent.extras?.let {
-            settings = it.getSerializable(SCAN_CONFIGURATION)?.run {
-                this as HashMap<String, Int>
-            } ?: HashMap()
-
+            settings = it.serializable(SCAN_CONFIGURATION)
             requirePostalCode = it.getBoolean(EXTRA_REQUIRE_POSTAL_CODE, false)
             suppressConfirmation = it.getBoolean(EXTRA_SUPPRESS_CONFIRMATION, true)
             suppressManualEnter = it.getBoolean(EXTRA_SUPPRESS_MANUAL_ENTRY, true)
@@ -49,9 +66,9 @@ class ScanActivity : BaseTransmitActivity() {
     }
 
     private fun runCardIO() {
-        val scanIntent = Intent(this, CardIOActivity::class.java)
-            .putExtra(CardIOActivity.EXTRA_HIDE_CARDIO_LOGO, true)
-            .putExtra(CardIOActivity.EXTRA_USE_PAYPAL_ACTIONBAR_ICON, true)
+        val scanIntent = Intent(this, CardIOActivity::class.java).putExtra(
+            CardIOActivity.EXTRA_HIDE_CARDIO_LOGO, true
+        ).putExtra(CardIOActivity.EXTRA_USE_PAYPAL_ACTIONBAR_ICON, true)
             .putExtra(CardIOActivity.EXTRA_SCAN_EXPIRY, true)
             .putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false)
             .putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, requirePostalCode)
@@ -72,34 +89,10 @@ class ScanActivity : BaseTransmitActivity() {
         }
 
 
-        startActivityForResult(
-            scanIntent,
-            CARD_IO_REQUEST_CODE
-        )
+        scanLauncher.launch(scanIntent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        configureInternalSettings(resultCode, data)
-        if (requestCode == CARD_IO_REQUEST_CODE) {
-            val scanResult: CreditCard? = data?.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT)
-            scanResult?.run {
-                settings.forEach {
-                    when (it.value) {
-                        CARD_NUMBER -> mapData(it.key, scanResult.cardNumber)
-                        CARD_CVC -> mapData(it.key, scanResult.cvv)
-                        CARD_HOLDER -> mapData(it.key, scanResult.cardholderName)
-                        CARD_EXP_DATE -> mapData(it.key, retrieveDate(scanResult))
-                        POSTAL_CODE -> mapData(it.key, scanResult.postalCode)
-                    }
-                }
-            }
-        }
-
-        super.onActivityResult(requestCode, resultCode, data)
-        finish()
-    }
-
-    private fun configureInternalSettings(resultCode: Int, data: Intent?) {
+    private fun configureInternalSettings(data: Intent?) {
         mapData(RESULT_TYPE, SCAN)
         mapData(RESULT_NAME, NAME)
         if (data?.extras?.containsKey(CardIOActivity.EXTRA_SCAN_RESULT) == true) {
@@ -111,15 +104,20 @@ class ScanActivity : BaseTransmitActivity() {
 
     private fun retrieveDate(scanResult: CreditCard): Long? {
         return if (scanResult.expiryMonth != 0 && scanResult.expiryYear != 0) {
-            val yMask = scanResult.expiryYear.toString()
-                .replace("\\d".toRegex(), "y")
-            val mMask = String.format("%02d", scanResult.expiryMonth)
-                .replace("\\d".toRegex(), "M")
+            val yMask = scanResult.expiryYear.toString().replace("\\d".toRegex(), "y")
+            val mMask = String.format(
+                locale = Locale.getDefault(),
+                format = "%02d",
+                scanResult.expiryMonth
+            ).replace("\\d".toRegex(), "M")
 
-            val mStr = String.format("%02d", scanResult.expiryMonth)
+            val mStr = String.format(
+                locale = Locale.getDefault(),
+                format = "%02d",
+                scanResult.expiryMonth
+            )
             val yStr = scanResult.expiryYear.toString()
-            val date = SimpleDateFormat("$mMask/$yMask", Locale.US)
-                .parse("$mStr/$yStr")
+            val date = SimpleDateFormat("$mMask/$yMask", Locale.US).parse("$mStr/$yStr")
             date?.time
         } else {
             null
@@ -162,7 +160,6 @@ class ScanActivity : BaseTransmitActivity() {
         const val CARD_HOLDER = 0x73
         const val CARD_EXP_DATE = 0x74
         const val POSTAL_CODE = 0x75
-        private const val CARD_IO_REQUEST_CODE = 0x7
         private const val NAME = "CardIO"
 
         fun scan(context: Activity, code: Int, bndl: Bundle = Bundle.EMPTY) {
