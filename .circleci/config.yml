@@ -10,7 +10,9 @@ aliases:
   - &environment
     working_directory: ~/code
     docker:
-      - image: cimg/android:2024.01
+      - image: cimg/android:2023.06.1
+    environment:
+      JVM_OPTS: -Xmx3200m
 
 jobs:
   "Run_Unit_Test_And_Build":
@@ -136,24 +138,23 @@ workflows:
     when:
       not: << pipeline.parameters.nightly-security-scan >>
     jobs:
+      - scan-sast-pr:
+          context:
+            - security-tools
+
+      - scan-sast-full:
+          filters:
+            # ignore any commit on any branch by default
+            branches:
+              ignore: /.*/
+            tags:
+              only:
+                - /production-.*/
+          context:
+            - security-tools
       - "Run_Unit_Test_And_Build":
           context:
             - circleci
-#      - scan-sast-pr:
-#          context:
-#            - security-tools
-#
-#      - scan-sast-full:
-#          filters:
-#            # ignore any commit on any branch by default
-#            branches:
-#              ignore: /.*/
-#            tags:
-#              only:
-#                - /production-.*/
-#          context:
-#            - security-tools
-
       - "Run_UI_Test":
           requires:
             - "Run_Unit_Test_And_Build"
