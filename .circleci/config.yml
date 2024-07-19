@@ -136,7 +136,9 @@ workflows:
     when:
       not: << pipeline.parameters.nightly-security-scan >>
     jobs:
-      - "Run_Unit_Test_And_Build"
+      - "Run_Unit_Test_And_Build":
+          context:
+            - circleci
       - scan-sast-pr:
           context:
             - security-tools
