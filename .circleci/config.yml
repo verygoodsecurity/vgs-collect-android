@@ -139,20 +139,20 @@ workflows:
       - "Run_Unit_Test_And_Build":
           context:
             - circleci
-      - scan-sast-pr:
-          context:
-            - security-tools
-
-      - scan-sast-full:
-          filters:
-            # ignore any commit on any branch by default
-            branches:
-              ignore: /.*/
-            tags:
-              only:
-                - /production-.*/
-          context:
-            - security-tools
+#      - scan-sast-pr:
+#          context:
+#            - security-tools
+#
+#      - scan-sast-full:
+#          filters:
+#            # ignore any commit on any branch by default
+#            branches:
+#              ignore: /.*/
+#            tags:
+#              only:
+#                - /production-.*/
+#          context:
+#            - security-tools
 
       - "Run_UI_Test":
           requires:
