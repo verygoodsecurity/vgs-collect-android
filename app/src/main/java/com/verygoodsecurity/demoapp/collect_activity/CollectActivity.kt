@@ -324,7 +324,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
             .setMethod(HTTPMethod.POST)
             .setPath(path)
             .setCustomHeader(mapOf("custom-header-name" to "value"))
-            .setCustomData(mapOf("custom_data" to "value"))
+            .setCustomData(mapOf("extraData" to "value"))
             .build()
         collect.asyncSubmit(request)
     }

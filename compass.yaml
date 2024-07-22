@@ -1,0 +1,27 @@
+name: VGS Collect Android
+id: 'ari:cloud:compass:83673fa7-fd28-4f4a-9738-f584064570a7:component/db43f86d-85fe-42e1-954d-457f5a4082b8/dde6f82f-6e9f-4a9d-a79b-820223a44310'
+description: |-
+  Allows to collect end-user's PCI data.
+configVersion: 1
+typeId: LIBRARY
+ownerId: 'ari:cloud:teams::team/61e34c25-3af2-4d60-bfed-39429d934c8b'
+fields:
+  lifecycle: Active
+  tier: 1
+links:
+  - name: null
+    type: REPOSITORY
+    url: 'https://github.com/verygoodsecurity/vgs-collect-android'
+  - name: Public Docs
+    type: DOCUMENT
+    url: 'https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk'
+  - name: CircleCI
+    type: PROJECT
+    url: 'https://app.circleci.com/pipelines/github/verygoodsecurity/vgs-collect-android'
+  - name: Jira
+    type: PROJECT
+    url: 'https://verygoodsecurity.atlassian.net/browse/DEVX'
+relationships: {}
+labels:
+  - 'language:kotlin'
+customFields: null
