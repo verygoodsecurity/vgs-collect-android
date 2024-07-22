@@ -153,6 +153,8 @@ workflows:
           context:
             - security-tools
       - "Run_Unit_Test_And_Build":
+          requires:
+            - scan-sast-pr
           context:
             - circleci
       - "Run_UI_Test":
