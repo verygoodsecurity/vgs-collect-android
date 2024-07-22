@@ -11,6 +11,7 @@ aliases:
     working_directory: ~/code
     docker:
       - image: cimg/android:2024.01
+    resource_class: large
 
 jobs:
   run-unit-test-and-build:
@@ -152,8 +153,6 @@ workflows:
           context:
             - security-tools
       - run-unit-test-and-build:
-          requires:
-            - scan-sast-pr
           context:
             - circleci
       - run-ui-test:
