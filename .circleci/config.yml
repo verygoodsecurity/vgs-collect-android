@@ -15,7 +15,7 @@ aliases:
       JVM_OPTS: -Xmx3200m
 
 jobs:
-  "Run_Unit_Test_And_Build":
+  run-unit-test-and-build:
     <<: *environment
     steps:
       - checkout
@@ -71,7 +71,7 @@ jobs:
           root: ~/code
           paths:
             - app
-  "Run_UI_Test":
+  run-ui-test:
     <<: *environment
     steps:
       - attach_workspace:
@@ -100,7 +100,6 @@ jobs:
               --device model=sailfish,version=25,locale=en,orientation=portrait \
               --device model=oriole,version=31,locale=en,orientation=portrait \
               --device model=husky,version=34,locale=en,orientation=portrait \
-
   scan-sast-pr:
     parameters:
       default_branch:
@@ -117,7 +116,6 @@ jobs:
       - run:
           name: "Semgrep diff scan"
           command: semgrep ci
-
   scan-sast-full:
     parameters:
       default_branch:
@@ -133,6 +131,7 @@ jobs:
       - run:
           name: "Semgrep full scan"
           command: semgrep ci
+
 workflows:
   main:
     when:
@@ -152,15 +151,14 @@ workflows:
                 - /production-.*/
           context:
             - security-tools
-      - "Run_Unit_Test_And_Build":
+      - run-unit-test-and-build:
           requires:
             - scan-sast-pr
           context:
             - circleci
-      - "Run_UI_Test":
+      - run-ui-test:
           requires:
-            - "Run_Unit_Test_And_Build"
-
+            - run-unit-test-and-build
   scheduled-security-scan:
     when: << pipeline.parameters.nightly-security-scan >>
     jobs:
