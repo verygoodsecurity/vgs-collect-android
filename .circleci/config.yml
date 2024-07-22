@@ -11,9 +11,10 @@ aliases:
     working_directory: ~/code
     docker:
       - image: cimg/android:2024.01
+    resource_class: large
 
 jobs:
-  "Run_Unit_Test_And_Build":
+  run-unit-test-and-build:
     <<: *environment
     steps:
       - checkout
@@ -69,7 +70,7 @@ jobs:
           root: ~/code
           paths:
             - app
-  "Run_UI_Test":
+  run-ui-test:
     <<: *environment
     steps:
       - attach_workspace:
@@ -98,7 +99,6 @@ jobs:
               --device model=sailfish,version=25,locale=en,orientation=portrait \
               --device model=oriole,version=31,locale=en,orientation=portrait \
               --device model=husky,version=34,locale=en,orientation=portrait \
-
   scan-sast-pr:
     parameters:
       default_branch:
@@ -110,12 +110,12 @@ jobs:
       SEMGREP_BASELINE_REF: << parameters.default_branch >>
     docker:
       - image: returntocorp/semgrep
+    resource_class: large
     steps:
       - checkout
       - run:
           name: "Semgrep diff scan"
           command: semgrep ci
-
   scan-sast-full:
     parameters:
       default_branch:
@@ -126,21 +126,22 @@ jobs:
       SEMGREP_BRANCH: << pipeline.git.branch >>
     docker:
       - image: returntocorp/semgrep
+    resource_class: large
     steps:
       - checkout
       - run:
           name: "Semgrep full scan"
           command: semgrep ci
+
 workflows:
   main:
     when:
       not: << pipeline.parameters.nightly-security-scan >>
     jobs:
-      - "Run_Unit_Test_And_Build"
       - scan-sast-pr:
           context:
             - security-tools
-
+            - circleci
       - scan-sast-full:
           filters:
             # ignore any commit on any branch by default
@@ -151,14 +152,16 @@ workflows:
                 - /production-.*/
           context:
             - security-tools
-
-      - "Run_UI_Test":
+      - run-unit-test-and-build:
+          context:
+            - circleci
+      - run-ui-test:
           requires:
-            - "Run_Unit_Test_And_Build"
-
+            - run-unit-test-and-build
   scheduled-security-scan:
     when: << pipeline.parameters.nightly-security-scan >>
     jobs:
       - scan-sast-full:
           context:
             - security-tools
+            - circleci
