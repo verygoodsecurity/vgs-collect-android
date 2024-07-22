@@ -163,3 +163,4 @@ workflows:
       - scan-sast-full:
           context:
             - security-tools
+            - circleci
