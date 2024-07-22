@@ -139,7 +139,7 @@ workflows:
       - scan-sast-pr:
           context:
             - security-tools
-
+            - circleci
       - scan-sast-full:
           filters:
             # ignore any commit on any branch by default
