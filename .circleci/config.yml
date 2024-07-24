@@ -152,9 +152,7 @@ workflows:
                 - /production-.*/
           context:
             - security-tools
-      - run-unit-test-and-build:
-          context:
-            - circleci
+      - run-unit-test-and-build
       - run-ui-test:
           requires:
             - run-unit-test-and-build
