@@ -48,7 +48,7 @@ jobs:
       - run:
           name: Publish Code Coverage Report
           command: |
-            if [ "<< pipeline.git.branch >>" == "master" ]; then
+            if [ "<< pipeline.git.branch >>" == "develop" ]; then
               COVERAGE=$(sed -n '51p' vgscollect/build/reports/kover/htmlDebug/index.html)
               METRIC_VALUE=`echo ${COVERAGE//[[:space:]]/} | sed 's/.$//'`
 
