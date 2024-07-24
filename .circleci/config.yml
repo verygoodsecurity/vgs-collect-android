@@ -40,7 +40,7 @@ jobs:
       - run:
           name: Generate Code Coverage Report
           command: |
-            if [ "<< pipeline.git.branch >>" == "master" ]; then
+            if [ "<< pipeline.git.branch >>" == "develop" ]; then
               ./gradlew koverHtmlReportDebug
             else
               echo "Code coverage will only be generated on the master branch."
