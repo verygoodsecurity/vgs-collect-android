@@ -60,7 +60,7 @@ jobs:
                 --user "$COMPASS_USER_EMAIL:$COMPASS_API_KEY" \
                 --header "Accept: application/json" \
                 --header "Content-Type: application/json" \
-                --data "{\"metricSourceId\":\"$COMPASS_COMPONENT_URL\",\"value\":\"$METRIC_VALUE\",\"timestamp\":\"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"}"
+                --data "{\"metricSourceId\":\"$COMPASS_METRIC_SOURCE_ID\",\"value\":\"$METRIC_VALUE\",\"timestamp\":\"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"}"
             else
               echo "Code coverage will only be pushed to compass on the master branch."
             fi
@@ -153,7 +153,9 @@ workflows:
                 - /production-.*/
           context:
             - security-tools
-      - run-unit-test-and-build
+      - run-unit-test-and-build:
+          context:
+            - frontend-deploy
       - run-ui-test:
           requires:
             - run-unit-test-and-build
