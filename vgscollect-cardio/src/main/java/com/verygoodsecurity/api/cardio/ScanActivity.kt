@@ -12,6 +12,7 @@ import io.card.payment.CreditCard
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+@Deprecated("Use com.verygoodsecurity.api.blinkcard.ScanActivity instead.")
 class ScanActivity : BaseTransmitActivity() {
 
     private var settings: HashMap<*, *>? = null
@@ -162,6 +163,7 @@ class ScanActivity : BaseTransmitActivity() {
         const val POSTAL_CODE = 0x75
         private const val NAME = "CardIO"
 
+        @Deprecated("Use com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder instead.")
         fun scan(context: Activity, code: Int, bndl: Bundle = Bundle.EMPTY) {
             val intent = Intent(context, ScanActivity::class.java)
             intent.putExtras(bndl)
