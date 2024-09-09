@@ -132,9 +132,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         c.data = str
         c.vaultStorage = vaultStorage
         c.vaultAliasFormat = vaultAliasFormat
-        return c.also {
-            println("TEST, rawData = ${c.rawData}, data = ${c.data}")
-        }
+        return c
     }
 
     internal fun setPreviewIconMode(mode: Int) {
