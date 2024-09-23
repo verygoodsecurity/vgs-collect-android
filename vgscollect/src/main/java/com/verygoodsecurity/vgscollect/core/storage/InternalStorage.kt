@@ -2,7 +2,9 @@ package com.verygoodsecurity.vgscollect.core.storage
 
 import android.content.Context
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
-import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.*
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.CardNumberContent
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.DateContent
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.SSNContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.content.field.FieldStateContractor
 import com.verygoodsecurity.vgscollect.core.storage.content.field.TemporaryFieldsStorage
@@ -94,21 +96,17 @@ internal class InternalStorage(
         emitter.attachStateChangeListener(fieldStateListener)
     }
 
-    fun performSubscription(view: InputFieldView?) {
-        view?.let {
-            fieldsDependencyDispatcher.addDependencyListener(
-                it.getFieldType(),
-                it.statePreparer.getDependencyListener()
-            )
-            it.addStateListener(emitter.performSubscription())
-        }
+    fun performSubscription(view: InputFieldView) {
+        fieldsDependencyDispatcher.addDependencyListener(
+            view.getFieldType(),
+            view.statePreparer.getDependencyListener()
+        )
+        view.addStateListener(emitter.performSubscription())
     }
 
-    fun unsubscribe(view: InputFieldView?) {
-        view?.let {
-            it.statePreparer.unsubscribe()
-            fieldsStorage.remove(it.statePreparer.getView().id)
-        }
+    fun unsubscribe(view: InputFieldView) {
+        view.statePreparer.unsubscribe()
+        fieldsStorage.remove(view.statePreparer.getView().id)
     }
 
     fun getFileSizeLimit(): Int {

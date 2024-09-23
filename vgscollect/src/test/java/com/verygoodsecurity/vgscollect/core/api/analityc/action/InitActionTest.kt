@@ -1,29 +1,21 @@
 package com.verygoodsecurity.vgscollect.core.api.analityc.action
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class InitActionTest {
 
     @Test
-    fun getAttributes_typoAddedByDefault() {
+    fun getAttributes() {
         // Arrange
-        val target = InitAction(emptyMap())
-        // Act
-        val result = target.getAttributes()["type"]
-        // Assert
-        assertEquals("Init", result)
-    }
-
-    @Test
-    fun getAttributes_customParamAndTypeAdded() {
-        // Arrange
-        val target = InitAction(mapOf("custom_param_name" to "custom_param_value"))
+        val target = InitAction(fieldType = "field_type", isCompose = false)
         // Act
         val type = target.getAttributes()["type"]
-        val customParam = target.getAttributes()["custom_param_name"]
+        val fieldType = target.getAttributes()["field"]
+        val ui = target.getAttributes()["ui"]
         // Assert
         assertEquals("Init", type)
-        assertEquals("custom_param_value", customParam)
+        assertEquals("field_type", fieldType)
+        assertEquals("xml", ui)
     }
 }

@@ -10,33 +10,62 @@ import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
-import com.verygoodsecurity.vgscollect.core.api.*
+import com.verygoodsecurity.vgscollect.core.api.PORT_MAX_VALUE
+import com.verygoodsecurity.vgscollect.core.api.PORT_MIN_VALUE
+import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
-import com.verygoodsecurity.vgscollect.core.api.analityc.action.*
+import com.verygoodsecurity.vgscollect.core.api.analityc.action.AttachFileAction
+import com.verygoodsecurity.vgscollect.core.api.analityc.action.HostNameValidationAction
+import com.verygoodsecurity.vgscollect.core.api.analityc.action.InitAction
+import com.verygoodsecurity.vgscollect.core.api.analityc.action.ResponseAction
+import com.verygoodsecurity.vgscollect.core.api.analityc.action.ScanAction
+import com.verygoodsecurity.vgscollect.core.api.analityc.action.SubmitAction
 import com.verygoodsecurity.vgscollect.core.api.analityc.utils.toAnalyticStatus
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.generateAgentHeader
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isCodeSuccessful
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isHttpStatusCode
+import com.verygoodsecurity.vgscollect.core.api.equalsUrl
+import com.verygoodsecurity.vgscollect.core.api.isIpAllowed
+import com.verygoodsecurity.vgscollect.core.api.isURLValid
+import com.verygoodsecurity.vgscollect.core.api.isValidIp
+import com.verygoodsecurity.vgscollect.core.api.isValidPort
+import com.verygoodsecurity.vgscollect.core.api.setupLocalhostURL
+import com.verygoodsecurity.vgscollect.core.api.setupURL
+import com.verygoodsecurity.vgscollect.core.api.toHost
+import com.verygoodsecurity.vgscollect.core.api.toHostnameValidationUrl
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
-import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy.*
+import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy.NESTED_JSON
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
-import com.verygoodsecurity.vgscollect.core.model.network.*
+import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
+import com.verygoodsecurity.vgscollect.core.model.network.VGSError
+import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
+import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
+import com.verygoodsecurity.vgscollect.core.model.network.toVGSResponse
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
-import com.verygoodsecurity.vgscollect.core.storage.*
+import com.verygoodsecurity.vgscollect.core.storage.InternalStorage
+import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageErrorListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
-import com.verygoodsecurity.vgscollect.util.extension.*
+import com.verygoodsecurity.vgscollect.util.extension.DATA_KEY
+import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
+import com.verygoodsecurity.vgscollect.util.extension.hasAccessNetworkStatePermission
+import com.verygoodsecurity.vgscollect.util.extension.hasInternetPermission
+import com.verygoodsecurity.vgscollect.util.extension.isConnectionAvailable
+import com.verygoodsecurity.vgscollect.util.extension.prepareUserDataForCollecting
+import com.verygoodsecurity.vgscollect.util.extension.toNetworkRequest
+import com.verygoodsecurity.vgscollect.util.extension.toTokenizationData
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
-import kotlinx.coroutines.*
-import java.util.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.util.UUID
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -160,26 +189,6 @@ class VGSCollect {
     /**
      * Allows VGS secure fields to interact with [VGSCollect] and collect data from this source.
      *
-     * @param view base class for VGS secure fields.
-     */
-    fun bindView(view: InputFieldView?) {
-        view?.statePreparer?.let {
-            externalDependencyDispatcher.addDependencyListener(
-                view.getFieldName(),
-                it.getDependencyListener()
-            )
-
-            it.setAnalyticTracker(tracker)
-        }
-
-        storage.performSubscription(view)
-
-        initField(view)
-    }
-
-    /**
-     * Allows VGS secure fields to interact with [VGSCollect] and collect data from this source.
-     *
      * @param views VGS secure views.
      */
     fun bindView(vararg views: InputFieldView?) {
@@ -189,14 +198,21 @@ class VGSCollect {
     }
 
     /**
+     * Allows VGS secure fields to interact with [VGSCollect] and collect data from this source.
+     *
+     * @param view base class for VGS secure fields.
+     */
+    fun bindView(view: InputFieldView?) {
+        bindView(view, isCompose = false)
+    }
+
+    /**
      * Allows to unsubscribe from a View updates.
      *
      * @param view base class for VGS secure fields.
      */
     fun unbindView(view: InputFieldView?) {
-        view?.let {
-            storage.unsubscribe(view)
-        }
+        view?.let { storage.unsubscribe(view) }
     }
 
     /**
@@ -369,21 +385,25 @@ class VGSCollect {
                 VGSError.URL_NOT_VALID.toVGSResponse(context),
                 request.requiresTokenization
             )
+
             !context.hasInternetPermission() ->
                 notifyAllListeners(
                     VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse(context),
                     request.requiresTokenization
                 )
+
             !context.hasAccessNetworkStatePermission() ->
                 notifyAllListeners(
                     VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(context),
                     request.requiresTokenization
                 )
+
             !context.isConnectionAvailable() ->
                 notifyAllListeners(
                     VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(context),
                     request.requiresTokenization
                 )
+
             else -> {
                 val data = prepareDataToSubmit(request)
 
@@ -518,6 +538,7 @@ class VGSCollect {
                     map.get(BaseTransmitActivity.RESULT_ID) as? String,
                     map.get(BaseTransmitActivity.RESULT_DETAILS).toString()
                 )
+
                 BaseTransmitActivity.ATTACH -> attachFileEvent(
                     map.get(BaseTransmitActivity.RESULT_STATUS).toString()
                 )
@@ -598,17 +619,25 @@ class VGSCollect {
         client = c
     }
 
-    private fun initField(view: InputFieldView?) {
-        val m = view?.getFieldType()?.getAnalyticName()?.run {
-            with(mutableMapOf<String, String>()) {
-                put("field", this@run)
-                this
-            }
-        } ?: mutableMapOf()
+    internal fun bindComposeView(view: InputFieldView?) {
+        bindView(view, isCompose = true)
+    }
 
-        tracker.logEvent(
-            InitAction(m)
-        )
+    private fun bindView(view: InputFieldView?, isCompose: Boolean) {
+        view?.let {
+            externalDependencyDispatcher.addDependencyListener(
+                view.getFieldName(),
+                it.statePreparer.getDependencyListener()
+            )
+
+            it.statePreparer.setAnalyticTracker(tracker)
+            storage.performSubscription(view)
+            trackViewInit(it, isCompose)
+        }
+    }
+
+    private fun trackViewInit(view: InputFieldView, isCompose: Boolean) {
+        tracker.logEvent(InitAction(view.getFieldType().getAnalyticName(), isCompose))
     }
 
     private fun scanEvent(
