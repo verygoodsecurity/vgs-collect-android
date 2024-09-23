@@ -235,7 +235,7 @@ internal fun <T : InputFieldView> Root(
             view.setFieldName(fieldName)
             onViewCreate?.invoke(layout, view)
             layout.addView(view)
-            collect?.bindView(view)
+            collect?.bindComposeView(view)
             layout
         },
         update = { layout -> input?.let { onViewUpdate?.invoke(layout, it) } }
