@@ -6,13 +6,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
-import com.verygoodsecurity.api.cardio.ScanActivity
+import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityTokenizationBinding
@@ -35,11 +36,6 @@ import kotlin.properties.Delegates
 class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedListener,
     VgsCollectResponseListener {
 
-    companion object {
-
-        private const val SCAN_REQUEST_CODE = 1
-    }
-
     private val defaultHintTextColor by lazy { ContextCompat.getColor(this, R.color.fiord) }
     private val defaultInputBackgroundColor by lazy {
         ContextCompat.getColor(this, R.color.fiord_20)
@@ -59,6 +55,12 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
     private lateinit var binding: ActivityTokenizationBinding
     private lateinit var codeExampleBinding: CodeExampleLayoutBinding
     private lateinit var cardViewBinding: CardInputLayoutBinding
+
+    // Used to start and receive result from scan activity
+    private val scanResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            collect?.onActivityResult(0, it.resultCode, it.data)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,10 +88,12 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
                 scanCard()
                 true
             }
+
             R.id.settings -> {
                 openSettings()
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -240,15 +244,13 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
     }
 
     private fun scanCard() {
-        val intent = Intent(this, ScanActivity::class.java).apply {
-            putExtra(ScanActivity.SCAN_CONFIGURATION, hashMapOf<String?, Int>().apply {
-                this[cardViewBinding.vgsTiedCardNumber.getFieldName()] = ScanActivity.CARD_NUMBER
-                this[cardViewBinding.vgsTiedCardHolder.getFieldName()] = ScanActivity.CARD_HOLDER
-                this[cardViewBinding.vgsTiedExpiry.getFieldName()] = ScanActivity.CARD_EXP_DATE
-                this[cardViewBinding.vgsTiedCvc.getFieldName()] = ScanActivity.CARD_CVC
-            })
-        }
-        @Suppress("DEPRECATION") startActivityForResult(intent, SCAN_REQUEST_CODE)
+        val scanIntent = VGSBlinkCardIntentBuilder(this)
+            .setCardHolderFieldName(cardViewBinding.vgsTiedCardHolder.getFieldName())
+            .setCardNumberFieldName(cardViewBinding.vgsTiedCardNumber.getFieldName())
+            .setExpirationDateFieldName(cardViewBinding.vgsTiedExpiry.getFieldName())
+            .setCVCFieldName(cardViewBinding.vgsTiedCvc.getFieldName())
+            .build()
+        scanResultLauncher.launch(scanIntent)
     }
 
     private fun openSettings() {
