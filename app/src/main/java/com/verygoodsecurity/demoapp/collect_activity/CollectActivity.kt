@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.verygoodsecurity.api.cardio.ScanActivity
+import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
 import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_PATH
@@ -140,8 +140,10 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
         binding.ccInputsRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
 
         // Setup accessibility example
-        binding.includeCardInputView.vgsTiedSsn.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
-        binding.includeCardInputView.vgsTiedSsn.contentDescription = getString(R.string.social_security_number_desc)
+        binding.includeCardInputView.vgsTiedSsn.importantForAccessibility =
+            View.IMPORTANT_FOR_ACCESSIBILITY_YES
+        binding.includeCardInputView.vgsTiedSsn.contentDescription =
+            getString(R.string.social_security_number_desc)
     }
 
     private fun initCodeExampleView() {
@@ -331,17 +333,13 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
 
     // Start scanning process
     private fun scan() {
-        scanResultLauncher.launch(Intent(this, ScanActivity::class.java).apply {
-            putExtra(
-                ScanActivity.SCAN_CONFIGURATION, hashMapOf(
-                    // Provide vgs inputs field names, so scan activity can map scanning result to proper input field
-                    cardBinding.vgsTiedCardHolder.getFieldName() to ScanActivity.CARD_HOLDER,
-                    cardBinding.vgsTiedCardNumber.getFieldName() to ScanActivity.CARD_NUMBER,
-                    cardBinding.vgsTiedExpiry.getFieldName() to ScanActivity.CARD_EXP_DATE,
-                    cardBinding.vgsTiedCvc.getFieldName() to ScanActivity.CARD_CVC,
-                )
-            )
-        })
+        val scanIntent = VGSBlinkCardIntentBuilder(this)
+            .setCardHolderFieldName(cardBinding.vgsTiedCardHolder.getFieldName())
+            .setCardNumberFieldName(cardBinding.vgsTiedCardNumber.getFieldName())
+            .setExpirationDateFieldName(cardBinding.vgsTiedExpiry.getFieldName())
+            .setCVCFieldName(cardBinding.vgsTiedCvc.getFieldName())
+            .build()
+        scanResultLauncher.launch(scanIntent)
     }
 
     private fun updateFilesManageButtonState() {

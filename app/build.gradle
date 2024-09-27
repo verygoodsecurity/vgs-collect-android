@@ -85,7 +85,6 @@ detekt {
 
 dependencies {
     implementation project(":vgscollect")
-    implementation project(":vgscollect-cardio")
     implementation project(":vgscollect-blinkcard")
 
     implementation platform('androidx.compose:compose-bom:2024.02.01')
