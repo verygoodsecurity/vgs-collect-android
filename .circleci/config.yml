@@ -119,8 +119,8 @@ jobs:
     steps:
       - checkout
       - run:
-        name: "Semgrep diff scan"
-        command: semgrep ci
+          name: "Semgrep diff scan"
+          command: semgrep ci
   scan-sast-full:
     <<: *semgrep-config
     environment:
@@ -129,8 +129,8 @@ jobs:
     steps:
       - checkout
       - run:
-        name: "Semgrep full scan"
-        command: semgrep ci
+          name: "Semgrep full scan"
+          command: semgrep ci
 
 workflows:
   main:
