@@ -87,7 +87,7 @@ dependencies {
     implementation project(":vgscollect")
     implementation project(":vgscollect-blinkcard")
 
-    implementation platform('androidx.compose:compose-bom:2024.02.01')
+    implementation platform('androidx.compose:compose-bom:2024.09.02')
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
