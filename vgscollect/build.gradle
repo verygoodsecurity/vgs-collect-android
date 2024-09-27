@@ -97,7 +97,7 @@ dependencies {
     dokkaHtmlPlugin(libs.dokka.base)
 }
 
-tasks.withType(Javadoc).all {
+tasks.withType(Javadoc).configureEach {
     enabled = false
 }
 

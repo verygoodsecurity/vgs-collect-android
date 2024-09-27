@@ -8,8 +8,10 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
-        mavenCentral()
         google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+        maven { url 'https://maven.microblink.com' }
     }
     versionCatalogs {
         debugLibs {
@@ -24,4 +26,5 @@ dependencyResolutionManagement {
     }
 }
 
+rootProject.name = "vgs-collect-android"
 include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-blinkcard'

@@ -7,13 +7,6 @@ plugins {
     alias(libs.plugins.kover).apply(false)
 }
 
-allprojects {
-    repositories {
-        mavenCentral()
-        google()
-    }
-}
-
 tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }

@@ -83,11 +83,6 @@ detekt {
     config = files("$project.rootDir/.detekt/config.yml")
 }
 
-repositories {
-    maven { url "https://jitpack.io" }
-    maven { url 'https://maven.microblink.com' }
-}
-
 dependencies {
     implementation project(":vgscollect")
     implementation project(":vgscollect-cardio")

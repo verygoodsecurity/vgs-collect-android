@@ -46,10 +46,10 @@ detekt {
 dependencies {
     api project(':vgscollect')
 
+    api libs.cardio
+
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
-
-    api libs.cardio
 
     dokkaHtmlPlugin(libs.dokka.base)
 }
