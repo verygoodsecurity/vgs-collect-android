@@ -1,9 +1,9 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'org.jetbrains.dokka'
-    id 'com.vanniktech.maven.publish'
-    id 'io.gitlab.arturbosch.detekt'
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.maven.publish)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -46,10 +46,10 @@ detekt {
 dependencies {
     api project(':vgscollect')
 
+    api libs.cardio
+
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
-
-    api libs.cardio
 
     dokkaHtmlPlugin(libs.dokka.base)
 }
