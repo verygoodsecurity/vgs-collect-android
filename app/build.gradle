@@ -1,8 +1,10 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'io.gitlab.arturbosch.detekt'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.detekt)
 }
+
+apply from: "$rootDir/gradle/utils.gradle"
 
 android {
     namespace 'com.verygoodsecurity.demoapp'
@@ -91,30 +93,23 @@ dependencies {
     implementation project(":vgscollect-cardio")
     implementation project(":vgscollect-blinkcard")
 
-    implementation 'com.google.android.gms:play-services-wallet:19.3.0'
+    implementation platform('androidx.compose:compose-bom:2024.02.01')
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
     implementation libs.material
-
-    implementation platform('androidx.compose:compose-bom:2024.02.01')
-
-    implementation libs.compose.activity
+    implementation libs.activity.compose
     implementation libs.compose.material
     implementation libs.compose.ui.tooling.preview
+    implementation libs.play.services.wallet
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.multidex
+    implementation libs.androidx.preference.ktx
+    implementation libs.codeview
+    implementation libs.fuel
+    implementation libs.espresso.idling.resource
 
     debugImplementation debugLibs.compose.ui.tooling
-
-    debugImplementation 'androidx.compose.ui:ui-tooling'
-
-    implementation demoLibs.androidx.constraintlayout
-    implementation demoLibs.androidx.multidex
-    implementation demoLibs.androidx.preference.ktx
-    implementation demoLibs.codeview
-    implementation demoLibs.fuel
-
-    implementation demoLibs.espresso.idling.resource
-
     debugImplementation debugLibs.leakcanary
 
     testImplementation testLibs.junit
