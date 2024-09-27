@@ -110,27 +110,27 @@ jobs:
               --device model=sailfish,version=25,locale=en,orientation=portrait \
               --device model=oriole,version=31,locale=en,orientation=portrait \
               --device model=husky,version=34,locale=en,orientation=portrait \
-    scan-sast-pr:
-      <<: *semgrep-config
-      environment:
-        SEMGREP_REPO_URL: << pipeline.project.git_url >>
-        SEMGREP_BRANCH: << pipeline.git.branch >>
-        SEMGREP_BASELINE_REF: << parameters.default_branch >>
-      steps:
-        - checkout
-        - run:
-          name: "Semgrep diff scan"
-          command: semgrep ci
-    scan-sast-full:
-      <<: *semgrep-config
-      environment:
-        SEMGREP_REPO_URL: << pipeline.project.git_url >>
-        SEMGREP_BRANCH: << pipeline.git.branch >>
-      steps:
-        - checkout
-        - run:
-          name: "Semgrep full scan"
-          command: semgrep ci
+  scan-sast-pr:
+    <<: *semgrep-config
+    environment:
+      SEMGREP_REPO_URL: << pipeline.project.git_url >>
+      SEMGREP_BRANCH: << pipeline.git.branch >>
+      SEMGREP_BASELINE_REF: << parameters.default_branch >>
+    steps:
+      - checkout
+      - run:
+        name: "Semgrep diff scan"
+        command: semgrep ci
+  scan-sast-full:
+    <<: *semgrep-config
+    environment:
+      SEMGREP_REPO_URL: << pipeline.project.git_url >>
+      SEMGREP_BRANCH: << pipeline.git.branch >>
+    steps:
+      - checkout
+      - run:
+        name: "Semgrep full scan"
+        command: semgrep ci
 
 workflows:
   main:
