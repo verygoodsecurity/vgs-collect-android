@@ -1,3 +1,4 @@
+#file: noinspection YAMLSchemaValidation
 version: 2.1
 
 # === Scheduled Pipeline Parameters ===
@@ -12,8 +13,6 @@ aliases:
     docker:
       - image: cimg/android:2024.01
     resource_class: large
-    executor:
-      name: android/android-machine
   - &semgrep-config
     parameters:
       default_branch:
