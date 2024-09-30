@@ -74,6 +74,7 @@ internal class CollectActionTracker(
                 deviceInfo[DEVICE] = Build.BRAND
                 deviceInfo[DEVICE_MODEL] = Build.MODEL
                 deviceInfo[OS] = Build.VERSION.SDK_INT.toString()
+                deviceInfo[DEVICE_LOCALE] = Locale.getDefault().language
                 this[USER_AGENT] = deviceInfo
 
                 this
@@ -106,6 +107,7 @@ internal class CollectActionTracker(
             private const val DEVICE = "device"
             private const val DEVICE_MODEL = "deviceModel"
             private const val OS = "osVersion"
+            private const val DEVICE_LOCALE = "deviceLocale"
             private const val STATUS = "status"
             private const val STATUS_OK = "Ok"
             private const val USER_AGENT = "ua"

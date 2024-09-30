@@ -1,15 +1,11 @@
 package com.verygoodsecurity.demoapp.flows
 
-import android.app.Activity
-import android.app.Instrumentation.ActivityResult
-import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.*
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -18,14 +14,11 @@ import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.demoapp.utils.actions.SetTextAction
-import com.verygoodsecurity.demoapp.collect_activity.CollectActivity
 import com.verygoodsecurity.demoapp.utils.matchers.withCardCVCState
 import com.verygoodsecurity.demoapp.utils.matchers.withCardExpDateState
 import com.verygoodsecurity.demoapp.utils.matchers.withCardHolderState
 import com.verygoodsecurity.demoapp.utils.matchers.withCardNumberState
 import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
-import io.card.payment.CardIOActivity
-import io.card.payment.CreditCard
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.notNullValue
@@ -67,27 +60,6 @@ class CollectActivityTest {
     fun teardown() {
         release()
         IdlingRegistry.getInstance().unregister(GlobalIdlingResource.getResource())
-    }
-
-    @Test
-    fun test_scan_card() {
-        startMainScreen()
-        intended(hasComponent(CollectActivity::class.qualifiedName))
-
-        val intent = Intent()
-        val card = CreditCard("4111111111111111", 5, 2033, "123", null, "John B")
-        intent.putExtra(CardIOActivity.EXTRA_SCAN_RESULT, card)
-
-
-        intending(hasComponent(CardIOActivity::class.qualifiedName))
-            .respondWith(ActivityResult(Activity.RESULT_OK, intent))
-
-        onView(withId(R.id.scan_card)).perform(click())
-
-        val submitBtn = interactWithSubmitButton()
-        performClick(submitBtn)
-
-        interactWithResponseContainer().check(matches(withText(containsString(CODE_200))))
     }
 
     @Test

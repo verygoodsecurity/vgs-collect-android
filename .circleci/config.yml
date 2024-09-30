@@ -1,3 +1,4 @@
+#file: noinspection YAMLSchemaValidation
 version: 2.1
 
 # === Scheduled Pipeline Parameters ===
@@ -7,15 +8,23 @@ parameters:
     default: false
 
 aliases:
-  - &environment
+  - &android-environment
     working_directory: ~/code
     docker:
       - image: cimg/android:2024.01
     resource_class: large
+  - &semgrep-config
+    parameters:
+      default_branch:
+        type: string
+        default: master
+    docker:
+      - image: returntocorp/semgrep
+    resource_class: large
 
 jobs:
   run-unit-test-and-build:
-    <<: *environment
+    <<: *android-environment
     steps:
       - checkout
       - run: echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
@@ -72,7 +81,7 @@ jobs:
           paths:
             - app
   run-ui-test:
-    <<: *environment
+    <<: *android-environment
     steps:
       - attach_workspace:
           at: ~/code
@@ -101,33 +110,21 @@ jobs:
               --device model=oriole,version=31,locale=en,orientation=portrait \
               --device model=husky,version=34,locale=en,orientation=portrait \
   scan-sast-pr:
-    parameters:
-      default_branch:
-        type: string
-        default: master
+    <<: *semgrep-config
     environment:
       SEMGREP_REPO_URL: << pipeline.project.git_url >>
       SEMGREP_BRANCH: << pipeline.git.branch >>
       SEMGREP_BASELINE_REF: << parameters.default_branch >>
-    docker:
-      - image: returntocorp/semgrep
-    resource_class: large
     steps:
       - checkout
       - run:
           name: "Semgrep diff scan"
           command: semgrep ci
   scan-sast-full:
-    parameters:
-      default_branch:
-        type: string
-        default: master
+    <<: *semgrep-config
     environment:
       SEMGREP_REPO_URL: << pipeline.project.git_url >>
       SEMGREP_BRANCH: << pipeline.git.branch >>
-    docker:
-      - image: returntocorp/semgrep
-    resource_class: large
     steps:
       - checkout
       - run:

@@ -1,15 +1,11 @@
 package com.verygoodsecurity.demoapp.flows
 
-import android.app.Activity
-import android.app.Instrumentation
-import android.content.Intent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.*
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -22,10 +18,7 @@ import com.verygoodsecurity.demoapp.utils.matchers.withCardCVCState
 import com.verygoodsecurity.demoapp.utils.matchers.withCardExpDateState
 import com.verygoodsecurity.demoapp.utils.matchers.withCardHolderState
 import com.verygoodsecurity.demoapp.utils.matchers.withCardNumberState
-import com.verygoodsecurity.demoapp.test.BuildConfig
 import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
-import io.card.payment.CardIOActivity
-import io.card.payment.CreditCard
 import org.hamcrest.CoreMatchers.containsString
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.core.StringContains
@@ -64,31 +57,6 @@ class CollectFragmentTest {
     fun teardown() {
         release()
         IdlingRegistry.getInstance().unregister(GlobalIdlingResource.getResource())
-    }
-
-    @Test
-    fun test_scan_card() {
-        startMainScreen()
-
-        interactWithScanner()
-
-        val submitBtn  = interactWithSubmitButton()
-        performClick(submitBtn)
-
-        val responseContainer  = interactWithResponseContainer()
-        responseContainer.check(matches(withText(containsString(CODE_200))))
-    }
-
-    private fun interactWithScanner() = apply {
-        val intent = Intent()
-        val card = CreditCard("4111111111111111", 5,33, "123", null, "John B")
-        intent.putExtra(CardIOActivity.EXTRA_SCAN_RESULT, card)
-
-
-        intending(hasComponent(CardIOActivity::class.qualifiedName))
-            .respondWith(Instrumentation.ActivityResult(Activity.RESULT_OK, intent))
-
-        performClick(onView(withId(R.id.scan_card)))
     }
 
     @Test

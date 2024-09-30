@@ -4,9 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.verygoodsecurity.api.cardio.ScanActivity
+import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.databinding.FragmentPaymentBinding
 import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
@@ -36,6 +37,12 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
     private lateinit var vgsForm: VGSCollect
 
     private lateinit var binding: FragmentPaymentBinding
+
+    // Used to start and receive result from scan activity
+    private val scanResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            vgsForm.onActivityResult(0, it.resultCode, it.data)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,21 +78,13 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
     }
 
     private fun scanCard() {
-        val intent = Intent(activity, ScanActivity::class.java)
-
-        val scanSettings = hashMapOf<String?, Int>().apply {
-            this[binding.cardNumberField.getFieldName()] = ScanActivity.CARD_NUMBER
-            this[binding.cardCVCField.getFieldName()] = ScanActivity.CARD_CVC
-            this[binding.cardHolderField.getFieldName()] = ScanActivity.CARD_HOLDER
-            this[binding.cardExpDateField.getFieldName()] = ScanActivity.CARD_EXP_DATE
-        }
-
-        intent.putExtra(ScanActivity.SCAN_CONFIGURATION, scanSettings)
-
-        startActivityForResult(
-            intent,
-            VGSCollectFragmentActivity.USER_SCAN_REQUEST_CODE
-        )
+        val scanIntent = VGSBlinkCardIntentBuilder(requireActivity())
+            .setCardHolderFieldName(binding.cardHolderField.getFieldName())
+            .setCardNumberFieldName(binding.cardNumberField.getFieldName())
+            .setExpirationDateFieldName(binding.cardExpDateField.getFieldName())
+            .setCVCFieldName(binding.cardCVCField.getFieldName())
+            .build()
+        scanResultLauncher.launch(scanIntent)
     }
 
     private fun retrieveAttributes() {
