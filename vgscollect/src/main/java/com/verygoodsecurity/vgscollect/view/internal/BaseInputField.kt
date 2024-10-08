@@ -67,9 +67,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
 
     internal var isEnabledTokenization: Boolean = true
-        get() {
-            return field
-        }
         set(value) {
             field = value
             inputConnection?.getOutput()?.content?.isEnabledTokenization = value

@@ -160,6 +160,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
         }
         c.vaultStorage = vaultStorage
         c.vaultAliasFormat = vaultAliasFormat
+        c.isEnabledTokenization = isEnabledTokenization
         return c
     }
 
