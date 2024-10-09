@@ -87,7 +87,7 @@ class VGSCollect {
     private var storage: InternalStorage
     private val storageErrorListener: StorageErrorListener = object : StorageErrorListener {
         override fun onStorageError(error: VGSError) {
-            error.toVGSResponse(context).also { r ->
+            error.toVGSResponse().also { r ->
                 notifyAllListeners(r, false)
                 VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
                 submitEvent(isSuccess = false, requiresTokenization = false, code = r.errorCode)
@@ -382,25 +382,25 @@ class VGSCollect {
             !request.fieldsIgnore && !validateFields(request.requiresTokenization) -> return
             !request.fileIgnore && !validateFiles(request.requiresTokenization) -> return
             !baseURL.isURLValid() -> notifyAllListeners(
-                VGSError.URL_NOT_VALID.toVGSResponse(context),
+                VGSError.URL_NOT_VALID.toVGSResponse(),
                 request.requiresTokenization
             )
 
             !context.hasInternetPermission() ->
                 notifyAllListeners(
-                    VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse(context),
+                    VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse(),
                     request.requiresTokenization
                 )
 
             !context.hasAccessNetworkStatePermission() ->
                 notifyAllListeners(
-                    VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(context),
+                    VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(),
                     request.requiresTokenization
                 )
 
             !context.isConnectionAvailable() ->
                 notifyAllListeners(
-                    VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(context),
+                    VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(),
                     request.requiresTokenization
                 )
 
@@ -443,7 +443,7 @@ class VGSCollect {
         storage.getAttachedFiles().forEach {
             if (it.size > storage.getFileSizeLimit()) {
                 notifyAllListeners(
-                    VGSError.FILE_SIZE_OVER_LIMIT.toVGSResponse(context, it.name),
+                    VGSError.FILE_SIZE_OVER_LIMIT.toVGSResponse(it.name),
                     requiresTokenization
                 )
 
@@ -460,7 +460,7 @@ class VGSCollect {
 
         storage.getFieldsStorage().getItems().forEach {
             if (it.isValid.not()) {
-                VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(context, it.fieldName).also { r ->
+                VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(it.fieldName).also { r ->
                     notifyAllListeners(r, requiresTokenization)
                     VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
                     submitEvent(false, requiresTokenization, code = r.errorCode)
