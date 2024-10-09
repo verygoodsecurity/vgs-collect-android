@@ -132,6 +132,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         c.data = str
         c.vaultStorage = vaultStorage
         c.vaultAliasFormat = vaultAliasFormat
+        c.isEnabledTokenization = isEnabledTokenization
         return c
     }
 
