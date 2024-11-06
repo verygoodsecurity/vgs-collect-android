@@ -14,6 +14,13 @@
         <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
     </style>
 
+    <style name="AppTheme.CollectActivity">
+        <item name="colorSecondary">@color/brown</item>
+        <item name="android:textColorPrimary">#353332</item>
+        <item name="android:textColorSecondary">#90353332</item>
+        <item name="android:textColorPrimaryInverse">#FDF4EC</item>
+    </style>
+
     <style name="AlertDialogTheme" parent="Theme.MaterialComponents.Dialog">
         <item name="android:windowBackground">@drawable/dialog_bg</item>
         <item name="android:windowTitleStyle">@style/AlertDialogTitleStyle</item>
@@ -47,7 +54,6 @@
     </style>
 
     <style name="DatePicker" parent="@android:style/Widget.Material.DatePicker">
-        <item name="colorSecondary">@color/brown</item>
         <item name="android:headerBackground">#FDF4EC</item>
         <item name="android:headerMonthTextAppearance">@style/DatePickerHeaderMonthTextAppearance</item>
         <item name="android:paddingTop">16dp</item>
