@@ -91,4 +91,9 @@
     <string name="reg_title">Reg</string>
     <string name="rule_off_title">Rule off</string>
     <string name="add_credit_or_debit_card_title">Add credit or debit card</string>
+
+
+    <string name="vgs_date_picker_title">Choose date</string>
+    <string name="vgs_date_picker_positive_button">OK</string>
+    <string name="vgs_date_picker_negative_button">Close</string>
 </resources>

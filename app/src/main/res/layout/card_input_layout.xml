@@ -125,7 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:datePattern="MM/yy"
-            app:datePickerModes="input"
+            app:datePickerModes="calendar"
             app:fieldName="card.expiry"
             app:imeOptions="actionNext"
             app:inputType="date"

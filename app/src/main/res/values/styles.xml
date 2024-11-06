@@ -9,6 +9,57 @@
         <item name="android:textColorSecondary">@color/fiord</item>
         <item name="actionBarStyle">@style/ActionBarStyle</item>
         <item name="snackbarTextViewStyle">@style/SnackBarTextViewStyle</item>
+        <item name="android:datePickerDialogTheme">@style/AlertDialogTheme</item>
+        <item name="android:datePickerStyle">@style/DatePicker</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:windowBackground">@drawable/dialog_bg</item>
+        <item name="android:windowTitleStyle">@style/AlertDialogTitleStyle</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/AlertDialogPositiveButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/AlertDialogNegativeButtonStyle</item>
+    </style>
+
+    <style name="AlertDialogTitleStyle" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">#353332</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
+    </style>
+
+    <style name="AlertDialogPositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">#353332</item>
+        <item name="android:textAppearance">@style/AlertDialogPositiveButtonTextAppearance</item>
+    </style>
+
+    <style name="AlertDialogNegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">#353332</item>
+        <item name="android:textAppearance">@style/AlertDialogNegativeButtonTextAppearance</item>
+    </style>
+
+    <style name="AlertDialogPositiveButtonTextAppearance" parent="@style/TextAppearance.MaterialComponents.Button">
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="AlertDialogNegativeButtonTextAppearance" parent="@style/TextAppearance.MaterialComponents.Button">
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="DatePicker" parent="@android:style/Widget.Material.DatePicker">
+        <item name="colorSecondary">@color/brown</item>
+        <item name="android:headerBackground">#FDF4EC</item>
+        <item name="android:headerMonthTextAppearance">@style/DatePickerHeaderMonthTextAppearance</item>
+        <item name="android:paddingTop">16dp</item>
+    </style>
+
+    <style name="DatePickerHeaderMonthTextAppearance">
+        <item name="android:textColor">@color/calendar_header_color</item>
+    </style>
+
+    <style name="DatePickerYearListItemTextAppearance">
+        <item name="android:textColor">@color/brown</item>
+        <item name="textColor">@color/brown</item>
     </style>
 
     <style name="ActionBarStyle" parent="Widget.MaterialComponents.ActionBar.Primary">
