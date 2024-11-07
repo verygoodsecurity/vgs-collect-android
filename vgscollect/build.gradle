@@ -86,7 +86,6 @@ dependencies {
     testImplementation testLibs.mockito.core
     testImplementation testLibs.mockito.inline
     testImplementation testLibs.robolectric
-    testImplementation testLibs.mockk
     testImplementation testLibs.json
     testImplementation testLibs.jsonassert
 
