@@ -49,9 +49,9 @@ internal class FilePickerActivity :BaseTransmitActivity() {
     private fun configureInternalSettings(data: Intent?) {
         mapData(RESULT_TYPE, ATTACH)
         if(data?.data?.toString().isNullOrEmpty()) {
-            mapData(RESULT_STATUS, Status.CLOSE.raw)
+            mapData(RESULT_STATUS, Status.CLOSE)
         } else {
-            mapData(RESULT_STATUS, Status.SUCCESS.raw)
+            mapData(RESULT_STATUS, Status.SUCCESS)
         }
     }
 }

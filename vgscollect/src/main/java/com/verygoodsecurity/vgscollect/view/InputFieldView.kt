@@ -28,9 +28,9 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
+import com.verygoodsecurity.sdk.analytics.AnalyticsManager
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
@@ -152,8 +152,8 @@ abstract class InputFieldView @JvmOverloads constructor(
 
         override fun getDependencyListener(): DependencyListener = notifier
 
-        override fun setAnalyticTracker(tr: AnalyticTracker) {
-            inputField.tracker = tr
+        override fun setAnalyticManager(manager: AnalyticsManager) {
+            inputField.manager = manager
         }
 
         override fun unsubscribe() {

@@ -1,7 +1,7 @@
 package com.verygoodsecurity.vgscollect.view
 
 import android.view.View
-import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
+import com.verygoodsecurity.sdk.analytics.AnalyticsManager
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
 
 /** @suppress */
@@ -11,5 +11,5 @@ internal interface AccessibilityStatePreparer {
     fun unsubscribe()
     fun getDependencyListener(): DependencyListener
 
-    fun setAnalyticTracker(tr: AnalyticTracker)
+    fun setAnalyticManager(manager: AnalyticsManager)
 }
