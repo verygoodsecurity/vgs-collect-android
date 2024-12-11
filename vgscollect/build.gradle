@@ -79,7 +79,7 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
 
-    implementation platform('androidx.compose:compose-bom:2024.02.01')
+    implementation platform('androidx.compose:compose-bom:2024.12.01')
     implementation libs.compose.material
 
     testImplementation testLibs.junit
