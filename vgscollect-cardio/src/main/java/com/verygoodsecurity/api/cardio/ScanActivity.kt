@@ -97,9 +97,9 @@ class ScanActivity : BaseTransmitActivity() {
         mapData(RESULT_TYPE, SCAN)
         mapData(RESULT_NAME, NAME)
         if (data?.extras?.containsKey(CardIOActivity.EXTRA_SCAN_RESULT) == true) {
-            mapData(RESULT_STATUS, Status.SUCCESS.raw)
+            mapData(RESULT_STATUS, Status.SUCCESS)
         } else {
-            mapData(RESULT_STATUS, Status.FAILED.raw)
+            mapData(RESULT_STATUS, Status.FAILED)
         }
     }
 

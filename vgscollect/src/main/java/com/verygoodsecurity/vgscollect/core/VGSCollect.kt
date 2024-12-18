@@ -7,21 +7,17 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
+import com.verygoodsecurity.sdk.analytics.AnalyticsManager
+import com.verygoodsecurity.sdk.analytics.model.Event
+import com.verygoodsecurity.sdk.analytics.model.Status
+import com.verygoodsecurity.sdk.analytics.model.Upstream
+import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.api.PORT_MAX_VALUE
 import com.verygoodsecurity.vgscollect.core.api.PORT_MIN_VALUE
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
-import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
-import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
-import com.verygoodsecurity.vgscollect.core.api.analityc.action.AttachFileAction
-import com.verygoodsecurity.vgscollect.core.api.analityc.action.HostNameValidationAction
-import com.verygoodsecurity.vgscollect.core.api.analityc.action.InitAction
-import com.verygoodsecurity.vgscollect.core.api.analityc.action.ResponseAction
-import com.verygoodsecurity.vgscollect.core.api.analityc.action.ScanAction
-import com.verygoodsecurity.vgscollect.core.api.analityc.action.SubmitAction
-import com.verygoodsecurity.vgscollect.core.api.analityc.utils.toAnalyticStatus
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.generateAgentHeader
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isCodeSuccessful
@@ -59,14 +55,17 @@ import com.verygoodsecurity.vgscollect.util.extension.hasAccessNetworkStatePermi
 import com.verygoodsecurity.vgscollect.util.extension.hasInternetPermission
 import com.verygoodsecurity.vgscollect.util.extension.isConnectionAvailable
 import com.verygoodsecurity.vgscollect.util.extension.prepareUserDataForCollecting
+import com.verygoodsecurity.vgscollect.util.extension.toAnalyticsMappingPolicy
+import com.verygoodsecurity.vgscollect.util.extension.toAnalyticsStatus
 import com.verygoodsecurity.vgscollect.util.extension.toNetworkRequest
 import com.verygoodsecurity.vgscollect.util.extension.toTokenizationData
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.UUID
 import java.util.concurrent.CopyOnWriteArrayList
+
+private const val SOURCE_TAG = "androidSDK"
 
 /**
  * VGS Collect allows you to securely collect data and files from your users without having
@@ -79,8 +78,8 @@ class VGSCollect {
 
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
-    private val tracker: AnalyticTracker
-
+    private val analyticsManager: AnalyticsManager
+    private var isAnalyticsEnabled: Boolean = true
     private var client: ApiClient
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
@@ -111,12 +110,12 @@ class VGSCollect {
         port: Int?
     ) {
         this.context = context
+        this.analyticsManager =
+            AnalyticsManager(id, environment, SOURCE_TAG, BuildConfig.VERSION_NAME)
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
         this.baseURL = generateBaseUrl(id, environment, url, port)
-        this.tracker =
-            CollectActionTracker(id, environment, UUID.randomUUID().toString(), isSatelliteMode)
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
     }
@@ -241,6 +240,7 @@ class VGSCollect {
      */
     fun onDestroy() {
         client.cancelAll()
+        analyticsManager.cancelAll()
         responseListeners.clear()
         storage.clear()
     }
@@ -533,14 +533,14 @@ class VGSCollect {
 
             when (map.get(BaseTransmitActivity.RESULT_TYPE)) {
                 BaseTransmitActivity.SCAN -> scanEvent(
-                    map.get(BaseTransmitActivity.RESULT_STATUS).toString(),
+                    map.get(BaseTransmitActivity.RESULT_STATUS) as BaseTransmitActivity.Status,
                     map.get(BaseTransmitActivity.RESULT_NAME).toString(),
                     map.get(BaseTransmitActivity.RESULT_ID) as? String,
                     map.get(BaseTransmitActivity.RESULT_DETAILS).toString()
                 )
 
                 BaseTransmitActivity.ATTACH -> attachFileEvent(
-                    map.get(BaseTransmitActivity.RESULT_STATUS).toString()
+                    map.get(BaseTransmitActivity.RESULT_STATUS) as BaseTransmitActivity.Status
                 )
             }
 
@@ -600,7 +600,7 @@ class VGSCollect {
      * Warning: if this option is set to false, it will increase resolving time for possible incidents.
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
-        tracker.isEnabled = isEnabled
+        isAnalyticsEnabled = isEnabled
         updateAgentHeader()
     }
 
@@ -630,32 +630,35 @@ class VGSCollect {
                 it.statePreparer.getDependencyListener()
             )
 
-            it.statePreparer.setAnalyticTracker(tracker)
+            it.statePreparer.setAnalyticManager(analyticsManager)
             storage.performSubscription(view)
-            trackViewInit(it, isCompose)
+            fieldInitEvent(it, isCompose)
         }
     }
 
-    private fun trackViewInit(view: InputFieldView, isCompose: Boolean) {
-        tracker.logEvent(InitAction(view.getFieldType().getAnalyticName(), isCompose))
+    @Suppress("UNUSED_PARAMETER")
+    private fun fieldInitEvent(view: InputFieldView, isCompose: Boolean) {
+        capture(
+            Event.FieldInit(
+                fieldType = view.getFieldType().getAnalyticName(),
+                contentPath = view.getFieldName() ?: "",
+            )
+        ) // TODO: Add UI type
     }
 
     private fun scanEvent(
-        status: String,
+        status: BaseTransmitActivity.Status,
         type: String,
         id: String?,
         details: String? = null
     ) {
-        val m = with(mutableMapOf<String, String>()) {
-            put("status", status)
-            put("scannerType", type)
-            details?.let { put("details", details.toString()) }
-            id?.let { put("scanId", id.toString()) }
-
-            this
-        }
-        tracker.logEvent(
-            ScanAction(m)
+        capture(
+            Event.Scan(
+                status = status.toAnalyticsStatus(),
+                scanId = id.toString(),
+                scanDetails = details.toString(),
+                scannerType = type
+            )
         )
     }
 
@@ -671,60 +674,65 @@ class VGSCollect {
         code: Int = 200
     ) {
         if (code.isHttpStatusCode()) {
-            val m = with(mutableMapOf<String, Any>()) {
-                put("status", isSuccess.toAnalyticStatus())
-                put("statusCode", code)
-                put("upstream", if (requiresTokenization) "tokenization" else "custom")
-                val arr = with(mutableListOf<String>()) {
-                    if (hasCustomHostname) add("custom_hostname")
-                    if (hasFiles) add("file")
-                    if (hasFields) add("textField")
-                    if (hasCustomHeader ||
-                        client.getTemporaryStorage().getCustomHeaders().isNotEmpty()
-                    ) add("custom_header")
-                    if (hasCustomData ||
-                        client.getTemporaryStorage().getCustomData().isNotEmpty()
-                    ) add("custom_data")
-                    add(mappingPolicy.analyticsName)
-                    this
-                }
+            val event = Event.Request.Builder(
+                status = if (isSuccess) Status.OK else Status.FAILED,
+                code = code,
+                upstream = if (requiresTokenization) Upstream.TOKENIZATION else Upstream.CUSTOM
+            )
 
-                put("content", arr)
-
-                this
+            if (hasCustomHostname) event.customHostname()
+            if (hasFiles) event.files()
+            if (hasFields) event.fields()
+            if (hasCustomHeader || client.getTemporaryStorage().getCustomHeaders().isNotEmpty()) {
+                event.customHeader()
+            }
+            if (hasCustomData || client.getTemporaryStorage().getCustomData().isNotEmpty()) {
+                event.customData()
             }
 
-            tracker.logEvent(
-                SubmitAction(m)
-            )
+            event.mappingPolicy(mappingPolicy.toAnalyticsMappingPolicy())
+
+            capture(event.build())
         }
     }
 
     private fun responseEvent(code: Int, requiresTokenization: Boolean, message: String? = null) {
         if (code.isHttpStatusCode()) {
-            val m = with(mutableMapOf<String, Any>()) {
-                put("statusCode", code)
-                put("status", code.isCodeSuccessful().toAnalyticStatus())
-                if (!message.isNullOrEmpty()) put("error", message)
-                put("upstream", if (requiresTokenization) "tokenization" else "custom")
-
-                this
-            }
-            tracker.logEvent(
-                ResponseAction(m)
+            capture(
+                Event.Response(
+                    status = code.isCodeSuccessful().toAnalyticsStatus(),
+                    code = code,
+                    upstream = if (requiresTokenization) Upstream.TOKENIZATION else Upstream.CUSTOM
+                )
             )
         }
     }
 
-    private fun attachFileEvent(status: String) {//MIME, success
-        val m = with(mutableMapOf<String, Any>()) {
-            put("status", status)
+    private fun attachFileEvent(status: BaseTransmitActivity.Status) {
+        capture(Event.AttachFile(status.toAnalyticsStatus()))
+    }
 
-            this
-        }
-        tracker.logEvent(
-            AttachFileAction(m)
+    private fun hostnameValidationEvent(
+        isSuccess: Boolean,
+        hostname: String = ""
+    ) {
+        analyticsManager.capture(
+            Event.Cname(
+                status = isSuccess.toAnalyticsStatus(),
+                hostname = hostname
+            )
         )
+    }
+
+    private fun updateAgentHeader() {
+        client.getTemporaryStorage()
+            .setCustomHeaders(mapOf(generateAgentHeader(isAnalyticsEnabled)))
+    }
+
+    private fun capture(event: Event) {
+        if (isAnalyticsEnabled) {
+            analyticsManager.capture(event)
+        }
     }
 
     private var hasCustomHostname = false
@@ -793,26 +801,6 @@ class VGSCollect {
                 hostnameValidationEvent(hasCustomHostname, host)
             }
         }
-    }
-
-    private fun hostnameValidationEvent(
-        isSuccess: Boolean,
-        hostname: String = ""
-    ) {
-        val m = with(mutableMapOf<String, Any>()) {
-            put("status", isSuccess.toAnalyticStatus())
-            put("hostname", hostname)
-
-            this
-        }
-
-        tracker.logEvent(
-            HostNameValidationAction(m)
-        )
-    }
-
-    private fun updateAgentHeader() {
-        client.getTemporaryStorage().setCustomHeaders(mapOf(generateAgentHeader(tracker.isEnabled)))
     }
 
     /**

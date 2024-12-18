@@ -117,7 +117,7 @@ internal class ScanActivity : BaseTransmitActivity() {
     private fun addAnalyticInfo(status: Status, details: String? = null) {
         mapData(RESULT_TYPE, SCAN)
         mapData(RESULT_NAME, NAME)
-        mapData(RESULT_STATUS, status.raw)
+        mapData(RESULT_STATUS, status)
         mapData(RESULT_DETAILS, details)
     }
 
