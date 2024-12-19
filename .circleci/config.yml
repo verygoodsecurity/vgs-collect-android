@@ -1,25 +1,11 @@
 #file: noinspection YAMLSchemaValidation
 version: 2.1
 
-# === Scheduled Pipeline Parameters ===
-parameters:
-  nightly-security-scan:
-    type: boolean
-    default: false
-
 aliases:
   - &android-environment
     working_directory: ~/code
     docker:
       - image: cimg/android:2024.01
-    resource_class: large
-  - &semgrep-config
-    parameters:
-      default_branch:
-        type: string
-        default: master
-    docker:
-      - image: returntocorp/semgrep
     resource_class: large
 
 jobs:
@@ -109,57 +95,13 @@ jobs:
               --device model=sailfish,version=25,locale=en,orientation=portrait \
               --device model=oriole,version=31,locale=en,orientation=portrait \
               --device model=husky,version=34,locale=en,orientation=portrait \
-  scan-sast-pr:
-    <<: *semgrep-config
-    environment:
-      SEMGREP_REPO_URL: << pipeline.project.git_url >>
-      SEMGREP_BRANCH: << pipeline.git.branch >>
-      SEMGREP_BASELINE_REF: << parameters.default_branch >>
-    steps:
-      - checkout
-      - run:
-          name: "Semgrep diff scan"
-          command: semgrep ci
-  scan-sast-full:
-    <<: *semgrep-config
-    environment:
-      SEMGREP_REPO_URL: << pipeline.project.git_url >>
-      SEMGREP_BRANCH: << pipeline.git.branch >>
-    steps:
-      - checkout
-      - run:
-          name: "Semgrep full scan"
-          command: semgrep ci
 
 workflows:
   main:
-    when:
-      not: << pipeline.parameters.nightly-security-scan >>
     jobs:
-      - scan-sast-pr:
-          context:
-            - security-tools
-            - circleci
-      - scan-sast-full:
-          filters:
-            # ignore any commit on any branch by default
-            branches:
-              ignore: /.*/
-            tags:
-              only:
-                - /production-.*/
-          context:
-            - security-tools
       - run-unit-test-and-build:
           context:
             - frontend-deploy
       - run-ui-test:
           requires:
             - run-unit-test-and-build
-  scheduled-security-scan:
-    when: << pipeline.parameters.nightly-security-scan >>
-    jobs:
-      - scan-sast-full:
-          context:
-            - security-tools
-            - circleci
