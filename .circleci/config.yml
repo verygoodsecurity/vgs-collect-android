@@ -27,6 +27,8 @@ jobs:
     <<: *android-environment
     steps:
       - checkout
+      - run: git submodule init
+      - run: git submodule update
       - run: echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
       - run: echo "VGS_PATH=$VGS_PATH" >> local.properties
       - restore_cache:
