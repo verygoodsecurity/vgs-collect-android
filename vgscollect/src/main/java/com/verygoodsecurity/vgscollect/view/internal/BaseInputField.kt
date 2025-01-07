@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo
@@ -13,11 +12,11 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
+import com.verygoodsecurity.sdk.analytics.AnalyticsManager
+import com.verygoodsecurity.sdk.analytics.model.Event
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
-import com.verygoodsecurity.vgscollect.core.api.analityc.action.AutofillAction
 import com.verygoodsecurity.vgscollect.core.model.state.*
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
@@ -26,7 +25,6 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
-import com.verygoodsecurity.vgscollect.view.card.conection.BaseInputConnection
 import com.verygoodsecurity.vgscollect.view.card.conection.InputRunnable
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import com.verygoodsecurity.vgscollect.view.card.validation.CompositeValidator
@@ -338,6 +336,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         when {
             actionCode == EditorInfo.IME_ACTION_NEXT
                     && nextFocusDownId != View.NO_ID -> requestFocusOnView(nextFocusDownId)
+
             actionCode == EditorInfo.IME_ACTION_PREVIOUS
                     && nextFocusUpId != View.NO_ID -> requestFocusOnView(nextFocusUpId)
         }
@@ -390,7 +389,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         return inputConnection?.getOutput()?.mapToFieldState()
     }
 
-    internal var tracker: AnalyticTracker? = null
+    internal var manager: AnalyticsManager? = null
 
     override fun autofill(value: AutofillValue?) {
         super.autofill(value)
@@ -398,14 +397,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     private fun logAutofillAction() {
-        val m = with(mutableMapOf<String, String>()) {
-            put("field", fieldType.getAnalyticName())
-            this
-        }
-
-        tracker?.logEvent(
-            AutofillAction(m)
-        )
+        manager?.capture(Event.Autofill(fieldType = fieldType.getAnalyticName()))
     }
 
     protected fun printWarning(tag: String, resId: Int) {

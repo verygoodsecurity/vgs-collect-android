@@ -24,10 +24,10 @@ abstract class BaseTransmitActivity : AppCompatActivity() {
         const val ATTACH = "com.vgs.attach_f_type"
     }
 
-    enum class Status(val raw: String) {
-        SUCCESS("Ok"),
-        FAILED("Failed"),
-        CLOSE("Cancel")
+    enum class Status {
+        SUCCESS,
+        FAILED,
+        CLOSE
     }
 
     private val storage = VGSHashMapWrapper<String, Any>()

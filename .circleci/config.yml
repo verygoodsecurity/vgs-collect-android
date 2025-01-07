@@ -27,8 +27,14 @@ jobs:
     <<: *android-environment
     steps:
       - checkout
-      - run: echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
-      - run: echo "VGS_PATH=$VGS_PATH" >> local.properties
+      - run:
+          name: Fetch analytics submodule
+          command: git submodule init && git submodule update
+      - run:
+          name: Setup local variables
+          command: |
+            echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
+            echo "VGS_PATH=$VGS_PATH" >> local.properties
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
