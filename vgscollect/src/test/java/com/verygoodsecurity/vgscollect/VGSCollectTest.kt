@@ -101,7 +101,7 @@ class VGSCollectTest {
         val view = applyEditText(FieldType.INFO)
 
         verify(view, times(2)).getFieldType() //default init + analytics,
-        verify(view, times(2)).getFieldName()
+        verify(view, times(1)).getFieldName()
         verify(view).addStateListener(any())
     }
 

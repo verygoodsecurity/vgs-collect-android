@@ -18,7 +18,7 @@ internal fun BaseTransmitActivity.Status.toAnalyticsStatus(): Status {
     return when (this) {
         BaseTransmitActivity.Status.SUCCESS -> Status.OK
         BaseTransmitActivity.Status.FAILED -> Status.FAILED
-        BaseTransmitActivity.Status.CLOSE -> Status.CANCEL
+        BaseTransmitActivity.Status.CLOSE -> Status.CANCELED
     }
 }
 
