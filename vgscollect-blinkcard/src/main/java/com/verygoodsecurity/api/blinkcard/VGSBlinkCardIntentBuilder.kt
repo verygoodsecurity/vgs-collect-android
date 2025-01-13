@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.StyleRes
-import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.CC
+import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.CARD_NUMBER
 import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.CVC
-import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.C_HOLDER
+import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.CARD_HOLDER
 import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.EXP_DATE
+import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.SHOW_INTRO_DIALOG
+import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.SHOW_ONBOARDING_INFO_DIALOG
 import com.verygoodsecurity.api.blinkcard.ScanActivity.Companion.STYLE_RES_ID
 
 /**
@@ -18,11 +20,13 @@ class VGSBlinkCardIntentBuilder(
     private val activity: Activity
 ) {
 
+    private var styleId: Int? = null
     private var ccFieldName: String? = null
     private var cvcFieldName: String? = null
     private var expDateFieldName: String? = null
     private var cHolderFieldName: String? = null
-    private var styleId: Int? = null
+    private var showIntroductionDialog: Boolean = true
+    private var showOnboardingInfoDialog: Boolean = true
 
     /**
      * Allows to customize UI by configuring style resource for labels, appearance, etc..
@@ -70,14 +74,34 @@ class VGSBlinkCardIntentBuilder(
     }
 
     /**
+     * Controlling the visibility of the introduction dialog.
+     *
+     * @param showIntroductionDialog true if introduction dialog should be shown, false otherwise.
+     */
+    fun setShowIntroductionDialog(showIntroductionDialog: Boolean): VGSBlinkCardIntentBuilder = apply {
+        this.showIntroductionDialog = showIntroductionDialog
+    }
+
+    /**
+     * Controlling the visibility of the onboarding dialog.
+     *
+     * @param showOnboardingInfoDialog true if onboarding dialog should be shown, false otherwise.
+     */
+    fun setShowOnboardingInfoDialog(showOnboardingInfoDialog: Boolean): VGSBlinkCardIntentBuilder = apply {
+        this.showOnboardingInfoDialog = showOnboardingInfoDialog
+    }
+
+    /**
      * Returns ready to use Intent instance which is required to start scanner.
      */
     fun build(): Intent = with(Intent(activity, ScanActivity::class.java)) {
         putExtras(Bundle().apply {
-            putString(CC, ccFieldName)
+            putString(CARD_NUMBER, ccFieldName)
             putString(CVC, cvcFieldName)
-            putString(C_HOLDER, cHolderFieldName)
+            putString(CARD_HOLDER, cHolderFieldName)
             putString(EXP_DATE, expDateFieldName)
+            putBoolean(SHOW_INTRO_DIALOG, showIntroductionDialog)
+            putBoolean(SHOW_ONBOARDING_INFO_DIALOG, showOnboardingInfoDialog)
             styleId?.let { putInt(STYLE_RES_ID, it) }
         })
     }
