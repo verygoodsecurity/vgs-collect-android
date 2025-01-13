@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import com.microblink.blinkcard.activity.result.ResultStatus
 import com.microblink.blinkcard.activity.result.contract.MbScan
-import com.microblink.blinkcard.results.date.Date
 import com.microblink.blinkcard.entities.recognizers.RecognizerBundle
 import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardProcessingStatus
 import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardRecognizer
+import com.microblink.blinkcard.results.date.Date
 import com.microblink.blinkcard.uisettings.BlinkCardUISettings
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
-import java.util.*
+import java.util.Calendar
 
 internal class ScanActivity : BaseTransmitActivity() {
 
@@ -25,6 +25,8 @@ internal class ScanActivity : BaseTransmitActivity() {
     private var cvcFieldName: String? = null
     private var expDateFieldName: String? = null
     private var cHolderFieldName: String? = null
+    private var showIntroductionDialog: Boolean = true
+    private var showOnboardingInfoDialog: Boolean = true
 
     private val blinkCardScanLauncher = registerForActivityResult(MbScan()) { results ->
         results.resultStatus.run {
@@ -35,10 +37,12 @@ internal class ScanActivity : BaseTransmitActivity() {
                     processRecognitionResults()
                     RESULT_OK
                 }
+
                 ResultStatus.CANCELLED -> {
                     addAnalyticInfo(Status.CLOSE)
                     RESULT_CANCELED
                 }
+
                 ResultStatus.EXCEPTION -> {
                     notifyFailedStatus(getString(R.string.vgs_bc_warning_exception))
                     RESULT_OK
@@ -89,11 +93,14 @@ internal class ScanActivity : BaseTransmitActivity() {
 
     private fun parseSettings() {
         intent.extras?.let {
-            ccFieldName = it.getString(CC, "")
+            styleId = it.getInt(STYLE_RES_ID)
+            ccFieldName = it.getString(CARD_NUMBER, "")
             cvcFieldName = it.getString(CVC, "")
             expDateFieldName = it.getString(EXP_DATE, "")
-            cHolderFieldName = it.getString(C_HOLDER, "")
-            styleId = it.getInt(STYLE_RES_ID)
+            cHolderFieldName = it.getString(CARD_HOLDER, "")
+            showIntroductionDialog = it.getBoolean(SHOW_INTRO_DIALOG, showIntroductionDialog)
+            showOnboardingInfoDialog =
+                it.getBoolean(SHOW_ONBOARDING_INFO_DIALOG, showOnboardingInfoDialog)
         }
     }
 
@@ -111,23 +118,29 @@ internal class ScanActivity : BaseTransmitActivity() {
 
     private fun configureBlinkCardUISettings() = BlinkCardUISettings(mRecognizerBundle).apply {
         setOverlayViewStyle(styleId ?: return@apply)
+        setShowIntroductionDialog(showIntroductionDialog)
+        setShowOnboardingInfo(showOnboardingInfoDialog)
     }
 
 
     private fun addAnalyticInfo(status: Status, details: String? = null) {
         mapData(RESULT_TYPE, SCAN)
         mapData(RESULT_NAME, NAME)
-        mapData(RESULT_STATUS, status.raw)
+        mapData(RESULT_STATUS, status)
         mapData(RESULT_DETAILS, details)
     }
 
     companion object {
 
-        internal const val CC: String = "VgsCc"
-        internal const val CVC: String = "VgsCvc"
-        internal const val C_HOLDER: String = "VgsOwner"
-        internal const val EXP_DATE: String = "VgsExpDate"
-        internal const val STYLE_RES_ID: String = "StyleResId"
+        internal const val STYLE_RES_ID: String = "com.verygoodsecurity.api.blinkcard.style_res_id"
+        internal const val CARD_NUMBER: String = "com.verygoodsecurity.api.blinkcard.card_number"
+        internal const val CVC: String = "com.verygoodsecurity.api.blinkcard.cvc"
+        internal const val CARD_HOLDER: String = "com.verygoodsecurity.api.blinkcard.card_holder"
+        internal const val EXP_DATE: String = "com.verygoodsecurity.api.blinkcard.exp_date"
+        internal const val SHOW_INTRO_DIALOG: String =
+            "com.verygoodsecurity.api.blinkcard.show_intro_dialog"
+        internal const val SHOW_ONBOARDING_INFO_DIALOG: String =
+            "com.verygoodsecurity.api.blinkcard.show_onboarding_info_dialog"
         private const val NAME: String = "BlinkCard"
 
         internal fun Date.parseDate(): Any {

@@ -27,4 +27,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "vgs-collect-android"
-include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-blinkcard'
+include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-blinkcard', ':vgs-sdk-analytics:analytics'
