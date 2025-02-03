@@ -70,7 +70,7 @@ detekt {
 }
 
 dependencies {
-    implementation project(':vgs-sdk-analytics:analytics')
+    implementation project(':vgs-sdk-analytics:VGSClientSDKAnalytics')
 
     api libs.material
     api libs.okhttp

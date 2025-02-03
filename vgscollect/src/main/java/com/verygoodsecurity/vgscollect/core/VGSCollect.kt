@@ -7,10 +7,11 @@ import android.os.Handler
 import android.os.Looper
 import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
-import com.verygoodsecurity.sdk.analytics.AnalyticsManager
-import com.verygoodsecurity.sdk.analytics.model.Event
-import com.verygoodsecurity.sdk.analytics.model.Status
-import com.verygoodsecurity.sdk.analytics.model.Upstream
+import com.verygoodsecurity.sdk.analytics.VGSSharedAnalyticsManager
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsEvent
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsScannerType
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsStatus
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsUpstream
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
@@ -62,9 +63,11 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.UUID
 import java.util.concurrent.CopyOnWriteArrayList
 
 private const val SOURCE_TAG = "androidSDK"
+private const val DEPENDENCY_MANAGER = "maven"
 
 /**
  * VGS Collect allows you to securely collect data and files from your users without having
@@ -75,9 +78,14 @@ private const val SOURCE_TAG = "androidSDK"
  */
 class VGSCollect {
 
+    private val vaultId: String
+    private val environment: String
+    private val formId: String = UUID.randomUUID().toString()
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
-    private val analyticsManager: AnalyticsManager
+    private val analyticsManager: VGSSharedAnalyticsManager
+    private val analyticsHandler: AnalyticsHandler
+
     private var client: ApiClient
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
@@ -104,8 +112,20 @@ class VGSCollect {
         context: Context, id: String, environment: String, url: String?, port: Int?
     ) {
         this.context = context
-        this.analyticsManager =
-            AnalyticsManager(id, environment, SOURCE_TAG, BuildConfig.VERSION_NAME)
+        this.vaultId = id
+        this.environment = environment
+        this.analyticsManager = VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
+        this.analyticsHandler = object : AnalyticsHandler {
+
+            override fun capture(event: VGSAnalyticsEvent) {
+                analyticsManager.capture(
+                    vault = vaultId,
+                    environment = environment,
+                    formId = formId,
+                    event = event
+                )
+            }
+        }
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
@@ -503,7 +523,7 @@ class VGSCollect {
                     map.get(BaseTransmitActivity.RESULT_STATUS) as BaseTransmitActivity.Status,
                     map.get(BaseTransmitActivity.RESULT_NAME).toString(),
                     map.get(BaseTransmitActivity.RESULT_ID) as? String,
-                    map.get(BaseTransmitActivity.RESULT_DETAILS).toString()
+                    map.get(BaseTransmitActivity.RESULT_DETAILS) as? String
                 )
 
                 BaseTransmitActivity.ATTACH -> attachFileEvent(
@@ -567,9 +587,11 @@ class VGSCollect {
      * Warning: if this option is set to false, it will increase resolving time for possible incidents.
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
-        analyticsManager.isEnabled = isEnabled
+        analyticsManager.setIsEnabled(isEnabled)
         updateAgentHeader()
     }
+
+    fun getIsAnalyticsEnabled() = analyticsManager.getIsEnabled()
 
     @VisibleForTesting
     internal fun getResponseListeners(): Collection<VgsCollectResponseListener> {
@@ -596,15 +618,15 @@ class VGSCollect {
                 view.getFieldName(), it.statePreparer.getDependencyListener()
             )
 
-            it.statePreparer.setAnalyticManager(analyticsManager)
+            it.statePreparer.setAnalyticHandler(analyticsHandler)
             storage.performSubscription(view)
             fieldInitEvent(it, isCompose)
         }
     }
 
     private fun fieldInitEvent(view: InputFieldView, isCompose: Boolean) {
-        analyticsManager.capture(
-            Event.FieldAttach(
+        analyticsHandler.capture(
+            VGSAnalyticsEvent.FieldAttach(
                 fieldType = view.getFieldType().getAnalyticName(),
                 contentPath = null,
                 ui = if (isCompose) "compose" else "xml",
@@ -613,14 +635,23 @@ class VGSCollect {
     }
 
     private fun scanEvent(
-        status: BaseTransmitActivity.Status, type: String, id: String?, details: String? = null
+        status: BaseTransmitActivity.Status,
+        type: String,
+        id: String?,
+        details: String?
     ) {
-        analyticsManager.capture(
-            Event.Scan(
+        val scannerType = if (type == VGSAnalyticsScannerType.CARD_IO.analyticsValue) {
+            VGSAnalyticsScannerType.CARD_IO
+        } else {
+            VGSAnalyticsScannerType.BLINK_CARD
+        }
+
+        analyticsHandler.capture(
+            VGSAnalyticsEvent.Scan(
                 status = status.toAnalyticsStatus(),
-                scanId = id.toString(),
-                scanDetails = details.toString(),
-                scannerType = type
+                scannerType = scannerType,
+                scanId = id,
+                scanDetails = details
             )
         )
     }
@@ -636,10 +667,10 @@ class VGSCollect {
         mappingPolicy: VGSCollectFieldNameMappingPolicy = NESTED_JSON,
         code: Int = 200
     ) {
-        val event = Event.Request.Builder(
-            status = if (isSuccess) Status.OK else Status.FAILED,
+        val event = VGSAnalyticsEvent.Request.Builder(
+            status = if (isSuccess) VGSAnalyticsStatus.OK else VGSAnalyticsStatus.FAILED,
             code = code,
-            upstream = if (requiresTokenization) Upstream.TOKENIZATION else Upstream.CUSTOM
+            upstream = if (requiresTokenization) VGSAnalyticsUpstream.TOKENIZATION else VGSAnalyticsUpstream.CUSTOM
         )
 
         if (hasCustomHostname) event.customHostname()
@@ -654,37 +685,38 @@ class VGSCollect {
 
         event.mappingPolicy(mappingPolicy.toAnalyticsMappingPolicy())
 
-        analyticsManager.capture(event.build())
+        analyticsHandler.capture(event = event.build())
     }
 
     private fun responseEvent(code: Int, requiresTokenization: Boolean, message: String? = null) {
-        analyticsManager.capture(
-            Event.Response(
+        analyticsHandler.capture(
+            VGSAnalyticsEvent.Response(
                 status = code.isCodeSuccessful().toAnalyticsStatus(),
                 code = code,
-                upstream = if (requiresTokenization) Upstream.TOKENIZATION else Upstream.CUSTOM,
+                upstream = if (requiresTokenization) VGSAnalyticsUpstream.TOKENIZATION else VGSAnalyticsUpstream.CUSTOM,
                 errorMessage = message
             )
         )
     }
 
     private fun attachFileEvent(status: BaseTransmitActivity.Status) {
-        analyticsManager.capture(Event.AttachFile(status.toAnalyticsStatus()))
+        analyticsHandler.capture(
+            VGSAnalyticsEvent.AttachFile(status.toAnalyticsStatus())
+        )
     }
 
-    private fun hostnameValidationEvent(
-        isSuccess: Boolean, hostname: String = ""
-    ) {
-        analyticsManager.capture(
-            Event.Cname(
-                status = isSuccess.toAnalyticsStatus(), hostname = hostname
+    private fun hostnameValidationEvent(isSuccess: Boolean, hostname: String = "") {
+        analyticsHandler.capture(
+            VGSAnalyticsEvent.Cname(
+                status = isSuccess.toAnalyticsStatus(),
+                hostname = hostname
             )
         )
     }
 
     private fun updateAgentHeader() {
         client.getTemporaryStorage()
-            .setCustomHeaders(mapOf(generateAgentHeader(analyticsManager.isEnabled)))
+            .setCustomHeaders(mapOf(generateAgentHeader(analyticsManager.getIsEnabled())))
     }
 
     private var hasCustomHostname = false

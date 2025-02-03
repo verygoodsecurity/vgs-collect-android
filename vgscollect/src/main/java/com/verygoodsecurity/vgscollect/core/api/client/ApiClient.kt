@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.api.client
 
+import com.verygoodsecurity.sdk.analytics.utils.VGSAnalyticsSession
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorage
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
@@ -35,7 +36,7 @@ internal interface ApiClient {
             AGENT to String.format(
                 TEMPORARY_AGENT_TEMPLATE,
                 BuildConfig.VERSION_NAME,
-                "", // TODO: Get id from analytics tracker or pass it to analytics tracker
+                VGSAnalyticsSession.id,
                 if (isAnalyticsEnabled) "default" else "none"
             )
     }
