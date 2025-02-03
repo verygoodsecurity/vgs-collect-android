@@ -84,6 +84,8 @@ class VGSCollect {
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
     private val analyticsManager: VGSSharedAnalyticsManager
+    private val analyticsHandler: AnalyticsHandler
+
     private var client: ApiClient
     private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
@@ -113,6 +115,17 @@ class VGSCollect {
         this.vaultId = id
         this.environment = environment
         this.analyticsManager = VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
+        this.analyticsHandler = object : AnalyticsHandler {
+
+            override fun capture(event: VGSAnalyticsEvent) {
+                analyticsManager.capture(
+                    vault = vaultId,
+                    environment = environment,
+                    formId = formId,
+                    event = event
+                )
+            }
+        }
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
@@ -605,17 +618,14 @@ class VGSCollect {
                 view.getFieldName(), it.statePreparer.getDependencyListener()
             )
 
-            it.statePreparer.setAnalyticManager(analyticsManager)
+            it.statePreparer.setAnalyticHandler(analyticsHandler)
             storage.performSubscription(view)
             fieldInitEvent(it, isCompose)
         }
     }
 
     private fun fieldInitEvent(view: InputFieldView, isCompose: Boolean) {
-        analyticsManager.capture(
-            vault = vaultId,
-            environment = environment,
-            formId = formId,
+        analyticsHandler.capture(
             VGSAnalyticsEvent.FieldAttach(
                 fieldType = view.getFieldType().getAnalyticName(),
                 contentPath = null,
@@ -636,10 +646,7 @@ class VGSCollect {
             VGSAnalyticsScannerType.BLINK_CARD
         }
 
-        analyticsManager.capture(
-            vault = vaultId,
-            environment = environment,
-            formId = formId,
+        analyticsHandler.capture(
             VGSAnalyticsEvent.Scan(
                 status = status.toAnalyticsStatus(),
                 scannerType = scannerType,
@@ -678,19 +685,11 @@ class VGSCollect {
 
         event.mappingPolicy(mappingPolicy.toAnalyticsMappingPolicy())
 
-        analyticsManager.capture(
-            vault = vaultId,
-            environment = environment,
-            formId = formId,
-            event = event.build()
-        )
+        analyticsHandler.capture(event = event.build())
     }
 
     private fun responseEvent(code: Int, requiresTokenization: Boolean, message: String? = null) {
-        analyticsManager.capture(
-            vault = vaultId,
-            environment = environment,
-            formId = formId,
+        analyticsHandler.capture(
             VGSAnalyticsEvent.Response(
                 status = code.isCodeSuccessful().toAnalyticsStatus(),
                 code = code,
@@ -701,19 +700,13 @@ class VGSCollect {
     }
 
     private fun attachFileEvent(status: BaseTransmitActivity.Status) {
-        analyticsManager.capture(
-            vault = vaultId,
-            environment = environment,
-            formId = formId,
+        analyticsHandler.capture(
             VGSAnalyticsEvent.AttachFile(status.toAnalyticsStatus())
         )
     }
 
     private fun hostnameValidationEvent(isSuccess: Boolean, hostname: String = "") {
-        analyticsManager.capture(
-            vault = vaultId,
-            environment = environment,
-            formId = formId,
+        analyticsHandler.capture(
             VGSAnalyticsEvent.Cname(
                 status = isSuccess.toAnalyticsStatus(),
                 hostname = hostname

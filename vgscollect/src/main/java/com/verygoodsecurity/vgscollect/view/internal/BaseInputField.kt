@@ -12,12 +12,16 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
-import com.verygoodsecurity.sdk.analytics.AnalyticsManager
-import com.verygoodsecurity.sdk.analytics.model.Event
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsEvent
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
+import com.verygoodsecurity.vgscollect.core.AnalyticsHandler
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscollect.core.model.state.*
+import com.verygoodsecurity.vgscollect.core.model.state.Dependency
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
@@ -389,7 +393,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         return inputConnection?.getOutput()?.mapToFieldState()
     }
 
-    internal var manager: AnalyticsManager? = null
+    internal var analyticsHandler: AnalyticsHandler? = null
 
     override fun autofill(value: AutofillValue?) {
         super.autofill(value)
@@ -397,7 +401,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     private fun logAutofillAction() {
-        manager?.capture(Event.Autofill(fieldType = fieldType.getAnalyticName()))
+        analyticsHandler?.capture(event = VGSAnalyticsEvent.Autofill(fieldType = fieldType.getAnalyticName()))
     }
 
     protected fun printWarning(tag: String, resId: Int) {
