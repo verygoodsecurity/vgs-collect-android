@@ -39,7 +39,7 @@ internal fun String.setupURL(rawValue: String): String {
 }
 
 private fun String.buildURL(env: String): String {
-    val domain = "verygoodproxy.com"
+    val domain = "vault-api.verygoodvault.com"
     val divider = "."
     val scheme = "https://"
 

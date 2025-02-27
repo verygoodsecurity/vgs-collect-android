@@ -144,6 +144,7 @@ internal class OkHttpClient(
         data: Any?,
         contentType: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
     ): Request {
+        println("TEST:DD, data = $data")
         val mediaType = contentType.toContentType().toMediaTypeOrNull()
         val requestBody = data?.toString().toRequestBodyOrNull(mediaType, method)
         return Request.Builder()
@@ -195,9 +196,9 @@ internal class OkHttpClient(
 
             return if (requiresTokenization) {
                 val originalDataMap = unwrapRequestBody(originalRequest.body)
-                val request = mapTokenizationRequest(originalRequest, originalDataMap)
+//                val request = mapTokenizationRequest(originalRequest, originalDataMap)
 
-                val response = chain.proceed(request)
+                val response = chain.proceed(originalRequest)
                 mapTokenizationResponse(response, originalDataMap)
             } else {
                 chain.proceed(originalRequest)

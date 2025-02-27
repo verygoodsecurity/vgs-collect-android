@@ -7,6 +7,8 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.util.extension.TOKENIZATION_PATH
 
+private const val TOKEN = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI1RVhBTnFldTBIbUNGVHZDUGs1c21iQjNjcVo1c0FLUzNKWFRjeHdTWjY4In0.eyJleHAiOjE3NDA2NTUxMjUsImlhdCI6MTc0MDY1MzkyNSwianRpIjoiOTFkZjczNWUtNzE0OS00OWMyLWJjYTUtOGFlZWM3ZTA3MDFiIiwiaXNzIjoiaHR0cHM6Ly9hdXRoLnZlcnlnb29kc2VjdXJpdHkuY29tL2F1dGgvcmVhbG1zL3ZncyIsImF1ZCI6InZhdWx0LWFwaSIsInN1YiI6IjcxNzdiZTU1LTM4MDItNDczNy04YjA5LTFkYWQ0OGQyYjkyYiIsInR5cCI6IkJlYXJlciIsImF6cCI6IkFDazRGYW1mRi1BbGlhc2VzUE9DLWZUSWNSIiwicmVzb3VyY2VfYWNjZXNzIjp7InZhdWx0LWFwaSI6eyJyb2xlcyI6WyJhbGlhc2VzOndyaXRlIl19fSwic2NvcGUiOiJhbGlhc2VzOndyaXRlIHVzZXJfaWQgc2VydmljZS1hY2NvdW50Iiwic2VydmljZV9hY2NvdW50Ijp0cnVlLCJjbGllbnRIb3N0IjoiNDUuODkuOTAuMTgyIiwiY2xpZW50QW5ub3RhdGlvbnMiOnsidmdzLmlvL3ZhdWx0LWlkIjoidG50aHU1eWl6bmQifSwiY2xpZW50QWRkcmVzcyI6IjQ1Ljg5LjkwLjE4MiIsImNsaWVudF9pZCI6IkFDazRGYW1mRi1BbGlhc2VzUE9DLWZUSWNSIn0.ThvjjR_5UR_Ko5wlsEE0XN8Z8crZ0x2nBUrxxr6OK_XWLK_J8orAtQGzfePbzeh3n1MnbySf2AWIgnepbMmZvKEf6GPNKSFkcHzSx_Eb6TKOabqu1SOifCSoUQRwSr_n_BMAUSM43eZP5-Rx9YUJVlLCQoRT7AKWK05uIyaKVQOtdXc9kfzIU3WrDmML_wOSnTu1UPTKwr9vbOY2q6iuexmNQdYyzxAHTiKauYrnIN8G6XF4a5463zIZu8o0EWmt3Ij0Vksb3ITo0go8H-E9syqrmKM-xKs-oIayI6ZExlktgHLFNwd2eyTBCfEqZOiJjbpl-1JZVAoa1mhEkRkGPw"
+
 /**
  * Class to collect data before tokenization.
  *
@@ -36,7 +38,9 @@ data class VGSTokenizationRequest internal constructor(
     class VGSRequestBuilder {
         private var method: HTTPMethod = HTTPMethod.POST
         private var path: String = TOKENIZATION_PATH
-        private val customHeader: HashMap<String, String> = HashMap()
+        private val customHeader: Map<String, String> = mapOf(
+            "Authorization" to "Bearer $TOKEN"
+        )
         private val customData: HashMap<String, Any> = HashMap()
         private var fieldsIgnore: Boolean = false
         private var format: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
