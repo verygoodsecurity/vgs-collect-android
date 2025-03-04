@@ -101,6 +101,8 @@ data class VGSTokenizationRequest internal constructor(
         /**
          * Creates a VGSRequest with the arguments supplied to this.
          *
+         * @param accessToken The access token used to authenticate the request.
+         *
          * @return VGSRequest instance
          */
         fun build(accessToken: String): VGSTokenizationRequest {
