@@ -34,6 +34,7 @@ data class VGSTokenizationRequest internal constructor(
      * dialog theme.
      */
     class VGSRequestBuilder {
+
         private var method: HTTPMethod = HTTPMethod.POST
         private var path: String = TOKENIZATION_PATH
         private val customHeader: HashMap<String, String> = HashMap()
@@ -45,6 +46,20 @@ data class VGSTokenizationRequest internal constructor(
         private var fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy =
             VGSCollectFieldNameMappingPolicy.NESTED_JSON
         private var requestTimeoutInterval: Long = DEFAULT_CONNECTION_TIME_OUT
+
+        companion object {
+
+            private const val AUTHORIZATION_HEADER_KEY = "Authorization"
+            private const val AUTHORIZATION_HEADER_VALUE = "Bearer"
+        }
+
+        /**
+         * Set access token header.
+         */
+        fun setAccessToken(token: String): VGSRequestBuilder {
+            customData[AUTHORIZATION_HEADER_KEY] = "$AUTHORIZATION_HEADER_VALUE $token"
+            return this
+        }
 
         /**
          * Ignore input's data in a request to the server.
