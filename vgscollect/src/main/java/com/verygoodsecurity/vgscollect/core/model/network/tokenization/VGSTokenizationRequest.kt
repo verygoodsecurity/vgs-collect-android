@@ -57,7 +57,7 @@ data class VGSTokenizationRequest internal constructor(
          * Set access token header.
          */
         fun setAccessToken(token: String): VGSRequestBuilder {
-            customData[AUTHORIZATION_HEADER_KEY] = "$AUTHORIZATION_HEADER_VALUE $token"
+            customHeader[AUTHORIZATION_HEADER_KEY] = "$AUTHORIZATION_HEADER_VALUE $token"
             return this
         }
 
