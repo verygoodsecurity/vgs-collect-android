@@ -54,14 +54,6 @@ data class VGSTokenizationRequest internal constructor(
         }
 
         /**
-         * Set access token header.
-         */
-        fun setAccessToken(token: String): VGSRequestBuilder {
-            customHeader[AUTHORIZATION_HEADER_KEY] = "$AUTHORIZATION_HEADER_VALUE $token"
-            return this
-        }
-
-        /**
          * Ignore input's data in a request to the server.
          *
          * @return current builder instance
@@ -111,7 +103,8 @@ data class VGSTokenizationRequest internal constructor(
          *
          * @return VGSRequest instance
          */
-        fun build(): VGSTokenizationRequest {
+        fun build(accessToken: String): VGSTokenizationRequest {
+            customHeader[AUTHORIZATION_HEADER_KEY] = "$AUTHORIZATION_HEADER_VALUE $accessToken"
             return VGSTokenizationRequest(
                 method,
                 path,
