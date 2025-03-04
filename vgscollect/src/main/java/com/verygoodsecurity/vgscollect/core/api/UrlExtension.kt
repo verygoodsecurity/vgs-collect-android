@@ -24,34 +24,32 @@ internal fun String.setupLocalhostURL(port: Int?): String {
 }
 
 /** @suppress */
-internal fun String.setupURL(rawValue: String): String {
+internal fun String.buildCollectURL(env: String): String {
     return when {
-        this.isEmpty() || !isTennantIdValid() -> {
+        this.isEmpty() || !isVaultIdValid() -> {
             VGSCollectLogger.warn(message = "Vault ID is not valid")
-            return ""
+            ""
         }
-        rawValue.isEmpty() || !rawValue.isEnvironmentValid() -> {
+        env.isEmpty() || !env.isEnvironmentValid() -> {
             VGSCollectLogger.warn(message = "Environment is not valid")
-            return ""
+            ""
         }
-        else -> this.buildURL(rawValue)
+        else -> {
+            val domain = "verygoodproxy.com"
+            val divider = "."
+            val scheme = "https://"
+
+            val builder = StringBuilder(scheme)
+                .append(this).append(divider)
+                .append(env).append(divider)
+                .append(domain)
+
+            builder.toString()
+        }
     }
 }
 
-private fun String.buildURL(env: String): String {
-    val domain = "verygoodproxy.com"
-    val divider = "."
-    val scheme = "https://"
-
-    val builder = StringBuilder(scheme)
-        .append(this).append(divider)
-        .append(env).append(divider)
-        .append(domain)
-
-    return builder.toString()
-}
-
-internal fun String.isTennantIdValid(): Boolean =
+internal fun String.isVaultIdValid(): Boolean =
     Pattern.compile("^[a-zA-Z0-9]*\$").matcher(this).matches()
 
 internal fun String.isEnvironmentValid(): Boolean =
