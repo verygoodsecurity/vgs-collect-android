@@ -13,9 +13,9 @@ internal class StrictDateRangeFormatter(
 ) : BaseDateFormatter() {
 
     //region - Properties
-    private var dateFormat = DateRangeFormat.MM_DD_YYYY
+    private var dateFormat: DateRangeFormat = DateRangeFormat.MMddYYYY
     private var mode: DatePickerMode = DatePickerMode.INPUT
-    private var divider = DateRangeFormat.divider
+    private var divider = DateRangeFormat.DIVIDER
     private var runtimeData = ""
     private var isDeleteAction = false
     private var skipStep = false
@@ -83,13 +83,13 @@ internal class StrictDateRangeFormatter(
                 cacheMonth = it
                 cacheYear = it
             }
-            dateFormat == DateRangeFormat.MM_DD_YYYY -> {
+            dateFormat == DateRangeFormat.MMddYYYY -> {
                 generateMMDDYYYY(str)
             }
-            dateFormat == DateRangeFormat.DD_MM_YYYY -> {
+            dateFormat == DateRangeFormat.DDmmYYYY -> {
                 generateDDMMYYYY(str)
             }
-            dateFormat == DateRangeFormat.YYYY_MM_DD -> {
+            dateFormat == DateRangeFormat.YYYYmmDD -> {
                 generateYYYYMMDD(str)
             }
             else -> "".also {
@@ -246,8 +246,8 @@ internal class StrictDateRangeFormatter(
 
     private fun moveCursorToEndOfDay() {
         when (dateFormat) {
-            DateRangeFormat.MM_DD_YYYY,
-            DateRangeFormat.YYYY_MM_DD -> {
+            DateRangeFormat.MMddYYYY,
+            DateRangeFormat.YYYYmmDD -> {
                 val index = if (runtimeData.isNotEmpty()) {
                     runtimeData.length - 1
                 } else {
@@ -255,19 +255,20 @@ internal class StrictDateRangeFormatter(
                 }
                 source?.setSelection(index)
             }
-            DateRangeFormat.DD_MM_YYYY -> {
+            DateRangeFormat.DDmmYYYY -> {
                 source?.setSelection(0)
             }
+            DateRangeFormat.MMyy -> { TODO("Implement") }
         }
     }
 
     private fun moveCursorToEndOfMonth() {
         when (dateFormat) {
-            DateRangeFormat.MM_DD_YYYY -> {
+            DateRangeFormat.MMddYYYY -> {
                 source?.setSelection(0)
             }
-            DateRangeFormat.DD_MM_YYYY,
-            DateRangeFormat.YYYY_MM_DD -> {
+            DateRangeFormat.DDmmYYYY,
+            DateRangeFormat.YYYYmmDD -> {
                 val index = if (runtimeData.isNotEmpty()) {
                     runtimeData.length - 1
                 } else {
@@ -275,13 +276,14 @@ internal class StrictDateRangeFormatter(
                 }
                 source?.setSelection(index)
             }
+            DateRangeFormat.MMyy -> { TODO("Implement")  }
         }
     }
 
     private fun moveCursorToEndOfYear() {
         when (dateFormat) {
-            DateRangeFormat.MM_DD_YYYY,
-            DateRangeFormat.DD_MM_YYYY -> {
+            DateRangeFormat.MMddYYYY,
+            DateRangeFormat.DDmmYYYY -> {
                 val index = if (runtimeData.isNotEmpty()) {
                     runtimeData.length - 1
                 } else {
@@ -289,9 +291,10 @@ internal class StrictDateRangeFormatter(
                 }
                 source?.setSelection(index)
             }
-            DateRangeFormat.YYYY_MM_DD -> {
+            DateRangeFormat.YYYYmmDD -> {
                 source?.setSelection(0)
             }
+            DateRangeFormat.MMyy -> { TODO("Implement")  }
         }
     }
 
@@ -302,7 +305,7 @@ internal class StrictDateRangeFormatter(
         var digits = input.digits
         when (dateFormat) {
             // Get month, day and year
-            DateRangeFormat.MM_DD_YYYY -> {
+            DateRangeFormat.MMddYYYY -> {
                 // Get month
                 result.month = digits.take(dateFormat.monthCharacters)
                 digits = digits.removePrefix(result.month)
@@ -313,7 +316,7 @@ internal class StrictDateRangeFormatter(
                 result.year = digits.take(dateFormat.yearCharacters)
             }
             // Get day, month and year
-            DateRangeFormat.DD_MM_YYYY -> {
+            DateRangeFormat.DDmmYYYY -> {
                 // Get day
                 result.day = digits.take(dateFormat.daysCharacters)
                 digits = digits.removePrefix(result.day)
@@ -324,7 +327,7 @@ internal class StrictDateRangeFormatter(
                 result.year = digits.take(dateFormat.yearCharacters)
             }
             // Get year, month and day
-            DateRangeFormat.YYYY_MM_DD -> {
+            DateRangeFormat.YYYYmmDD -> {
                 // Get year
                 result.year = digits.take(dateFormat.yearCharacters)
                 digits = digits.removePrefix(result.year)
@@ -334,6 +337,7 @@ internal class StrictDateRangeFormatter(
                 // Get day
                 result.day = digits.take(dateFormat.daysCharacters)
             }
+            DateRangeFormat.MMyy -> { TODO("Implement")  }
         }
         return result
     }

@@ -9,6 +9,8 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.date.DateRangeFormat
 import com.verygoodsecurity.vgscollect.widget.core.DateEditText
 import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 
 class RangeDateEditText @JvmOverloads constructor(
@@ -73,4 +75,24 @@ class RangeDateEditText @JvmOverloads constructor(
      * visibility.
      */
     interface OnDatePickerVisibilityChangeListener : VisibilityChangeListener
+
+    private fun parseRange(rangeDate: String?, format: String?): Date? {
+        val simpleDateFormat = SimpleDateFormat(format, Locale.US).apply { isLenient = true }
+        val calendar = Calendar.getInstance()
+        val currentYear = calendar.get(Calendar.YEAR)
+
+        return try {
+            val inputDate = rangeDate?.let { simpleDateFormat.parse(it) }
+            inputDate?.let { calendar.time = inputDate }
+            if (format?.contains(char = 'y', ignoreCase = true) == false) {
+                calendar.set(Calendar.YEAR, currentYear)
+            }
+            println("TEST:DD range = $rangeDate, result = ${calendar.time}")
+            calendar.time
+        } catch (e: ParseException) {
+            println("TEST:DD null")
+            // Log
+            null
+        }
+    }
 }

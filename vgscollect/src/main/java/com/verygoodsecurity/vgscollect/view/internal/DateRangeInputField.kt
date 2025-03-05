@@ -12,7 +12,7 @@ internal class DateRangeInputField(context: Context) : DateInputField(context) {
     //region - Abstract implementation
     override var fieldType: FieldType = FieldType.DATE_RANGE
     override var inclusiveRangeValidation: Boolean = true
-    override var inputDatePattern = DateRangeFormat.MM_DD_YYYY.format
+    override var inputDatePattern = DateRangeFormat.MMddYYYY.format
 
     override var datePickerMinDate: Long? = Calendar.getInstance().apply {
         set(Calendar.YEAR, this.get(Calendar.YEAR) - 100)

@@ -292,11 +292,8 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     }
 
     internal fun setDatePattern(pattern: String?) {
-        if (fieldType == FieldType.DATE_RANGE) {
-            val parsedFormat = DateRangeFormat.parsePatternToDateFormat(pattern)
-            if (parsedFormat != null) {
-                inputDatePattern = parsedFormat.format
-            }
+        if (fieldType == FieldType.DATE_RANGE && pattern != null) {
+            inputDatePattern = pattern
         } else {
             inputDatePattern = when {
                 pattern.isNullOrEmpty() -> ExpirationDateInputField.MM_YYYY
