@@ -5,7 +5,6 @@ import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
-import com.verygoodsecurity.vgscollect.util.extension.TOKENIZATION_PATH
 
 /**
  * Class to collect data before tokenization.
@@ -36,7 +35,7 @@ data class VGSTokenizationRequest internal constructor(
     class VGSRequestBuilder {
 
         private var method: HTTPMethod = HTTPMethod.POST
-        private var path: String = TOKENIZATION_PATH
+        private var path: String = PATH
         private val customHeader: HashMap<String, String> = HashMap()
         private val customData: HashMap<String, Any> = HashMap()
         private var fieldsIgnore: Boolean = false
@@ -51,6 +50,7 @@ data class VGSTokenizationRequest internal constructor(
 
             private const val AUTHORIZATION_HEADER_KEY = "Authorization"
             private const val AUTHORIZATION_HEADER_VALUE = "Bearer"
+            private const val PATH = "/aliases"
         }
 
         /**

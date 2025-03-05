@@ -8,7 +8,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSDateRangeSeparateSerializer
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 
-internal const val TOKENIZATION_PATH = "/tokens"
+internal const val URL = "https://%s.%s.vault-api.verygoodvault.com"
 internal const val DATA_KEY = "data"
 internal const val TOKENIZATION_REQUIRED_KEY = "is_required_tokenization"
 internal const val VALUE_KEY = "value"
@@ -17,6 +17,11 @@ internal const val STORAGE_KEY = "storage"
 internal const val FIELD_NAME_KEY = "fieldName"
 internal const val ALIASES_KEY = "aliases"
 internal const val ALIAS_KEY = "alias"
+
+internal fun getTokenizationUrl(vaultId: String, environment: String): String {
+    String.format(URL, vaultId, environment)
+    return String.format(URL, vaultId, environment)
+}
 
 internal fun VGSFieldState.toTokenizationData(): List<Map<String, Any>> {
     return getData(fieldName ?: "", content).map {

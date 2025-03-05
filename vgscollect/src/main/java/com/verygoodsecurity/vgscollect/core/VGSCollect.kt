@@ -28,7 +28,7 @@ import com.verygoodsecurity.vgscollect.core.api.isURLValid
 import com.verygoodsecurity.vgscollect.core.api.isValidIp
 import com.verygoodsecurity.vgscollect.core.api.isValidPort
 import com.verygoodsecurity.vgscollect.core.api.setupLocalhostURL
-import com.verygoodsecurity.vgscollect.core.api.setupURL
+import com.verygoodsecurity.vgscollect.core.api.buildCollectURL
 import com.verygoodsecurity.vgscollect.core.api.toHost
 import com.verygoodsecurity.vgscollect.core.api.toHostnameValidationUrl
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
@@ -51,6 +51,7 @@ import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.extension.DATA_KEY
 import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
+import com.verygoodsecurity.vgscollect.util.extension.getTokenizationUrl
 import com.verygoodsecurity.vgscollect.util.extension.hasAccessNetworkStatePermission
 import com.verygoodsecurity.vgscollect.util.extension.hasInternetPermission
 import com.verygoodsecurity.vgscollect.util.extension.isConnectionAvailable
@@ -102,7 +103,8 @@ class VGSCollect {
 
     private val responseListeners = CopyOnWriteArrayList<VgsCollectResponseListener>()
 
-    private val baseURL: String
+    private val collectURL: String
+    private val tokenizationURL: String
     private val context: Context
 
     private var cname: String? = null
@@ -129,7 +131,8 @@ class VGSCollect {
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
-        this.baseURL = generateBaseUrl(id, environment, url, port)
+        this.collectURL = buildCollectURL(id, environment, url, port)
+        this.tokenizationURL = getTokenizationUrl(id, environment)
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
     }
@@ -293,7 +296,7 @@ class VGSCollect {
 
         collectUserData(request) {
             response = client.execute(
-                request.toNetworkRequest(baseURL, it)
+                request.toNetworkRequest(collectURL, it)
             ).toVGSResponse(context)
         }
 
@@ -303,10 +306,8 @@ class VGSCollect {
     /**
      * The method sends data on VGS Server for tokenization.
      */
-    fun tokenize() {
-        with(VGSTokenizationRequest.VGSRequestBuilder().build()) {
-            submitAsyncRequest(this)
-        }
+    fun tokenize(accessToken: String) {
+        tokenize(VGSTokenizationRequest.VGSRequestBuilder().build(accessToken))
     }
 
     /**
@@ -315,7 +316,7 @@ class VGSCollect {
      * @param request A tokenization request data.
      */
     fun tokenize(request: VGSTokenizationRequest) {
-        submitAsyncRequest(request)
+        submitAsyncRequest(tokenizationURL, request)
     }
 
     /**
@@ -325,10 +326,11 @@ class VGSCollect {
      * @param method HTTP method
      */
     suspend fun submitAsync(
-        path: String, method: HTTPMethod = HTTPMethod.POST
-    ): VGSResponse = submitAsync(
-        VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build()
-    )
+        path: String,
+        method: HTTPMethod = HTTPMethod.POST
+    ): VGSResponse {
+        return submitAsync(VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build())
+    }
 
     /**
      * This suspend method executes and send data on VGS Server on IO dispatcher.
@@ -351,7 +353,6 @@ class VGSCollect {
         path: String, method: HTTPMethod
     ) {
         val request = VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build()
-
         asyncSubmit(request)
     }
 
@@ -361,12 +362,12 @@ class VGSCollect {
      * @param request data class with attributes for submit
      */
     fun asyncSubmit(request: VGSRequest) {
-        submitAsyncRequest(request)
+        submitAsyncRequest(collectURL, request)
     }
 
-    private fun submitAsyncRequest(request: VGSBaseRequest) {
+    private fun submitAsyncRequest(url: String, request: VGSBaseRequest) {
         collectUserData(request) {
-            client.enqueue(request.toNetworkRequest(baseURL, it)) { r ->
+            client.enqueue(request.toNetworkRequest(url, it)) { r ->
                 mainHandler.post {
                     notifyAllListeners(
                         r.toVGSResponse(), request.requiresTokenization
@@ -382,7 +383,7 @@ class VGSCollect {
         when {
             !request.fieldsIgnore && !validateFields(request.requiresTokenization) -> return
             !request.fileIgnore && !validateFiles(request.requiresTokenization) -> return
-            !baseURL.isURLValid() -> notifyAllListeners(
+            !collectURL.isURLValid() -> notifyAllListeners(
                 VGSError.URL_NOT_VALID.toVGSResponse(), request.requiresTokenization
             )
 
@@ -721,7 +722,7 @@ class VGSCollect {
 
     private var hasCustomHostname = false
 
-    private fun generateBaseUrl(id: String, environment: String, url: String?, port: Int?): String {
+    private fun buildCollectURL(id: String, environment: String, url: String?, port: Int?): String {
 
         fun printPortDenied() {
             if (port.isValidPort()) {
@@ -734,22 +735,22 @@ class VGSCollect {
             if (host.isValidIp()) {
                 if (!host.isIpAllowed()) {
                     VGSCollectLogger.warn(message = context.getString(R.string.error_custom_ip_is_not_allowed))
-                    return id.setupURL(environment)
+                    return id.buildCollectURL(environment)
                 }
                 if (!environment.isSandbox()) {
                     VGSCollectLogger.warn(message = context.getString(R.string.error_env_incorrect))
-                    return id.setupURL(environment)
+                    return id.buildCollectURL(environment)
                 }
                 isSatelliteMode = true
                 return host.setupLocalhostURL(port)
             } else {
                 printPortDenied()
                 cname = host
-                return id.setupURL(environment)
+                return id.buildCollectURL(environment)
             }
         } else {
             printPortDenied()
-            return id.setupURL(environment)
+            return id.buildCollectURL(environment)
         }
     }
 
@@ -760,7 +761,7 @@ class VGSCollect {
     }
 
     private fun configureHostname(host: String, tnt: String) {
-        if (host.isNotBlank() && baseURL.isNotEmpty()) {
+        if (host.isNotBlank() && collectURL.isNotEmpty()) {
             val r = VGSRequest.VGSRequestBuilder().setMethod(HTTPMethod.GET)
                 .setFormat(VGSHttpBodyFormat.PLAIN_TEXT).build()
                 .toNetworkRequest(host.toHostnameValidationUrl(tnt))
