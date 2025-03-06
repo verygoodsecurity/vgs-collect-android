@@ -224,7 +224,6 @@ internal class StrictDateRangeFormatter(
         val formattedMonth = formatMonth(dateComponents.month)
         // Only month is valid
         if (dateComponents.isMonthValid && !dateComponents.isDayValid && !dateComponents.isYearValid) {
-            cacheDay = ""
             cacheYear = ""
             return when {
                 isDeleteAction -> formattedMonth
@@ -284,7 +283,8 @@ internal class StrictDateRangeFormatter(
     private fun moveCursorToEndOfDay() {
         when (dateFormat) {
             DateRangeFormat.MMddYYYY,
-            DateRangeFormat.YYYYmmDD -> {
+            DateRangeFormat.YYYYmmDD,
+            DateRangeFormat.MMyy-> {
                 val index = if (runtimeData.isNotEmpty()) {
                     runtimeData.length - 1
                 } else {
@@ -295,13 +295,12 @@ internal class StrictDateRangeFormatter(
             DateRangeFormat.DDmmYYYY -> {
                 source?.setSelection(0)
             }
-            DateRangeFormat.MMyy -> { TODO("Implement") }
         }
     }
 
     private fun moveCursorToEndOfMonth() {
         when (dateFormat) {
-            DateRangeFormat.MMddYYYY -> {
+            DateRangeFormat.MMddYYYY, DateRangeFormat.MMyy -> {
                 source?.setSelection(0)
             }
             DateRangeFormat.DDmmYYYY,
@@ -313,14 +312,14 @@ internal class StrictDateRangeFormatter(
                 }
                 source?.setSelection(index)
             }
-            DateRangeFormat.MMyy -> { TODO("Implement")  }
         }
     }
 
     private fun moveCursorToEndOfYear() {
         when (dateFormat) {
             DateRangeFormat.MMddYYYY,
-            DateRangeFormat.DDmmYYYY -> {
+            DateRangeFormat.DDmmYYYY,
+            DateRangeFormat.MMyy-> {
                 val index = if (runtimeData.isNotEmpty()) {
                     runtimeData.length - 1
                 } else {
@@ -331,7 +330,6 @@ internal class StrictDateRangeFormatter(
             DateRangeFormat.YYYYmmDD -> {
                 source?.setSelection(0)
             }
-            DateRangeFormat.MMyy -> { TODO("Implement")  }
         }
     }
 
