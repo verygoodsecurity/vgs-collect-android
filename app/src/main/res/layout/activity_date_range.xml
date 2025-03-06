@@ -59,15 +59,15 @@
                 style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:datePattern="MM/dd/yyyy"
+                app:datePattern="MM/yy"
                 app:datePickerModes="input"
                 app:fieldName="date"
                 app:formatterMode="strict"
                 app:hint="Date range"
                 app:imeOptions="actionNext"
                 app:inputType="date"
-                app:maxDate="10/10/2026"
-                app:minDate="10/10/2020"
+                app:minDate="02/25"
+                app:maxDate="10/25"
                 app:outputPattern="MM-yyyy-dd'T'HH:mm:ss.SSSSSSS"
                 app:text="" />
 
