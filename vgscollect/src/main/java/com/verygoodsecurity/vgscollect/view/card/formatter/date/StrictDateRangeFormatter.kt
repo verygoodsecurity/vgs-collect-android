@@ -92,6 +92,9 @@ internal class StrictDateRangeFormatter(
             dateFormat == DateRangeFormat.YYYYmmDD -> {
                 generateYYYYMMDD(str)
             }
+            dateFormat == DateRangeFormat.MMyy -> {
+                generateMMYY(str)
+            }
             else -> "".also {
                 cacheMonth = it
                 cacheYear = it
@@ -214,6 +217,36 @@ internal class StrictDateRangeFormatter(
         }
     }
 
+    private fun generateMMYY(str: CharSequence): String {
+        // Get date components
+        val dateComponents = dateComponentsString(str.toString())
+        // Format month
+        val formattedMonth = formatMonth(dateComponents.month)
+        // Only month is valid
+        if (dateComponents.isMonthValid && !dateComponents.isDayValid && !dateComponents.isYearValid) {
+            cacheDay = ""
+            cacheYear = ""
+            return when {
+                isDeleteAction -> formattedMonth
+                formattedMonth == "1" -> formattedMonth
+                formattedMonth == "0" -> formattedMonth
+                else -> formattedMonth + divider
+            }
+        } else {
+            // Format day and year
+            val formattedYear = formatYear(dateComponents.year)
+            // Create result
+            var result = ""
+            if (formattedMonth.isNotEmpty()) {
+                result = formattedMonth
+            }
+            if (formattedYear.isNotEmpty()) {
+                result += divider + formattedYear
+            }
+            return result
+        }
+    }
+
     private fun formatDay(day: String): String {
         val isValid = DayFormatter.isValidDay(day)
         return when {
@@ -235,7 +268,11 @@ internal class StrictDateRangeFormatter(
     }
 
     private fun formatYear(year: String): String {
-        val isValid = YearFormatter.isValidYear(year)
+        val isValid = if (dateFormat == DateRangeFormat.MMyy) {
+            YearFormatter.isShortValidYear(year)
+        } else {
+            YearFormatter.isValidYear(year)
+        }
         return when {
             year.isEmpty() -> "".also { cacheYear = "" }
             isValid -> year.also { cacheYear = it }
@@ -337,7 +374,13 @@ internal class StrictDateRangeFormatter(
                 // Get day
                 result.day = digits.take(dateFormat.daysCharacters)
             }
-            DateRangeFormat.MMyy -> { TODO("Implement")  }
+            DateRangeFormat.MMyy -> {
+                // Get month
+                result.month = digits.take(dateFormat.monthCharacters)
+                digits = digits.removePrefix(result.month)
+                // Get year
+                result.year = digits.take(dateFormat.yearCharacters)
+            }
         }
         return result
     }
@@ -409,9 +452,14 @@ internal class StrictDateRangeFormatter(
         companion object {
 
             private val patternYear = Pattern.compile("^((1|19|19\\d|19\\d\\d)|(2|20|20\\d|20\\d\\d))\$")
+            private val patternShotYear = Pattern.compile("^(\\d|\\d\\d)\$")
 
             fun isValidYear(year: String): Boolean {
                 return patternYear.matcher(year).matches()
+            }
+
+            fun isShortValidYear(year: String): Boolean {
+                return patternShotYear.matcher(year).matches()
             }
         }
     }
