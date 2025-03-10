@@ -3,13 +3,13 @@ package com.verygoodsecurity.vgscollect.view.card.formatter.date
 import android.text.Editable
 import com.verygoodsecurity.vgscollect.util.extension.digits
 import com.verygoodsecurity.vgscollect.util.extension.replaceIgnoreFilters
-import com.verygoodsecurity.vgscollect.view.date.DateRangeFormat
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
+import com.verygoodsecurity.vgscollect.view.date.DateRangeFormat
 
 internal class FlexibleDateRangeFormatter : BaseDateFormatter() {
 
     //region - Properties
-    private var dateFormat = DateRangeFormat.MM_DD_YYYY
+    private var dateFormat: DateRangeFormat = DateRangeFormat.MMddYYYY
     private var mode: DatePickerMode = DatePickerMode.INPUT
     private var runtimeData = ""
     //endregion
@@ -22,12 +22,7 @@ internal class FlexibleDateRangeFormatter : BaseDateFormatter() {
     override fun getMask(): String = dateFormat.formatPattern
 
     override fun setMask(mask: String) {
-        val parsedFormat = DateRangeFormat.parsePatternToDateFormat(mask)
-        dateFormat = if (parsedFormat != null) {
-            parsedFormat
-        } else {
-            DateRangeFormat.MM_DD_YYYY
-        }
+        dateFormat = DateRangeFormat.parsePatternToDateFormat(mask) ?: DateRangeFormat.MMddYYYY
     }
     //endregion
 

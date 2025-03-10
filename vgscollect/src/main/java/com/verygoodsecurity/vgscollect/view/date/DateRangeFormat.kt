@@ -1,53 +1,25 @@
 package com.verygoodsecurity.vgscollect.view.date
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
-internal enum class DateRangeFormat(val format: String) {
-    MM_DD_YYYY("MM/dd/yyyy"),
-    DD_MM_YYYY("dd/MM/yyyy"),
-    YYYY_MM_DD("yyyy/MM/dd");
+internal sealed class DateRangeFormat(val format: String) {
 
-    //region - Properties
-    internal val daysCharacters = 2
-    internal val monthCharacters = 2
-    internal val yearCharacters = 4
-    internal val dividerCharacters = 2
-    internal val size = daysCharacters + monthCharacters + yearCharacters + dividerCharacters
-    internal val formatPatternItem = '#'
-    internal val formatPattern: String
-        get() {
-            val patternItem = formatPatternItem.toString()
-            return format
-                .replace("M", patternItem, true)
-                .replace("y", patternItem, true)
-                .replace("d", patternItem, true)
-        }
-    //endregion
+    abstract val daysCharacters: Int
+    abstract val monthCharacters: Int
+    abstract val yearCharacters: Int
+    abstract val dividerCharacters: Int
+    abstract val formatPattern: String
 
-    //region - Methods
-    internal fun dateFromString(input: String?): Date? {
-        // Make sure if is a valid input string
-        if (input.isNullOrEmpty()) {
-            return null
-        }
+    val size: Int by lazy { daysCharacters + monthCharacters + yearCharacters + dividerCharacters }
 
-        val sDateFormat = SimpleDateFormat(format, Locale.US)
-        sDateFormat.isLenient = false
+    val formatPatternItem = '#'
 
-        return try {
-            sDateFormat.parse(input)
-        } catch (_: Exception) {
-            null
-        }
-    }
-    //endregion
-
-    //region - Companion
     companion object {
 
         // Default format
-        const val divider = "/"
+        const val DIVIDER = "/"
 
         private fun findDividerInInput(input: String?): String? {
             // Make sure if is a valid pattern string
@@ -77,13 +49,90 @@ internal enum class DateRangeFormat(val format: String) {
             val currentDivider = findDividerInInput(pattern) ?: return null
 
             // Replace dividers with the default
-            return when (pattern.replace(currentDivider, divider, true)) {
-                MM_DD_YYYY.format -> MM_DD_YYYY
-                DD_MM_YYYY.format -> DD_MM_YYYY
-                YYYY_MM_DD.format -> YYYY_MM_DD
+            return when (pattern.replace(currentDivider, DIVIDER, true)) {
+                MMddYYYY.format -> MMddYYYY
+                DDmmYYYY.format -> DDmmYYYY
+                YYYYmmDD.format -> YYYYmmDD
+                MMyy.format -> MMyy
                 else -> null
             }
         }
     }
-    //endregion
+
+    internal fun dateFromString(input: String?): Date? {
+        // Make sure if is a valid input string
+        if (input.isNullOrEmpty()) {
+            return null
+        }
+
+        val sDateFormat = SimpleDateFormat(format, Locale.US)
+        sDateFormat.isLenient = false
+
+        return try {
+            sDateFormat.parse(input)
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    data object MMddYYYY : DateRangeFormat("MM/dd/yyyy") {
+        override val daysCharacters: Int = 2
+        override val monthCharacters: Int = 2
+        override val yearCharacters: Int = 4
+        override val dividerCharacters: Int = 2
+        override val formatPattern: String
+            get() {
+                val patternItem = formatPatternItem.toString()
+                return format
+                    .replace("M", patternItem, true)
+                    .replace("y", patternItem, true)
+                    .replace("d", patternItem, true)
+            }
+    }
+
+    data object DDmmYYYY : DateRangeFormat("dd/MM/yyyy") {
+        override val daysCharacters: Int = 2
+        override val monthCharacters: Int = 2
+        override val yearCharacters: Int = 4
+        override val dividerCharacters: Int = 2
+        override val formatPattern: String
+            get() {
+                val patternItem = formatPatternItem.toString()
+                return format
+                    .replace("M", patternItem, true)
+                    .replace("y", patternItem, true)
+                    .replace("d", patternItem, true)
+            }
+    }
+
+    data object YYYYmmDD : DateRangeFormat("yyyy/MM/dd") {
+        override val daysCharacters: Int = 2
+        override val monthCharacters: Int = 2
+        override val yearCharacters: Int = 4
+        override val dividerCharacters: Int = 2
+        override val formatPattern: String
+            get() {
+                val patternItem = formatPatternItem.toString()
+                return format
+                    .replace("M", patternItem, true)
+                    .replace("y", patternItem, true)
+                    .replace("d", patternItem, true)
+            }
+
+    }
+
+    data object MMyy : DateRangeFormat("MM/yy") {
+        override val daysCharacters: Int = 0
+        override val monthCharacters: Int = 2
+        override val yearCharacters: Int = 2
+        override val dividerCharacters: Int = 1
+        override val formatPattern: String
+            get() {
+                val patternItem = formatPatternItem.toString()
+                return format
+                    .replace("M", patternItem, true)
+                    .replace("y", patternItem, true)
+            }
+
+    }
 }
