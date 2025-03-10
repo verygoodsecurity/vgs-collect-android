@@ -13,10 +13,17 @@ import com.verygoodsecurity.vgscollect.core.storage.DependencyType
 import com.verygoodsecurity.vgscollect.util.extension.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.conection.InputDateConnection
-import com.verygoodsecurity.vgscollect.view.card.formatter.date.*
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.BaseDateFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.DatePickerFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.FlexibleDateFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.FlexibleDateRangeFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.StrictDateRangeFormatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.date.StrictExpirationDateFormatter
 import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
-import com.verygoodsecurity.vgscollect.view.date.*
+import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
+import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
+import com.verygoodsecurity.vgscollect.view.date.DateRangeFormat
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
 import com.verygoodsecurity.vgscollect.view.date.validation.isInputDatePatternValid
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
@@ -24,7 +31,9 @@ import com.verygoodsecurity.vgscollect.view.internal.ExpirationDateInputField
 import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 /** @suppress */
 internal abstract class DateInputField(context: Context) : BaseInputField(context),
@@ -293,9 +302,8 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
 
     internal fun setDatePattern(pattern: String?) {
         if (fieldType == FieldType.DATE_RANGE) {
-            val parsedFormat = DateRangeFormat.parsePatternToDateFormat(pattern)
-            if (parsedFormat != null) {
-                inputDatePattern = parsedFormat.format
+            DateRangeFormat.parsePatternToDateFormat(pattern)?.let {
+                inputDatePattern = it.format
             }
         } else {
             inputDatePattern = when {
