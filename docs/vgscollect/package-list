@@ -15,56 +15,10 @@ $dokka.location:com.verygoodsecurity.vgscollect.app/BaseTransmitActivity.Status.
 $dokka.location:com.verygoodsecurity.vgscollect.app/BaseTransmitActivity.Status.SUCCESS///PointingToDeclaration/{"org.jetbrains.dokka.links.EnumEntryDRIExtra":{"key":"org.jetbrains.dokka.links.EnumEntryDRIExtra"}}vgscollect/com.verygoodsecurity.vgscollect.app/-base-transmit-activity/-status/-s-u-c-c-e-s-s/index.html
 $dokka.location:com.verygoodsecurity.vgscollect.app/BaseTransmitActivity.Status///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.app/-base-transmit-activity/-status/index.html
 $dokka.location:com.verygoodsecurity.vgscollect.app/BaseTransmitActivity.Status/entries/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.app/-base-transmit-activity/-status/entries.html
-$dokka.location:com.verygoodsecurity.vgscollect.app/BaseTransmitActivity.Status/raw/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.app/-base-transmit-activity/-status/raw.html
 $dokka.location:com.verygoodsecurity.vgscollect.app/BaseTransmitActivity.Status/valueOf/#kotlin.String/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.app/-base-transmit-activity/-status/value-of.html
 $dokka.location:com.verygoodsecurity.vgscollect.app/BaseTransmitActivity.Status/values/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.app/-base-transmit-activity/-status/values.html
 $dokka.location:com.verygoodsecurity.vgscollect.app/BaseTransmitActivity///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.app/-base-transmit-activity/index.html
 $dokka.location:com.verygoodsecurity.vgscollect.app/BaseTransmitActivity/BaseTransmitActivity/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.app/-base-transmit-activity/-base-transmit-activity.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action////PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/Action///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-action/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/Action/getAttributes/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-action/get-attributes.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/AttachFileAction.Companion///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-attach-file-action/-companion/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/AttachFileAction///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-attach-file-action/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/AttachFileAction/AttachFileAction/#kotlin.collections.Map[kotlin.String,kotlin.Any]/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-attach-file-action/-attach-file-action.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/AttachFileAction/getAttributes/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-attach-file-action/get-attributes.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/AttachFileAction/params/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-attach-file-action/params.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/AutofillAction.Companion///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-autofill-action/-companion/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/AutofillAction///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-autofill-action/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/AutofillAction/AutofillAction/#kotlin.collections.Map[kotlin.String,kotlin.Any]/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-autofill-action/-autofill-action.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/AutofillAction/getAttributes/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-autofill-action/get-attributes.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/AutofillAction/params/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-autofill-action/params.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/HostNameValidationAction.Companion///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-host-name-validation-action/-companion/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/HostNameValidationAction///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-host-name-validation-action/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/HostNameValidationAction/HostNameValidationAction/#kotlin.collections.Map[kotlin.String,kotlin.Any]/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-host-name-validation-action/-host-name-validation-action.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/HostNameValidationAction/getAttributes/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-host-name-validation-action/get-attributes.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/HostNameValidationAction/params/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-host-name-validation-action/params.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/InitAction.Companion///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-init-action/-companion/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/InitAction///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-init-action/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/InitAction/InitAction/#kotlin.String#kotlin.Boolean/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-init-action/-init-action.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/InitAction/fieldType/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-init-action/field-type.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/InitAction/getAttributes/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-init-action/get-attributes.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/InitAction/isCompose/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-init-action/is-compose.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ResponseAction.Companion///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-response-action/-companion/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ResponseAction///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-response-action/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ResponseAction/ResponseAction/#kotlin.collections.Map[kotlin.String,kotlin.Any]/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-response-action/-response-action.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ResponseAction/getAttributes/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-response-action/get-attributes.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ResponseAction/params/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-response-action/params.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ScanAction.Companion///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-scan-action/-companion/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ScanAction///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-scan-action/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ScanAction/ScanAction/#kotlin.collections.Map[kotlin.String,kotlin.Any]/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-scan-action/-scan-action.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ScanAction/getAttributes/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-scan-action/get-attributes.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/ScanAction/params/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-scan-action/params.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/SubmitAction.Companion///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-submit-action/-companion/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/SubmitAction///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-submit-action/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/SubmitAction/SubmitAction/#kotlin.collections.Map[kotlin.String,kotlin.Any]/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-submit-action/-submit-action.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/SubmitAction/getAttributes/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-submit-action/get-attributes.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.action/SubmitAction/params/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.action/-submit-action/params.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.utils////PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.utils/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc.utils//toAnalyticStatus/kotlin.Boolean#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc.utils/to-analytic-status.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc////PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc/AnalyticTracker///PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc/-analytic-tracker/index.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc/AnalyticTracker/isEnabled/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc/-analytic-tracker/is-enabled.html
-$dokka.location:com.verygoodsecurity.vgscollect.core.api.analityc/AnalyticTracker/logEvent/#com.verygoodsecurity.vgscollect.core.api.analityc.action.Action/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.analityc/-analytic-tracker/log-event.html
 $dokka.location:com.verygoodsecurity.vgscollect.core.api.client.extension////PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.client.extension/index.html
 $dokka.location:com.verygoodsecurity.vgscollect.core.api.client.extension//isCodeSuccessful/kotlin.Int#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.client.extension/is-code-successful.html
 $dokka.location:com.verygoodsecurity.vgscollect.core.api.client.extension//isHttpStatusCode/kotlin.Int#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core.api.client.extension/is-http-status-code.html
@@ -338,6 +292,7 @@ $dokka.location:com.verygoodsecurity.vgscollect.core/VGSCollect/bindView/#kotlin
 $dokka.location:com.verygoodsecurity.vgscollect.core/VGSCollect/clearResponseListeners/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core/-v-g-s-collect/clear-response-listeners.html
 $dokka.location:com.verygoodsecurity.vgscollect.core/VGSCollect/getAllStates/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core/-v-g-s-collect/get-all-states.html
 $dokka.location:com.verygoodsecurity.vgscollect.core/VGSCollect/getFileProvider/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core/-v-g-s-collect/get-file-provider.html
+$dokka.location:com.verygoodsecurity.vgscollect.core/VGSCollect/getIsAnalyticsEnabled/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core/-v-g-s-collect/get-is-analytics-enabled.html
 $dokka.location:com.verygoodsecurity.vgscollect.core/VGSCollect/onActivityResult/#kotlin.Int#kotlin.Int#android.content.Intent?/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core/-v-g-s-collect/on-activity-result.html
 $dokka.location:com.verygoodsecurity.vgscollect.core/VGSCollect/onDestroy/#/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core/-v-g-s-collect/on-destroy.html
 $dokka.location:com.verygoodsecurity.vgscollect.core/VGSCollect/removeOnResponseListener/#com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener/PointingToDeclaration/vgscollect/com.verygoodsecurity.vgscollect.core/-v-g-s-collect/remove-on-response-listener.html
@@ -808,9 +763,6 @@ com.verygoodsecurity.vgscollect
 com.verygoodsecurity.vgscollect.app
 com.verygoodsecurity.vgscollect.core
 com.verygoodsecurity.vgscollect.core.api
-com.verygoodsecurity.vgscollect.core.api.analityc
-com.verygoodsecurity.vgscollect.core.api.analityc.action
-com.verygoodsecurity.vgscollect.core.api.analityc.utils
 com.verygoodsecurity.vgscollect.core.api.client.extension
 com.verygoodsecurity.vgscollect.core.model
 com.verygoodsecurity.vgscollect.core.model.map
