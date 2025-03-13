@@ -70,11 +70,11 @@ detekt {
 }
 
 dependencies {
-    implementation project(':vgs-sdk-analytics:VGSClientSDKAnalytics')
 
     api libs.material
     api libs.okhttp
 
+    implementation project(':vgs-sdk-analytics:VGSClientSDKAnalytics')
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
 
