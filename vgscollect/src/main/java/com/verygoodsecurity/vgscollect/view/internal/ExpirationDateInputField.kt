@@ -7,6 +7,8 @@ import android.view.View
 import android.view.autofill.AutofillValue
 import com.verygoodsecurity.vgscollect.util.extension.setMaximumTime
 import com.verygoodsecurity.vgscollect.view.card.FieldType
+import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
+import com.verygoodsecurity.vgscollect.view.date.validation.isInputDatePatternValid
 import com.verygoodsecurity.vgscollect.view.internal.core.DateInputField
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -20,6 +22,15 @@ internal class ExpirationDateInputField(context: Context) : DateInputField(conte
     override var inputDatePattern: String = MM_YYYY
     override var datePickerMinDate: Long? = null
     override var datePickerMaxDate: Long? = null
+    override var isDaysVisible: Boolean = false
+
+    override fun validateDatePattern(pattern: String?): String {
+        return when {
+            pattern.isNullOrEmpty() -> MM_YYYY
+            datePickerMode == DatePickerMode.INPUT && !pattern.isInputDatePatternValid() -> MM_YYYY
+            else -> pattern
+        }
+    }
 
     override fun setupAutofill() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
