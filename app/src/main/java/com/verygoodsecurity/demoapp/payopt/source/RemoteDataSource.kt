@@ -13,7 +13,7 @@ class RemoteDataSource {
     private val handler = Handler(Looper.getMainLooper())
 
     fun fetchAccessToken(listener: ResponseListener<String>) {
-        makeRequest(BuildConfig.ACCESS_TOKEN_URL, null, emptyList(), {
+        makeRequest(BuildConfig.PAY_OPT_ACCESS_TOKEN_URL, null, emptyList(), {
             try {
                 listener.onSuccess(JSONObject(it).getString("access_token"))
             } catch (e: Exception) {
@@ -41,7 +41,7 @@ class RemoteDataSource {
         }.toString()
 
         makeRequest(
-            BuildConfig.CREATE_ORDER_URL,
+            BuildConfig.PAY_OPT_CREATE_ORDER_URL,
             body,
             listOf("X-Auth-Token" to token, "Content-Type" to "application/json"),
             {
@@ -59,7 +59,7 @@ class RemoteDataSource {
         token: String, instrumentId: String, orderId: String, listener: ResponseListener<String>
     ) {
         makeRequest(
-            BuildConfig.PAYMENT_URL,
+            BuildConfig.PAY_OPT_PAYMENT_URL,
             JSONObject().apply {
                 put("order_id", orderId)
                 put("source", instrumentId)

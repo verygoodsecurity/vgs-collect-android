@@ -25,9 +25,12 @@ android {
         buildConfigField("String", "VAULT_ID", "\"${getLocalProperty("VGS_VAULT_ID")}\"")
         buildConfigField("String", "ROUTE_ID", "\"${getLocalProperty("VGS_ROUTE_ID")}\"")
         buildConfigField("String", "PATH", "\"${getLocalProperty("VGS_PATH")}\"")
-        buildConfigField("String", "ACCESS_TOKEN_URL", "\"${getLocalProperty("VGS_ACCESS_TOKEN_URL")}\"")
-        buildConfigField("String", "CREATE_ORDER_URL", "\"${getLocalProperty("VGS_CREATE_ORDER_URL")}\"")
-        buildConfigField("String", "PAYMENT_URL", "\"${getLocalProperty("VGS_PAYMENT_URL")}\"")
+        buildConfigField("String", "PAY_OPT_ACCESS_TOKEN_URL", "\"${getLocalProperty("VGS_PAY_OPT_ACCESS_TOKEN_URL")}\"")
+        buildConfigField("String", "PAY_OPT_CREATE_ORDER_URL", "\"${getLocalProperty("VGS_PAY_OPT_CREATE_ORDER_URL")}\"")
+        buildConfigField("String", "PAY_OPT_PAYMENT_URL", "\"${getLocalProperty("VGS_PAY_OPT_PAYMENT_URL")}\"")
+        buildConfigField("String", "TOKENIZATION_ACCESS_TOKEN_URL", "\"${getLocalProperty("VGS_VAULT_API_ACCESS_TOKEN_URL")}\"")
+        buildConfigField("String", "TOKENIZATION_ACCESS_TOKEN_CONTENT_TYPE", "\"${getLocalProperty("VGS_VAULT_API_ACCESS_TOKEN_CONTENT_TYPE")}\"")
+        buildConfigField("String", "TOKENIZATION_ACCESS_TOKEN_BODY", "\"${getLocalProperty("VGS_VAULT_API_ACCESS_TOKEN_BODY")}\"")
     }
 
     buildFeatures {

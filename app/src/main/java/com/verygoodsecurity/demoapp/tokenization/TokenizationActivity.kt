@@ -3,6 +3,8 @@ package com.verygoodsecurity.demoapp.tokenization
 import android.animation.LayoutTransition
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -11,9 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.preference.PreferenceManager
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.result.Result
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
+import com.verygoodsecurity.demoapp.BuildConfig
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityTokenizationBinding
@@ -55,6 +60,8 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
     private lateinit var binding: ActivityTokenizationBinding
     private lateinit var codeExampleBinding: CodeExampleLayoutBinding
     private lateinit var cardViewBinding: CardInputLayoutBinding
+
+    private val handler = Handler(Looper.getMainLooper())
 
     // Used to start and receive result from scan activity
     private val scanResultLauncher =
@@ -236,7 +243,43 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
 
     private fun tokenize() {
         setLoading(true)
-        collect?.tokenize()
+        getAccessToken { accessToken ->
+            if (accessToken.isNullOrEmpty()) {
+                setLoading(false)
+            } else {
+                collect?.tokenize(accessToken)
+            }
+        }
+    }
+
+    private fun getAccessToken(onResult: (accessToken: String?) -> Unit) {
+        val accessTokenBaseUrl = BuildConfig.TOKENIZATION_ACCESS_TOKEN_URL
+        if (accessTokenBaseUrl.isEmpty()) {
+            onResult(null)
+            return
+        }
+        val request = Fuel.post(accessTokenBaseUrl)
+        request.body(BuildConfig.TOKENIZATION_ACCESS_TOKEN_BODY)
+        request.header("Content-type", BuildConfig.TOKENIZATION_ACCESS_TOKEN_CONTENT_TYPE)
+        request.responseString { _, _, result ->
+            handler.post {
+                when (result) {
+                    is Result.Success -> {
+                        try {
+                            val token = JSONObject(result.value).getString("access_token")
+                            onResult(token)
+                        } catch (e: Exception) {
+                            onResult(null)
+                        }
+                    }
+
+                    is Result.Failure -> {
+                        Log.d(this::class.simpleName, "Access token request failed!")
+                        onResult(null)
+                    }
+                }
+            }
+        }
     }
 
     private fun resetView() {
