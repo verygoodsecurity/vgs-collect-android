@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.view.core.serializers
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.api.client.extension.logException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 /**
  * Represents [com.verygoodsecurity.vgscollect.widget.RangeDateEditText] date split serializer.
@@ -15,7 +15,7 @@ import java.util.*
  * @param yearFieldName - this field name will be used for year in request json.
  */
 class VGSDateRangeSeparateSerializer constructor(
-    private val dayFieldName: String,
+    private val dayFieldName: String?,
     private val monthFieldName: String,
     private val yearFieldName: String
 ) : FieldDataSerializer<VGSDateRangeSeparateSerializer.Params, List<Pair<String, String>>>() {
@@ -30,11 +30,13 @@ class VGSDateRangeSeparateSerializer constructor(
                 )
                 return emptyList()
             }
-            listOf(
-                dayFieldName to getDayFormat(params.dateFormat).format(date),
-                monthFieldName to getMonthFormat(params.dateFormat).format(date),
-                yearFieldName to getYearFormat(params.dateFormat).format(date)
-            )
+            val result = mutableListOf<Pair<String, String>>()
+            dayFieldName?.let {
+                result.add(dayFieldName to getDayFormat(params.dateFormat).format(date))
+            }
+            result.add(monthFieldName to getMonthFormat(params.dateFormat).format(date))
+            result.add(yearFieldName to getYearFormat(params.dateFormat).format(date))
+            result
         } catch (e: Exception) {
             logException(e)
             emptyList()
