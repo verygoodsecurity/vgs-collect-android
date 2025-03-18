@@ -44,6 +44,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     internal abstract var inclusiveRangeValidation: Boolean
     internal abstract var datePickerMinDate: Long?
     internal abstract var datePickerMaxDate: Long?
+    internal abstract var isDaysVisible: Boolean
     //endregion
 
     //region - Properties
@@ -59,18 +60,16 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
             field = value
             updateTimeGapsValidator()
         }
-    private var timeGapsValidator: TimeGapsValidator? = null
     protected val selectedDate: Calendar = Calendar.getInstance()
+    protected var datePickerMode: DatePickerMode = DatePickerMode.INPUT
+    private var timeGapsValidator: TimeGapsValidator? = null
     private var fieldDateFormat: SimpleDateFormat? = null
     private var fieldDateOutputFormat: SimpleDateFormat? = null
     private var fieldDataSerializers: List<FieldDataSerializer<*, *>>? = null
-    private var datePickerMode: DatePickerMode = DatePickerMode.INPUT
-    protected val isDaysVisible: Boolean
-        get() {
-            return fieldType == FieldType.DATE_RANGE
-        }
     private var datePickerVisibilityChangeListener: VisibilityChangeListener? = null
     //endregion
+
+    abstract fun validateDatePattern(pattern: String?): String
 
     override fun applyFieldType() {
         updateTimeGapsValidator()
@@ -301,19 +300,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     }
 
     internal fun setDatePattern(pattern: String?) {
-        if (fieldType == FieldType.DATE_RANGE) {
-            DateRangeFormat.parsePatternToDateFormat(pattern)?.let {
-                inputDatePattern = it.format
-            }
-        } else {
-            inputDatePattern = when {
-                pattern.isNullOrEmpty() -> ExpirationDateInputField.MM_YYYY
-                datePickerMode == DatePickerMode.INPUT && pattern.isInputDatePatternValid()
-                    .not() -> ExpirationDateInputField.MM_YYYY
-                else -> pattern
-            }
-        }
-
+        inputDatePattern = validateDatePattern(pattern)
         fieldDateFormat = SimpleDateFormat(inputDatePattern, Locale.US)
         isListeningPermitted = true
         formatter?.setMask(inputDatePattern)

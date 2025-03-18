@@ -60,17 +60,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:datePattern="MM/yy"
-                app:datePickerModes="input"
+                app:datePickerModes="spinner"
                 app:fieldName="date"
                 app:formatterMode="strict"
                 app:hint="Date range"
                 app:imeOptions="actionNext"
                 app:inputType="date"
                 app:minDate="02/25"
-                app:maxDate="10/25"
-                app:outputPattern="MM-yyyy-dd'T'HH:mm:ss.SSSSSSS"
-                app:text="" />
-
+                app:maxDate="10/25" />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.google.android.material.button.MaterialButton

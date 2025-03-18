@@ -129,9 +129,9 @@ class DateRangeActivity : AppCompatActivity(), VgsCollectResponseListener, OnFie
         // Specify VGSDateRangeSeparateSerializer to send day, month and year separately in json structure
         binding.vgsTiedDateRange.setSerializer(
             VGSDateRangeSeparateSerializer(
-                "date.day",
-                "date.month",
-                "date.year"
+                null,
+                "card.expiry.month",
+                "card.expiry.year",
             )
         )
         binding.vgsTiedDateRange.setOnFieldStateChangeListener(object : OnFieldStateChangeListener {
