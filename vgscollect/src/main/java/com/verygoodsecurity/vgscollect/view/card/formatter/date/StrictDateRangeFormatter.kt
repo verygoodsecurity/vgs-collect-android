@@ -6,6 +6,7 @@ import com.verygoodsecurity.vgscollect.util.extension.digits
 import com.verygoodsecurity.vgscollect.util.extension.replaceIgnoreFilters
 import com.verygoodsecurity.vgscollect.view.date.*
 import com.verygoodsecurity.vgscollect.view.date.DateRangeFormat
+import java.util.Locale
 import java.util.regex.Pattern
 
 internal class StrictDateRangeFormatter(
@@ -408,10 +409,10 @@ internal class StrictDateRangeFormatter(
             fun validateDay(day: String): String? {
                 return try {
                     val dayInt = day.toInt()
-                    if (dayInt in 1..30) {
-                        return String.format("%02d", dayInt)
+                    return if (dayInt in 1..30) {
+                        String.format(Locale.getDefault(), "%02d", dayInt)
                     } else {
-                        return null
+                        null
                     }
                 } catch (e: Exception) {
                     null
@@ -433,12 +434,12 @@ internal class StrictDateRangeFormatter(
             fun validateMonth(month: String): String? {
                 return try {
                     val monthInt = month.toInt()
-                    if (monthInt in 1..12) {
-                        return String.format("%02d", monthInt)
+                    return if (monthInt in 1..12) {
+                        String.format(Locale.getDefault(), "%02d", monthInt)
                     } else {
-                        return null
+                        null
                     }
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     null
                 }
             }

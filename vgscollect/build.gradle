@@ -11,11 +11,11 @@ plugins {
 
 android {
     namespace 'com.verygoodsecurity.vgscollect'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 34
+        minSdk 21
+        targetSdk 35
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
@@ -74,7 +74,9 @@ dependencies {
     api libs.material
     api libs.okhttp
 
-    implementation project(':vgs-sdk-analytics:VGSClientSDKAnalytics')
+    debugImplementation project(':vgs-sdk-analytics:VGSClientSDKAnalytics')
+    releaseImplementation(libs.vgs.sdk.analytics.android)
+
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
 
