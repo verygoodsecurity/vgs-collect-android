@@ -15,7 +15,7 @@ class FlatMap constructor(private val allowParseArrays: Boolean = true) {
     }
 
     private fun set(target: MutableMap<String, Any>, keys: MutableList<Key>, value: Any): Any? {
-        val key = keys.removeFirst()
+        val key = keys.removeAt(0)
         val v = if (keys.isEmpty()) value else null
         val nestedTarget = when (key) {
             is Key.ArrayKey -> addArray(target, key, v)
