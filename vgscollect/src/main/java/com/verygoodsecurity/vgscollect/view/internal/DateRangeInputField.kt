@@ -35,6 +35,13 @@ internal class DateRangeInputField(context: Context) : DateInputField(context) {
 
     override var isDaysVisible: Boolean = true
 
+    override var minDate: Long? = null
+        set(value) {
+            field = value
+            updateTimeGapsValidator()
+            value?.let { selectedDate.timeInMillis = it }
+        }
+
     override fun validateDatePattern(pattern: String?): String {
         return DateRangeFormat.parsePatternToDateFormat(pattern)?.format ?: inputDatePattern
     }
