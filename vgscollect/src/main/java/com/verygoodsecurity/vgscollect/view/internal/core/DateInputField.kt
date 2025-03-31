@@ -55,7 +55,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
             field = value
             updateTimeGapsValidator()
         }
-    internal var maxDate: Long? = null
+    internal open var maxDate: Long? = null
         set(value) {
             field = value
             updateTimeGapsValidator()
