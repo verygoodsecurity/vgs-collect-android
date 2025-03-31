@@ -35,8 +35,33 @@ internal class DateRangeInputField(context: Context) : DateInputField(context) {
 
     override var isDaysVisible: Boolean = true
 
+    override var minDate: Long? = null
+        set(value) {
+            field = value
+            updateSelectedDate()
+            updateTimeGapsValidator()
+        }
+
+    override var maxDate: Long? = null
+        set(value) {
+            field = value
+            updateSelectedDate()
+            updateTimeGapsValidator()
+        }
+
     override fun validateDatePattern(pattern: String?): String {
         return DateRangeFormat.parsePatternToDateFormat(pattern)?.format ?: inputDatePattern
     }
     //endregion
+
+    private fun updateSelectedDate() {
+        val min = minDate
+        val max = maxDate
+        val selected = selectedDate.timeInMillis
+        if (min != null && selected < min) {
+            selectedDate.timeInMillis = min
+        } else if (max != null && selected > max) {
+            selectedDate.timeInMillis = max
+        }
+    }
 }

@@ -50,12 +50,12 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     //region - Properties
     private var formatterMode = FormatMode.STRICT
     private var formatter: DatePickerFormatter? = null
-    internal var minDate: Long? = null
+    internal open var minDate: Long? = null
         set(value) {
             field = value
             updateTimeGapsValidator()
         }
-    internal var maxDate: Long? = null
+    internal open var maxDate: Long? = null
         set(value) {
             field = value
             updateTimeGapsValidator()
@@ -356,7 +356,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
         refreshInput()
     }
 
-    private fun updateTimeGapsValidator() {
+    protected fun updateTimeGapsValidator() {
         timeGapsValidator?.let { validator.removeRule(it) }
         timeGapsValidator = TimeGapsValidator(
             inputDatePattern,
