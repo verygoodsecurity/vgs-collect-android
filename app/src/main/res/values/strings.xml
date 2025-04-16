@@ -35,6 +35,9 @@
     <string name="start_compos_fragment_title">Compose (Fragment)</string>
     <string name="start_compose_fragment_description">Example of collecting date wit Jetpack Compose and Fragment.</string>
 
+    <string name="start_cmp_title">CMP</string>
+    <string name="start_cmp_description">Example of create card object flow.</string>
+
     <string name="start_payopt">Payopt</string>
     <string name="start_payopt_description">Collecting data with payment optimization example.</string>
 

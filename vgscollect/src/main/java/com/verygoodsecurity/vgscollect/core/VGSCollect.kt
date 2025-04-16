@@ -114,7 +114,8 @@ class VGSCollect {
         this.context = context
         this.vaultId = id
         this.environment = environment
-        this.analyticsManager = VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
+        this.analyticsManager =
+            VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
         this.analyticsHandler = object : AnalyticsHandler {
 
             override fun capture(event: VGSAnalyticsEvent) {
@@ -316,6 +317,16 @@ class VGSCollect {
      */
     fun tokenize(request: VGSTokenizationRequest) {
         submitAsyncRequest(request)
+    }
+
+    fun createCard(accessToken: String) {
+        submitAsyncRequest(
+            VGSRequest.VGSRequestBuilder()
+                .setMethod(HTTPMethod.POST)
+                .setPath("/cards")
+                .setCustomHeader(mapOf<String, String>("Authorization" to "Bearer $accessToken "))
+                .build()
+        )
     }
 
     /**
@@ -723,6 +734,8 @@ class VGSCollect {
 
     private fun generateBaseUrl(id: String, environment: String, url: String?, port: Int?): String {
 
+        return "https://sandbox.vgsapi.com"
+
         fun printPortDenied() {
             if (port.isValidPort()) {
                 VGSCollectLogger.warn(message = context.getString(R.string.error_custom_port_is_not_allowed))
@@ -781,6 +794,16 @@ class VGSCollect {
 
                 hostnameValidationEvent(hasCustomHostname, host)
             }
+        }
+    }
+
+    companion object {
+
+        fun initCMP(
+            context: Context,
+            environment: Environment
+        ): VGSCollect {
+            return VGSCollect(context = context, environment = environment, id = "test")
         }
     }
 

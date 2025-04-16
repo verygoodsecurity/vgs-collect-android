@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.verygoodsecurity.demoapp.cmp.CMPActivity
 import com.verygoodsecurity.demoapp.collect_activity.CollectActivity
 import com.verygoodsecurity.demoapp.collect_compose.activity_case.ComposeActivity
 import com.verygoodsecurity.demoapp.collect_compose.fragment_case.ComposeFragmentActivity
@@ -55,6 +56,9 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         }
         binding.llComposeFragmentFlow.setOnClickListener {
             startActivity(ComposeFragmentActivity::class.java)
+        }
+        binding.llCmpFlow.setOnClickListener {
+            startActivity(CMPActivity::class.java)
         }
     }
 

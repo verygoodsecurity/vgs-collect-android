@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingBottom="@dimen/margin_padding_material_medium">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/margin_padding_material_medium"
+        android:paddingTop="@dimen/margin_padding_material_medium"
+        android:paddingEnd="@dimen/margin_padding_material_medium">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineHalf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvCardNumberHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="PAN"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTilCardNumber"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mtvCardNumberHint">
+
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                android:id="@+id/vgsTiedPan"
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/card_number_desc"
+                app:cardBrandIconGravity="end"
+                app:fieldName="data.attributes.pan"
+                app:imeOptions="actionNext"
+                app:numberDivider=" "
+                app:text="4111111111111111" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvExpiryHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_small"
+            android:layout_marginEnd="@dimen/margin_padding_material_small"
+            android:fontFamily="sans-serif-medium"
+            android:text="Expiry"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineHalf"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vgsTilCardNumber"
+            tools:ignore="HardcodedText" />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTilExpiry"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            android:layout_marginEnd="@dimen/margin_padding_material_small"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineHalf"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mtvExpiryHint">
+
+            <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+                android:id="@+id/vgsTiedExpiry"
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:datePattern="MM/yy"
+                app:datePickerModes="input"
+                app:fieldName="data.attributes.expiry"
+                app:imeOptions="actionNext"
+                app:inputType="date"
+                app:text="01/30" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mbProceed"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Proceed"
+            app:layout_constraintBottom_toBottomOf="@+id/vgsTilExpiry"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/vgsTilExpiry"
+            app:layout_constraintTop_toTopOf="@+id/vgsTilExpiry"
+            tools:ignore="HardcodedText" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            app:cardBackgroundColor="@color/blackPearl"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vgsTilExpiry">
+
+            <include layout="@layout/code_example_layout" />
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
