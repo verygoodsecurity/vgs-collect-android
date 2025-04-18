@@ -27,6 +27,7 @@ import com.verygoodsecurity.vgscollect.core.api.isIpAllowed
 import com.verygoodsecurity.vgscollect.core.api.isURLValid
 import com.verygoodsecurity.vgscollect.core.api.isValidIp
 import com.verygoodsecurity.vgscollect.core.api.isValidPort
+import com.verygoodsecurity.vgscollect.core.api.setupCmpUrl
 import com.verygoodsecurity.vgscollect.core.api.setupLocalhostURL
 import com.verygoodsecurity.vgscollect.core.api.setupURL
 import com.verygoodsecurity.vgscollect.core.api.toHost
@@ -109,7 +110,12 @@ class VGSCollect {
     private var isSatelliteMode: Boolean = false
 
     private constructor(
-        context: Context, id: String, environment: String, url: String?, port: Int?
+        context: Context,
+        id: String,
+        environment: String,
+        url: String?,
+        port: Int?,
+        isCMP: Boolean
     ) {
         this.context = context
         this.vaultId = id
@@ -130,7 +136,7 @@ class VGSCollect {
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
-        this.baseURL = generateBaseUrl(id, environment, url, port)
+        this.baseURL = generateBaseUrl(id, environment, url, port, isCMP)
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
     }
@@ -144,7 +150,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: String
-    ) : this(context, id, environment, null, null)
+    ) : this(context, id, environment, null, null, false)
 
     constructor(
         /** Activity context */
@@ -155,7 +161,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: Environment = Environment.SANDBOX
-    ) : this(context, id, environment.rawValue, null, null)
+    ) : this(context, id, environment.rawValue, null, null, false)
 
     constructor(
         /** Activity context */
@@ -169,7 +175,7 @@ class VGSCollect {
 
         /** Region identifier */
         suffix: String
-    ) : this(context, id, environmentType concatWithDash suffix, null, null)
+    ) : this(context, id, environmentType concatWithDash suffix, null, null, false)
 
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSCollect receive response from Server.
@@ -732,9 +738,17 @@ class VGSCollect {
 
     private var hasCustomHostname = false
 
-    private fun generateBaseUrl(id: String, environment: String, url: String?, port: Int?): String {
+    private fun generateBaseUrl(
+        id: String,
+        environment: String,
+        url: String?,
+        port: Int?,
+        isCMP: Boolean
+    ): String {
 
-        return "https://sandbox.vgsapi.com"
+        if (isCMP) {
+            return setupCmpUrl(environment)
+        }
 
         fun printPortDenied() {
             if (port.isValidPort()) {
@@ -801,9 +815,17 @@ class VGSCollect {
 
         fun initCMP(
             context: Context,
-            environment: Environment
+            environment: Environment,
+            suffix: String? = null,
         ): VGSCollect {
-            return VGSCollect(context = context, environment = environment, id = "test")
+            return VGSCollect(
+                context = context,
+                environment = suffix?.let { environment.rawValue concatWithDash it }
+                    ?: environment.rawValue,
+                id = "",
+                url = null,
+                port = null,
+                isCMP = true)
         }
     }
 
@@ -864,6 +886,6 @@ class VGSCollect {
          * Creates an VGSCollect with the arguments supplied to this
          * builder.
          */
-        fun create() = VGSCollect(context, id, environment, host, port)
+        fun create() = VGSCollect(context, id, environment, host, port, false)
     }
 }
