@@ -326,6 +326,10 @@ class VGSCollect {
     }
 
     fun createCard(accessToken: String) {
+        if (accessToken.isEmpty()) {
+            VGSCollectLogger.warn(message = "Can't create card, access token is empty!")
+            return
+        }
         submitAsyncRequest(
             VGSRequest.VGSRequestBuilder()
                 .setMethod(HTTPMethod.POST)
