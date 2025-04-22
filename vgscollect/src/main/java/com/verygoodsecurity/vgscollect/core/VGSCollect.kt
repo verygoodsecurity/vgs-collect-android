@@ -335,6 +335,7 @@ class VGSCollect {
                 .setMethod(HTTPMethod.POST)
                 .setPath("/cards")
                 .setCustomHeader(mapOf<String, String>("Authorization" to "Bearer $accessToken "))
+                .setFormat(VGSHttpBodyFormat.API_JSON)
                 .build()
         )
     }

@@ -42,6 +42,7 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
 
     override fun onResponse(response: VGSResponse?) {
         println(response)
+        updateCodeExample(response?.body)
     }
 
     private fun initViews() {
@@ -54,6 +55,7 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
 
     private fun initProceedView() {
         binding.mbProceed.setOnClickListener {
+            collectCMP.setCustomHeaders(mapOf("Content-type" to "application/vnd.api+json"))
             collectCMP.createCard(accessToken = "")
         }
     }
