@@ -10,9 +10,19 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/margin_padding_material_medium"
-        android:paddingTop="@dimen/margin_padding_material_medium"
-        android:paddingEnd="@dimen/margin_padding_material_medium">
+        android:animateLayoutChanges="true">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:minHeight="0dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineHalf"
@@ -21,17 +31,32 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_padding_material_medium" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_padding_material_medium" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/mtvCardNumberHint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_medium"
             android:fontFamily="sans-serif-medium"
             android:text="PAN"
             android:textAppearance="?attr/textAppearanceCaption"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar"
             tools:ignore="HardcodedText" />
 
         <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
@@ -43,8 +68,8 @@
             app:boxBackgroundColor="@color/fiord_20"
             app:boxStrokeColor="@color/invisible_input_border"
             app:hintEnabled="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@+id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@+id/mtvCardNumberHint">
 
             <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
@@ -71,7 +96,7 @@
             android:textAppearance="?attr/textAppearanceCaption"
             app:layout_constraintEnd_toStartOf="@+id/guidelineHalf"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@+id/vgsTilCardNumber"
             tools:ignore="HardcodedText" />
 
@@ -86,7 +111,7 @@
             app:boxStrokeColor="@color/invisible_input_border"
             app:hintEnabled="false"
             app:layout_constraintEnd_toStartOf="@+id/guidelineHalf"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@+id/mtvExpiryHint">
 
             <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
@@ -114,7 +139,7 @@
             android:insetBottom="0dp"
             android:text="Proceed"
             app:layout_constraintBottom_toBottomOf="@+id/vgsTilExpiry"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
             app:layout_constraintStart_toEndOf="@+id/vgsTilExpiry"
             app:layout_constraintTop_toTopOf="@+id/vgsTilExpiry"
             tools:ignore="HardcodedText" />
@@ -125,8 +150,8 @@
             android:layout_marginTop="32dp"
             app:cardBackgroundColor="@color/blackPearl"
             app:cardElevation="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@+id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@+id/vgsTilExpiry">
 
             <include layout="@layout/code_example_layout" />
