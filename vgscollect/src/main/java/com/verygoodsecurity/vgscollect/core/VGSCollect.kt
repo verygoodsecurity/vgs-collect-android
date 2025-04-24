@@ -79,7 +79,8 @@ private const val DEPENDENCY_MANAGER = "maven"
  */
 class VGSCollect {
 
-    private val vaultId: String
+    private val vaultId: String?
+    private val accountId: String?
     private val environment: String
     private val formId: String = UUID.randomUUID().toString()
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
@@ -109,16 +110,17 @@ class VGSCollect {
     private var cname: String? = null
     private var isSatelliteMode: Boolean = false
 
-    private constructor(
+    internal constructor(
         context: Context,
-        id: String,
+        vaultId: String?,
+        accountId: String?,
         environment: String,
         url: String?,
         port: Int?,
-        isCMP: Boolean
     ) {
         this.context = context
-        this.vaultId = id
+        this.vaultId = vaultId
+        this.accountId = accountId
         this.environment = environment
         this.analyticsManager =
             VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
@@ -126,7 +128,7 @@ class VGSCollect {
 
             override fun capture(event: VGSAnalyticsEvent) {
                 analyticsManager.capture(
-                    vault = vaultId,
+                    vault = this@VGSCollect.vaultId ?: TODO("Implement"),
                     environment = environment,
                     formId = formId,
                     event = event
@@ -136,8 +138,12 @@ class VGSCollect {
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
-        this.baseURL = generateBaseUrl(id, environment, url, port, isCMP)
-        cname?.let { configureHostname(it, id) }
+        this.baseURL = if (!accountId.isNullOrEmpty()) {
+            generateBaseUrl(accountId, environment)
+        } else {
+            generateBaseUrl(vaultId ?: "", environment, url, port)
+        }
+        configureHostname(cname, vaultId)
         updateAgentHeader()
     }
 
@@ -150,7 +156,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: String
-    ) : this(context, id, environment, null, null, false)
+    ) : this(context, id, null, environment, null, null)
 
     constructor(
         /** Activity context */
@@ -161,7 +167,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: Environment = Environment.SANDBOX
-    ) : this(context, id, environment.rawValue, null, null, false)
+    ) : this(context, id, null, environment.rawValue, null, null)
 
     constructor(
         /** Activity context */
@@ -175,7 +181,7 @@ class VGSCollect {
 
         /** Region identifier */
         suffix: String
-    ) : this(context, id, environmentType concatWithDash suffix, null, null, false)
+    ) : this(context, id, null, environmentType concatWithDash suffix, null, null)
 
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSCollect receive response from Server.
@@ -743,18 +749,16 @@ class VGSCollect {
 
     private var hasCustomHostname = false
 
+    private fun generateBaseUrl(accountId: String, environment: String): String {
+        return accountId.setupCmpUrl(environment)
+    }
+
     private fun generateBaseUrl(
-        id: String,
+        vaultId: String,
         environment: String,
         url: String?,
         port: Int?,
-        isCMP: Boolean
     ): String {
-
-        if (isCMP) {
-            return setupCmpUrl(environment)
-        }
-
         fun printPortDenied() {
             if (port.isValidPort()) {
                 VGSCollectLogger.warn(message = context.getString(R.string.error_custom_port_is_not_allowed))
@@ -766,22 +770,22 @@ class VGSCollect {
             if (host.isValidIp()) {
                 if (!host.isIpAllowed()) {
                     VGSCollectLogger.warn(message = context.getString(R.string.error_custom_ip_is_not_allowed))
-                    return id.setupURL(environment)
+                    return vaultId.setupURL(environment)
                 }
                 if (!environment.isSandbox()) {
                     VGSCollectLogger.warn(message = context.getString(R.string.error_env_incorrect))
-                    return id.setupURL(environment)
+                    return vaultId.setupURL(environment)
                 }
                 isSatelliteMode = true
                 return host.setupLocalhostURL(port)
             } else {
                 printPortDenied()
                 cname = host
-                return id.setupURL(environment)
+                return vaultId.setupURL(environment)
             }
         } else {
             printPortDenied()
-            return id.setupURL(environment)
+            return vaultId.setupURL(environment)
         }
     }
 
@@ -791,7 +795,10 @@ class VGSCollect {
         }
     }
 
-    private fun configureHostname(host: String, tnt: String) {
+    private fun configureHostname(host: String?, tnt: String?) {
+        if (host.isNullOrEmpty() || tnt.isNullOrEmpty()) {
+            return
+        }
         if (host.isNotBlank() && baseURL.isNotEmpty()) {
             val r = VGSRequest.VGSRequestBuilder().setMethod(HTTPMethod.GET)
                 .setFormat(VGSHttpBodyFormat.PLAIN_TEXT).build()
@@ -813,24 +820,6 @@ class VGSCollect {
 
                 hostnameValidationEvent(hasCustomHostname, host)
             }
-        }
-    }
-
-    companion object {
-
-        fun initCMP(
-            context: Context,
-            environment: Environment,
-            suffix: String? = null,
-        ): VGSCollect {
-            return VGSCollect(
-                context = context,
-                environment = suffix?.let { environment.rawValue concatWithDash it }
-                    ?: environment.rawValue,
-                id = "",
-                url = null,
-                port = null,
-                isCMP = true)
         }
     }
 
@@ -891,6 +880,6 @@ class VGSCollect {
          * Creates an VGSCollect with the arguments supplied to this
          * builder.
          */
-        fun create() = VGSCollect(context, id, environment, host, port, false)
+        fun create() = VGSCollect(context, id, null, environment, host, port)
     }
 }

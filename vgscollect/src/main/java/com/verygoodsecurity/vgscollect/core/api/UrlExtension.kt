@@ -23,7 +23,7 @@ internal fun String.setupLocalhostURL(port: Int?): String {
         .toString()
 }
 
-internal fun setupCmpUrl(env: String): String {
+internal fun String.setupCmpUrl(env: String): String {
     val scheme = "https://"
     val domain = "vgsapi.com"
     val divider = "."
