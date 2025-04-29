@@ -60,6 +60,9 @@ fun BaseCollect(
                 )
                 input.setDivider(' ')
                 input.setCardBrandIconGravity(Gravity.END)
+                input.isFocusable = true
+                input.isFocusableInTouchMode = true
+                input.requestFocus()
             }
         )
 
