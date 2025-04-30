@@ -100,11 +100,18 @@ class VGSCollect {
 
     private var cname: String? = null
 
-    private constructor(context: Context, id: String, environment: String, url: String?) {
+    private constructor(
+        context: Context,
+        id: String,
+        environment: String,
+        suffix: String?,
+        url: String?
+    ) {
         this.context = context
         this.vaultId = id
-        this.environment = environment
-        this.analyticsManager = VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
+        this.environment = suffix?.let { environment concatWithDash it } ?: environment
+        this.analyticsManager =
+            VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
         this.analyticsHandler = object : AnalyticsHandler {
 
             override fun capture(event: VGSAnalyticsEvent) {
@@ -133,7 +140,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: String
-    ) : this(context, id, environment, null)
+    ) : this(context, id, environment, null, null)
 
     constructor(
         /** Activity context */
@@ -144,7 +151,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: Environment = Environment.SANDBOX
-    ) : this(context, id, environment.rawValue, null)
+    ) : this(context, id, environment.rawValue, null, null)
 
     constructor(
         /** Activity context */
@@ -158,7 +165,7 @@ class VGSCollect {
 
         /** Region identifier */
         suffix: String
-    ) : this(context, id, environmentType concatWithDash suffix, null)
+    ) : this(context, id, environmentType, suffix, null)
 
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSCollect receive response from Server.
@@ -797,6 +804,6 @@ class VGSCollect {
          * Creates an VGSCollect with the arguments supplied to this
          * builder.
          */
-        fun create() = VGSCollect(context, id, environment, cname)
+        fun create() = VGSCollect(context, id, environment, null ,cname)
     }
 }
