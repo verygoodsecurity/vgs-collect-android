@@ -28,7 +28,6 @@ data class VGSRequest internal constructor(
     override val fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy,
     override val requestTimeoutInterval: Long,
     override val routeId: String? = null,
-    override val requiresTokenization: Boolean = false
 ) : VGSBaseRequest() {
 
     /**

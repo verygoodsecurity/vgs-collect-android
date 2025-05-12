@@ -140,6 +140,7 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
                 this?.getString(StartActivity.KEY_BUNDLE_ENVIRONMENT) ?: ""
             )
             collect?.addOnResponseListeners(this@TokenizationActivity)
+            collect?.setCustomHeaders(mapOf<String, String>("Authorization" to "Bearer <TOKEN>"))
         }
     }
 
@@ -236,7 +237,7 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
 
     private fun tokenize() {
         setLoading(true)
-        collect?.tokenize()
+        collect?.createAliases()
     }
 
     private fun resetView() {
