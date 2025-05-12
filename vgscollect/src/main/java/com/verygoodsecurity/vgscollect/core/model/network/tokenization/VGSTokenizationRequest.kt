@@ -26,12 +26,10 @@ data class VGSTokenizationRequest internal constructor(
     override val fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy,
     override val requestTimeoutInterval: Long,
     override val routeId: String?,
-    override val requiresTokenization: Boolean = true
 ) : VGSBaseRequest() {
 
     /**
      * Creates a builder for a request that uses to send data to VGS server.
-     * dialog theme.
      */
     class VGSRequestBuilder {
         private var method: HTTPMethod = HTTPMethod.POST
@@ -83,11 +81,6 @@ data class VGSTokenizationRequest internal constructor(
          */
         fun setRequestTimeoutInterval(timeout: Long): VGSRequestBuilder {
             this.requestTimeoutInterval = timeout
-            return this
-        }
-
-        internal fun setFormat(format: VGSHttpBodyFormat): VGSRequestBuilder {
-            this.format = format
             return this
         }
 

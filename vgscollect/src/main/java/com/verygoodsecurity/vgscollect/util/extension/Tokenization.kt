@@ -9,6 +9,7 @@ import com.verygoodsecurity.vgscollect.view.core.serializers.VGSDateRangeSeparat
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 
 internal const val TOKENIZATION_PATH = "/tokens"
+internal const val ALIASES_PATH = "/aliases"
 internal const val DATA_KEY = "data"
 internal const val TOKENIZATION_REQUIRED_KEY = "is_required_tokenization"
 internal const val VALUE_KEY = "value"

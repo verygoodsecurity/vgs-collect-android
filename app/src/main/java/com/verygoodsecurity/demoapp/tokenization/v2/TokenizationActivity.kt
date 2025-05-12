@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.tokenization
+package com.verygoodsecurity.demoapp.tokenization.v2
 
 import android.animation.LayoutTransition
 import android.content.Intent
@@ -136,9 +136,10 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
         with(intent?.extras) {
             collect = VGSCollect(
                 this@TokenizationActivity,
-                this?.getString(StartActivity.KEY_BUNDLE_VAULT_ID) ?: "",
-                this?.getString(StartActivity.KEY_BUNDLE_ENVIRONMENT) ?: ""
+                this?.getString(StartActivity.Companion.KEY_BUNDLE_VAULT_ID) ?: "",
+                this?.getString(StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT) ?: ""
             )
+            collect?.setCustomHeaders(mapOf("Authorization" to "Bearer <TOKEN>"))
             collect?.addOnResponseListeners(this@TokenizationActivity)
         }
     }
@@ -236,7 +237,7 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
 
     private fun tokenize() {
         setLoading(true)
-        collect?.tokenize()
+        collect?.createAliases()
     }
 
     private fun resetView() {
@@ -254,7 +255,7 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
     }
 
     private fun openSettings() {
-        TokenizationSettingsActivity.start(this)
+        TokenizationSettingsActivity.Companion.start(this)
     }
 
     private fun runIfInputsValid(action: () -> Unit) {

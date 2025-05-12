@@ -12,7 +12,8 @@ import com.verygoodsecurity.demoapp.date_range_activity.DateRangeActivity
 import com.verygoodsecurity.demoapp.collect_fragment.VGSCollectFragmentActivity
 import com.verygoodsecurity.demoapp.google_pay.GooglePayActivity
 import com.verygoodsecurity.demoapp.payopt.PaymentOptimizationActivity
-import com.verygoodsecurity.demoapp.tokenization.TokenizationActivity
+import com.verygoodsecurity.demoapp.tokenization.v1.TokenizationActivity as TokenizationActivityV1
+import com.verygoodsecurity.demoapp.tokenization.v2.TokenizationActivity as TokenizationActivityV2
 import com.verygoodsecurity.demoapp.collect_viewpager.ViewPagerActivity
 
 class StartActivity : AppCompatActivity(R.layout.activity_start) {
@@ -33,7 +34,10 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
             startActivity(PaymentOptimizationActivity::class.java)
         }
         binding.llTokenizationFlow.setOnClickListener {
-            startActivity(TokenizationActivity::class.java)
+            startActivity(TokenizationActivityV1::class.java)
+        }
+        binding.llTokenizationV2Flow.setOnClickListener {
+            startActivity(TokenizationActivityV2::class.java)
         }
         binding.llGooglePayActivityFlow.setOnClickListener {
             startActivity(GooglePayActivity::class.java)

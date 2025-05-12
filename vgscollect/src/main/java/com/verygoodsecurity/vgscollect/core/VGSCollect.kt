@@ -32,6 +32,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.network.toVGSResponse
+import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSCreateAliasesRequest
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
@@ -316,6 +317,22 @@ class VGSCollect {
     }
 
     /**
+     * The method sends data on VGS Server for create aliases.
+     */
+    fun createAliases() {
+        createAliases(VGSCreateAliasesRequest.VGSRequestBuilder().build())
+    }
+
+    /**
+     * The method sends data on VGS Server for create aliases.
+     *
+     * @param request A create aliases request data.
+     */
+    fun createAliases(request: VGSCreateAliasesRequest) {
+        submitAsyncRequest(request)
+    }
+
+    /**
      * This suspend method executes and send data on VGS Server on IO dispatcher.
      *
      * @param path path for a request
@@ -366,7 +383,7 @@ class VGSCollect {
             client.enqueue(request.toNetworkRequest(baseURL, it)) { r ->
                 mainHandler.post {
                     notifyAllListeners(
-                        r.toVGSResponse(), request.requiresTokenization
+                        r.toVGSResponse(), request.isTokenization
                     )
                 }
             }
@@ -374,25 +391,26 @@ class VGSCollect {
     }
 
     private fun collectUserData(
-        request: VGSBaseRequest, submitRequest: (Map<String, Any>) -> Unit
+        request: VGSBaseRequest,
+        submitRequest: (Map<String, Any>) -> Unit
     ) {
         when {
-            !request.fieldsIgnore && !validateFields(request.requiresTokenization) -> return
-            !request.fileIgnore && !validateFiles(request.requiresTokenization) -> return
+            !request.fieldsIgnore && !validateFields(request.isTokenization) -> return
+            !request.fileIgnore && !validateFiles(request.isTokenization) -> return
             !baseURL.isURLValid() -> notifyAllListeners(
-                VGSError.URL_NOT_VALID.toVGSResponse(), request.requiresTokenization
+                VGSError.URL_NOT_VALID.toVGSResponse(), request.isTokenization
             )
 
             !context.hasInternetPermission() -> notifyAllListeners(
-                VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse(), request.requiresTokenization
+                VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse(), request.isTokenization
             )
 
             !context.hasAccessNetworkStatePermission() -> notifyAllListeners(
-                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(), request.requiresTokenization
+                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(), request.isTokenization
             )
 
             !context.isConnectionAvailable() -> notifyAllListeners(
-                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(), request.requiresTokenization
+                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(), request.isTokenization
             )
 
             else -> {
@@ -400,7 +418,7 @@ class VGSCollect {
 
                 requestEvent(
                     true,
-                    request.requiresTokenization,
+                    request.isTokenization,
                     !request.fileIgnore && storage.getFileStorage().getItems().isNotEmpty(),
                     !request.fieldsIgnore && storage.getFieldsStorage().getItems().isNotEmpty(),
                     request.customHeader.isNotEmpty(),
@@ -414,7 +432,7 @@ class VGSCollect {
     }
 
     private fun prepareDataToSubmit(request: VGSBaseRequest): Map<String, Any> {
-        return request.takeIf { it.requiresTokenization }?.run { prepareDataForTokenization() }
+        return request.takeIf { it.isTokenization }?.run { prepareDataForTokenization() }
             ?: prepareDataForCollecting(request as VGSRequest)
     }
 

@@ -42,8 +42,12 @@
             android:label="Date Range" />
 
         <activity
-            android:name=".tokenization.TokenizationActivity"
+            android:name=".tokenization.v1.TokenizationActivity"
             android:label="Tokenization" />
+
+        <activity
+            android:name=".tokenization.v2.TokenizationActivity"
+            android:label="Create aliases(Tokenization v2)" />
 
         <activity
             android:name=".tokenization.settings.TokenizationSettingsActivity"
