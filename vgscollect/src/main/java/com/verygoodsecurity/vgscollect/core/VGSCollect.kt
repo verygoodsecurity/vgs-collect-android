@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import androidx.annotation.IntRange
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.sdk.analytics.VGSSharedAnalyticsManager
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsEvent
@@ -16,18 +15,12 @@ import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
-import com.verygoodsecurity.vgscollect.core.api.PORT_MAX_VALUE
-import com.verygoodsecurity.vgscollect.core.api.PORT_MIN_VALUE
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.generateAgentHeader
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isCodeSuccessful
 import com.verygoodsecurity.vgscollect.core.api.equalsUrl
-import com.verygoodsecurity.vgscollect.core.api.isIpAllowed
 import com.verygoodsecurity.vgscollect.core.api.isURLValid
-import com.verygoodsecurity.vgscollect.core.api.isValidIp
-import com.verygoodsecurity.vgscollect.core.api.isValidPort
-import com.verygoodsecurity.vgscollect.core.api.setupLocalhostURL
 import com.verygoodsecurity.vgscollect.core.api.setupURL
 import com.verygoodsecurity.vgscollect.core.api.toHost
 import com.verygoodsecurity.vgscollect.core.api.toHostnameValidationUrl
@@ -39,6 +32,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.network.toVGSResponse
+import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSCreateAliasesRequest
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
@@ -106,15 +100,19 @@ class VGSCollect {
     private val context: Context
 
     private var cname: String? = null
-    private var isSatelliteMode: Boolean = false
 
     private constructor(
-        context: Context, id: String, environment: String, url: String?, port: Int?
+        context: Context,
+        id: String,
+        environment: String,
+        suffix: String?,
+        url: String?
     ) {
         this.context = context
         this.vaultId = id
-        this.environment = environment
-        this.analyticsManager = VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
+        this.environment = suffix?.let { environment concatWithDash it } ?: environment
+        this.analyticsManager =
+            VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
         this.analyticsHandler = object : AnalyticsHandler {
 
             override fun capture(event: VGSAnalyticsEvent) {
@@ -129,7 +127,7 @@ class VGSCollect {
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
-        this.baseURL = generateBaseUrl(id, environment, url, port)
+        this.baseURL = generateBaseUrl(id, environment, url)
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
     }
@@ -168,7 +166,7 @@ class VGSCollect {
 
         /** Region identifier */
         suffix: String
-    ) : this(context, id, environmentType concatWithDash suffix, null, null)
+    ) : this(context, id, environmentType, suffix, null)
 
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSCollect receive response from Server.
@@ -319,6 +317,22 @@ class VGSCollect {
     }
 
     /**
+     * The method sends data on VGS Server for create aliases.
+     */
+    fun createAliases() {
+        createAliases(VGSCreateAliasesRequest.VGSRequestBuilder().build())
+    }
+
+    /**
+     * The method sends data on VGS Server for create aliases.
+     *
+     * @param request A create aliases request data.
+     */
+    fun createAliases(request: VGSCreateAliasesRequest) {
+        submitAsyncRequest(request)
+    }
+
+    /**
      * This suspend method executes and send data on VGS Server on IO dispatcher.
      *
      * @param path path for a request
@@ -369,7 +383,7 @@ class VGSCollect {
             client.enqueue(request.toNetworkRequest(baseURL, it)) { r ->
                 mainHandler.post {
                     notifyAllListeners(
-                        r.toVGSResponse(), request.requiresTokenization
+                        r.toVGSResponse(), request.isTokenization
                     )
                 }
             }
@@ -377,25 +391,26 @@ class VGSCollect {
     }
 
     private fun collectUserData(
-        request: VGSBaseRequest, submitRequest: (Map<String, Any>) -> Unit
+        request: VGSBaseRequest,
+        submitRequest: (Map<String, Any>) -> Unit
     ) {
         when {
-            !request.fieldsIgnore && !validateFields(request.requiresTokenization) -> return
-            !request.fileIgnore && !validateFiles(request.requiresTokenization) -> return
+            !request.fieldsIgnore && !validateFields(request.isTokenization) -> return
+            !request.fileIgnore && !validateFiles(request.isTokenization) -> return
             !baseURL.isURLValid() -> notifyAllListeners(
-                VGSError.URL_NOT_VALID.toVGSResponse(), request.requiresTokenization
+                VGSError.URL_NOT_VALID.toVGSResponse(), request.isTokenization
             )
 
             !context.hasInternetPermission() -> notifyAllListeners(
-                VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse(), request.requiresTokenization
+                VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse(), request.isTokenization
             )
 
             !context.hasAccessNetworkStatePermission() -> notifyAllListeners(
-                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(), request.requiresTokenization
+                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(), request.isTokenization
             )
 
             !context.isConnectionAvailable() -> notifyAllListeners(
-                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(), request.requiresTokenization
+                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(), request.isTokenization
             )
 
             else -> {
@@ -403,7 +418,7 @@ class VGSCollect {
 
                 requestEvent(
                     true,
-                    request.requiresTokenization,
+                    request.isTokenization,
                     !request.fileIgnore && storage.getFileStorage().getItems().isNotEmpty(),
                     !request.fieldsIgnore && storage.getFieldsStorage().getItems().isNotEmpty(),
                     request.customHeader.isNotEmpty(),
@@ -417,7 +432,7 @@ class VGSCollect {
     }
 
     private fun prepareDataToSubmit(request: VGSBaseRequest): Map<String, Any> {
-        return request.takeIf { it.requiresTokenization }?.run { prepareDataForTokenization() }
+        return request.takeIf { it.isTokenization }?.run { prepareDataForTokenization() }
             ?: prepareDataForCollecting(request as VGSRequest)
     }
 
@@ -721,34 +736,12 @@ class VGSCollect {
 
     private var hasCustomHostname = false
 
-    private fun generateBaseUrl(id: String, environment: String, url: String?, port: Int?): String {
-
-        fun printPortDenied() {
-            if (port.isValidPort()) {
-                VGSCollectLogger.warn(message = context.getString(R.string.error_custom_port_is_not_allowed))
-            }
-        }
-
+    private fun generateBaseUrl(id: String, environment: String, url: String?): String {
         if (!url.isNullOrBlank() && url.isURLValid()) {
             val host = getHost(url)
-            if (host.isValidIp()) {
-                if (!host.isIpAllowed()) {
-                    VGSCollectLogger.warn(message = context.getString(R.string.error_custom_ip_is_not_allowed))
-                    return id.setupURL(environment)
-                }
-                if (!environment.isSandbox()) {
-                    VGSCollectLogger.warn(message = context.getString(R.string.error_env_incorrect))
-                    return id.setupURL(environment)
-                }
-                isSatelliteMode = true
-                return host.setupLocalhostURL(port)
-            } else {
-                printPortDenied()
-                cname = host
-                return id.setupURL(environment)
-            }
+            cname = host
+            return id.setupURL(environment)
         } else {
-            printPortDenied()
             return id.setupURL(environment)
         }
     }
@@ -794,8 +787,7 @@ class VGSCollect {
     class Builder(private val context: Context, private val id: String) {
 
         private var environment: String = Environment.SANDBOX.rawValue
-        private var host: String? = null
-        private var port: Int? = null
+        private var cname: String? = null
 
         /** Specify Environment for the VGSCollect instance. */
         fun setEnvironment(env: Environment, region: String = ""): Builder = this.apply {
@@ -815,7 +807,6 @@ class VGSCollect {
 
         /**
          * Sets the VGSCollect instance to use the custom hostname.
-         * Also, the localhost IP can be used for VGS-Satellite for local testing.
          *
          * @param cname where VGSCollect will send requests.
          */
@@ -824,23 +815,13 @@ class VGSCollect {
                 VGSCollectLogger.warn(message = context.getString(R.string.error_custom_host_wrong_short))
                 return@apply
             }
-            this.host = cname
+            this.cname = cname
         }
-
-        /**
-         * Sets the VGSCollect instance to use the custom hostname port.
-         * Port can be used only with localhost with VGS-Satellite, otherwise, it will be ignored.
-         *
-         * @param port Integer value from 1 to 65353.
-         */
-        fun setPort(
-            @IntRange(from = PORT_MIN_VALUE, to = PORT_MAX_VALUE) port: Int
-        ) = this.apply { this.port = port }
 
         /**
          * Creates an VGSCollect with the arguments supplied to this
          * builder.
          */
-        fun create() = VGSCollect(context, id, environment, host, port)
+        fun create() = VGSCollect(context, id, environment, null ,cname)
     }
 }

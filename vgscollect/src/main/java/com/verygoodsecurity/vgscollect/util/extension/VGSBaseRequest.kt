@@ -7,20 +7,6 @@ import com.verygoodsecurity.vgscollect.core.model.state.ArrayMergePolicy
 
 internal const val DEFAULT_CONNECTION_TIME_OUT = 60_000L
 
-internal fun VGSBaseRequest.toAnalyticRequest(url: String): NetworkRequest {
-    return NetworkRequest(
-        method,
-        url concatWithSlash path,
-        customHeader,
-        customData.toJSON().toString().toBase64(),
-        fieldsIgnore,
-        fileIgnore,
-        format,
-        requestTimeoutInterval,
-        false
-    )
-}
-
 internal fun VGSBaseRequest.toNetworkRequest(
     host: String,
     requestData: Map<String, Any>? = null,
@@ -48,7 +34,7 @@ internal fun VGSBaseRequest.toNetworkRequest(
         fileIgnore,
         format,
         requestTimeoutInterval,
-        requiresTokenization
+        isTokenization
     )
 }
 

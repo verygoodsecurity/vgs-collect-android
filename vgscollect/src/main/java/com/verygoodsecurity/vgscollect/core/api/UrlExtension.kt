@@ -7,23 +7,6 @@ import java.net.URL
 import java.util.regex.Pattern
 
 /** @suppress */
-internal fun String.setupLocalhostURL(port: Int?): String {
-    val divider = ":"
-    val scheme = "http://"
-
-    val prt = if (!port.isValidPort()) {
-        VGSCollectLogger.warn(message = "Port is not specified")
-        ""
-    } else {
-        divider + port
-    }
-    return StringBuilder(scheme)
-        .append(this)
-        .append(prt)
-        .toString()
-}
-
-/** @suppress */
 internal fun String.setupURL(rawValue: String): String {
     return when {
         this.isEmpty() || !isTennantIdValid() -> {
@@ -71,19 +54,6 @@ internal fun String.isValidIp(): Boolean {
     }
 }
 
-private const val AVD_LOCALHOST_ALIAS = "10.0.2.2"
-private const val GENYMOTION_LOCALHOST_ALIAS = "10.0.3.2"
-private const val PRIVATE_NETWORK_IP_PREFIX = "192.168."
-
-internal fun String.isIpAllowed() = this == AVD_LOCALHOST_ALIAS ||
-        this == GENYMOTION_LOCALHOST_ALIAS ||
-        this.startsWith(PRIVATE_NETWORK_IP_PREFIX)
-
-internal const val PORT_MIN_VALUE = 1L
-internal const val PORT_MAX_VALUE = 65353L
-
-internal fun Int?.isValidPort(): Boolean = this != null && this in PORT_MIN_VALUE..PORT_MAX_VALUE
-
 internal fun String.toHostnameValidationUrl(tnt: String): String {
     return String.format(
         "https://js.verygoodvault.com/collect-configs/%s__%s.txt",
@@ -107,7 +77,7 @@ internal fun String.toHttps(): String {
 internal fun String.toHost(): String {
     return try {
         URL(this.toHttps()).host
-    } catch (e: MalformedURLException) {
+    } catch (_: MalformedURLException) {
         ""
     }
 }

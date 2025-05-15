@@ -9,12 +9,12 @@ apply from: "$rootDir/gradle/utils.gradle"
 
 android {
     namespace 'com.verygoodsecurity.demoapp'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.verygoodsecurity.demoapp"
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode 1
         versionName "1.0"
 
