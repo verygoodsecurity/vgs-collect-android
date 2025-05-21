@@ -43,11 +43,9 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileSt
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
+import com.verygoodsecurity.vgscollect.util.NetworkInspector
 import com.verygoodsecurity.vgscollect.util.extension.DATA_KEY
 import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
-import com.verygoodsecurity.vgscollect.util.extension.hasAccessNetworkStatePermission
-import com.verygoodsecurity.vgscollect.util.extension.hasInternetPermission
-import com.verygoodsecurity.vgscollect.util.extension.isConnectionAvailable
 import com.verygoodsecurity.vgscollect.util.extension.prepareUserDataForCollecting
 import com.verygoodsecurity.vgscollect.util.extension.toAnalyticsMappingPolicy
 import com.verygoodsecurity.vgscollect.util.extension.toAnalyticsStatus
@@ -55,6 +53,7 @@ import com.verygoodsecurity.vgscollect.util.extension.toNetworkRequest
 import com.verygoodsecurity.vgscollect.util.extension.toTokenizationData
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
+import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.UUID
@@ -87,7 +86,7 @@ class VGSCollect {
     private val storageErrorListener: StorageErrorListener = object : StorageErrorListener {
         override fun onStorageError(error: VGSError) {
             error.toVGSResponse().also { r ->
-                notifyAllListeners(r, false)
+                notifyResponseListeners(r, false)
                 VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
                 requestEvent(isSuccess = false, requiresTokenization = false, code = r.errorCode)
             }
@@ -126,7 +125,7 @@ class VGSCollect {
         }
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
-        this.client = ApiClient.newHttpClient()
+        this.client = ApiClient.build(NetworkInspector(context))
         this.baseURL = generateBaseUrl(id, environment, url)
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
@@ -292,7 +291,7 @@ class VGSCollect {
         collectUserData(request) {
             response = client.execute(
                 request.toNetworkRequest(baseURL, it)
-            ).toVGSResponse(context)
+            ).toVGSResponse()
         }
 
         return response
@@ -378,11 +377,15 @@ class VGSCollect {
         submitAsyncRequest(request)
     }
 
+    fun asyncSubmit(request: VGSRequest, vararg state: BaseFieldState?) {
+        submitAsyncRequest(request)
+    }
+
     private fun submitAsyncRequest(request: VGSBaseRequest) {
         collectUserData(request) {
             client.enqueue(request.toNetworkRequest(baseURL, it)) { r ->
                 mainHandler.post {
-                    notifyAllListeners(
+                    notifyResponseListeners(
                         r.toVGSResponse(), request.isTokenization
                     )
                 }
@@ -395,24 +398,8 @@ class VGSCollect {
         submitRequest: (Map<String, Any>) -> Unit
     ) {
         when {
-            !request.fieldsIgnore && !validateFields(request.isTokenization) -> return
-            !request.fileIgnore && !validateFiles(request.isTokenization) -> return
-            !baseURL.isURLValid() -> notifyAllListeners(
-                VGSError.URL_NOT_VALID.toVGSResponse(), request.isTokenization
-            )
-
-            !context.hasInternetPermission() -> notifyAllListeners(
-                VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse(), request.isTokenization
-            )
-
-            !context.hasAccessNetworkStatePermission() -> notifyAllListeners(
-                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(), request.isTokenization
-            )
-
-            !context.isConnectionAvailable() -> notifyAllListeners(
-                VGSError.NO_NETWORK_CONNECTIONS.toVGSResponse(), request.isTokenization
-            )
-
+            !request.fieldsIgnore && !validateFields(request.requiresTokenization) -> return
+            !request.fileIgnore && !validateFiles(request.requiresTokenization) -> return
             else -> {
                 val data = prepareDataToSubmit(request)
 
@@ -436,9 +423,11 @@ class VGSCollect {
             ?: prepareDataForCollecting(request as VGSRequest)
     }
 
-    private fun notifyAllListeners(r: VGSResponse, requiresTokenization: Boolean) {
+    private fun notifyResponseListeners(r: VGSResponse, requiresTokenization: Boolean) {
         responseEvent(
-            r.code, requiresTokenization, (r as? VGSResponse.ErrorResponse)?.localizeMessage
+            code = r.code,
+            requiresTokenization = requiresTokenization,
+            message = (r as? VGSResponse.ErrorResponse)?.localizeMessage
         )
         responseListeners.forEach { it.onResponse(r) }
     }
@@ -448,7 +437,7 @@ class VGSCollect {
 
         storage.getAttachedFiles().forEach {
             if (it.size > storage.getFileSizeLimit()) {
-                notifyAllListeners(
+                notifyResponseListeners(
                     VGSError.FILE_SIZE_OVER_LIMIT.toVGSResponse(it.name), requiresTokenization
                 )
 
@@ -466,7 +455,7 @@ class VGSCollect {
         storage.getFieldsStorage().getItems().forEach {
             if (it.isValid.not()) {
                 VGSError.INPUT_DATA_NOT_VALID.toVGSResponse(it.fieldName).also { r ->
-                    notifyAllListeners(r, requiresTokenization)
+                    notifyResponseListeners(r, requiresTokenization)
                     VGSCollectLogger.warn(InputFieldView.TAG, r.localizeMessage)
                     requestEvent(false, requiresTokenization, code = r.errorCode)
                 }
@@ -478,12 +467,16 @@ class VGSCollect {
         return isValid
     }
 
-    private fun prepareDataForCollecting(request: VGSRequest) =
-        request.prepareUserDataForCollecting(
-            client.getTemporaryStorage().getCustomData(), storage.getData(
-                request.fieldNameMappingPolicy, request.fieldsIgnore, request.fileIgnore
+    private fun prepareDataForCollecting(request: VGSRequest): Map<String, Any> {
+        return request.prepareUserDataForCollecting(
+            client.getTemporaryStorage().getCustomData(),
+            storage.getData(
+                request.fieldNameMappingPolicy,
+                request.fieldsIgnore,
+                request.fileIgnore
             )
         )
+    }
 
     private fun prepareDataForTokenization(): MutableMap<String, Any> {
         val tokenizationItems = mutableListOf<Map<String, Any>>()

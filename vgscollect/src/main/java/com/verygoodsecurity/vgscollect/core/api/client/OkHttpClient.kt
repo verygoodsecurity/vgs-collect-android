@@ -1,33 +1,51 @@
 package com.verygoodsecurity.vgscollect.core.api.client
 
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
-import com.verygoodsecurity.vgscollect.core.api.*
-import com.verygoodsecurity.vgscollect.core.api.client.extension.*
+import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
+import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorage
+import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
+import com.verygoodsecurity.vgscollect.core.api.client.extension.bodyToString
+import com.verygoodsecurity.vgscollect.core.api.client.extension.logException
+import com.verygoodsecurity.vgscollect.core.api.client.extension.logRequest
+import com.verygoodsecurity.vgscollect.core.api.client.extension.logResponse
+import com.verygoodsecurity.vgscollect.core.api.client.extension.toRequestBodyOrNull
+import com.verygoodsecurity.vgscollect.core.api.isURLValid
+import com.verygoodsecurity.vgscollect.core.api.toContentType
+import com.verygoodsecurity.vgscollect.core.api.toHost
+import com.verygoodsecurity.vgscollect.core.model.network.NetworkException
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.toMutableMap
-import com.verygoodsecurity.vgscollect.util.extension.*
+import com.verygoodsecurity.vgscollect.util.NetworkInspector
+import com.verygoodsecurity.vgscollect.util.extension.ALIASES_KEY
+import com.verygoodsecurity.vgscollect.util.extension.ALIAS_KEY
 import com.verygoodsecurity.vgscollect.util.extension.DATA_KEY
+import com.verygoodsecurity.vgscollect.util.extension.FIELD_NAME_KEY
 import com.verygoodsecurity.vgscollect.util.extension.FORMAT_KEY
+import com.verygoodsecurity.vgscollect.util.extension.TOKENIZATION_REQUIRED_KEY
 import com.verygoodsecurity.vgscollect.util.extension.VALUE_KEY
-import okhttp3.*
+import com.verygoodsecurity.vgscollect.util.extension.toJSON
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Dispatcher
+import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
 import java.io.IOException
 import java.io.InterruptedIOException
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.TimeoutException
 
-internal class OkHttpClient(
-    isLogsVisible: Boolean,
-    private val tempStore: VgsApiTemporaryStorage
-) : ApiClient {
+internal class OkHttpClient(private val networkInspector: NetworkInspector) : ApiClient {
 
+    private val storage: VgsApiTemporaryStorage = VgsApiTemporaryStorageImpl()
     private val hostInterceptor = HostInterceptor()
     private val tokenizationInterceptor = TokenizationInterceptor()
 
@@ -35,9 +53,8 @@ internal class OkHttpClient(
         OkHttpClient().newBuilder()
             .addInterceptor(hostInterceptor)
             .addInterceptor(tokenizationInterceptor)
-            .dispatcher(Dispatcher(Executors.newSingleThreadExecutor())).also {
-                if (isLogsVisible) it.addInterceptor(HttpLoggingInterceptor())
-            }
+            .dispatcher(Dispatcher(Executors.newSingleThreadExecutor()))
+            .addInterceptor(HttpLoggingInterceptor())
             .build()
     }
 
@@ -46,10 +63,18 @@ internal class OkHttpClient(
     }
 
     override fun enqueue(request: NetworkRequest, callback: ((NetworkResponse) -> Unit)?) {
+        try {
+            checkConnection()
+        } catch (e: NetworkException) {
+            callback?.invoke(NetworkResponse(error = e.error))
+            return
+        }
+
         if (!request.url.isURLValid()) {
             callback?.invoke(NetworkResponse(error = VGSError.URL_NOT_VALID))
             return
         }
+
 
         tokenizationInterceptor.requiresTokenization = request.requiresTokenization
 
@@ -71,7 +96,7 @@ internal class OkHttpClient(
 
                     override fun onFailure(call: Call, e: IOException) {
                         logException(e)
-                        if (e is InterruptedIOException || e is TimeoutException) {
+                        if (e is InterruptedIOException) {
                             callback?.invoke(NetworkResponse(error = VGSError.TIME_OUT))
                         } else {
                             callback?.invoke(NetworkResponse(message = e.message))
@@ -96,6 +121,12 @@ internal class OkHttpClient(
     }
 
     override fun execute(request: NetworkRequest): NetworkResponse {
+        try {
+            checkConnection()
+        } catch (e: NetworkException) {
+            return NetworkResponse(error = e.error)
+        }
+
         if (!request.url.isURLValid()) {
             return NetworkResponse(error = VGSError.URL_NOT_VALID)
         }
@@ -110,9 +141,10 @@ internal class OkHttpClient(
 
         return try {
             val response = client.newBuilder()
-                .callTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+                .connectTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
                 .readTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
                 .writeTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
+                .callTimeout(request.requestTimeoutInterval, TimeUnit.MILLISECONDS)
                 .build()
                 .newCall(okHttpRequest).execute()
 
@@ -122,11 +154,9 @@ internal class OkHttpClient(
                 response.code,
                 response.message
             )
-        } catch (e: InterruptedIOException) {
+        } catch (_: InterruptedIOException) {
             NetworkResponse(error = VGSError.TIME_OUT)
-        } catch (e: TimeoutException) {
-            NetworkResponse(error = VGSError.TIME_OUT)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             NetworkResponse(message = e.message)
         }
     }
@@ -135,7 +165,16 @@ internal class OkHttpClient(
         client.dispatcher.cancelAll()
     }
 
-    override fun getTemporaryStorage(): VgsApiTemporaryStorage = tempStore
+    override fun getTemporaryStorage(): VgsApiTemporaryStorage = storage
+
+    @Throws(NetworkException::class)
+    private fun checkConnection() {
+        if (networkInspector.hasInternetPermission()) {
+            throw NetworkException(error = VGSError.NO_INTERNET_PERMISSIONS)
+        } else if (networkInspector.isConnectionAvailable()) {
+            throw NetworkException(error = VGSError.NO_NETWORK_CONNECTIONS)
+        }
+    }
 
     private fun buildRequest(
         url: String,
@@ -157,7 +196,7 @@ internal class OkHttpClient(
         headers?.forEach {
             this.addHeader(it.key, it.value)
         }
-        tempStore.getCustomHeaders().forEach {
+        storage.getCustomHeaders().forEach {
             this.addHeader(it.key, it.value)
         }
 
@@ -283,9 +322,8 @@ internal class OkHttpClient(
 
             val originalResponseData = unwrapResponseBody(response)
 
-            val responseBody = originalData.map {
-                val requiredTokenization: Boolean = (it[TOKENIZATION_REQUIRED_KEY] as? Boolean)
-                    ?: false
+            val responseBody = originalData.associate {
+                val requiredTokenization: Boolean = (it[TOKENIZATION_REQUIRED_KEY] as? Boolean) == true
                 val format = it[FORMAT_KEY].toString()
                 val originalValue = it[VALUE_KEY].toString()
                 val fieldName = it[FIELD_NAME_KEY].toString()
@@ -297,7 +335,7 @@ internal class OkHttpClient(
                 }
 
                 fieldName to alias
-            }.toMap()
+            }
                 .toJSON()
                 .toString()
                 .toResponseBody(response.body?.contentType())
