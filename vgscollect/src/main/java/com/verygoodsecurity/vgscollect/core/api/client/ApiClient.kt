@@ -3,9 +3,9 @@ package com.verygoodsecurity.vgscollect.core.api.client
 import com.verygoodsecurity.sdk.analytics.utils.VGSAnalyticsSession
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorage
-import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
+import com.verygoodsecurity.vgscollect.util.NetworkInspector
 
 internal interface ApiClient {
 
@@ -22,22 +22,18 @@ internal interface ApiClient {
     companion object {
 
         private const val AGENT = "vgs-client"
-        private const val TEMPORARY_AGENT_TEMPLATE =
+        private const val AGENT_TEMPLATE =
             "source=androidSDK&medium=vgs-collect&content=%s&vgsCollectSessionId=%s&tr=%s"
 
-        fun newHttpClient(
-            isLogsVisible: Boolean = true,
-            storage: VgsApiTemporaryStorage? = null
-        ): ApiClient {
-            return OkHttpClient(isLogsVisible, storage ?: VgsApiTemporaryStorageImpl())
-        }
+        fun build(inspector: NetworkInspector): ApiClient = OkHttpClient(inspector)
 
-        fun generateAgentHeader(isAnalyticsEnabled: Boolean): Pair<String, String> =
-            AGENT to String.format(
-                TEMPORARY_AGENT_TEMPLATE,
+        fun generateAgentHeader(isAnalyticsEnabled: Boolean): Pair<String, String> {
+            return AGENT to String.format(
+                AGENT_TEMPLATE,
                 BuildConfig.VERSION_NAME,
                 VGSAnalyticsSession.id,
                 if (isAnalyticsEnabled) "default" else "none"
             )
+        }
     }
 }
