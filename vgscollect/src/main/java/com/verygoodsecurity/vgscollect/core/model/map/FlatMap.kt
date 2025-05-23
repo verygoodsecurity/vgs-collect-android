@@ -5,7 +5,7 @@ import com.verygoodsecurity.vgscollect.util.extension.merge
 import com.verygoodsecurity.vgscollect.util.extension.putIfAbsentCompat
 
 @Suppress("UNCHECKED_CAST")
-class FlatMap constructor(private val allowParseArrays: Boolean = true) {
+class FlatMap(private val allowParseArrays: Boolean) {
 
     val structuredData: MutableMap<String, Any> by lazy { mutableMapOf() }
 
