@@ -263,6 +263,38 @@ class VGSCollect {
     }
 
     /**
+     * The method sends data on VGS Server for create aliases.
+     */
+    fun createAliases() {
+        createAliases(VGSCreateAliasesRequest.VGSRequestBuilder().build())
+    }
+
+    /**
+     * The method sends data on VGS Server for create aliases.
+     *
+     * @param request A create aliases request data.
+     */
+    fun createAliases(request: VGSCreateAliasesRequest) {
+        storage.getDataForTokenization()?.let { payload ->
+            requestEvent(
+                true,
+                true,
+                !request.fileIgnore && storage.fileStorage.getItems().isNotEmpty(),
+                !request.fieldsIgnore && storage.fieldsStorage.getItems().isNotEmpty(),
+                request.customHeader.isNotEmpty(),
+                payload.isNotEmpty(),
+                hasCustomHostname,
+                request.fieldNameMappingPolicy
+            )
+            client.enqueue(request.toNetworkRequest(baseURL, payload)) { response ->
+                mainHandler.post {
+                    notifyResponseListeners(response.toVGSResponse(), request.isTokenization)
+                }
+            }
+        }
+    }
+
+    /**
      * The method sends data on VGS Server for tokenization.
      */
     fun tokenize() {
@@ -288,7 +320,7 @@ class VGSCollect {
             )
             client.enqueue(request.toNetworkRequest(baseURL, payload)) { response ->
                 mainHandler.post {
-                    notifyResponseListeners(response.toVGSResponse(), request.requiresTokenization)
+                    notifyResponseListeners(response.toVGSResponse(), request.isTokenization)
                 }
             }
         }
@@ -332,22 +364,6 @@ class VGSCollect {
             )
             client.execute(request.toNetworkRequest(baseURL, payload)).toVGSResponse()
         } ?: VGSResponse.ErrorResponse()
-    }
-
-    /**
-     * The method sends data on VGS Server for create aliases.
-     */
-    fun createAliases() {
-        createAliases(VGSCreateAliasesRequest.VGSRequestBuilder().build())
-    }
-
-    /**
-     * The method sends data on VGS Server for create aliases.
-     *
-     * @param request A create aliases request data.
-     */
-    fun createAliases(request: VGSCreateAliasesRequest) {
-        submitAsyncRequest(request)
     }
 
     /**
@@ -409,11 +425,9 @@ class VGSCollect {
                 hasCustomHostname,
                 request.fieldNameMappingPolicy
             )
-            client.enqueue(request.toNetworkRequest(baseURL, payload)) { r ->
+            client.enqueue(request.toNetworkRequest(baseURL, payload)) { response ->
                 mainHandler.post {
-                    notifyResponseListeners(
-                        r.toVGSResponse(), request.requiresTokenization
-                    )
+                    notifyResponseListeners(response.toVGSResponse(), request.isTokenization)
                 }
             }
         }
