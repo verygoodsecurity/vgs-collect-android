@@ -4,6 +4,7 @@ import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsMappingPolicy
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsStatus
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
+import com.verygoodsecurity.vgscollect.core.model.state.ArrayMergePolicy
 
 internal fun VGSCollectFieldNameMappingPolicy.toAnalyticsMappingPolicy(): VGSAnalyticsMappingPolicy {
     return when (this) {
@@ -11,6 +12,15 @@ internal fun VGSCollectFieldNameMappingPolicy.toAnalyticsMappingPolicy(): VGSAna
         VGSCollectFieldNameMappingPolicy.NESTED_JSON -> VGSAnalyticsMappingPolicy.NESTED_JSON
         VGSCollectFieldNameMappingPolicy.NESTED_JSON_WITH_ARRAYS_OVERWRITE -> VGSAnalyticsMappingPolicy.NESTED_JSON_ARRAYS_OVERWRITE
         VGSCollectFieldNameMappingPolicy.NESTED_JSON_WITH_ARRAYS_MERGE -> VGSAnalyticsMappingPolicy.NESTED_JSON_ARRAYS_MERGE
+    }
+}
+
+internal fun VGSCollectFieldNameMappingPolicy.toArrayMergePolicy(): ArrayMergePolicy {
+    return when (this) {
+        VGSCollectFieldNameMappingPolicy.NESTED_JSON -> ArrayMergePolicy.OVERWRITE
+        VGSCollectFieldNameMappingPolicy.FLAT_JSON -> ArrayMergePolicy.OVERWRITE
+        VGSCollectFieldNameMappingPolicy.NESTED_JSON_WITH_ARRAYS_MERGE -> ArrayMergePolicy.MERGE
+        VGSCollectFieldNameMappingPolicy.NESTED_JSON_WITH_ARRAYS_OVERWRITE -> ArrayMergePolicy.OVERWRITE
     }
 }
 

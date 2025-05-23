@@ -18,7 +18,7 @@ import java.util.*
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 internal class TemporaryFileStorage(
     private val context: Context,
-    private val errorListener: StorageErrorListener? = null
+    private val listener: StorageListener? = null
 ) : VGSFileProvider, FileStorage {
 
     private var cipher: VgsFileCipher = Base64Cipher(context)
@@ -39,7 +39,7 @@ internal class TemporaryFileStorage(
         (context as? Activity)?.startActivityForResult(
             createFilePickerIntent(fieldName),
             REQUEST_CODE
-        ) ?: errorListener?.onStorageError(VGSError.NOT_ACTIVITY_CONTEXT)
+        ) ?: listener?.onStorageError(VGSError.NOT_ACTIVITY_CONTEXT)
     }
 
     override fun attachFile(activity: Activity, fieldName: String) {
@@ -69,14 +69,14 @@ internal class TemporaryFileStorage(
     override fun dispatch(map: HashMap<String, Any?>) {
         val fileInfo = cipher.retrieve(map)
         if (fileInfo == null) {
-            errorListener?.onStorageError(VGSError.FILE_NOT_FOUND)
+            listener?.onStorageError(VGSError.FILE_NOT_FOUND)
             return
         }
         try {
             encodedFile = cipher.getBase64(Uri.parse(fileInfo.second), encodedFileMaxSize)
             addItem(fileInfo.first, fileInfo.second)
-        } catch (e: NotEnoughMemoryException) {
-            errorListener?.onStorageError(VGSError.FILE_SIZE_OVER_LIMIT)
+        } catch (_: NotEnoughMemoryException) {
+            listener?.onStorageError(VGSError.FILE_SIZE_OVER_LIMIT)
         }
     }
     //endregion

@@ -6,6 +6,8 @@ import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPoli
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSCreateAliasesRequest
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 
+internal const val DEFAULT_CONNECTION_TIME_OUT = 60_000L
+
 /**
  * Base class for building configuration requests in VGS Collect SDK .
  *
