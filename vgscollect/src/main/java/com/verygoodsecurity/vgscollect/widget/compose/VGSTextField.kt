@@ -21,14 +21,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 
 class VgsTextFieldState internal constructor(
+    override val fieldName: String?,
     override val text: String,
-    val fieldName: String?,
     val validators: List<Any>
 ): BaseFieldState() {
 
     val validationResults: List<Any> = validate()
 
-    val isValid: Boolean = validationResults.isEmpty()
+    override val isValid: Boolean = validationResults.isEmpty()
 
     val contentLength: Int = text.length
 

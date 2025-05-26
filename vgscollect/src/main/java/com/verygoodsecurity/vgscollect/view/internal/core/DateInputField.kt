@@ -23,11 +23,8 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
-import com.verygoodsecurity.vgscollect.view.date.DateRangeFormat
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
-import com.verygoodsecurity.vgscollect.view.date.validation.isInputDatePatternValid
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
-import com.verygoodsecurity.vgscollect.view.internal.ExpirationDateInputField
 import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -65,7 +62,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     private var timeGapsValidator: TimeGapsValidator? = null
     private var fieldDateFormat: SimpleDateFormat? = null
     private var fieldDateOutputFormat: SimpleDateFormat? = null
-    private var fieldDataSerializers: List<FieldDataSerializer<*, *>>? = null
+    private var fieldDataSerializers: List<FieldDataSerializer>? = null
     private var datePickerVisibilityChangeListener: VisibilityChangeListener? = null
     //endregion
 
@@ -385,7 +382,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
         datePickerVisibilityChangeListener = listener
     }
 
-    internal fun setFieldDataSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
+    internal fun setFieldDataSerializers(serializers: List<FieldDataSerializer>?) {
         this.fieldDataSerializers = serializers
     }
 

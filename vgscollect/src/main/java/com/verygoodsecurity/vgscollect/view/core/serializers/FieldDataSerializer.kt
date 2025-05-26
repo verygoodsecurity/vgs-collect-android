@@ -4,9 +4,9 @@ import com.verygoodsecurity.vgscollect.core.api.client.extension.logException
 import java.text.SimpleDateFormat
 import java.util.*
 
-abstract class FieldDataSerializer<P, R> {
+abstract class FieldDataSerializer {
 
-    internal abstract fun serialize(params: P): R
+    internal abstract fun serialize(date: String, dateFormat: String?): List<Pair<String, String>>
 
     private lateinit var daySDF: SimpleDateFormat
     private lateinit var monthSDF: SimpleDateFormat
