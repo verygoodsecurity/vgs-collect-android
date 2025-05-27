@@ -17,6 +17,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokeni
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.util.extension.toJSON
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -447,7 +448,7 @@ class VGSCollectTest {
 
         collect.onActivityResult(TemporaryFileStorage.REQUEST_CODE, Activity.RESULT_OK, intent)
 
-        verify(storage).getFileStorage()
+        verify(storage).fileStorage
     }
 
     @Test
@@ -498,7 +499,7 @@ class VGSCollectTest {
     fun test_get_file_provider() {
         val storage = applyStorage()
         collect.getFileProvider()
-        verify(storage).getFileProvider()
+        verify(storage).fileProvider
     }
 
     @Test
@@ -520,7 +521,12 @@ class VGSCollectTest {
     }
 
     private fun applyStorage(): InternalStorage {
-        val storage = spy(InternalStorage(activity))
+        val storage = spy(InternalStorage(activity, object : StorageListener {
+            override fun onStorageError(
+                error: VGSError,
+                vararg params: String?
+            ) {}
+        }))
         collect.setStorage(storage)
 
         return storage
