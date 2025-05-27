@@ -76,7 +76,7 @@ class VGSCollect {
     private val analyticsHandler: AnalyticsHandler
 
     private var client: ApiClient
-    private val mainHandler: Handler = Handler(Looper.getMainLooper())
+    private var mainHandler: Handler = Handler(Looper.getMainLooper())
 
     private var storage: InternalStorage
     private val storageListener: StorageListener = object : StorageListener {
@@ -574,6 +574,11 @@ class VGSCollect {
     @VisibleForTesting
     internal fun setClient(c: ApiClient) {
         client = c
+    }
+
+    @VisibleForTesting
+    internal fun setMainHandler(handler: Handler) {
+        mainHandler = handler
     }
 
     internal fun bindComposeView(view: InputFieldView?) {

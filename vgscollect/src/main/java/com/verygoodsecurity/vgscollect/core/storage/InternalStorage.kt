@@ -77,8 +77,11 @@ internal class InternalStorage(
     }
 
     fun getDataForTokenization(): Map<String, Any>? {
-        val items = fieldsStorage.getItems()
-        return mutableMapOf(DATA_KEY to items.map { it.toTokenizationData() })
+        val data = mutableListOf<Map<String, Any>>()
+        fieldsStorage.getItems().forEach {
+            data.addAll(it.toTokenizationData())
+        }
+        return mutableMapOf(DATA_KEY to data)
     }
 
     fun getFieldsStates(): MutableCollection<VGSFieldState> = fieldsStorage.getItems()
