@@ -276,7 +276,7 @@ class VGSCollect {
      * @param request A create aliases request data.
      */
     fun createAliases(request: VGSCreateAliasesRequest) {
-        request(request, storage.getDataForTokenization())
+        asyncRequest(request, storage.getDataForTokenization())
     }
 
     /**
@@ -292,7 +292,7 @@ class VGSCollect {
      * @param request A tokenization request data.
      */
     fun tokenize(request: VGSTokenizationRequest) {
-        request(request, storage.getDataForTokenization())
+        asyncRequest(request, storage.getDataForTokenization())
     }
 
     /**
