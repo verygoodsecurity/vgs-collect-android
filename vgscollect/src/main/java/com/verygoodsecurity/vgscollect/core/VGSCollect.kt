@@ -27,6 +27,7 @@ import com.verygoodsecurity.vgscollect.core.api.toHostnameValidationUrl
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy.NESTED_JSON
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
+import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
@@ -275,23 +276,7 @@ class VGSCollect {
      * @param request A create aliases request data.
      */
     fun createAliases(request: VGSCreateAliasesRequest) {
-        storage.getDataForTokenization()?.let { payload ->
-            requestEvent(
-                true,
-                true,
-                !request.fileIgnore && storage.fileStorage.getItems().isNotEmpty(),
-                !request.fieldsIgnore && storage.fieldsStorage.getItems().isNotEmpty(),
-                request.customHeader.isNotEmpty(),
-                payload.isNotEmpty(),
-                hasCustomHostname,
-                request.fieldNameMappingPolicy
-            )
-            client.enqueue(request.toNetworkRequest(baseURL, payload)) { response ->
-                mainHandler.post {
-                    notifyResponseListeners(response.toVGSResponse(), request.isTokenization)
-                }
-            }
-        }
+        request(request, storage.getDataForTokenization())
     }
 
     /**
@@ -307,23 +292,7 @@ class VGSCollect {
      * @param request A tokenization request data.
      */
     fun tokenize(request: VGSTokenizationRequest) {
-        storage.getDataForTokenization()?.let { payload ->
-            requestEvent(
-                true,
-                true,
-                !request.fileIgnore && storage.fileStorage.getItems().isNotEmpty(),
-                !request.fieldsIgnore && storage.fieldsStorage.getItems().isNotEmpty(),
-                request.customHeader.isNotEmpty(),
-                payload.isNotEmpty(),
-                hasCustomHostname,
-                request.fieldNameMappingPolicy
-            )
-            client.enqueue(request.toNetworkRequest(baseURL, payload)) { response ->
-                mainHandler.post {
-                    notifyResponseListeners(response.toVGSResponse(), request.isTokenization)
-                }
-            }
-        }
+        request(request, storage.getDataForTokenization())
     }
 
     /**
@@ -335,8 +304,7 @@ class VGSCollect {
      * @param method HTTP method
      */
     fun submit(path: String, method: HTTPMethod = HTTPMethod.POST): VGSResponse {
-        val request = VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build()
-        return submit(request)
+        return submit(VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build())
     }
 
     /**
@@ -347,23 +315,13 @@ class VGSCollect {
      * @param request data class with attributes for submit.
      */
     fun submit(request: VGSRequest): VGSResponse {
-        val payload = storage.getDataForCollecting(
+        return request(
             request,
-            client.getTemporaryStorage().getCustomData(),
-        )
-        return payload?.let { payload ->
-            requestEvent(
-                true,
-                false,
-                !request.fileIgnore && storage.fileStorage.getItems().isNotEmpty(),
-                !request.fieldsIgnore && storage.fieldsStorage.getItems().isNotEmpty(),
-                request.customHeader.isNotEmpty(),
-                payload.isNotEmpty(),
-                hasCustomHostname,
-                request.fieldNameMappingPolicy
+            storage.getDataForCollecting(
+                request,
+                client.getTemporaryStorage().getCustomData(),
             )
-            client.execute(request.toNetworkRequest(baseURL, payload)).toVGSResponse()
-        } ?: VGSResponse.ErrorResponse()
+        )
     }
 
     /**
@@ -396,12 +354,8 @@ class VGSCollect {
      * @param path path for a request
      * @param method HTTP method
      */
-    fun asyncSubmit(
-        path: String,
-        method: HTTPMethod
-    ) {
-        val request = VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build()
-        asyncSubmit(request)
+    fun asyncSubmit(path: String, method: HTTPMethod) {
+        asyncSubmit(VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build())
     }
 
     /**
@@ -410,14 +364,47 @@ class VGSCollect {
      * @param request data class with attributes for submit
      */
     fun asyncSubmit(request: VGSRequest) {
-        val payload = storage.getDataForCollecting(
+        asyncSubmit(request, null)
+    }
+
+    /**
+     * This method executes and send data on VGS Server.
+     *
+     * @param request data class with attributes for submit
+     * @param state compose widgets states
+     */
+    fun asyncSubmit(request: VGSRequest, vararg state: BaseFieldState?) {
+        asyncRequest(
             request,
-            client.getTemporaryStorage().getCustomData(),
+            storage.getDataForCollecting(
+                request,
+                client.getTemporaryStorage().getCustomData(),
+                state.filterNotNull().takeIf { it.isNotEmpty() }
+            )
         )
-        payload?.let { payload ->
+    }
+
+    private fun request(request: VGSBaseRequest, data: Map<String, Any>?): VGSResponse {
+        return data?.let { payload ->
             requestEvent(
                 true,
                 false,
+                !request.fileIgnore && storage.fileStorage.getItems().isNotEmpty(),
+                !request.fieldsIgnore && storage.fieldsStorage.getItems().isNotEmpty(),
+                request.customHeader.isNotEmpty(),
+                payload.isNotEmpty(),
+                hasCustomHostname,
+                request.fieldNameMappingPolicy
+            )
+            client.execute(request.toNetworkRequest(baseURL, payload)).toVGSResponse()
+        } ?: VGSResponse.ErrorResponse()
+    }
+
+    private fun asyncRequest(request: VGSBaseRequest, data: Map<String, Any>?) {
+        data?.let { payload ->
+            requestEvent(
+                true,
+                request.isTokenization,
                 !request.fileIgnore && storage.fileStorage.getItems().isNotEmpty(),
                 !request.fieldsIgnore && storage.fieldsStorage.getItems().isNotEmpty(),
                 request.customHeader.isNotEmpty(),
@@ -431,10 +418,6 @@ class VGSCollect {
                 }
             }
         }
-    }
-
-    fun asyncSubmit(request: VGSRequest, vararg state: BaseFieldState?) {
-        // TODO Implement
     }
 
     private fun notifyResponseListeners(response: VGSResponse, requiresTokenization: Boolean) {
