@@ -169,9 +169,9 @@ internal class OkHttpClient(private val networkInspector: NetworkInspector) : Ap
 
     @Throws(NetworkException::class)
     private fun checkConnection() {
-        if (networkInspector.hasInternetPermission()) {
+        if (!networkInspector.hasInternetPermission()) {
             throw NetworkException(error = VGSError.NO_INTERNET_PERMISSIONS)
-        } else if (networkInspector.isConnectionAvailable()) {
+        } else if (!networkInspector.isConnectionAvailable()) {
             throw NetworkException(error = VGSError.NO_NETWORK_CONNECTIONS)
         }
     }
