@@ -5,9 +5,7 @@ package com.verygoodsecurity.vgscollect.view.card
  *
  * @since 1.0.1
  */
-enum class FieldType(
-    val raw: String
-) {
+enum class FieldType(val raw: String) {
 
     /**
      * Represents field with card number input in '####-####-####-####' format.

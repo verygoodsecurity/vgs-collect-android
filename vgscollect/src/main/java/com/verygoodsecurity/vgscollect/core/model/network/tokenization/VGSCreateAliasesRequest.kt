@@ -3,9 +3,9 @@ package com.verygoodsecurity.vgscollect.core.model.network.tokenization
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
+import com.verygoodsecurity.vgscollect.core.model.network.DEFAULT_CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.util.extension.ALIASES_PATH
-import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
 
 /**
  * Class that represents request that uses to send data to VGS server.

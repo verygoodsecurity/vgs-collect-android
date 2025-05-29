@@ -186,7 +186,7 @@ abstract class DateEditText @JvmOverloads internal constructor(
      *
      * @param serializer - FieldDataSerializer serializer.
      */
-    fun setSerializer(serializer: FieldDataSerializer<*, *>?) {
+    fun setSerializer(serializer: FieldDataSerializer?) {
         if (serializer == null) setSerializers(null) else setSerializers(listOf(serializer))
     }
 
@@ -195,7 +195,7 @@ abstract class DateEditText @JvmOverloads internal constructor(
      *
      * @param serializers - list of FieldDataSerializer serializers.
      */
-    fun setSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
+    fun setSerializers(serializers: List<FieldDataSerializer>?) {
         super.setFieldDataSerializers(serializers)
     }
 

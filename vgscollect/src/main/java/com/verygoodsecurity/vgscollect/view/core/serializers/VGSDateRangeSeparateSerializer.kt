@@ -14,15 +14,15 @@ import java.util.Locale
  * @param monthFieldName - this field name will be used for month in request json.
  * @param yearFieldName - this field name will be used for year in request json.
  */
-class VGSDateRangeSeparateSerializer constructor(
+class VGSDateRangeSeparateSerializer(
     private val dayFieldName: String?,
     private val monthFieldName: String,
     private val yearFieldName: String
-) : FieldDataSerializer<VGSDateRangeSeparateSerializer.Params, List<Pair<String, String>>>() {
+) : FieldDataSerializer() {
 
-    override fun serialize(params: Params): List<Pair<String, String>> {
+    override fun serialize(date: String, dateFormat: String?): List<Pair<String, String>> {
         return try {
-            val date = SimpleDateFormat(params.dateFormat, Locale.US).parse(params.date)
+            val date = SimpleDateFormat(dateFormat, Locale.US).parse(date)
             if (date == null) {
                 VGSCollectLogger.debug(
                     VGSExpDateSeparateSerializer::class.java.simpleName,
@@ -32,10 +32,10 @@ class VGSDateRangeSeparateSerializer constructor(
             }
             val result = mutableListOf<Pair<String, String>>()
             dayFieldName?.let {
-                result.add(dayFieldName to getDayFormat(params.dateFormat).format(date))
+                result.add(dayFieldName to getDayFormat(dateFormat).format(date))
             }
-            result.add(monthFieldName to getMonthFormat(params.dateFormat).format(date))
-            result.add(yearFieldName to getYearFormat(params.dateFormat).format(date))
+            result.add(monthFieldName to getMonthFormat(dateFormat).format(date))
+            result.add(yearFieldName to getYearFormat(dateFormat).format(date))
             result
         } catch (e: Exception) {
             logException(e)
