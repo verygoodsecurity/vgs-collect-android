@@ -18,16 +18,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 
 class VgsTextFieldState internal constructor(
-    internal val text: String,
-    val fieldName: String?,
+    override val fieldName: String?,
+    override val text: String,
     val validators: List<Any>
-) {
+): BaseFieldState() {
 
     val validationResults: List<Any> = validate()
 
-    val isValid: Boolean = validationResults.isEmpty()
+    override val isValid: Boolean = validationResults.isEmpty()
 
     val contentLength: Int = text.length
 
@@ -77,13 +78,11 @@ fun VGSTextField(
             )
         )
     }
+    onStateChange(state)
 
     TextField(
         value = state.text,
-        onValueChange = {
-            state = state.copy(text = it)
-            onStateChange(state)
-        },
+        onValueChange = { state = state.copy(text = it) },
         modifier = modifier,
         enabled = enabled,
         readOnly = readOnly,

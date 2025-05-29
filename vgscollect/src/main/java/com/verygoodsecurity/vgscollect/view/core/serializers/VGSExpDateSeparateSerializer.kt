@@ -13,14 +13,14 @@ import java.util.*
  * @param monthFieldName - this field name will be used for month in request json.
  * @param yearFieldName - this field name will be used for year in request json.
  */
-class VGSExpDateSeparateSerializer constructor(
+class VGSExpDateSeparateSerializer(
     private val monthFieldName: String,
     private val yearFieldName: String,
-) : FieldDataSerializer<VGSExpDateSeparateSerializer.Params, List<Pair<String, String>>>() {
+) : FieldDataSerializer() {
 
-    override fun serialize(params: Params): List<Pair<String, String>> {
+    override fun serialize(date: String, dateFormat: String?): List<Pair<String, String>> {
         return try {
-            val date = SimpleDateFormat(params.dateFormat, Locale.US).parse(params.date)
+            val date = SimpleDateFormat(dateFormat, Locale.US).parse(date)
             if (date == null) {
                 VGSCollectLogger.debug(
                     VGSExpDateSeparateSerializer::class.java.simpleName,
@@ -29,8 +29,8 @@ class VGSExpDateSeparateSerializer constructor(
                 return emptyList()
             }
             listOf(
-                monthFieldName to getMonthFormat(params.dateFormat).format(date),
-                yearFieldName to getYearFormat(params.dateFormat).format(date)
+                monthFieldName to getMonthFormat(dateFormat).format(date),
+                yearFieldName to getYearFormat(dateFormat).format(date)
             )
         } catch (e: Exception) {
             logException(e)

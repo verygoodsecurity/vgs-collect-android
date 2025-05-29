@@ -51,16 +51,7 @@ private fun handleDateContent(
     val result = mutableListOf<Pair<String, String>>()
     val data = (content.rawData ?: content.data!!)
     content.serializers?.forEach {
-        if (it is VGSExpDateSeparateSerializer) {
-            result.addAll(
-                it.serialize(VGSExpDateSeparateSerializer.Params(data, content.dateFormat))
-            )
-        }
-        if (it is VGSDateRangeSeparateSerializer) {
-            result.addAll(
-                it.serialize(VGSDateRangeSeparateSerializer.Params(data, content.dateFormat))
-            )
-        }
+        result.addAll(it.serialize(data, content.dateFormat))
     } ?: result.add(fieldName to data)
     return result
 }

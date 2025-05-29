@@ -3,38 +3,51 @@ package com.verygoodsecurity.vgscollect
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.os.Handler
 import com.verygoodsecurity.vgscollect.Utils.capture
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
-import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
+import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
-import com.verygoodsecurity.vgscollect.core.model.network.*
+import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
+import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
+import com.verygoodsecurity.vgscollect.core.model.network.VGSError
+import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
+import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.storage.InternalStorage
 import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.util.extension.toJSON
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
-import com.verygoodsecurity.vgscollect.widget.*
-import org.junit.Assert.*
+import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
+import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+import com.verygoodsecurity.vgscollect.widget.VGSEditText
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.*
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows
 import org.robolectric.android.controller.ActivityController
 import org.robolectric.annotation.Config
+
 
 @RunWith(RobolectricTestRunner::class)
 @Config(application = TestApplication::class)
@@ -49,6 +62,13 @@ class VGSCollectTest {
         activityController = Robolectric.buildActivity(Activity::class.java)
         activity = activityController.get()
         collect = VGSCollect(activity, "tnts")
+
+        val handler = mock(Handler::class.java)
+        `when`(handler.post(any())).thenAnswer { invocation ->
+            invocation.getArgument(0, Runnable::class.java).run()
+            true
+        }
+        collect.setMainHandler(handler)
     }
 
     @Test
@@ -297,11 +317,9 @@ class VGSCollectTest {
             Manifest.permission.ACCESS_NETWORK_STATE
         )
 
-        val listener = applyResponseListener()
+        val response = collect.submit("/path", HTTPMethod.POST)
 
-        collect.submit("/path", HTTPMethod.POST)
-
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        assertTrue(response is VGSResponse.ErrorResponse)
     }
 
     @Test
@@ -311,11 +329,9 @@ class VGSCollectTest {
             Manifest.permission.INTERNET
         )
 
-        val listener = applyResponseListener()
+        val response = collect.submit("/path", HTTPMethod.POST)
 
-        collect.submit("/path", HTTPMethod.POST)
-
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        assertTrue(response is VGSResponse.ErrorResponse)
     }
 
     @Test
@@ -347,7 +363,7 @@ class VGSCollectTest {
 
         collect.asyncSubmit("/path", HTTPMethod.POST)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        verify(listener).onResponse(any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
@@ -361,7 +377,7 @@ class VGSCollectTest {
 
         collect.asyncSubmit("/path", HTTPMethod.POST)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        verify(listener).onResponse(any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
@@ -386,15 +402,13 @@ class VGSCollectTest {
             Manifest.permission.ACCESS_NETWORK_STATE
         )
 
-        val listener = applyResponseListener()
-
         val request = VGSRequest.VGSRequestBuilder()
             .setPath("/path")
             .setMethod(HTTPMethod.POST)
             .build()
-        collect.submit(request)
+        val response = collect.submit(request)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        assertTrue(response is VGSResponse.ErrorResponse)
     }
 
     @Test
@@ -404,15 +418,13 @@ class VGSCollectTest {
             Manifest.permission.INTERNET
         )
 
-        val listener = applyResponseListener()
-
         val request = VGSRequest.VGSRequestBuilder()
             .setPath("/path")
             .setMethod(HTTPMethod.POST)
             .build()
-        collect.submit(request)
+        val response = collect.submit(request)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        assertTrue(response is VGSResponse.ErrorResponse)
     }
 
     @Test
@@ -453,7 +465,7 @@ class VGSCollectTest {
             .build()
         collect.asyncSubmit(request)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        verify(listener).onResponse(any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
@@ -471,7 +483,7 @@ class VGSCollectTest {
             .build()
         collect.asyncSubmit(request)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        verify(listener).onResponse(any(VGSResponse.ErrorResponse::class.java))
     }
 
     @Test
@@ -583,7 +595,7 @@ class VGSCollectTest {
 
         collect.onActivityResult(TemporaryFileStorage.REQUEST_CODE, Activity.RESULT_OK, intent)
 
-        verify(storage).getFileStorage()
+        verify(storage).fileStorage
     }
 
     @Test
@@ -634,7 +646,7 @@ class VGSCollectTest {
     fun test_get_file_provider() {
         val storage = applyStorage()
         collect.getFileProvider()
-        verify(storage).getFileProvider()
+        verify(storage).fileProvider
     }
 
     @Test
@@ -652,11 +664,17 @@ class VGSCollectTest {
 
         collect.asyncSubmit("/path", HTTPMethod.POST)
 
-        verify(listener).onResponse(ArgumentMatchers.any(VGSResponse.ErrorResponse::class.java))
+        verify(listener).onResponse(any(VGSResponse.ErrorResponse::class.java))
     }
 
     private fun applyStorage(): InternalStorage {
-        val storage = spy(InternalStorage(activity))
+        val storage = spy(InternalStorage(activity, object : StorageListener {
+            override fun onStorageError(
+                error: VGSError,
+                vararg params: String?
+            ) {
+            }
+        }))
         collect.setStorage(storage)
 
         return storage
