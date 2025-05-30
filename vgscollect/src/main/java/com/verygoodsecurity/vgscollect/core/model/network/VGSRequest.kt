@@ -152,7 +152,7 @@ data class VGSRequest internal constructor(
             return this
         }
 
-        internal fun setFormat(format: VGSHttpBodyFormat): VGSRequestBuilder {
+        fun setFormat(format: VGSHttpBodyFormat): VGSRequestBuilder {
             this.format = format
             return this
         }

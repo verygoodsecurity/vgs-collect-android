@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.verygoodsecurity.demoapp.cmp.CMPActivity
 import com.verygoodsecurity.demoapp.collect_activity.CollectActivity
 import com.verygoodsecurity.demoapp.collect_compose.activity_case.ComposeActivity
 import com.verygoodsecurity.demoapp.collect_compose.fragment_case.ComposeFragmentActivity
@@ -38,6 +39,9 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         }
         binding.llTokenizationV2Flow.setOnClickListener {
             startActivity(TokenizationActivityV2::class.java)
+        }
+        binding.llCMP.setOnClickListener {
+            startActivity(CMPActivity::class.java)
         }
         binding.llGooglePayActivityFlow.setOnClickListener {
             startActivity(GooglePayActivity::class.java)
