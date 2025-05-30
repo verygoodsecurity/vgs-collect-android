@@ -61,11 +61,12 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener, OnFieldStat
         binding.tvResponseCode.text = "CODE: ${response?.code.toString()}"
         setLoading(false)
         this.response = when (response) {
-            is VGSResponse.SuccessResponse -> readShortResponse(response.body)
+            is VGSResponse.SuccessResponse -> formatResponse(response.body)
             is VGSResponse.ErrorResponse -> response.body ?: response.localizeMessage
             else -> throw IllegalArgumentException("Not implemented.")
         }
         updateCodeExample()
+        binding.mbGroupCodeExampleType.check(R.id.mbResponse)
     }
 
     // Use this callback to track input fields state change
@@ -161,9 +162,9 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener, OnFieldStat
         binding.viewDisableTouch.isVisible = isLoading
     }
 
-    private fun readShortResponse(body: String?): String {
+    private fun formatResponse(body: String?): String {
         return try {
-            JSONObject(body ?: "").getJSONObject("json").toString(4)
+            JSONObject(body ?: "").toString(4)
         } catch (_: Exception) {
             ""
         }
