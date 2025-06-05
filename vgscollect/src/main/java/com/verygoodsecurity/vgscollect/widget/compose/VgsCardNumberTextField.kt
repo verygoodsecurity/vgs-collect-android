@@ -14,12 +14,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.VisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 
-class VgsTextFieldState internal constructor(
+class VgsCardNumberTextFieldState internal constructor(
     text: String,
     fieldName: String,
     validators: List<VgsTextFieldValidator>
@@ -34,16 +34,20 @@ class VgsTextFieldState internal constructor(
         validators
     )
 
-    internal fun copy(text: String = this.text): VgsTextFieldState {
-        return VgsTextFieldState(text = text, fieldName = fieldName, validators = validators)
+    internal fun copy(text: String = this.text): VgsCardNumberTextFieldState {
+        return VgsCardNumberTextFieldState(
+            text = text,
+            fieldName = fieldName,
+            validators = validators
+        )
     }
 }
 
 @Composable
-fun VgsTextField(
-    state: VgsTextFieldState,
+fun VgsCardNumberTextField(
+    state: VgsCardNumberTextFieldState,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsTextFieldState) -> Unit = {},
+    onStateChange: (state: VgsCardNumberTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -52,7 +56,6 @@ fun VgsTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    visualTransformation: VgsVisualTransformation = VgsVisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions(),
     singleLine: Boolean = false,
@@ -77,7 +80,7 @@ fun VgsTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         isError = isError,
-        visualTransformation = visualTransformation,
+        visualTransformation = VisualTransformation.None,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         singleLine = singleLine,
