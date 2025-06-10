@@ -14,16 +14,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.VisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
+import kotlin.math.min
 
 class VgsCardNumberTextFieldState internal constructor(
     text: String,
     fieldName: String,
-    validators: List<VgsTextFieldValidator>
+    validators: List<VgsTextFieldValidator>,
 ) : BaseFieldState(text, fieldName, validators) {
+
+    val cardBrand: VgsCardBrand = VgsCardBrand.detect(text)
 
     constructor(
         fieldName: String,
@@ -31,15 +35,19 @@ class VgsCardNumberTextFieldState internal constructor(
     ) : this(
         EMPTY,
         fieldName,
-        validators
+        validators,
     )
 
     internal fun copy(text: String = this.text): VgsCardNumberTextFieldState {
         return VgsCardNumberTextFieldState(
-            text = text,
+            text = validateTextLength(text),
             fieldName = fieldName,
-            validators = validators
+            validators = validators,
         )
+    }
+
+    private fun validateTextLength(text: String): String {
+        return text.substring(0, min(text.length, cardBrand.length.maxOrNull() ?: text.length))
     }
 }
 
@@ -80,7 +88,7 @@ fun VgsCardNumberTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         isError = isError,
-        visualTransformation = VisualTransformation.None,
+        visualTransformation = VgsMaskVisualTransformation(state.cardBrand.mask),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         singleLine = singleLine,
