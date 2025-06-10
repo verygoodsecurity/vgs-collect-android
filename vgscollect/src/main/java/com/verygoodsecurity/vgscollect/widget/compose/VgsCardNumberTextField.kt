@@ -15,9 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
+import com.verygoodsecurity.vgscollect.widget.compose.card.isValidCard
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
+import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import kotlin.math.min
 
@@ -46,6 +48,10 @@ class VgsCardNumberTextFieldState internal constructor(
         )
     }
 
+    override fun validate(): List<VgsTextFieldValidationResult> {
+        return super.validate() + cardBrand.isValidCard(text)
+    }
+
     private fun validateTextLength(text: String): String {
         return text.substring(0, min(text.length, cardBrand.length.maxOrNull() ?: text.length))
     }
@@ -71,8 +77,7 @@ fun VgsCardNumberTextField(
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = MaterialTheme.shapes.small.copy(
-        bottomEnd = ZeroCornerSize,
-        bottomStart = ZeroCornerSize
+        bottomEnd = ZeroCornerSize, bottomStart = ZeroCornerSize
     ),
     colors: TextFieldColors = TextFieldDefaults.textFieldColors()
 ) {

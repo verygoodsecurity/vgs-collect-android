@@ -5,6 +5,9 @@ package com.verygoodsecurity.vgscollect.widget.compose.card
 import androidx.annotation.DrawableRes
 import com.verygoodsecurity.vgscollect.util.extension.except
 import com.verygoodsecurity.vgscollect.view.card.CardType
+import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsLuhnAlgorithmValidator
+import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsTextLengthValidator
+import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import java.util.regex.Pattern
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm as LegacyChecksumAlgorithm
 
@@ -56,4 +59,14 @@ internal fun LegacyChecksumAlgorithm.toChecksumAlgorithm(): VgsCardBrand.Checksu
         LegacyChecksumAlgorithm.LUHN, LegacyChecksumAlgorithm.ANY -> VgsCardBrand.ChecksumAlgorithm.LUHN
         LegacyChecksumAlgorithm.NONE -> VgsCardBrand.ChecksumAlgorithm.NONE
     }
+}
+
+internal fun VgsCardBrand.isValidCard(target: String): List<VgsTextFieldValidationResult> {
+    val isLuhnValid  = if (this.algorithm == VgsCardBrand.ChecksumAlgorithm.LUHN) {
+        VgsLuhnAlgorithmValidator().validate(target)
+    } else {
+        null
+    }
+    val isLengthValid = VgsTextLengthValidator(lengths = this.length).validate(target)
+    return listOfNotNull(isLuhnValid, isLengthValid)
 }

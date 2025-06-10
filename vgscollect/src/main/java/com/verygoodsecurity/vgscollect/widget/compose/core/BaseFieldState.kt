@@ -6,7 +6,7 @@ import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFiel
 abstract class BaseFieldState(
     internal val text: String,
     val fieldName: String,
-    val validators: List<VgsTextFieldValidator>
+    open val validators: List<VgsTextFieldValidator>
 ) {
 
     companion object {
@@ -22,7 +22,7 @@ abstract class BaseFieldState(
 
     val contentLength: Int = text.length
 
-    private fun validate(): List<VgsTextFieldValidationResult> {
+    protected open fun validate(): List<VgsTextFieldValidationResult> {
         return validators.map { it.validate(text) }
     }
 }
