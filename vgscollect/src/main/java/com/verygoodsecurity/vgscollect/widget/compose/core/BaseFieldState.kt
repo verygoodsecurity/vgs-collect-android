@@ -14,9 +14,11 @@ abstract class BaseFieldState(
         internal const val EMPTY = ""
     }
 
-    val validationResults: List<VgsTextFieldValidationResult> = validate()
+    val validationResults: List<VgsTextFieldValidationResult>
+        get() = validate()
 
-    val isValid: Boolean = validationResults.all { it.isValid }
+    val isValid: Boolean
+        get() = validationResults.all { it.isValid }
 
     val isEmpty: Boolean = text.isEmpty()
 

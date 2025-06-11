@@ -34,7 +34,7 @@ class VgsTextFieldState internal constructor(
         validators
     )
 
-    internal fun copy(text: String = this.text): VgsTextFieldState {
+    internal fun copy(text: String): VgsTextFieldState {
         return VgsTextFieldState(text = text, fieldName = fieldName, validators = validators)
     }
 }

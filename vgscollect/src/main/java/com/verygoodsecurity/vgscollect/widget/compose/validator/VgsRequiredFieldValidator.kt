@@ -9,7 +9,7 @@ class VgsRequiredFieldValidator(
 
     companion object {
 
-        const val ERROR_MESSAGE = "This field is required."
+        const val ERROR_MESSAGE = "REQUIRED_FIELD_VALIDATION_ERROR"
     }
 
     override fun validate(text: String): Result {

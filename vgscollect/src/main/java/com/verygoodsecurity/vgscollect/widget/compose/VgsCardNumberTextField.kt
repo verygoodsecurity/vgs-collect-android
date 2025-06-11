@@ -19,6 +19,7 @@ import com.verygoodsecurity.vgscollect.widget.compose.card.getValidators
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
+import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import kotlin.math.min
 
@@ -39,14 +40,17 @@ class VgsCardNumberTextFieldState internal constructor(
         VgsCardBrand.detect(EMPTY)
     )
 
-    internal fun copy(text: String = this.text): VgsCardNumberTextFieldState {
-        val cardBrand = VgsCardBrand.detect(text)
+    internal fun copy(text: String): VgsCardNumberTextFieldState {
         return VgsCardNumberTextFieldState(
             text = maxCardLengthSubstring(text), // Ensure text does not exceed the maximum card length
-            fieldName = fieldName,
-            validators = validators + cardBrand.getValidators(),
-            cardBrand = cardBrand
+            fieldName = this.fieldName,
+            validators = this.validators,
+            cardBrand = VgsCardBrand.detect(text)
         )
+    }
+
+    override fun validate(): List<VgsTextFieldValidationResult> {
+        return super.validate() + cardBrand.getValidators().map { it.validate(text) }
     }
 
     private fun maxCardLengthSubstring(text: String): String {
