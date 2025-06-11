@@ -15,11 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
-import com.verygoodsecurity.vgscollect.widget.compose.card.isValidCard
+import com.verygoodsecurity.vgscollect.widget.compose.card.getValidators
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
-import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import kotlin.math.min
 
@@ -27,9 +26,8 @@ class VgsCardNumberTextFieldState internal constructor(
     text: String,
     fieldName: String,
     validators: List<VgsTextFieldValidator>,
+    val cardBrand: VgsCardBrand
 ) : BaseFieldState(text, fieldName, validators) {
-
-    val cardBrand: VgsCardBrand = VgsCardBrand.detect(text)
 
     constructor(
         fieldName: String,
@@ -38,21 +36,20 @@ class VgsCardNumberTextFieldState internal constructor(
         EMPTY,
         fieldName,
         validators,
+        VgsCardBrand.detect(EMPTY)
     )
 
     internal fun copy(text: String = this.text): VgsCardNumberTextFieldState {
+        val cardBrand = VgsCardBrand.detect(text)
         return VgsCardNumberTextFieldState(
-            text = validateTextLength(text),
+            text = maxCardLengthSubstring(text), // Ensure text does not exceed the maximum card length
             fieldName = fieldName,
-            validators = validators,
+            validators = validators + cardBrand.getValidators(),
+            cardBrand = cardBrand
         )
     }
 
-    override fun validate(): List<VgsTextFieldValidationResult> {
-        return super.validate() + cardBrand.isValidCard(text)
-    }
-
-    private fun validateTextLength(text: String): String {
+    private fun maxCardLengthSubstring(text: String): String {
         return text.substring(0, min(text.length, cardBrand.length.maxOrNull() ?: text.length))
     }
 }

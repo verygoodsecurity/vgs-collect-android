@@ -8,10 +8,11 @@ import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsLuhnAlgorithmValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsTextLengthValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
+import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import java.util.regex.Pattern
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm as LegacyChecksumAlgorithm
 
-class VgsCardBrand internal constructor(
+class VgsCardBrand private constructor(
     val name: String,
     val mask: String,
     val regex: String,
@@ -23,15 +24,27 @@ class VgsCardBrand internal constructor(
 
     companion object {
 
-        internal fun detect(card: String): VgsCardBrand {
-            if (card.isBlank()) return CardType.UNKNOWN.toVgsCardBrand()
+        fun detect(card: String): VgsCardBrand {
+            if (card.isBlank()) return map(CardType.UNKNOWN)
             CardType.entries.toTypedArray().except(CardType.UNKNOWN).forEach {
                 val matcher = Pattern.compile(it.regex).matcher(card)
                 while (matcher.find()) {
-                    return it.toVgsCardBrand()
+                    return map(it)
                 }
             }
-            return CardType.UNKNOWN.toVgsCardBrand()
+            return map(CardType.UNKNOWN)
+        }
+
+        private fun map(cardType: CardType): VgsCardBrand {
+            return VgsCardBrand(
+                name = cardType.name,
+                mask = cardType.mask,
+                regex = cardType.regex,
+                algorithm = cardType.algorithm.toChecksumAlgorithm(),
+                length = cardType.rangeNumber,
+                securityCodeLength = cardType.rangeCVV,
+                iconResourceId = cardType.resId
+            )
         }
     }
 
@@ -42,18 +55,6 @@ class VgsCardBrand internal constructor(
     }
 }
 
-internal fun CardType.toVgsCardBrand(): VgsCardBrand {
-    return VgsCardBrand(
-        name = this.name,
-        mask = this.mask,
-        regex = this.regex,
-        algorithm = this.algorithm.toChecksumAlgorithm(),
-        length = this.rangeNumber,
-        securityCodeLength = this.rangeCVV,
-        iconResourceId = this.resId
-    )
-}
-
 internal fun LegacyChecksumAlgorithm.toChecksumAlgorithm(): VgsCardBrand.ChecksumAlgorithm {
     return when (this) {
         LegacyChecksumAlgorithm.LUHN, LegacyChecksumAlgorithm.ANY -> VgsCardBrand.ChecksumAlgorithm.LUHN
@@ -61,12 +62,11 @@ internal fun LegacyChecksumAlgorithm.toChecksumAlgorithm(): VgsCardBrand.Checksu
     }
 }
 
-internal fun VgsCardBrand.isValidCard(target: String): List<VgsTextFieldValidationResult> {
-    val isLuhnValid  = if (this.algorithm == VgsCardBrand.ChecksumAlgorithm.LUHN) {
-        VgsLuhnAlgorithmValidator().validate(target)
-    } else {
-        null
+internal fun VgsCardBrand.getValidators(): List<VgsTextFieldValidator> {
+    val result = mutableListOf<VgsTextFieldValidator>()
+    result.add( VgsTextLengthValidator(lengths = this.length))
+    if (this.algorithm == VgsCardBrand.ChecksumAlgorithm.LUHN) {
+        result.add(VgsLuhnAlgorithmValidator())
     }
-    val isLengthValid = VgsTextLengthValidator(lengths = this.length).validate(target)
-    return listOfNotNull(isLuhnValid, isLengthValid)
+    return result
 }
