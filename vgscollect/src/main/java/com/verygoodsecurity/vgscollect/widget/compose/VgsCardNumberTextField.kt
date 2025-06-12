@@ -43,7 +43,7 @@ class VgsCardNumberTextFieldState internal constructor(
 
     internal fun copy(text: String): VgsCardNumberTextFieldState {
         return VgsCardNumberTextFieldState(
-            text = normalizeText(text), // Ensure text does not exceed the maximum card length
+            text = normalizeText(text),
             fieldName = this.fieldName,
             validators = this.validators,
         )
@@ -53,6 +53,9 @@ class VgsCardNumberTextFieldState internal constructor(
         return (validators + cardBrand.getValidators()).map { it.validate(text) }
     }
 
+    /**
+     * Ensure text does not exceed the maximum card length and contains only digits.
+     */
     private fun normalizeText(text: String): String {
         val digits = text.filter { it.isDigit() }
         val length = digits.length
