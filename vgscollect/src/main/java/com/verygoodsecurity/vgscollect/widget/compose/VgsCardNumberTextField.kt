@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
 import com.verygoodsecurity.vgscollect.widget.compose.card.getValidators
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
@@ -42,7 +43,7 @@ class VgsCardNumberTextFieldState internal constructor(
 
     internal fun copy(text: String): VgsCardNumberTextFieldState {
         return VgsCardNumberTextFieldState(
-            text = maxCardLengthSubstring(text), // Ensure text does not exceed the maximum card length
+            text = normalizeText(text), // Ensure text does not exceed the maximum card length
             fieldName = this.fieldName,
             validators = this.validators,
         )
@@ -52,8 +53,10 @@ class VgsCardNumberTextFieldState internal constructor(
         return (validators + cardBrand.getValidators()).map { it.validate(text) }
     }
 
-    private fun maxCardLengthSubstring(text: String): String {
-        return text.substring(0, min(text.length, cardBrand.length.maxOrNull() ?: text.length))
+    private fun normalizeText(text: String): String {
+        val digits = text.filter { it.isDigit() }
+        val length = digits.length
+        return digits.substring(0, min(length, cardBrand.length.maxOrNull() ?: length))
     }
 }
 
@@ -70,7 +73,6 @@ fun VgsCardNumberTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions(),
     singleLine: Boolean = true,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
@@ -94,7 +96,7 @@ fun VgsCardNumberTextField(
         trailingIcon = trailingIcon,
         isError = isError,
         visualTransformation = VgsMaskVisualTransformation(state.cardBrand.mask),
-        keyboardOptions = keyboardOptions,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         keyboardActions = keyboardActions,
         singleLine = singleLine,
         maxLines = maxLines,
