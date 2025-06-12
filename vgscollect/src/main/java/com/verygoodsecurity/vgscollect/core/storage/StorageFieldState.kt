@@ -13,14 +13,12 @@ internal class StorageFieldState(
 )
 
 internal fun List<BaseFieldState>.mapStorageFieldState(): List<StorageFieldState> {
-    return this.mapNotNull { state ->
-        state.fieldName?.let {
-            StorageFieldState(
-                it,
-                state.isValid,
-                state.text
-            )
-        }
+    return this.map { state ->
+        StorageFieldState(
+            state.fieldName,
+            state.isValid(),
+            state.text
+        )
     }
 }
 
