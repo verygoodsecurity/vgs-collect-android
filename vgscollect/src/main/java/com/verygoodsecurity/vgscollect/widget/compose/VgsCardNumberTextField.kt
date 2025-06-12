@@ -27,8 +27,9 @@ class VgsCardNumberTextFieldState internal constructor(
     text: String,
     fieldName: String,
     validators: List<VgsTextFieldValidator>,
-    val cardBrand: VgsCardBrand
 ) : BaseFieldState(text, fieldName, validators) {
+
+    val cardBrand: VgsCardBrand = VgsCardBrand.detect(text)
 
     constructor(
         fieldName: String,
@@ -37,7 +38,6 @@ class VgsCardNumberTextFieldState internal constructor(
         EMPTY,
         fieldName,
         validators,
-        VgsCardBrand.detect(EMPTY)
     )
 
     internal fun copy(text: String): VgsCardNumberTextFieldState {
@@ -45,12 +45,11 @@ class VgsCardNumberTextFieldState internal constructor(
             text = maxCardLengthSubstring(text), // Ensure text does not exceed the maximum card length
             fieldName = this.fieldName,
             validators = this.validators,
-            cardBrand = VgsCardBrand.detect(text)
         )
     }
 
     override fun validate(): List<VgsTextFieldValidationResult> {
-        return super.validate() + cardBrand.getValidators().map { it.validate(text) }
+        return (validators + cardBrand.getValidators()).map { it.validate(text) }
     }
 
     private fun maxCardLengthSubstring(text: String): String {
