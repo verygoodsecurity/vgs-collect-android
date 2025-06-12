@@ -14,16 +14,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
+import com.verygoodsecurity.vgscollect.widget.compose.card.getValidators
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
+import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
+import kotlin.math.min
 
-class VgsTextFieldState internal constructor(
+class VgsCardNumberTextFieldState internal constructor(
     text: String,
     fieldName: String,
-    validators: List<VgsTextFieldValidator>
+    validators: List<VgsTextFieldValidator>,
 ) : BaseFieldState(text, fieldName, validators) {
+
+    val cardBrand: VgsCardBrand = VgsCardBrand.detect(text)
 
     constructor(
         fieldName: String,
@@ -31,19 +38,36 @@ class VgsTextFieldState internal constructor(
     ) : this(
         EMPTY,
         fieldName,
-        validators
+        validators,
     )
 
-    internal fun copy(text: String): VgsTextFieldState {
-        return VgsTextFieldState(text = text, fieldName = fieldName, validators = validators)
+    internal fun copy(text: String): VgsCardNumberTextFieldState {
+        return VgsCardNumberTextFieldState(
+            text = normalizeText(text),
+            fieldName = this.fieldName,
+            validators = this.validators,
+        )
+    }
+
+    override fun validate(): List<VgsTextFieldValidationResult> {
+        return (validators + cardBrand.getValidators()).map { it.validate(text) }
+    }
+
+    /**
+     * Ensure text does not exceed the maximum card length and contains only digits.
+     */
+    private fun normalizeText(text: String): String {
+        val digits = text.filter { it.isDigit() }
+        val length = digits.length
+        return digits.substring(0, min(length, cardBrand.length.maxOrNull() ?: length))
     }
 }
 
 @Composable
-fun VgsTextField(
-    state: VgsTextFieldState,
+fun VgsCardNumberTextField(
+    state: VgsCardNumberTextFieldState,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsTextFieldState) -> Unit = {},
+    onStateChange: (state: VgsCardNumberTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -52,16 +76,13 @@ fun VgsTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    visualTransformation: VgsVisualTransformation = VgsVisualTransformation.None,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions(),
-    singleLine: Boolean = false,
+    singleLine: Boolean = true,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = MaterialTheme.shapes.small.copy(
-        bottomEnd = ZeroCornerSize,
-        bottomStart = ZeroCornerSize
+        bottomEnd = ZeroCornerSize, bottomStart = ZeroCornerSize
     ),
     colors: TextFieldColors = TextFieldDefaults.textFieldColors()
 ) {
@@ -77,8 +98,8 @@ fun VgsTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         isError = isError,
-        visualTransformation = visualTransformation,
-        keyboardOptions = keyboardOptions,
+        visualTransformation = VgsMaskVisualTransformation(state.cardBrand.mask),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         keyboardActions = keyboardActions,
         singleLine = singleLine,
         maxLines = maxLines,
