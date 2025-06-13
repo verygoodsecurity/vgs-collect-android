@@ -3,11 +3,11 @@
 package com.verygoodsecurity.vgscollect.widget.compose.card
 
 import androidx.annotation.DrawableRes
+import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.util.extension.except
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsLuhnAlgorithmValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsTextLengthValidator
-import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import java.util.regex.Pattern
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm as LegacyChecksumAlgorithm
@@ -19,20 +19,23 @@ class VgsCardBrand private constructor(
     val algorithm: ChecksumAlgorithm,
     val length: Array<Int>,
     val securityCodeLength: Array<Int>,
-    @DrawableRes val iconResourceId: Int,
+    @DrawableRes val cardIcon: Int,
+    @DrawableRes val securityCodeIcon: Int, // TODO: Discuss it with iOS team
 ) {
 
     companion object {
 
+        val UNKNOWN = map(CardType.UNKNOWN)
+
         fun detect(card: String): VgsCardBrand {
-            if (card.isBlank()) return map(CardType.UNKNOWN)
+            if (card.isBlank()) return UNKNOWN
             CardType.entries.toTypedArray().except(CardType.UNKNOWN).forEach {
                 val matcher = Pattern.compile(it.regex).matcher(card)
                 while (matcher.find()) {
                     return map(it)
                 }
             }
-            return map(CardType.UNKNOWN)
+            return UNKNOWN
         }
 
         private fun map(cardType: CardType): VgsCardBrand {
@@ -43,9 +46,36 @@ class VgsCardBrand private constructor(
                 algorithm = cardType.algorithm.toChecksumAlgorithm(),
                 length = cardType.rangeNumber,
                 securityCodeLength = cardType.rangeCVV,
-                iconResourceId = cardType.resId
+                cardIcon = cardType.resId,
+                securityCodeIcon = R.drawable.ic_card_back_preview_dark // TODO: Discuss it with iOS team
             )
         }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is VgsCardBrand) return false
+
+        return name == other.name &&
+                mask == other.mask &&
+                regex == other.regex &&
+                algorithm == other.algorithm &&
+                length.contentEquals(other.length) &&
+                securityCodeLength.contentEquals(other.securityCodeLength) &&
+                cardIcon == other.cardIcon &&
+                securityCodeIcon == other.securityCodeIcon
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + mask.hashCode()
+        result = 31 * result + regex.hashCode()
+        result = 31 * result + algorithm.hashCode()
+        result = 31 * result + length.contentHashCode()
+        result = 31 * result + securityCodeLength.contentHashCode()
+        result = 31 * result + cardIcon
+        result = 31 * result + securityCodeIcon
+        return result
     }
 
     enum class ChecksumAlgorithm {
@@ -64,7 +94,7 @@ internal fun LegacyChecksumAlgorithm.toChecksumAlgorithm(): VgsCardBrand.Checksu
 
 internal fun VgsCardBrand.getValidators(): List<VgsTextFieldValidator> {
     val result = mutableListOf<VgsTextFieldValidator>()
-    result.add( VgsTextLengthValidator(lengths = this.length))
+    result.add(VgsTextLengthValidator(lengths = this.length))
     if (this.algorithm == VgsCardBrand.ChecksumAlgorithm.LUHN) {
         result.add(VgsLuhnAlgorithmValidator())
     }
