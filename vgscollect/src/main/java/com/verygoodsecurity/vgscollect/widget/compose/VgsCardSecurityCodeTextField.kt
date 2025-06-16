@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
@@ -104,7 +105,6 @@ fun VgsCardSecurityCodeTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions(),
     singleLine: Boolean = true,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
@@ -128,7 +128,7 @@ fun VgsCardSecurityCodeTextField(
         trailingIcon = trailingIcon,
         isError = isError,
         visualTransformation = VgsVisualTransformation.None,
-        keyboardOptions = keyboardOptions,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         keyboardActions = keyboardActions,
         singleLine = singleLine,
         maxLines = maxLines,
