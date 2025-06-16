@@ -20,7 +20,7 @@ class VgsCardBrand private constructor(
     val length: Array<Int>,
     val securityCodeLength: Array<Int>,
     @DrawableRes val cardIcon: Int,
-    @DrawableRes val securityCodeIcon: Int, // TODO: Discuss it with iOS team
+    @DrawableRes val securityCodeIcon: Int,
 ) {
 
     companion object {
@@ -47,8 +47,14 @@ class VgsCardBrand private constructor(
                 length = cardType.rangeNumber,
                 securityCodeLength = cardType.rangeCVV,
                 cardIcon = cardType.resId,
-                securityCodeIcon = R.drawable.ic_card_back_preview_dark // TODO: Discuss it with iOS team
+                securityCodeIcon = getIcon(cardType)
             )
+        }
+
+        @DrawableRes
+        private fun getIcon(cardType: CardType): Int = when (cardType) {
+            CardType.AMERICAN_EXPRESS -> R.drawable.ic_card_back_preview_dark_4
+            else -> R.drawable.ic_card_back_preview_dark
         }
     }
 
