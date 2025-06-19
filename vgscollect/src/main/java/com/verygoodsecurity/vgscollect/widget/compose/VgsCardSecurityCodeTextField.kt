@@ -60,6 +60,10 @@ class VgsCardSecurityCodeTextFieldState internal constructor(
      */
     fun withCardBrand(cardBrand: VgsCardBrand) = this.copy(cardBrand)
 
+    override fun validate(): List<VgsTextFieldValidationResult> {
+        return validators.map { it.validate(text) } // TODO: Validator
+    }
+
     internal fun copy(cardBrand: VgsCardBrand): VgsCardSecurityCodeTextFieldState {
         return VgsCardSecurityCodeTextFieldState(
             text = normalizeText(text, cardBrand),
@@ -76,10 +80,6 @@ class VgsCardSecurityCodeTextFieldState internal constructor(
             validators = this.validators,
             cardBrand = this.cardBrand
         )
-    }
-
-    override fun validate(): List<VgsTextFieldValidationResult> {
-        return validators.map { it.validate(text) }
     }
 
     /**

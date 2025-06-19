@@ -15,22 +15,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
-import com.verygoodsecurity.vgscollect.widget.compose.card.getValidators
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpirationDateFormat
+import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import kotlin.math.min
 
-class VgsCardNumberTextFieldState internal constructor(
+class VgsExpirationDateTextFieldState internal constructor(
     text: String,
     fieldName: String,
     validators: List<VgsTextFieldValidator>,
+    val inputDateFormat: VgsExpirationDateFormat = VgsExpirationDateFormat.MonthShortYear(),
+    val outputDateFormat: VgsExpirationDateFormat = VgsExpirationDateFormat.MonthShortYear()
 ) : BaseFieldState(text, fieldName, validators) {
-
-    val cardBrand: VgsCardBrand = VgsCardBrand.detect(text)
 
     constructor(
         fieldName: String,
@@ -42,7 +41,7 @@ class VgsCardNumberTextFieldState internal constructor(
     )
 
     override fun validate(): List<VgsTextFieldValidationResult> {
-        return (validators + cardBrand.getValidators()).map { it.validate(text) }
+        return validators.map { it.validate(text) }
     }
 
     internal fun copy(text: String): VgsCardNumberTextFieldState {
@@ -54,17 +53,17 @@ class VgsCardNumberTextFieldState internal constructor(
     }
 
     /**
-     * Ensure text does not exceed the maximum card length and contains only digits.
+     * Ensure text does not exceed the maximum expiration date length and contains only digits.
      */
     private fun normalizeText(text: String): String {
         val digits = text.filter { it.isDigit() }
         val length = digits.length
-        return digits.substring(0, min(length, cardBrand.length.maxOrNull() ?: length))
+        return digits.substring(0, min(length, inputDateFormat.mask.length))
     }
 }
 
 @Composable
-fun VgsCardNumberTextField(
+fun VgsExpirationDateTextFieldState(
     state: VgsCardNumberTextFieldState,
     modifier: Modifier = Modifier,
     onStateChange: (state: VgsCardNumberTextFieldState) -> Unit = {},
@@ -98,7 +97,7 @@ fun VgsCardNumberTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         isError = isError,
-        visualTransformation = VgsMaskVisualTransformation(state.cardBrand.mask),
+        visualTransformation = VgsVisualTransformation.None,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         keyboardActions = keyboardActions,
         singleLine = singleLine,
