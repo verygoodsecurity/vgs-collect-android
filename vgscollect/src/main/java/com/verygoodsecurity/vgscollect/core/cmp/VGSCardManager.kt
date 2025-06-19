@@ -36,11 +36,11 @@ class VGSCardManager(
 
     private val collect: VGSCollect = VGSCollect(
         context = context,
-        vaultId = "",
+        vaultId = null,
         accountId = accountId,
         environment = environment,
+        suffix = null,
         url = null,
-        port = null
     )
 
     fun addOnResponseListeners(listener: VGSCardManagerResponseListener) {

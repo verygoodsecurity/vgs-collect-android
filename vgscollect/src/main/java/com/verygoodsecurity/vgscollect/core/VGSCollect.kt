@@ -21,6 +21,7 @@ import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.gener
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isCodeSuccessful
 import com.verygoodsecurity.vgscollect.core.api.equalsUrl
 import com.verygoodsecurity.vgscollect.core.api.isURLValid
+import com.verygoodsecurity.vgscollect.core.api.setupCmpUrl
 import com.verygoodsecurity.vgscollect.core.api.setupURL
 import com.verygoodsecurity.vgscollect.core.api.toHost
 import com.verygoodsecurity.vgscollect.core.api.toHostnameValidationUrl
@@ -111,7 +112,8 @@ class VGSCollect {
         url: String?
     ) {
         this.context = context
-        this.vaultId = id
+        this.vaultId = vaultId
+        this.accountId = accountId
         this.environment = suffix?.let { environment concatWithDash it } ?: environment
         this.analyticsManager =
             VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
@@ -132,9 +134,9 @@ class VGSCollect {
         this.baseURL = if (!accountId.isNullOrEmpty()) {
             generateBaseUrl(accountId, environment)
         } else {
-            generateBaseUrl(vaultId, environment, url)
+            generateBaseUrl(vaultId ?: "", environment, url)
         }
-        onfigureHostname(cname, vaultId)
+        configureHostname(cname, vaultId)
         updateAgentHeader()
     }
 
@@ -835,6 +837,6 @@ class VGSCollect {
          * Creates an VGSCollect with the arguments supplied to this
          * builder.
          */
-        fun create() = VGSCollect(context, id, null, environment, null ,cname)
+        fun create() = VGSCollect(context, id, null, environment, null, cname)
     }
 }
