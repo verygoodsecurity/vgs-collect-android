@@ -21,6 +21,7 @@ import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.gener
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isCodeSuccessful
 import com.verygoodsecurity.vgscollect.core.api.equalsUrl
 import com.verygoodsecurity.vgscollect.core.api.isURLValid
+import com.verygoodsecurity.vgscollect.core.api.setupCmpUrl
 import com.verygoodsecurity.vgscollect.core.api.setupURL
 import com.verygoodsecurity.vgscollect.core.api.toHost
 import com.verygoodsecurity.vgscollect.core.api.toHostnameValidationUrl
@@ -72,7 +73,8 @@ private const val DEPENDENCY_MANAGER = "maven"
  */
 class VGSCollect {
 
-    private val vaultId: String
+    private val vaultId: String?
+    private val accountId: String?
     private val environment: String
     private val formId: String = UUID.randomUUID().toString()
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
@@ -101,15 +103,17 @@ class VGSCollect {
 
     private var cname: String? = null
 
-    private constructor(
+    internal constructor(
         context: Context,
-        id: String,
+        vaultId: String?,
+        accountId: String?,
         environment: String,
         suffix: String?,
         url: String?
     ) {
         this.context = context
-        this.vaultId = id
+        this.vaultId = vaultId
+        this.accountId = accountId
         this.environment = suffix?.let { environment concatWithDash it } ?: environment
         this.analyticsManager =
             VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
@@ -117,7 +121,7 @@ class VGSCollect {
 
             override fun capture(event: VGSAnalyticsEvent) {
                 analyticsManager.capture(
-                    vault = vaultId,
+                    vault = vaultId ?: accountId ?: "",
                     environment = environment,
                     formId = formId,
                     event = event
@@ -127,8 +131,12 @@ class VGSCollect {
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
-        this.baseURL = generateBaseUrl(id, environment, url)
-        cname?.let { configureHostname(it, id) }
+        this.baseURL = if (!accountId.isNullOrEmpty()) {
+            generateBaseUrl(accountId, environment)
+        } else {
+            generateBaseUrl(vaultId ?: "", environment, url)
+        }
+        configureHostname(cname, vaultId)
         updateAgentHeader()
     }
 
@@ -141,7 +149,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: String
-    ) : this(context, id, environment, null, null)
+    ) : this(context, id, null, environment, null, null)
 
     constructor(
         /** Activity context */
@@ -152,7 +160,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: Environment = Environment.SANDBOX
-    ) : this(context, id, environment.rawValue, null, null)
+    ) : this(context, id, null, environment.rawValue, null, null)
 
     constructor(
         /** Activity context */
@@ -166,7 +174,7 @@ class VGSCollect {
 
         /** Region identifier */
         suffix: String
-    ) : this(context, id, environmentType, suffix, null)
+    ) : this(context, id, null, environmentType, suffix, null)
 
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSCollect receive response from Server.
@@ -736,6 +744,10 @@ class VGSCollect {
 
     private var hasCustomHostname = false
 
+    private fun generateBaseUrl(accountId: String, environment: String): String {
+        return accountId.setupCmpUrl(environment)
+    }
+
     private fun generateBaseUrl(id: String, environment: String, url: String?): String {
         if (!url.isNullOrBlank() && url.isURLValid()) {
             val host = getHost(url)
@@ -752,7 +764,10 @@ class VGSCollect {
         }
     }
 
-    private fun configureHostname(host: String, tnt: String) {
+    private fun configureHostname(host: String?, tnt: String?) {
+        if (host.isNullOrEmpty() || tnt.isNullOrEmpty()) {
+            return
+        }
         if (host.isNotBlank() && baseURL.isNotEmpty()) {
             val r = VGSRequest.VGSRequestBuilder().setMethod(HTTPMethod.GET)
                 .setFormat(VGSHttpBodyFormat.PLAIN_TEXT).build()
@@ -822,6 +837,6 @@ class VGSCollect {
          * Creates an VGSCollect with the arguments supplied to this
          * builder.
          */
-        fun create() = VGSCollect(context, id, environment, null ,cname)
+        fun create() = VGSCollect(context, id, null, environment, null, cname)
     }
 }

@@ -6,6 +6,19 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.regex.Pattern
 
+internal fun String.setupCmpUrl(env: String): String {
+    val scheme = "https://"
+    val domain = "vgsapi.com"
+    val divider = "."
+
+    val builder = StringBuilder(scheme)
+        .append(env)
+        .append(divider)
+        .append(domain)
+
+    return builder.toString()
+}
+
 /** @suppress */
 internal fun String.setupURL(rawValue: String): String {
     return when {
