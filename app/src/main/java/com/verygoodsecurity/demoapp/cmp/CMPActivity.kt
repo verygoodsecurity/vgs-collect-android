@@ -24,7 +24,7 @@ class CMPActivity : AppCompatActivity(), VGSCardManagerResponseListener {
     private lateinit var codeExampleBinding: CodeExampleLayoutBinding
 
     private val collectCMP: VGSCardManager by lazy {
-        VGSCardManager(
+        VGSCardManager.init(
             context = this@CMPActivity,
             accountId = "test",
             environment = Environment.SANDBOX.rawValue
@@ -65,7 +65,7 @@ class CMPActivity : AppCompatActivity(), VGSCardManagerResponseListener {
 
 
     private fun initPanView() {
-        collectCMP.bindView(binding.vgsTiedPan)
+        collectCMP.cardNumber(binding.vgsTiedPan)
     }
 
     private fun initExpiryView() {
@@ -75,7 +75,7 @@ class CMPActivity : AppCompatActivity(), VGSCardManagerResponseListener {
                 yearFieldName = "data.attributes.exp_year"
             )
         )
-        collectCMP.bindView(binding.vgsTiedExpiry)
+        collectCMP.expirationDate(binding.vgsTiedExpiry)
     }
 
     private fun initCodeExampleView() {
