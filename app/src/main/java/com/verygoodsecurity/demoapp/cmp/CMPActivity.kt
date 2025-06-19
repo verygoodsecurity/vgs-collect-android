@@ -23,7 +23,7 @@ class CMPActivity : AppCompatActivity(), VGSCardManagerResponseListener {
     private lateinit var binding: CmpActivityBinding
     private lateinit var codeExampleBinding: CodeExampleLayoutBinding
 
-    private val collectCMP: VGSCardManager by lazy {
+    private val cardManager: VGSCardManager by lazy {
         VGSCardManager.init(
             context = this@CMPActivity,
             accountId = "test",
@@ -59,13 +59,13 @@ class CMPActivity : AppCompatActivity(), VGSCardManagerResponseListener {
     private fun initProceedView() {
         binding.mbProceed.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE
-            collectCMP.createCard(accessToken = "")
+            cardManager.createCard(accessToken = "")
         }
     }
 
 
     private fun initPanView() {
-        collectCMP.cardNumber(binding.vgsTiedPan)
+        cardManager.cardNumber(binding.vgsTiedPan)
     }
 
     private fun initExpiryView() {
@@ -75,7 +75,7 @@ class CMPActivity : AppCompatActivity(), VGSCardManagerResponseListener {
                 yearFieldName = "data.attributes.exp_year"
             )
         )
-        collectCMP.expirationDate(binding.vgsTiedExpiry)
+        cardManager.expirationDate(binding.vgsTiedExpiry)
     }
 
     private fun initCodeExampleView() {
