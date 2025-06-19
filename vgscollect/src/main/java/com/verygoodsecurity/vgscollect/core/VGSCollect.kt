@@ -121,7 +121,7 @@ class VGSCollect {
 
             override fun capture(event: VGSAnalyticsEvent) {
                 analyticsManager.capture(
-                    vault = this@VGSCollect.vaultId ?: TODO("Implement"),
+                    vault = vaultId ?: accountId ?: "",
                     environment = environment,
                     formId = formId,
                     event = event
