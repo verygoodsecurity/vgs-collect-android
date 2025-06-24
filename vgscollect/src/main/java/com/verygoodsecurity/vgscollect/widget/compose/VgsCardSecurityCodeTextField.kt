@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
+import com.verygoodsecurity.vgscollect.widget.compose.card.getSecurityCodeValidators
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
@@ -23,21 +24,45 @@ import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFiel
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import kotlin.math.min
 
-class VgsCardSecurityCodeTextFieldState internal constructor(
-    text: String,
-    fieldName: String,
-    validators: List<VgsTextFieldValidator>,
-    var cardBrand: VgsCardBrand = VgsCardBrand.UNKNOWN
-) : BaseFieldState(text, fieldName, validators) {
+class VgsCardSecurityCodeTextFieldState : BaseFieldState {
+
+    val cardBrand: VgsCardBrand
+    val validators: List<VgsTextFieldValidator>
+    val includeCardBrandValidation: Boolean
 
     constructor(
         fieldName: String,
-        validators: List<VgsTextFieldValidator> = listOf(VgsRequiredFieldValidator()),
+        validators: List<VgsTextFieldValidator>? = null,
+        includeCardBrandValidation: Boolean = true,
     ) : this(
         EMPTY,
         fieldName,
         validators,
+        includeCardBrandValidation,
+        VgsCardBrand.UNKNOWN
     )
+
+    internal constructor(
+        text: String,
+        fieldName: String,
+        validators: List<VgsTextFieldValidator>?,
+        includeCardBrandValidation: Boolean,
+        cardBrand: VgsCardBrand
+    ) : super(text, fieldName) {
+        this.cardBrand = cardBrand
+        this.validators = prepareValidators(validators)
+        this.includeCardBrandValidation = includeCardBrandValidation
+    }
+
+    override fun isValid(): Boolean {
+        return validate().all { it.isValid }
+    }
+
+    override fun getOutputText(): String = text
+
+    override fun validate(): List<VgsTextFieldValidationResult> {
+        return validators.map { it.validate(text) }
+    }
 
     /**
      * Updates the security code field state when a new card brand is detected
@@ -60,15 +85,12 @@ class VgsCardSecurityCodeTextFieldState internal constructor(
      */
     fun withCardBrand(cardBrand: VgsCardBrand) = this.copy(cardBrand)
 
-    override fun validate(): List<VgsTextFieldValidationResult> {
-        return validators.map { it.validate(text) } // TODO: Validator
-    }
-
     internal fun copy(cardBrand: VgsCardBrand): VgsCardSecurityCodeTextFieldState {
         return VgsCardSecurityCodeTextFieldState(
             text = normalizeText(text, cardBrand),
-            fieldName = this.fieldName,
-            validators = this.validators,
+            fieldName = fieldName,
+            validators = validators,
+            includeCardBrandValidation = includeCardBrandValidation,
             cardBrand = cardBrand
         )
     }
@@ -76,10 +98,21 @@ class VgsCardSecurityCodeTextFieldState internal constructor(
     internal fun copy(text: String): VgsCardSecurityCodeTextFieldState {
         return VgsCardSecurityCodeTextFieldState(
             text = normalizeText(text),
-            fieldName = this.fieldName,
-            validators = this.validators,
-            cardBrand = this.cardBrand
+            fieldName = fieldName,
+            validators = validators,
+            includeCardBrandValidation = includeCardBrandValidation,
+            cardBrand = cardBrand
         )
+    }
+
+    private fun prepareValidators(validators: List<VgsTextFieldValidator>?): List<VgsTextFieldValidator> {
+        return with(validators ?: listOf(VgsRequiredFieldValidator())) {
+            if (includeCardBrandValidation) {
+                this + cardBrand.getSecurityCodeValidators()
+            } else {
+                this
+            }
+        }
     }
 
     /**

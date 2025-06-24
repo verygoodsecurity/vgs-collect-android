@@ -1,27 +1,35 @@
 package com.verygoodsecurity.vgscollect.widget.compose.date
 
+private const val SHORT_YEAR_INPUT_LENGTH = 4
+private const val LONG_YEAR_INPUT_LENGTH = 6
+
 sealed class VgsExpirationDateFormat(
-    val format: String,
-    val mask: String
+    val dateFormat: String,
+    val mask: String,
+    val inputLength: Int,
 ) {
 
     class MonthShortYear : VgsExpirationDateFormat(
-        format = "MM/yy",
-        mask = "##/##"
+        dateFormat = "MM/yy",
+        mask = "##/##",
+        inputLength = SHORT_YEAR_INPUT_LENGTH
     )
 
     class MonthLongYear : VgsExpirationDateFormat(
-        format = "MM/yyyy",
-        mask = "##/####"
+        dateFormat = "MM/yyyy",
+        mask = "##/####",
+        inputLength = LONG_YEAR_INPUT_LENGTH
     )
 
     class ShortYearMonth : VgsExpirationDateFormat(
-        format = "yy/MM",
-        mask = "##/##"
+        dateFormat = "yy/MM",
+        mask = "##/##",
+        inputLength = SHORT_YEAR_INPUT_LENGTH
     )
 
     class LongYearMonth : VgsExpirationDateFormat(
-        format = "yyyy/MM",
-        mask = "####/##"
+        dateFormat = "yyyy/MM",
+        mask = "####/##",
+        inputLength = LONG_YEAR_INPUT_LENGTH
     )
 }
