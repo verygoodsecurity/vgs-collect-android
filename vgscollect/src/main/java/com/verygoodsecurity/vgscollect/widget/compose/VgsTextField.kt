@@ -17,22 +17,39 @@ import androidx.compose.ui.text.TextStyle
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
+import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 
-class VgsTextFieldState internal constructor(
-    text: String,
-    fieldName: String,
-    validators: List<VgsTextFieldValidator>
-) : BaseFieldState(text, fieldName, validators) {
+class VgsTextFieldState : BaseFieldState {
+
+    val validators: List<VgsTextFieldValidator>
 
     constructor(
         fieldName: String,
-        validators: List<VgsTextFieldValidator> = listOf(VgsRequiredFieldValidator())
+        validators: List<VgsTextFieldValidator>? = null
     ) : this(
         EMPTY,
         fieldName,
         validators
     )
+
+    internal constructor(
+        text: String,
+        fieldName: String,
+        validators: List<VgsTextFieldValidator>?
+    ) : super(text, fieldName) {
+        this.validators = validators ?: listOf(VgsRequiredFieldValidator())
+    }
+
+    override fun isValid(): Boolean {
+        return validate().all { it.isValid }
+    }
+
+    override fun validate(): List<VgsTextFieldValidationResult> {
+        return validators.map { it.validate(text) }
+    }
+
+    override fun getOutputText(): String = text
 
     internal fun copy(text: String): VgsTextFieldState {
         return VgsTextFieldState(text = text, fieldName = fieldName, validators = validators)

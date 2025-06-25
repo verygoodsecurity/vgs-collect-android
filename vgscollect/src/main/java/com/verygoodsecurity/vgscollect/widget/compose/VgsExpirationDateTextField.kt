@@ -15,121 +15,97 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
-import com.verygoodsecurity.vgscollect.widget.compose.card.getSecurityCodeValidators
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpirationDateFormat
+import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.util.plusYears
+import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsMinMaxDateValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import kotlin.math.min
 
-class VgsCardSecurityCodeTextFieldState : BaseFieldState {
+class VgsExpirationDateTextFieldState : BaseFieldState {
 
-    val cardBrand: VgsCardBrand
+    internal companion object {
+
+        const val DEFAULT_MAX_YEARS_FROM_NOW = 20
+    }
+
     val validators: List<VgsTextFieldValidator>
-    val includeCardBrandValidation: Boolean
+    val inputDateFormat: VgsExpirationDateFormat
+    val outputDateFormat: VgsExpirationDateFormat
 
     constructor(
         fieldName: String,
         validators: List<VgsTextFieldValidator>? = null,
-        includeCardBrandValidation: Boolean = true,
+        inputDateFormat: VgsExpirationDateFormat = VgsExpirationDateFormat.MonthShortYear(),
+        outputDateFormat: VgsExpirationDateFormat = VgsExpirationDateFormat.MonthShortYear(),
     ) : this(
         EMPTY,
         fieldName,
         validators,
-        includeCardBrandValidation,
-        VgsCardBrand.UNKNOWN
+        inputDateFormat,
+        outputDateFormat
     )
 
     internal constructor(
         text: String,
         fieldName: String,
         validators: List<VgsTextFieldValidator>?,
-        includeCardBrandValidation: Boolean,
-        cardBrand: VgsCardBrand
+        inputDateFormat: VgsExpirationDateFormat,
+        outputDateFormat: VgsExpirationDateFormat
     ) : super(text, fieldName) {
-        this.cardBrand = cardBrand
-        this.validators = prepareValidators(validators)
-        this.includeCardBrandValidation = includeCardBrandValidation
+        this.validators = validators ?: getDefaultValidators(inputDateFormat)
+        this.inputDateFormat = inputDateFormat
+        this.outputDateFormat = outputDateFormat
     }
 
     override fun isValid(): Boolean {
         return validate().all { it.isValid }
     }
 
-    override fun getOutputText(): String = text
-
     override fun validate(): List<VgsTextFieldValidationResult> {
         return validators.map { it.validate(text) }
     }
 
-    /**
-     * Updates the security code field state when a new card brand is detected
-     * in the card number field.
-     *
-     * This ensures that the security code field reflects the correct requirements
-     * (e.g., CVV length) for the currently detected card brand.
-     *
-     * ### Example usage:
-     *
-     * ```
-     * LaunchedEffect(cardNumberFieldState) {
-     *     if (securityCodeFieldState.cardBrand != cardNumberFieldState.cardBrand) {
-     *         securityCodeFieldState = securityCodeFieldState.withCardBrand(cardNumberFieldState.cardBrand)
-     *     }
-     * }
-     * ```
-     *
-     * @param cardBrand The card brand detected in [VgsCardNumberTextFieldState]
-     */
-    fun withCardBrand(cardBrand: VgsCardBrand) = this.copy(cardBrand)
+    override fun getOutputText(): String {
+        return ""
+    }
 
-    internal fun copy(cardBrand: VgsCardBrand): VgsCardSecurityCodeTextFieldState {
-        return VgsCardSecurityCodeTextFieldState(
-            text = normalizeText(text, cardBrand),
+    internal fun copy(text: String): VgsExpirationDateTextFieldState {
+        val normalizedText = normalizeText(text)
+        return VgsExpirationDateTextFieldState(
+            text = normalizedText,
             fieldName = fieldName,
             validators = validators,
-            includeCardBrandValidation = includeCardBrandValidation,
-            cardBrand = cardBrand
+            inputDateFormat = inputDateFormat,
+            outputDateFormat = outputDateFormat
         )
     }
 
-    internal fun copy(text: String): VgsCardSecurityCodeTextFieldState {
-        return VgsCardSecurityCodeTextFieldState(
-            text = normalizeText(text),
-            fieldName = fieldName,
-            validators = validators,
-            includeCardBrandValidation = includeCardBrandValidation,
-            cardBrand = cardBrand
-        )
-    }
-
-    private fun prepareValidators(validators: List<VgsTextFieldValidator>?): List<VgsTextFieldValidator> {
-        return with(validators ?: listOf(VgsRequiredFieldValidator())) {
-            if (includeCardBrandValidation) {
-                this + cardBrand.getSecurityCodeValidators()
-            } else {
-                this
-            }
-        }
+    private fun getDefaultValidators(inputDateFormat: VgsExpirationDateFormat): List<VgsTextFieldValidator> {
+        val min = System.currentTimeMillis()
+        val max = min.plusYears(DEFAULT_MAX_YEARS_FROM_NOW)
+        val minMaxValidator = VgsMinMaxDateValidator(min, max, inputDateFormat)
+        return listOf(VgsRequiredFieldValidator(), minMaxValidator)
     }
 
     /**
-     * Ensure text does not exceed the maximum card security code length and contains only digits.
+     * Ensure text does not exceed the maximum expiration date length and contains only digits.
      */
-    private fun normalizeText(text: String, cardBrand: VgsCardBrand = this.cardBrand): String {
+    private fun normalizeText(text: String): String {
         val digits = text.filter { it.isDigit() }
         val length = digits.length
-        return digits.substring(0, min(length, cardBrand.securityCodeLength.maxOrNull() ?: length))
+        return digits.substring(0, min(length, inputDateFormat.inputLength))
     }
 }
 
 @Composable
-fun VgsCardSecurityCodeTextField(
-    state: VgsCardSecurityCodeTextFieldState,
+fun VgsExpirationDateTextField(
+    state: VgsExpirationDateTextFieldState,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsCardSecurityCodeTextFieldState) -> Unit = {},
+    onStateChange: (state: VgsExpirationDateTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -160,7 +136,7 @@ fun VgsCardSecurityCodeTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         isError = isError,
-        visualTransformation = VgsVisualTransformation.None,
+        visualTransformation = VgsMaskVisualTransformation(state.inputDateFormat.mask),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         keyboardActions = keyboardActions,
         singleLine = singleLine,

@@ -98,11 +98,15 @@ internal fun LegacyChecksumAlgorithm.toChecksumAlgorithm(): VgsCardBrand.Checksu
     }
 }
 
-internal fun VgsCardBrand.getValidators(): List<VgsTextFieldValidator> {
+internal fun VgsCardBrand.getCardNumberValidators(): List<VgsTextFieldValidator> {
     val result = mutableListOf<VgsTextFieldValidator>()
     result.add(VgsTextLengthValidator(lengths = this.length))
     if (this.algorithm == VgsCardBrand.ChecksumAlgorithm.LUHN) {
         result.add(VgsLuhnAlgorithmValidator())
     }
     return result
+}
+
+internal fun VgsCardBrand.getSecurityCodeValidators(): List<VgsTextFieldValidator> {
+    return listOf(VgsTextLengthValidator(lengths = this.securityCodeLength))
 }
