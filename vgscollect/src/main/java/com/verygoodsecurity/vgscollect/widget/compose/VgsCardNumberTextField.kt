@@ -64,12 +64,7 @@ class VgsCardNumberTextFieldState : BaseFieldState {
     override fun getOutputText(): String = text
 
     override fun validate(): List<VgsTextFieldValidationResult> {
-        val completeValidators = if (includeCardBrandValidation) {
-            validators + cardBrand.getCardNumberValidators()
-        } else {
-            validators
-        }
-        return completeValidators.map { it.validate(text) }
+        return validators.map { it.validate(text) }
     }
 
     internal fun copy(text: String): VgsCardNumberTextFieldState {
