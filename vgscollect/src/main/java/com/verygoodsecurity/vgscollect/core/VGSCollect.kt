@@ -127,7 +127,7 @@ class VGSCollect {
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
-        this.baseURL = generateBaseUrl(id, environment, url)
+        this.baseURL = generateBaseUrl(url)
         cname?.let { configureHostname(it, id) }
         updateAgentHeader()
     }
@@ -736,13 +736,13 @@ class VGSCollect {
 
     private var hasCustomHostname = false
 
-    private fun generateBaseUrl(id: String, environment: String, url: String?): String {
+    private fun generateBaseUrl(url: String?): String {
         if (!url.isNullOrBlank() && url.isURLValid()) {
             val host = getHost(url)
             cname = host
-            return id.setupURL(environment)
+            return vaultId.setupURL(environment)
         } else {
-            return id.setupURL(environment)
+            return vaultId.setupURL(environment)
         }
     }
 
