@@ -17,7 +17,7 @@ internal fun List<BaseFieldState>.mapStorageFieldState(): List<StorageFieldState
         StorageFieldState(
             state.fieldName,
             state.isValid(),
-            state.text
+            state.getOutputText()
         )
     }
 }
