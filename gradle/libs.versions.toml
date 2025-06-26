@@ -24,6 +24,7 @@ wallet = '19.4.0'
 ktor = "3.0.1"
 kotlin-coroutines-test = "1.9.0"
 vgs-sdk-analytics-android = "1.0.1"
+bouncer = "2.1.0016"
 
 [plugins]
 android-application = { id = 'com.android.application', version.ref = 'agp' }
@@ -65,3 +66,6 @@ ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "kto
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlin-coroutines-test" }
 vgs-sdk-analytics-android = { module = "com.verygoodsecurity:vgs-sdk-analytics-android", version.ref = "vgs-sdk-analytics-android" }
+bouncer-scan-payment-full = { module = "com.getbouncer:scan-payment-full", version.ref = "bouncer" }
+bouncer-cardscan-ui = { module = "com.getbouncer:cardscan-ui", version.ref = "bouncer" }
+bouncer-tensorflow-lite = { module = "com.getbouncer:tensorflow-lite", version.ref = "bouncer" }
