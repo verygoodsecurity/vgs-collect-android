@@ -6,11 +6,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 33
+    namespace 'com.verygoodsecurity.api'
+    compileSdk 35
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdk 35
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
@@ -23,6 +24,15 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 }
 
