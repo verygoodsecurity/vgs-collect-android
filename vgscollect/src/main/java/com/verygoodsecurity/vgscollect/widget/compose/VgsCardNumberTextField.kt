@@ -27,21 +27,21 @@ import kotlin.math.min
 class VgsCardNumberTextFieldState : BaseFieldState {
 
     val cardBrand: VgsCardBrand
-    val includeCardBrandValidation: Boolean
     val validators: List<VgsTextFieldValidator>
+    val isCardBrandValidationEnabled: Boolean
 
     private val userValidators: List<VgsTextFieldValidator>?
 
     constructor(
         fieldName: String,
         validators: List<VgsTextFieldValidator>? = null,
-        includeCardBrandValidation: Boolean = true,
+        isCardBrandValidationEnabled: Boolean = true,
     ) : this(
         EMPTY,
         fieldName,
         VgsCardBrand.UNKNOWN,
         validators,
-        includeCardBrandValidation
+        isCardBrandValidationEnabled
     )
 
     internal constructor(
@@ -49,11 +49,11 @@ class VgsCardNumberTextFieldState : BaseFieldState {
         fieldName: String,
         cardBrand: VgsCardBrand,
         userValidators: List<VgsTextFieldValidator>?,
-        includeCardBrandValidation: Boolean
+        isCardBrandValidationEnabled: Boolean
     ) : super(text, fieldName) {
         this.cardBrand = cardBrand
         this.userValidators = userValidators
-        this.includeCardBrandValidation = includeCardBrandValidation
+        this.isCardBrandValidationEnabled = isCardBrandValidationEnabled
         this.validators = prepareValidators()
     }
 
@@ -73,13 +73,13 @@ class VgsCardNumberTextFieldState : BaseFieldState {
             fieldName = fieldName,
             cardBrand = VgsCardBrand.detect(text),
             userValidators = userValidators,
-            includeCardBrandValidation = includeCardBrandValidation
+            isCardBrandValidationEnabled = isCardBrandValidationEnabled
         )
     }
 
     private fun prepareValidators(): List<VgsTextFieldValidator> {
         return with(userValidators ?: listOf(VgsRequiredFieldValidator())) {
-            if (includeCardBrandValidation) {
+            if (isCardBrandValidationEnabled) {
                 this + cardBrand.getCardNumberValidators()
             } else {
                 this
