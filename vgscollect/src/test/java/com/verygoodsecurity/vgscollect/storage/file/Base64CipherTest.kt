@@ -5,7 +5,6 @@ import android.database.Cursor
 import com.verygoodsecurity.vgscollect.core.storage.content.file.Base64Cipher
 import org.junit.Assert.assertEquals
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito

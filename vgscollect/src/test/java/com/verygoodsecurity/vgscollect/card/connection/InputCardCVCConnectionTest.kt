@@ -23,21 +23,21 @@ class InputCardCVCConnectionTest {
     @Test
     fun setChangeListener() {
         val listener = mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
+        connection.addOutputListener(listener)
         verify(listener, times(1)).emit(anyInt(), any())
     }
 
     @Test
     fun emitItem() {
         val listener = mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
+        connection.addOutputListener(listener)
         verify(listener, times(1)).emit(anyInt(), any())
     }
 
     @Test
     fun setOutput() {
         val listener = mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
+        connection.addOutputListener(listener)
 
         val textItem = VGSFieldState(fieldName = "fieldName")
         connection.setOutput(textItem)
@@ -49,7 +49,7 @@ class InputCardCVCConnectionTest {
     @Test
     fun emitEmptyNotRequired() {
         val listener = mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
+        connection.addOutputListener(listener)
 
         val content = FieldContent.InfoContent()
         content.data = ""
@@ -66,7 +66,7 @@ class InputCardCVCConnectionTest {
     @Test
     fun emitNotRequired() {
         val listener = mock(OnVgsViewStateChangeListener::class.java)
-        connection.setOutputListener(listener)
+        connection.addOutputListener(listener)
 
         val content = FieldContent.InfoContent()
         content.data = "testStr"

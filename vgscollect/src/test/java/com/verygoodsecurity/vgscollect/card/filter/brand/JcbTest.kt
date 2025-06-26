@@ -9,29 +9,34 @@ import org.junit.Test
 
 class JcbTest {
 
-    private lateinit var filter: VGSCardFilter
-
-    @Before
-    fun setupFilter() {
-        filter = CardBrandFilter()
-    }
+    private var filter: VGSCardFilter = CardBrandFilter()
 
     @Test
-    fun test_1() {
-        val brand = filter.detect("35")
-        Assert.assertEquals(brand.name, CardType.JCB.name)
+    fun detect() {
+        val expectedCardBrand = CardType.JCB.name
+
+        cards().forEach {
+            val actualCardBrand = filter.detect(it).name
+            Assert.assertEquals(
+                "CARD: $it",
+                expectedCardBrand,
+                actualCardBrand
+            )
+        }
     }
 
-    @Test
-    fun test_2() {
-        val brand = filter.detect("350")
-        Assert.assertEquals(brand.name, CardType.JCB.name)
-    }
-
-    @Test
-    fun test_3() {
-        val brand = filter.detect("359")
-        Assert.assertEquals(brand.name, CardType.JCB.name)
-    }
-
+    private fun cards() = listOf(
+        "3566002020360505",
+        "3530111333300000",
+        "3566111111111113",
+        "3566000000000000",
+        "3566000000001016",
+        "3566000000001024",
+        "3566000000001032",
+        "3566000000002006",
+        "3569990000000009",
+        "3528000700000000",
+        "2131000000000016",
+        "1800000000000018",
+    )
 }

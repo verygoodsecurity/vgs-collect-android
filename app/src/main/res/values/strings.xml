@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">VGS Collect Demo</string>
-    <!--    Start screen-->
-    <string name="start_activity_app_bar_title">Very Good Security</string>
 
+    <!--    Start screen-->
     <string name="start_activity_vault_id_hint">Vault id</string>
     <string name="start_activity_path_hint">Path (Only for collect flow)</string>
 
@@ -15,6 +14,12 @@
     <string name="start_tokenization_activity_title">Tokenization</string>
     <string name="start_tokenization_activity_description">Tokenize data without additional backend setup required.</string>
 
+    <string name="start_tokenization_v2_activity_title">Create aliases(Tokenization v2)</string>
+    <string name="start_tokenization_v2_activity_description">Tokenize data without additional backend setup required.</string>
+
+    <string name="start_google_pay_activity_title">Google Pay</string>
+    <string name="start_google_pay_activity_description">Example of decrypting google pay token.</string>
+
     <string name="start_collect_with_activity_title">Collect (Activity)</string>
     <string name="start_collect_with_activity_description">Example of collecting data using Activity.</string>
 
@@ -23,6 +28,15 @@
 
     <string name="start_collect_with_view_pager_title">Collect (ViewPager)</string>
     <string name="start_collect_with_view_pager_description">Example of collecting data using ViewPager.</string>
+
+    <string name="start_date_range_pager_title">Date Range (Activity)</string>
+    <string name="start_date_range_pager_description">Example of collecting date range using Activity.</string>
+
+    <string name="start_compose_title">Compose (Activity)</string>
+    <string name="start_compose_description">Example of collecting date wit Jetpack Compose and Activity.</string>
+
+    <string name="start_compos_fragment_title">Compose (Fragment)</string>
+    <string name="start_compose_fragment_description">Example of collecting date wit Jetpack Compose and Fragment.</string>
 
     <string name="start_payopt">Payopt</string>
     <string name="start_payopt_description">Collecting data with payment optimization example.</string>
@@ -35,19 +49,13 @@
     <string name="collect_activity_cards_title">Collecting credit card data</string>
     <string name="collect_activity_submit_btn">submit</string>
     <string name="collect_activity_attach_btn">Attach file</string>
-    <string name="collect_activity_detach_btn">detach file</string>
     <string name="collect_activity_state_item">STATE</string>
     <string name="collect_activity_response_item">RESPONSE</string>
-
-    <string name="demo_description">Collecting credit card data</string>
 
     <string name="card_number">Card number</string>
     <string name="cvc">CVC</string>
     <string name="card_holder">Name on card</string>
     <string name="exp_date">Expiration date</string>
-
-    <string name="postal_code">Postal code</string>
-    <string name="city">City</string>
 
     <!--    Tokenization-->
     <string name="tokenization_card_holder_enabled_key">key_card_holder_tokenization_enabled</string>
@@ -57,4 +65,33 @@
     <string name="tokenization_expiry_enabled_key">key_expiry_tokenization_enabled</string>
     <string name="tokenization_expiry_storage_key">key_expiry_tokenization_storage</string>
     <string name="tokenization_expiry_alias_format_key">key_expiry_tokenization_alias_format</string>
+
+    <!-- Accessibility -->
+    <string name="card_holder_name_desc">Card holder name description</string>
+    <string name="card_number_desc">Card number description</string>
+    <string name="social_security_number_desc">Social security number description</string>
+    <string name="card_holder_title">Card Holder</string>
+    <string name="card_number_title">Card Number</string>
+    <string name="expiry_title">Expiry</string>
+    <string name="cvc_title">CVC</string>
+    <string name="deposit_title">Deposit</string>
+    <string name="holder_name_default_value">John Galt</string>
+    <string name="expiration_date_default_value">12/24</string>
+    <string name="back_title">Back</string>
+    <string name="next_title">Next</string>
+    <string name="submit_title">Submit</string>
+    <string name="expiration_date_title">Expiration date</string>
+    <string name="expiration_date_default_placeholder">MM/YY</string>
+    <string name="card_owner_default_value">Card owner(Name on the card)</string>
+    <string name="some_details_default_value">some details</string>
+    <string name="apply_divider_title">Apply Divider</string>
+    <string name="add_brand_title">Add brand</string>
+    <string name="override_brand_title">Override brand</string>
+    <string name="inflate_last_lay_title">Inflate last Lay</string>
+    <string name="create_last_lay_title">Create last Lay</string>
+    <string name="attach_card_number_title">Attach Card Number</string>
+    <string name="max_title">Max</string>
+    <string name="reg_title">Reg</string>
+    <string name="rule_off_title">Rule off</string>
+    <string name="add_credit_or_debit_card_title">Add credit or debit card</string>
 </resources>

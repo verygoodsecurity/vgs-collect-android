@@ -58,16 +58,16 @@ class InputFieldViewTest {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
-        val FIELD_NAME = "card"
-        view.setFieldName(FIELD_NAME)
-        assertEquals(FIELD_NAME, view.getFieldName())
-        assertEquals(FIELD_NAME, (child as BaseInputField).tag)
+        val fieldName = "card"
+        view.setFieldName(fieldName)
+        assertEquals(fieldName, view.getFieldName())
+        assertEquals(fieldName, (child as BaseInputField).tag)
 
-        val FIELD_NAME_ID = R.string.sdk_name
-        val TEXT = activity.resources.getString(R.string.sdk_name)
-        view.setFieldName(FIELD_NAME_ID)
-        assertEquals(TEXT, view.getFieldName())
-        assertEquals(TEXT, child.tag)
+        val fieldNameId = R.string.sdk_name
+        val text = activity.resources.getString(R.string.sdk_name)
+        view.setFieldName(fieldNameId)
+        assertEquals(text, view.getFieldName())
+        assertEquals(text, child.tag)
     }
 
     @Test
@@ -98,13 +98,13 @@ class InputFieldViewTest {
 
     @Test
     fun test_hint() {
-        val HINT = "hint"
-        view.setHint(HINT)
+        val hint = "hint"
+        view.setHint(hint)
 
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
-        assertEquals(HINT, (child as BaseInputField).hint)
+        assertEquals(hint, (child as BaseInputField).hint)
     }
 
     @Test
@@ -112,21 +112,21 @@ class InputFieldViewTest {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
-        val TEXT1 = "text"
-        view.setText(TEXT1)
-        assertEquals(TEXT1, (child as BaseInputField).text.toString())
+        val text1 = "text"
+        view.setText(text1)
+        assertEquals(text1, (child as BaseInputField).text.toString())
 
-        val TEXT2 = "text_2"
-        view.setText(TEXT2, TextView.BufferType.SPANNABLE)
-        assertEquals(TEXT2, child.text.toString())
+        val text2 = "text_2"
+        view.setText(text2, TextView.BufferType.SPANNABLE)
+        assertEquals(text2, child.text.toString())
 
-        val TEXT_ID_1 = R.string.sdk_name
-        val TEXT = activity.resources.getString(R.string.sdk_name)
-        view.setText(TEXT_ID_1, TextView.BufferType.SPANNABLE)
-        assertEquals(TEXT, child.text.toString())
+        val textId1 = R.string.sdk_name
+        val text = activity.resources.getString(R.string.sdk_name)
+        view.setText(textId1, TextView.BufferType.SPANNABLE)
+        assertEquals(text, child.text.toString())
 
-        view.setText(TEXT_ID_1)
-        assertEquals(TEXT, child.text.toString())
+        view.setText(textId1)
+        assertEquals(text, child.text.toString())
     }
 
     @Test
@@ -135,13 +135,13 @@ class InputFieldViewTest {
         assertTrue(child is BaseInputField)
 
         val myList = ColorStateList(arrayOf(intArrayOf()), intArrayOf(android.R.color.black))
-        val COLOR = android.R.color.black
+        val color = android.R.color.black
         view.setHintTextColor(myList)
-        assertEquals(COLOR, (child as BaseInputField).hintTextColors.defaultColor)
+        assertEquals(color, (child as BaseInputField).hintTextColors.defaultColor)
 
-        val COLOR_2 = android.R.color.white
-        view.setHintTextColor(COLOR_2)
-        assertEquals(COLOR_2, child.hintTextColors.defaultColor)
+        val color2 = android.R.color.white
+        view.setHintTextColor(color2)
+        assertEquals(color2, child.hintTextColors.defaultColor)
     }
 
     @Test
@@ -149,9 +149,9 @@ class InputFieldViewTest {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
-        val COLOR = android.R.color.black
-        view.setTextColor(COLOR)
-        assertEquals(COLOR, (child as BaseInputField).textColors.defaultColor)
+        val color = android.R.color.black
+        view.setTextColor(color)
+        assertEquals(color, (child as BaseInputField).textColors.defaultColor)
     }
 
     @Test
@@ -159,9 +159,9 @@ class InputFieldViewTest {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
-        val MAX_LINES = 12
-        view.setMaxLines(MAX_LINES)
-        assertEquals(MAX_LINES, (child as BaseInputField).maxLines)
+        val maxLines = 12
+        view.setMaxLines(maxLines)
+        assertEquals(maxLines, (child as BaseInputField).maxLines)
     }
 
     @Test
@@ -169,9 +169,9 @@ class InputFieldViewTest {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
-        val MIN_LINES = 12
-        view.setMinLines(MIN_LINES)
-        assertEquals(MIN_LINES, (child as BaseInputField).minLines)
+        val minLines = 12
+        view.setMinLines(minLines)
+        assertEquals(minLines, (child as BaseInputField).minLines)
     }
 
     @Test
@@ -179,14 +179,14 @@ class InputFieldViewTest {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
-        val ELLIPSIZE_1 = TextUtils.TruncateAt.END
-        view.setEllipsize(ELLIPSIZE_1)
-        assertEquals(ELLIPSIZE_1, (child as BaseInputField).ellipsize)
+        val ellipSize1 = TextUtils.TruncateAt.END
+        view.setEllipsize(ellipSize1)
+        assertEquals(ellipSize1, (child as BaseInputField).ellipsize)
 
-        val ELLIPSIZE_INT = 2
-        val ELLIPSIZE_2 = TextUtils.TruncateAt.MIDDLE
-        view.setEllipsize(ELLIPSIZE_INT)
-        assertEquals(ELLIPSIZE_2, child.ellipsize)
+        val ellipSizeInt = 2
+        val ellipSize2 = TextUtils.TruncateAt.MIDDLE
+        view.setEllipsize(ellipSizeInt)
+        assertEquals(ellipSize2, child.ellipsize)
     }
 
     @Test
@@ -194,10 +194,10 @@ class InputFieldViewTest {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
-        val GRAVITY = Gravity.CENTER
-        view.setGravity(GRAVITY)
-        assertEquals(GRAVITY, (child as BaseInputField).gravity)
-        assertEquals(GRAVITY, view.getGravity())
+        val gravity = Gravity.CENTER
+        view.setGravity(gravity)
+        assertEquals(gravity, (child as BaseInputField).gravity)
+        assertEquals(gravity, view.getGravity())
     }
 
     @Test
@@ -205,8 +205,8 @@ class InputFieldViewTest {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
-        val VISIBILITY = false
-        view.setCursorVisible(VISIBILITY)
+        val visibility = false
+        view.setCursorVisible(visibility)
         assertFalse((child as BaseInputField).isCursorVisible)
     }
 
@@ -215,8 +215,8 @@ class InputFieldViewTest {
         val child = view.statePreparer.getView()
         assertTrue(child is BaseInputField)
 
-        val VISIBILITY = true
-        view.setIsRequired(VISIBILITY)
+        val visibility = true
+        view.setIsRequired(visibility)
         assertTrue((child as BaseInputField).isRequired)
         assertTrue(view.isRequired())
     }

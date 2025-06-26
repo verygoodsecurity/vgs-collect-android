@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.view.card.formatter.date
 
 import android.text.Editable
+import com.verygoodsecurity.vgscollect.util.extension.replaceIgnoreFilters
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import java.lang.StringBuilder
 
@@ -26,7 +27,7 @@ class FlexibleDateFormatter : BaseDateFormatter() {
         if(mode == DatePickerMode.INPUT) {
             s?.apply {
                 if(s.toString() != runtimeData) {
-                    replace(0, s.length, runtimeData)
+                    replaceIgnoreFilters(0, s.length, runtimeData)
                 }
             }
         }

@@ -101,7 +101,7 @@ class VGSCollectTest {
         val view = applyEditText(FieldType.INFO)
 
         verify(view, times(2)).getFieldType() //default init + analytics,
-        verify(view).getFieldName()
+        verify(view, times(1)).getFieldName()
         verify(view).addStateListener(any())
     }
 
@@ -427,11 +427,11 @@ class VGSCollectTest {
                     )
                 )
             ).toJSON().toString(),
-            false,
-            false,
-            VGSHttpBodyFormat.JSON,
-            60_000,
-            true
+            fieldsIgnore = false,
+            fileIgnore = false,
+            format = VGSHttpBodyFormat.JSON,
+            requestTimeoutInterval = 60_000,
+            requiresTokenization = true
         )
 
         assertEquals(expected, ac.value)

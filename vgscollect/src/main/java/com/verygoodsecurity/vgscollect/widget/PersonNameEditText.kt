@@ -6,14 +6,13 @@ import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.inputmethod.EditorInfo
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
-import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
 
 class PersonNameEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -70,7 +69,7 @@ class PersonNameEditText @JvmOverloads constructor(
                 setTypeface(getTypeface(), textStyle)
 
                 setText(text)
-                setEnabled(enabled)
+                isEnabled = enabled
 
                 setInputType(inputType)
 

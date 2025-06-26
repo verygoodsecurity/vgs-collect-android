@@ -1,9 +1,9 @@
 package com.verygoodsecurity.vgscollect.core.api.client
 
+import com.verygoodsecurity.sdk.analytics.utils.VGSAnalyticsSession
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorage
 import com.verygoodsecurity.vgscollect.core.api.VgsApiTemporaryStorageImpl
-import com.verygoodsecurity.vgscollect.core.api.analityc.CollectActionTracker
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 
@@ -36,7 +36,7 @@ internal interface ApiClient {
             AGENT to String.format(
                 TEMPORARY_AGENT_TEMPLATE,
                 BuildConfig.VERSION_NAME,
-                CollectActionTracker.Sid.id,
+                VGSAnalyticsSession.id,
                 if (isAnalyticsEnabled) "default" else "none"
             )
     }

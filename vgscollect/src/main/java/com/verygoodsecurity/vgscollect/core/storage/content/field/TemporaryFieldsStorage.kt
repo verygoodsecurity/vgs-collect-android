@@ -2,10 +2,14 @@ package com.verygoodsecurity.vgscollect.core.storage.content.field
 
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscollect.core.model.state.*
-import com.verygoodsecurity.vgscollect.core.storage.*
+import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.core.model.state.isCardCVCType
+import com.verygoodsecurity.vgscollect.core.model.state.isCardNumberType
+import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.storage.FieldDependencyObserver
 import com.verygoodsecurity.vgscollect.core.storage.IStateEmitter
+import com.verygoodsecurity.vgscollect.core.storage.OnFieldStateChangeListener
+import com.verygoodsecurity.vgscollect.core.storage.StorageContractor
 import com.verygoodsecurity.vgscollect.core.storage.VgsStore
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
@@ -38,9 +42,9 @@ internal class TemporaryFieldsStorage(
         return store.values
     }
 
-    private fun Map<Int, VGSFieldState>.containsState(state: VGSFieldState):Int {
+    private fun Map<Int, VGSFieldState>.containsState(state: VGSFieldState): Int {
         forEach {
-            if(state.fieldName == it.value.fieldName) {
+            if (state.fieldName == it.value.fieldName) {
                 return it.key
             }
         }
@@ -48,7 +52,7 @@ internal class TemporaryFieldsStorage(
         return -1
     }
 
-    override fun performSubscription() = object: OnVgsViewStateChangeListener {
+    override fun performSubscription() = object : OnVgsViewStateChangeListener {
         override fun emit(viewId: Int, state: VGSFieldState) {
             if (contractor.checkState(state)) {
                 addItem(viewId, state)
@@ -82,9 +86,9 @@ internal class TemporaryFieldsStorage(
     }
 
     private fun notifyOnNewFieldAdd(state: VGSFieldState) {
-        if(state.isCardCVCType()) {
+        if (state.isCardCVCType()) {
             store.forEach {
-                if(it.value.type == FieldType.CARD_NUMBER) {
+                if (it.value.type == FieldType.CARD_NUMBER) {
                     refreshDependenciesOnNewField(it.value)
                     return
                 }
@@ -93,7 +97,7 @@ internal class TemporaryFieldsStorage(
     }
 
     private fun notifyDependentFieldsOnDataChange(state: VGSFieldState) {
-        if(state.isCardNumberType()) {
+        if (state.isCardNumberType()) {
             refreshDependencies(state)
         }
     }
@@ -114,12 +118,12 @@ internal class TemporaryFieldsStorage(
     }
 
     @VisibleForTesting
-    fun  getFieldStateChangeListeners(): MutableList<OnFieldStateChangeListener> {
+    fun getFieldStateChangeListeners(): MutableList<OnFieldStateChangeListener> {
         return onFieldStateChangeListeners
     }
 
     @VisibleForTesting
-    fun  getDependencyObservers(): MutableList<FieldDependencyObserver> {
+    fun getDependencyObservers(): MutableList<FieldDependencyObserver> {
         return dependencyObservers
     }
 }

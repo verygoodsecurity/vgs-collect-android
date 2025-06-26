@@ -4,23 +4,29 @@
     <!-- Representation of dates and times that will be visible for end-user.
          The method uses the ISO 8601 standard.
      -->
-    <attr name="datePattern" format="string"/>
+    <attr name="datePattern" format="string" />
+
+    <!-- Representation of start date. The method uses the ISO 8601 standard. -->
+    <attr name="startDate" format="string" />
+
+    <!-- Representation of end date. The method uses the ISO 8601 standard. -->
+    <attr name="endDate" format="string" />
 
     <!-- Representation of date and times which will be sent to the Vault Proxy Server.
          The method uses the ISO 8601 standard.
      -->
-    <attr name="outputPattern" format="string"/>
+    <attr name="outputPattern" format="string" />
 
     <!-- Set the date picker mode(calendar, spinner, or input). -->
     <attr name="datePickerModes">
 
-    <!-- set date from CalendarView.-->
+        <!-- set date from CalendarView.-->
         <enum name="calendar" value="0" />
 
-    <!-- set date from spinner DatePicker.-->
+        <!-- set date from spinner DatePicker.-->
         <enum name="spinner" value="1" />
 
-    <!-- set date manually.-->
+        <!-- set date manually.-->
         <enum name="input" value="2" />
     </attr>
 
@@ -33,31 +39,31 @@
         <li><b>dip</b> Device independent pixels. See {@link android.util.DisplayMetrics} for more information.</li>
     </ul>
         -->
-    <attr name="textSize" format="dimension"/>
+    <attr name="textSize" format="dimension" />
 
     <!-- Hint text to display when the text is empty. -->
-    <attr name="hint" format="string"/>
+    <attr name="hint" format="string" />
 
     <!-- Specifies whether the widget is enabled. The interpretation of the enabled state varies by subclass.
          For example, a non-enabled EditText prevents the user from editing the contained text, and
          a non-enabled Button prevents the user from tapping the button.
          The appearance of enabled and non-enabled widgets may differ, if the drawables referenced
          from evaluating state_enabled differ. -->
-    <attr name="enabled" format="boolean"/>
+    <attr name="enabled" format="boolean" />
 
     <!-- Color of text (usually same as colorForeground). -->
-    <attr name="textColor" format="color"/>
+    <attr name="textColor" format="color" />
 
     <!-- Text to display. -->
-    <attr name="text" format="string"  localization="suggested"/>
+    <attr name="text" format="string" localization="suggested" />
 
-    <attr name="maxLines" format="integer"/>
-    <attr name="minLines" format="integer"/>
+    <attr name="maxLines" format="integer" />
+    <attr name="minLines" format="integer" />
 
     <!--    Sets the text to be used for data transfer to VGS proxy.
             Usually, it is similar to field-name in JSON path in your inbound route filters.
             It is highly important to specify this parameter because the VGSCollect module relies on it too.-->
-    <attr name="fieldName" format="string"/>
+    <attr name="fieldName" format="string" />
 
     <!-- Makes the cursor visible (the default) or invisible. -->
     <attr name="cursorVisible" format="boolean" />
@@ -330,12 +336,12 @@
     </attr>
 
     <!--  To set the symbol that will divide groups of digits. -->
-    <attr name="numberDivider" format="string"/>
+    <attr name="numberDivider" format="string" />
 
     <!--  To set the symbol that will divide groups of digits before submit to the Proxy.
           By default, the widget doesn't change user input before submit.
     -->
-    <attr name="outputNumberDivider" format="string"/>
+    <attr name="outputNumberDivider" format="string" />
 
     <!-- Format of the alias. -->
     <attr name="aliasFormat">
@@ -351,103 +357,103 @@
     </attr>
 
     <!-- Defines if data should be tokenized. -->
-    <attr name="enableTokenization" format="boolean"/>
+    <attr name="enableTokenization" format="boolean" />
 
 
     <declare-styleable name="InputFieldView">
 
         <!-- Set the validation state of this view. Set true if this view has enabled validation, false otherwise. -->
-        <attr name="enableValidation" format="boolean"/>
+        <attr name="enableValidation" format="boolean" />
 
         <attr name="imeOptions" />
         <!-- Font family (named by string or as a font resource reference) for the text. -->
-        <attr name="fontFamily" format="string"/>
+        <attr name="fontFamily" format="string" />
 
         <!-- Sets the text color, size, style, hint color, and highlight color from the specified TextAppearance resource.-->
-        <attr name="textAppearance" format="reference"/>
+        <attr name="textAppearance" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="PersonNameEditText">
-        <attr name="fieldName"/>
+        <attr name="fieldName" />
 
-        <attr name="inputType"/>
+        <attr name="inputType" />
 
-        <attr name="text"/>
-        <attr name="enabled"/>
-        <attr name="textSize"/>
+        <attr name="text" />
+        <attr name="enabled" />
+        <attr name="textSize" />
         <attr name="textColor" />
-        <attr name="maxLines"/>
-        <attr name="minLines"/>
-        <attr name="ellipsize"/>
+        <attr name="maxLines" />
+        <attr name="minLines" />
+        <attr name="ellipsize" />
 
         <attr name="textStyle" />
 
         <attr name="cursorVisible" />
-        <attr name="singleLine"  />
-        <attr name="isRequired"/>
+        <attr name="singleLine" />
+        <attr name="isRequired" />
 
         <attr name="gravity" />
-        <attr name="scrollHorizontally"/>
+        <attr name="scrollHorizontally" />
 
         <attr name="hint" />
 
         <!-- tokenization api-->
-        <attr name="storageType"/>
-        <attr name="aliasFormat"/>
-        <attr name="enableTokenization"/>
+        <attr name="storageType" />
+        <attr name="aliasFormat" />
+        <attr name="enableTokenization" />
     </declare-styleable>
 
     <declare-styleable name="VGSEditText">
-        <attr name="fieldName"/>
+        <attr name="fieldName" />
 
-        <attr name="inputType"/>
+        <attr name="inputType" />
 
-        <attr name="text"/>
-        <attr name="enabled"/>
-        <attr name="textSize"/>
+        <attr name="text" />
+        <attr name="enabled" />
+        <attr name="textSize" />
         <attr name="textColor" />
-        <attr name="maxLines"/>
-        <attr name="minLines"/>
-        <attr name="ellipsize"/>
+        <attr name="maxLines" />
+        <attr name="minLines" />
+        <attr name="ellipsize" />
 
         <attr name="textStyle" />
 
         <attr name="cursorVisible" />
-        <attr name="singleLine"  />
-        <attr name="isRequired"/>
+        <attr name="singleLine" />
+        <attr name="isRequired" />
 
         <attr name="gravity" />
-        <attr name="scrollHorizontally"/>
+        <attr name="scrollHorizontally" />
 
         <attr name="hint" />
 
         <!-- tokenization api-->
-        <attr name="enableTokenization"/>
-        <attr name="storageType"/>
-        <attr name="aliasFormat"/>
+        <attr name="enableTokenization" />
+        <attr name="storageType" />
+        <attr name="aliasFormat" />
     </declare-styleable>
 
     <declare-styleable name="CardVerificationCodeEditText">
-        <attr name="fieldName"/>
+        <attr name="fieldName" />
 
-        <attr name="inputType"/>
+        <attr name="inputType" />
 
-        <attr name="text"/>
-        <attr name="enabled"/>
-        <attr name="textSize"/>
+        <attr name="text" />
+        <attr name="enabled" />
+        <attr name="textSize" />
         <attr name="textColor" />
-        <attr name="maxLines"/>
-        <attr name="minLines"/>
-        <attr name="ellipsize"/>
+        <attr name="maxLines" />
+        <attr name="minLines" />
+        <attr name="ellipsize" />
 
         <attr name="textStyle" />
 
         <attr name="cursorVisible" />
-        <attr name="singleLine"  />
-        <attr name="isRequired"/>
+        <attr name="singleLine" />
+        <attr name="isRequired" />
 
         <attr name="gravity" />
-        <attr name="scrollHorizontally"/>
+        <attr name="scrollHorizontally" />
 
         <attr name="hint" />
 
@@ -472,7 +478,7 @@
         </attr>
 
         <!-- tokenization api-->
-        <attr name="aliasFormat"/>
+        <attr name="aliasFormat" />
     </declare-styleable>
 
     <declare-styleable name="VGSCardNumberEditText">
@@ -490,33 +496,33 @@
             <enum name="disable" value="2" />
         </attr>
 
-        <attr name="fieldName"/>
+        <attr name="fieldName" />
 
-        <attr name="inputType"/>
+        <attr name="inputType" />
 
-        <attr name="text"/>
-        <attr name="enabled"/>
-        <attr name="textSize"/>
+        <attr name="text" />
+        <attr name="enabled" />
+        <attr name="textSize" />
         <attr name="textColor" />
-        <attr name="maxLines"/>
-        <attr name="minLines"/>
-        <attr name="ellipsize"/>
+        <attr name="maxLines" />
+        <attr name="minLines" />
+        <attr name="ellipsize" />
 
         <attr name="textStyle" />
 
         <attr name="cursorVisible" />
-        <attr name="singleLine"  />
-        <attr name="isRequired"/>
+        <attr name="singleLine" />
+        <attr name="isRequired" />
 
         <attr name="gravity" />
-        <attr name="scrollHorizontally"/>
+        <attr name="scrollHorizontally" />
 
         <attr name="hint" />
 
         <!--  To set the symbol that will divide groups of digits in the card number add app:numberDivider to your field's declaration in xml. -->
-        <attr name="numberDivider"/>
+        <attr name="numberDivider" />
 
-        <attr name="outputNumberDivider"/>
+        <attr name="outputNumberDivider" />
 
         <!-- Specifies how to align the icon by the view’s x-axis. To specify gravity programmatically you could use android Gravity class.
              By default, gravity in end position.
@@ -530,23 +536,23 @@
         <!-- Specifies visibility for card brand preview icon. -->
         <attr name="brandIconVisibility">
             <!-- Preview icon is visible all the time. -->
-            <enum name="always" value="0"/>
+            <enum name="always" value="0" />
             <!-- Preview icon is visible only when card brand is detected. -->
-            <enum name="ifDetected" value="1"/>
+            <enum name="ifDetected" value="1" />
             <!-- Preview icon is visible when some input exists. -->
-            <enum name="hasContent" value="2"/>
+            <enum name="hasContent" value="2" />
             <!-- Preview icon is never visible. -->
-            <enum name="never" value="3"/>
+            <enum name="never" value="3" />
         </attr>
 
         <!-- tokenization api-->
-        <attr name="aliasFormat"/>
-        <attr name="storageType"/>
+        <attr name="aliasFormat" />
+        <attr name="storageType" />
     </declare-styleable>
 
     <declare-styleable name="SSNEditText">
 
-        <attr name="fieldName"/>
+        <attr name="fieldName" />
 
         <attr name="inputType" />
         <attr name="hint" />
@@ -563,93 +569,97 @@
         <attr name="ellipsize" />
 
         <!--  To set the symbol that will divide groups of digits in the SSN add app:numberDivider to your field's declaration in xml. -->
-        <attr name="numberDivider"/>
+        <attr name="numberDivider" />
 
-        <attr name="outputNumberDivider"/>
+        <attr name="outputNumberDivider" />
 
         <!-- tokenization api-->
-        <attr name="storageType"/>
-        <attr name="aliasFormat"/>
-        <attr name="enableTokenization"/>
+        <attr name="storageType" />
+        <attr name="aliasFormat" />
+        <attr name="enableTokenization" />
     </declare-styleable>
 
 
-
     <declare-styleable name="DateTextField">
-        <attr name="fieldName"/>
+        <attr name="fieldName" />
 
-        <attr name="inputType"/>
+        <attr name="inputType" />
 
-        <attr name="text"/>
-        <attr name="enabled"/>
-        <attr name="textSize"/>
+        <attr name="text" />
+        <attr name="enabled" />
+        <attr name="textSize" />
         <attr name="textColor" />
-        <attr name="ellipsize"/>
+        <attr name="ellipsize" />
 
         <attr name="textStyle" />
 
         <attr name="cursorVisible" />
-        <attr name="singleLine"  />
-        <attr name="isRequired"/>
+        <attr name="singleLine" />
+        <attr name="isRequired" />
 
         <attr name="gravity" />
-        <attr name="scrollHorizontally"/>
+        <attr name="scrollHorizontally" />
 
         <attr name="hint" />
 
-        <attr name="maxDate" format="string"/>
-        <attr name="minDate" format="string"/>
-        <attr name="datePattern"/>
-        <attr name="datePickerModes"/>
+        <attr name="maxDate" format="string" />
+        <attr name="minDate" format="string" />
+        <attr name="datePattern" />
+        <attr name="datePickerModes" />
 
         <!-- tokenization api-->
-        <attr name="storageType"/>
-        <attr name="aliasFormat"/>
-        <attr name="enableTokenization"/>
+        <attr name="storageType" />
+        <attr name="aliasFormat" />
+        <attr name="enableTokenization" />
     </declare-styleable>
 
-    <declare-styleable name="ExpirationDateEditText">
+    <declare-styleable name="DateEditText">
 
         <!-- Specifies rules on how to format the user input. Currently, it has an impact only on datePickerModes as input.
              By default, field apply strict mode. -->
         <attr name="formatterMode" format="enum">
 
             <!-- Ignore any incorrect user input. -->
-            <enum name="strict" value="0"/>
+            <enum name="strict" value="0" />
 
             <!-- Apply any digits in user input. -->
-            <enum name="flexible" value="1"/>
+            <enum name="flexible" value="1" />
         </attr>
 
-        <attr name="fieldName"/>
+        <attr name="fieldName" />
 
-        <attr name="inputType"/>
+        <attr name="inputType" />
 
-        <attr name="text"/>
-        <attr name="enabled"/>
-        <attr name="textSize"/>
+        <attr name="text" />
+        <attr name="enabled" />
+        <attr name="textSize" />
         <attr name="textColor" />
-        <attr name="ellipsize"/>
+        <attr name="ellipsize" />
 
         <attr name="textStyle" />
 
         <attr name="cursorVisible" />
-        <attr name="singleLine"  />
-        <attr name="isRequired"/>
+        <attr name="singleLine" />
+        <attr name="isRequired" />
 
         <attr name="gravity" />
-        <attr name="scrollHorizontally"/>
+        <attr name="scrollHorizontally" />
 
         <attr name="hint" />
 
-        <attr name="datePattern"/>
-        <attr name="outputPattern"/>
-        <attr name="datePickerModes"/>
+        <attr name="datePattern" />
+        <attr name="outputPattern" />
+        <attr name="datePickerModes" />
 
         <!-- tokenization api-->
-        <attr name="storageType"/>
-        <attr name="aliasFormat"/>
-        <attr name="enableTokenization"/>
+        <attr name="storageType" />
+        <attr name="aliasFormat" />
+        <attr name="enableTokenization" />
+    </declare-styleable>
+
+    <declare-styleable name="RangeDateEditText">
+        <attr name="minDate" />
+        <attr name="maxDate" />
     </declare-styleable>
 
     <declare-styleable name="VGSTextInputLayout">
@@ -657,88 +667,88 @@
         <!-- The color of the label when it is collapsed and the text field is active -->
         <attr name="hintTextColor" format="color" />
         <!-- Whether the layout's floating label functionality is enabled. -->
-        <attr name="hintEnabled" format="boolean"/>
+        <attr name="hintEnabled" format="boolean" />
         <!-- Whether to animate hint state changes. -->
-        <attr name="hintAnimationEnabled" format="boolean"/>
+        <attr name="hintAnimationEnabled" format="boolean" />
 
         <!-- Whether the view will display a toggle when the EditText has a password.
              Deprecated. The view's end icon should be specified via endIconMode instead. -->
-        <attr name="passwordToggleEnabled" format="boolean"/>
+        <attr name="passwordToggleEnabled" format="boolean" />
         <!-- Icon to use for the password input visibility toggle
          Deprecated. Use endIconTint instead. -->
-        <attr name="passwordToggleTint" format="color"/>
+        <attr name="passwordToggleTint" format="color" />
         <!-- Drawable to use as the password input visibility toggle icon.
          Deprecated. Use endIconDrawable instead. -->
-        <attr name="passwordToggleDrawable" format="reference"/>
+        <attr name="passwordToggleDrawable" format="reference" />
 
-<!--        Set the box background more(filled, outline, or none).-->
-        <attr name="boxBackgroundModes" >
-            <enum name="outline" value="0"/>
-            <enum name="filled" value="1"/>
-            <enum name="none" value="2"/>
+        <!--        Set the box background more(filled, outline, or none).-->
+        <attr name="boxBackgroundModes">
+            <enum name="outline" value="0" />
+            <enum name="filled" value="1" />
+            <enum name="none" value="2" />
         </attr>
         <!-- The color to use for the box's background color when in filled box mode. -->
-        <attr name="boxBackgroundColor" format="color"/>
+        <attr name="boxBackgroundColor" format="color" />
         <!-- The color to use for the box's stroke when in outline box mode. -->
-        <attr name="boxStrokeColor" format="color"/>
+        <attr name="boxStrokeColor" format="color" />
         <!-- The value to use for the box's top end corner radius when in box mode. -->
-        <attr name="boxCornerRadiusTopEnd" format="dimension"/>
+        <attr name="boxCornerRadiusTopEnd" format="dimension" />
         <!-- The value to use for the box's top start corner radius when in box mode. -->
-        <attr name="boxCornerRadiusTopStart" format="dimension"/>
+        <attr name="boxCornerRadiusTopStart" format="dimension" />
         <!-- The value to use for the box's bottom start corner radius when in box mode. -->
-        <attr name="boxCornerRadiusBottomStart" format="dimension"/>
+        <attr name="boxCornerRadiusBottomStart" format="dimension" />
         <!-- The value to use for the box's bottom end corner radius when in box mode. -->
-        <attr name="boxCornerRadiusBottomEnd" format="dimension"/>
-        <attr name="boxCornerRadius" format="dimension"/>
+        <attr name="boxCornerRadiusBottomEnd" format="dimension" />
+        <attr name="boxCornerRadius" format="dimension" />
 
         <!-- Whether the layout is laid out as if the character counter will be displayed. -->
-        <attr name="counterEnabled" format="boolean"/>
+        <attr name="counterEnabled" format="boolean" />
         <!-- The max length to display in the character counter. -->
-        <attr name="counterMaxLength" format="integer"/>
+        <attr name="counterMaxLength" format="integer" />
 
         <!-- Tint color to use for the start icon. -->
-        <attr name="startIconTint" format="color"/>
+        <attr name="startIconTint" format="color" />
         <!-- Drawable to use for the start icon. -->
-        <attr name="startIconDrawable" format="reference"/>
+        <attr name="startIconDrawable" format="reference" />
 
         <!-- Tint color to use for the end icon. -->
-        <attr name="endIconTint" format="color"/>
+        <attr name="endIconTint" format="color" />
         <!-- Drawable to use for the end icon. -->
-        <attr name="endIconDrawable" format="reference"/>
+        <attr name="endIconDrawable" format="reference" />
         <!-- The end icon mode of the TextInputLayout. It will display one of the end icons detailed
          below, or no end icon. -->
         <attr name="endIconModes">
             <!-- The view will display a custom icon specified by the user. -->
-            <enum name="custom" value="-1"/>
+            <enum name="custom" value="-1" />
             <!-- No end icon. -->
-            <enum name="none" value="0"/>
+            <enum name="none" value="0" />
             <!-- The view will display a toggle when the EditText has a password. -->
-            <enum name="password_toggle" value="1"/>
+            <enum name="password_toggle" value="1" />
             <!-- The view will display a clear text button while the EditText contains input. -->
-            <enum name="clear_text" value="2"/>
+            <enum name="clear_text" value="2" />
         </attr>
 
         <!-- Whether the layout is laid out as if an error will be displayed. -->
-        <attr name="errorEnabled" format="boolean"/>
+        <attr name="errorEnabled" format="boolean" />
 
         <!-- Sets the text color and size for the error message from the specified TextAppearance resource.-->
-        <attr name="errorTextAppearance" format="reference"/>
+        <attr name="errorTextAppearance" format="reference" />
 
         <!-- Sets the collapsed hint text color from the specified ColorStateList resource.-->
-        <attr name="hintTextAppearance" format="reference"/>
+        <attr name="hintTextAppearance" format="reference" />
 
         <!-- Sets the text color and size for the overflowed character counter using the specified TextAppearance resource.-->
-        <attr name="counterOverflowTextAppearance" format="reference"/>
+        <attr name="counterOverflowTextAppearance" format="reference" />
 
         <!-- Sets the text color and size for the character counter using the specified TextAppearance resource.-->
-        <attr name="counterTextAppearance" format="reference"/>
+        <attr name="counterTextAppearance" format="reference" />
 
         <!-- Sets the text color and size for the helper text from the specified TextAppearance resource.-->
-        <attr name="helperTextTextAppearance" format="reference"/>
+        <attr name="helperTextTextAppearance" format="reference" />
 
         <!-- Returns the helper message that was set to be displayed with setHelperText(CharSequence),
              or null if no helper text was set or if helper text functionality is not enabled.
         -->
-        <attr name="helperText" format="string"/>
+        <attr name="helperText" format="string" />
     </declare-styleable>
 </resources>

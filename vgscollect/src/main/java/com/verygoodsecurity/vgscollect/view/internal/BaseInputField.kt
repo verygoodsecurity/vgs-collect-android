@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.view.internal
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
@@ -11,12 +12,16 @@ import androidx.annotation.VisibleForTesting
 import androidx.core.view.ViewCompat
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsEvent
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
+import com.verygoodsecurity.vgscollect.core.AnalyticsHandler
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
-import com.verygoodsecurity.vgscollect.core.api.analityc.action.AutofillAction
-import com.verygoodsecurity.vgscollect.core.model.state.*
+import com.verygoodsecurity.vgscollect.core.model.state.Dependency
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
+import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.core.model.state.mapToFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.core.storage.DependencyListener
@@ -38,7 +43,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
             val field = when (parent.getFieldType()) {
                 FieldType.CARD_NUMBER -> CardInputField(context)
                 FieldType.CVC -> CVCInputField(context)
-                FieldType.CARD_EXPIRATION_DATE -> DateInputField(context)
+                FieldType.DATE_RANGE -> DateRangeInputField(context)
+                FieldType.CARD_EXPIRATION_DATE -> ExpirationDateInputField(context)
                 FieldType.CARD_HOLDER_NAME -> PersonNameInputField(context)
                 FieldType.SSN -> SSNInputField(context)
                 FieldType.INFO -> InfoInputField(context)
@@ -63,9 +69,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
 
     internal var isEnabledTokenization: Boolean = true
-        get() {
-            return field
-        }
         set(value) {
             field = value
             inputConnection?.getOutput()?.content?.isEnabledTokenization = value
@@ -74,9 +77,12 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     internal var stateListener: OnVgsViewStateChangeListener? = null
         set(value) {
+            if (value == null) {
+                inputConnection?.removeOutputListener(field)
+            } else {
+                inputConnection?.addOutputListener(value)
+            }
             field = value
-            inputConnection?.setOutputListener(value)
-            inputConnection?.run()
         }
     internal var isRequired: Boolean = true
         set(value) {
@@ -230,6 +236,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
+    @SuppressLint("InlinedApi")
     protected fun isRTL(): Boolean {
         val direction = getResolvedLayoutDirection()
         return direction == View.LAYOUT_DIRECTION_RTL
@@ -246,7 +253,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     protected fun refreshInput() {
         val currentSelection = selectionStart
-        setText(text)
+        text = text
         val textLength = text?.length ?: 0
 
         when {
@@ -333,6 +340,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         when {
             actionCode == EditorInfo.IME_ACTION_NEXT
                     && nextFocusDownId != View.NO_ID -> requestFocusOnView(nextFocusDownId)
+
             actionCode == EditorInfo.IME_ACTION_PREVIOUS
                     && nextFocusUpId != View.NO_ID -> requestFocusOnView(nextFocusUpId)
         }
@@ -341,7 +349,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     internal fun applyInternalFieldStateChangeListener() {
-        inputConnection?.setOutputListener(this)
+        inputConnection?.addOutputListener(this)
     }
 
     override fun emit(viewId: Int, state: VGSFieldState) {
@@ -385,7 +393,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         return inputConnection?.getOutput()?.mapToFieldState()
     }
 
-    internal var tracker: AnalyticTracker? = null
+    internal var analyticsHandler: AnalyticsHandler? = null
 
     override fun autofill(value: AutofillValue?) {
         super.autofill(value)
@@ -393,14 +401,7 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
     }
 
     private fun logAutofillAction() {
-        val m = with(mutableMapOf<String, String>()) {
-            put("field", fieldType.getAnalyticName())
-            this
-        }
-
-        tracker?.logEvent(
-            AutofillAction(m)
-        )
+        analyticsHandler?.capture(event = VGSAnalyticsEvent.Autofill(fieldType = fieldType.getAnalyticName()))
     }
 
     protected fun printWarning(tag: String, resId: Int) {

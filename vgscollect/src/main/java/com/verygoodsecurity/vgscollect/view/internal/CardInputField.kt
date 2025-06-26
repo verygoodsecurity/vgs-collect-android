@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.parseCardBin
 import com.verygoodsecurity.vgscollect.util.extension.applyLimitOnMask
-import com.verygoodsecurity.vgscollect.util.extension.formatToMask
+import com.verygoodsecurity.vgscollect.util.extension.formatDigits
 import com.verygoodsecurity.vgscollect.util.extension.isNumeric
 import com.verygoodsecurity.vgscollect.view.card.CardBrand
 import com.verygoodsecurity.vgscollect.view.card.CardType
@@ -21,8 +21,7 @@ import com.verygoodsecurity.vgscollect.view.card.conection.InputCardNumberConnec
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandFilter
 import com.verygoodsecurity.vgscollect.view.card.filter.CardBrandPreview
 import com.verygoodsecurity.vgscollect.view.card.formatter.CardMaskAdapter
-import com.verygoodsecurity.vgscollect.view.card.formatter.CardNumberFormatter
-import com.verygoodsecurity.vgscollect.view.card.formatter.Formatter
+import com.verygoodsecurity.vgscollect.view.card.formatter.digit.DigitInputFormatter
 import com.verygoodsecurity.vgscollect.view.card.icon.CardIconAdapter
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
@@ -60,7 +59,7 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     private var previewIconMode: PreviewIconMode = PreviewIconMode.ALWAYS
 
     private var maskAdapter = CardMaskAdapter()
-    private var cardNumberFormatter: Formatter? = null
+    private var formatter: DigitInputFormatter? = null
 
     private var lengthLimit: Int = -1
 
@@ -90,17 +89,14 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         val state = collectCurrentState(stateContent)
 
         inputConnection?.setOutput(state)
-        inputConnection?.setOutputListener(stateListener)
+        inputConnection?.addOutputListener(stateListener)
 
         applyFormatter()
         applyInputType()
     }
 
     private fun applyFormatter() {
-        cardNumberFormatter = CardNumberFormatter().also {
-            it.setMask(derivedCardNumberMask)
-            applyNewTextWatcher(it)
-        }
+        formatter = DigitInputFormatter(derivedCardNumberMask).also { applyNewTextWatcher(it) }
     }
 
     private fun applyInputType() {
@@ -131,9 +127,12 @@ internal class CardInputField(context: Context) : BaseInputField(context),
         val c = FieldContent.CardNumberContent()
         c.cardtype = this@CardInputField.cardtype
         c.rawData = originalCardNumberMask.replace(MASK_REGEX.toRegex(), outputDivider).run {
-            str.formatToMask(this)
+            str.formatDigits(this).first
         }
         c.data = str
+        c.vaultStorage = vaultStorage
+        c.vaultAliasFormat = vaultAliasFormat
+        c.isEnabledTokenization = isEnabledTokenization
         return c
     }
 
@@ -316,9 +315,9 @@ internal class CardInputField(context: Context) : BaseInputField(context),
     private fun applyDividerOnMask() {
         val newCardNumberMask = derivedCardNumberMask.replace(MASK_REGEX.toRegex(), divider)
 
-        if (cardNumberFormatter?.getMask() != newCardNumberMask) {
+        if (formatter?.getMask() != newCardNumberMask) {
             derivedCardNumberMask = newCardNumberMask
-            cardNumberFormatter?.setMask(newCardNumberMask)
+            formatter?.setMask(newCardNumberMask)
             refreshOutputContent()
         }
     }

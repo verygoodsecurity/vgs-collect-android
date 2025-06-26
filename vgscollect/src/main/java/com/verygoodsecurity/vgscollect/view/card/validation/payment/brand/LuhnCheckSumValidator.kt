@@ -34,6 +34,6 @@ class LuhnCheckSumValidator constructor(
 
     internal companion object {
 
-        internal  const val DEFAULT_ERROR_MSG = "LUHN_ALGORITHM_CHECK_VALIDATION_ERROR"
+        internal const val DEFAULT_ERROR_MSG = "LUHN_ALGORITHM_CHECK_VALIDATION_ERROR"
     }
 }

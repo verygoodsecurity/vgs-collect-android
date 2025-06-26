@@ -1,0 +1,15 @@
+[versions]
+junit = '4.13.2'
+mockito-core = '5.11.0'
+mockito-inline = '5.2.0'
+robolectric = '4.11.1'
+json = '20240303'
+jsonassert = '1.5.1'
+
+[libraries]
+junit = { group = 'junit', name = 'junit', version.ref = 'junit' }
+mockito-core = { group = 'org.mockito', name = 'mockito-core', version.ref = 'mockito-core' }
+mockito-inline = { group = 'org.mockito', name = 'mockito-inline', version.ref = 'mockito-inline' }
+robolectric = { group = 'org.robolectric', name = 'robolectric', version.ref = 'robolectric' }
+json = { group = 'org.json', name = 'json', version.ref = 'json' }
+jsonassert = { group = 'org.skyscreamer', name = 'jsonassert', version.ref = 'jsonassert' }

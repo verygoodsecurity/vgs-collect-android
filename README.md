@@ -24,7 +24,7 @@ Table of contents
 
 ## Structure
 * **VGSCollect SDK** - provides an API for interacting with the VGS Vault
-* **Card Scanner** - This module is for adapting <a href="https://github.com/card-io/card.io-Android-SDK">Card.io SDK</a> with VGS Collect Android SDK.
+* **Card Scanner** - This module is for adapting <a href="https://github.com/blinkcard/blinkcard-android">blinkcard-android SDK</a> with VGS Collect Android SDK.
 * **app** - sample application to act as the host app for testing the SDK during development
 
 ## Integration

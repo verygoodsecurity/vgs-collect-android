@@ -1,406 +1,472 @@
 <!DOCTYPE html>
-<html>
+<html class="no-js">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>CardType</title>
     <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
     <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-const savedDarkMode = storage ? JSON.parse(storage) : false
-if(savedDarkMode === true){
-    document.getElementsByTagName("html")[0].classList.add("theme-dark")
-}</script>
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
-<link href="../../../styles/jetbrains-mono.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
 <link href="../../../styles/prism.css" rel="Stylesheet">
 <link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
 <script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
 <script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
 <script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
 <script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
 </head>
 <body>
-<div class="navigation-wrapper" id="navigation-wrapper">
-    <div id="leftToggler"><span class="icon-toggler"></span></div>
-    <div class="library-name">
-            <a href="../../../index.html">
-                    <span>vgscollect</span>
-            </a>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../index.html">
+                            vgscollect
+                    </a>
+            </div>
+            <div class="library-version">
+            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":vgscollect:dokkaHtml/release">androidJvm</button>
+        </div>
     </div>
-    <div>
-1.7.3    </div>
-    <div class="pull-right d-flex">
-        <button id="theme-toggle-button"><span id="theme-toggle"></span></button>
-        <div id="searchBar"></div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
     </div>
-</div>
-<div id="container">
-    <div id="leftColumn">
-        <div id="sideMenu"></div>
-    </div>
-    <div id="main">
-<div class="main-content" id="content" pageIds="vgscollect::com.verygoodsecurity.vgscollect.view.card/CardType///PointingToDeclaration//1122815226">
-  <div class="breadcrumbs"><a href="../../../index.html">vgscollect</a><span class="delimiter">/</span><a href="../index.html">com.verygoodsecurity.vgscollect.view.card</a><span class="delimiter">/</span><a href="index.html">CardType</a></div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="vgscollect::com.verygoodsecurity.vgscollect.view.card/CardType///PointingToDeclaration//1122815226">
+  <div class="breadcrumbs"><a href="../../../index.html">vgscollect</a><span class="delimiter">/</span><a href="../index.html">com.verygoodsecurity.vgscollect.view.card</a><span class="delimiter">/</span><span class="current">CardType</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Card</span><wbr></wbr><span><span>Type</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">CardType</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><span class="token keyword"></span><a href="index.html">CardType</a><span class="token operator">&gt; </span><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><p class="paragraph">Standard constants of credit card brands that are supported by SDK.</p></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">CardType</a> : <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="index.html">CardType</a><span class="token operator">&gt; </span></div><p class="paragraph">Standard constants of credit card brands that are supported by SDK.</p><h4 class="">Parameters</h4><div class="table"><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>regex</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Regular expression rules for detection card's brand.</p></div></div></div></div><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>res</span><wbr></wbr><span><span>Id</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The drawable resource represents credit card logo.</p></div></div></div></div><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>mask</span></span></u></div></span></div><div><div class="title"><p class="paragraph">Represents format of the current card's number.</p></div></div></div></div><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>algorithm</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The algorithm for validation checkSum.</p></div></div></div></div><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>range</span><wbr></wbr><span><span>Number</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The array of the card's number which a brand supported.</p></div></div></div></div><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>range</span><wbr></wbr><span><span>CVV</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The array of the card's CVC number which a brand supported.</p></div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
-    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="Entries">Entries</button><button class="section-tab" data-togglable="Properties">Properties</button><button class="section-tab" data-togglable="Extensions">Extensions</button><button class="section-tab" data-togglable="Parameters">Parameters</button></div>
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button><button class="section-tab" data-togglable="ENTRY">Entries</button></div>
     <div class="tabs-section-body">
-      <h2 class="">Parameters</h2>
-      <div data-togglable="Parameters">
-        <div class="platform-hinted WithExtraAttributes" data-platform-hinted="data-platform-hinted" data-togglable="Parameters"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div data-togglable="Parameters"><div class="table" data-togglable="Parameters"><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>regex</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">Regular expression rules for detection card's brand.</p></div></div></div></div></div><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span>res</span><wbr></wbr><span><span>Id</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The drawable resource represents credit card logo.</p></div></div></div></div></div><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>mask</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">Represents format of the current card's number.</p></div></div></div></div></div><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span><span>algorithm</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The algorithm for validation checkSum.</p></div></div></div></div></div><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span>range</span><wbr></wbr><span><span>Number</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The array of the card's number which a brand supported.</p></div></div></div></div></div><div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release"><div class="main-subrow keyValue WithExtraAttributes"><div class=""><span class="inline-flex"><div><span>range</span><wbr></wbr><span><span>CVV</span></span></div></span></div><div><div class="title"><div data-togglable="Parameters"><p class="paragraph">The array of the card's CVC number which a brand supported.</p></div></div></div></div></div></div></div></div></div>
-      </div>
-      <h2 class="tabbedcontent">Entries</h2>
-      <div class="table" data-togglable="Entries"><a data-name="-1064112122%2FClasslikes%2F1122815226" anchor-label="ELO" id="-1064112122%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-e-l-o/index.html">ELO</a></div>
+      <div data-togglable="ENTRY">
+        <h2 class="">Entries</h2>
+        <div class="table"><a data-name="-1064112122%2FClasslikes%2F1122815226" anchor-label="ELO" id="-1064112122%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-e-l-o/index.html">ELO</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1064112122%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-e-l-o/index.html">ELO</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-e-l-o/index.html">ELO</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="1865640222%2FClasslikes%2F1122815226" anchor-label="VISA_ELECTRON" id="1865640222%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-v-i-s-a_-e-l-e-c-t-r-o-n/index.html">VISA_ELECTRON</a></div>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-v-i-s-a_-e-l-e-c-t-r-o-n/index.html">VISA_ELECTRON</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1865640222%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-v-i-s-a_-e-l-e-c-t-r-o-n/index.html">VISA_ELECTRON</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-v-i-s-a_-e-l-e-c-t-r-o-n/index.html">VISA_ELECTRON</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-351728307%2FClasslikes%2F1122815226" anchor-label="MAESTRO" id="-351728307%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-m-a-e-s-t-r-o/index.html">MAESTRO</a></div>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-m-a-e-s-t-r-o/index.html">MAESTRO</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-351728307%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-m-a-e-s-t-r-o/index.html">MAESTRO</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-m-a-e-s-t-r-o/index.html">MAESTRO</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="1529190763%2FClasslikes%2F1122815226" anchor-label="FORBRUGSFORENINGEN" id="1529190763%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-f-o-r-b-r-u-g-s-f-o-r-e-n-i-n-g-e-n/index.html">FORBRUGSFORENINGEN</a></div>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-f-o-r-b-r-u-g-s-f-o-r-e-n-i-n-g-e-n/index.html">FORBRUGSFORENINGEN</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1529190763%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-f-o-r-b-r-u-g-s-f-o-r-e-n-i-n-g-e-n/index.html">FORBRUGSFORENINGEN</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-f-o-r-b-r-u-g-s-f-o-r-e-n-i-n-g-e-n/index.html">FORBRUGSFORENINGEN</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="586422229%2FClasslikes%2F1122815226" anchor-label="DANKORT" id="586422229%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-d-a-n-k-o-r-t/index.html">DANKORT</a></div>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-d-a-n-k-o-r-t/index.html">DANKORT</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="586422229%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-d-a-n-k-o-r-t/index.html">DANKORT</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-d-a-n-k-o-r-t/index.html">DANKORT</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="1195711339%2FClasslikes%2F1122815226" anchor-label="VISA" id="1195711339%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-v-i-s-a/index.html">VISA</a></div>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-v-i-s-a/index.html">VISA</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1195711339%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-v-i-s-a/index.html">VISA</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-v-i-s-a/index.html">VISA</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-270702756%2FClasslikes%2F1122815226" anchor-label="MASTERCARD" id="-270702756%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-m-a-s-t-e-r-c-a-r-d/index.html">MASTERCARD</a></div>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-m-a-s-t-e-r-c-a-r-d/index.html">MASTERCARD</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-270702756%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-m-a-s-t-e-r-c-a-r-d/index.html">MASTERCARD</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-m-a-s-t-e-r-c-a-r-d/index.html">MASTERCARD</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-339130277%2FClasslikes%2F1122815226" anchor-label="AMERICAN_EXPRESS" id="-339130277%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-a-m-e-r-i-c-a-n_-e-x-p-r-e-s-s/index.html">AMERICAN_EXPRESS</a></div>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-a-m-e-r-i-c-a-n_-e-x-p-r-e-s-s/index.html">AMERICAN_EXPRESS</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-339130277%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-a-m-e-r-i-c-a-n_-e-x-p-r-e-s-s/index.html">AMERICAN_EXPRESS</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-a-m-e-r-i-c-a-n_-e-x-p-r-e-s-s/index.html">AMERICAN_EXPRESS</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-1271473558%2FClasslikes%2F1122815226" anchor-label="HIPERCARD" id="-1271473558%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-h-i-p-e-r-c-a-r-d/index.html">HIPERCARD</a></div>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-h-i-p-e-r-c-a-r-d/index.html">HIPERCARD</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1271473558%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-h-i-p-e-r-c-a-r-d/index.html">HIPERCARD</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-h-i-p-e-r-c-a-r-d/index.html">HIPERCARD</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-798437155%2FClasslikes%2F1122815226" anchor-label="DINCLUB" id="-798437155%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-d-i-n-c-l-u-b/index.html">DINCLUB</a></div>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-d-i-n-c-l-u-b/index.html">DINCLUB</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-798437155%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-d-i-n-c-l-u-b/index.html">DINCLUB</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-d-i-n-c-l-u-b/index.html">DINCLUB</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-2016936429%2FClasslikes%2F1122815226" anchor-label="DISCOVER" id="-2016936429%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-d-i-s-c-o-v-e-r/index.html">DISCOVER</a></div>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-d-i-s-c-o-v-e-r/index.html">DISCOVER</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2016936429%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-d-i-s-c-o-v-e-r/index.html">DISCOVER</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-d-i-s-c-o-v-e-r/index.html">DISCOVER</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="1912855971%2FClasslikes%2F1122815226" anchor-label="UNIONPAY" id="1912855971%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-u-n-i-o-n-p-a-y/index.html">UNIONPAY</a></div>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-n-i-o-n-p-a-y/index.html">UNIONPAY</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1912855971%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-u-n-i-o-n-p-a-y/index.html">UNIONPAY</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-u-n-i-o-n-p-a-y/index.html">UNIONPAY</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-125966873%2FClasslikes%2F1122815226" anchor-label="JCB" id="-125966873%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-j-c-b/index.html">JCB</a></div>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-j-c-b/index.html">JCB</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-125966873%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-j-c-b/index.html">JCB</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-j-c-b/index.html">JCB</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="782399272%2FClasslikes%2F1122815226" anchor-label="UNKNOWN" id="782399272%2FClasslikes%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="-u-n-k-n-o-w-n/index.html">UNKNOWN</a></div>
+          <div class="table-row" data-togglable="ENTRY" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-u-n-k-n-o-w-n/index.html">UNKNOWN</a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="782399272%2FClasslikes%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-u-n-k-n-o-w-n/index.html">UNKNOWN</a></div><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><div class="block"><a href="-u-n-k-n-o-w-n/index.html">UNKNOWN</a></div></div></div></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <h2 class="">Properties</h2>
-      <div class="table" data-togglable="Properties"><a data-name="-1156752059%2FProperties%2F1122815226" anchor-label="algorithm" id="-1156752059%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="algorithm.html"><span><span>algorithm</span></span></a></div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="-1156752059%2FProperties%2F1122815226" anchor-label="algorithm" id="-1156752059%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="algorithm.html"><span><span>algorithm</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1156752059%2FProperties%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><a data-name="-1156752059%2FProperties%2F1122815226" anchor-label="algorithm" id="-1156752059%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="algorithm.html">algorithm</a><span class="token operator">: </span><a href="../../com.verygoodsecurity.vgscollect.view.card.validation.payment/-checksum-algorithm/index.html">ChecksumAlgorithm</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="algorithm.html">algorithm</a><span class="token operator">: </span><a href="../../com.verygoodsecurity.vgscollect.view.card.validation.payment/-checksum-algorithm/index.html">ChecksumAlgorithm</a></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+<a data-name="-884662780%2FProperties%2F1122815226" anchor-label="entries" id="-884662780%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="entries.html"><span><span>entries</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-884662780%2FProperties%2F1122815226"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="entries.html">entries</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin.enums/-enum-entries/index.html">EnumEntries</a><span class="token operator">&lt;</span><a href="index.html">CardType</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns a representation of an immutable list of all enum entries, in the order they're declared.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
 <a data-name="1356679386%2FProperties%2F1122815226" anchor-label="mask" id="1356679386%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="mask.html"><span><span>mask</span></span></a></div>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="mask.html"><span><span>mask</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1356679386%2FProperties%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><a data-name="1356679386%2FProperties%2F1122815226" anchor-label="mask" id="1356679386%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="mask.html">mask</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="mask.html">mask</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-372974862%2FProperties%2F1122815226" anchor-label="name" id="-372974862%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="../../com.verygoodsecurity.vgscollect.view.date/-date-picker-mode/-d-e-f-a-u-l-t/index.html#-372974862%2FProperties%2F1122815226"><span><span>name</span></span></a></div>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.verygoodsecurity.vgscollect.view.date/-date-picker-mode/-d-e-f-a-u-l-t/index.html#-372974862%2FProperties%2F1122815226"><span><span>name</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-372974862%2FProperties%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><a data-name="-372974862%2FProperties%2F1122815226" anchor-label="name" id="-372974862%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="../../com.verygoodsecurity.vgscollect.view.date/-date-picker-mode/-d-e-f-a-u-l-t/index.html#-372974862%2FProperties%2F1122815226">name</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.verygoodsecurity.vgscollect.view.date/-date-picker-mode/-d-e-f-a-u-l-t/index.html#-372974862%2FProperties%2F1122815226">name</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-739389684%2FProperties%2F1122815226" anchor-label="ordinal" id="-739389684%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="../../com.verygoodsecurity.vgscollect.view.date/-date-picker-mode/-d-e-f-a-u-l-t/index.html#-739389684%2FProperties%2F1122815226"><span><span>ordinal</span></span></a></div>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.verygoodsecurity.vgscollect.view.date/-date-picker-mode/-d-e-f-a-u-l-t/index.html#-739389684%2FProperties%2F1122815226"><span><span>ordinal</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-739389684%2FProperties%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><a data-name="-739389684%2FProperties%2F1122815226" anchor-label="ordinal" id="-739389684%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="../../com.verygoodsecurity.vgscollect.view.date/-date-picker-mode/-d-e-f-a-u-l-t/index.html#-739389684%2FProperties%2F1122815226">ordinal</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.verygoodsecurity.vgscollect.view.date/-date-picker-mode/-d-e-f-a-u-l-t/index.html#-739389684%2FProperties%2F1122815226">ordinal</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="-1702156128%2FProperties%2F1122815226" anchor-label="rangeCVV" id="-1702156128%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="range-c-v-v.html"><span>range</span><wbr></wbr><span><span>CVV</span></span></a></div>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="range-c-v-v.html"><span>range</span><wbr></wbr><span><span>CVV</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1702156128%2FProperties%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><a data-name="-1702156128%2FProperties%2F1122815226" anchor-label="rangeCVV" id="-1702156128%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="range-c-v-v.html">rangeCVV</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html">IntArray</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="range-c-v-v.html">rangeCVV</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="361442542%2FProperties%2F1122815226" anchor-label="rangeNumber" id="361442542%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="range-number.html"><span>range</span><wbr></wbr><span><span>Number</span></span></a></div>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="range-number.html"><span>range</span><wbr></wbr><span><span>Number</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="361442542%2FProperties%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><a data-name="361442542%2FProperties%2F1122815226" anchor-label="rangeNumber" id="361442542%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="range-number.html">rangeNumber</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/index.html">IntArray</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="range-number.html">rangeNumber</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="944883693%2FProperties%2F1122815226" anchor-label="regex" id="944883693%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="regex.html"><span><span>regex</span></span></a></div>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="regex.html"><span><span>regex</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="944883693%2FProperties%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><a data-name="944883693%2FProperties%2F1122815226" anchor-label="regex" id="944883693%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="regex.html">regex</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="regex.html">regex</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></div></div></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 <a data-name="407227609%2FProperties%2F1122815226" anchor-label="resId" id="407227609%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="res-id.html"><span>res</span><wbr></wbr><span><span>Id</span></span></a></div>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="res-id.html"><span>res</span><wbr></wbr><span><span>Id</span></span></a></div>
 <span class="anchor-wrapper"><span class="anchor-icon" pointing-to="407227609%2FProperties%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted" data-togglable="Properties"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><a data-name="407227609%2FProperties%2F1122815226" anchor-label="resId" id="407227609%2FProperties%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="res-id.html">resId</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div></div></div>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="res-id.html">resId</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <h2 class="tabbedcontent">Extensions</h2>
-      <div class="table" data-togglable="Extensions"><a data-name="-1925738973%2FExtensions%2F1122815226" anchor-label="toCardBrand" id="-1925738973%2FExtensions%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-        <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
-          <div class="main-subrow keyValue ">
-            <div class=""><span class="inline-flex">
-                <div><a href="../../com.verygoodsecurity.vgscollect.util.extension/to-card-brand.html"><span>to</span><wbr></wbr><span>Card</span><wbr></wbr><span><span>Brand</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1925738973%2FExtensions%2F1122815226"></span>
-                  <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                </span></span></div>
-            <div>
-              <div class="title">
-                <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-depenent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="index.html">CardType</a><span class="token punctuation">.</span><a href="../../com.verygoodsecurity.vgscollect.util.extension/to-card-brand.html"><span class="token function">toCardBrand</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-card-brand/index.html">CardBrand</a><span class="top-right-position"><span class="copy-icon"></span><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div></span></div><div class="brief "><p class="paragraph">Map CardType to CardBrand.</p></div></div></div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1925738973%2FFunctions%2F1122815226" anchor-label="toCardBrand" id="-1925738973%2FFunctions%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
+          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.verygoodsecurity.vgscollect.util.extension/to-card-brand.html"><span>to</span><wbr></wbr><span>Card</span><wbr></wbr><span><span>Brand</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1925738973%2FFunctions%2F1122815226"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html">CardType</a><span class="token punctuation">.</span><a href="../../com.verygoodsecurity.vgscollect.util.extension/to-card-brand.html"><span class="token function">toCardBrand</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-card-brand/index.html">CardBrand</a></div><div class="brief "><p class="paragraph">Map CardType to CardBrand.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-272718312%2FFunctions%2F1122815226" anchor-label="valueOf" id="-272718312%2FFunctions%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="value-of.html"><span>value</span><wbr></wbr><span><span>Of</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-272718312%2FFunctions%2F1122815226"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="value-of.html"><span class="token function">valueOf</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">value<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">CardType</a></div><div class="brief "><p class="paragraph">Returns the enum constant of this type with the specified name. The string must match exactly an identifier used to declare an enum constant in this type. (Extraneous whitespace characters are not permitted.)</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="449740068%2FFunctions%2F1122815226" anchor-label="values" id="449740068%2FFunctions%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
+          <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="values.html"><span><span>values</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="449740068%2FFunctions%2F1122815226"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="values.html"><span class="token function">values</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin-stdlib/kotlin/-array/index.html">Array</a><span class="token operator">&lt;</span><a href="index.html">CardType</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns an array containing the constants of this enum type, in the order they're declared.</p></div></div></div>
+                </div>
               </div>
             </div>
           </div>
@@ -410,11 +476,12 @@ if(savedDarkMode === true){
   </div>
 </div>
       <div class="footer">
-        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2022 Copyright</span><span
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span
                 class="pull-right"><span>Generated by </span><a
                 href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
       </div>
+            </div>
+        </div>
     </div>
-</div>
 </body>
 </html>

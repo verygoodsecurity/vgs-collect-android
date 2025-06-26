@@ -2,7 +2,9 @@ package com.verygoodsecurity.vgscollect.core.storage
 
 import android.content.Context
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
-import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.*
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.CardNumberContent
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.DateContent
+import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.SSNContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.content.field.FieldStateContractor
 import com.verygoodsecurity.vgscollect.core.storage.content.field.TemporaryFieldsStorage
@@ -15,6 +17,7 @@ import com.verygoodsecurity.vgscollect.util.extension.isArraysIgnored
 import com.verygoodsecurity.vgscollect.util.extension.merge
 import com.verygoodsecurity.vgscollect.util.extension.toFlatMap
 import com.verygoodsecurity.vgscollect.view.InputFieldView
+import com.verygoodsecurity.vgscollect.view.core.serializers.VGSDateRangeSeparateSerializer
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 
 /** @suppress */
@@ -37,7 +40,7 @@ internal class InternalStorage(
             fileStorage = this
         }
 
-        val fieldStateContractor = FieldStateContractor(context)
+        val fieldStateContractor = FieldStateContractor()
         with(TemporaryFieldsStorage(fieldStateContractor)) {
             attachFieldDependencyObserver(fieldsDependencyDispatcher)
 
@@ -93,21 +96,17 @@ internal class InternalStorage(
         emitter.attachStateChangeListener(fieldStateListener)
     }
 
-    fun performSubscription(view: InputFieldView?) {
-        view?.let {
-            fieldsDependencyDispatcher.addDependencyListener(
-                it.getFieldType(),
-                it.statePreparer.getDependencyListener()
-            )
-            it.addStateListener(emitter.performSubscription())
-        }
+    fun performSubscription(view: InputFieldView) {
+        fieldsDependencyDispatcher.addDependencyListener(
+            view.getFieldType(),
+            view.statePreparer.getDependencyListener()
+        )
+        view.addStateListener(emitter.performSubscription())
     }
 
-    fun unsubscribe(view: InputFieldView?) {
-        view?.let {
-            it.statePreparer.unsubscribe()
-            fieldsStorage.remove(it.statePreparer.getView().id)
-        }
+    fun unsubscribe(view: InputFieldView) {
+        view.statePreparer.unsubscribe()
+        fieldsStorage.remove(view.statePreparer.getView().id)
     }
 
     fun getFileSizeLimit(): Int {
@@ -121,8 +120,8 @@ internal class InternalStorage(
                 when (this) {
                     is CardNumberContent -> result.add(state.fieldName!! to (rawData ?: data!!))
                     is SSNContent -> result.add(state.fieldName!! to (rawData ?: data!!))
-                    is CreditCardExpDateContent -> {
-                        result.addAll(handleExpirationDateContent(state.fieldName!!, this))
+                    is DateContent -> {
+                        result.addAll(handleDateContent(state.fieldName!!, this))
                     }
                     else -> result.add(state.fieldName!! to data!!)
                 }
@@ -131,9 +130,9 @@ internal class InternalStorage(
         return result
     }
 
-    private fun handleExpirationDateContent(
+    private fun handleDateContent(
         fieldName: String,
-        content: CreditCardExpDateContent
+        content: DateContent
     ): List<Pair<String, String>> {
         val result = mutableListOf<Pair<String, String>>()
         val data = (content.rawData ?: content.data!!)
@@ -142,6 +141,11 @@ internal class InternalStorage(
                 if (it is VGSExpDateSeparateSerializer) {
                     result.addAll(
                         it.serialize(VGSExpDateSeparateSerializer.Params(data, content.dateFormat))
+                    )
+                }
+                if (it is VGSDateRangeSeparateSerializer) {
+                    result.addAll(
+                        it.serialize(VGSDateRangeSeparateSerializer.Params(data, content.dateFormat))
                     )
                 }
             }

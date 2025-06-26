@@ -8,6 +8,10 @@ class CompositeValidator {
         validators.add(validator)
     }
 
+    fun removeRule(validator: VGSValidator) {
+        validators.remove(validator)
+    }
+
     fun clearRules() {
         validators.clear()
     }
@@ -22,6 +26,6 @@ class CompositeValidator {
 
     private companion object {
 
-        private const val ERROR_MSG = "NO_VALIDATION_RULES_ATTACHED_ATTACHED"
+        private const val ERROR_MSG = "NO_VALIDATION_RULES_ATTACHED"
     }
 }

@@ -29,8 +29,8 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.core.AnalyticsHandler
 import com.verygoodsecurity.vgscollect.core.OnVgsViewStateChangeListener
-import com.verygoodsecurity.vgscollect.core.api.analityc.AnalyticTracker
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
@@ -45,8 +45,9 @@ import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import com.verygoodsecurity.vgscollect.view.internal.*
+import com.verygoodsecurity.vgscollect.view.internal.core.DateInputField
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
-import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
 
 /**
  * An abstract class that provide displays text user-editable text to the user.
@@ -151,8 +152,8 @@ abstract class InputFieldView @JvmOverloads constructor(
 
         override fun getDependencyListener(): DependencyListener = notifier
 
-        override fun setAnalyticTracker(tr: AnalyticTracker) {
-            inputField.tracker = tr
+        override fun setAnalyticHandler(handler: AnalyticsHandler) {
+            inputField.analyticsHandler = handler
         }
 
         override fun unsubscribe() {
@@ -328,7 +329,8 @@ abstract class InputFieldView @JvmOverloads constructor(
                 addView(inputField)
             }
             inputField.setPadding(leftP, topP, rightP, bottomP)
-
+            inputField.contentDescription = this.contentDescription
+            inputField.importantForAccessibility = this.importantForAccessibility
             isAttachPermitted = false
         }
     }
@@ -344,16 +346,16 @@ abstract class InputFieldView @JvmOverloads constructor(
                 currentGravity = currentGravity or Gravity.TOP
             }
 
-            val LP = LinearLayout.LayoutParams(
+            val lp = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-            LP.weight = 1.0f
-            LP.setMargins(0, 0, 0, 0)
-            if (LP.gravity == -1) {
-                LP.gravity = Gravity.CENTER_VERTICAL
+            lp.weight = 1.0f
+            lp.setMargins(0, 0, 0, 0)
+            if (lp.gravity == -1) {
+                lp.gravity = Gravity.CENTER_VERTICAL
             }
-            layoutParams = LP
+            layoutParams = lp
 
             this.gravity = currentGravity
         }
@@ -739,6 +741,50 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
+     * Sets how to determine whether this view is important for accessibility
+     * which is if it fires accessibility events and if it is reported to
+     * accessibility services that query the screen.
+     *
+     * @param mode How to determine whether this view is important for accessibility.
+     *
+     * @attr [android.R.attr.importantForAccessibility]
+     *
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_YES
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+     * @see View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
+     */
+    override fun setImportantForAccessibility(mode: Int) {
+        if (::inputField.isInitialized) {
+            this.inputField.importantForAccessibility = mode
+        }
+        super.setImportantForAccessibility(mode)
+    }
+
+    /**
+     * Sets the [View]'s content description.
+     * <p>
+     * A content description briefly describes the view and is primarily used
+     * for accessibility support to determine how a view should be presented to
+     * the user. In the case of a view with no textual representation, such as
+     * [android.widget.ImageButton], a useful content description
+     * explains what the view does. For example, an image button with a phone
+     * icon that is used to place a call may use "Call" as its content
+     * description. An image of a floppy disk that is used to save a file may
+     * use "Save".
+     *
+     * @param contentDescription The content description.
+     * @see getContentDescription
+     * @attr [android.R.attr.contentDescription]
+     */
+    override fun setContentDescription(contentDescription: CharSequence?) {
+        if (::inputField.isInitialized) {
+            this.inputField.contentDescription = contentDescription
+        }
+        super.setContentDescription(contentDescription)
+    }
+
+    /**
      * Gets the current field type of the InputFieldView.
      *
      * @return FieldType
@@ -981,24 +1027,28 @@ abstract class InputFieldView @JvmOverloads constructor(
         inputField.isEnabled = enabled
     }
 
-    protected fun setOutputPattern(pattern: String?) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setOutputPattern(pattern)
-        }
-    }
-
     protected fun setDatePattern(pattern: String?) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setDatePattern(pattern)
         }
     }
 
+    protected fun setOutputPattern(pattern: String?) {
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.setOutputPattern(pattern)
+        }
+    }
+
     protected fun getDatePattern(): String? {
-        return (inputField as? DateInputField)?.getDatePattern()
+        return if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.getDatePattern()
+        } else {
+            null
+        }
     }
 
     protected fun setDatePickerMode(type: Int) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setDatePickerMode(type)
         }
     }
@@ -1007,21 +1057,15 @@ abstract class InputFieldView @JvmOverloads constructor(
         return (inputField as? DateInputField)?.getDatePickerMode()
     }
 
-    protected fun maxDate(date: String) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setMaxDate(date)
-        }
-    }
-
-    protected fun minDate(date: String) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setMinDate(date)
-        }
-    }
-
     protected fun setMinDate(date: Long) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.setMinDate(date)
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.minDate = date
+        }
+    }
+
+    protected fun setMaxDate(date: Long) {
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.maxDate = date
         }
     }
 
@@ -1029,19 +1073,19 @@ abstract class InputFieldView @JvmOverloads constructor(
         dialogMode: DatePickerMode,
         ignoreFieldMode: Boolean
     ) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.showDatePickerDialog(dialogMode, ignoreFieldMode)
         }
     }
 
-    protected fun setDatePickerVisibilityListener(l: ExpirationDateEditText.OnDatePickerVisibilityChangeListener?) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
+    protected fun setDatePickerVisibilityListener(l: VisibilityChangeListener?) {
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setDatePickerVisibilityListener(l)
         }
     }
 
     protected fun setFieldDataSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setFieldDataSerializers(serializers)
         }
     }
@@ -1278,9 +1322,9 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    protected fun getExpirationDate(): FieldState.CardExpirationDateState? {
-        return if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
-            (inputField as? DateInputField)?.getState() as? FieldState.CardExpirationDateState
+    protected fun getDateState(): FieldState.DateState? {
+        return if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
+            (inputField as? DateInputField)?.getState() as? FieldState.DateState
         } else {
             null
         }
@@ -1334,13 +1378,13 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     @VisibleForTesting(otherwise = VisibleForTesting.PROTECTED)
     internal fun setFormatterMode(mode: Int) {
-        if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
+        if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setFormatterMode(mode)
         }
     }
 
     internal fun getFormatterMode(): Int {
-        return if (fieldType == FieldType.CARD_EXPIRATION_DATE) {
+        return if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.getFormatterMode() ?: -1
         } else {
             -1

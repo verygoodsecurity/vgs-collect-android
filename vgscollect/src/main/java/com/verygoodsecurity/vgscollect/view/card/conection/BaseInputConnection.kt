@@ -23,8 +23,19 @@ internal abstract class BaseInputConnection constructor(
         this.state = state
     }
 
-    override fun setOutputListener(listener: OnVgsViewStateChangeListener?) {
-        listener?.let { addNewListener(it) } ?: clearAllListeners()
+    override fun addOutputListener(listener: OnVgsViewStateChangeListener?) {
+        listener?.let {
+            if (!stateListeners.contains(listener)) {
+                stateListeners.add(listener)
+                run()
+            }
+        }
+    }
+
+    override fun removeOutputListener(listener: OnVgsViewStateChangeListener?) {
+        listener?.let {
+            stateListeners.remove(it)
+        }
     }
 
     override fun run() {
@@ -40,17 +51,6 @@ internal abstract class BaseInputConnection constructor(
             !state.isRequired && content.isNullOrEmpty() -> emptyList()
             state.enableValidation -> validator.validate(getRawContent(content))
             else -> emptyList()
-        }
-    }
-
-    private fun clearAllListeners() {
-        stateListeners.clear()
-    }
-
-    private fun addNewListener(listener: OnVgsViewStateChangeListener) {
-        if (!stateListeners.contains(listener)) {
-            stateListeners.add(listener)
-            run()
         }
     }
 

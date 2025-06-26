@@ -9,40 +9,31 @@ import org.junit.Test
 
 class DinnersClubTest {
 
-    private lateinit var filter: VGSCardFilter
-
-    @Before
-    fun setupFilter() {
-        filter = CardBrandFilter()
-    }
+    private var filter: VGSCardFilter = CardBrandFilter()
 
     @Test
-    fun test_1() {
-        val brand = filter.detect("305")
-        Assert.assertEquals(brand.name, CardType.DINCLUB.name)
+    fun detect() {
+        val expectedCardBrand = CardType.DINCLUB.name
+
+        cards().forEach {
+            val actualCardBrand = filter.detect(it).name
+            Assert.assertEquals(
+                "CARD: $it",
+                expectedCardBrand,
+                actualCardBrand
+            )
+        }
     }
 
-    @Test
-    fun test_2() {
-        val brand = filter.detect("3056")
-        Assert.assertEquals(brand.name, CardType.DINCLUB.name)
-    }
-
-    @Test
-    fun test_3() {
-        val brand = filter.detect("38")
-        Assert.assertEquals(brand.name, CardType.DINCLUB.name)
-    }
-
-    @Test
-    fun test_4() {
-        val brand = filter.detect("36")
-        Assert.assertEquals(brand.name, CardType.DINCLUB.name)
-    }
-
-    @Test
-    fun test_5() {
-        val brand = filter.detect("367")
-        Assert.assertEquals(brand.name, CardType.DINCLUB.name)
-    }
+    fun cards() = listOf(
+        "30569309025904",
+        "38520000023237",
+        "38000000000006",
+        "36256000000725",
+        "36256000000998",
+        "36256000000634",
+        "38865000000705",
+        "36700102000000",
+        "36148900647913",
+    )
 }

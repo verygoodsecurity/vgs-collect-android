@@ -57,7 +57,7 @@ sealed class FieldContent {
         }
     }
 
-    class CreditCardExpDateContent : FieldContent() {
+    class DateContent : FieldContent() {
         internal var dateFormat: String? = null
         internal var serializers: List<FieldDataSerializer<*, *>>? = null
     }
@@ -80,7 +80,7 @@ sealed class FieldContent {
 }
 
 /** @suppress */
-internal fun FieldContent.CreditCardExpDateContent.handleOutputFormat(
+internal fun FieldContent.DateContent.handleOutputFormat(
     selectedDate: Calendar,
     fieldDateFormat: SimpleDateFormat?,
     fieldDateOutPutFormat: SimpleDateFormat?,

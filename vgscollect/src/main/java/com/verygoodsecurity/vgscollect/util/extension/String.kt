@@ -1,43 +1,46 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
 import android.util.Base64
-import kotlin.text.StringBuilder
+import kotlin.math.min
 
-private const val NUMBER_REGEX = "[^\\d]"
 private const val MASK_ITEM = '#'
+private const val EMPTY = ""
 
-internal fun String.formatToMask(mask: String): String {
-    val text = replace(Regex(NUMBER_REGEX), "")
+internal fun String.formatDigits(mask: String, selectorPosition: Int = -1): Pair<String, Int?> {
+    val digits: List<Pair<Char, Boolean>> = this
+        .mapIndexed { index, char -> char to (index == selectorPosition.dec()) }
+        .filter { it.first.isDigit() }
 
-    val textCount = if (mask.length < text.length) {
-        mask.length
-    } else {
-        text.length
-    }
+    val result = ArrayList<Pair<Char, Boolean>>()
 
-    val builder = StringBuilder()
-    var indexSpace = 0
+    var skipCount = 0
 
-    repeat(textCount) { charIndex ->
-        val maskIndex = charIndex + indexSpace
+    repeat(min(mask.length, digits.size)) { charIndex ->
+        val maskIndex = charIndex + skipCount
 
         if (maskIndex < mask.length) {
             val maskChar = mask[maskIndex]
-            val char = text[charIndex]
+            val digit = digits[charIndex]
 
             if (maskChar == MASK_ITEM) {
-                builder.append(char)
+                result.add(digit)
             } else {
-                indexSpace += 1
-                builder.append(maskChar)
-                if (char.isDigit()) {
-                    builder.append(char)
-                }
+                skipCount++
+                result.add(maskChar to false)
+                result.add(digit)
             }
         }
     }
 
-    return builder.toString()
+    val selectedPosition = with(result.indexOfFirst { it.second }) {
+        if (this == -1) {
+            null
+        } else {
+            this.inc()
+        }
+    }
+
+    return result.map { it.first }.joinToString(separator = EMPTY) to selectedPosition
 }
 
 internal infix fun String.concatWithDash(suffix: String): String {
@@ -81,3 +84,9 @@ internal fun String.applyLimitOnMask(limit: Int): String {
         builder.toString().trim()
     }
 }
+
+internal val String.digits: String
+    get() {
+        val digitsRegex = Regex("\\D")
+        return digitsRegex.replace(this, "")
+    }

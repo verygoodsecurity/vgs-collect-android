@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.view.card.formatter.date
 
 import android.text.Editable
 import android.widget.EditText
+import com.verygoodsecurity.vgscollect.util.extension.replaceIgnoreFilters
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 import java.util.regex.Pattern
 
@@ -68,7 +69,7 @@ internal open class StrictDateFormatter(
         if (mode == DatePickerMode.INPUT) {
             s?.apply {
                 if (s.toString() != runtimeData) {
-                    replace(0, s.length, runtimeData)
+                    replaceIgnoreFilters(0, s.length, runtimeData)
                 }
             }
         }
@@ -164,14 +165,14 @@ internal open class StrictDateFormatter(
         val newM = when {
             year.isEmpty() -> "".also { cacheYear = "" }
             isValid -> year.also { cacheYear = it }
-            isDeleteAction -> "".also { moveCursorToEnd_Year() }
+            isDeleteAction -> "".also { moveCursorToEndYear() }
             else -> cacheYear
         }
 
         return newM
     }
 
-    private fun moveCursorToEnd_Year() {
+    private fun moveCursorToEndYear() {
         if (yearIndex > mounthIndex) {
             source?.setSelection(runtimeData.length - 1)
         } else {
@@ -179,7 +180,7 @@ internal open class StrictDateFormatter(
         }
     }
 
-    private fun moveCursorToEnd_M() {
+    private fun moveCursorToEndM() {
         if (yearIndex < mounthIndex) {
             source?.setSelection(runtimeData.length - 1)
         } else {
@@ -192,7 +193,7 @@ internal open class StrictDateFormatter(
         val newM = when {
             month.isEmpty() -> "".also { cacheMonth = "" }
             isValid -> month.also { cacheMonth = it }
-            isDeleteAction -> "".also { moveCursorToEnd_M() }
+            isDeleteAction -> "".also { moveCursorToEndM() }
             else -> validateMonth(month) ?: cacheMonth
         }
 

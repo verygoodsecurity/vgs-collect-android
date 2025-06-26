@@ -1,16 +1,20 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-android-extensions'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.detekt)
 }
 
+apply from: "$rootDir/gradle/utils.gradle"
+
 android {
-    compileSdkVersion 33
+    namespace 'com.verygoodsecurity.demoapp'
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.verygoodsecurity.demoapp"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 35
         versionCode 1
         versionName "1.0"
 
@@ -24,6 +28,10 @@ android {
         buildConfigField("String", "ACCESS_TOKEN_URL", "\"${getLocalProperty("VGS_ACCESS_TOKEN_URL")}\"")
         buildConfigField("String", "CREATE_ORDER_URL", "\"${getLocalProperty("VGS_CREATE_ORDER_URL")}\"")
         buildConfigField("String", "PAYMENT_URL", "\"${getLocalProperty("VGS_PAYMENT_URL")}\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -55,30 +63,47 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    buildFeatures {
+        viewBinding true
+        compose true
+    }
+
+    testOptions {
+        animationsDisabled = true
+    }
 }
 
-repositories {
-    maven { url "https://jitpack.io" }
+detekt {
+    buildUponDefaultConfig = false
+    allRules = false
+    config = files("$project.rootDir/.detekt/config.yml")
 }
 
 dependencies {
     implementation project(":vgscollect")
-    implementation project(":vgscollect-cardio")
+    implementation project(":vgscollect-blinkcard")
 
     implementation libs.androidx.appcompat
     implementation libs.androidx.core.ktx
     implementation libs.material
+    implementation libs.activity.compose
+    implementation libs.compose.material
+    implementation libs.compose.ui.tooling.preview
+    implementation libs.play.services.wallet
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.multidex
+    implementation libs.androidx.preference.ktx
+    implementation libs.codeview
+    implementation libs.fuel
+    implementation libs.espresso.idling.resource
 
-    implementation demoLibs.androidx.constraintlayout
-    implementation demoLibs.androidx.multidex
-    implementation demoLibs.androidx.preference.ktx
-    implementation demoLibs.codeview
-    implementation demoLibs.fuel
-
+    debugImplementation debugLibs.compose.ui.tooling
     debugImplementation debugLibs.leakcanary
 
     testImplementation testLibs.junit
 
+    androidTestImplementation androidTestLibs.androidx.core
     androidTestImplementation androidTestLibs.androidx.runner
     androidTestImplementation androidTestLibs.androidx.rules
     androidTestImplementation androidTestLibs.androidx.junit.ext

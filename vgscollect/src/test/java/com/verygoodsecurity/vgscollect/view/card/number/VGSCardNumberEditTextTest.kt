@@ -22,7 +22,6 @@ import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgo
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CardInputField
-import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 import org.junit.Assert.*
 import org.junit.Before
@@ -1027,4 +1026,9 @@ class VGSCardNumberEditTextTest {
         assertEquals(child.vaultStorage, VGSVaultStorageType.PERSISTENT)
     }
 
+    @Test
+    fun test_accessibility() {
+        view.contentDescription = "card number"
+        assertEquals(view.contentDescription, "card number")
+    }
 }

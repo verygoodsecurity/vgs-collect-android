@@ -1,18 +1,40 @@
+#file: noinspection YAMLSchemaValidation
 version: 2.1
 
+# === Scheduled Pipeline Parameters ===
+parameters:
+  nightly-security-scan:
+    type: boolean
+    default: false
+
 aliases:
-  - &environment
+  - &android-environment
     working_directory: ~/code
     docker:
-      - image: circleci/android:api-29
-    environment:
-      JVM_OPTS: -Xmx3200m
+      - image: cimg/android:2024.01
+    resource_class: large
+  - &semgrep-config
+    parameters:
+      default_branch:
+        type: string
+        default: master
+    docker:
+      - image: returntocorp/semgrep
+    resource_class: large
 
 jobs:
-  "Run_Unit_Test_And_Build":
-    <<: *environment
+  run-unit-test-and-build:
+    <<: *android-environment
     steps:
       - checkout
+      - run:
+          name: Fetch analytics submodule
+          command: git submodule init && git submodule update
+      - run:
+          name: Setup local variables
+          command: |
+            echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
+            echo "VGS_PATH=$VGS_PATH" >> local.properties
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
@@ -25,28 +47,55 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Run Lint
-          command: ./gradlew lintDebug
+          name: Run Detekt
+          command: ./gradlew app:detekt vgscollect:detekt vgscollect-cardio:detekt --continue --parallel
       - run:
           name: Run Unit tests
           command: ./gradlew testDebugUnitTest
       - run:
+          name: Generate Code Coverage Report
+          command: |
+            if [ "<< pipeline.git.branch >>" == "master" ]; then
+              ./gradlew koverHtmlReportDebug
+            else
+              echo "Code coverage will only be generated on the master branch."
+            fi
+      - run:
+          name: Publish Code Coverage Report
+          command: |
+            if [ "<< pipeline.git.branch >>" == "master" ]; then
+              COVERAGE=$(sed -n '51p' vgscollect/build/reports/kover/htmlDebug/index.html)
+              METRIC_VALUE=`echo ${COVERAGE//[[:space:]]/} | sed 's/.$//'`
+
+              echo "$METRIC_VALUE"
+
+              curl --fail-with-body \
+                --request POST \
+                --url https://verygoodsecurity.atlassian.net/gateway/api/compass/v1/metrics \
+                --user "$COMPASS_USER_EMAIL:$COMPASS_API_KEY" \
+                --header "Accept: application/json" \
+                --header "Content-Type: application/json" \
+                --data "{\"metricSourceId\":\"$COMPASS_METRIC_SOURCE_ID\",\"value\":\"$METRIC_VALUE\",\"timestamp\":\"$(date -u +'%Y-%m-%dT%H:%M:%SZ')\"}"
+            else
+              echo "Code coverage will only be pushed to compass on the master branch."
+            fi
+      - run:
           name: Generate apk
-          command: ./gradlew assembleDebug assembleAndroidTest
+          command: ./gradlew app:assembleDebug app:assembleAndroidTest --no-daemon
       - persist_to_workspace:
           root: ~/code
           paths:
             - app
-  "Run_UI_Test":
-    <<: *environment
+  run-ui-test:
+    <<: *android-environment
     steps:
       - attach_workspace:
           at: ~/code
       - run:
-          name: Check if release branch
+          name: Check if master branch
           command: |
-            if [[ $CIRCLE_BRANCH != *"release/"* ]] && [ $CIRCLE_BRANCH != master* ]; then
-              echo "Skipped, reason: UI tests should be running only on release branches or master!"
+            if [ "<< pipeline.git.branch >>" != "master" ]; then
+              echo "UI tests should be running only on master branch!"
               circleci-agent step halt
             fi
       - run:
@@ -63,15 +112,60 @@ jobs:
             sudo gcloud firebase test android run \
               --app app/build/outputs/apk/debug/app-debug.apk \
               --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
-              --device model=lv0,version=23,locale=en,orientation=portrait \
-              --device model=capricorn,version=26,locale=en,orientation=portrait \
-              --device model=tissot_sprout,version=28,locale=en,orientation=portrait \
-              --device model=flame,version=30,locale=en,orientation=portrait \
+              --device model=sailfish,version=25,locale=en,orientation=portrait \
+              --device model=oriole,version=31,locale=en,orientation=portrait \
+              --device model=husky,version=34,locale=en,orientation=portrait \
+  scan-sast-pr:
+    <<: *semgrep-config
+    environment:
+      SEMGREP_REPO_URL: << pipeline.project.git_url >>
+      SEMGREP_BRANCH: << pipeline.git.branch >>
+      SEMGREP_BASELINE_REF: << parameters.default_branch >>
+    steps:
+      - checkout
+      - run:
+          name: "Semgrep diff scan"
+          command: semgrep ci
+  scan-sast-full:
+    <<: *semgrep-config
+    environment:
+      SEMGREP_REPO_URL: << pipeline.project.git_url >>
+      SEMGREP_BRANCH: << pipeline.git.branch >>
+    steps:
+      - checkout
+      - run:
+          name: "Semgrep full scan"
+          command: semgrep ci
 
 workflows:
   main:
+    when:
+      not: << pipeline.parameters.nightly-security-scan >>
     jobs:
-      - "Run_Unit_Test_And_Build"
-      - "Run_UI_Test":
+      - scan-sast-pr:
+          context:
+            - security-tools
+            - circleci
+      - scan-sast-full:
+          filters:
+            # ignore any commit on any branch by default
+            branches:
+              ignore: /.*/
+            tags:
+              only:
+                - /production-.*/
+          context:
+            - security-tools
+      - run-unit-test-and-build:
+          context:
+            - frontend-deploy
+      - run-ui-test:
           requires:
-            - "Run_Unit_Test_And_Build"
+            - run-unit-test-and-build
+  scheduled-security-scan:
+    when: << pipeline.parameters.nightly-security-scan >>
+    jobs:
+      - scan-sast-full:
+          context:
+            - security-tools
+            - circleci

@@ -10,5 +10,7 @@ interface InputRunnable : Runnable {
 
     fun setOutput(state: VGSFieldState)
 
-    fun setOutputListener(listener: OnVgsViewStateChangeListener?)
+    fun addOutputListener(listener: OnVgsViewStateChangeListener?)
+
+    fun removeOutputListener(listener: OnVgsViewStateChangeListener?)
 }

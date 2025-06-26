@@ -1,17 +1,21 @@
 plugins {
-    id 'com.android.library'
-    id 'kotlin-android'
-    id 'kotlin-android-extensions'
-    id 'org.jetbrains.dokka'
-    id 'com.vanniktech.maven.publish'
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.maven.publish)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.kover)
 }
 
 android {
-    compileSdkVersion 33
+    namespace 'com.verygoodsecurity.vgscollect'
+    compileSdk 35
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 33
+        minSdk 21
+        targetSdk 35
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
@@ -21,6 +25,11 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField "String", "VERSION_NAME", "\"$VERSION_NAME\""
+    }
+
+    buildFeatures {
+        buildConfig true
+        compose true
     }
 
     buildTypes {
@@ -43,30 +52,40 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
-    androidExtensions {
-        experimental = true
-    }
-
     testOptions {
         unitTests {
             includeAndroidResources = true
             returnDefaultValues = true
+            all {
+                jvmArgs '-noverify'
+            }
         }
     }
 }
 
+detekt {
+    buildUponDefaultConfig = false
+    allRules = false
+    config = files("$project.rootDir/.detekt/config.yml")
+}
+
 dependencies {
-    implementation libs.androidx.appcompat
-    implementation libs.androidx.core.ktx
 
     api libs.material
     api libs.okhttp
+
+    debugImplementation project(':vgs-sdk-analytics:VGSClientSDKAnalytics')
+    releaseImplementation(libs.vgs.sdk.analytics.android)
+
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
+
+    implementation libs.compose.material
 
     testImplementation testLibs.junit
     testImplementation testLibs.mockito.core
     testImplementation testLibs.mockito.inline
     testImplementation testLibs.robolectric
-    testImplementation testLibs.mockk
     testImplementation testLibs.json
     testImplementation testLibs.jsonassert
 
@@ -77,7 +96,7 @@ dependencies {
     dokkaHtmlPlugin(libs.dokka.base)
 }
 
-tasks.withType(Javadoc).all {
+tasks.withType(Javadoc).configureEach {
     enabled = false
 }
 

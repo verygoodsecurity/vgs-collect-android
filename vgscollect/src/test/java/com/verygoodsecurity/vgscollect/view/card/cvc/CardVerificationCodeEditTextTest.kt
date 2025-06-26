@@ -11,8 +11,6 @@ import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultSto
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
-import com.verygoodsecurity.vgscollect.view.internal.CardInputField
-import com.verygoodsecurity.vgscollect.view.internal.DateInputField
 import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import org.junit.Assert.*
 import org.junit.Before
@@ -207,4 +205,9 @@ class CardVerificationCodeEditTextTest {
         assertEquals((child as CVCInputField).vaultAliasFormat, VGSVaultAliasFormat.UUID)
     }
 
+    @Test
+    fun test_accessibility() {
+        view.contentDescription = "cvc"
+        assertEquals(view.contentDescription, "cvc")
+    }
 }

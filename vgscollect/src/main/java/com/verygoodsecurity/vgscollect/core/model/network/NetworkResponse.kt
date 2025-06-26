@@ -19,7 +19,7 @@ fun NetworkResponse.toVGSResponse(
             rawResponse = this.body
         )
         this.error != null -> VGSResponse.ErrorResponse(
-            localizeMessage = context?.getString(error.messageResId) ?: "",
+            localizeMessage = error.message,
             errorCode = error.code,
             rawResponse = this.body
         )

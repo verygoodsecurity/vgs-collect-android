@@ -9,34 +9,34 @@ import org.junit.Test
 
 class AmexTest {
 
-    private lateinit var filter: VGSCardFilter
-
-    @Before
-    fun setupFilter() {
-        filter = CardBrandFilter()
-    }
+    private var filter: VGSCardFilter = CardBrandFilter()
 
     @Test
-    fun test_1() {
-        val brand = filter.detect("37")
-        Assert.assertEquals(brand.name, CardType.AMERICAN_EXPRESS.name)
+    fun detect() {
+        val expectedCardBrand = CardType.AMERICAN_EXPRESS.name
+
+        cards().forEach {
+            val actualCardBrand = filter.detect(it).name
+            Assert.assertEquals(
+                "CARD: $it",
+                expectedCardBrand,
+                actualCardBrand
+            )
+        }
     }
 
-    @Test
-    fun test_2() {
-        val brand = filter.detect("34")
-        Assert.assertEquals(brand.name, CardType.AMERICAN_EXPRESS.name)
-    }
-
-    @Test
-    fun test_3() {
-        val brand = filter.detect("341")
-        Assert.assertEquals(brand.name, CardType.AMERICAN_EXPRESS.name)
-    }
-
-    @Test
-    fun test_4() {
-        val brand = filter.detect("379")
-        Assert.assertEquals(brand.name, CardType.AMERICAN_EXPRESS.name)
-    }
+    private fun cards() = listOf(
+        "370000000000002",
+        "378282246310005",
+        "371449635398431",
+        "378734493671000",
+        "374111111111111",
+        "373953192351004",
+        "346018484777573",
+        "374101000000608",
+        "376525000000010",
+        "375425000000907",
+        "343452000000306",
+        "372349000000852",
+    )
 }

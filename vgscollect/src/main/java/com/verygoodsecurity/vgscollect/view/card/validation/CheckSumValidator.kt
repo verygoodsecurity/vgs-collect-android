@@ -14,7 +14,7 @@ class CheckSumValidator(
         ChecksumAlgorithm.NONE -> null
     }
 
-    override fun isValid(content: String) = validator?.isValid(content) ?: true
+    override fun isValid(content: String) = validator?.isValid(content) != false
 
     internal companion object {
 

@@ -1,59 +1,30 @@
-include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-bouncer'
+pluginManagement {
+    repositories {
+        google()
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
 
-// Read more about dependencyResolutionManagement in gradle docs: https://docs.gradle.org/current/userguide/platforms.html
-// Currently dependabot doesn't recognize toml files and doesn't support versions references.
 dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+        maven { url 'https://maven.microblink.com' }
+    }
     versionCatalogs {
-        gradleLibs {
-            library('tools', 'com.android.tools.build:gradle:7.3.0')
-            library('kotlin', 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10')
-            library('maven', 'com.github.dcendents:android-maven-gradle-plugin:2.1')
-            library('maven-publish', 'com.vanniktech:gradle-maven-publish-plugin:0.22.0')
-            library('dokka', 'org.jetbrains.dokka:dokka-gradle-plugin:1.7.10')
-        }
-        libs {
-            // Libraries
-            library('androidx-appcompat', 'androidx.appcompat:appcompat:1.6.0-rc01')
-            library('androidx-core-ktx', 'androidx.core:core-ktx:1.9.0')
-            library('material', 'com.google.android.material:material:1.6.1')
-            library('okhttp', 'com.squareup.okhttp3:okhttp:4.10.0')
-            library('dokka-base', 'org.jetbrains.dokka:dokka-base:1.7.10')
-            library('bouncer-scan-payment-full', 'com.getbouncer:scan-payment-full:2.1.0016')
-            library('bouncer-cardscan-ui', 'com.getbouncer:cardscan-ui:2.1.0016')
-            library('bouncer-tensorflow-lite', 'com.getbouncer:tensorflow-lite:2.1.0016')
-            library('cardio', 'io.card:android-sdk:5.5.1')
-
-            // Bundles
-            bundle('bouncer', ['bouncer-scan-payment-full', 'bouncer-cardscan-ui', 'bouncer-tensorflow-lite'])
-        }
-        demoLibs {
-            library('androidx-constraintlayout', 'androidx.constraintlayout:constraintlayout:2.1.4')
-            library('androidx-multidex', 'androidx.multidex:multidex:2.0.1')
-            library('androidx-preference-ktx', 'androidx.preference:preference-ktx:1.2.0')
-            library('codeview', 'com.github.kbiakov:CodeView-Android:1.3.2')
-            library('fuel', 'com.github.kittinunf.fuel:fuel:2.3.1')
-        }
         debugLibs {
-            library('leakcanary', 'com.squareup.leakcanary:leakcanary-android:2.9.1')
+            from(files('gradle/debug-libs.versions.toml'))
         }
         testLibs {
-            library('junit', 'junit:junit:4.13.2')
-            library('mockito-core', 'org.mockito:mockito-core:4.8.0')
-            library('mockito-inline', 'org.mockito:mockito-inline:4.8.0')
-            library('robolectric', 'org.robolectric:robolectric:4.8.2')
-            library('mockk', 'io.mockk:mockk:1.12.4')
-            library('json', 'org.json:json:20220924')
-            library('jsonassert', 'org.skyscreamer:jsonassert:1.5.1')
+            from(files('gradle/test-libs.versions.toml'))
         }
         androidTestLibs {
-            library('androidx-runner', 'androidx.test:runner:1.4.0')
-            library('androidx-rules', 'androidx.test:rules:1.4.0')
-            library('androidx-junit-ext', 'androidx.test.ext:junit:1.1.3')
-            library('androidx-junit-ext-ktx', 'androidx.test.ext:junit-ktx:1.1.3')
-            library('androidx-uiautomator', 'androidx.test.uiautomator:uiautomator:2.2.0')
-            library('androidx-espresso-core', 'androidx.test.espresso:espresso-core:3.4.0')
-            library('androidx-espresso-intents', 'androidx.test.espresso:espresso-intents:3.4.0')
-            library('espresso-contrib', 'com.android.support.test.espresso:espresso-contrib:3.0.2')
+            from(files('gradle/android-test-libs.versions.toml'))
         }
     }
 }
+
+rootProject.name = "vgs-collect-android"
+include ':app', ':vgscollect', ':vgscollect-cardio', ':vgscollect-blinkcard', ':vgs-sdk-analytics:VGSClientSDKAnalytics'
