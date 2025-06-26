@@ -14,77 +14,93 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpirationDateFormat
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
-import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRegexValidator
+import com.verygoodsecurity.vgscollect.widget.compose.util.plusYears
+import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsMinMaxDateValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
-import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsTextLengthValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import kotlin.math.min
 
-class VgsSsnTextFieldState(
-    text: String,
-    fieldName: String,
-    validators: List<VgsTextFieldValidator>?
-) : BaseFieldState(text, fieldName, validators) {
+class VgsExpiryTextFieldState : BaseFieldState {
 
-    private companion object {
+    internal companion object {
 
-        const val DEFAULT_MASK = "###-##-####"
-        const val DEFAULT_LENGTH = 9
-        const val DEFAULT_REGEX =
-            "^(?!(000|666|9))(\\d{3}(-|\\s)?(?!(00))\\d{2}(-|\\s)?(?!(0000))\\d{4})\$"
+        const val DEFAULT_MAX_YEARS_FROM_NOW = 20
     }
 
-    val mask: String = DEFAULT_MASK
+    val inputDateFormat: VgsExpirationDateFormat
+
+    val outputDateFormat: VgsExpirationDateFormat
 
     constructor(
         fieldName: String,
-        validators: List<VgsTextFieldValidator>? = null
+        validators: List<VgsTextFieldValidator>? = null,
+        inputDateFormat: VgsExpirationDateFormat = VgsExpirationDateFormat.MonthShortYear(),
+        outputDateFormat: VgsExpirationDateFormat = VgsExpirationDateFormat.MonthShortYear(),
     ) : this(
         EMPTY,
         fieldName,
-        validators
+        validators,
+        inputDateFormat,
+        outputDateFormat
     )
 
+    internal constructor(
+        text: String,
+        fieldName: String,
+        validators: List<VgsTextFieldValidator>?,
+        inputDateFormat: VgsExpirationDateFormat,
+        outputDateFormat: VgsExpirationDateFormat
+    ) : super(text, fieldName, validators) {
+        this.inputDateFormat = inputDateFormat
+        this.outputDateFormat = outputDateFormat
+    }
+
     override fun validate(): List<VgsTextFieldValidationResult> {
-        return (validators ?: getDefaultValidators()).map { it.validate(text) }
+        return (validators ?: getDefaultValidators(inputDateFormat)).map { it.validate(text) }
     }
 
-    override fun getOutputText(): String = text
+    override fun getOutputText(): String {
+        return ""
+    }
 
-    internal fun copy(text: String): VgsSsnTextFieldState {
-        return VgsSsnTextFieldState(
-            text = normalizeText(text),
+    internal fun copy(text: String): VgsExpiryTextFieldState {
+        val normalizedText = normalizeText(text)
+        return VgsExpiryTextFieldState(
+            text = normalizedText,
             fieldName = fieldName,
-            validators = validators
+            validators = validators,
+            inputDateFormat = inputDateFormat,
+            outputDateFormat = outputDateFormat
         )
     }
 
-    private fun getDefaultValidators(): List<VgsTextFieldValidator> {
-        return listOf(
-            VgsRequiredFieldValidator(),
-            VgsTextLengthValidator(arrayOf(DEFAULT_LENGTH)),
-            VgsRegexValidator(DEFAULT_REGEX)
-        )
+    private fun getDefaultValidators(inputDateFormat: VgsExpirationDateFormat): List<VgsTextFieldValidator> {
+        val min = System.currentTimeMillis()
+        val max = min.plusYears(DEFAULT_MAX_YEARS_FROM_NOW)
+        val minMaxValidator = VgsMinMaxDateValidator(min, max, inputDateFormat)
+        return listOf(VgsRequiredFieldValidator(), minMaxValidator)
     }
 
     /**
-     * Ensure text does not exceed the maximum ssn date length and contains only digits.
+     * Ensure text does not exceed the maximum expiration date length and contains only digits.
      */
     private fun normalizeText(text: String): String {
         val digits = text.filter { it.isDigit() }
         val length = digits.length
-        return digits.substring(0, min(length, DEFAULT_LENGTH))
+        return digits.substring(0, min(length, inputDateFormat.inputLength))
     }
 }
 
 @Composable
-fun VgsSsnTextField(
-    state: VgsSsnTextFieldState,
+fun VgsExpiryTextField(
+    state: VgsExpiryTextFieldState,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsSsnTextFieldState) -> Unit = {},
+    onStateChange: (state: VgsExpiryTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -93,15 +109,13 @@ fun VgsSsnTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions(),
-    singleLine: Boolean = false,
+    singleLine: Boolean = true,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = MaterialTheme.shapes.small.copy(
-        bottomEnd = ZeroCornerSize,
-        bottomStart = ZeroCornerSize
+        bottomEnd = ZeroCornerSize, bottomStart = ZeroCornerSize
     ),
     colors: TextFieldColors = TextFieldDefaults.textFieldColors()
 ) {
@@ -117,8 +131,8 @@ fun VgsSsnTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         isError = isError,
-        visualTransformation = VgsMaskVisualTransformation(state.mask),
-        keyboardOptions = keyboardOptions,
+        visualTransformation = VgsMaskVisualTransformation(state.inputDateFormat.mask),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         keyboardActions = keyboardActions,
         singleLine = singleLine,
         maxLines = maxLines,

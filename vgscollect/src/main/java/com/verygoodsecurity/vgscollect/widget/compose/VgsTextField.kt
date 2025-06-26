@@ -20,9 +20,11 @@ import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredField
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 
-class VgsTextFieldState : BaseFieldState {
-
-    val validators: List<VgsTextFieldValidator>
+class VgsTextFieldState(
+    text: String,
+    fieldName: String,
+    validators: List<VgsTextFieldValidator>?
+) : BaseFieldState(text, fieldName, validators) {
 
     constructor(
         fieldName: String,
@@ -33,20 +35,8 @@ class VgsTextFieldState : BaseFieldState {
         validators
     )
 
-    internal constructor(
-        text: String,
-        fieldName: String,
-        validators: List<VgsTextFieldValidator>?
-    ) : super(text, fieldName) {
-        this.validators = validators ?: listOf(VgsRequiredFieldValidator())
-    }
-
-    override fun isValid(): Boolean {
-        return validate().all { it.isValid }
-    }
-
     override fun validate(): List<VgsTextFieldValidationResult> {
-        return validators.map { it.validate(text) }
+        return (validators ?: listOf(VgsRequiredFieldValidator())).map { it.validate(text) }
     }
 
     override fun getOutputText(): String = text
