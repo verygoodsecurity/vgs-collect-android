@@ -18,9 +18,9 @@ abstract class BaseFieldState(
 
     val contentLength: Int = text.length
 
-    val validationResult: List<VgsTextFieldValidationResult> = validate()
+    val validationResult: List<VgsTextFieldValidationResult> by lazy { validate() }
 
-    val isValid: Boolean = validationResult.isEmpty()
+    val isValid: Boolean by lazy { validationResult.all { it.isValid } }
 
     internal abstract fun validate(): List<VgsTextFieldValidationResult>
 

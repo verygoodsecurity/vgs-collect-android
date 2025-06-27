@@ -11,6 +11,7 @@ import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
@@ -46,6 +47,7 @@ class VgsTextFieldState(
     }
 }
 
+@ExperimentalComposeUiApi
 @Composable
 fun VgsTextField(
     state: VgsTextFieldState,
