@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.widget.compose.validator
 
 import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpiryDateFormat
+import com.verygoodsecurity.vgscollect.widget.compose.util.format
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import java.text.SimpleDateFormat
