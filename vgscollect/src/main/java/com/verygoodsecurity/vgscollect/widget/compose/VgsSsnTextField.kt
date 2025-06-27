@@ -15,16 +15,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRegexValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
+import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsTextLengthValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
+import kotlin.math.min
 
-class VgsTextFieldState(
+class VgsSsnTextFieldState(
     text: String,
     fieldName: String,
     validators: List<VgsTextFieldValidator>?
 ) : BaseFieldState(text, fieldName, validators) {
+
+    private companion object {
+
+        const val DEFAULT_MASK = "###-##-####"
+        const val DEFAULT_LENGTH = 9
+        const val DEFAULT_REGEX =
+            "^(?!(000|666|9))(\\d{3}(-|\\s)?(?!(00))\\d{2}(-|\\s)?(?!(0000))\\d{4})\$"
+    }
+
+    val mask: String = DEFAULT_MASK
 
     constructor(
         fieldName: String,
@@ -36,21 +49,42 @@ class VgsTextFieldState(
     )
 
     override fun validate(): List<VgsTextFieldValidationResult> {
-        return (validators ?: listOf(VgsRequiredFieldValidator())).map { it.validate(text) }
+        return (validators ?: getDefaultValidators()).map { it.validate(text) }
     }
 
     override fun getOutputText(): String = text
 
-    internal fun copy(text: String): VgsTextFieldState {
-        return VgsTextFieldState(text = text, fieldName = fieldName, validators = validators)
+    internal fun copy(text: String): VgsSsnTextFieldState {
+        return VgsSsnTextFieldState(
+            text = normalizeText(text),
+            fieldName = fieldName,
+            validators = validators
+        )
+    }
+
+    private fun getDefaultValidators(): List<VgsTextFieldValidator> {
+        return listOf(
+            VgsRequiredFieldValidator(),
+            VgsTextLengthValidator(arrayOf(DEFAULT_LENGTH)),
+            VgsRegexValidator(DEFAULT_REGEX)
+        )
+    }
+
+    /**
+     * Ensure text does not exceed the maximum ssn date length and contains only digits.
+     */
+    private fun normalizeText(text: String): String {
+        val digits = text.filter { it.isDigit() }
+        val length = digits.length
+        return digits.substring(0, min(length, DEFAULT_LENGTH))
     }
 }
 
 @Composable
-fun VgsTextField(
-    state: VgsTextFieldState,
+fun VgsSsnTextField(
+    state: VgsSsnTextFieldState,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsTextFieldState) -> Unit = {},
+    onStateChange: (state: VgsSsnTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -59,7 +93,6 @@ fun VgsTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    visualTransformation: VgsVisualTransformation = VgsVisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions(),
     singleLine: Boolean = false,
@@ -84,7 +117,7 @@ fun VgsTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         isError = isError,
-        visualTransformation = visualTransformation,
+        visualTransformation = VgsMaskVisualTransformation(state.mask),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         singleLine = singleLine,

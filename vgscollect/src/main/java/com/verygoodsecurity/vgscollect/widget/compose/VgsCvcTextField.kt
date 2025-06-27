@@ -24,45 +24,27 @@ import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFiel
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import kotlin.math.min
 
-class VgsCardSecurityCodeTextFieldState : BaseFieldState {
-
-    val cardBrand: VgsCardBrand
-    val validators: List<VgsTextFieldValidator>
-    val includeCardBrandValidation: Boolean
+class VgsCvcTextFieldState internal constructor(
+    text: String,
+    fieldName: String,
+    validators: List<VgsTextFieldValidator>?,
+    val isCardBrandValidationEnabled: Boolean,
+    val cardBrand: VgsCardBrand,
+) : BaseFieldState(text, fieldName, validators) {
 
     constructor(
         fieldName: String,
         validators: List<VgsTextFieldValidator>? = null,
-        includeCardBrandValidation: Boolean = true,
+        isCardBrandValidationEnabled: Boolean = true,
     ) : this(
         EMPTY,
         fieldName,
         validators,
-        includeCardBrandValidation,
+        isCardBrandValidationEnabled,
         VgsCardBrand.UNKNOWN
     )
 
-    internal constructor(
-        text: String,
-        fieldName: String,
-        validators: List<VgsTextFieldValidator>?,
-        includeCardBrandValidation: Boolean,
-        cardBrand: VgsCardBrand
-    ) : super(text, fieldName) {
-        this.cardBrand = cardBrand
-        this.validators = prepareValidators(validators)
-        this.includeCardBrandValidation = includeCardBrandValidation
-    }
-
-    override fun isValid(): Boolean {
-        return validate().all { it.isValid }
-    }
-
     override fun getOutputText(): String = text
-
-    override fun validate(): List<VgsTextFieldValidationResult> {
-        return validators.map { it.validate(text) }
-    }
 
     /**
      * Updates the security code field state when a new card brand is detected
@@ -83,42 +65,39 @@ class VgsCardSecurityCodeTextFieldState : BaseFieldState {
      *
      * @param cardBrand The card brand detected in [VgsCardNumberTextFieldState]
      */
-    fun withCardBrand(cardBrand: VgsCardBrand) = this.copy(cardBrand)
+    fun withCardBrand(cardBrand: VgsCardBrand) = VgsCvcTextFieldState(
+        text = normalizeText(text, cardBrand),
+        fieldName = fieldName,
+        validators = validators,
+        isCardBrandValidationEnabled = isCardBrandValidationEnabled,
+        cardBrand = cardBrand
+    )
 
-    internal fun copy(cardBrand: VgsCardBrand): VgsCardSecurityCodeTextFieldState {
-        return VgsCardSecurityCodeTextFieldState(
+    internal fun copy(text: String): VgsCvcTextFieldState {
+        return VgsCvcTextFieldState(
             text = normalizeText(text, cardBrand),
             fieldName = fieldName,
             validators = validators,
-            includeCardBrandValidation = includeCardBrandValidation,
+            isCardBrandValidationEnabled = isCardBrandValidationEnabled,
             cardBrand = cardBrand
         )
     }
 
-    internal fun copy(text: String): VgsCardSecurityCodeTextFieldState {
-        return VgsCardSecurityCodeTextFieldState(
-            text = normalizeText(text),
-            fieldName = fieldName,
-            validators = validators,
-            includeCardBrandValidation = includeCardBrandValidation,
-            cardBrand = cardBrand
-        )
-    }
-
-    private fun prepareValidators(validators: List<VgsTextFieldValidator>?): List<VgsTextFieldValidator> {
-        return with(validators ?: listOf(VgsRequiredFieldValidator())) {
-            if (includeCardBrandValidation) {
+    override fun validate(): List<VgsTextFieldValidationResult> {
+        val completeValidators = with(validators ?: listOf(VgsRequiredFieldValidator())) {
+            if (isCardBrandValidationEnabled) {
                 this + cardBrand.getSecurityCodeValidators()
             } else {
                 this
             }
         }
+        return completeValidators.map { it.validate(text) }
     }
 
     /**
      * Ensure text does not exceed the maximum card security code length and contains only digits.
      */
-    private fun normalizeText(text: String, cardBrand: VgsCardBrand = this.cardBrand): String {
+    private fun normalizeText(text: String, cardBrand: VgsCardBrand): String {
         val digits = text.filter { it.isDigit() }
         val length = digits.length
         return digits.substring(0, min(length, cardBrand.securityCodeLength.maxOrNull() ?: length))
@@ -126,10 +105,10 @@ class VgsCardSecurityCodeTextFieldState : BaseFieldState {
 }
 
 @Composable
-fun VgsCardSecurityCodeTextField(
-    state: VgsCardSecurityCodeTextFieldState,
+fun VgsCvcTextField(
+    state: VgsCvcTextFieldState,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsCardSecurityCodeTextFieldState) -> Unit = {},
+    onStateChange: (state: VgsCvcTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,

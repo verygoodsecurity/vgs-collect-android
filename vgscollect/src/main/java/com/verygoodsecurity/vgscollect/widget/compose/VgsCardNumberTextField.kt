@@ -24,73 +24,54 @@ import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFiel
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import kotlin.math.min
 
-class VgsCardNumberTextFieldState : BaseFieldState {
-
-    val cardBrand: VgsCardBrand
-    val includeCardBrandValidation: Boolean
-    val validators: List<VgsTextFieldValidator>
-
-    private val userValidators: List<VgsTextFieldValidator>?
+class VgsCardNumberTextFieldState internal constructor(
+    text: String,
+    fieldName: String,
+    validators: List<VgsTextFieldValidator>?,
+    val isCardBrandValidationEnabled: Boolean,
+    val cardBrand: VgsCardBrand,
+) : BaseFieldState(text, fieldName, validators) {
 
     constructor(
         fieldName: String,
         validators: List<VgsTextFieldValidator>? = null,
-        includeCardBrandValidation: Boolean = true,
+        isCardBrandValidationEnabled: Boolean = true,
     ) : this(
         EMPTY,
         fieldName,
-        VgsCardBrand.UNKNOWN,
         validators,
-        includeCardBrandValidation
+        isCardBrandValidationEnabled,
+        VgsCardBrand.UNKNOWN,
     )
-
-    internal constructor(
-        text: String,
-        fieldName: String,
-        cardBrand: VgsCardBrand,
-        userValidators: List<VgsTextFieldValidator>?,
-        includeCardBrandValidation: Boolean
-    ) : super(text, fieldName) {
-        this.cardBrand = cardBrand
-        this.userValidators = userValidators
-        this.includeCardBrandValidation = includeCardBrandValidation
-        this.validators = prepareValidators()
-    }
-
-    override fun isValid(): Boolean {
-        return validate().all { it.isValid }
-    }
 
     override fun getOutputText(): String = text
 
-    override fun validate(): List<VgsTextFieldValidationResult> {
-        return validators.map { it.validate(text) }
-    }
-
     internal fun copy(text: String): VgsCardNumberTextFieldState {
+        val cardBrand = VgsCardBrand.detect(text)
         return VgsCardNumberTextFieldState(
-            text = normalizeText(text),
+            text = normalizeText(text, cardBrand),
             fieldName = fieldName,
-            cardBrand = VgsCardBrand.detect(text),
-            userValidators = userValidators,
-            includeCardBrandValidation = includeCardBrandValidation
+            validators = validators,
+            isCardBrandValidationEnabled = isCardBrandValidationEnabled,
+            cardBrand = cardBrand,
         )
     }
 
-    private fun prepareValidators(): List<VgsTextFieldValidator> {
-        return with(userValidators ?: listOf(VgsRequiredFieldValidator())) {
-            if (includeCardBrandValidation) {
+    override fun validate(): List<VgsTextFieldValidationResult> {
+        val completeValidators = with(validators ?: listOf(VgsRequiredFieldValidator())) {
+            if (isCardBrandValidationEnabled) {
                 this + cardBrand.getCardNumberValidators()
             } else {
                 this
             }
         }
+        return completeValidators.map { it.validate(text) }
     }
 
     /**
      * Ensure text does not exceed the maximum card length and contains only digits.
      */
-    private fun normalizeText(text: String): String {
+    private fun normalizeText(text: String, cardBrand: VgsCardBrand): String {
         val digits = text.filter(Char::isDigit)
         val length = digits.length
         return digits.substring(0, min(length, cardBrand.length.maxOrNull() ?: length))

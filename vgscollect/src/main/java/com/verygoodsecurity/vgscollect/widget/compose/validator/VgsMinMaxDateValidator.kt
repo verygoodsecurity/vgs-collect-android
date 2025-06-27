@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.widget.compose.validator
 
-import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpirationDateFormat
+import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpiryDateFormat
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import java.text.SimpleDateFormat
@@ -9,7 +9,7 @@ import java.util.Locale
 class VgsMinMaxDateValidator(
     val minDate: Long,
     val maxDate: Long,
-    val inputDateFormat: VgsExpirationDateFormat,
+    val inputDateFormat: VgsExpiryDateFormat,
     override val errorMsg: String = ERROR_MESSAGE
 ) : VgsTextFieldValidator() {
 

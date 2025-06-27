@@ -16,7 +16,7 @@ internal fun List<BaseFieldState>.mapStorageFieldState(): List<StorageFieldState
     return this.map { state ->
         StorageFieldState(
             state.fieldName,
-            state.isValid(),
+            state.isValid,
             state.getOutputText()
         )
     }
