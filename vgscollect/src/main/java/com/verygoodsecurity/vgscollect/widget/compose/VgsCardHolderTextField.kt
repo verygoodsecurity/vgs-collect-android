@@ -16,15 +16,13 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRegexValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
-import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsTextLengthValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
-import kotlin.math.min
 
-class VgsSsnTextFieldState(
+class VgsCardHolderTextFieldState(
     text: String,
     fieldName: String,
     validators: List<VgsTextFieldValidator>?
@@ -32,13 +30,8 @@ class VgsSsnTextFieldState(
 
     private companion object {
 
-        const val DEFAULT_MASK = "###-##-####"
-        const val DEFAULT_LENGTH = 9
-        const val DEFAULT_REGEX =
-            "^(?!(000|666|9))(\\d{3}(-|\\s)?(?!(00))\\d{2}(-|\\s)?(?!(0000))\\d{4})\$"
+        const val VALIDATION_REGEX = "^[a-zA-Z0-9 ,\\'.-]+$"
     }
-
-    val mask: String = DEFAULT_MASK
 
     constructor(
         fieldName: String,
@@ -50,42 +43,28 @@ class VgsSsnTextFieldState(
     )
 
     override fun validate(): List<VgsTextFieldValidationResult> {
-        return (validators ?: getDefaultValidators()).map { it.validate(text) }
+        return (validators ?: listOf(
+            VgsRequiredFieldValidator(),
+            VgsRegexValidator(VALIDATION_REGEX)
+        )).map { it.validate(text) }
     }
 
     override fun getOutputText(): String = text
 
-    internal fun copy(text: String): VgsSsnTextFieldState {
-        return VgsSsnTextFieldState(
-            text = normalizeText(text),
+    internal fun copy(text: String): VgsCardHolderTextFieldState {
+        return VgsCardHolderTextFieldState(
+            text = text,
             fieldName = fieldName,
             validators = validators
         )
     }
-
-    private fun getDefaultValidators(): List<VgsTextFieldValidator> {
-        return listOf(
-            VgsRequiredFieldValidator(),
-            VgsTextLengthValidator(arrayOf(DEFAULT_LENGTH)),
-            VgsRegexValidator(DEFAULT_REGEX)
-        )
-    }
-
-    /**
-     * Ensure text does not exceed the maximum ssn length and contains only digits.
-     */
-    private fun normalizeText(text: String): String {
-        val digits = text.filter { it.isDigit() }
-        val length = digits.length
-        return digits.substring(0, min(length, DEFAULT_LENGTH))
-    }
 }
 
 @Composable
-fun VgsSsnTextField(
-    state: VgsSsnTextFieldState,
+fun VgsCardHolderTextField(
+    state: VgsCardHolderTextFieldState,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsSsnTextFieldState) -> Unit = {},
+    onStateChange: (state: VgsCardHolderTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -94,6 +73,7 @@ fun VgsSsnTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
+    visualTransformation: VgsVisualTransformation = VgsVisualTransformation.None,
     keyboardActions: KeyboardActions = KeyboardActions(),
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
@@ -117,7 +97,7 @@ fun VgsSsnTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         isError = isError,
-        visualTransformation = VgsMaskVisualTransformation(state.mask),
+        visualTransformation = visualTransformation,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         keyboardActions = keyboardActions,
         singleLine = singleLine,
