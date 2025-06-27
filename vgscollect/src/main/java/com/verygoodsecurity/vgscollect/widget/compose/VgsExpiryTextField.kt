@@ -16,31 +16,34 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpirationDateFormat
+import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpiryDateFormat
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.util.parse
 import com.verygoodsecurity.vgscollect.widget.compose.util.plusYears
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsMinMaxDateValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
+import java.text.SimpleDateFormat
+import java.util.Locale
 import kotlin.math.min
 
-class VgsExpirationDateTextFieldState : BaseFieldState {
+class VgsExpiryTextFieldState : BaseFieldState {
 
     internal companion object {
 
         const val DEFAULT_MAX_YEARS_FROM_NOW = 20
     }
 
-    val validators: List<VgsTextFieldValidator>
-    val inputDateFormat: VgsExpirationDateFormat
-    val outputDateFormat: VgsExpirationDateFormat
+    val inputDateFormat: VgsExpiryDateFormat
+
+    val outputDateFormat: VgsExpiryDateFormat
 
     constructor(
         fieldName: String,
         validators: List<VgsTextFieldValidator>? = null,
-        inputDateFormat: VgsExpirationDateFormat = VgsExpirationDateFormat.MonthShortYear(),
-        outputDateFormat: VgsExpirationDateFormat = VgsExpirationDateFormat.MonthShortYear(),
+        inputDateFormat: VgsExpiryDateFormat = VgsExpiryDateFormat.MonthShortYear(),
+        outputDateFormat: VgsExpiryDateFormat = VgsExpiryDateFormat.MonthShortYear(),
     ) : this(
         EMPTY,
         fieldName,
@@ -53,29 +56,32 @@ class VgsExpirationDateTextFieldState : BaseFieldState {
         text: String,
         fieldName: String,
         validators: List<VgsTextFieldValidator>?,
-        inputDateFormat: VgsExpirationDateFormat,
-        outputDateFormat: VgsExpirationDateFormat
-    ) : super(text, fieldName) {
-        this.validators = validators ?: getDefaultValidators(inputDateFormat)
+        inputDateFormat: VgsExpiryDateFormat,
+        outputDateFormat: VgsExpiryDateFormat
+    ) : super(text, fieldName, validators) {
         this.inputDateFormat = inputDateFormat
         this.outputDateFormat = outputDateFormat
     }
 
-    override fun isValid(): Boolean {
-        return validate().all { it.isValid }
-    }
-
     override fun validate(): List<VgsTextFieldValidationResult> {
-        return validators.map { it.validate(text) }
+        return (validators ?: getDefaultValidators(inputDateFormat)).map { it.validate(text) }
     }
 
     override fun getOutputText(): String {
-        return ""
+        val formattedInput = text.format(inputDateFormat.mask)
+        val outputDate = formattedInput.parse(inputDateFormat.dateFormat)
+        val sdf = SimpleDateFormat(outputDateFormat.dateFormat, Locale.US)
+        val output = try {
+            outputDate?.let { sdf.format(it) }
+        } catch (_: Exception) {
+            null
+        }
+        return output ?: EMPTY
     }
 
-    internal fun copy(text: String): VgsExpirationDateTextFieldState {
+    internal fun copy(text: String): VgsExpiryTextFieldState {
         val normalizedText = normalizeText(text)
-        return VgsExpirationDateTextFieldState(
+        return VgsExpiryTextFieldState(
             text = normalizedText,
             fieldName = fieldName,
             validators = validators,
@@ -84,7 +90,7 @@ class VgsExpirationDateTextFieldState : BaseFieldState {
         )
     }
 
-    private fun getDefaultValidators(inputDateFormat: VgsExpirationDateFormat): List<VgsTextFieldValidator> {
+    private fun getDefaultValidators(inputDateFormat: VgsExpiryDateFormat): List<VgsTextFieldValidator> {
         val min = System.currentTimeMillis()
         val max = min.plusYears(DEFAULT_MAX_YEARS_FROM_NOW)
         val minMaxValidator = VgsMinMaxDateValidator(min, max, inputDateFormat)
@@ -97,15 +103,15 @@ class VgsExpirationDateTextFieldState : BaseFieldState {
     private fun normalizeText(text: String): String {
         val digits = text.filter { it.isDigit() }
         val length = digits.length
-        return digits.substring(0, min(length, inputDateFormat.inputLength))
+        return digits.substring(0, min(length, inputDateFormat.maskChartsCount))
     }
 }
 
 @Composable
-fun VgsExpirationDateTextField(
-    state: VgsExpirationDateTextFieldState,
+fun VgsExpiryTextField(
+    state: VgsExpiryTextFieldState,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsExpirationDateTextFieldState) -> Unit = {},
+    onStateChange: (state: VgsExpiryTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
