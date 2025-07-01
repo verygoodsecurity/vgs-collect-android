@@ -113,7 +113,6 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
     // Handle VGSCollect submit responses
     @SuppressLint("SetTextI18n")
     override fun onResponse(response: VGSResponse?) {
-        Log.d("Test", "CODE: ${response?.code.toString()}")
         binding.tvResponseCode.text = "CODE: ${response?.code.toString()}"
         setLoading(false)
         this.response = when (response) {
