@@ -36,7 +36,7 @@ class CollectActivityTest {
     companion object {
         const val CARD_NUMBER = "4111111111111111"
         const val CARD_HOLDER = "Gohn G"
-        const val CARD_EXP_DATE = "02/25"
+        const val CARD_EXP_DATE = "02/32"
         const val CARD_CVC = "123"
         const val POSTAL = "12345"
         const val CITY = "new city"
