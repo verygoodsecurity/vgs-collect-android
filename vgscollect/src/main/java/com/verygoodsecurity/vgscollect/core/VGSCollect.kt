@@ -363,7 +363,7 @@ class VGSCollect {
             .build()
 
         collectUserData(request) {
-            val data = mapOf<String, Any>(CMP_ATTRIBUTES to mapOf<String, Any>(CMP_DATA to it))
+            val data = mapOf<String, Any>(CMP_DATA to mapOf<String, Any>(CMP_ATTRIBUTES to it))
             val request = request.toNetworkRequest(baseURL, data)
             client.enqueue(request) { response ->
                 mainHandler.post {
