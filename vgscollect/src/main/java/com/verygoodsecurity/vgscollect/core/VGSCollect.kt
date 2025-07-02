@@ -64,6 +64,10 @@ import java.util.concurrent.CopyOnWriteArrayList
 private const val SOURCE_TAG = "androidSDK"
 private const val DEPENDENCY_MANAGER = "maven"
 
+private const val CMP_PATH = "/cards"
+private const val CMP_ATTRIBUTES = "attributes"
+private const val CMP_DATA = "data"
+
 /**
  * VGS Collect allows you to securely collect data and files from your users without having
  * to have them pass through your systems.
@@ -347,6 +351,26 @@ class VGSCollect {
      */
     fun createAliases(request: VGSCreateAliasesRequest) {
         submitAsyncRequest(request)
+    }
+
+    /**
+     * Creates a new card in the [Card Management API](https://www.verygoodsecurity.com/docs/api/card-management#tag/card-management/POST/cards).
+     */
+    fun createCard() {
+        val request = VGSRequest.VGSRequestBuilder()
+            .setFormat(VGSHttpBodyFormat.API_JSON)
+            .setPath(CMP_PATH)
+            .build()
+
+        collectUserData(request) {
+            val data = mapOf<String, Any>(CMP_ATTRIBUTES to mapOf<String, Any>(CMP_DATA to it))
+            val request = request.toNetworkRequest(baseURL, data)
+            client.enqueue(request) { response ->
+                mainHandler.post {
+                    notifyAllListeners(response.toVGSResponse(), false)
+                }
+            }
+        }
     }
 
     /**
