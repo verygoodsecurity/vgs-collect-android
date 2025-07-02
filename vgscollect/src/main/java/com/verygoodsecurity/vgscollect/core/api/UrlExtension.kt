@@ -6,6 +6,27 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.regex.Pattern
 
+internal fun String.setupCardManagerURL(env: String): String {
+    if (this.isBlank()) {
+        VGSCollectLogger.warn(message = "Account ID is not valid")
+        return ""
+    }
+    if (env.isBlank() || !env.isEnvironmentValid()) {
+        VGSCollectLogger.warn(message = "Environment is not valid")
+        return ""
+    }
+    val scheme = "https://"
+    val domain = "vgsapi.com"
+    val divider = "."
+
+    val builder = StringBuilder(scheme)
+        .append(env)
+        .append(divider)
+        .append(domain)
+
+    return builder.toString()
+}
+
 /** @suppress */
 internal fun String.setupURL(rawValue: String): String {
     return when {
@@ -44,13 +65,6 @@ internal fun String?.isURLValid(): Boolean {
     return when {
         isNullOrBlank() -> false
         else -> PatternsCompat.WEB_URL.matcher(this).matches()
-    }
-}
-
-internal fun String.isValidIp(): Boolean {
-    return when {
-        isNullOrEmpty() -> false
-        else -> PatternsCompat.IP_ADDRESS.matcher(this).matches()
     }
 }
 

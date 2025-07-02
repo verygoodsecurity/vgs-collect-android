@@ -21,6 +21,7 @@ import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.gener
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isCodeSuccessful
 import com.verygoodsecurity.vgscollect.core.api.equalsUrl
 import com.verygoodsecurity.vgscollect.core.api.isURLValid
+import com.verygoodsecurity.vgscollect.core.api.setupCardManagerURL
 import com.verygoodsecurity.vgscollect.core.api.setupURL
 import com.verygoodsecurity.vgscollect.core.api.toHost
 import com.verygoodsecurity.vgscollect.core.api.toHostnameValidationUrl
@@ -72,7 +73,21 @@ private const val DEPENDENCY_MANAGER = "maven"
  */
 class VGSCollect {
 
-    private val vaultId: String
+    companion object {
+
+        fun createCMP(context: Context, accountId: String, environment: String): VGSCollect {
+            return VGSCollect(
+                context = context,
+                vaultId = null,
+                accountId = accountId,
+                environment = environment,
+                url = null
+            )
+        }
+    }
+
+    private val vaultId: String?
+    private val accountId: String?
     private val environment: String
     private val formId: String = UUID.randomUUID().toString()
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
@@ -99,25 +114,26 @@ class VGSCollect {
     private val baseURL: String
     private val context: Context
 
-    private var cname: String? = null
+    private var hasCustomHostname = false
 
     private constructor(
         context: Context,
-        id: String,
+        vaultId: String?,
+        accountId: String?,
         environment: String,
-        suffix: String?,
         url: String?
     ) {
         this.context = context
-        this.vaultId = id
-        this.environment = suffix?.let { environment concatWithDash it } ?: environment
+        this.vaultId = vaultId
+        this.accountId = accountId
+        this.environment = environment
         this.analyticsManager =
             VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
         this.analyticsHandler = object : AnalyticsHandler {
 
             override fun capture(event: VGSAnalyticsEvent) {
                 analyticsManager.capture(
-                    vault = vaultId,
+                    vault = vaultId ?: accountId ?: "",
                     environment = environment,
                     formId = formId,
                     event = event
@@ -127,8 +143,9 @@ class VGSCollect {
         this.storage = InternalStorage(context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
-        this.baseURL = generateBaseUrl(url)
-        cname?.let { configureHostname(it, id) }
+        this.baseURL =
+            vaultId?.setupURL(environment) ?: accountId?.setupCardManagerURL(environment) ?: ""
+        configureHostname(getHost(url), vaultId)
         updateAgentHeader()
     }
 
@@ -141,7 +158,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: String
-    ) : this(context, id, environment, null, null)
+    ) : this(context, id, null, environment, null)
 
     constructor(
         /** Activity context */
@@ -152,7 +169,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: Environment = Environment.SANDBOX
-    ) : this(context, id, environment.rawValue, null, null)
+    ) : this(context, id, null, environment.rawValue, null)
 
     constructor(
         /** Activity context */
@@ -166,7 +183,7 @@ class VGSCollect {
 
         /** Region identifier */
         suffix: String
-    ) : this(context, id, environmentType, suffix, null)
+    ) : this(context, id, null, environmentType concatWithDash suffix, null)
 
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSCollect receive response from Server.
@@ -734,46 +751,35 @@ class VGSCollect {
             .setCustomHeaders(mapOf(generateAgentHeader(analyticsManager.getIsEnabled())))
     }
 
-    private var hasCustomHostname = false
-
-    private fun generateBaseUrl(url: String?): String {
-        if (!url.isNullOrBlank() && url.isURLValid()) {
-            val host = getHost(url)
-            cname = host
-            return vaultId.setupURL(environment)
-        } else {
-            return vaultId.setupURL(environment)
-        }
-    }
-
-    private fun getHost(url: String) = url.toHost().also {
+    private fun getHost(url: String?) = url?.toHost().also {
         if (it != url) {
             VGSCollectLogger.debug(message = "Hostname will be normalized to the $it")
         }
     }
 
-    private fun configureHostname(host: String, tnt: String) {
-        if (host.isNotBlank() && baseURL.isNotEmpty()) {
-            val r = VGSRequest.VGSRequestBuilder().setMethod(HTTPMethod.GET)
-                .setFormat(VGSHttpBodyFormat.PLAIN_TEXT).build()
-                .toNetworkRequest(host.toHostnameValidationUrl(tnt))
+    private fun configureHostname(host: String?, tnt: String?) {
+        if (host.isNullOrBlank() || tnt.isNullOrBlank()) {
+            return
+        }
+        val r = VGSRequest.VGSRequestBuilder().setMethod(HTTPMethod.GET)
+            .setFormat(VGSHttpBodyFormat.PLAIN_TEXT).build()
+            .toNetworkRequest(host.toHostnameValidationUrl(tnt))
 
-            client.enqueue(r) {
-                hasCustomHostname = it.isSuccessful && host equalsUrl it.body
-                if (hasCustomHostname) {
-                    client.setHost(it.body)
-                } else {
-                    context.run {
-                        VGSCollectLogger.warn(
-                            message = String.format(
-                                getString(R.string.error_custom_host_wrong), host
-                            )
+        client.enqueue(r) {
+            hasCustomHostname = it.isSuccessful && host equalsUrl it.body
+            if (hasCustomHostname) {
+                client.setHost(it.body)
+            } else {
+                context.run {
+                    VGSCollectLogger.warn(
+                        message = String.format(
+                            getString(R.string.error_custom_host_wrong), host
                         )
-                    }
+                    )
                 }
-
-                hostnameValidationEvent(hasCustomHostname, host)
             }
+
+            hostnameValidationEvent(hasCustomHostname, host)
         }
     }
 
@@ -822,6 +828,6 @@ class VGSCollect {
          * Creates an VGSCollect with the arguments supplied to this
          * builder.
          */
-        fun create() = VGSCollect(context, id, environment, null ,cname)
+        fun create() = VGSCollect(context, id, null, environment ,cname)
     }
 }
