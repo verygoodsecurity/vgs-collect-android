@@ -75,12 +75,12 @@ class VGSCollect {
 
     companion object {
 
-        fun createCMP(context: Context, accountId: String, environment: String): VGSCollect {
+        fun createCMP(context: Context, accountId: String, environment: Environment): VGSCollect {
             return VGSCollect(
                 context = context,
                 vaultId = null,
                 accountId = accountId,
-                environment = environment,
+                environment = environment.rawValue,
                 url = null
             )
         }

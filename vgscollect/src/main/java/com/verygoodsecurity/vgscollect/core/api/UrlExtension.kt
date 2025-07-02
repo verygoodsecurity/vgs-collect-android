@@ -2,6 +2,7 @@ package com.verygoodsecurity.vgscollect.core.api
 
 import androidx.core.util.PatternsCompat
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
+import com.verygoodsecurity.vgscollect.core.Environment
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.regex.Pattern
@@ -16,13 +17,17 @@ internal fun String.setupCardManagerURL(env: String): String {
         return ""
     }
     val scheme = "https://"
-    val domain = "vgsapi.com"
     val divider = "."
+    val domain = "vgsapi.com"
 
     val builder = StringBuilder(scheme)
-        .append(env)
-        .append(divider)
-        .append(domain)
+
+    if (env == Environment.SANDBOX.rawValue) {
+        builder.append(env)
+        builder.append(divider)
+    }
+
+    builder.append(domain)
 
     return builder.toString()
 }
