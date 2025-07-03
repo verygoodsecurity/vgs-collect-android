@@ -781,13 +781,13 @@ class VGSCollect {
         }
     }
 
-    private fun configureHostname(host: String?, tnt: String?) {
-        if (host.isNullOrBlank() || tnt.isNullOrBlank() || baseURL.isEmpty()) {
+    private fun configureHostname(host: String?, vaultId: String?) {
+        if (host.isNullOrBlank() || vaultId.isNullOrBlank() || baseURL.isEmpty()) {
             return
         }
         val r = VGSRequest.VGSRequestBuilder().setMethod(HTTPMethod.GET)
             .setFormat(VGSHttpBodyFormat.PLAIN_TEXT).build()
-            .toNetworkRequest(host.toHostnameValidationUrl(tnt))
+            .toNetworkRequest(host.toHostnameValidationUrl(vaultId))
 
         client.enqueue(r) {
             hasCustomHostname = it.isSuccessful && host equalsUrl it.body
