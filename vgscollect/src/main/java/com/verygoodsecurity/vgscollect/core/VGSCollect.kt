@@ -61,13 +61,6 @@ import kotlinx.coroutines.withContext
 import java.util.UUID
 import java.util.concurrent.CopyOnWriteArrayList
 
-private const val SOURCE_TAG = "androidSDK"
-private const val DEPENDENCY_MANAGER = "maven"
-
-private const val CMP_PATH = "/cards"
-private const val CMP_ATTRIBUTES = "attributes"
-private const val CMP_DATA = "data"
-
 /**
  * VGS Collect allows you to securely collect data and files from your users without having
  * to have them pass through your systems.
@@ -76,19 +69,6 @@ private const val CMP_DATA = "data"
  * @since 1.0.0
  */
 class VGSCollect {
-
-    companion object {
-
-        fun createCMP(context: Context, accountId: String, environment: Environment): VGSCollect {
-            return VGSCollect(
-                context = context,
-                vaultId = null,
-                accountId = accountId,
-                environment = environment.rawValue,
-                url = null
-            )
-        }
-    }
 
     private val vaultId: String?
     private val accountId: String?
@@ -804,6 +784,26 @@ class VGSCollect {
             }
 
             hostnameValidationEvent(hasCustomHostname, host)
+        }
+    }
+
+    companion object {
+
+        private const val SOURCE_TAG = "androidSDK"
+        private const val DEPENDENCY_MANAGER = "maven"
+
+        private const val CMP_PATH = "/cards"
+        private const val CMP_ATTRIBUTES = "attributes"
+        private const val CMP_DATA = "data"
+
+        fun createCMP(context: Context, accountId: String, environment: Environment): VGSCollect {
+            return VGSCollect(
+                context = context,
+                vaultId = null,
+                accountId = accountId,
+                environment = environment.rawValue,
+                url = null
+            )
         }
     }
 
