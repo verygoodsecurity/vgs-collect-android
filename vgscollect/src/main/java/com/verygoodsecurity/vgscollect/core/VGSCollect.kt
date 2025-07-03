@@ -782,7 +782,7 @@ class VGSCollect {
     }
 
     private fun configureHostname(host: String?, tnt: String?) {
-        if (host.isNullOrBlank() || tnt.isNullOrBlank()) {
+        if (host.isNullOrBlank() || tnt.isNullOrBlank() || baseURL.isEmpty()) {
             return
         }
         val r = VGSRequest.VGSRequestBuilder().setMethod(HTTPMethod.GET)
