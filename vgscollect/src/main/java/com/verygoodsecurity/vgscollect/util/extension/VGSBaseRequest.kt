@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.util.extension
 
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsUpstream
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
@@ -34,7 +35,7 @@ internal fun VGSBaseRequest.toNetworkRequest(
         fileIgnore,
         format,
         requestTimeoutInterval,
-        isTokenization
+        upstream == VGSAnalyticsUpstream.TOKENIZATION
     )
 }
 
