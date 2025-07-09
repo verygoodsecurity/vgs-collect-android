@@ -88,6 +88,10 @@
             android:name=".collect_compose.fragment_case.ComposeFragmentActivity"
             android:label="Compose Demo (Fragment)" />
 
+        <activity
+            android:name=".cmp.CMPActivity"
+            android:label="CMP" />
+
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />

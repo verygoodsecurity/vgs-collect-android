@@ -46,7 +46,7 @@ internal class OkHttpClient(
     }
 
     override fun enqueue(request: NetworkRequest, callback: ((NetworkResponse) -> Unit)?) {
-        if (!request.url.isURLValid()) {
+        if (!request.url.isUrlValid()) {
             callback?.invoke(NetworkResponse(error = VGSError.URL_NOT_VALID))
             return
         }
@@ -96,7 +96,7 @@ internal class OkHttpClient(
     }
 
     override fun execute(request: NetworkRequest): NetworkResponse {
-        if (!request.url.isURLValid()) {
+        if (!request.url.isUrlValid()) {
             return NetworkResponse(error = VGSError.URL_NOT_VALID)
         }
 
