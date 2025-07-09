@@ -24,10 +24,10 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
     private lateinit var codeExampleBinding: CodeExampleLayoutBinding
 
     private val collect: VGSCollect by lazy {
-        VGSCollect.createCMP(
+        VGSCollect(
             context = this@CMPActivity,
-            accountId = "test",
-            environment = Environment.SANDBOX
+            vaultId = null,
+            environment = Environment.SANDBOX.rawValue
         ).apply {
             addOnResponseListeners(this@CMPActivity)
         }
