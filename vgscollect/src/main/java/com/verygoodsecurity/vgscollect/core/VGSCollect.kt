@@ -6,25 +6,21 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.VisibleForTesting
-import com.verygoodsecurity.sdk.analytics.VGSSharedAnalyticsManager
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsEvent
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsScannerType
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsStatus
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsUpstream
-import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
+import com.verygoodsecurity.vgscollect.core.api.UrlBuilder
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient
 import com.verygoodsecurity.vgscollect.core.api.client.ApiClient.Companion.generateAgentHeader
 import com.verygoodsecurity.vgscollect.core.api.client.extension.isCodeSuccessful
 import com.verygoodsecurity.vgscollect.core.api.equalsUrl
-import com.verygoodsecurity.vgscollect.core.api.isURLValid
-import com.verygoodsecurity.vgscollect.core.api.setupCardManagerURL
-import com.verygoodsecurity.vgscollect.core.api.setupURL
+import com.verygoodsecurity.vgscollect.core.api.isUrlValid
 import com.verygoodsecurity.vgscollect.core.api.toHost
-import com.verygoodsecurity.vgscollect.core.api.toHostnameValidationUrl
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy.NESTED_JSON
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
@@ -61,7 +57,6 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.UUID
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**
@@ -73,71 +68,48 @@ import java.util.concurrent.CopyOnWriteArrayList
  */
 class VGSCollect {
 
-    private val vaultId: String?
-    private val accountId: String?
-    private val environment: String
-    private val formId: String = UUID.randomUUID().toString()
-    private val externalDependencyDispatcher: ExternalDependencyDispatcher
-
-    private val analyticsManager: VGSSharedAnalyticsManager
-    private val analyticsHandler: AnalyticsHandler
-
-    private var client: ApiClient
-    private val mainHandler: Handler = Handler(Looper.getMainLooper())
-
-    private var storage: InternalStorage
-    private val storageErrorListener: StorageErrorListener = object : StorageErrorListener {
-        override fun onStorageError(error: VGSError) {
-            error.toVGSResponse().also { response ->
-                val upstream = VGSAnalyticsUpstream.CUSTOM
-                notifyAllListeners(response, upstream)
-                VGSCollectLogger.warn(InputFieldView.TAG, response.localizeMessage)
-                requestEvent(
-                    isSuccess = false,
-                    upstream = upstream,
-                    code = response.errorCode
-                )
-            }
-        }
-    }
-
-    private val responseListeners = CopyOnWriteArrayList<VgsCollectResponseListener>()
-
-    private val baseURL: String
     private val context: Context
-
+    private val vaultId: String?
+    private val environment: String
+    private val analyticsHandler: AnalyticsHandler
+    private var storage: InternalStorage
+    private val externalDependencyDispatcher: ExternalDependencyDispatcher
+    private var client: ApiClient
+    private val mainHandler: Handler
+    private val responseListeners: CopyOnWriteArrayList<VgsCollectResponseListener>
+    private val collectUrl: String
+    private val cardManagerUrl: String
     private var hasCustomHostname = false
 
-    private constructor(
+    constructor(
         context: Context,
         vaultId: String?,
-        accountId: String?,
         environment: String,
-        url: String?
     ) {
         this.context = context
         this.vaultId = vaultId
-        this.accountId = accountId
         this.environment = environment
-        this.analyticsManager =
-            VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
-        this.analyticsHandler = object : AnalyticsHandler {
-
-            override fun capture(event: VGSAnalyticsEvent) {
-                analyticsManager.capture(
-                    vault = vaultId ?: accountId ?: "",
-                    environment = environment,
-                    formId = formId,
-                    event = event
-                )
+        this.analyticsHandler = AnalyticsHandler(context, vaultId, environment)
+        this.storage = InternalStorage(context, object : StorageErrorListener {
+            override fun onStorageError(error: VGSError) {
+                error.toVGSResponse().also { response ->
+                    val upstream = VGSAnalyticsUpstream.CUSTOM
+                    notifyAllListeners(response, upstream)
+                    VGSCollectLogger.warn(InputFieldView.TAG, response.localizeMessage)
+                    requestEvent(
+                        isSuccess = false,
+                        upstream = upstream,
+                        code = response.errorCode
+                    )
+                }
             }
-        }
-        this.storage = InternalStorage(context, storageErrorListener)
+        })
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
-        this.baseURL =
-            vaultId?.setupURL(environment) ?: accountId?.setupCardManagerURL(environment) ?: ""
-        configureHostname(getHost(url), vaultId)
+        this.mainHandler = Handler(Looper.getMainLooper())
+        this.responseListeners = CopyOnWriteArrayList<VgsCollectResponseListener>()
+        this.collectUrl = UrlBuilder.buildCollectUrl(vaultId, environment)
+        this.cardManagerUrl = UrlBuilder.buildCardManagerUrl(environment)
         updateAgentHeader()
     }
 
@@ -149,19 +121,8 @@ class VGSCollect {
         id: String,
 
         /** Type of Vault */
-        environment: String
-    ) : this(context, id, null, environment, null)
-
-    constructor(
-        /** Activity context */
-        context: Context,
-
-        /** Unique Vault id */
-        id: String,
-
-        /** Type of Vault */
         environment: Environment = Environment.SANDBOX
-    ) : this(context, id, null, environment.rawValue, null)
+    ) : this(context, id, environment.rawValue)
 
     constructor(
         /** Activity context */
@@ -175,7 +136,7 @@ class VGSCollect {
 
         /** Region identifier */
         suffix: String
-    ) : this(context, id, null, environmentType concatWithDash suffix, null)
+    ) : this(context, id, environmentType concatWithDash suffix)
 
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSCollect receive response from Server.
@@ -261,7 +222,7 @@ class VGSCollect {
      */
     fun onDestroy() {
         client.cancelAll()
-        analyticsManager.cancelAll()
+        analyticsHandler.cancelAll()
         responseListeners.clear()
         storage.clear()
     }
@@ -299,7 +260,7 @@ class VGSCollect {
         var response: VGSResponse = VGSResponse.ErrorResponse()
         collectUserData(request) { data ->
             response =
-                client.execute(request.toNetworkRequest(baseURL, data)).toVGSResponse(context)
+                client.execute(request.toNetworkRequest(collectUrl, data)).toVGSResponse(context)
         }
         return response
     }
@@ -348,7 +309,7 @@ class VGSCollect {
                     CREATE_CARD_ATTRIBUTES_KEY to data
                 )
             )
-            client.enqueue(request.toNetworkRequest(baseURL, payload)) { response ->
+            client.enqueue(request.toNetworkRequest(cardManagerUrl, payload)) { response ->
                 mainHandler.post {
                     notifyAllListeners(response.toVGSResponse(), request.upstream)
                 }
@@ -404,7 +365,7 @@ class VGSCollect {
 
     private fun submitAsyncRequest(request: VGSBaseRequest) {
         collectUserData(request) { data ->
-            client.enqueue(request.toNetworkRequest(baseURL, data)) { response ->
+            client.enqueue(request.toNetworkRequest(collectUrl, data)) { response ->
                 mainHandler.post {
                     notifyAllListeners(
                         response.toVGSResponse(),
@@ -422,7 +383,7 @@ class VGSCollect {
         when {
             !request.fieldsIgnore && !validateFields(request.upstream) -> return
             !request.fileIgnore && !validateFiles(request.upstream) -> return
-            !baseURL.isURLValid() -> notifyAllListeners(
+            !collectUrl.isUrlValid() -> notifyAllListeners(
                 VGSError.URL_NOT_VALID.toVGSResponse(),
                 request.upstream
             )
@@ -639,11 +600,11 @@ class VGSCollect {
      * Warning: if this option is set to false, it will increase resolving time for possible incidents.
      */
     fun setAnalyticsEnabled(isEnabled: Boolean) {
-        analyticsManager.setIsEnabled(isEnabled)
+        analyticsHandler.setIsEnabled(isEnabled)
         updateAgentHeader()
     }
 
-    fun getIsAnalyticsEnabled() = analyticsManager.getIsEnabled()
+    fun getIsAnalyticsEnabled() = analyticsHandler.getIsEnabled()
 
     @VisibleForTesting
     internal fun getResponseListeners(): Collection<VgsCollectResponseListener> {
@@ -768,7 +729,7 @@ class VGSCollect {
 
     private fun updateAgentHeader() {
         client.getTemporaryStorage()
-            .setCustomHeaders(mapOf(generateAgentHeader(analyticsManager.getIsEnabled())))
+            .setCustomHeaders(mapOf(generateAgentHeader(analyticsHandler.getIsEnabled())))
     }
 
     private fun getHost(url: String?) = url?.toHost().also {
@@ -777,13 +738,14 @@ class VGSCollect {
         }
     }
 
-    private fun configureHostname(host: String?, vaultId: String?) {
-        if (host.isNullOrBlank() || vaultId.isNullOrBlank() || baseURL.isEmpty()) {
+    internal fun configureHostname(cname: String?, vaultId: String?) {
+        val host = getHost(cname)
+        if (host.isNullOrBlank() || vaultId.isNullOrBlank() || collectUrl.isEmpty()) {
             return
         }
         val r = VGSRequest.VGSRequestBuilder().setMethod(HTTPMethod.GET)
             .setFormat(VGSHttpBodyFormat.PLAIN_TEXT).build()
-            .toNetworkRequest(host.toHostnameValidationUrl(vaultId))
+            .toNetworkRequest(UrlBuilder.buildCnameUrl(host, vaultId))
 
         client.enqueue(r) {
             hasCustomHostname = it.isSuccessful && host equalsUrl it.body
@@ -800,22 +762,6 @@ class VGSCollect {
             }
 
             hostnameValidationEvent(hasCustomHostname, host)
-        }
-    }
-
-    companion object {
-
-        private const val SOURCE_TAG = "androidSDK"
-        private const val DEPENDENCY_MANAGER = "maven"
-
-        fun createCMP(context: Context, accountId: String, environment: Environment): VGSCollect {
-            return VGSCollect(
-                context = context,
-                vaultId = null,
-                accountId = accountId,
-                environment = environment.rawValue,
-                url = null
-            )
         }
     }
 
@@ -853,7 +799,7 @@ class VGSCollect {
          * @param cname where VGSCollect will send requests.
          */
         fun setHostname(cname: String): Builder = this.apply {
-            if (!cname.isURLValid()) {
+            if (!cname.isUrlValid()) {
                 VGSCollectLogger.warn(message = context.getString(R.string.error_custom_host_wrong_short))
                 return@apply
             }
@@ -864,6 +810,6 @@ class VGSCollect {
          * Creates an VGSCollect with the arguments supplied to this
          * builder.
          */
-        fun create() = VGSCollect(context, id, null, environment ,cname)
+        fun create() = VGSCollect(context, id, environment).also { it.configureHostname(cname, id) }
     }
 }

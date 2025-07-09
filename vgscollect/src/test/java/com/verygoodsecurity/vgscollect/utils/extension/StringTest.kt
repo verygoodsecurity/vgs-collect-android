@@ -2,7 +2,6 @@ package com.verygoodsecurity.vgscollect.utils.extension
 
 import com.verygoodsecurity.vgscollect.core.api.equalsUrl
 import com.verygoodsecurity.vgscollect.core.api.toHost
-import com.verygoodsecurity.vgscollect.core.api.toHostnameValidationUrl
 import com.verygoodsecurity.vgscollect.core.api.toHttps
 import com.verygoodsecurity.vgscollect.util.extension.applyLimitOnMask
 import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
@@ -54,15 +53,6 @@ class StringTest {
         assertEquals("live/path/", "live" concatWithSlash "/path/")
         assertEquals("live/eu", "live" concatWithSlash "eu")
         assertEquals("live", "live" concatWithSlash "")
-    }
-
-    @Test
-    fun test_to_hostname_validation_url() {
-        val test1 = "www.vgs.com".toHostnameValidationUrl("tnt")
-        assertEquals("https://js.verygoodvault.com/collect-configs/www.vgs.com__tnt.txt", test1)
-
-        val test2 = "".toHostnameValidationUrl("")
-        assertEquals("https://js.verygoodvault.com/collect-configs/__.txt", test2)
     }
 
     @Test
