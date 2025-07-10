@@ -59,14 +59,17 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
 
 
     private fun initPanView() {
+        binding.vgsTiedPan.setFieldName("pan")
         collect.bindView(binding.vgsTiedPan)
     }
 
     private fun initCvcView() {
+        binding.vgsTiedCvc.setFieldName("cvc")
         collect.bindView(binding.vgsTiedCvc)
     }
 
     private fun initExpiryView() {
+        binding.vgsTiedExpiry.setFieldName("exp_date")
         binding.vgsTiedExpiry.setSerializer(
             VGSExpDateSeparateSerializer(
                 monthFieldName = "exp_month",
