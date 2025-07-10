@@ -808,6 +808,14 @@ class VGSCollect {
         private const val SOURCE_TAG = "androidSDK"
         private const val DEPENDENCY_MANAGER = "maven"
 
+        /**
+         * Creates an instance of [VGSCollect] configured for the Card Management API.
+         *
+         * @param context The activity context used to initialize the instance.
+         * @param accountId The unique account identifier associated with your VGS account.
+         * @param environment The environment type (e.g., sandbox, live) defining the vault destination.
+         * @return A configured [VGSCollect] instance for Card Management API usage.
+         */
         fun createCMP(context: Context, accountId: String, environment: Environment): VGSCollect {
             return VGSCollect(
                 context = context,
