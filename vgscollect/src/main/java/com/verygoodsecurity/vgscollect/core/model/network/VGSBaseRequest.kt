@@ -1,10 +1,9 @@
 package com.verygoodsecurity.vgscollect.core.model.network
 
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsUpstream
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
-import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSCreateAliasesRequest
-import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 
 /**
  * Base class for building configuration requests in VGS Collect SDK .
@@ -28,6 +27,5 @@ abstract class VGSBaseRequest {
     abstract val fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy
     abstract val requestTimeoutInterval: Long
     abstract val routeId: String?
-
-    val isTokenization: Boolean = this is VGSTokenizationRequest || this is VGSCreateAliasesRequest
+    internal abstract val upstream: VGSAnalyticsUpstream
 }
