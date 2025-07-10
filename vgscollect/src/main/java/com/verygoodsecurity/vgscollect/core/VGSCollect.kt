@@ -337,7 +337,16 @@ class VGSCollect {
     }
 
     /**
-     * Creates a new card in the [Card Management API](https://www.verygoodsecurity.com/docs/api/card-management#tag/card-management/POST/cards).
+     * Creates a new card using the
+     * [Card Management API](https://www.verygoodsecurity.com/docs/api/card-management#tag/card-management/POST/cards).
+     *
+     * This method builds a default `VGSCreateCardRequest`, collects user input data from the configured fields,
+     * and sends a POST request to create a new card.
+     *
+     * Once the request completes, all registered listeners are notified with the result.
+     *
+     * @see VGSCreateCardRequest
+     * @see VGSCollect
      */
     fun createCard() {
         val request = VGSCreateCardRequest.VGSRequestBuilder().build()
