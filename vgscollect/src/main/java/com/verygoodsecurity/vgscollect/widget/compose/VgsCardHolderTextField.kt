@@ -1,23 +1,19 @@
 package com.verygoodsecurity.vgscollect.widget.compose
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRegexValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
@@ -75,16 +71,11 @@ fun VgsCardHolderTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    visualTransformation: VgsVisualTransformation = VgsVisualTransformation.None,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions(),
-    singleLine: Boolean = false,
-    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
-    minLines: Int = 1,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    shape: Shape = MaterialTheme.shapes.small.copy(
-        bottomEnd = ZeroCornerSize,
-        bottomStart = ZeroCornerSize
-    ),
+    interactionSource: MutableInteractionSource? = null,
+    shape: Shape = TextFieldDefaults.TextFieldShape,
     colors: TextFieldColors = TextFieldDefaults.textFieldColors()
 ) {
     TextField(
@@ -100,11 +91,11 @@ fun VgsCardHolderTextField(
         trailingIcon = trailingIcon,
         isError = isError,
         visualTransformation = visualTransformation,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
-        singleLine = singleLine,
-        maxLines = maxLines,
-        minLines = minLines,
+        singleLine = true,
+        maxLines = 1,
+        minLines = 1,
         interactionSource = interactionSource,
         shape = shape,
         colors = colors

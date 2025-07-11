@@ -1,16 +1,13 @@
 package com.verygoodsecurity.vgscollect.widget.compose
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -67,11 +64,8 @@ fun VgsTextField(
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    shape: Shape = MaterialTheme.shapes.small.copy(
-        bottomEnd = ZeroCornerSize,
-        bottomStart = ZeroCornerSize
-    ),
+    interactionSource: MutableInteractionSource? = null,
+    shape: Shape = TextFieldDefaults.TextFieldShape,
     colors: TextFieldColors = TextFieldDefaults.textFieldColors()
 ) {
     TextField(
