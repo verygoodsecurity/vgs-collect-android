@@ -102,3 +102,48 @@ fun VgsCardHolderTextField(
         colors = colors
     )
 }
+
+@ExperimentalComposeUiApi
+@Composable
+fun VgsCardHolderOutlineTextField(
+    state: VgsCardHolderTextFieldState,
+    modifier: Modifier = Modifier,
+    onStateChange: (state: VgsCardHolderTextFieldState) -> Unit = {},
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
+    textStyle: TextStyle = LocalTextStyle.current,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    isError: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    interactionSource: MutableInteractionSource? = null,
+    shape: Shape = TextFieldDefaults.TextFieldShape,
+    colors: TextFieldColors = TextFieldDefaults.textFieldColors()
+) {
+    OutlinedTextField(
+        value = state.text,
+        onValueChange = { onStateChange(state.copy(text = it)) },
+        modifier = modifier,
+        enabled = enabled,
+        readOnly = readOnly,
+        textStyle = textStyle,
+        label = label,
+        placeholder = placeholder,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        isError = isError,
+        visualTransformation = visualTransformation,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        singleLine = true,
+        maxLines = 1,
+        minLines = 1,
+        interactionSource = interactionSource,
+        shape = shape,
+        colors = colors
+    )
+}
