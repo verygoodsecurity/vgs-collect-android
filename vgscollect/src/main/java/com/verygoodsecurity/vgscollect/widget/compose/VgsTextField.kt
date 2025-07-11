@@ -11,10 +11,8 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.VisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator

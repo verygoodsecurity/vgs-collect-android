@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRegexValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
@@ -117,7 +118,7 @@ fun VgsCardHolderOutlineTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
+    visualTransformation: VgsVisualTransformation = VgsVisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     interactionSource: MutableInteractionSource? = null,
