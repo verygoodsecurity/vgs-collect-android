@@ -105,7 +105,7 @@ internal fun FieldContent.CardNumberContent.parseCardBin(): String {
     return number.substring(0, min(number.length, binLength))
 }
 
-private fun allowed8DigitBIN(brand: String?, length: Int): Boolean {
+internal fun allowed8DigitBIN(brand: String?, length: Int): Boolean {
     return length >= 16 && (brand == CardType.MAESTRO.name || brand == CardType.MASTERCARD.name || brand == CardType.VISA.name)
 }
 

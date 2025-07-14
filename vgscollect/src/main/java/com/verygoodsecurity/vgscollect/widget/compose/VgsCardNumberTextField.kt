@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import com.verygoodsecurity.vgscollect.core.model.state.allowed8DigitBIN
 import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
 import com.verygoodsecurity.vgscollect.widget.compose.card.getCardNumberValidators
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
@@ -86,7 +87,8 @@ class VgsCardNumberTextFieldState internal constructor(
     }
 
     private fun generateBin(): String? {
-        return if (isValid) text.substring(0, min(text.length, 6)) else null
+        val length = if (allowed8DigitBIN(cardBrand.name, text.length)) 8 else 6
+        return if (isValid) text.substring(0, min(text.length, length)) else null
     }
 
     private fun generateLast4(): String? {
