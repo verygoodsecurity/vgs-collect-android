@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFiel
 import java.util.regex.Pattern
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm as LegacyChecksumAlgorithm
 
-class VgsCardBrand private constructor(
+data class VgsCardBrand(
     val name: String,
     val mask: String,
     val regex: String,
@@ -27,12 +27,14 @@ class VgsCardBrand private constructor(
 
         val UNKNOWN = map(CardType.UNKNOWN)
 
-        fun detect(card: String): VgsCardBrand {
+        val DEFAULT = CardType.entries.toTypedArray().except(CardType.UNKNOWN).map { map(it) }
+
+        fun detect(card: String, brands: List<VgsCardBrand> = DEFAULT): VgsCardBrand {
             if (card.isBlank()) return UNKNOWN
-            CardType.entries.toTypedArray().except(CardType.UNKNOWN).forEach {
-                val matcher = Pattern.compile(it.regex).matcher(card)
+            brands.forEach { brand ->
+                val matcher = Pattern.compile(brand.regex).matcher(card)
                 while (matcher.find()) {
-                    return map(it)
+                    return brand
                 }
             }
             return UNKNOWN
