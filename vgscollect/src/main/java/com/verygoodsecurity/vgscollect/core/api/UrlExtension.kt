@@ -7,11 +7,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.regex.Pattern
 
-internal fun String.setupCardManagerURL(env: String): String {
-    if (this.isBlank()) {
-        VGSCollectLogger.warn(message = "Account ID is not valid")
-        return ""
-    }
+internal fun setupCardManagerURL(env: String): String {
     if (env.isBlank() || !env.isEnvironmentValid()) {
         VGSCollectLogger.warn(message = "Environment is not valid")
         return ""

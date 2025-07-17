@@ -8,6 +8,8 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
 
 private const val CREATE_CARD_PATH = "/cards"
+private const val AUTH_HEADER_KEY = "Authorization"
+private const val AUTH_HEADER_VALUE = "Bearer"
 internal const val CREATE_CARD_ATTRIBUTES_KEY = "attributes"
 internal const val CREATE_CARD_DATA_KEY = "data"
 
@@ -28,11 +30,18 @@ internal class VGSCreateCardRequest internal constructor(
 
     class VGSRequestBuilder {
 
+        private val customHeader: HashMap<String, String> = HashMap()
+
+        fun setAuthToken(token: String): VGSRequestBuilder {
+            this.customHeader.put(AUTH_HEADER_KEY, "$AUTH_HEADER_VALUE $token")
+            return this
+        }
+
         fun build(): VGSCreateCardRequest {
             return VGSCreateCardRequest(
                 HTTPMethod.POST,
                 CREATE_CARD_PATH,
-                emptyMap(),
+                customHeader,
                 emptyMap(),
                 false,
                 false,
