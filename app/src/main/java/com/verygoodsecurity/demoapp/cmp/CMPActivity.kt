@@ -12,7 +12,9 @@ import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
-import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
+import com.verygoodsecurity.vgscollect.util.extension.cardCVC
+import com.verygoodsecurity.vgscollect.util.extension.cardExpirationDate
+import com.verygoodsecurity.vgscollect.util.extension.cardNumber
 import io.github.kbiakov.codeview.adapters.Options
 import io.github.kbiakov.codeview.highlight.ColorThemeData
 import io.github.kbiakov.codeview.highlight.SyntaxColors
@@ -24,9 +26,9 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
     private lateinit var codeExampleBinding: CodeExampleLayoutBinding
 
     private val collect: VGSCollect by lazy {
-        VGSCollect.createCMP(
+        VGSCollect(
             context = this@CMPActivity,
-            accountId = "test",
+            id = "<VAULT_ID>",
             environment = Environment.SANDBOX
         ).apply {
             addOnResponseListeners(this@CMPActivity)
@@ -49,41 +51,23 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
     }
 
     private fun initViews() {
-        initPanView()
-        initCvcView()
-        initExpiryView()
+        initCollectViews()
         initProceedView()
         initCodeExampleView()
         updateCodeExample(null)
     }
 
+    private fun initCollectViews() {
+        collect.cardNumber(binding.vgsTiedPan)
+        collect.cardExpirationDate(binding.vgsTiedExpiry)
+        collect.cardCVC(binding.vgsTiedCvc)
 
-    private fun initPanView() {
-        binding.vgsTiedPan.setFieldName("pan")
-        collect.bindView(binding.vgsTiedPan)
-    }
-
-    private fun initCvcView() {
-        binding.vgsTiedCvc.setFieldName("cvc")
-        collect.bindView(binding.vgsTiedCvc)
-    }
-
-    private fun initExpiryView() {
-        binding.vgsTiedExpiry.setFieldName("exp_date")
-        binding.vgsTiedExpiry.setSerializer(
-            VGSExpDateSeparateSerializer(
-                monthFieldName = "exp_month",
-                yearFieldName = "exp_year"
-            )
-        )
-        collect.bindView(binding.vgsTiedExpiry)
     }
 
     private fun initProceedView() {
         binding.mbProceed.setOnClickListener {
             binding.progressBar.visibility = View.VISIBLE
-            collect.setCustomHeaders(mapOf("Authorization" to "Bearer <ACCESS_TOKEN>")) // Setup access token
-            collect.createCard()
+            collect.createCard("<ACCESS_TOKEN>")
         }
     }
 

@@ -64,6 +64,9 @@ import kotlinx.coroutines.withContext
 import java.util.UUID
 import java.util.concurrent.CopyOnWriteArrayList
 
+private const val SOURCE_TAG = "androidSDK"
+private const val DEPENDENCY_MANAGER = "maven"
+
 /**
  * VGS Collect allows you to securely collect data and files from your users without having
  * to have them pass through your systems.
@@ -73,9 +76,11 @@ import java.util.concurrent.CopyOnWriteArrayList
  */
 class VGSCollect {
 
-    private val vaultId: String?
-    private val accountId: String?
-    private val environment: String
+    private val context: Context
+    internal val vaultId: String
+    internal val environment: String
+    internal val collectURL: String
+    internal val cardManagementURL: String
     private val formId: String = UUID.randomUUID().toString()
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
@@ -103,41 +108,37 @@ class VGSCollect {
 
     private val responseListeners = CopyOnWriteArrayList<VgsCollectResponseListener>()
 
-    private val baseURL: String
-    private val context: Context
-
     private var hasCustomHostname = false
 
     private constructor(
         context: Context,
-        vaultId: String?,
-        accountId: String?,
-        environment: String,
-        url: String?
+        id: String,
+        env: String,
+        suffix: String?,
+        cname: String?
     ) {
         this.context = context
-        this.vaultId = vaultId
-        this.accountId = accountId
-        this.environment = environment
+        this.vaultId = id
+        this.environment = suffix?.let { env concatWithDash it } ?: env
+        this.collectURL = vaultId.setupURL(environment)
+        this.cardManagementURL = setupCardManagerURL(environment)
         this.analyticsManager =
             VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
         this.analyticsHandler = object : AnalyticsHandler {
 
             override fun capture(event: VGSAnalyticsEvent) {
                 analyticsManager.capture(
-                    vault = vaultId ?: accountId ?: "",
+                    vault = vaultId,
                     environment = environment,
                     formId = formId,
                     event = event
                 )
             }
         }
-        this.storage = InternalStorage(context, storageErrorListener)
+        this.storage = InternalStorage(this.context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
-        this.baseURL =
-            vaultId?.setupURL(environment) ?: accountId?.setupCardManagerURL(environment) ?: ""
-        configureHostname(getHost(url), vaultId)
+        configureHostname(getHost(cname), vaultId)
         updateAgentHeader()
     }
 
@@ -150,7 +151,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: String
-    ) : this(context, id, null, environment, null)
+    ) : this(context, id, environment, null, null)
 
     constructor(
         /** Activity context */
@@ -161,7 +162,7 @@ class VGSCollect {
 
         /** Type of Vault */
         environment: Environment = Environment.SANDBOX
-    ) : this(context, id, null, environment.rawValue, null)
+    ) : this(context, id, environment.rawValue, null, null)
 
     constructor(
         /** Activity context */
@@ -175,7 +176,7 @@ class VGSCollect {
 
         /** Region identifier */
         suffix: String
-    ) : this(context, id, null, environmentType concatWithDash suffix, null)
+    ) : this(context, id, environmentType, suffix, null)
 
     /**
      * Adds a listener to the list of those whose methods are called whenever the VGSCollect receive response from Server.
@@ -297,9 +298,14 @@ class VGSCollect {
      */
     fun submit(request: VGSRequest): VGSResponse {
         var response: VGSResponse = VGSResponse.ErrorResponse()
+        if (!collectURL.isURLValid()) {
+            response = VGSError.URL_NOT_VALID.toVGSResponse()
+            notifyAllListeners(response, request.upstream)
+            return response
+        }
         collectUserData(request) { data ->
             response =
-                client.execute(request.toNetworkRequest(baseURL, data)).toVGSResponse(context)
+                client.execute(request.toNetworkRequest(collectURL, data)).toVGSResponse(context)
         }
         return response
     }
@@ -337,18 +343,25 @@ class VGSCollect {
     }
 
     /**
-     * Creates a new card in the [Card Management API](https://www.verygoodsecurity.com/docs/api/card-management#tag/card-management/POST/cards).
+     * Creates a new card using the [Card Management API](https://www.verygoodsecurity.com/docs/api/card-management#tag/card-management/POST/cards).
+     *
+     * @param auth The authentication token used for the request.
      */
-    fun createCard() {
-        val request = VGSCreateCardRequest.VGSRequestBuilder().build()
-
+    fun createCard(auth: String) {
+        val request = VGSCreateCardRequest.VGSRequestBuilder()
+            .setAuthToken(auth)
+            .build()
+        if (!cardManagementURL.isURLValid()) {
+            notifyAllListeners(VGSError.URL_NOT_VALID.toVGSResponse(), request.upstream)
+            return
+        }
         collectUserData(request) { data ->
             val payload = mapOf<String, Any>(
                 CREATE_CARD_DATA_KEY to mapOf<String, Any>(
                     CREATE_CARD_ATTRIBUTES_KEY to data
                 )
             )
-            client.enqueue(request.toNetworkRequest(baseURL, payload)) { response ->
+            client.enqueue(request.toNetworkRequest(cardManagementURL, payload)) { response ->
                 mainHandler.post {
                     notifyAllListeners(response.toVGSResponse(), request.upstream)
                 }
@@ -403,8 +416,12 @@ class VGSCollect {
     }
 
     private fun submitAsyncRequest(request: VGSBaseRequest) {
+        if (!collectURL.isURLValid()) {
+            notifyAllListeners(VGSError.URL_NOT_VALID.toVGSResponse(), request.upstream)
+            return
+        }
         collectUserData(request) { data ->
-            client.enqueue(request.toNetworkRequest(baseURL, data)) { response ->
+            client.enqueue(request.toNetworkRequest(collectURL, data)) { response ->
                 mainHandler.post {
                     notifyAllListeners(
                         response.toVGSResponse(),
@@ -417,16 +434,11 @@ class VGSCollect {
 
     private fun collectUserData(
         request: VGSBaseRequest,
-        submitRequest: (Map<String, Any>) -> Unit
+        submitRequest: (data: Map<String, Any>) -> Unit
     ) {
         when {
             !request.fieldsIgnore && !validateFields(request.upstream) -> return
             !request.fileIgnore && !validateFiles(request.upstream) -> return
-            !baseURL.isURLValid() -> notifyAllListeners(
-                VGSError.URL_NOT_VALID.toVGSResponse(),
-                request.upstream
-            )
-
             !context.hasInternetPermission() -> notifyAllListeners(
                 VGSError.NO_INTERNET_PERMISSIONS.toVGSResponse(),
                 request.upstream
@@ -777,8 +789,8 @@ class VGSCollect {
         }
     }
 
-    private fun configureHostname(host: String?, vaultId: String?) {
-        if (host.isNullOrBlank() || vaultId.isNullOrBlank() || baseURL.isEmpty()) {
+    private fun configureHostname(host: String?, vaultId: String) {
+        if (host.isNullOrBlank() || vaultId.isBlank() || collectURL.isEmpty()) {
             return
         }
         val r = VGSRequest.VGSRequestBuilder().setMethod(HTTPMethod.GET)
@@ -800,22 +812,6 @@ class VGSCollect {
             }
 
             hostnameValidationEvent(hasCustomHostname, host)
-        }
-    }
-
-    companion object {
-
-        private const val SOURCE_TAG = "androidSDK"
-        private const val DEPENDENCY_MANAGER = "maven"
-
-        fun createCMP(context: Context, accountId: String, environment: Environment): VGSCollect {
-            return VGSCollect(
-                context = context,
-                vaultId = null,
-                accountId = accountId,
-                environment = environment.rawValue,
-                url = null
-            )
         }
     }
 
@@ -864,6 +860,6 @@ class VGSCollect {
          * Creates an VGSCollect with the arguments supplied to this
          * builder.
          */
-        fun create() = VGSCollect(context, id, null, environment ,cname)
+        fun create() = VGSCollect(context, id, environment, null, cname)
     }
 }

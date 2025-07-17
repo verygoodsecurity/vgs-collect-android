@@ -52,6 +52,98 @@ class VGSCollectTest {
     }
 
     @Test
+    fun test_env() {
+        val sandbox = VGSCollect(
+            activity,
+            "testTenant",
+            "sandbox"
+        )
+        assertEquals("sandbox", sandbox.environment)
+
+        val sandboxEu = VGSCollect(
+            activity,
+            "testTenant",
+            "sandbox",
+            "eu-1"
+        )
+        assertEquals("sandbox-eu-1", sandboxEu.environment)
+
+        val live = VGSCollect(
+            activity,
+            "testTenant",
+            "live"
+        )
+        assertEquals("live", live.environment)
+
+        val liveEu = VGSCollect(
+            activity,
+            "testTenant",
+            "live",
+            "eu-1"
+        )
+        assertEquals("live-eu-1", liveEu.environment)
+    }
+
+    @Test
+    fun test_collect_url() {
+        val sandbox = VGSCollect(
+            activity,
+            "testTenant",
+            "sandbox"
+        )
+        assertEquals("https://testTenant.sandbox.verygoodproxy.com", sandbox.collectURL)
+        val sandboxEuDirectly = VGSCollect(
+            activity,
+            "testTenant",
+            "sandbox",
+            "eu-1"
+        )
+        assertEquals("https://testTenant.sandbox-eu-1.verygoodproxy.com", sandboxEuDirectly.collectURL)
+        val sandboxEuBySuffix = VGSCollect(
+            activity,
+            "testTenant",
+            "sandbox-eu-1",
+        )
+        assertEquals("https://testTenant.sandbox-eu-1.verygoodproxy.com", sandboxEuBySuffix.collectURL)
+        val live = VGSCollect(
+            activity,
+            "testTenant",
+            "live"
+        )
+        assertEquals("https://testTenant.live.verygoodproxy.com", live.collectURL)
+        val liveEuDirectly = VGSCollect(
+            activity,
+            "testTenant",
+            "live-eu-1",
+        )
+        assertEquals("https://testTenant.live-eu-1.verygoodproxy.com", liveEuDirectly.collectURL)
+        val liveEuBySuffix = VGSCollect(
+            activity,
+            "testTenant",
+            "live",
+            "eu-1"
+        )
+        assertEquals("https://testTenant.live-eu-1.verygoodproxy.com", liveEuBySuffix.collectURL)
+    }
+
+    @Test
+    fun test_cmp_url() {
+        val sandbox = VGSCollect(
+            activity,
+            "testTenant",
+            "sandbox"
+        )
+        assertEquals("https://sandbox.vgsapi.com", sandbox.cardManagementURL)
+
+        val live = VGSCollect(
+            activity,
+            "testTenant",
+            "live"
+        )
+        assertEquals("https://vgsapi.com", live.cardManagementURL)
+    }
+
+    @Test
     fun test_add_response_listener() {
         applyResponseListener()
         applyResponseListener()
