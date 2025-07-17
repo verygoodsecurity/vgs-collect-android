@@ -77,8 +77,10 @@ private const val DEPENDENCY_MANAGER = "maven"
 class VGSCollect {
 
     private val context: Context
-    private val vaultId: String
-    private val environment: String
+    internal val vaultId: String
+    internal val environment: String
+    internal val collectURL: String
+    internal val cardManagementURL: String
     private val formId: String = UUID.randomUUID().toString()
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
@@ -106,9 +108,6 @@ class VGSCollect {
 
     private val responseListeners = CopyOnWriteArrayList<VgsCollectResponseListener>()
 
-    private val collectURL: String
-    private val cardManagementURL: String
-
     private var hasCustomHostname = false
 
     private constructor(
@@ -121,6 +120,8 @@ class VGSCollect {
         this.context = context
         this.vaultId = id
         this.environment = suffix?.let { env concatWithDash it } ?: env
+        this.collectURL = vaultId.setupURL(environment)
+        this.cardManagementURL = setupCardManagerURL(environment)
         this.analyticsManager =
             VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
         this.analyticsHandler = object : AnalyticsHandler {
@@ -137,8 +138,6 @@ class VGSCollect {
         this.storage = InternalStorage(this.context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.newHttpClient()
-        this.collectURL = vaultId.setupURL(environment)
-        this.cardManagementURL = setupCardManagerURL(environment)
         configureHostname(getHost(cname), vaultId)
         updateAgentHeader()
     }
