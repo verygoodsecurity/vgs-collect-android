@@ -37,6 +37,4 @@ class VGSExpDateSeparateSerializer(
             emptyList()
         }
     }
-
-    data class Params(val date: String, val dateFormat: String?)
 }
