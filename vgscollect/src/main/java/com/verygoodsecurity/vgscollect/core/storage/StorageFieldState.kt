@@ -28,7 +28,8 @@ internal fun List<BaseFieldState>.mapStorageFieldState(): List<StorageFieldState
         if (state is VgsExpiryTextFieldState && state.serializer != null) {
             state.serializer.getSerialized(
                 state.text,
-                state.inputDateFormat
+                state.inputDateFormat,
+                state.outputDateFormat
             ).forEach { (fieldName, data) ->
                 result.add(
                     StorageFieldState(

@@ -28,6 +28,10 @@ sealed class VgsExpiryDateFormat(val dateFormat: String) {
         }
     }
 
+    fun convert(text: String, targetFormat: VgsExpiryDateFormat): String? {
+        return targetFormat.format(parse(text))
+    }
+
     class MonthShortYear : VgsExpiryDateFormat(dateFormat = "MM/yy")
 
     class MonthLongYear : VgsExpiryDateFormat(dateFormat = "MM/yyyy")
