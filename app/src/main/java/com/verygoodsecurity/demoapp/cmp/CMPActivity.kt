@@ -1,9 +1,12 @@
 package com.verygoodsecurity.demoapp.cmp
 
+import android.animation.LayoutTransition
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.databinding.CmpActivityBinding
 import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
@@ -17,6 +20,8 @@ import com.verygoodsecurity.vgscollect.util.extension.cardExpirationDate
 import com.verygoodsecurity.vgscollect.util.extension.cardNumber
 import io.github.kbiakov.codeview.adapters.Options
 import io.github.kbiakov.codeview.highlight.ColorThemeData
+import io.github.kbiakov.codeview.highlight.Font
+import io.github.kbiakov.codeview.highlight.FontCache
 import io.github.kbiakov.codeview.highlight.SyntaxColors
 import org.json.JSONObject
 
@@ -38,7 +43,7 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = CmpActivityBinding.inflate(layoutInflater)
-        codeExampleBinding = CodeExampleLayoutBinding.bind(binding.root)
+        codeExampleBinding = CodeExampleLayoutBinding.bind(binding.ccInputsRoot)
         setContentView(binding.root)
         VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
         initViews()
@@ -55,6 +60,7 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
         initProceedView()
         initCodeExampleView()
         updateCodeExample(null)
+        binding.ccInputsRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
     }
 
     private fun initCollectViews() {
@@ -71,13 +77,20 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initCodeExampleView() {
         val syntaxColor = ContextCompat.getColor(this, R.color.veryLightGray)
         val bgColor = ContextCompat.getColor(this, R.color.blackPearl)
         val lineNumberColor = ContextCompat.getColor(this, R.color.nobel)
+        codeExampleBinding.tvLanguage.setTypeface(
+            FontCache.get(this).getTypeface(this, Font.DroidSansMonoSlashed)
+        )
+        codeExampleBinding.tvLanguage.text = "JSON"
+        codeExampleBinding.tvLanguage.visibility = View.VISIBLE
         codeExampleBinding.cvResponse.setOptions(
             Options(
-                context = this.applicationContext, theme = ColorThemeData(
+                context = this.applicationContext,
+                theme = ColorThemeData(
                     SyntaxColors(
                         string = syntaxColor,
                         punctuation = syntaxColor,
@@ -86,10 +99,12 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
                     bgContent = bgColor,
                     bgNum = bgColor,
                     noteColor = syntaxColor,
-                )
-            )
+                ),
+            ).withFont(Font.DroidSansMonoSlashed)
         )
         codeExampleBinding.cvResponse.alpha = 1f
+        codeExampleBinding.cvResponse.findViewById<RecyclerView>(R.id.rv_code_content).isNestedScrollingEnabled =
+            false
     }
 
     private fun updateCodeExample(response: String?) {

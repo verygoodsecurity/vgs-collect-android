@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_padding_material_medium"
             android:columnCount="2"
-            android:rowCount="5">
+            android:rowCount="6">
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/llPayopt"
@@ -437,6 +437,7 @@
                 android:layout_columnWeight="1"
                 android:layout_marginTop="@dimen/margin_padding_material_micro"
                 android:layout_marginEnd="@dimen/margin_padding_material_micro"
+                android:layout_marginBottom="@dimen/margin_padding_material_micro"
                 android:background="@drawable/bg_custom_btn"
                 android:orientation="vertical"
                 android:padding="@dimen/margin_padding_material_small">
@@ -477,6 +478,7 @@
                 android:layout_columnWeight="1"
                 android:layout_marginStart="@dimen/margin_padding_material_micro"
                 android:layout_marginTop="@dimen/margin_padding_material_micro"
+                android:layout_marginBottom="@dimen/margin_padding_material_micro"
                 android:background="@drawable/bg_custom_btn"
                 android:orientation="vertical"
                 android:padding="@dimen/margin_padding_material_small">
@@ -511,12 +513,12 @@
                 android:id="@+id/llCmpFlow"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_row="4"
+                android:layout_row="5"
                 android:layout_rowWeight="1"
-                android:layout_column="1"
+                android:layout_column="0"
                 android:layout_columnWeight="1"
-                android:layout_marginStart="@dimen/margin_padding_material_micro"
-                android:layout_marginTop="@dimen/margin_padding_material_small"
+                android:layout_marginTop="@dimen/margin_padding_material_micro"
+                android:layout_marginEnd="@dimen/margin_padding_material_micro"
                 android:background="@drawable/bg_custom_btn"
                 android:orientation="vertical"
                 android:padding="@dimen/margin_padding_material_small">
