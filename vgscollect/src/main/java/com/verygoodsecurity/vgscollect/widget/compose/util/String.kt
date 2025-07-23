@@ -1,9 +1,5 @@
 package com.verygoodsecurity.vgscollect.widget.compose.util
 
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-
 internal const val MASK_SYMBOL = '#'
 
 internal fun String.format(mask: String): String {
@@ -20,12 +16,4 @@ internal fun String.format(mask: String): String {
         maskIndex++
     }
     return out
-}
-
-internal fun String.parse(format: String): Date? {
-    return try {
-        SimpleDateFormat(format, Locale.US).parse(this)
-    } catch (_: Exception) {
-        null
-    }
 }

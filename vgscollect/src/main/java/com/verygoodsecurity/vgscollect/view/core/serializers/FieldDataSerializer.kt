@@ -25,7 +25,7 @@ abstract class FieldDataSerializer {
                 SimpleDateFormat(dayFormat, Locale.US)
             } catch (e: Exception) {
                 logException(e)
-                SimpleDateFormat(DEFAULT_MONTH_FORMAT, Locale.US)
+                SimpleDateFormat(DEFAULT_DAY_FORMAT, Locale.US)
             }
         }
     }

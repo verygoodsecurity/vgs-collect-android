@@ -1,9 +1,12 @@
 package com.verygoodsecurity.vgscollect.core.storage
 
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
+import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.CardNumberContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.DateContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.SSNContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.VgsExpiryTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 
 internal class StorageFieldState(
@@ -13,13 +16,40 @@ internal class StorageFieldState(
 )
 
 internal fun List<BaseFieldState>.mapStorageFieldState(): List<StorageFieldState> {
-    return this.map { state ->
-        StorageFieldState(
-            state.fieldName,
-            state.isValid,
-            state.getOutputText()
-        )
+    val result = mutableListOf<StorageFieldState>()
+    this.forEach { state ->
+        if (state.fieldName.isBlank()) {
+            VGSCollectLogger.warn(
+                state::class.simpleName.toString(),
+                VGSError.FIELD_NAME_NOT_SET.message
+            )
+            return@forEach
+        }
+        if (state is VgsExpiryTextFieldState && state.serializer != null) {
+            state.serializer.getSerialized(
+                state.text,
+                state.inputDateFormat,
+                state.outputDateFormat
+            ).forEach { (fieldName, data) ->
+                result.add(
+                    StorageFieldState(
+                        fieldName,
+                        state.isValid,
+                        data
+                    )
+                )
+            }
+        } else {
+            result.add(
+                StorageFieldState(
+                    state.fieldName,
+                    state.isValid,
+                    state.getOutputText()
+                )
+            )
+        }
     }
+    return result
 }
 
 internal fun MutableCollection<VGSFieldState>.mapStorageFieldState(): List<StorageFieldState> {
