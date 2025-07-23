@@ -16,67 +16,51 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpiryDateFormat
+import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpirySerializer
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.util.format
-import com.verygoodsecurity.vgscollect.widget.compose.util.parse
 import com.verygoodsecurity.vgscollect.widget.compose.util.plusYears
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsMinMaxDateValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
-import java.text.SimpleDateFormat
-import java.util.Locale
 import kotlin.math.min
 
-class VgsExpiryTextFieldState : BaseFieldState {
+class VgsExpiryTextFieldState internal constructor(
+    text: String,
+    fieldName: String,
+    validators: List<VgsTextFieldValidator>?,
+    val inputDateFormat: VgsExpiryDateFormat,
+    val outputDateFormat: VgsExpiryDateFormat,
+    val serializer: VgsExpirySerializer?,
+) : BaseFieldState(text, fieldName, validators) {
 
     internal companion object {
 
         const val DEFAULT_MAX_YEARS_FROM_NOW = 20
     }
 
-    val inputDateFormat: VgsExpiryDateFormat
-
-    val outputDateFormat: VgsExpiryDateFormat
-
     constructor(
         fieldName: String,
         validators: List<VgsTextFieldValidator>? = null,
         inputDateFormat: VgsExpiryDateFormat = VgsExpiryDateFormat.MonthShortYear(),
         outputDateFormat: VgsExpiryDateFormat = VgsExpiryDateFormat.MonthShortYear(),
+        serializer: VgsExpirySerializer? = null,
     ) : this(
         EMPTY,
         fieldName,
         validators,
         inputDateFormat,
-        outputDateFormat
+        outputDateFormat,
+        serializer
     )
-
-    internal constructor(
-        text: String,
-        fieldName: String,
-        validators: List<VgsTextFieldValidator>?,
-        inputDateFormat: VgsExpiryDateFormat,
-        outputDateFormat: VgsExpiryDateFormat
-    ) : super(text, fieldName, validators) {
-        this.inputDateFormat = inputDateFormat
-        this.outputDateFormat = outputDateFormat
-    }
 
     override fun validate(): List<VgsTextFieldValidationResult> {
         return (validators ?: getDefaultValidators(inputDateFormat)).map { it.validate(text) }
     }
 
     override fun getOutputText(): String {
-        val formattedInput = text.format(inputDateFormat.mask)
-        val outputDate = formattedInput.parse(inputDateFormat.dateFormat)
-        val sdf = SimpleDateFormat(outputDateFormat.dateFormat, Locale.US)
-        val output = try {
-            outputDate?.let { sdf.format(it) }
-        } catch (_: Exception) {
-            null
-        }
-        return output ?: EMPTY
+        return outputDateFormat.format(inputDateFormat.parse(text)) ?: EMPTY
     }
 
     internal fun copy(text: String): VgsExpiryTextFieldState {
@@ -86,7 +70,8 @@ class VgsExpiryTextFieldState : BaseFieldState {
             fieldName = fieldName,
             validators = validators,
             inputDateFormat = inputDateFormat,
-            outputDateFormat = outputDateFormat
+            outputDateFormat = outputDateFormat,
+            serializer = serializer
         )
     }
 
