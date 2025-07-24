@@ -12,7 +12,9 @@ import io.card.payment.CreditCard
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-@Deprecated("Use com.verygoodsecurity.api.blinkcard.ScanActivity instead.")
+@Deprecated(
+    message = "Adapter 'card-io' is no longer supported. Please migrate to the 'blinkcard' adapter. Continued use is at your own risk, as compatibility with VGS Collect may break at any time."
+)
 class ScanActivity : BaseTransmitActivity() {
 
     private var settings: HashMap<*, *>? = null
