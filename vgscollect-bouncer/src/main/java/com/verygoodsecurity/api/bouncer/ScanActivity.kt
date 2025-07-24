@@ -11,8 +11,11 @@ import com.getbouncer.scan.framework.exception.InvalidBouncerApiKeyException
 import com.verygoodsecurity.vgscollect.BuildConfig
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
+@Deprecated(
+    message = "Adapter 'bouncer' is no longer supported. Please migrate to the 'blinkcard' adapter. Continued use is at your own risk, as compatibility with VGS Collect may break at any time."
+)
 class ScanActivity : BaseTransmitActivity(), CardScanActivityResultHandler {
 
     private lateinit var key: String
