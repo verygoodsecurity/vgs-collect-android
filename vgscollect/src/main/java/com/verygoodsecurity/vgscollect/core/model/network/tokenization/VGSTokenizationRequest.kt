@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.model.network.tokenization
 
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsUpstream
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
@@ -27,6 +28,8 @@ data class VGSTokenizationRequest internal constructor(
     override val requestTimeoutInterval: Long,
     override val routeId: String?,
 ) : VGSBaseRequest() {
+
+    override val upstream: VGSAnalyticsUpstream = VGSAnalyticsUpstream.TOKENIZATION
 
     /**
      * Creates a builder for a request that uses to send data to VGS server.

@@ -4,13 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="com.google.android.material.card.MaterialCardView">
 
-    <io.github.kbiakov.codeview.CodeView
-        android:id="@+id/cvResponse"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/code_example_language_bg"
+            android:paddingStart="@dimen/margin_padding_material_micro"
+            android:paddingTop="@dimen/margin_padding_material_micro"
+            android:paddingEnd="@dimen/margin_padding_material_micro"
+            android:paddingBottom="@dimen/margin_padding_material_micro"
+            android:textColor="@color/veryLightGray"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@android:color/holo_red_dark"
+            tools:text="JSON"
+            tools:textColor="@android:color/white"
+            tools:visibility="visible" />
+
+        <io.github.kbiakov.codeview.CodeView
+            android:id="@+id/cvResponse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvLanguage" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </merge>
