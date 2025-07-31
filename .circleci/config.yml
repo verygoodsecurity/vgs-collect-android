@@ -106,8 +106,8 @@ jobs:
       - run:
           name: Check if master branch
           command: |
-            if [ "<< pipeline.git.branch >>" != "master" ]; then
-              echo "UI tests should be running only on master branch!"
+            if [[ "<< pipeline.git.branch >>" != *"release"* ]]; then
+              echo "UI tests should be running only on release branch!"
               circleci-agent step halt
             fi
       - run:
