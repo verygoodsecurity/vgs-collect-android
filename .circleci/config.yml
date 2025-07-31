@@ -154,7 +154,7 @@ workflows:
     when:
       not: << pipeline.parameters.nightly-security-scan >>
     jobs:
-      - test
+#      - test
 #      - scan-sast-pr:
 #          context:
 #            - security-tools
@@ -172,9 +172,12 @@ workflows:
 #      - run-unit-test-and-build:
 #          context:
 #            - frontend-deploy
-#      - run-ui-test:
-#          requires:
-#            - run-unit-test-and-build
+      - run-ui-test:
+          requires:
+            - run-unit-test-and-build
+          filters:
+            branches:
+              only: master
   scheduled-security-scan:
     when: << pipeline.parameters.nightly-security-scan >>
     jobs:
