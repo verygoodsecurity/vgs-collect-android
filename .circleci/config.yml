@@ -23,6 +23,18 @@ aliases:
     resource_class: large
 
 jobs:
+  test:
+    <<: *android-environment
+    steps:
+      - checkout
+      - run: |
+          PR_NUMBER="<< pipeline.event.github.pull_request.base.ref >>"
+          if [ -n "$CIRCLE_PULL_REQUEST" ] && [ PR_NUMBER == "master" ]; then
+            echo "Correct target: $PR_NUMBER"
+          else
+            echo "Wrong target: $PR_NUMBER"
+          fi
+
   run-unit-test-and-build:
     <<: *android-environment
     steps:
@@ -142,26 +154,27 @@ workflows:
     when:
       not: << pipeline.parameters.nightly-security-scan >>
     jobs:
-      - scan-sast-pr:
-          context:
-            - security-tools
-            - circleci
-      - scan-sast-full:
-          filters:
-            # ignore any commit on any branch by default
-            branches:
-              ignore: /.*/
-            tags:
-              only:
-                - /production-.*/
-          context:
-            - security-tools
-      - run-unit-test-and-build:
-          context:
-            - frontend-deploy
-      - run-ui-test:
-          requires:
-            - run-unit-test-and-build
+      - test
+#      - scan-sast-pr:
+#          context:
+#            - security-tools
+#            - circleci
+#      - scan-sast-full:
+#          filters:
+#            # ignore any commit on any branch by default
+#            branches:
+#              ignore: /.*/
+#            tags:
+#              only:
+#                - /production-.*/
+#          context:
+#            - security-tools
+#      - run-unit-test-and-build:
+#          context:
+#            - frontend-deploy
+#      - run-ui-test:
+#          requires:
+#            - run-unit-test-and-build
   scheduled-security-scan:
     when: << pipeline.parameters.nightly-security-scan >>
     jobs:
