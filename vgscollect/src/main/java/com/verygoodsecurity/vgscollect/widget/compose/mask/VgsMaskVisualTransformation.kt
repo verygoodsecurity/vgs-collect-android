@@ -12,4 +12,15 @@ class VgsMaskVisualTransformation(val mask: String) : VgsVisualTransformation() 
             MaskOffsetMapping(maskFormatter)
         )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is VgsMaskVisualTransformation) return false
+        if (mask != other.mask) return false
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return mask.hashCode()
+    }
 }
