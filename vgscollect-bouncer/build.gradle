@@ -48,3 +48,34 @@ dependencies {
 
     dokkaHtmlPlugin(libs.dokka.base)
 }
+
+//uncomment if need to force user to stop using this lib
+//tasks.register('deprecatedModuleCheck') {
+//    description = 'Блокує виконання збірки, оскільки цей модуль є застарілим.'
+//
+//    doLast {
+//        throw new org.gradle.api.GradleException("""
+//****************************************************************************************
+//❌ ERROR: Module '${project.name}' is DEPRECATED and will be removed in a future release.
+//Please migrate to 'blinkcard' adapter as soon as possible.
+//****************************************************************************************
+//        """.stripIndent())
+//    }
+//}
+//
+//tasks.all { task ->
+//    // Перевіряємо, чи завдання не є 'clean' або самим блокувальником
+//    if (task.name != "clean" && task.name != "deprecatedModuleCheck") {
+//        // Забезпечуємо, що блокувальник виконається ПЕРЕД будь-яким іншим завданням
+//        task.dependsOn(tasks.named('deprecatedModuleCheck'))
+//    }
+//}
+
+gradle.projectsEvaluated {
+    if (project.state.executed) {
+        logger.warn("****************************************************************************************")
+        logger.warn("WARNING: Module '${project.name}' is DEPRECATED and will be removed in a future release.")
+        logger.warn("         Please migrate to 'blinkcard' adapter as soon as possible.")
+        logger.warn("****************************************************************************************")
+    }
+}
