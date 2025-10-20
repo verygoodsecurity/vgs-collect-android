@@ -54,7 +54,7 @@ dependencies {
     dokkaHtmlPlugin(libs.dokka.base)
 }
 
-//uncomment if need to force user to stop using this lib
+//uncomment if need to force user to stop using this
 //tasks.register('deprecatedModuleCheck') {
 //    description = 'Блокує виконання збірки, оскільки цей модуль є застарілим.'
 //
