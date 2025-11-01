@@ -7,16 +7,18 @@ import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPoli
 import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
 
 /**
- * Class to collect data before submit.
+ * VGS request representation.
  *
- * @param method HTTP method
- * @param path path for a request
- * @param customHeader The headers to save for request.
- * @param customData The Map to save for request.
- * @param fieldsIgnore contains true if need to skip data from input fields.
- * @param fileIgnore contains true if need to skip files.
- * @param requestTimeoutInterval Specifies request timeout interval in milliseconds.
- * @param routeId Defines route id for submitting data.
+ * @param method The HTTP method to use.
+ * @param path The path to the API endpoint.
+ * @param customHeader The custom headers to send with the request.
+ * @param customData The custom data to send with the request.
+ * @param fieldsIgnore Whether to ignore the fields in the request.
+ * @param fileIgnore Whether to ignore the files in the request.
+ * @param format The format of the request body.
+ * @param fieldNameMappingPolicy The policy for mapping field names.
+ * @param requestTimeoutInterval The request timeout interval in milliseconds.
+ * @param routeId The route id for submitting data.
  */
 data class VGSRequest internal constructor(
     override val method: HTTPMethod,
@@ -34,8 +36,7 @@ data class VGSRequest internal constructor(
     override val upstream: VGSAnalyticsUpstream = VGSAnalyticsUpstream.CUSTOM
 
     /**
-     * Creates a builder for a request that uses to send data to VGS server.
-     * dialog theme.
+     * VGSRequest builder.
      */
     class VGSRequestBuilder {
         private var method: HTTPMethod = HTTPMethod.POST

@@ -1,15 +1,12 @@
 package com.verygoodsecurity.vgscollect.core.model.state
 
 /**
- * The base class definition for a file presentation state.
+ * The state of a file attached to the VGS Collect instance.
  *
- * @param size The size of a file which it takes up on your device.
+ * @param size The size of the file in bytes.
  * @param name The name of the file.
- * @param mimeType The size of a file which it takes up on your device.
- * @param fieldName The text to be used for data transfer to VGS proxy. Usually, it is similar to field-name in JSON path in your inbound route filters.
- * @constructor Primary constructor
- *
- * @since 1.1.0
+ * @param mimeType The MIME type of the file.
+ * @param fieldName The name of the field used for data transfer to the VGS proxy.
  */
 data class FileState(
     val size: Long = 0,

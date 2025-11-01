@@ -9,8 +9,11 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.date.DateRangeFormat
 import com.verygoodsecurity.vgscollect.widget.core.DateEditText
 import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
-import java.util.*
+import java.util.Calendar
 
+/**
+ * A user interface element for inputting a date range.
+ */
 class RangeDateEditText @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -55,22 +58,25 @@ class RangeDateEditText @JvmOverloads constructor(
     }
 
     /**
-     * Set minimum date allowed
+     * Sets the minimum date allowed.
+     *
+     * @param date The minimum date allowed.
      */
     fun setMinDate(date: VGSDate) {
         setMinDate(date.timeInMillis)
     }
 
     /**
-     * Set maximum date allowed
+     * Sets the maximum date allowed.
+     *
+     * @param date The maximum date allowed.
      */
     fun setMaxDate(date: VGSDate) {
         setMaxDate(date.timeInMillis)
     }
 
     /**
-     * Interface definition for a callback to be invoked when the DatePicker Dialog changes
-     * visibility.
+     * A listener for receiving notifications about the visibility of the date picker dialog.
      */
     interface OnDatePickerVisibilityChangeListener : VisibilityChangeListener
 }

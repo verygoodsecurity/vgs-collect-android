@@ -8,9 +8,7 @@ import com.verygoodsecurity.vgscollect.widget.core.DateEditText
 import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
 
 /**
- * Provides a user interface element for date input. The range of dates supported by this field is not configurable.
- *
- * @since 1.0.7
+ * A user interface element for inputting a card's expiration date.
  */
 class ExpirationDateEditText @JvmOverloads constructor(
     context: Context,
@@ -25,8 +23,7 @@ class ExpirationDateEditText @JvmOverloads constructor(
     }
 
     /**
-     * Interface definition for a callback to be invoked when the DatePicker Dialog changes
-     * visibility.
+     * A listener for receiving notifications about the visibility of the date picker dialog.
      */
     interface OnDatePickerVisibilityChangeListener: VisibilityChangeListener
 }

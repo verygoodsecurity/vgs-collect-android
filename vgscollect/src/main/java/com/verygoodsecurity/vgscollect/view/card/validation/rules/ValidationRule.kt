@@ -8,6 +8,9 @@ import com.verygoodsecurity.vgscollect.view.card.validation.RegexValidator
 internal const val MIN_LENGTH = 1
 internal const val MAX_LENGTH = 256
 
+/**
+ * The base class for all validation rules.
+ */
 open class ValidationRule internal constructor(
     internal val algorithm: CheckSumValidator?,
     internal val regex: RegexValidator?,
