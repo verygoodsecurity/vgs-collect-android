@@ -243,7 +243,36 @@ Forbidden: full PAN, full CVC, full SSN, unredacted file content, license keys, 
 Ensure production logger level minimal (`.NONE` or equivalent).
 
 ---
-## 11. Final Rule for Agents
+## 11. AI Agent Integration
+Use AGENTS.md as the single authoritative context for autonomous coding agents integrating or maintaining VGSCollectSDK. It lists public APIs, security constraints, validation rules, upgrade & testing expectations.
+
+### Minimal System Prompt Example:
+
+```
+You are an autonomous engineering agent integrating the VGS Collect Android SDK into an existing Kotlin app.
+Use the full contents of AGENTS.md as the authoritative policy.
+Constraints:
+- Only public, non-deprecated APIs.
+- No raw sensitive data in logs/tests.
+- Validate all fields before submission.
+- Clean files after successful upload.
+Goals:
+1. Add a secure card form (number, name, exp, cvc) with redacted logging.
+2. Integrate BlinkCard scanning.
+3. Provide unit tests for valid/invalid card + expiration edge case.
+Return: Modified Kotlin source files only, no secrets.
+```
+
+### Developer Prompt (Inline Example for a Single Task):
+
+```
+Task: Add a custom payment card brand "mycard" (BIN starts with 7777) and ensure CVC field adapts.
+Follow AGENTS.md.
+Do not break existing brand detection; add tests for detection and negative near-miss.
+```
+
+---
+## 12. Final Rule for Agents
 If uncertain between two approaches, choose the one that:
 1. Uses fewer APIs.
 2. Avoids storing or exposing raw sensitive data.
