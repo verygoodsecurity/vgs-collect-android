@@ -1,7 +1,9 @@
 package com.verygoodsecurity.vgscollect
 
 import android.util.Log
-import com.verygoodsecurity.vgscollect.VGSCollectLogger.Level.*
+import com.verygoodsecurity.vgscollect.VGSCollectLogger.Level.DEBUG
+import com.verygoodsecurity.vgscollect.VGSCollectLogger.Level.NONE
+import com.verygoodsecurity.vgscollect.VGSCollectLogger.Level.WARN
 
 /**
  * This object is used to log messages in VGS Collect SDK.
@@ -16,7 +18,7 @@ object VGSCollectLogger {
     /** Allows enable and disable debug-log printing. */
     var isEnabled = true
 
-    /** Current logs tag */
+    /** The custom tag for all logs. */
     var tag: String = TAG
 
     /**
@@ -42,7 +44,7 @@ object VGSCollectLogger {
     }
 
     /**
-     * Returns true if the logger print log messages.
+     * Returns true if the logger print log messages, false otherwise.
      */
     fun isDebugEnabled(): Boolean = isEnabled && (logLevel.ordinal != NONE.ordinal)
 

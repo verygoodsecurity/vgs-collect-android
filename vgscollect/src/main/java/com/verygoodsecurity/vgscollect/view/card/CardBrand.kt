@@ -1,14 +1,12 @@
 package com.verygoodsecurity.vgscollect.view.card
 
 /**
- * The data class definition for represent custom card brand.
- * It may be useful to add new brands in addition to already defined brands or override existing ones.
+ * Represents a card brand.
  *
- * @constructor
- * @param regex - The regex rules for detection card brand.
- * @param cardBrandName - The name of current card brand. This name may be visible for users.
- * @param drawableResId - The drawable resource represents credit card logo.
- * @param params - The set of parameters for card brand creation.
+ * @param regex The regex used to identify the card brand.
+ * @param cardBrandName The name of the card brand.
+ * @param drawableResId The drawable resource ID for the card brand's icon.
+ * @param params The parameters for the card brand.
  */
 data class CardBrand(
     val regex: String,

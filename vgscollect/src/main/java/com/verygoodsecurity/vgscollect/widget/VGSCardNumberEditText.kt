@@ -21,9 +21,7 @@ import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgo
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNumberRule
 
 /**
- * A user interface element that displays text to the user in bank card number format.
- *
- * @since 1.0.2
+ * A user interface element for inputting a card number.
  */
 class VGSCardNumberEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -148,18 +146,18 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     /**
-     * Return the align the icon by the view’s x-axis.
+     * Returns the icon alignment by the view’s x-axis.
      *
-     * @return the icon gravity value.
+     * @return The icon gravity.
      */
     fun getCardPreviewIconGravity(): Int {
         return getCardIconGravity()
     }
 
     /**
-     * It may be useful to add new brands in addition to already defined brands or override existing ones.
+     * Adds a new card brand to the list of supported brands or overrides an existing one.
      *
-     * @param c new card definition
+     * @param c The new card brand definition.
      */
     fun addCardBrand(c: CardBrand) {
         val digitCount = c.params.mask.replace("[^#]".toRegex(), "").length
@@ -174,10 +172,10 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     /**
-     * Modify list of valid card brands. Only this brands will be valid all other brands will be marked as UNKNOWN.
-     * Please note, that items adding order is important for correct brand detect.
+     * Modifies the list of valid card brands. Only the brands in this list will be considered valid.
+     * The order of the brands in the list is important for correct brand detection.
      *
-     * @param cardBrand n number of valid card brands.
+     * @param cardBrand The list of valid card brands.
      */
     fun setValidCardBrands(vararg cardBrand: CardBrand) {
         super.setValidCardBrands(cardBrand.toList())
@@ -194,18 +192,17 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     /**
-     * Return symbol that will divide groups of digits in the card number.
+     * Returns the symbol that divides groups of digits in the card number.
      *
-     * @return divider symbol
+     * @return The divider symbol.
      */
     fun getDivider(): Char? {
         return getNumberDivider()
     }
 
     /**
-     * Sets the symbol that will divide groups of digits in the card number before submit it.
-     * The divider has no impact on UI.
-     * 0000 0000 0000 0000
+     * Sets the symbol that will divide groups of digits in the card number before it is submitted.
+     * This divider does not affect the UI.
      *
      * @param char The divider symbol.
      */
@@ -214,45 +211,46 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     /**
-     * Return symbol that will divide groups of digits in the card number before submitting on Proxy.
+     * Returns the symbol that will divide groups of digits in the card number before it is submitted to the proxy.
      *
-     * @return divider symbol
+     * @return The divider symbol.
      */
     fun getOutputDivider(): Char? {
         return getOutputNumberDivider()
     }
 
     /**
-     * The max card number length to display.
-     * Counting the length of a card number divider chars is ignored.
+     * Sets the maximum length of the card number.
+     * Divider characters are not counted.
+     *
+     * @param length The maximum length of the card number.
      */
     fun setMaxInputLength(length: Int) {
         applyMaxLength(length)
     }
 
     /**
-     * Sets the custom icons for Brand.
+     * Sets a custom icon adapter for the card brand icons.
      *
-     * @param adapter The adapter is responsible for maintaining the icons backing this view and
-     * for producing a drawable for preview.
+     * @param adapter The icon adapter.
      */
     fun setCardIconAdapter(adapter: CardIconAdapter?) {
         setCardBrandIconAdapter(adapter)
     }
 
     /**
-     * Sets the custom mask for formatting card number.
+     * Sets a custom mask adapter for formatting the card number.
      *
-     * @param adapter The adapter is responsible for maintaining the format of the card number.
+     * @param adapter The mask adapter.
      */
     fun setCardMaskAdapter(adapter: CardMaskAdapter) {
         setCardBrandMaskAdapter(adapter)
     }
 
     /**
-     * It return current state of the field.
+     * Returns the current state of the field.
      *
-     * @return current state.
+     * @return The current state of the field.
      */
     fun getState(): FieldState.CardNumberState? {
         return getCardNumberState()
@@ -260,6 +258,8 @@ class VGSCardNumberEditText @JvmOverloads constructor(
 
     /**
      * Adds a validation rule for the field.
+     *
+     * @param rule The validation rule to add.
      */
     @Deprecated("Use setRule(rule) instead.", ReplaceWith("setRule(rule)"))
     fun addRule(rule: PaymentCardNumberRule) {
@@ -267,28 +267,34 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     /**
-     * Set a validation rule for the field.
+     * Sets a validation rule for the field.
+     *
+     * @param rule The validation rule to set.
      */
     fun setRule(rule: PaymentCardNumberRule) {
         applyValidationRule(rule)
     }
 
     /**
-     * Set validation rules for the field.
+     * Sets a list of validation rules for the field.
+     *
+     * @param rules The list of validation rules to set.
      */
     fun setRules(rules: List<PaymentCardNumberRule>) {
         applyValidationRules(rules)
     }
 
     /**
-     * Adds a validation rule for the field.
+     * Appends a validation rule to the field.
+     *
+     * @param rule The validation rule to append.
      */
     fun appendRule(rule: PaymentCardNumberRule) {
         appendValidationRule(rule)
     }
 
     /**
-     * Sets the vault alias format in which data stores on a backend.
+     * Sets the vault alias format in which data is stored on the backend.
      *
      * @param format The VGS alias format.
      */
@@ -297,7 +303,7 @@ class VGSCardNumberEditText @JvmOverloads constructor(
     }
 
     /**
-     * Sets the vault storage type for storing.
+     * Sets the vault storage type.
      *
      * @param type The VGS storage type.
      */

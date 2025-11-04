@@ -1,9 +1,28 @@
 package com.verygoodsecurity.vgscollect.core.api
 
+/**
+ * The content type of the request body.
+ */
 enum class VGSHttpBodyFormat {
+
+    /**
+     * The body is a plain text.
+     */
     PLAIN_TEXT,
+
+    /**
+     * The body is a JSON.
+     */
     JSON,
+
+    /**
+     * The body is a JSON API.
+     */
     API_JSON,
+
+    /**
+     * The body is a URL encoded form.
+     */
     X_WWW_FORM_URLENCODED
 }
 

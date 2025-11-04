@@ -17,9 +17,7 @@ import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
 
 /**
- * Provides a user interface element for date input. The range of dates supported by this field is not configurable.
- *
- * @since 1.0.7
+ * An abstract class for all VGS date input fields.
  */
 abstract class DateEditText @JvmOverloads internal constructor(
     type: FieldType, context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -108,55 +106,51 @@ abstract class DateEditText @JvmOverloads internal constructor(
     }
 
     /**
-     * Representation of date and times which will be sent to the Vault Proxy Server. The method uses the ISO 8601 standard.
+     * Sets the date format for the output data.
      *
-     * @param regex Specifies date representation format
+     * @param regex The date format regex.
      */
     fun setOutputRegex(regex: String) {
         setOutputPattern(regex)
     }
 
     /**
-     * Representation of dates and times is an international standard covering the exchange of date- and time-related data.
-     * The method uses the ISO 8601 standard.
+     * Sets the date format for the input field.
      *
-     * @param regex Specifies date representation format
-     *
+     * @param regex The date format regex.
      */
     fun setDateRegex(regex: String) {
         setDatePattern(regex)
     }
 
     /**
-     * Return regex date representation format.
+     * Returns the date format regex.
      *
-     * @return regex
+     * @return The date format regex.
      */
     fun getDateRegex(): String? = getDatePattern()
 
     /**
-     * Sets type of exact appearance and interaction model of this widget.
+     * Sets the appearance and interaction mode of the date picker.
      *
-     * @param mode
+     * @param mode The date picker mode.
      */
     fun setDatePickerMode(mode: DatePickerMode) {
         setDatePickerMode(mode.ordinal)
     }
 
     /**
-     * Return type of exact appearance and interaction model of this widget.
+     * Returns the appearance and interaction mode of the date picker.
      *
-     * @return date picker mode
+     * @return The date picker mode.
      */
     fun getDatePickerMode(): DatePickerMode? = getDateMode()
 
     /**
-     * Start the DatePicker dialog and display it on screen.
+     * Shows the date picker dialog.
      *
-     * @param dialogMode
-     * @param ignoreFieldMode Whether the field should ignore state configured
-     * with setDatePickerMode() or through attr.datePickerModes attribute in the XML.
-     * If true, the dialog will show DatePicker with dialogMode mode.
+     * @param dialogMode The date picker mode to use.
+     * @param ignoreFieldMode Whether to ignore the field's configured date picker mode.
      */
     fun showDatePickerDialog(
         dialogMode: DatePickerMode = DatePickerMode.DEFAULT,
@@ -166,41 +160,43 @@ abstract class DateEditText @JvmOverloads internal constructor(
     }
 
     /**
-     * Sets a listener to be invoked when the DatePicker dialog visibility is changing.
+     * Sets a listener to be invoked when the date picker dialog's visibility changes.
+     *
+     * @param l The listener to be invoked.
      */
     fun setDatePickerVisibilityChangeListener(l: VisibilityChangeListener?) {
         setDatePickerVisibilityListener(l)
     }
 
     /**
-     * It return current state of the field.
+     * Returns the current state of the field.
      *
-     * @return current state.
+     * @return The current state of the field.
      */
     fun getState(): FieldState.DateState? {
         return getDateState()
     }
 
     /**
-     * Sets output data serializers, which will serialize data before send it to back-end.
+     * Sets the output data serializer.
      *
-     * @param serializer - FieldDataSerializer serializer.
+     * @param serializer The serializer.
      */
     fun setSerializer(serializer: FieldDataSerializer<*, *>?) {
         if (serializer == null) setSerializers(null) else setSerializers(listOf(serializer))
     }
 
     /**
-     * Sets output data serializers, which will serialize data before send it to back-end.
+     * Sets a list of output data serializers.
      *
-     * @param serializers - list of FieldDataSerializer serializers.
+     * @param serializers The list of serializers.
      */
     fun setSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
         super.setFieldDataSerializers(serializers)
     }
 
     /**
-     * Sets the vault alias format in which data stores on a backend.
+     * Sets the vault alias format in which data is stored on the backend.
      *
      * @param format The VGS alias format.
      */
@@ -209,7 +205,7 @@ abstract class DateEditText @JvmOverloads internal constructor(
     }
 
     /**
-     * Sets the vault storage type for storing.
+     * Sets the vault storage type.
      *
      * @param storage The VGS storage type.
      */
@@ -220,7 +216,7 @@ abstract class DateEditText @JvmOverloads internal constructor(
     /**
      * Defines if data requires tokenization.
      *
-     * @param isEnabled Is tokenization enabled.
+     * @param isEnabled Whether tokenization is enabled.
      */
     fun setEnabledTokenization(isEnabled: Boolean) {
         enableTokenization(isEnabled)

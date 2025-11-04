@@ -44,13 +44,18 @@ import com.verygoodsecurity.vgscollect.view.card.validation.rules.ValidationRule
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
-import com.verygoodsecurity.vgscollect.view.internal.*
+import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
+import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
+import com.verygoodsecurity.vgscollect.view.internal.CardInputField
+import com.verygoodsecurity.vgscollect.view.internal.InfoInputField
+import com.verygoodsecurity.vgscollect.view.internal.PersonNameInputField
+import com.verygoodsecurity.vgscollect.view.internal.SSNInputField
 import com.verygoodsecurity.vgscollect.view.internal.core.DateInputField
 import com.verygoodsecurity.vgscollect.view.material.TextInputFieldLayout
 import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
 
 /**
- * An abstract class that provide displays text user-editable text to the user.
+ * An abstract class that provides a basis for all VGS input fields.
  */
 abstract class InputFieldView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -121,9 +126,9 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Delegate class that helps deliver new requirements between related input fields.
+     * A delegate class that helps deliver new requirements between related input fields.
      *
-     * @param notifier The listener that emits new dependencies for apply.
+     * @param notifier The listener that emits new dependencies to apply.
      */
     internal class DependencyNotifier(notifier: DependencyListener) : DependencyListener by notifier
 
@@ -210,15 +215,15 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Sets the padding.
-     * The view may add on the space required to display the scrollbars, depending on the style and visibility of the scrollbars.
-     * So the values returned from getPaddingLeft(), getPaddingTop(), getPaddingRight() and getPaddingBottom()
-     * may be different from the values set in this call.
+     * Sets the padding. The view may add to the space required to display the scrollbars,
+     * depending on the style and visibility of the scrollbars. So the values returned from
+     * getPaddingLeft(), getPaddingTop(), getPaddingRight(), and getPaddingBottom() may be different
+     * from the values set in this call.
      *
-     * @param left the left padding in pixels
-     * @param top the top padding in pixels
-     * @param right the right padding in pixels
-     * @param bottom the bottom padding in pixels
+     * @param left The left padding in pixels.
+     * @param top The top padding in pixels.
+     * @param right The right padding in pixels.
+     * @param bottom The bottom padding in pixels.
      */
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
         this.leftP = left
@@ -229,10 +234,10 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Returns the bottom padding of this view.
-     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     * Returns the bottom padding of this view. If there are inset and enabled scrollbars,
+     * this value may include the space required to display the scrollbars as well.
      *
-     * @return the bottom padding in pixels
+     * @return The bottom padding in pixels.
      */
     override fun getPaddingBottom(): Int {
         return if (isAttachPermitted) {
@@ -244,9 +249,10 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     /**
      * Returns the end padding of this view depending on its resolved layout direction.
-     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     * If there are inset and enabled scrollbars, this value may include the space required
+     * to display the scrollbars as well.
      *
-     * @return the end padding in pixels
+     * @return The end padding in pixels.
      */
     override fun getPaddingEnd(): Int {
         return if (isAttachPermitted) {
@@ -257,10 +263,10 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Returns the left padding of this view.
-     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     * Returns the left padding of this view. If there are inset and enabled scrollbars,
+     * this value may include the space required to display the scrollbars as well.
      *
-     * @return the left padding in pixels
+     * @return The left padding in pixels.
      */
     override fun getPaddingLeft(): Int {
         return if (isAttachPermitted) {
@@ -271,10 +277,10 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Returns the right padding of this view.
-     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     * Returns the right padding of this view. If there are inset and enabled scrollbars,
+     * this value may include the space required to display the scrollbars as well.
      *
-     * @return the right padding in pixels
+     * @return The right padding in pixels.
      */
     override fun getPaddingRight(): Int {
         return if (isAttachPermitted) {
@@ -286,9 +292,10 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     /**
      * Returns the start padding of this view depending on its resolved layout direction.
-     * If there are inset and enabled scrollbars, this value may include the space required to display the scrollbars as well.
+     * If there are inset and enabled scrollbars, this value may include the space required
+     * to display the scrollbars as well.
      *
-     * @return the start padding in pixels
+     * @return The start padding in pixels.
      */
     override fun getPaddingStart(): Int {
         return if (isAttachPermitted) {
@@ -301,7 +308,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     /**
      * Returns the top padding of this view.
      *
-     * @return the top padding in pixels
+     * @return The top padding in pixels.
      */
     override fun getPaddingTop(): Int {
         return if (isAttachPermitted) {
@@ -362,45 +369,43 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Get the type of the editable content.
+     * Returns the type of the editable content.
      *
-     * @return inputType
+     * @return The input type.
      */
     open fun getInputType(): Int {
         return inputField.inputType
     }
 
     /**
-     * Set the type of the content with a constant as defined for input field.
+     * Sets the type of the content.
      *
-     * @param inputType
+     * @param inputType The input type.
      */
     open fun setInputType(inputType: Int) {
         inputField.inputType = inputType
     }
 
     /**
-     * Sets the text to be used for data transfer to VGS proxy. Usually,
-     * it is similar to field-name in JSON path in your inbound route filters.
+     * Sets the field name for data transfer to the VGS proxy.
      *
-     * @param fieldName the name of the field
+     * @param fieldName The name of the field.
      */
     open fun setFieldName(fieldName: String?) {
         inputField.tag = fieldName
     }
 
     /**
-     * Return the text that field is using for data transfer to VGS proxy.
+     * Returns the field name used for data transfer to the VGS proxy.
      *
-     * @return The text used by the field.
+     * @return The field name.
      */
     open fun getFieldName(): String? = inputField.tag as String?
 
     /**
-     * Sets the text to be used for data transfer to VGS proxy. Usually,
-     * it is similar to field-name in JSON path in your inbound route filters.
+     * Sets the field name for data transfer to the VGS proxy.
      *
-     * @param resId the resource identifier of the field name
+     * @param resId The resource ID of the field name.
      */
     open fun setFieldName(resId: Int) {
         inputField.tag = resources.getString(resId, "")
@@ -410,7 +415,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * Causes words in the text that are longer than the view's width to be ellipsized
      * instead of broken in the middle.
      *
-     * @param type integer value of TextUtils.TruncateAt
+     * @param type The type of truncation to use.
      */
     open fun setEllipsize(type: Int) {
         val ellipsize = when (type) {
@@ -427,7 +432,7 @@ abstract class InputFieldView @JvmOverloads constructor(
      * Causes words in the text that are longer than the view's width to be ellipsized
      * instead of broken in the middle.
      *
-     * @param ellipsis
+     * @param ellipsis The type of truncation to use.
      */
     open fun setEllipsize(ellipsis: TextUtils.TruncateAt) {
         inputField.ellipsize = ellipsis
@@ -436,7 +441,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     /**
      * Sets the height of the TextView to be at least minLines tall.
      *
-     * @param lines the minimum height of TextView in terms of number of lines
+     * @param lines The minimum height in terms of number of lines.
      */
     open fun setMinLines(lines: Int) {
         inputField.minLines = lines
@@ -445,24 +450,23 @@ abstract class InputFieldView @JvmOverloads constructor(
     /**
      * Sets the height of the TextView to be at most maxLines tall.
      *
-     * @param lines the maximum height of TextView in terms of number of lines.
+     * @param lines The maximum height in terms of number of lines.
      */
     open fun setMaxLines(lines: Int) {
         inputField.maxLines = lines
     }
 
     /**
-     * If true, sets the properties of this field
-     * (number of lines, horizontally scrolling, transformation method) to be for a single-line input.
+     * If true, sets the properties of this field to be for a single-line input.
      *
-     * @param singleLine
+     * @param singleLine Whether to enable single-line mode.
      */
     open fun setSingleLine(singleLine: Boolean) {
         inputField.isSingleLine = singleLine
     }
 
     /**
-     * Returns true if this view has focus
+     * Returns true if this view has focus, false otherwise.
      *
      * @return True if this view has focus, false otherwise.
      */
@@ -475,25 +479,23 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Find the view in the hierarchy rooted at this view that currently has focus.
+     * Finds the view in the hierarchy rooted at this view that currently has focus.
      *
      * @return The view that currently has focus, or null if no focused view can be found.
      */
     override fun findFocus(): View? = inputField.findFocus()
 
     /**
-     * Set whether this view can receive the focus.
+     * Sets whether this view can receive focus.
      *
-     * Setting this to false will also ensure that this view is not focusable in touch mode.
-     *
-     * @param focusable If true, this view can receive the focus.
+     * @param focusable If true, this view can receive focus.
      */
     override fun setFocusable(focusable: Boolean) {
         inputField.isFocusable = focusable
     }
 
     /**
-     * Set whether this view can receive the focus.
+     * Sets whether this view can receive focus.
      */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun setFocusable(focusable: Int) {
@@ -501,8 +503,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Returns true if this view has focus itself, or is the ancestor of the
-     * view that has focus.
+     * Returns true if this view has focus itself, or is the ancestor of the view that has focus.
      *
      * @return True if this view has or contains focus, false otherwise.
      */
@@ -513,12 +514,9 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Set whether this view can receive focus while in touch mode.
+     * Sets whether this view can receive focus while in touch mode.
      *
-     * Setting this to true will also ensure that this view is focusable.
-     *
-     * @param focusableInTouchMode If true, this view can receive the focus while
-     *   in touch mode.
+     * @param focusableInTouchMode If true, this view can receive focus while in touch mode.
      */
     override fun setFocusableInTouchMode(focusableInTouchMode: Boolean) {
         super.setFocusableInTouchMode(focusableInTouchMode)
@@ -527,10 +525,8 @@ abstract class InputFieldView @JvmOverloads constructor(
 
     /**
      * Sets the text to be displayed when the text of the TextView is empty.
-     * Null means to use the normal empty text. The hint does not currently participate
-     * in determining the size of the view.
      *
-     * @param text
+     * @param text The hint text.
      */
     open fun setHint(text: String?) {
         inputField.hint = text
@@ -539,37 +535,34 @@ abstract class InputFieldView @JvmOverloads constructor(
     /**
      * Sets the color of the hint text.
      *
-     * @param colors
+     * @param colors The color state list.
      */
     open fun setHintTextColor(colors: ColorStateList) {
         inputField.setHintTextColor(colors)
     }
 
     /**
-     * Sets the color of the hint text for all the states (disabled, focussed, selected...)
-     * of this TextView.
+     * Sets the color of the hint text.
      *
-     * @param color
+     * @param color The color.
      */
     open fun setHintTextColor(color: Int) {
         inputField.setHintTextColor(color)
     }
 
     /**
-     * Sets whether the text should be allowed to be wider than the View is. If false,
-     * it will be wrapped to the width of the View.
+     * Sets whether the text should be allowed to be wider than the view.
      *
-     * @param canScroll
+     * @param canScroll Whether the text can scroll horizontally.
      */
     open fun canScrollHorizontally(canScroll: Boolean) {
         inputField.setHorizontallyScrolling(canScroll)
     }
 
     /**
-     * Sets the horizontal alignment of the text and the vertical gravity that will be used when
-     * there is extra space in the TextView beyond what is required for the text itself.
+     * Sets the horizontal and vertical alignment of the text.
      *
-     * @param gravity
+     * @param gravity The gravity.
      */
     open fun setGravity(gravity: Int) {
         inputField.gravity = gravity
@@ -578,25 +571,24 @@ abstract class InputFieldView @JvmOverloads constructor(
     /**
      * Returns the horizontal and vertical alignment of this TextView.
      *
-     * @return current gravity
+     * @return The gravity.
      */
     open fun getGravity() = inputField.gravity
 
     /**
-     * Set whether the cursor is visible.
+     * Sets whether the cursor is visible.
      *
-     * @param isVisible
+     * @param isVisible Whether the cursor is visible.
      */
     open fun setCursorVisible(isVisible: Boolean) {
         inputField.isCursorVisible = isVisible
     }
 
     /**
-     * Sets the text color, size, style, hint color, and highlight color from the specified
-     * TextAppearance resource.
+     * Sets the text appearance from the specified style resource.
      *
-     * @param context
-     * @param resId the resource identifier of the style to apply
+     * @param context The context.
+     * @param resId The resource ID of the style.
      */
     @Deprecated("deprecated")
     open fun setTextAppearance(context: Context, resId: Int) {
@@ -606,7 +598,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     /**
      * Sets the text appearance from the specified style resource.
      *
-     * @param resId the resource identifier of the style to apply
+     * @param resId The resource ID of the style.
      */
     @RequiresApi(Build.VERSION_CODES.M)
     open fun setTextAppearance(resId: Int) {
@@ -614,9 +606,9 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Gets the current Typeface that is used to style the text.
+     * Returns the current typeface used to style the text.
      *
-     * @return The current Typeface.
+     * @return The current typeface.
      */
     open fun getTypeface(): Typeface? {
         return inputField.typeface
@@ -625,19 +617,17 @@ abstract class InputFieldView @JvmOverloads constructor(
     /**
      * Sets the typeface and style in which the text should be displayed.
      *
-     * @param typeface This value may be null.
+     * @param typeface The typeface.
      */
     open fun setTypeface(typeface: Typeface) {
         inputField.typeface = typeface
     }
 
     /**
-     * Sets the typeface and style in which the text should be displayed,
-     * and turns on the fake bold and italic bits in the Paint if the Typeface
-     * that you provided does not have all the bits in the style that you specified.
+     * Sets the typeface and style in which the text should be displayed.
      *
-     * @param tf This value may be null.
-     * @param style Value is Typeface.NORMAL, Typeface.BOLD, Typeface.ITALIC, or Typeface.BOLD_ITALIC
+     * @param tf The typeface.
+     * @param style The style.
      */
     open fun setTypeface(tf: Typeface?, style: Int) {
         when (style) {
@@ -650,20 +640,19 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Sets the text to be displayed using a string resource identifier.
+     * Sets the text to be displayed from a string resource.
      *
-     * @param resId the resource identifier of the string resource to be displayed
+     * @param resId The resource ID of the string.
      */
     open fun setText(resId: Int) {
         inputField.setText(resId)
     }
 
     /**
-     * Sets the text to be displayed using a string resource identifier and the TextView.BufferType.
+     * Sets the text to be displayed from a string resource.
      *
-     * @param resId the resource identifier of the string resource to be displayed
-     * @param type a TextView.BufferType which defines whether the text is stored as a static text,
-     * styleable/spannable text, or editable text
+     * @param resId The resource ID of the string.
+     * @param type The buffer type.
      */
     open fun setText(resId: Int, type: TextView.BufferType) {
         inputField.setText(resId, type)
@@ -672,38 +661,33 @@ abstract class InputFieldView @JvmOverloads constructor(
     /**
      * Sets the text to be displayed.
      *
-     * @param text text to be displayed
+     * @param text The text to be displayed.
      */
     open fun setText(text: CharSequence?) {
         inputField.setText(text)
     }
 
     /**
-     * Sets the text to be displayed and the TextView.BufferType.
+     * Sets the text to be displayed.
      *
-     * @param text text to be displayed
-     * @param type a TextView.BufferType which defines whether the text is stored as a static text,
-     * styleable/spannable text, or editable text
-     *
-     * @see TextView.BufferType
+     * @param text The text to be displayed.
+     * @param type The buffer type.
      */
     open fun setText(text: CharSequence?, type: TextView.BufferType) {
         inputField.setText(text, type)
     }
 
     /**
-     * Set the default text size to the given value, interpreted as "scaled pixel" units.
-     * This size is adjusted based on the current density and user font size preference.
+     * Sets the text size in scaled pixels.
      *
-     * @param size The scaled pixel size.
+     * @param size The text size.
      */
     open fun setTextSize(size: Float) {
         inputField.textSize = size
     }
 
     /**
-     * Set the default text size to a given unit and value.
-     * See TypedValue for the possible dimension units.
+     * Sets the text size to a given unit and value.
      *
      * @param unit The desired dimension unit.
      * @param size The desired size in the given units.
@@ -713,46 +697,36 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Sets the text color for all the states (normal, selected, focused) to be this color.
+     * Sets the text color.
      *
-     * @param color A color value that will be applied
+     * @param color The text color.
      */
     open fun setTextColor(color: Int) {
         inputField.setTextColor(color)
     }
 
     /**
-     * Specifies whether the text inside input field is required to be filled before sending.
+     * Specifies whether the field is required to be filled before sending.
      *
-     * @param state Set true if the input required.
+     * @param state If true, the field is required.
      */
     open fun setIsRequired(state: Boolean) {
         inputField.isRequired = state
     }
 
     /**
-     * Specifies whether the text inside input field is required to be filled before sending.
-     * If the field doesn't require, then it may be sent to the server as empty.
+     * Returns whether the field is required to be filled before sending.
      *
-     * @return true if the input required.
+     * @return True if the field is required, false otherwise.
      */
     open fun isRequired(): Boolean {
         return inputField.isRequired
     }
 
     /**
-     * Sets how to determine whether this view is important for accessibility
-     * which is if it fires accessibility events and if it is reported to
-     * accessibility services that query the screen.
+     * Sets how to determine whether this view is important for accessibility.
      *
      * @param mode How to determine whether this view is important for accessibility.
-     *
-     * @attr [android.R.attr.importantForAccessibility]
-     *
-     * @see View.IMPORTANT_FOR_ACCESSIBILITY_YES
-     * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO
-     * @see View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
-     * @see View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
      */
     override fun setImportantForAccessibility(mode: Int) {
         if (::inputField.isInitialized) {
@@ -762,20 +736,9 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Sets the [View]'s content description.
-     * <p>
-     * A content description briefly describes the view and is primarily used
-     * for accessibility support to determine how a view should be presented to
-     * the user. In the case of a view with no textual representation, such as
-     * [android.widget.ImageButton], a useful content description
-     * explains what the view does. For example, an image button with a phone
-     * icon that is used to place a call may use "Call" as its content
-     * description. An image of a floppy disk that is used to save a file may
-     * use "Save".
+     * Sets the content description of the view.
      *
      * @param contentDescription The content description.
-     * @see getContentDescription
-     * @attr [android.R.attr.contentDescription]
      */
     override fun setContentDescription(contentDescription: CharSequence?) {
         if (::inputField.isInitialized) {
@@ -785,11 +748,9 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Gets the current field type of the InputFieldView.
+     * Returns the field type.
      *
-     * @return FieldType
-     *
-     * @see FieldType
+     * @return The field type.
      */
     fun getFieldType(): FieldType {
         return fieldType
@@ -960,18 +921,13 @@ abstract class InputFieldView @JvmOverloads constructor(
 
 
     /**
-     * @return the base paint used for the text.  Please use this only to
-     * consult the Paint's properties and not to change them.
+     * Returns the base paint used for the text.
      */
     fun getPaint(): TextPaint? = inputField.paint
 
     /**
-     * Hook allowing a view to generate a representation of its internal state
-     * that can later be used to create a new instance with that same state.
-     * This state should only contain information that is not persistent or can
-     * not be reconstructed later. For example, you will never store your
-     * current position on screen because that will be computed again when a
-     * new instance of the view is placed in its view hierarchy.
+     * Hook allowing a view to generate a representation of its internal state that can later be used to
+     * create a new instance with that same state.
      */
     override fun onSaveInstanceState(): Parcelable? {
         val savedState = SavedState(super.onSaveInstanceState())
@@ -1017,8 +973,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Set the enabled state of this view. The interpretation of the enabled
-     * state varies by subclass.
+     * Sets the enabled state of this view.
      *
      * @param enabled True if this view is enabled, false otherwise.
      */
@@ -1091,9 +1046,9 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Sets the id of the view to use when the next focus is FOCUS_FORWARD.
-     * @param nextFocusForwardId The next focus ID, or NO_ID if the framework should
-     * decide automatically.
+     * Sets the ID of the view to use when the next focus is FOCUS_FORWARD.
+     *
+     * @param nextFocusForwardId The next focus ID.
      */
     override fun setNextFocusForwardId(nextFocusForwardId: Int) {
         inputField.nextFocusForwardId = nextFocusForwardId
@@ -1101,9 +1056,9 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Sets the id of the view to use when the next focus is FOCUS_LEFT.
-     * @param nextFocusLeftId The next focus ID, or NO_ID if the framework should
-     * decide automatically.
+     * Sets the ID of the view to use when the next focus is FOCUS_LEFT.
+     *
+     * @param nextFocusLeftId The next focus ID.
      */
     override fun setNextFocusLeftId(nextFocusLeftId: Int) {
         inputField.nextFocusLeftId = nextFocusLeftId
@@ -1111,9 +1066,9 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Sets the id of the view to use when the next focus is FOCUS_RIGHT.
-     * @param nextFocusRightId The next focus ID, or NO_ID if the framework should
-     * decide automatically.
+     * Sets the ID of the view to use when the next focus is FOCUS_RIGHT.
+     *
+     * @param nextFocusRightId The next focus ID.
      */
     override fun setNextFocusRightId(nextFocusRightId: Int) {
         inputField.nextFocusRightId = nextFocusRightId
@@ -1121,9 +1076,9 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Sets the id of the view to use when the next focus is FOCUS_UP.
-     * @param nextFocusUpId The next focus ID, or NO_ID if the framework should
-     * decide automatically.
+     * Sets the ID of the view to use when the next focus is FOCUS_UP.
+     *
+     * @param nextFocusUpId The next focus ID.
      */
     override fun setNextFocusUpId(nextFocusUpId: Int) {
         inputField.nextFocusUpId = nextFocusUpId
@@ -1131,9 +1086,9 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Sets the id of the view to use when the next focus is FOCUS_DOWN.
-     * @param nextFocusDownId The next focus ID, or NO_ID if the framework should
-     * decide automatically.
+     * Sets the ID of the view to use when the next focus is FOCUS_DOWN.
+     *
+     * @param nextFocusDownId The next focus ID.
      */
     override fun setNextFocusDownId(nextFocusDownId: Int) {
         inputField.nextFocusDownId = nextFocusDownId
@@ -1141,28 +1096,11 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Call this to try to give focus to a specific view or to one of its descendants
-     * and give it hints about the direction and a specific rectangle that the focus
-     * is coming from.  The rectangle can help give larger views a finer grained hint
-     * about where focus is coming from, and therefore, where to show selection, or
-     * forward focus change internally.
+     * Call this to try to give focus to a specific view or to one of its descendants.
      *
-     * A view will not actually take focus if it is not focusable (isFocusable} returns
-     * false), or if it is focusable and it is not focusable in touch mode
-     * (isFocusableInTouchMode) while the device is in touch mode.
+     * @param direction The direction of the focus.
+     * @param previouslyFocusedRect The previously focused rectangle.
      *
-     * A View will not take focus if it is not visible.
-     *
-     * See also focusSearch(int), which is what you call to say that you
-     * have focus, and you want your parent to look for the next one.
-     *
-     * You may wish to override this method if your custom {@link View} has an internal
-     * View that it wishes to forward the request to.
-     *
-     * @param direction One of FOCUS_UP, FOCUS_DOWN, FOCUS_LEFT, and FOCUS_RIGHT
-     * @param previouslyFocusedRect The rectangle (in this View's coordinate system)
-     *        to give a finer grained hint about where focus is coming from.  May be null
-     *        if there is no hint.
      * @return Whether this view or one of its descendants actually took focus.
      */
     override fun requestFocus(direction: Int, previouslyFocusedRect: Rect?): Boolean {
@@ -1170,78 +1108,67 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Moves the cursor to the specified offset position in text
+     * Moves the cursor to the specified offset in the text.
      *
-     * @param index specific position for the cursor.
+     * @param index The position for the cursor.
      */
     fun setSelection(index: Int) {
         inputField.setSelection(index)
     }
 
     /**
-     * Called when this view wants to give up focus. If focus is cleared
-     * onFocusChanged(boolean, int, android.graphics.Rect) is called.
-     * <p>
-     * <strong>Note:</strong> When not in touch-mode, the framework will try to give focus
-     * to the first focusable View from the top after focus is cleared. Hence, if this
-     * View is the first from the top that can take focus, then all callbacks
-     * related to clearing focus will be invoked after which the framework will
-     * give focus to this view.
-     * </p>
+     * Called when this view wants to give up focus.
      */
     override fun clearFocus() {
         inputField.clearFocus()
     }
 
     /**
-     * Change the editor type integer associated with the text view, which
-     * is reported to an Input Method Editor when it has focus.
+     * Changes the editor type integer associated with the text view.
      */
     fun setImeOptions(imeOptions: Int) {
         inputField.imeOptions = imeOptions
     }
 
     /**
-     * Get the type of the Input Method Editor (IME).
-     * @return the type of the IME
+     * Returns the type of the Input Method Editor (IME).
+     *
+     * @return The type of the IME.
      */
     fun getImeOptions(): Int {
         return inputField.imeOptions
     }
 
     /**
-     * This method adds a listener whose methods are called whenever VGS secure field state changes.
+     * Sets a listener to be notified when the field state changes.
      *
-     * @param onFieldStateChangeListener listener which will notify about changes inside input field.
+     * @param onFieldStateChangeListener The listener.
      */
     fun setOnFieldStateChangeListener(onFieldStateChangeListener: OnFieldStateChangeListener?) {
         inputField.setOnFieldStateChangeListener(onFieldStateChangeListener)
     }
 
     /**
-     * Register a callback to be invoked when focus of this view changed.
+     * Sets a listener to be invoked when the focus of this view changes.
      *
-     * @param l The callback that will run.
+     * @param l The listener.
      */
     override fun setOnFocusChangeListener(l: OnFocusChangeListener?) {
         inputField.setOnFocusChangeListener(l, true)
     }
 
     /**
-     * Interface definition for a callback to be invoked when an action is
-     * performed on the editor.
+     * A listener for editor actions.
      */
     interface OnEditorActionListener {
         /**
          * Called when an action is being performed.
          *
          * @param v The view that was clicked.
-         * @param actionId Identifier of the action.  This will be either the
-         * identifier you supplied, or [ EditorInfo.IME_NULL][EditorInfo.IME_NULL] if being called due to the enter key
-         * being pressed.
-         * @param event If triggered by an enter key, this is the event;
-         * otherwise, this is null.
-         * @return Return true if you have consumed the action, else false.
+         * @param actionId The ID of the action.
+         * @param event The key event.
+         *
+         * @return True if you have consumed the action, false otherwise.
          */
         fun onEditorAction(
             v: View?,
@@ -1251,12 +1178,9 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Set a special listener to be called when an action is performed
-     * on the text view.  This will be called when the enter key is pressed,
-     * or when an action supplied to the IME is selected by the user.  Setting
-     * this means that the normal hard key event will not insert a newline
-     * into the text view, even if it is multi-line; holding down the ALT
-     * modifier will, however, allow the user to insert a newline character.
+     * Sets a listener to be called when an action is performed on the text view.
+     *
+     * @param l The listener.
      */
     fun setOnEditorActionListener(l: OnEditorActionListener?) {
         inputField.setEditorActionListener(l)
@@ -1335,10 +1259,9 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Set the validation state of this view.
+     * Sets whether validation is enabled for this view.
      *
-     * @param isEnabled True if this view has enabled validation, false otherwise.
-     *
+     * @param isEnabled True if validation is enabled, false otherwise.
      */
     fun enableValidation(isEnabled: Boolean) {
         inputField.enableValidation = isEnabled
@@ -1349,14 +1272,18 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Returns the validation status for this view.
+     * Returns whether validation is enabled for this view.
      *
-     * @return True if validation enabled for this View.
+     * @return True if validation is enabled, false otherwise.
      */
     fun isValidationEnabled(): Boolean = inputField.enableValidation
 
     /**
-     * Returns true if view content same, false otherwise.
+     * Returns true if the content of this view is the same as the content of the other view.
+     *
+     * @param view The other view.
+     *
+     * @return True if the content is the same, false otherwise.
      */
     fun isContentEquals(view: InputFieldView): Boolean = inputField.isContentEquals(view.inputField)
 
@@ -1392,13 +1319,12 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * When an object of this type is attached to an [InputFieldView], its method will
-     * be called when the text is changed.
+     * A listener for text changes.
      */
     interface OnTextChangedListener {
 
         /**
-         * This method is called to notify you that the text has been changed.
+         * This method is called to notify you that the text has changed.
          *
          * @param view The view that was clicked.
          * @param isEmpty If true, then field is have no revealed data.
@@ -1413,32 +1339,34 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Adds a OnTextChangedListener to the list of those whose methods are called
-     * whenever this field text changes.
+     * Adds a listener for text changes.
+     *
+     * @param listener The listener.
      */
     fun addOnTextChangeListener(listener: OnTextChangedListener?) {
         listener?.let { textChangeListeners.add(listener) }
     }
 
     /**
-     * Removes the specified OnTextChangedListener from the list of those whose methods are called
-     * whenever this field text changes.
+     * Removes a listener for text changes.
+     *
+     * @param listener The listener to remove.
      */
     fun removeTextChangedListener(listener: OnTextChangedListener?) {
         listener?.let { textChangeListeners.remove(listener) }
     }
 
     /**
-     * Register a callback to be invoked when a key is pressed in this view.
+     * Sets a listener to be invoked when a key is pressed in this view.
      *
-     * @param l the key listener to attach to this view
+     * @param l The listener.
      */
     override fun setOnKeyListener(l: OnKeyListener?) {
         inputField.setOnKeyListener(l)
     }
 
     /**
-     * Explicitly request that the current input method's soft input area be shown to the user, if needed.
+     * Shows the soft keyboard.
      */
     fun showKeyboard() {
         if (::inputField.isInitialized) {
@@ -1448,7 +1376,7 @@ abstract class InputFieldView @JvmOverloads constructor(
     }
 
     /**
-     * Request to hide the soft input window from the context of the window that is currently accepting input.
+     * Hides the soft keyboard.
      */
     fun hideKeyboard() {
         if (::inputField.isInitialized) {
