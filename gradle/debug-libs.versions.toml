@@ -1,5 +1,5 @@
 [versions]
-leakcanary = '2.13'
+leakcanary = '2.14'
 compose-ui-tooling = '1.6.2'
 
 [libraries]
