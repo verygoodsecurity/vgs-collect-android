@@ -1,6 +1,6 @@
 [versions]
 junit = '4.13.2'
-mockito-core = '5.11.0'
+mockito-core = '5.20.0'
 mockito-inline = '5.2.0'
 robolectric = '4.11.1'
 json = '20240303'
