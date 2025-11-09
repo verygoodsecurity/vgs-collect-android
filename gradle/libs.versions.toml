@@ -22,7 +22,7 @@ fuel = '2.3.1'
 espresso-idling-resource = '3.6.1'
 wallet = '19.4.0'
 ktor = "3.0.1"
-kotlin-coroutines-test = "1.9.0"
+kotlin-coroutines-test = "1.10.2"
 vgs-sdk-analytics-android = "1.0.3"
 
 [plugins]
