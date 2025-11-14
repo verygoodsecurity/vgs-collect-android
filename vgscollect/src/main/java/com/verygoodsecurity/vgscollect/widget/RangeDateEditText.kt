@@ -21,6 +21,13 @@ class RangeDateEditText @JvmOverloads constructor(
 ) : DateEditText(FieldType.DATE_RANGE, context, attrs, defStyleAttr) {
 
     init {
+        isFocusable = true
+        this.isFocusableInTouchMode = true
+        this.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                showDatePickerDialog()
+            }
+        }
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.RangeDateEditText,

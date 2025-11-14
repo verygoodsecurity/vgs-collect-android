@@ -112,4 +112,5 @@ dependencies {
     androidTestImplementation androidTestLibs.androidx.espresso.core
     androidTestImplementation androidTestLibs.androidx.espresso.intents
     androidTestImplementation androidTestLibs.espresso.contrib
+    androidTestImplementation androidTestLibs.androidx.rules
 }
