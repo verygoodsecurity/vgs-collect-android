@@ -1,11 +1,11 @@
 package com.verygoodsecurity.vgscollect.widget
 
 import android.content.Context
-import android.text.format.DateUtils
 import android.util.AttributeSet
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.widget.core.DateEditText
 import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
+import java.util.concurrent.TimeUnit
 
 /**
  * A user interface element for inputting a card's expiration date.
@@ -19,7 +19,9 @@ class ExpirationDateEditText @JvmOverloads constructor(
     init {
         val minDate = System.currentTimeMillis()
         setMinDate(minDate)
-        setMaxDate(minDate + DateUtils.YEAR_IN_MILLIS * 20)
+        val daysInTwentyYears = 365L * 20
+        val twentyYearsInMillis = TimeUnit.DAYS.toMillis(daysInTwentyYears)
+        setMaxDate(minDate + twentyYearsInMillis)
     }
 
     /**
