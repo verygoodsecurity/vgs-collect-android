@@ -1,8 +1,8 @@
 [versions]
-agp = '8.6.1'
-kotlin = "2.1.20"
-mokkery = "2.7.2"
-mavenPublish = '0.34.0'
+agp = "8.13.1"
+kotlin = "2.2.21"
+mokkery = "2.10.2"
+mavenPublish = '0.35.0'
 dokka = '1.9.20'
 detekt = '1.23.5'
 kover = '0.8.3'
@@ -22,7 +22,7 @@ fuel = '2.3.1'
 espresso-idling-resource = '3.6.1'
 wallet = '19.4.0'
 ktor = "3.0.1"
-kotlin-coroutines-test = "1.9.0"
+kotlin-coroutines-test = "1.10.2"
 vgs-sdk-analytics-android = "1.0.3"
 
 [plugins]
