@@ -8,11 +8,11 @@ plugins {
 
 android {
     namespace 'com.verygoodsecurity.api'
-    compileSdk 35
+    compileSdkVersion 36
 
     defaultConfig {
-        minSdk 21
-        targetSdk 35
+        minSdkVersion 21
+        targetSdkVersion 36
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
