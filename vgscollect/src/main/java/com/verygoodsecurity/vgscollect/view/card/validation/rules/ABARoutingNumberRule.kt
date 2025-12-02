@@ -1,12 +1,10 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.rules
 
 import com.verygoodsecurity.vgscollect.view.card.validation.ABARoutingNumberValidator
-import com.verygoodsecurity.vgscollect.view.card.validation.LengthValidator
 
 class ABARoutingNumberRule private constructor(
-    private val lengthValidator: LengthValidator,
-    private val checksumValidator: ABARoutingNumberValidator
-) : ValidationRule(null, null, null, null) {
+    validator: ABARoutingNumberValidator
+) : ValidationRule(null, null, null, null, validator) {
 
     class ValidationBuilder {
 
@@ -25,11 +23,10 @@ class ABARoutingNumberRule private constructor(
          * Builds the validation rule.
          */
         fun build(): ABARoutingNumberRule {
-            val errorMessage = this.errorMsg ?: "ABA routing number is not valid"
-            return ABARoutingNumberRule(
-                LengthValidator(ABA_ROUTING_NUMBER_LENGTH, ABA_ROUTING_NUMBER_LENGTH, errorMessage),
-                ABARoutingNumberValidator(errorMessage)
+            val validator = ABARoutingNumberValidator(
+                errorMsg = errorMsg ?: ABARoutingNumberValidator.DEFAULT_ERROR_MSG
             )
+            return ABARoutingNumberRule(validator)
         }
     }
 
