@@ -121,13 +121,28 @@ Notation: P=Formatting Pattern, D=Divider, Val=Default Validation Rules (names),
 - Scan: No Icon: No Sens.: (Treat as sensitive in app logic even if `sensitive` flag false; never log.)
 
 ---
+## 3. Specific Validation Rules
+
+### ABARoutingNumberRule
+- Use: Validates a 9-digit ABA routing number using a checksum algorithm.
+- Example:
+```kotlin
+val abaRule = ABARoutingNumberRule.ValidationBuilder()
+    .setErrorMsg("Invalid ABA routing number")
+    .build()
+
+val routingNumberField = VGSTextInputEditText(this)
+routingNumberField.addRule(abaRule)
+```
+
+---
 ## 4. Field Setup & Configuration Pattern
 Canonical card form snippet (XML Layout):
 ```xml
 <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
     android:id="@+id/cardNumberField"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android.layout_height="wrap_content"
     app:fieldName="card_number"/>
 
 <com.verygoodsecurity.vgscollect.widget.VGSTextInputEditText
@@ -147,7 +162,7 @@ Canonical card form snippet (XML Layout):
 <com.verygoodsecurity.vgscollect.widget.VGSTextInputEditText
     android:id="@+id/cvcField"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android.layout_height="wrap_content"
     app:fieldName="card_cvc"
     app:fieldType="cvc"/>
 ```

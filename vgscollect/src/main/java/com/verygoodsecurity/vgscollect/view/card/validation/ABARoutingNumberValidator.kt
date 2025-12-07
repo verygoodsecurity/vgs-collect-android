@@ -2,11 +2,19 @@ package com.verygoodsecurity.vgscollect.view.card.validation
 
 /**
  * ABA Routing Number checksum validation.
+ *
+ * @param errorMsg The error message to be returned if validation fails.
  */
 class ABARoutingNumberValidator(
     override val errorMsg: String = DEFAULT_ERROR_MSG
 ): VGSValidator {
 
+    /**
+     * Validates the given ABA routing number.
+     *
+     * @param content The content to validate.
+     * @return True if the content is a valid ABA routing number, false otherwise.
+     */
     override fun isValid(content: String): Boolean {
         if (content.isEmpty() || !content.matches(Regex("^\\d{9}$"))) {
             return false
@@ -19,7 +27,7 @@ class ABARoutingNumberValidator(
         return sum != 0 && sum % 10 == 0
     }
 
-    internal companion object Companion {
+    internal companion object {
 
         internal const val DEFAULT_ERROR_MSG = "is not a valid ABA routing number"
     }
