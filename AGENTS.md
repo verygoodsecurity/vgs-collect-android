@@ -142,7 +142,7 @@ Canonical card form snippet (XML Layout):
 <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
     android:id="@+id/cardNumberField"
     android:layout_width="match_parent"
-    android.layout_height="wrap_content"
+    android:layout_height="wrap_content"
     app:fieldName="card_number"/>
 
 <com.verygoodsecurity.vgscollect.widget.VGSTextInputEditText
@@ -162,7 +162,7 @@ Canonical card form snippet (XML Layout):
 <com.verygoodsecurity.vgscollect.widget.VGSTextInputEditText
     android:id="@+id/cvcField"
     android:layout_width="match_parent"
-    android.layout_height="wrap_content"
+    android:layout_height="wrap_content"
     app:fieldName="card_cvc"
     app:fieldType="cvc"/>
 ```
