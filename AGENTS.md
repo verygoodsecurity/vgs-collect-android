@@ -121,6 +121,21 @@ Notation: P=Formatting Pattern, D=Divider, Val=Default Validation Rules (names),
 - Scan: No Icon: No Sens.: (Treat as sensitive in app logic even if `sensitive` flag false; never log.)
 
 ---
+## 3. Specific Validation Rules
+
+### ABARoutingNumberRule
+- Use: Validates a 9-digit ABA routing number using a checksum algorithm.
+- Example:
+```kotlin
+val abaRule = ABARoutingNumberRule.ValidationBuilder()
+    .setErrorMsg("Invalid ABA routing number")
+    .build()
+
+val routingNumberField = VGSTextInputEditText(this)
+routingNumberField.addRule(abaRule)
+```
+
+---
 ## 4. Field Setup & Configuration Pattern
 Canonical card form snippet (XML Layout):
 ```xml
