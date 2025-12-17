@@ -12,14 +12,15 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
 import androidx.annotation.VisibleForTesting
 import com.verygoodsecurity.vgscollect.view.InputFieldView
-import com.verygoodsecurity.vgscollect.view.material.internal.TextInputLayoutSavedState
 import com.verygoodsecurity.vgscollect.view.material.internal.InputLayoutStateImpl
+import com.verygoodsecurity.vgscollect.view.material.internal.TextInputLayoutSavedState
 import com.verygoodsecurity.vgscollect.view.material.internal.TextInputLayoutWrapper
 import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
 
 /**
- * An abstract class that provide floating label when
- * the hint is hidden due to user inputting text.
+ * An abstract class that provides a floating label for VGS input fields when the hint is hidden
+ * due to user input. It is an abstraction over Google's [TextInputLayout](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout)
+ * to support all VGS features.
  *
  * @since 1.0.0
  */

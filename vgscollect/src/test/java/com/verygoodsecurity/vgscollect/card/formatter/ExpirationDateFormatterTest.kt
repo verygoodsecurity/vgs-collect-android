@@ -7,7 +7,9 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.date.StrictExpiration
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 
 class ExpirationDateFormatterTest {
 
@@ -88,7 +90,7 @@ class ExpirationDateFormatterTest {
 
         textWatcher.onTextChanged("20", 0,0,19)
         textWatcher.afterTextChanged(editable)
-        verify(editable, times(2)).replace(0, 0, "2")
+        verify(editable).replace(0, 0, "2")
 
         textWatcher.onTextChanged("26", 0,0,19)
         textWatcher.afterTextChanged(editable)
@@ -117,6 +119,11 @@ class ExpirationDateFormatterTest {
         textWatcher.onTextChanged("26/10", 0,0,19)
         textWatcher.afterTextChanged(editable)
         verify(editable).replace(0, 0, "26/10")
+
+        textWatcher.beforeTextChanged("", 0, 5, 6)
+        textWatcher.onTextChanged("50/10", 0,0,19)
+        textWatcher.afterTextChanged(editable)
+        verify(editable).replace(0, 0, "50/10")
     }
 
     @Test
@@ -233,11 +240,11 @@ class ExpirationDateFormatterTest {
 
         textWatcher.onTextChanged("12/3", 0,0,19)
         textWatcher.afterTextChanged(editable)
-        verify(editable, times(2)).replace(0, 0, "12/")
+        verify(editable).replace(0, 0, "12/")
 
         textWatcher.onTextChanged("12/2020", 0,0,19)
         textWatcher.afterTextChanged(editable)
-        verify(editable, times(3)).replace(0, 0, "12/")
+        verify(editable).replace(0, 0, "12/")
 
         textWatcher.onTextChanged("12/2039", 0,0,19)
         textWatcher.afterTextChanged(editable)
@@ -246,7 +253,7 @@ class ExpirationDateFormatterTest {
         textWatcher.beforeTextChanged("12/2039", 5, 1, 0)
         textWatcher.onTextChanged("12/209", 5, 1, 0)
         textWatcher.afterTextChanged(editable)
-        verify(editable, times(4)).replace(0, 0, "12/")
+        verify(editable).replace(0, 0, "12/")
 
         textWatcher.beforeTextChanged("10/2034", 0, 1, 0)
         textWatcher.onTextChanged("0/2034", 0, 1, 0)
@@ -267,6 +274,11 @@ class ExpirationDateFormatterTest {
         textWatcher.onTextChanged("08/2029", 6, 0, 1)
         textWatcher.afterTextChanged(editable)
         verify(editable).replace(0, 0, "08/2029")
+
+        textWatcher.beforeTextChanged("08/212", 6, 0, 1)
+        textWatcher.onTextChanged("08/2129", 6, 0, 1)
+        textWatcher.afterTextChanged(editable)
+        verify(editable).replace(0, 0, "08/2129")
     }
 
     @Test

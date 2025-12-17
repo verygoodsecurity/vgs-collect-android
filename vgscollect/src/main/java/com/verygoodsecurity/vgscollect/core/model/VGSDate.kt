@@ -1,16 +1,21 @@
 package com.verygoodsecurity.vgscollect.core.model
 
 import com.verygoodsecurity.vgscollect.util.extension.setMaximumTime
-import java.util.*
+import java.util.Calendar
 
 /**
  * Date representation that includes a day, month and year.
+ *
+ * @param day The day of the month.
+ * @param month The month of the year.
+ * @param year The year.
  */
 class VGSDate private constructor(
     val day: Int,
     val month: Int,
     val year: Int
 ) {
+    /** The time in milliseconds from the epoch. */
     val timeInMillis: Long = Calendar.getInstance().apply {
         set(Calendar.DAY_OF_MONTH, day)
         set(Calendar.MONTH, month - 1)
@@ -20,6 +25,15 @@ class VGSDate private constructor(
 
     companion object {
 
+        /**
+         * Creates a [VGSDate] object.
+         *
+         * @param day The day of the month.
+         * @param month The month of the year.
+         * @param year The year.
+         *
+         * @return The [VGSDate] object, or null if the date is invalid.
+         */
         fun create(day: Int, month: Int, year: Int): VGSDate? {
             // Create a calendar and set the components to create the date
             val calendar = Calendar.getInstance().apply {

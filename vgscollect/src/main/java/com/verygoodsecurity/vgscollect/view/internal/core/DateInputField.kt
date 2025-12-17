@@ -23,11 +23,8 @@ import com.verygoodsecurity.vgscollect.view.card.formatter.rules.FormatMode
 import com.verygoodsecurity.vgscollect.view.core.serializers.FieldDataSerializer
 import com.verygoodsecurity.vgscollect.view.date.DatePickerBuilder
 import com.verygoodsecurity.vgscollect.view.date.DatePickerMode
-import com.verygoodsecurity.vgscollect.view.date.DateRangeFormat
 import com.verygoodsecurity.vgscollect.view.date.validation.TimeGapsValidator
-import com.verygoodsecurity.vgscollect.view.date.validation.isInputDatePatternValid
 import com.verygoodsecurity.vgscollect.view.internal.BaseInputField
-import com.verygoodsecurity.vgscollect.view.internal.ExpirationDateInputField
 import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -46,6 +43,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     internal abstract var datePickerMaxDate: Long?
     internal abstract var isDaysVisible: Boolean
     //endregion
+    private var isDatePickerShowing = false
 
     //region - Properties
     private var formatterMode = FormatMode.STRICT
@@ -95,6 +93,19 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
 
         applyFormatter()
         applyInputType()
+    }
+
+    init {
+        datePickerVisibilityChangeListener = object: VisibilityChangeListener {
+            override fun onDismiss() {
+                isDatePickerShowing = false
+                this@DateInputField.clearFocus()
+            }
+
+            override fun onShow() {
+                isDatePickerShowing = true
+            }
+        }
     }
 
     private fun applyFormatter() {
@@ -198,6 +209,9 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     }
 
     private fun showDatePickerDialog() {
+        if (isDatePickerShowing) {
+            return
+        }
         showDatePickerDialog(datePickerMode)
     }
 

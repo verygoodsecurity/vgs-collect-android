@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscollect.R
 import com.verygoodsecurity.vgscollect.view.card.CardType
 
 /**
- * You can use this class to create custom Drawables as a preview image for the [com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText].
+ * An adapter for creating custom CVC icons.
  */
 open class CVCIconAdapter(private val context: Context) {
 
@@ -21,20 +21,24 @@ open class CVCIconAdapter(private val context: Context) {
     private val defaultIconHeight = context.resources.getDimension(R.dimen.c_icon_size_h).toInt()
 
     /**
-     * Returns a drawable object associated with a particular resource ID or default drawable.
+     * Returns a drawable object associated with a particular resource ID.
+     *
+     * @param resId The resource ID of the drawable.
+     *
+     * @return The drawable object, or the default drawable if the resource is not found.
      */
     protected fun getDrawable(@DrawableRes resId: Int) =
         AppCompatResources.getDrawable(context, resId) ?: defaultIcon
 
     /**
-     * Returns prepared Drawable to display in [com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText].
+     * Returns the icon to be displayed in the CVC field.
      *
-     * @param cardType detected card brand type
-     * @param cardBrand card brand name
-     * @param cvcLength cvc length
-     * @param r size of the input field. The size will be 0 if View is not visible.
+     * @param cardType The detected card type.
+     * @param cardBrand The name of the card brand.
+     * @param cvcLength The length of the CVC.
+     * @param r The bounds of the input field.
      *
-     * @return Drawable object for the preview.
+     * @return The drawable to be displayed.
      */
     protected open fun getIcon(
         cardType: CardType,
@@ -48,10 +52,7 @@ open class CVCIconAdapter(private val context: Context) {
     }
 
     /**
-     * Return the Rect object for the drawable's bounds. You may change the object returned by this
-     * method to setup dimensions of the preview.
-     *
-     * The default preview image has 32dp for the width and 21dp for the height.
+     * Returns the bounds for the CVC icon.
      *
      * @return The bounds for the drawable.
      */

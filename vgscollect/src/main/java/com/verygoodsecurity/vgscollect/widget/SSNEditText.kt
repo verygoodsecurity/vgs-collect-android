@@ -13,6 +13,9 @@ import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultSto
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
+/**
+ * A user interface element for inputting a Social Security Number (SSN).
+ */
 class SSNEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
@@ -85,9 +88,9 @@ class SSNEditText @JvmOverloads constructor(
     }
 
     /**
-     * It return current state of the field.
+     * Returns the current state of the field.
      *
-     * @return current state.
+     * @return The current state of the field.
      */
     fun getState(): FieldState.SSNNumberState? {
         return getSSNState()
@@ -105,9 +108,9 @@ class SSNEditText @JvmOverloads constructor(
     }
 
     /**
-     * Return symbol that will divide groups of digits in the number.
+     * Returns the symbol that divides groups of digits in the number.
      *
-     * @return divider symbol
+     * @return The divider symbol.
      */
     fun getDivider(): Char? {
         return getNumberDivider()
@@ -125,16 +128,16 @@ class SSNEditText @JvmOverloads constructor(
     }
 
     /**
-     * Return symbol that will divide groups of digits in the number before submitting on Proxy.
+     * Returns the symbol that will divide groups of digits in the number before it is submitted to the proxy.
      *
-     * @return divider symbol
+     * @return The divider symbol.
      */
     fun getOutputDivider(): Char? {
         return getOutputNumberDivider()
     }
 
     /**
-     * Sets the vault alias format in which data stores on a backend.
+     * Sets the vault alias format in which data is stored on the backend.
      *
      * @param format The VGS alias format.
      */
@@ -143,7 +146,7 @@ class SSNEditText @JvmOverloads constructor(
     }
 
     /**
-     * Sets the vault storage type for storing.
+     * Sets the vault storage type.
      *
      * @param type The VGS storage type.
      */
@@ -154,7 +157,7 @@ class SSNEditText @JvmOverloads constructor(
     /**
      * Defines if data requires tokenization.
      *
-     * @param isEnabled Is tokenization enabled.
+     * @param isEnabled Whether tokenization is enabled.
      */
     fun setEnabledTokenization(isEnabled: Boolean) {
         enableTokenization(isEnabled)

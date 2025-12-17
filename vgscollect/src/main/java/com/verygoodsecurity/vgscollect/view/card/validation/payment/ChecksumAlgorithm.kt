@@ -1,16 +1,16 @@
 package com.verygoodsecurity.vgscollect.view.card.validation.payment
 
 /**
- * The set of actions for checkSum validation.
+ * The checksum algorithm to use for validation.
  */
 enum class ChecksumAlgorithm {
 
-    /** Luhn validation algorithm. */
+    /** The Luhn algorithm. */
     LUHN,
 
-    /** Any validation algorithm */
+    /** Any checksum algorithm. */
     ANY,
 
-    /** Number will be accepted without any algorithm */
+    /** No checksum algorithm. */
     NONE
 }

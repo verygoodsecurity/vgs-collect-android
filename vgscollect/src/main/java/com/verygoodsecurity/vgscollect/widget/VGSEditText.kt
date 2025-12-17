@@ -6,9 +6,9 @@ import android.text.InputType
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
-import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import android.view.inputmethod.EditorInfo
 import com.verygoodsecurity.vgscollect.R
+import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 import com.verygoodsecurity.vgscollect.view.InputFieldView
@@ -17,8 +17,6 @@ import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
 
 /**
  * A user interface element that displays text.
- *
- * @since 1.0.0
  */
 open class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -94,6 +92,9 @@ open class VGSEditText @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Sets the input type of the field.
+     */
     override fun setInputType(inputType: Int) {
         if (inputType == InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS) {
             super.setInputType(getInputType() or inputType)
@@ -103,21 +104,27 @@ open class VGSEditText @JvmOverloads constructor(
     }
 
     /**
-     * It return current state of the field.
+     * Returns the current state of the field.
      *
-     * @return current state.
+     * @return The current state of the field.
      */
     fun getState(): FieldState.InfoState? {
         return getInfoState()
     }
 
-    /** The max text length to display. */
+    /**
+     * Sets the maximum length of the text.
+     *
+     * @param length The maximum length of the text.
+     */
     fun setMaxLength(length: Int) {
         applyMaxLength(length)
     }
 
     /**
      * Adds a validation rule for the field.
+     *
+     * @param rule The validation rule to add.
      */
     @Deprecated("Use setRule(rule) instead.", ReplaceWith("setRule(rule)"))
     fun addRule(rule: VGSInfoRule) {
@@ -125,21 +132,27 @@ open class VGSEditText @JvmOverloads constructor(
     }
 
     /**
-     * Set a validation rule for the field.
+     * Sets a validation rule for the field.
+     *
+     * @param rule The validation rule to set.
      */
     fun setRule(rule: VGSInfoRule) {
         applyValidationRule(rule)
     }
 
     /**
-     * Set validation rules for the field.
+     * Sets a list of validation rules for the field.
+     *
+     * @param rules The list of validation rules to set.
      */
     fun setRules(rules: List<VGSInfoRule>) {
         applyValidationRules(rules)
     }
 
     /**
-     * Adds a validation rule for the field.
+     * Appends a validation rule to the field.
+     *
+     * @param rule The validation rule to append.
      */
     fun appendRule(rule: VGSInfoRule) {
         appendValidationRule(rule)
