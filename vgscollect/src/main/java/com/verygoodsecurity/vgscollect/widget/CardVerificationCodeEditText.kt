@@ -15,6 +15,9 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.cvc.CVCIconAdapter
 import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
 
+/**
+ * A user interface element for inputting a CVC.
+ */
 class CardVerificationCodeEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
@@ -100,26 +103,25 @@ class CardVerificationCodeEditText @JvmOverloads constructor(
     }
 
     /**
-     * It return current state of the field.
+     * Returns the current state of the field.
      *
-     * @return current state.
+     * @return The current state of the field.
      */
     fun getState(): FieldState.CVCState? {
         return getCVCState()
     }
 
     /**
-     * Sets the custom icons for cvc.
+     * Sets a custom icon adapter for the CVC icon.
      *
-     * @param adapter The adapter is responsible for maintaining the icons backing this view and
-     * for producing a drawable for preview.
+     * @param adapter The icon adapter.
      */
     fun setPreviewIconAdapter(adapter: CVCIconAdapter?) {
         setCVCPreviewIconAdapter(adapter)
     }
 
     /**
-     * Sets the vault alias format in which data stores on a backend.
+     * Sets the vault alias format in which data is stored on the backend.
      *
      * @param format The VGS alias format.
      */

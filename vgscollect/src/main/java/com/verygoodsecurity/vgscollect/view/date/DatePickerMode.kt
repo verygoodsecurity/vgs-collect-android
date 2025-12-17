@@ -1,20 +1,19 @@
 package com.verygoodsecurity.vgscollect.view.date
 
 /**
- * The enum class represents all available modes of expiration date field.
- *
- * @version 1.0.3
+ * The mode of the date picker.
  */
 enum class DatePickerMode {
 
-    /** Configure date from CalendarView */
+    /** A calendar-style date picker. */
     CALENDAR,
 
-    /** Configure date from spinner DatePicker */
+    /** A spinner-style date picker. */
     SPINNER,
 
-    /** Configure date manually. It supports only ``dd``, ``MM``, ``yyyy``,``yy`` forms. */
+    /** A text input field for manual date entry. */
     INPUT,
 
+    /** The default date picker mode. */
     DEFAULT
 }

@@ -6,15 +6,18 @@ import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 
 /**
- * Base class for building configuration requests in VGS Collect SDK .
+ * Base class for VGS Collect requests.
  *
- * @property method HTTP method
- * @property path path for a request
- * @property customHeader The headers to save for request.
- * @property customData The Map to save for request.
- * @property fieldsIgnore contains true if need to skip data from input fields.
- * @property fileIgnore contains true if need to skip files.
- * @property routeId
+ * @property method The HTTP method to use.
+ * @property path The path to the API endpoint.
+ * @property customHeader The custom headers to send with the request.
+ * @property customData The custom data to send with the request.
+ * @property fieldsIgnore Whether to ignore the fields in the request.
+ * @property fileIgnore Whether to ignore the files in the request.
+ * @property format The format of the request body.
+ * @property fieldNameMappingPolicy The policy for mapping field names.
+ * @property requestTimeoutInterval The request timeout interval in milliseconds.
+ * @property routeId The route id for submitting data.
  */
 abstract class VGSBaseRequest {
     abstract val method: HTTPMethod

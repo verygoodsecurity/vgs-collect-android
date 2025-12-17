@@ -2,18 +2,15 @@ package com.verygoodsecurity.vgscollect.core.storage
 
 import com.verygoodsecurity.vgscollect.core.model.state.FieldState
 
-
 /**
- * Interface definition for a callback to be invoked when a view state is changed.
- *
- * @version 1.0.0
+ * A listener for receiving notifications about VGS input field state changes.
  */
 interface OnFieldStateChangeListener {
 
     /**
-     * Called when new changes is detected
+     * Called when a VGS input field's state has changed.
      *
-     * @param state current state of input field
+     * @param state The new state of the input field.
      */
     fun onStateChange(state:FieldState)
 }

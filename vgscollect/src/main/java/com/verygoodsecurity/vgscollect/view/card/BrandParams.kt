@@ -3,7 +3,12 @@ package com.verygoodsecurity.vgscollect.view.card
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm
 
 /**
- * Creates a new set of card brand parameters.
+ * A set of parameters for a card brand.
+ *
+ * @param mask The mask used to format the card number.
+ * @param algorithm The checksum algorithm used to validate the card number.
+ * @param rangeNumber The valid lengths for the card number.
+ * @param rangeCVV The valid lengths for the CVC.
  */
 data class BrandParams(
 

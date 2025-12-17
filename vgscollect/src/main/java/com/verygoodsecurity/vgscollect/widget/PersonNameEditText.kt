@@ -14,6 +14,9 @@ import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
 
+/**
+ * A user interface element for inputting a person's name, typically a cardholder name.
+ */
 class PersonNameEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
@@ -83,9 +86,9 @@ class PersonNameEditText @JvmOverloads constructor(
     }
 
     /**
-     * It return current state of the field.
+     * Returns the current state of the field.
      *
-     * @return current state.
+     * @return The current state of the field.
      */
     fun getState(): FieldState.CardHolderNameState? {
         return getCardHolderName()
@@ -93,6 +96,8 @@ class PersonNameEditText @JvmOverloads constructor(
 
     /**
      * Adds a validation rule for the field.
+     *
+     * @param rule The validation rule to add.
      */
     @Deprecated("Use setRule(rule) instead.", ReplaceWith("setRule(rule)"))
     fun addRule(rule: PersonNameRule) {
@@ -100,28 +105,34 @@ class PersonNameEditText @JvmOverloads constructor(
     }
 
     /**
-     * Set a validation rule for the field.
+     * Sets a validation rule for the field.
+     *
+     * @param rule The validation rule to set.
      */
     fun setRule(rule: PersonNameRule) {
         applyValidationRule(rule)
     }
 
     /**
-     * Set validation rules for the field.
+     * Sets a list of validation rules for the field.
+     *
+     * @param rules The list of validation rules to set.
      */
     fun setRules(rules: List<PersonNameRule>) {
         applyValidationRules(rules)
     }
 
     /**
-     * Adds a validation rule for the field.
+     * Appends a validation rule to the field.
+     *
+     * @param rule The validation rule to append.
      */
     fun appendRule(rule: PersonNameRule) {
         appendValidationRule(rule)
     }
 
     /**
-     * Sets the vault alias format in which data stores on a backend.
+     * Sets the vault alias format in which data is stored on the backend.
      *
      * @param format The VGS alias format.
      */
@@ -130,7 +141,7 @@ class PersonNameEditText @JvmOverloads constructor(
     }
 
     /**
-     * Sets the vault storage type for storing.
+     * Sets the vault storage type.
      *
      * @param storage The VGS storage type.
      */
@@ -141,7 +152,7 @@ class PersonNameEditText @JvmOverloads constructor(
     /**
      * Defines if data requires tokenization.
      *
-     * @param isEnabled Is tokenization enabled.
+     * @param isEnabled Whether tokenization is enabled.
      */
     fun setEnabledTokenization(isEnabled: Boolean) {
         enableTokenization(isEnabled)

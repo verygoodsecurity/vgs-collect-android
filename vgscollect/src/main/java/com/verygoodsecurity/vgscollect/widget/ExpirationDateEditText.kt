@@ -1,16 +1,14 @@
 package com.verygoodsecurity.vgscollect.widget
 
 import android.content.Context
-import android.text.format.DateUtils
 import android.util.AttributeSet
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.widget.core.DateEditText
 import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
+import java.util.concurrent.TimeUnit
 
 /**
- * Provides a user interface element for date input. The range of dates supported by this field is not configurable.
- *
- * @since 1.0.7
+ * A user interface element for inputting a card's expiration date.
  */
 class ExpirationDateEditText @JvmOverloads constructor(
     context: Context,
@@ -21,12 +19,13 @@ class ExpirationDateEditText @JvmOverloads constructor(
     init {
         val minDate = System.currentTimeMillis()
         setMinDate(minDate)
-        setMaxDate(minDate + DateUtils.YEAR_IN_MILLIS * 20)
+        val daysInTwentyYears = 365L * 20
+        val twentyYearsInMillis = TimeUnit.DAYS.toMillis(daysInTwentyYears)
+        setMaxDate(minDate + twentyYearsInMillis)
     }
 
     /**
-     * Interface definition for a callback to be invoked when the DatePicker Dialog changes
-     * visibility.
+     * A listener for receiving notifications about the visibility of the date picker dialog.
      */
     interface OnDatePickerVisibilityChangeListener: VisibilityChangeListener
 }

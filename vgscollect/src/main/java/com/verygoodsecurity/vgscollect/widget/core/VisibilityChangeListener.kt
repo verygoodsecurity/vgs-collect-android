@@ -1,17 +1,16 @@
 package com.verygoodsecurity.vgscollect.widget.core
 
 /**
- * Interface definition for a callback to be invoked when the DatePicker Dialog changes
- * visibility.
+ * A listener for receiving notifications about visibility changes.
  */
 interface VisibilityChangeListener {
     /**
-     * Called when the DatePicker Dialog was shown.
+     * Called when the view becomes visible.
      */
     fun onShow()
 
     /**
-     * Called when the DatePicker Dialog was dismissed.
+     * Called when the view becomes hidden.
      */
     fun onDismiss()
 }

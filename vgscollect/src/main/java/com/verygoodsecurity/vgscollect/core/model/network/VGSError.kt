@@ -1,5 +1,11 @@
 package com.verygoodsecurity.vgscollect.core.model.network
 
+/**
+ * VGS Collect SDK error codes.
+ *
+ * @param code The error code.
+ * @param message The error message.
+ */
 enum class VGSError(
     val code: Int,
     val message: String

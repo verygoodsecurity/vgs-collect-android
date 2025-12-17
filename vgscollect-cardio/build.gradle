@@ -8,11 +8,11 @@ plugins {
 
 android {
     namespace 'com.verygoodsecurity.api'
-    compileSdk 35
+    compileSdkVersion 36
 
     defaultConfig {
-        minSdk 21
-        targetSdk 35
+        minSdkVersion 21
+        targetSdkVersion 36
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
@@ -52,4 +52,32 @@ dependencies {
     implementation libs.androidx.core.ktx
 
     dokkaHtmlPlugin(libs.dokka.base)
+}
+
+//uncomment if need to force user to stop using this
+//tasks.register('deprecatedModuleCheck') {
+//
+//    doLast {
+//        throw new org.gradle.api.GradleException("""
+//****************************************************************************************
+//❌ ERROR: Module '${project.name}' is DEPRECATED and will be removed in a future release.
+//Please migrate to 'blinkcard' adapter as soon as possible.
+//****************************************************************************************
+//        """.stripIndent())
+//    }
+//}
+//
+//tasks.all { task ->
+//    if (task.name != "clean" && task.name != "deprecatedModuleCheck") {
+//        task.dependsOn(tasks.named('deprecatedModuleCheck'))
+//    }
+//}
+
+gradle.projectsEvaluated {
+    if (project.state.executed) {
+        logger.warn("****************************************************************************************")
+        logger.warn("⚠️ WARNING: Module '${project.name}' is DEPRECATED and will be removed in a future release.")
+        logger.warn("         Please migrate to 'blinkcard' adapter as soon as possible.")
+        logger.warn("****************************************************************************************")
+    }
 }
