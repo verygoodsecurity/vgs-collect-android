@@ -9,7 +9,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * [com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText] validation rule.
+ * A validation rule for a payment card number.
  */
 class PaymentCardNumberRule private constructor(
     algorithm: CheckSumValidator?,
@@ -20,9 +20,7 @@ class PaymentCardNumberRule private constructor(
 ) : ValidationRule(algorithm, regex, length, lengthMatch) {
 
     /**
-     * This class provides an API for set up rules for validation unknown bank card brands.
-     *
-     * It is recommended if you may have a lot of local or special brands in you system.
+     * A builder for creating [PaymentCardNumberRule]s.
      */
     class ValidationBuilder {
 
@@ -41,28 +39,47 @@ class PaymentCardNumberRule private constructor(
         /** Determines whether the Collect SDK can replace default validation rules by configured with ValidationBuilder. */
         private var overrideDefaultValidation = false
 
-        /** Configure behavior for validation checkSum. */
+        /**
+         * Sets the checksum algorithm for validation.
+         *
+         * @param algorithm The checksum algorithm.
+         * @param errorMsg The error message to display if validation fails.
+         */
         @JvmOverloads
         fun setAlgorithm(
             algorithm: ChecksumAlgorithm,
             errorMsg: String = CheckSumValidator.DEFAULT_ERROR_MSG
         ) = this.apply { this.algorithm = CheckSumValidator(algorithm, errorMsg) }
 
-        /** Configure regex for validation input. */
+        /**
+         * Sets the regex for validation.
+         *
+         * @param regex The regex.
+         * @param errorMsg The error message to display if validation fails.
+         */
         @JvmOverloads
         fun setRegex(
             regex: String,
             errorMsg: String = RegexValidator.DEFAULT_ERROR_MSG
         ) = this.apply { this.regex = RegexValidator(regex, errorMsg) }
 
-        /** Configure minimum length which will support. */
+        /**
+         * Sets the minimum allowable length.
+         *
+         * @param length The minimum length.
+         */
         fun setAllowableMinLength(length: Int) = this.apply {
             this.length = this.length?.let {
                 it.copy(min = min(it.max, length))
             } ?: LengthValidator(length, MAX_LENGTH)
         }
 
-        /** Configure minimum length which will support. */
+        /**
+         * Sets the minimum allowable length.
+         *
+         * @param length The minimum length.
+         * @param errorMsg The error message to display if validation fails.
+         */
         fun setAllowableMinLength(
             length: Int,
             errorMsg: String
@@ -72,14 +89,23 @@ class PaymentCardNumberRule private constructor(
             } ?: LengthValidator(length, MAX_LENGTH, errorMsg)
         }
 
-        /** Configure maximum length which will support. */
+        /**
+         * Sets the maximum allowable length.
+         *
+         * @param length The maximum length.
+         */
         fun setAllowableMaxLength(length: Int) = this.apply {
             this.length = this.length?.let {
                 it.copy(max = max(it.min, length))
             } ?: LengthValidator(MIN_LENGTH, length)
         }
 
-        /** Configure maximum length which will support. */
+        /**
+         * Sets the maximum allowable length.
+         *
+         * @param length The maximum length.
+         * @param errorMsg The error message to display if validation fails.
+         */
         fun setAllowableMaxLength(
             length: Int,
             errorMsg: String
@@ -89,7 +115,12 @@ class PaymentCardNumberRule private constructor(
             } ?: LengthValidator(MIN_LENGTH, length, errorMsg)
         }
 
-        /** Configure the array of lengths which will support. */
+        /**
+         * Sets the allowable lengths.
+         *
+         * @param length The allowable lengths.
+         * @param errorMsg The error message to display if validation fails.
+         */
         @JvmOverloads
         fun setAllowableNumberLength(
             length: Array<Int>,
@@ -98,12 +129,18 @@ class PaymentCardNumberRule private constructor(
             this.lengthMatch = LengthMatchValidator(length, errorMsg)
         }
 
-        /** Determines whether the Collect SDK can override default validation rules. */
+        /**
+         * Sets whether to override the default validation rules.
+         *
+         * @param canOverride Whether to override the default validation rules.
+         */
         fun setAllowToOverrideDefaultValidation(canOverride: Boolean) = this.apply {
             this.overrideDefaultValidation = canOverride
         }
 
-        /** Creates a rule. */
+        /**
+         * Builds the validation rule.
+         */
         fun build() = PaymentCardNumberRule(
             algorithm,
             regex,

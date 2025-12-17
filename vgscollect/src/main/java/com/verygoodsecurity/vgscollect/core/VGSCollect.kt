@@ -311,14 +311,14 @@ class VGSCollect {
     }
 
     /**
-     * The method sends data on VGS Server for tokenization.
+     * The method sends data on VGS Server for tokenization. It is an asynchronous method.
      */
     fun tokenize() {
         tokenize(VGSTokenizationRequest.VGSRequestBuilder().build())
     }
 
     /**
-     * The method sends data on VGS Server for tokenization.
+     * The method sends data on VGS Server for tokenization. It is an asynchronous method.
      *
      * @param request A tokenization request data.
      */
@@ -327,14 +327,14 @@ class VGSCollect {
     }
 
     /**
-     * The method sends data on VGS Server for create aliases.
+     * The method sends data on VGS Server for create aliases. It is an asynchronous method.
      */
     fun createAliases() {
         createAliases(VGSCreateAliasesRequest.VGSRequestBuilder().build())
     }
 
     /**
-     * The method sends data on VGS Server for create aliases.
+     * The method sends data on VGS Server for create aliases. It is an asynchronous method.
      *
      * @param request A create aliases request data.
      */
@@ -655,6 +655,9 @@ class VGSCollect {
         updateAgentHeader()
     }
 
+    /**
+     * Return true if analytics is enabled, false otherwise.
+     */
     fun getIsAnalyticsEnabled() = analyticsManager.getIsEnabled()
 
     @VisibleForTesting

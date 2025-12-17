@@ -1,10 +1,10 @@
 package com.verygoodsecurity.vgscollect.core.model.network
 
 /**
- * The base class definition for a VGSCollect response states.
+ * The base class for VGS Collect responses.
  *
- * @param code The response code from server.
- * @param body The response string.
+ * @param code The HTTP response code.
+ * @param body The raw response body as a string.
  */
 sealed class VGSResponse(
     val code: Int = -1,
@@ -12,11 +12,11 @@ sealed class VGSResponse(
 ) {
 
     /**
-     * The class definition for a success response state.
+     * A successful response from the VGS server.
      *
-     * @param response The response map<String, *> from server.
-     * @param rawResponse The response string.
-     * @param successCode The response code from server.
+     * @param response The response body as a map. @suppress
+     * @param rawResponse The raw response body as a string. @suppress
+     * @param successCode The HTTP response code.
      */
     data class SuccessResponse(
         @Deprecated("body attribute better to use for response parsing")
@@ -32,10 +32,10 @@ sealed class VGSResponse(
     }
 
     /**
-     * The class definition for an error response state.
-
-     * @param localizeMessage The message of the error.
-     * @param errorCode The response code from server.
+     * An error response from the VGS server.
+     *
+     * @param localizeMessage A localized message describing the error.
+     * @param errorCode The HTTP response code.
      */
     data class ErrorResponse(
         val localizeMessage: String = "Can't connect to server",

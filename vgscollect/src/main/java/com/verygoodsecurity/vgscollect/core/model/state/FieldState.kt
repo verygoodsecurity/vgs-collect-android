@@ -3,43 +3,41 @@ package com.verygoodsecurity.vgscollect.core.model.state
 import com.verygoodsecurity.vgscollect.view.card.FieldType
 
 /**
- * Base class definition for a VGS input field state.
- *
- * @since 1.0.1
+ * Represents the state of a VGS input field. It contains information about the field's content,
+ * validity, and other metadata.
  */
 sealed class FieldState {
 
-    /** The State is true if this input field has focus itself. */
+    /** True if the field has focus, false otherwise. */
     var hasFocus: Boolean = false
         internal set
 
-    /** The state is true if the content inside the input field is valid. */
+    /** True if the field's contents are valid, false otherwise. */
     var isValid: Boolean = false
         internal set
 
-    /** List of errors. */
+    /** A list of validation errors. */
     var validationErrors: List<String> = emptyList()
         internal set
 
-    /** The state is true if the input field has no input inside. */
+    /** True if the field is empty, false otherwise. */
     var isEmpty: Boolean = false
         internal set
 
-    /** The state is true if the input field may be skipped for submitting. */
+    /** True if the field is required, false otherwise. */
     var isRequired: Boolean = false
         internal set
 
-    /** The length of this character sequence inside input. */
+    /** The length of the content in the field. */
     var contentLength: Int = 0
 
     /**
-     * The text to be used for data transfer to VGS proxy.
-     * Usually, it is similar to field-name in JSON path in your inbound route filters.
+     * The name of the field used for data transfer to the VGS proxy.
      */
     var fieldName: String = ""
         internal set
 
-    /** The type of current VGS input field. */
+    /** The type of the VGS input field. */
     var fieldType: FieldType = FieldType.INFO
         internal set
 
@@ -54,14 +52,17 @@ sealed class FieldState {
                 "isRequired: $isRequired \n"
     }
 
+    /**
+     * The state of a Social Security Number (SSN) field.
+     */
     class SSNNumberState : FieldState() {
 
-        /** The last numbers on card. */
+        /** The last 4 digits of the SSN. */
         var last: String? = ""
             internal set
 
-        /** The length of this character sequence inside input.
-         * Comparing with contentLength, the contentLengthRaw doesn't count divider symbol.
+        /**
+         * The length of the raw, unformatted SSN.
          */
         var contentLengthRaw: Int = 0
 
@@ -73,34 +74,32 @@ sealed class FieldState {
     }
 
     /**
-     * Class definition for a CardNumber field state.
-     *
-     * @version 1.0.1
+     * The state of a card number field.
      */
     class CardNumberState : FieldState() {
 
-        /** Bank Identification Number. */
+        /** The Bank Identification Number (BIN) of the card. */
         var bin: String? = ""
             internal set
 
-        /** The last numbers on card. */
+        /** The last 4 digits of the card number. */
         var last: String? = ""
             internal set
 
-        /** The card number. */
+        /** The full card number. @suppress */
         var number: String? = ""
             internal set
 
-        /** The length of this character sequence inside input.
-         * Comparing with contentLength, the contentLengthRaw doesn't count divider symbol.
+        /**
+         * The length of the raw, unformatted card number.
          */
         var contentLengthRaw: Int = 0
 
-        /** The brand of the card. */
+        /** The name of the card brand. */
         var cardBrand: String? = ""
             internal set
 
-        /** The resource identifier of the detected card brand. */
+        /** The resource ID of the card brand's icon. */
         var drawableBrandResId: Int = 0
             internal set
 
@@ -114,30 +113,22 @@ sealed class FieldState {
     }
 
     /**
-     * Class definition for a CVC field state.
-     *
-     * @version 1.0.1
+     * The state of a CVC field.
      */
     class CVCState : FieldState()
 
     /**
-     * Class definition for a cardHolderName field state.
-     *
-     * @version 1.0.1
+     * The state of a card holder name field.
      */
     class CardHolderNameState : FieldState()
 
     /**
-     * Class definition for a Date field state.
-     *
-     * @version 1.0.1
+     * The state of a date field.
      */
     class DateState : FieldState()
 
     /**
-     * Class definition for a Info field state.
-     *
-     * @version 1.0.1
+     * The state of a generic text field.
      */
     class InfoState : FieldState()
 

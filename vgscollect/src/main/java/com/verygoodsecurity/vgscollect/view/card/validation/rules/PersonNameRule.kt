@@ -6,7 +6,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 /**
- * [com.verygoodsecurity.vgscollect.widget.PersonNameEditText] validation rule.
+ * A validation rule for a person's name.
  */
 class PersonNameRule private constructor(
     regex: RegexValidator?,
@@ -14,7 +14,7 @@ class PersonNameRule private constructor(
 ) : ValidationRule(null, regex, length, null) {
 
     /**
-     * This class provides an API for set up rules for validation person name.
+     * A builder for creating [PersonNameRule]s.
      */
     class ValidationBuilder {
 
@@ -24,21 +24,35 @@ class PersonNameRule private constructor(
         /** The length range for validation input. */
         private var length: LengthValidator? = null
 
-        /** Configure regex for validation input. */
+        /**
+         * Sets the regex for validation.
+         *
+         * @param regex The regex.
+         * @param errorMsg The error message to display if validation fails.
+         */
         @JvmOverloads
         fun setRegex(
             regex: String,
             errorMsg: String = RegexValidator.DEFAULT_ERROR_MSG
         ) = this.apply { this.regex = RegexValidator(regex, errorMsg) }
 
-        /** Configure minimum length which will support. */
+        /**
+         * Sets the minimum allowable length.
+         *
+         * @param length The minimum length.
+         */
         fun setAllowableMinLength(length: Int) = this.apply {
             this.length = this.length?.let {
                 it.copy(min = min(it.max, length))
             } ?: LengthValidator(length, MAX_LENGTH)
         }
 
-        /** Configure minimum length which will support. */
+        /**
+         * Sets the minimum allowable length.
+         *
+         * @param length The minimum length.
+         * @param errorMsg The error message to display if validation fails.
+         */
         fun setAllowableMinLength(
             length: Int,
             errorMsg: String
@@ -48,14 +62,23 @@ class PersonNameRule private constructor(
             } ?: LengthValidator(length, MAX_LENGTH, errorMsg)
         }
 
-        /** Configure maximum length which will support. */
+        /**
+         * Sets the maximum allowable length.
+         *
+         * @param length The maximum length.
+         */
         fun setAllowableMaxLength(length: Int) = this.apply {
             this.length = this.length?.let {
                 it.copy(max = max(it.min, length))
             } ?: LengthValidator(MIN_LENGTH, length)
         }
 
-        /** Configure maximum length which will support. */
+        /**
+         * Sets the maximum allowable length.
+         *
+         * @param length The maximum length.
+         * @param errorMsg The error message to display if validation fails.
+         */
         fun setAllowableMaxLength(
             length: Int,
             errorMsg: String
@@ -65,7 +88,9 @@ class PersonNameRule private constructor(
             } ?: LengthValidator(MIN_LENGTH, length, errorMsg)
         }
 
-        /** Creates a rule. */
+        /**
+         * Builds the validation rule.
+         */
         fun build() = PersonNameRule(regex, length)
     }
 }

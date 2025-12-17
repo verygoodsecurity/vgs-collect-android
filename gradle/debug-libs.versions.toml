@@ -1,6 +1,6 @@
 [versions]
 leakcanary = '2.14'
-compose-ui-tooling = '1.6.2'
+compose-ui-tooling = '1.9.5'
 
 [libraries]
 leakcanary = { group = 'com.squareup.leakcanary', name = 'leakcanary-android', version.ref = 'leakcanary' }

@@ -82,6 +82,22 @@ class VGSCollectTest {
             "eu-1"
         )
         assertEquals("live-eu-1", liveEu.environment)
+
+        val sandboxAp = VGSCollect(
+            activity,
+            "testTenant",
+            "sandbox",
+            "ap-1"
+        )
+        assertEquals("sandbox-ap-1", sandboxAp.environment)
+
+        val liveAp = VGSCollect(
+            activity,
+            "testTenant",
+            "live",
+            "ap-1"
+        )
+        assertEquals("live-ap-1", liveAp.environment)
     }
 
     @Test
@@ -124,6 +140,34 @@ class VGSCollectTest {
             "eu-1"
         )
         assertEquals("https://testTenant.live-eu-1.verygoodproxy.com", liveEuBySuffix.collectURL)
+
+        val sandboxApDirectly = VGSCollect(
+            activity,
+            "testTenant",
+            "sandbox",
+            "ap-1"
+        )
+        assertEquals("https://testTenant.sandbox-ap-1.verygoodproxy.com", sandboxApDirectly.collectURL)
+        val sandboxApBySuffix = VGSCollect(
+            activity,
+            "testTenant",
+            "sandbox-ap-1",
+        )
+        assertEquals("https://testTenant.sandbox-ap-1.verygoodproxy.com", sandboxApBySuffix.collectURL)
+
+        val liveApDirectly = VGSCollect(
+            activity,
+            "testTenant",
+            "live-ap-1",
+        )
+        assertEquals("https://testTenant.live-ap-1.verygoodproxy.com", liveApDirectly.collectURL)
+        val liveApBySuffix = VGSCollect(
+            activity,
+            "testTenant",
+            "live",
+            "ap-1"
+        )
+        assertEquals("https://testTenant.live-ap-1.verygoodproxy.com", liveApBySuffix.collectURL)
     }
 
     @Test
