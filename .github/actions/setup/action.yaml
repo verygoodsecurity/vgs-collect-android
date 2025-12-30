@@ -21,4 +21,6 @@ runs:
 
     - name: Setup local variables
       shell: bash
-      run: echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
+      run: |
+        echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
+        echo "VGS_PATH=VGS_PATH" >> local.properties

@@ -34,6 +34,7 @@ jobs:
         uses: ./.github/actions/setup
         env:
           VGS_VAULT_ID: ${{ secrets.VGS_VAULT_ID }}
+          VGS_PATH: ${{ secrets.VGS_PATH }}
 
       - name: Run Detekt
         run: ./gradlew vgscollect:detekt --continue
@@ -93,6 +94,7 @@ jobs:
         uses: ./.github/actions/setup
         env:
           VGS_VAULT_ID: ${{ secrets.VGS_VAULT_ID }}
+          VGS_PATH: ${{ secrets.VGS_PATH }}
 
       - name: Auth Google Cloud SDK
         uses: google-github-actions/auth@v2
