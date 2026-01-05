@@ -69,7 +69,13 @@ internal class CardsAdapter constructor(
         }
     }
 
-    inner class CardViewHolder constructor(view: View) : RecyclerView.ViewHolder(view) {
+    fun addItems(cards: List<Card>) {
+        submitList(cards + currentList) {
+            selected = selected.inc()
+        }
+    }
+
+    inner class CardViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val mrbIsSelected: MaterialRadioButton = view.findViewById(R.id.mrbIsSelected)
         private val ivBrand: ImageView = view.findViewById(R.id.ivBrand)
@@ -100,7 +106,7 @@ internal class CardsAdapter constructor(
         }
     }
 
-    inner class NewCardViewHolder constructor(view: View) : RecyclerView.ViewHolder(view) {
+    inner class NewCardViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val vgsTiedCardHolder: PersonNameEditText =
             view.findViewById(R.id.vgsTiedCardHolder)
@@ -150,7 +156,7 @@ internal class CardsAdapter constructor(
         }
     }
 
-    enum class Type constructor(val value: Int) {
+    enum class Type(val value: Int) {
 
         EXISTING(1),
         NEW(2)

@@ -5,10 +5,13 @@ import android.view.Gravity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
@@ -37,6 +40,7 @@ fun BaseCollect(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .windowInsetsPadding(insets = WindowInsets.systemBars)
             .padding(16.dp)
     ) {
         val radius = with(LocalDensity.current) { 4.dp.toPx() }

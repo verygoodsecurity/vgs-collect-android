@@ -3,7 +3,9 @@ package com.verygoodsecurity.demoapp
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import com.verygoodsecurity.demoapp.cmp.CMPActivity
 import com.verygoodsecurity.demoapp.collect_activity.CollectActivity
 import com.verygoodsecurity.demoapp.collect_compose.activity_case.ComposeActivity
@@ -23,6 +25,7 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityStartBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupViews()

@@ -1,6 +1,6 @@
 package com.verygoodsecurity.demoapp.payopt.model
 
-internal data class Card constructor(
+internal data class Card(
     val finId: String,
     val holderName: String,
     val last4: String,
