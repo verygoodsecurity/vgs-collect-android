@@ -3,6 +3,7 @@ package com.verygoodsecurity.demoapp.payopt
 import android.animation.LayoutTransition
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -40,6 +41,7 @@ class PaymentOptimizationActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityPaymentOptimizationBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initCollect()
@@ -83,7 +85,7 @@ class PaymentOptimizationActivity : AppCompatActivity(),
                 }
                 else -> throw IllegalArgumentException("Not implemented")
             }
-        } catch (e: JSONException) {
+        } catch (_: JSONException) {
             setLoading(false)
             showSnackBar("Reading financial instrument response error.")
         }
@@ -101,6 +103,7 @@ class PaymentOptimizationActivity : AppCompatActivity(),
     }
 
     private fun initCards() {
+        binding.rvCards.clipToOutline = true
         (binding.rvCards.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
         binding.rvCards.addItemDecoration(MarginItemDecoration(resources.getDimensionPixelSize(R.dimen.margin_padding_material_medium)))
         binding.rvCards.adapter = adapter
