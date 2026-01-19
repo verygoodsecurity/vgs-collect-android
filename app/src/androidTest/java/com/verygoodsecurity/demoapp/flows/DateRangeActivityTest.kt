@@ -2,17 +2,13 @@ package com.verygoodsecurity.demoapp.flows
 
 import android.view.View
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.pressImeActionButton
 import androidx.test.espresso.action.ViewActions.replaceText
 import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents.init
-import androidx.test.espresso.intent.Intents.release
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -23,13 +19,12 @@ import androidx.test.uiautomator.UiDevice
 import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.date_range_activity.DateRangeActivity
-import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
+import com.verygoodsecurity.demoapp.utils.Utils.waitForView
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.hamcrest.TypeSafeMatcher
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -41,20 +36,10 @@ class DateRangeActivityTest {
     @get:Rule
     val activityRule = ActivityScenarioRule(DateRangeActivity::class.java)
 
-    private lateinit var device: UiDevice
-
     @Before
     fun prepareDevice() {
-        init()
-        device = UiDevice.getInstance(getInstrumentation())
+        val device = UiDevice.getInstance(getInstrumentation())
         device.setOrientationNatural()
-        IdlingRegistry.getInstance().register(GlobalIdlingResource.getResource())
-    }
-
-    @After
-    fun teardown() {
-        release()
-        IdlingRegistry.getInstance().unregister(GlobalIdlingResource.getResource())
     }
 
     @Test
@@ -69,7 +54,7 @@ class DateRangeActivityTest {
 
         cardNumberFieldId.perform(pressImeActionButton())
 
-        onView(withText(datePickerDoneButtonText)).check(matches(isDisplayed()))
+        waitForView(withText(datePickerDoneButtonText))
     }
 
     @Test
@@ -83,8 +68,7 @@ class DateRangeActivityTest {
 
         interactWithDateRange().perform(ViewActions.click())
 
-        onView(withText(datePickerDoneButtonText))
-            .check(matches(isDisplayed()))
+        waitForView(withText(datePickerDoneButtonText))
     }
 
     @Test

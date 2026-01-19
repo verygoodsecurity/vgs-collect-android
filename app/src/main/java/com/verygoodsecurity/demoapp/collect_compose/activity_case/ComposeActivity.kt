@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -32,6 +33,7 @@ class ComposeActivity : AppCompatActivity(), VgsCollectResponseListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
         VGSCollectLogger.isEnabled = true
         setContent {

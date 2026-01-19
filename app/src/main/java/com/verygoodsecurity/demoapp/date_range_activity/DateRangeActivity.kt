@@ -4,9 +4,13 @@ import android.animation.LayoutTransition
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
@@ -50,9 +54,15 @@ class DateRangeActivity : AppCompatActivity(), VgsCollectResponseListener, OnFie
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityDateRangeBinding.inflate(layoutInflater)
         codeExampleBinding = CodeExampleLayoutBinding.bind(binding.ccInputsRoot)
         setContentView(binding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
+            val bars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(top = bars.top)
+            WindowInsetsCompat.CONSUMED
+        }
         initViews()
     }
 
