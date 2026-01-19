@@ -30,8 +30,6 @@ class VGSTokenizationRequestTest {
             baseUrl + path,
             emptyMap(),
             "{}",
-            fieldsIgnore = false,
-            fileIgnore = false,
             format = VGSHttpBodyFormat.JSON,
             requestTimeoutInterval = 60000L,
             requiresTokenization = true

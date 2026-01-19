@@ -23,8 +23,6 @@ class ApiClientTest {
             "https://www.test.com/post",
             headers,
             data,
-            fieldsIgnore = false,
-            fileIgnore = false,
             format = VGSHttpBodyFormat.JSON,
             requestTimeoutInterval = 60000L,
             requiresTokenization = false
@@ -49,8 +47,6 @@ class ApiClientTest {
             "https://www.test.com/post",
             headers,
             data,
-            fieldsIgnore = false,
-            fileIgnore = false,
             format = VGSHttpBodyFormat.JSON,
             requestTimeoutInterval = 60000L,
             requiresTokenization = false
@@ -76,8 +72,6 @@ class ApiClientTest {
             "https://www.test.com/post",
             headers,
             data,
-            fieldsIgnore = false,
-            fileIgnore = false,
             format = VGSHttpBodyFormat.JSON,
             requestTimeoutInterval = 60000L,
             requiresTokenization = true

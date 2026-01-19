@@ -563,8 +563,6 @@ class VGSCollectTest {
                     )
                 )
             ).toJSON().toString(),
-            fieldsIgnore = false,
-            fileIgnore = false,
             format = VGSHttpBodyFormat.JSON,
             requestTimeoutInterval = 60_000,
             requiresTokenization = true

@@ -31,8 +31,6 @@ internal fun VGSBaseRequest.toNetworkRequest(
         url,
         customHeader,
         requestData?.toJSON()?.toString() ?: customData,
-        fieldsIgnore,
-        fileIgnore,
         format,
         requestTimeoutInterval,
         upstream == VGSAnalyticsUpstream.TOKENIZATION

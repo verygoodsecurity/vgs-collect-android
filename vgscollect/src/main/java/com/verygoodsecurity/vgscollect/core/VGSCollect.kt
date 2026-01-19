@@ -28,6 +28,7 @@ import com.verygoodsecurity.vgscollect.core.api.toHostnameValidationUrl
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy.NESTED_JSON
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
+import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
@@ -48,6 +49,7 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.extension.DATA_KEY
+import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscollect.util.extension.hasAccessNetworkStatePermission
 import com.verygoodsecurity.vgscollect.util.extension.hasInternetPermission
@@ -81,6 +83,8 @@ class VGSCollect {
     internal val environment: String
     internal val collectURL: String
     internal val cardManagementURL: String
+    internal var authHandler: VgsAuthHandler? = null
+    internal var config: String? = null
     private val formId: String = UUID.randomUUID().toString()
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
@@ -305,7 +309,7 @@ class VGSCollect {
         }
         collectUserData(request) { data ->
             response =
-                client.execute(request.toNetworkRequest(collectURL, data)).toVGSResponse(context)
+                client.execute(request.toNetworkRequest(collectURL, data)).toVGSResponse()
         }
         return response
     }
@@ -347,6 +351,11 @@ class VGSCollect {
      *
      * @param auth The authentication token used for the request.
      */
+    @Deprecated(
+        message = "Use createCard() with VGSCollect.init() and AuthHandler instead. " +
+                "Passing auth tokens directly is deprecated.",
+        replaceWith = ReplaceWith("createCard()")
+    )
     fun createCard(auth: String) {
         val request = VGSCreateCardRequest.VGSRequestBuilder()
             .setAuthToken(auth)
@@ -364,6 +373,37 @@ class VGSCollect {
             client.enqueue(request.toNetworkRequest(cardManagementURL, payload)) { response ->
                 mainHandler.post {
                     notifyAllListeners(response.toVGSResponse(), request.upstream)
+                }
+            }
+        }
+    }
+
+    /**
+     * Creates a new card using the [Card Management API](https://www.verygoodsecurity.com/docs/api/card-management#tag/card-management/POST/cards).
+     *
+     * This method relies on [VGSCollect.init] for authentication and does not
+     * require passing an authentication token explicitly. The token is requested
+     * internally via the configured [VgsAuthHandler].
+     */
+    fun createCard() {
+        authHandler?.requestToken { token ->
+            val request = VGSCreateCardRequest.VGSRequestBuilder()
+                .setAuthToken(token)
+                .build()
+            if (!cardManagementURL.isURLValid()) {
+                notifyAllListeners(VGSError.URL_NOT_VALID.toVGSResponse(), request.upstream)
+                return@requestToken
+            }
+            collectUserData(request) { data ->
+                val payload = mapOf<String, Any>(
+                    CREATE_CARD_DATA_KEY to mapOf<String, Any>(
+                        CREATE_CARD_ATTRIBUTES_KEY to data
+                    )
+                )
+                client.enqueue(request.toNetworkRequest(cardManagementURL, payload)) { response ->
+                    mainHandler.post {
+                        notifyAllListeners(response.toVGSResponse(), request.upstream)
+                    }
                 }
             }
         }
@@ -815,6 +855,60 @@ class VGSCollect {
             }
 
             hostnameValidationEvent(hasCustomHostname, host)
+        }
+    }
+
+    companion object {
+
+        /**
+         * Asynchronously creates and initializes a [VGSCollect] instance.
+         *
+         * @param context activity context.
+         * @param id unique vault identifier.
+         * @param formId form identifier.
+         * @param environment target environment (e.g. sandbox, live).
+         * @param authHandler provider responsible for supplying an auth token.
+         * @param onSuccess called with a fully initialized [VGSCollect] instance.
+         * @param onError called if initialization fails.
+         */
+        fun init(
+            context: Context,
+            id: String,
+            formId: String,
+            environment: String,
+            authHandler: VgsAuthHandler,
+            onSuccess: (instance: VGSCollect) -> Unit,
+            onError: (code: Int, message: String?) -> Unit
+        ) {
+            val collect = VGSCollect(context, id, environment)
+            collect.client.enqueue(
+                request = NetworkRequest(
+                    method = HTTPMethod.GET,
+                    url = "config_url",
+                    customHeader = emptyMap(),
+                    customData = mapOf<Any, Any>(
+                        "form_id" to formId
+                    ),
+                    format = VGSHttpBodyFormat.JSON,
+                    requestTimeoutInterval = DEFAULT_CONNECTION_TIME_OUT,
+                    requiresTokenization = false
+                )
+            ) { r ->
+                collect.mainHandler.post {
+                    when (val response = r.toVGSResponse()) {
+                        is VGSResponse.SuccessResponse -> {
+                            onSuccess(collect.apply {
+                                this.authHandler = authHandler
+                                this.config = response.body
+                            })
+                        }
+
+                        is VGSResponse.ErrorResponse -> {
+                            onError(response.code, response.localizeMessage)
+                        }
+                    }
+                }
+            }
         }
     }
 

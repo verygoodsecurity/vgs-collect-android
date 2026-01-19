@@ -8,8 +8,6 @@ data class NetworkRequest(
     var url: String,
     val customHeader: Map<String, String>,
     val customData: Any,
-    val fieldsIgnore: Boolean,
-    val fileIgnore: Boolean,
     val format: VGSHttpBodyFormat,
     val requestTimeoutInterval: Long,
     val requiresTokenization: Boolean

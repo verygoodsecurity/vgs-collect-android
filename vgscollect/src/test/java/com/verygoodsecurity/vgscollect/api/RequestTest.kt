@@ -80,8 +80,6 @@ class RequestTest {
             baseUrl+path,
             emptyMap(),
             "{}",
-            false,
-            fileIgnore = false,
             format = VGSHttpBodyFormat.JSON,
             requestTimeoutInterval = 60000L,
             requiresTokenization = false

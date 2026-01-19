@@ -1,8 +1,6 @@
 package com.verygoodsecurity.vgscollect.core.model.network
 
-import android.content.Context
-
-data class NetworkResponse(
+internal data class NetworkResponse(
     val isSuccessful: Boolean = false,
     val body: String? = null,
     val code: Int = -1,
@@ -10,9 +8,7 @@ data class NetworkResponse(
     val error: VGSError? = null
 )
 
-fun NetworkResponse.toVGSResponse(
-    context: Context? = null
-): VGSResponse {
+internal fun NetworkResponse.toVGSResponse(): VGSResponse {
     return when {
         this.isSuccessful -> VGSResponse.SuccessResponse(
             successCode = this.code,
