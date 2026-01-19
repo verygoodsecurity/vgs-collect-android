@@ -3,12 +3,16 @@ package com.verygoodsecurity.demoapp.cmp
 import android.animation.LayoutTransition
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.verygoodsecurity.demoapp.R
@@ -17,6 +21,7 @@ import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.VGSCollect
+import com.verygoodsecurity.vgscollect.core.VgsAuthHandler
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.util.extension.cardCVC
@@ -33,16 +38,7 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
 
     private lateinit var binding: CmpActivityBinding
     private lateinit var codeExampleBinding: CodeExampleLayoutBinding
-
-    private val collect: VGSCollect by lazy {
-        VGSCollect(
-            context = this@CMPActivity,
-            id = "<VAULT_ID>",
-            environment = Environment.SANDBOX
-        ).apply {
-            addOnResponseListeners(this@CMPActivity)
-        }
-    }
+    private lateinit var collect: VGSCollect
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,12 +52,34 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
             WindowInsetsCompat.CONSUMED
         }
         VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
-        initViews()
+        setLoading(true)
+        VGSCollect.init(
+            context = this@CMPActivity,
+            id = "<VAULT_ID>",
+            environment = Environment.SANDBOX.rawValue,
+            formId = "<FORM_ID>",
+            authHandler = VgsAuthHandler { onComplete ->
+                Handler(Looper.getMainLooper()).postDelayed({
+                    onComplete("<TOKEN>")
+                }, 2000)
+            },
+            onSuccess = {
+                setLoading(false)
+                initViews()
+            },
+            onError = { code, message ->
+                setLoading(false)
+                Log.d(
+                    this@CMPActivity::class.simpleName,
+                    "Collect init error: core = $code, message = $message"
+                )
+            }
+        )
     }
 
     override fun onResponse(response: VGSResponse?) {
-        binding.progressBar.visibility = View.GONE
-        println(response)
+        setLoading(false)
+        Log.d(this@CMPActivity::class.simpleName, response.toString())
         updateCodeExample(response?.body)
     }
 
@@ -82,8 +100,9 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
 
     private fun initProceedView() {
         binding.mbProceed.setOnClickListener {
+            setLoading(true)
             binding.progressBar.visibility = View.VISIBLE
-            collect.createCard("<ACCESS_TOKEN>")
+            collect.createCard()
         }
     }
 
@@ -124,5 +143,10 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
             ""
         }
         codeExampleBinding.cvResponse.setCode(json)
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        binding.viewOverlay.isVisible = isLoading
+        binding.progressBar.isVisible = isLoading
     }
 }
