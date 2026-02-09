@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.text.InputFilter
 import android.text.InputType
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.DatePicker
 import com.verygoodsecurity.vgscollect.core.model.state.Dependency
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
@@ -34,7 +35,7 @@ import java.util.Locale
 
 /** @suppress */
 internal abstract class DateInputField(context: Context) : BaseInputField(context),
-    View.OnClickListener {
+    View.OnClickListener, View.OnFocusChangeListener {
 
     //region - Abstract properties
     internal abstract var inputDatePattern: String
@@ -43,7 +44,6 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     internal abstract var datePickerMaxDate: Long?
     internal abstract var isDaysVisible: Boolean
     //endregion
-    private var isDatePickerShowing = false
 
     //region - Properties
     private var formatterMode = FormatMode.STRICT
@@ -93,19 +93,6 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
 
         applyFormatter()
         applyInputType()
-    }
-
-    init {
-        datePickerVisibilityChangeListener = object: VisibilityChangeListener {
-            override fun onDismiss() {
-                isDatePickerShowing = false
-                this@DateInputField.clearFocus()
-            }
-
-            override fun onShow() {
-                isDatePickerShowing = true
-            }
-        }
     }
 
     private fun applyFormatter() {
@@ -208,11 +195,20 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
         showDatePickerDialog()
     }
 
-    private fun showDatePickerDialog() {
-        if (isDatePickerShowing) {
-            return
+    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+        if (hasFocus && (datePickerMode == DatePickerMode.CALENDAR || datePickerMode == DatePickerMode.INPUT)) {
+            showDatePickerDialog()
         }
+    }
+
+    private fun showDatePickerDialog() {
+        hideKeyboard()
         showDatePickerDialog(datePickerMode)
+    }
+
+    private fun hideKeyboard() {
+        val im = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        im.hideSoftInputFromWindow(windowToken, 0)
     }
 
     private fun showDatePickerDialog(dialogMode: DatePickerMode) {
@@ -349,15 +345,17 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
 
     private fun setIsActive(isActive: Boolean) {
         isCursorVisible = isActive
-        isFocusable = isActive
-        isFocusableInTouchMode = isActive
         isListeningPermitted = true
         filters = if (isActive) {
             setOnClickListener(null)
+            onFocusChangeListener = null
+            showSoftInputOnFocus = true
             val filterLength = InputFilter.LengthFilter(inputDatePattern.length)
             arrayOf(filterLength)
         } else {
             setOnClickListener(this)
+            onFocusChangeListener = this
+            showSoftInputOnFocus = false
             arrayOf()
         }
 
