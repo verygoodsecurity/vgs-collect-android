@@ -9,7 +9,7 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 import com.verygoodsecurity.vgscollect.view.date.DateRangeFormat
 import com.verygoodsecurity.vgscollect.widget.core.DateEditText
 import com.verygoodsecurity.vgscollect.widget.core.VisibilityChangeListener
-import java.util.Calendar
+import java.util.*
 
 /**
  * A user interface element for inputting a date range.
@@ -21,13 +21,6 @@ class RangeDateEditText @JvmOverloads constructor(
 ) : DateEditText(FieldType.DATE_RANGE, context, attrs, defStyleAttr) {
 
     init {
-        isFocusable = true
-        this.isFocusableInTouchMode = true
-        this.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                showDatePickerDialog()
-            }
-        }
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.RangeDateEditText,
