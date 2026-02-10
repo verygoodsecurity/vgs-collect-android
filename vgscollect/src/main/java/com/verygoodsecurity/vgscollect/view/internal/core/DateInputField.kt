@@ -196,7 +196,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     }
 
     override fun onFocusChange(v: View?, hasFocus: Boolean) {
-        if (hasFocus && (datePickerMode == DatePickerMode.CALENDAR || datePickerMode == DatePickerMode.INPUT)) {
+        if (hasFocus && (datePickerMode == DatePickerMode.CALENDAR || datePickerMode == DatePickerMode.SPINNER)) {
             showDatePickerDialog()
         }
     }
