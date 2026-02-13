@@ -48,8 +48,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    kotlin {
+        jvmToolchain {
+            languageVersion.set(JavaLanguageVersion.of(8))
+        }
     }
 
     testOptions {
@@ -100,6 +102,8 @@ tasks.withType(Javadoc).configureEach {
     enabled = false
 }
 
-tasks.named("dokkaHtml") {
-    outputDirectory.set(rootProject.file('docs'))
+dokka {
+    dokkaPublications.html {
+        outputDirectory.set(rootProject.file('docs'))
+    }
 }
