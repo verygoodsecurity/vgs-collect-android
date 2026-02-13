@@ -3,7 +3,7 @@ package com.verygoodsecurity.vgscollect.view.card.formatter
 import com.verygoodsecurity.vgscollect.view.card.CardType
 
 /**
- * You can use this class to create customize card numbers mask inside the [VGSCardNumberEditText].
+ * You can use this class to create customize card numbers mask inside the [com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText].
  */
 open class CardMaskAdapter {
 
@@ -18,7 +18,7 @@ open class CardMaskAdapter {
     }
 
     /**
-     * Returns prepared mask to display in [VGSCardNumberEditText]
+     * Returns prepared mask to display in [com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText]
      * This method trigger when field detect new cardBrand.
      *
      * @param cardType detected card brand type
