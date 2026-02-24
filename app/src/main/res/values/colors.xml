@@ -2,17 +2,10 @@
 <resources>
     <color name="colorAccent">#26A6D4</color>
 
-    <color name="title_color">#3B495C</color>
-
     <color name="bg_card_preview_start_color">#0C1427</color>
     <color name="bg_card_preview_start_end">#2f426f</color>
 
     <color name="preview_holder_name_color">#CED5E0</color>
-
-    <color name="bg_vgs_card_view">#F7F9FC</color>
-
-    <color name="state_unactive">#C5E1EB</color>
-    <color name="state_active">@color/colorAccent</color>
 
     <color name="fiord">#4b5d69</color>
     <color name="fiord_20">#204b5d69</color>

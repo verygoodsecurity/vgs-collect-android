@@ -58,10 +58,6 @@
             tools:ignore="LockedOrientationActivity" />
 
         <activity
-            android:name=".collect.collect_fragment.VGSCollectFragmentActivity"
-            android:label="Collect (Fragment)" />
-
-        <activity
             android:name=".collect.collect_viewpager.ViewPagerActivity"
             android:label="Collect (ViewPager)" />
 

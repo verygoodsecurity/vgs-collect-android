@@ -49,16 +49,6 @@
 
     <!--    Collect flow-->
     <string name="scan_item">Scan Card</string>
-    <string name="collect_activity_cards_title">Collecting credit card data</string>
-    <string name="collect_activity_submit_btn">submit</string>
-    <string name="collect_activity_attach_btn">Attach file</string>
-    <string name="collect_activity_state_item">STATE</string>
-    <string name="collect_activity_response_item">RESPONSE</string>
-
-    <string name="card_number">Card number</string>
-    <string name="cvc">CVC</string>
-    <string name="card_holder">Name on card</string>
-    <string name="exp_date">Expiration date</string>
 
     <!--    Tokenization-->
     <string name="tokenization_card_holder_enabled_key">key_card_holder_tokenization_enabled</string>
@@ -86,7 +76,6 @@
     <string name="expiration_date_title">Expiration date</string>
     <string name="expiration_date_default_placeholder">MM/YY</string>
     <string name="card_owner_default_value">Card owner(Name on the card)</string>
-    <string name="some_details_default_value">some details</string>
     <string name="apply_divider_title">Apply Divider</string>
     <string name="add_brand_title">Add brand</string>
     <string name="override_brand_title">Override brand</string>

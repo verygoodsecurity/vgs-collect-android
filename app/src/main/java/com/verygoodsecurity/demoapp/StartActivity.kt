@@ -11,7 +11,6 @@ import com.verygoodsecurity.demoapp.collect.collect_compose.activity_case.Compos
 import com.verygoodsecurity.demoapp.collect.collect_compose.fragment_case.ComposeFragmentActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityStartBinding
 import com.verygoodsecurity.demoapp.collect.date_range_activity.DateRangeActivity
-import com.verygoodsecurity.demoapp.collect.collect_fragment.VGSCollectFragmentActivity
 import com.verygoodsecurity.demoapp.google_pay.GooglePayActivity
 import com.verygoodsecurity.demoapp.payopt.PaymentOptimizationActivity
 import com.verygoodsecurity.demoapp.tokenization.v1.TokenizationActivity as TokenizationActivityV1
@@ -47,9 +46,6 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         }
         binding.llCollectActivityFlow.setOnClickListener {
             startActivity(CollectActivity::class.java)
-        }
-        binding.llCollectFragmentFlow.setOnClickListener {
-            startActivity(VGSCollectFragmentActivity::class.java)
         }
         binding.llCollectViewPagerFlow.setOnClickListener {
             startActivity(ViewPagerActivity::class.java)
