@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.collect_activity
+package com.verygoodsecurity.demoapp.collect.collect_activity
 
 import android.animation.LayoutTransition
 import android.annotation.SuppressLint

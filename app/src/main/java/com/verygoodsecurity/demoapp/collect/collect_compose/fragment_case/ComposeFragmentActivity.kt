@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.collect_compose.fragment_case
+package com.verygoodsecurity.demoapp.collect.collect_compose.fragment_case
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

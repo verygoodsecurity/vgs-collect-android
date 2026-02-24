@@ -2,7 +2,7 @@ package com.verygoodsecurity.demoapp
 
 import android.app.Application
 
-class VGSSampleApplication: Application() {
+class App: Application() {
 
     override fun onCreate() {
         super.onCreate()

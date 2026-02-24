@@ -5,19 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
 import com.verygoodsecurity.demoapp.cmp.CMPActivity
-import com.verygoodsecurity.demoapp.collect_activity.CollectActivity
-import com.verygoodsecurity.demoapp.collect_compose.activity_case.ComposeActivity
-import com.verygoodsecurity.demoapp.collect_compose.fragment_case.ComposeFragmentActivity
+import com.verygoodsecurity.demoapp.collect.collect_activity.CollectActivity
+import com.verygoodsecurity.demoapp.collect.collect_compose.activity_case.ComposeActivity
+import com.verygoodsecurity.demoapp.collect.collect_compose.fragment_case.ComposeFragmentActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityStartBinding
-import com.verygoodsecurity.demoapp.date_range_activity.DateRangeActivity
-import com.verygoodsecurity.demoapp.collect_fragment.VGSCollectFragmentActivity
+import com.verygoodsecurity.demoapp.collect.date_range_activity.DateRangeActivity
+import com.verygoodsecurity.demoapp.collect.collect_fragment.VGSCollectFragmentActivity
 import com.verygoodsecurity.demoapp.google_pay.GooglePayActivity
 import com.verygoodsecurity.demoapp.payopt.PaymentOptimizationActivity
 import com.verygoodsecurity.demoapp.tokenization.v1.TokenizationActivity as TokenizationActivityV1
 import com.verygoodsecurity.demoapp.tokenization.v2.TokenizationActivity as TokenizationActivityV2
-import com.verygoodsecurity.demoapp.collect_viewpager.ViewPagerActivity
+import com.verygoodsecurity.demoapp.collect.collect_viewpager.ViewPagerActivity
 
 class StartActivity : AppCompatActivity(R.layout.activity_start) {
 

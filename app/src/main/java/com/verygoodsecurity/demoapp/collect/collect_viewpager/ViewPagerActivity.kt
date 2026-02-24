@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.collect_viewpager
+package com.verygoodsecurity.demoapp.collect.collect_viewpager
 
 import android.content.Intent
 import android.os.Bundle

@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.date_range_activity
+package com.verygoodsecurity.demoapp.collect.date_range_activity
 
 import android.animation.LayoutTransition
 import android.annotation.SuppressLint

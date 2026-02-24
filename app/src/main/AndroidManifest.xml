@@ -5,7 +5,7 @@
     <uses-sdk tools:overrideLibrary="android.support.test.uiautomator.v18" />
 
     <application
-        android:name=".VGSSampleApplication"
+        android:name=".App"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -33,11 +33,11 @@
             android:label="Google Pay" />
 
         <activity
-            android:name=".collect_activity.CollectActivity"
+            android:name=".collect.collect_activity.CollectActivity"
             android:label="Collect (Activity)" />
 
         <activity
-            android:name=".date_range_activity.DateRangeActivity"
+            android:name=".collect.date_range_activity.DateRangeActivity"
             android:label="Date Range" />
 
         <activity
@@ -58,11 +58,11 @@
             tools:ignore="LockedOrientationActivity" />
 
         <activity
-            android:name=".collect_fragment.VGSCollectFragmentActivity"
+            android:name=".collect.collect_fragment.VGSCollectFragmentActivity"
             android:label="Collect (Fragment)" />
 
         <activity
-            android:name=".collect_viewpager.ViewPagerActivity"
+            android:name=".collect.collect_viewpager.ViewPagerActivity"
             android:label="Collect (ViewPager)" />
 
         <activity
@@ -78,12 +78,12 @@
             android:label="Instrumented Demo" />
 
         <activity
-            android:name=".collect_compose.activity_case.ComposeActivity"
+            android:name=".collect.collect_compose.activity_case.ComposeActivity"
             android:label="Compose Demo (Activity)"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
-            android:name=".collect_compose.fragment_case.ComposeFragmentActivity"
+            android:name=".collect.collect_compose.fragment_case.ComposeFragmentActivity"
             android:label="Compose Demo (Fragment)" />
 
         <activity

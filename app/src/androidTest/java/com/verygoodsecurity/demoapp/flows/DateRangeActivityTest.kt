@@ -18,7 +18,7 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
 import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.date_range_activity.DateRangeActivity
+import com.verygoodsecurity.demoapp.collect.date_range_activity.DateRangeActivity
 import com.verygoodsecurity.demoapp.utils.Utils.waitForView
 import org.hamcrest.Description
 import org.hamcrest.Matcher
