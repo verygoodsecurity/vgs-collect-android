@@ -64,17 +64,9 @@ class PaymentFragment : Fragment(), VgsCollectResponseListener, OnFieldStateChan
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.scan_card -> scanCard()
-            R.id.details_item -> addDetailsFragment()
             else -> return super.onOptionsItemSelected(item)
         }
         return true
-    }
-
-    private fun addDetailsFragment() {
-        activity?.supportFragmentManager?.beginTransaction()
-            ?.addToBackStack("details")
-            ?.replace(R.id.container, DetailsFragment())
-            ?.commit()
     }
 
     private fun scanCard() {
