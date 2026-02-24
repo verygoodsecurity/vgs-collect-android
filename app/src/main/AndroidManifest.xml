@@ -33,12 +33,8 @@
             android:label="Google Pay" />
 
         <activity
-            android:name=".collect.collect_activity.CollectActivity"
+            android:name=".collect.views.CollectActivity"
             android:label="Collect (Activity)" />
-
-        <activity
-            android:name=".collect.date_range_activity.DateRangeActivity"
-            android:label="Date Range" />
 
         <activity
             android:name=".tokenization.v1.TokenizationActivity"
@@ -58,10 +54,6 @@
             tools:ignore="LockedOrientationActivity" />
 
         <activity
-            android:name=".collect.collect_viewpager.ViewPagerActivity"
-            android:label="Collect (ViewPager)" />
-
-        <activity
             android:name=".instrumented.VGSEditTextInputTypeActivity"
             android:label="Instrumented Demo" />
 
@@ -74,13 +66,9 @@
             android:label="Instrumented Demo" />
 
         <activity
-            android:name=".collect.collect_compose.activity_case.ComposeActivity"
+            android:name=".collect.compose.ComposeActivity"
             android:label="Compose Demo (Activity)"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-
-        <activity
-            android:name=".collect.collect_compose.fragment_case.ComposeFragmentActivity"
-            android:label="Compose Demo (Fragment)" />
 
         <activity
             android:name=".cmp.CMPActivity"
