@@ -19,7 +19,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.StartActivity
+import com.verygoodsecurity.demoapp.start.StartActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityTokenizationBinding
 import com.verygoodsecurity.demoapp.databinding.CardInputLayoutBinding
 import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding

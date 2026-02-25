@@ -15,7 +15,7 @@ import com.google.android.gms.wallet.AutoResolveHelper
 import com.google.android.gms.wallet.IsReadyToPayRequest
 import com.google.android.gms.wallet.PaymentDataRequest
 import com.google.android.gms.wallet.PaymentsClient
-import com.verygoodsecurity.demoapp.StartActivity
+import com.verygoodsecurity.demoapp.start.StartActivity
 import com.verygoodsecurity.demoapp.databinding.GooglePayDemoActvityBinding
 import com.verygoodsecurity.demoapp.google_pay.util.Payments
 import com.verygoodsecurity.vgscollect.core.VGSCollect

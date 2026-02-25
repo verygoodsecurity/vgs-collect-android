@@ -12,7 +12,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.UiDevice
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.StartActivity
+import com.verygoodsecurity.demoapp.start.StartActivity
 import com.verygoodsecurity.demoapp.utils.actions.SetTextAction
 import com.verygoodsecurity.demoapp.utils.matchers.withCardCVCState
 import com.verygoodsecurity.demoapp.utils.matchers.withCardExpDateState

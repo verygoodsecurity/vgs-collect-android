@@ -9,8 +9,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.snackbar.Snackbar
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
-import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
+import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
+import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
 import com.verygoodsecurity.demoapp.databinding.ActivityPaymentOptimizationBinding
 import com.verygoodsecurity.demoapp.payopt.adapter.CardsAdapter
 import com.verygoodsecurity.demoapp.payopt.decorator.MarginItemDecoration

@@ -15,7 +15,7 @@
         tools:replace="android:allowBackup">
 
         <activity
-            android:name=".StartActivity"
+            android:name=".start.StartActivity"
             android:exported="true"
             android:label="Very Good Security"
             tools:ignore="LockedOrientationActivity">
@@ -33,7 +33,7 @@
             android:label="Google Pay" />
 
         <activity
-            android:name=".collect.views.CollectActivity"
+            android:name=".collect.views.CollectViewsActivity"
             android:label="Collect (Activity)" />
 
         <activity
@@ -66,7 +66,7 @@
             android:label="Instrumented Demo" />
 
         <activity
-            android:name=".collect.compose.ComposeActivity"
+            android:name=".collect.compose.CollectComposeActivity"
             android:label="Compose Demo (Activity)"
             android:windowSoftInputMode="stateVisible|adjustResize" />
 

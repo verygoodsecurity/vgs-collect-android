@@ -11,7 +11,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.StartActivity
+import com.verygoodsecurity.demoapp.start.StartActivity
 import com.verygoodsecurity.demoapp.utils.actions.FieldClickAction
 import com.verygoodsecurity.demoapp.utils.actions.SetTextAction
 import com.verygoodsecurity.demoapp.utils.matchers.withCardCVCState

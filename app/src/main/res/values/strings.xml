@@ -11,34 +11,22 @@
 
     <string name="start_activity_start_btn_title">Start</string>
 
-    <string name="start_tokenization_activity_title">Tokenization</string>
-    <string name="start_tokenization_activity_description">Tokenize data without additional backend setup required.</string>
+    <string name="start_tokenization_title">Tokenization</string>
+    <string name="start_tokenization_description">Tokenize data without additional backend setup required.</string>
 
-    <string name="start_tokenization_v2_activity_title">Create aliases(Tokenization v2)</string>
-    <string name="start_tokenization_v2_activity_description">Tokenize data without additional backend setup required.</string>
+    <string name="start_tokenization_v2_title">Create aliases(Tokenization v2)</string>
+    <string name="start_tokenization_v2_description">Tokenize data without additional backend setup required.</string>
 
-    <string name="start_google_pay_activity_title">Google Pay</string>
-    <string name="start_google_pay_activity_description">Example of decrypting google pay token.</string>
+    <string name="start_google_pay_title">Google Pay</string>
+    <string name="start_google_pay_description">Example of decrypting google pay token.</string>
 
-    <string name="start_collect_with_activity_title">Collect (Activity)</string>
-    <string name="start_collect_with_activity_description">Example of collecting data using Activity.</string>
+    <string name="start_collect_views_title">Collect (Views)</string>
+    <string name="start_collect_views_description">Example of collecting data using collect views.</string>
 
-    <string name="start_collect_with_fragment_title">Collect (Fragment)</string>
-    <string name="start_collect_with_fragment_description">Example of collecting data using Fragment.</string>
+    <string name="start_collect_compose_title">Collect (Compose)</string>
+    <string name="start_collect_compose_description">Example of collecting data using collect compose widgets.</string>
 
-    <string name="start_collect_with_view_pager_title">Collect (ViewPager)</string>
-    <string name="start_collect_with_view_pager_description">Example of collecting data using ViewPager.</string>
-
-    <string name="start_date_range_pager_title">Date Range (Activity)</string>
-    <string name="start_date_range_pager_description">Example of collecting date range using Activity.</string>
-
-    <string name="start_compose_title">Compose (Activity)</string>
-    <string name="start_compose_description">Example of collecting date wit Jetpack Compose and Activity.</string>
-
-    <string name="start_compos_fragment_title">Compose (Fragment)</string>
-    <string name="start_compose_fragment_description">Example of collecting date wit Jetpack Compose and Fragment.</string>
-
-    <string name="start_payopt">Payopt</string>
+    <string name="start_payopt_title">Payopt</string>
     <string name="start_payopt_description">Collecting data with payment optimization example.</string>
 
     <string name="start_cmp_title">CMP</string>

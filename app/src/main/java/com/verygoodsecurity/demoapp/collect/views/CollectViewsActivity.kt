@@ -22,13 +22,13 @@ import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
-import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_PATH
-import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
+import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
+import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_PATH
+import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
 import com.verygoodsecurity.demoapp.databinding.ActivityCollectBinding
 import com.verygoodsecurity.demoapp.databinding.CardInputLayoutBinding
 import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
-import com.verygoodsecurity.demoapp.getStringExtra
+import com.verygoodsecurity.demoapp.start.getStringExtra
 import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -52,7 +52,7 @@ import io.github.kbiakov.codeview.highlight.SyntaxColors
 import org.json.JSONArray
 import org.json.JSONObject
 
-class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
+class CollectViewsActivity : AppCompatActivity(), VgsCollectResponseListener,
     OnFieldStateChangeListener {
 
     private val path: String by lazy { getStringExtra(KEY_BUNDLE_PATH) }
@@ -63,8 +63,8 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
             getStringExtra(KEY_BUNDLE_VAULT_ID, ""),
             getStringExtra(KEY_BUNDLE_ENVIRONMENT, "")
         ).apply {
-            addOnResponseListeners(this@CollectActivity)
-            addOnFieldStateChangeListener(this@CollectActivity)
+            addOnResponseListeners(this@CollectViewsActivity)
+            addOnFieldStateChangeListener(this@CollectViewsActivity)
         }
     }
 
@@ -202,7 +202,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
 
             override fun onStateChange(state: FieldState) {
                 Log.d(
-                    CollectActivity::class.java.simpleName,
+                    CollectViewsActivity::class.java.simpleName,
                     "onStateChange: ${state.fieldName}, errors: ${state.validationErrors}"
                 )
             }
@@ -256,7 +256,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
             OnFieldStateChangeListener {
 
             override fun onStateChange(state: FieldState) {
-                Log.d(CollectActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")
+                Log.d(CollectViewsActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")
             }
         })
     }
@@ -274,7 +274,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
             OnFieldStateChangeListener {
 
             override fun onStateChange(state: FieldState) {
-                Log.d(CollectActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")
+                Log.d(CollectViewsActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")
             }
         })
     }
@@ -285,7 +285,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
             OnFieldStateChangeListener {
 
             override fun onStateChange(state: FieldState) {
-                Log.d(CollectActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")
+                Log.d(CollectViewsActivity::class.java.simpleName, "onStateChange: ${state.fieldName}")
             }
         })
     }
@@ -321,7 +321,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
             if (getAttachedFiles().isNotEmpty()) {
                 detachAll()
             } else {
-                attachFile(this@CollectActivity, "<FILE_NAME>")
+                attachFile(this@CollectViewsActivity, "<FILE_NAME>")
             }
         }
         updateFilesManageButtonState()
@@ -386,7 +386,7 @@ class CollectActivity : AppCompatActivity(), VgsCollectResponseListener,
     private fun readShortResponse(body: String?): String {
         return try {
             JSONObject(body ?: "").getJSONObject("json").toString(4)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             ""
         }
     }
