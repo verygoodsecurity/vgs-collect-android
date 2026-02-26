@@ -312,7 +312,7 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
 
     private fun formatJson(json: String?): String = try {
         JSONObject(json ?: "").toString(4)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         ""
     }
 
