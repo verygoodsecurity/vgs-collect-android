@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.demoapp.BuildConfig
@@ -38,6 +40,47 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
     }
 
     private lateinit var binding: ActivityStartBinding
+    private val flowAdapter = StartFlowAdapter(::onFlowItemClicked)
+
+    private val flowItems by lazy {
+        listOf(
+            StartFlowAdapter.FlowItem(
+                id = R.string.start_collect_views_title,
+                title = getString(R.string.start_collect_views_title),
+                description = getString(R.string.start_collect_views_description)
+            ),
+            StartFlowAdapter.FlowItem(
+                id = R.string.start_collect_compose_title,
+                title = getString(R.string.start_collect_compose_title),
+                description = getString(R.string.start_collect_compose_description)
+            ),
+            StartFlowAdapter.FlowItem(
+                id = R.string.start_payopt_title,
+                title = getString(R.string.start_payopt_title),
+                description = getString(R.string.start_payopt_description)
+            ),
+            StartFlowAdapter.FlowItem(
+                id = R.string.start_tokenization_title,
+                title = getString(R.string.start_tokenization_title),
+                description = getString(R.string.start_tokenization_description)
+            ),
+            StartFlowAdapter.FlowItem(
+                id = R.string.start_tokenization_v2_title,
+                title = getString(R.string.start_tokenization_v2_title),
+                description = getString(R.string.start_tokenization_v2_description)
+            ),
+            StartFlowAdapter.FlowItem(
+                id = R.string.start_cmp_title,
+                title = getString(R.string.start_cmp_title),
+                description = getString(R.string.start_cmp_description)
+            ),
+            StartFlowAdapter.FlowItem(
+                id = R.string.start_google_pay_title,
+                title = getString(R.string.start_google_pay_title),
+                description = getString(R.string.start_google_pay_description)
+            ),
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,66 +95,29 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         binding.tiedPath.setText(BuildConfig.PATH)
 
         binding.rvFlows.layoutManager = GridLayoutManager(this, FLOWS_SPAN_COUNT)
-        binding.rvFlows.addItemDecoration(
-            GridSpacingItemDecoration(
-                spanCount = FLOWS_SPAN_COUNT,
-                spacing = getResources().getDimensionPixelSize(R.dimen.margin_padding_material_micro),
-                includeEdge = false
+        if (binding.rvFlows.itemDecorationCount == 0) {
+            binding.rvFlows.addItemDecoration(
+                GridSpacingItemDecoration(
+                    spanCount = FLOWS_SPAN_COUNT,
+                    spacing = resources.getDimensionPixelSize(R.dimen.margin_padding_material_micro),
+                    includeEdge = false
+                )
             )
-        )
-        binding.rvFlows.adapter = StartFlowAdapter(
-            data = listOf(
-                StartFlowAdapter.FlowItem(
-                    title = getString(R.string.start_collect_views_title),
-                    description = getString(R.string.start_collect_views_description),
-                    onClick = {
-                        startActivity(activity = CollectViewsActivity::class.java)
-                    }
-                ),
-                StartFlowAdapter.FlowItem(
-                    title = getString(R.string.start_collect_compose_title),
-                    description = getString(R.string.start_collect_compose_description),
-                    onClick = {
-                        startActivity(activity = CollectComposeActivity::class.java)
-                    }
-                ),
-                StartFlowAdapter.FlowItem(
-                    title = getString(R.string.start_payopt_title),
-                    description = getString(R.string.start_payopt_description),
-                    onClick = {
-                        startActivity(activity = PaymentOptimizationActivity::class.java)
-                    }
-                ),
-                StartFlowAdapter.FlowItem(
-                    title = getString(R.string.start_tokenization_title),
-                    description = getString(R.string.start_tokenization_description),
-                    onClick = {
-                        startActivity(activity = TokenizationActivityV1::class.java)
-                    }
-                ),
-                StartFlowAdapter.FlowItem(
-                    title = getString(R.string.start_tokenization_v2_title),
-                    description = getString(R.string.start_tokenization_v2_description),
-                    onClick = {
-                        startActivity(activity = TokenizationActivityV2::class.java)
-                    }
-                ),
-                StartFlowAdapter.FlowItem(
-                    title = getString(R.string.start_cmp_title),
-                    description = getString(R.string.start_cmp_description),
-                    onClick = {
-                        startActivity(activity = CMPActivity::class.java)
-                    }
-                ),
-                StartFlowAdapter.FlowItem(
-                    title = getString(R.string.start_google_pay_title),
-                    description = getString(R.string.start_google_pay_description),
-                    onClick = {
-                        startActivity(activity = GooglePayActivity::class.java)
-                    }
-                ),
-            )
-        )
+        }
+        binding.rvFlows.adapter = flowAdapter
+        flowAdapter.submitList(flowItems)
+    }
+
+    private fun onFlowItemClicked(flowId: Int) {
+        when (flowId) {
+            R.string.start_collect_views_title -> startActivity(CollectViewsActivity::class.java)
+            R.string.start_collect_compose_title -> startActivity(CollectComposeActivity::class.java)
+            R.string.start_payopt_title -> startActivity(PaymentOptimizationActivity::class.java)
+            R.string.start_tokenization_title -> startActivity(TokenizationActivityV1::class.java)
+            R.string.start_tokenization_v2_title -> startActivity(TokenizationActivityV2::class.java)
+            R.string.start_cmp_title -> startActivity(CMPActivity::class.java)
+            R.string.start_google_pay_title -> startActivity(GooglePayActivity::class.java)
+        }
     }
 
     private fun startActivity(activity: Class<out Activity>) {
@@ -125,23 +131,34 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
     private fun getEnvironment() = when (binding.mbGroupEnvironment.checkedButtonId) {
         R.id.mbSandbox -> SANDBOX
         R.id.mbLive -> LIVE
-        else -> throw IllegalArgumentException("Not implemented")
+        else -> SANDBOX
     }
 }
 
 class StartFlowAdapter(
-    private val data: List<FlowItem>
-) : RecyclerView.Adapter<StartFlowAdapter.ViewHolder>() {
+    private val onItemClick: (Int) -> Unit
+) : ListAdapter<StartFlowAdapter.FlowItem, StartFlowAdapter.ViewHolder>(DiffCallback) {
+
+    init {
+        setHasStableIds(true)
+    }
+
+    private object DiffCallback : DiffUtil.ItemCallback<FlowItem>() {
+
+        override fun areItemsTheSame(oldItem: FlowItem, newItem: FlowItem) = oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: FlowItem, newItem: FlowItem) = oldItem == newItem
+    }
 
     class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
 
         private val mTvTitle: MaterialTextView = view.findViewById(R.id.mTvTitle)
         private val mTvDescription: MaterialTextView = view.findViewById(R.id.mTvDescription)
 
-        fun bind(item: FlowItem) {
+        fun bind(item: FlowItem, onItemClick: (Int) -> Unit) {
             mTvTitle.text = item.title
             mTvDescription.text = item.description
-            view.setOnClickListener { item.onClick() }
+            view.setOnClickListener { onItemClick(item.id) }
         }
     }
 
@@ -152,15 +169,15 @@ class StartFlowAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.bind(data[position])
+        viewHolder.bind(getItem(position), onItemClick)
     }
 
-    override fun getItemCount() = data.size
+    override fun getItemId(position: Int) = getItem(position).id.toLong()
 
     data class FlowItem(
+        val id: Int,
         val title: String,
-        val description: String,
-        val onClick: () -> Unit
+        val description: String
     )
 }
 

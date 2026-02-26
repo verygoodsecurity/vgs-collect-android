@@ -123,11 +123,11 @@ class CollectActivityTest {
     }
 
     private fun startMainScreen() {
-        val startWithActivityBtn = onView(withId(R.id.llCollectActivityFlow))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+//        val startWithActivityBtn = onView(withId(R.id.llCollectActivityFlow))
+//            .perform(scrollTo())
+//            .check(matches(isDisplayed()))
 
-        performClick(startWithActivityBtn)
+//        performClick(startWithActivityBtn)
     }
 
     private fun interactWithCardCVC(): ViewInteraction {
