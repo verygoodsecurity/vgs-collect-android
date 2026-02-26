@@ -32,7 +32,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputLayout
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.start.StartActivity
-import com.verygoodsecurity.demoapp.start.getStringExtra
+import com.verygoodsecurity.demoapp.utils.getStringExtra
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect

@@ -28,7 +28,7 @@ import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_VAU
 import com.verygoodsecurity.demoapp.databinding.ActivityCollectBinding
 import com.verygoodsecurity.demoapp.databinding.CardInputLayoutBinding
 import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
-import com.verygoodsecurity.demoapp.start.getStringExtra
+import com.verygoodsecurity.demoapp.utils.getStringExtra
 import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect

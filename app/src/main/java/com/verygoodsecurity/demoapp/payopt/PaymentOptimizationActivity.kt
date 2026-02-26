@@ -13,8 +13,7 @@ import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ENV
 import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
 import com.verygoodsecurity.demoapp.databinding.ActivityPaymentOptimizationBinding
 import com.verygoodsecurity.demoapp.payopt.adapter.CardsAdapter
-import com.verygoodsecurity.demoapp.payopt.decorator.MarginItemDecoration
-import com.verygoodsecurity.demoapp.payopt.model.Card
+import com.verygoodsecurity.demoapp.payopt.decoration.MarginItemDecoration
 import com.verygoodsecurity.demoapp.payopt.source.RemoteDataSource
 import com.verygoodsecurity.demoapp.payopt.source.ResponseListener
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
@@ -68,7 +67,7 @@ class PaymentOptimizationActivity : AppCompatActivity(),
                     val data = JSONObject(response.body!!).getJSONObject("data")
                     val card = data.getJSONObject("card")
                     transaction(
-                        Card(
+                        CardsAdapter.Card(
                             data.getString("id"),
                             card.getString("name"),
                             card.getString("last4"),
@@ -136,7 +135,7 @@ class PaymentOptimizationActivity : AppCompatActivity(),
         )
     }
 
-    private fun transaction(card: Card, saveCard: Boolean) {
+    private fun transaction(card: CardsAdapter.Card, saveCard: Boolean) {
         with(accessToken) {
             if (isNullOrEmpty()) {
                 showSnackBar("Access token is null.")

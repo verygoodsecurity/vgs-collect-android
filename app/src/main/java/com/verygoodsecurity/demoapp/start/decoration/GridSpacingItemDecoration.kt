@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.start
+package com.verygoodsecurity.demoapp.start.decoration
 
 import android.graphics.Rect
 import android.view.View

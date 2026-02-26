@@ -1,4 +1,4 @@
-package com.verygoodsecurity.demoapp.payopt.decorator
+package com.verygoodsecurity.demoapp.payopt.decoration
 
 import android.graphics.Rect
 import android.view.View

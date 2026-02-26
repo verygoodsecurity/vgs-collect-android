@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.android.material.textview.MaterialTextView
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.payopt.model.Card
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.CardType
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
@@ -23,9 +22,9 @@ import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 
-internal class CardsAdapter constructor(
+internal class CardsAdapter(
     private val bindListener: NewCardBindListener
-) : ListAdapter<Card, RecyclerView.ViewHolder>(DIFF_UTILS) {
+) : ListAdapter<CardsAdapter.Card, RecyclerView.ViewHolder>(DiffCallback) {
 
     private var selected: Int = 0
         set(value) {
@@ -69,12 +68,6 @@ internal class CardsAdapter constructor(
         }
     }
 
-    fun addItems(cards: List<Card>) {
-        submitList(cards + currentList) {
-            selected = selected.inc()
-        }
-    }
-
     inner class CardViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val mrbIsSelected: MaterialRadioButton = view.findViewById(R.id.mrbIsSelected)
@@ -84,7 +77,12 @@ internal class CardsAdapter constructor(
             view.findViewById(R.id.mtvLastFourAndDate)
 
         init {
-            itemView.setOnClickListener { selected = adapterPosition }
+            itemView.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    selected = position
+                }
+            }
         }
 
         fun bind(card: Card, isSelected: Boolean) {
@@ -101,7 +99,7 @@ internal class CardsAdapter constructor(
 
         @DrawableRes
         private fun getBrandIcon(brand: String): Int {
-            return CardType.values().find { it.name.lowercase() == brand.lowercase() }?.resId
+            return CardType.entries.find { it.name.equals(brand, ignoreCase = true) }?.resId
                 ?: CardType.UNKNOWN.resId
         }
     }
@@ -125,7 +123,12 @@ internal class CardsAdapter constructor(
                     "card.exp_year"
                 )
             )
-            itemView.setOnClickListener { selected = adapterPosition }
+            itemView.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    selected = position
+                }
+            }
         }
 
         fun bind(isSelected: Boolean) {
@@ -146,14 +149,11 @@ internal class CardsAdapter constructor(
         }
     }
 
-    private companion object {
+    private object DiffCallback : DiffUtil.ItemCallback<Card>() {
 
-        val DIFF_UTILS = object : DiffUtil.ItemCallback<Card>() {
+        override fun areItemsTheSame(oldItem: Card, newItem: Card) = oldItem == newItem
 
-            override fun areItemsTheSame(oldItem: Card, newItem: Card) = oldItem == newItem
-
-            override fun areContentsTheSame(oldItem: Card, newItem: Card) = oldItem == newItem
-        }
+        override fun areContentsTheSame(oldItem: Card, newItem: Card) = oldItem == newItem
     }
 
     enum class Type(val value: Int) {
@@ -168,4 +168,13 @@ internal class CardsAdapter constructor(
 
         fun unbind(inputs: Array<InputFieldView>)
     }
+
+    data class Card(
+        val finId: String,
+        val holderName: String,
+        val last4: String,
+        val expiryMonth: Int,
+        val expiryYear: Int,
+        val brand: String,
+    )
 }
