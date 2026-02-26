@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection", "RedundantOverride")
+
 package com.verygoodsecurity.demoapp
 
 import android.app.Application

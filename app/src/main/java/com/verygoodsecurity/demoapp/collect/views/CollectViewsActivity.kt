@@ -188,9 +188,9 @@ class CollectViewsActivity : AppCompatActivity(), VgsCollectResponseListener,
         bindViewsToCollect()
     }
 
-    // Configure card holder input field behaviour
+    // Configure cardholder input field behavior
     private fun setupCardHolderNameView() {
-        // Specify card holder name validation rule and error messages
+        // Specify cardholder name validation rule and error messages
         cardBinding.vgsTiedCardHolder.setRule(
             PersonNameRule.ValidationBuilder()
                 .setAllowableMinLength(3, "Card holder name is to short.")
@@ -209,7 +209,7 @@ class CollectViewsActivity : AppCompatActivity(), VgsCollectResponseListener,
         })
     }
 
-    // Configure card number input field behaviour
+    // Configure card number input field behavior
     private fun setupCardNumberView() {
         // Set CardIconAdapter to be able to override default card icons
         cardBinding.vgsTiedCardNumber.setCardIconAdapter(object : CardIconAdapter(this) {
@@ -261,9 +261,9 @@ class CollectViewsActivity : AppCompatActivity(), VgsCollectResponseListener,
         })
     }
 
-    // Configure expiry input field behaviour
+    // Configure expiry input field behavior
     private fun setupExpiryView() {
-        // Specify VGSExpDateSeparateSerializer to send expiry month and year separately in json structure
+        // Specify VGSExpDateSeparateSerializer to send expiry month and year separately in JSON structure
         cardBinding.vgsTiedExpiry.setSerializer(
             VGSExpDateSeparateSerializer(
                 "card.expiry.month",
@@ -290,13 +290,13 @@ class CollectViewsActivity : AppCompatActivity(), VgsCollectResponseListener,
         })
     }
 
-    // Configure postal code input field behaviour
+    // Configure postal code input field behavior
     private fun setupPostalCodeView() {
         cardBinding.groupAddress.visibility = View.VISIBLE
         // Specify postal code validation rule and error messages
         cardBinding.vgsTiedPostalCode.setRule(
             VGSInfoRule.ValidationBuilder()
-                .setRegex("^[0-9]{5}(?:-[0-9]{4})?\$", "Invalid postal code.")
+                .setRegex("^[0-9]{5}(?:-[0-9]{4})?$", "Invalid postal code.")
                 .build()
         )
     }
