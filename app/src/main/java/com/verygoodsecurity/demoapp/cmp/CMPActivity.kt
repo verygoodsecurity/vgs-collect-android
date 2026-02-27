@@ -13,7 +13,7 @@ import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.databinding.CmpActivityBinding
-import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
+import com.verygoodsecurity.demoapp.databinding.CodeViewLayoutBinding
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.Environment
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -32,7 +32,7 @@ import org.json.JSONObject
 class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
 
     private lateinit var binding: CmpActivityBinding
-    private lateinit var codeExampleBinding: CodeExampleLayoutBinding
+    private lateinit var codeExampleBinding: CodeViewLayoutBinding
 
     private val collect: VGSCollect by lazy {
         VGSCollect(
@@ -48,7 +48,7 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = CmpActivityBinding.inflate(layoutInflater)
-        codeExampleBinding = CodeExampleLayoutBinding.bind(binding.ccInputsRoot)
+        codeExampleBinding = CodeViewLayoutBinding.bind(binding.ccInputsRoot)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
             val bars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -97,7 +97,7 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
         )
         codeExampleBinding.tvLanguage.text = "JSON"
         codeExampleBinding.tvLanguage.visibility = View.VISIBLE
-        codeExampleBinding.cvResponse.setOptions(
+        codeExampleBinding.codeView.setOptions(
             Options(
                 context = this.applicationContext,
                 theme = ColorThemeData(
@@ -112,8 +112,8 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
                 ),
             ).withFont(Font.DroidSansMonoSlashed)
         )
-        codeExampleBinding.cvResponse.alpha = 1f
-        codeExampleBinding.cvResponse.findViewById<RecyclerView>(R.id.rv_code_content).isNestedScrollingEnabled =
+        codeExampleBinding.codeView.alpha = 1f
+        codeExampleBinding.codeView.findViewById<RecyclerView>(R.id.rv_code_content).isNestedScrollingEnabled =
             false
     }
 
@@ -123,6 +123,6 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
         } catch (_: Exception) {
             ""
         }
-        codeExampleBinding.cvResponse.setCode(json)
+        codeExampleBinding.codeView.setCode(json)
     }
 }

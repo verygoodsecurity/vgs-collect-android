@@ -80,7 +80,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llButtons">
 
-                <include layout="@layout/code_example_layout" />
+                <include layout="@layout/code_view_layout" />
             </com.google.android.material.card.MaterialCardView>
 
             <ProgressBar

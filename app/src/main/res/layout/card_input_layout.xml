@@ -251,13 +251,6 @@
             app:text="12345" />
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/groupAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="mtvCityHint, vgsTilCity, mtvPostalCodeHint, vgsTilPostalCode" />
-
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/mtvSsnHint"
         android:layout_width="wrap_content"
@@ -296,11 +289,4 @@
             app:numberDivider="-"
             app:text="111111111" />
     </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/groupSsn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="mtvSsnHint,vgsTilSsn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

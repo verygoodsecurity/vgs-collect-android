@@ -22,7 +22,7 @@ import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.start.StartActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityTokenizationBinding
 import com.verygoodsecurity.demoapp.databinding.CardInputLayoutBinding
-import com.verygoodsecurity.demoapp.databinding.CodeExampleLayoutBinding
+import com.verygoodsecurity.demoapp.databinding.CodeViewLayoutBinding
 import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettingsActivity
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -57,7 +57,7 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
     }
 
     private lateinit var binding: ActivityTokenizationBinding
-    private lateinit var codeExampleBinding: CodeExampleLayoutBinding
+    private lateinit var codeExampleBinding: CodeViewLayoutBinding
     private lateinit var cardViewBinding: CardInputLayoutBinding
 
     // Used to start and receive result from scan activity
@@ -70,7 +70,7 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityTokenizationBinding.inflate(layoutInflater)
-        codeExampleBinding = CodeExampleLayoutBinding.bind(binding.root)
+        codeExampleBinding = CodeViewLayoutBinding.bind(binding.root)
         cardViewBinding = binding.includeCardView
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
@@ -224,7 +224,7 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
         val syntaxColor = ContextCompat.getColor(this, R.color.veryLightGray)
         val bgColor = ContextCompat.getColor(this, R.color.blackPearl)
         val lineNumberColor = ContextCompat.getColor(this, R.color.nobel)
-        codeExampleBinding.cvResponse.setOptions(
+        codeExampleBinding.codeView.setOptions(
             Options(
                 context = this.applicationContext, theme = ColorThemeData(
                     SyntaxColors(
@@ -238,11 +238,11 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
                 )
             )
         )
-        codeExampleBinding.cvResponse.alpha = 1f
+        codeExampleBinding.codeView.alpha = 1f
     }
 
     private fun updateCodeExample(response: String?) {
-        codeExampleBinding.cvResponse.setCode(formatJson(response))
+        codeExampleBinding.codeView.setCode(formatJson(response))
     }
 
     private fun tokenize() {

@@ -35,6 +35,11 @@
     <string name="tokenization_scan_card_menu_item_title">Scan</string>
     <string name="tokenization_settings_menu_item_title">Settings</string>
 
+    <!--    Collect views flow-->
+    <string name="attach_btn_title">Attach</string>
+    <string name="detach_btn_title">Detach</string>
+
+
     <!--    Collect flow-->
     <string name="scan_item">Scan Card</string>
 
