@@ -6,6 +6,7 @@ import android.util.Log
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
 import com.verygoodsecurity.demoapp.R
+import com.verygoodsecurity.demoapp.core.BaseDemoActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener

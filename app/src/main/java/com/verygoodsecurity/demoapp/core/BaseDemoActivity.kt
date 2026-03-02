@@ -1,5 +1,6 @@
-package com.verygoodsecurity.demoapp.collect.views
+package com.verygoodsecurity.demoapp.core
 
+import android.R.id.content as contentId
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -22,10 +23,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButtonToggleGroup
-import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
-import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_PATH
-import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
+import com.verygoodsecurity.demoapp.start.StartActivity
 import com.verygoodsecurity.demoapp.utils.getStringExtra
 import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -44,14 +42,14 @@ import org.json.JSONObject
 
 abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(layoutId) {
 
-    protected val id: String by lazy { getStringExtra(KEY_BUNDLE_VAULT_ID) }
-    protected val path: String by lazy { getStringExtra(KEY_BUNDLE_PATH) }
-    protected val environment: String by lazy { getStringExtra(KEY_BUNDLE_ENVIRONMENT) }
+    protected val id: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_VAULT_ID) }
+    protected val path: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_PATH) }
+    protected val environment: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_ENVIRONMENT) }
 
-    private val content: ViewGroup by lazy { findViewById(android.R.id.content) }
-    private val codeView: CodeView? by lazy { findViewById(R.id.codeView) }
-    private val codeViewToggle: MaterialButtonToggleGroup? by lazy { findViewById(R.id.mbtgType) }
-    private val progressBar: ProgressBar? by lazy { findViewById(R.id.progressBar) }
+    private val content: ViewGroup by lazy { findViewById(contentId) }
+    private val codeView: CodeView? by lazy { findViewById(com.verygoodsecurity.demoapp.R.id.codeView) }
+    private val codeViewToggle: MaterialButtonToggleGroup? by lazy { findViewById(com.verygoodsecurity.demoapp.R.id.mbtgType) }
+    private val progressBar: ProgressBar? by lazy { findViewById(com.verygoodsecurity.demoapp.R.id.progressBar) }
 
     private lateinit var touchBlockerView: View
     private lateinit var responseCodeTextView: TextView
@@ -80,12 +78,12 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.scan_menu, menu)
+        inflater.inflate(com.verygoodsecurity.demoapp.R.menu.scan_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.scan_card -> true.also { scanResultLauncher.launch(createScanIntent()) }
+        com.verygoodsecurity.demoapp.R.id.scan_card -> true.also { scanResultLauncher.launch(createScanIntent()) }
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -121,7 +119,7 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
 
     private fun attachResponseCodeView() {
         responseCodeTextView = TextView(this).apply {
-            id = R.id.tvResponseCode
+            id = com.verygoodsecurity.demoapp.R.id.tvResponseCode
             visibility = View.GONE
         }
         content.addView(
@@ -151,10 +149,10 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
 
     private fun setupCodeView() {
         codeViewToggle?.addOnButtonCheckedListener { _, _, _ -> updateCodeView() }
-        setCodeViewToggle(R.id.mbStates)
-        val syntaxColor = ContextCompat.getColor(this, R.color.veryLightGray)
-        val bgColor = ContextCompat.getColor(this, R.color.blackPearl)
-        val lineNumberColor = ContextCompat.getColor(this, R.color.nobel)
+        setCodeViewToggle(com.verygoodsecurity.demoapp.R.id.mbStates)
+        val syntaxColor = ContextCompat.getColor(this, com.verygoodsecurity.demoapp.R.color.veryLightGray)
+        val bgColor = ContextCompat.getColor(this, com.verygoodsecurity.demoapp.R.color.blackPearl)
+        val lineNumberColor = ContextCompat.getColor(this, com.verygoodsecurity.demoapp.R.color.nobel)
         codeView?.setOptions(
             Options(
                 context = this.applicationContext, theme = ColorThemeData(
@@ -170,12 +168,12 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
             )
         )
         codeView?.alpha = 1f
-        codeView?.findViewById<RecyclerView>(R.id.rv_code_content)?.isNestedScrollingEnabled = false
-        val tvLanguage = findViewById<TextView>(R.id.tvLanguage)
+        codeView?.findViewById<RecyclerView>(com.verygoodsecurity.demoapp.R.id.rv_code_content)?.isNestedScrollingEnabled = false
+        val tvLanguage = findViewById<TextView>(com.verygoodsecurity.demoapp.R.id.tvLanguage)
         tvLanguage.setTypeface(
             FontCache.get(this).getTypeface(this, Font.DroidSansMonoSlashed)
         )
-        tvLanguage.text = getString(R.string.code_view_json_language_title)
+        tvLanguage.text = getString(com.verygoodsecurity.demoapp.R.string.code_view_json_language_title)
         tvLanguage.visibility = View.VISIBLE
     }
 
@@ -185,7 +183,7 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
         } catch (_: Exception) {
             (response as? VGSResponse.ErrorResponse)?.localizeMessage ?: ""
         }
-        setCodeViewToggle(R.id.mbResponse)
+        setCodeViewToggle(com.verygoodsecurity.demoapp.R.id.mbResponse)
         updateCodeView()
     }
 
@@ -210,7 +208,7 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
 
     private fun updateCodeView() {
         codeView?.setCode(
-            if (codeViewToggle?.checkedButtonId == R.id.mbStates) {
+            if (codeViewToggle?.checkedButtonId == com.verygoodsecurity.demoapp.R.id.mbStates) {
                 statesCodeExample ?: ""
             } else {
                 responseCodeExample ?: ""
