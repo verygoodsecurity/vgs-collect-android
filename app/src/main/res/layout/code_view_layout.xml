@@ -6,15 +6,15 @@
     tools:parentTag="androidx.appcompat.widget.LinearLayoutCompat">
 
     <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/mbGroupCodeExampleType"
+        android:id="@+id/mbtgType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:checkedButton="@+id/mbInputState"
+        app:checkedButton="@+id/mbStates"
         app:selectionRequired="true"
         app:singleSelection="true">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/mbInputState"
+            android:id="@+id/mbStates"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

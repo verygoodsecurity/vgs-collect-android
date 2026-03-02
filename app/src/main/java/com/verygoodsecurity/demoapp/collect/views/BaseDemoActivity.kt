@@ -1,6 +1,7 @@
 package com.verygoodsecurity.demoapp.collect.views
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -11,6 +12,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -19,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButtonToggleGroup
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
 import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_PATH
@@ -45,13 +48,21 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
     protected val path: String by lazy { getStringExtra(KEY_BUNDLE_PATH) }
     protected val environment: String by lazy { getStringExtra(KEY_BUNDLE_ENVIRONMENT) }
 
+    private val content: ViewGroup by lazy { findViewById(android.R.id.content) }
     private val codeView: CodeView? by lazy { findViewById(R.id.codeView) }
+    private val codeViewToggle: MaterialButtonToggleGroup? by lazy { findViewById(R.id.mbtgType) }
     private val progressBar: ProgressBar? by lazy { findViewById(R.id.progressBar) }
+
+    private lateinit var touchBlockerView: View
+    private lateinit var responseCodeTextView: TextView
 
     private val scanResultLauncher =
         registerForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
             form.onActivityResult(0, it.resultCode, it.data)
         }
+
+    private var statesCodeExample: String? = null
+    private var responseCodeExample: String? = null
 
     abstract val form: VGSCollect
 
@@ -60,7 +71,9 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        applyEdgeToEdge(findViewById<ViewGroup>(android.R.id.content).getChildAt(0))
+        applyEdgeToEdge()
+        attachTouchBlockerView()
+        attachResponseCodeView()
         setupCollect()
         setupCodeView()
     }
@@ -78,15 +91,46 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
 
     protected fun setLoading(isLoading: Boolean) {
         if (isLoading) GlobalIdlingResource.increment() else GlobalIdlingResource.decrement()
+        touchBlockerView.isVisible = isLoading
         progressBar?.isVisible = isLoading
     }
 
-    private fun applyEdgeToEdge(root: View) {
-        ViewCompat.setOnApplyWindowInsetsListener(root) { v, windowInsets ->
+    private fun applyEdgeToEdge() {
+        ViewCompat.setOnApplyWindowInsetsListener(content) { v, windowInsets ->
             val bars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.updatePadding(top = bars.top)
             WindowInsetsCompat.CONSUMED
         }
+    }
+
+    private fun attachTouchBlockerView() {
+        touchBlockerView = View(this).apply {
+            setBackgroundColor(Color.TRANSPARENT)
+            isClickable = true
+            isFocusable = true
+            visibility = View.GONE
+        }
+        content.addView(
+            touchBlockerView,
+            ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        )
+    }
+
+    private fun attachResponseCodeView() {
+        responseCodeTextView = TextView(this).apply {
+            id = R.id.tvResponseCode
+            visibility = View.GONE
+        }
+        content.addView(
+            responseCodeTextView,
+            ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        )
     }
 
     private fun setupCollect() {
@@ -94,18 +138,20 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
 
             override fun onResponse(response: VGSResponse?) {
                 updateCodeView(response)
+                updateResponseCodeView(response)
             }
         })
         form.addOnFieldStateChangeListener(object : OnFieldStateChangeListener {
 
             override fun onStateChange(state: FieldState) {
-                println("TEST:DD Base activity state change")
                 updateCodeView(form.getAllStates())
             }
         })
     }
 
     private fun setupCodeView() {
+        codeViewToggle?.addOnButtonCheckedListener { _, _, _ -> updateCodeView() }
+        setCodeViewToggle(R.id.mbStates)
         val syntaxColor = ContextCompat.getColor(this, R.color.veryLightGray)
         val bgColor = ContextCompat.getColor(this, R.color.blackPearl)
         val lineNumberColor = ContextCompat.getColor(this, R.color.nobel)
@@ -129,21 +175,22 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
         tvLanguage.setTypeface(
             FontCache.get(this).getTypeface(this, Font.DroidSansMonoSlashed)
         )
-        tvLanguage.text = "JSON"
+        tvLanguage.text = getString(R.string.code_view_json_language_title)
         tvLanguage.visibility = View.VISIBLE
     }
 
     private fun updateCodeView(response: VGSResponse?) {
-        val content = try {
+        responseCodeExample = try {
             JSONObject(response?.body ?: "").getJSONObject("json").toString(4)
         } catch (_: Exception) {
             (response as? VGSResponse.ErrorResponse)?.localizeMessage ?: ""
         }
-        codeView?.setCode(content)
+        setCodeViewToggle(R.id.mbResponse)
+        updateCodeView()
     }
 
     private fun updateCodeView(states: List<FieldState>) {
-        val content = JSONObject()
+        statesCodeExample = JSONObject()
             .put(
                 "states",
                 JSONArray().apply {
@@ -158,6 +205,24 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
                 }
             )
             .toString(4)
-        codeView?.setCode(content)
+        updateCodeView()
+    }
+
+    private fun updateCodeView() {
+        codeView?.setCode(
+            if (codeViewToggle?.checkedButtonId == R.id.mbStates) {
+                statesCodeExample ?: ""
+            } else {
+                responseCodeExample ?: ""
+            }
+        )
+    }
+
+    private fun setCodeViewToggle(@IdRes buttonId: Int) {
+        codeViewToggle?.check(buttonId)
+    }
+
+    private fun updateResponseCodeView(response: VGSResponse?) {
+        responseCodeTextView.text = response?.code?.toString()
     }
 }

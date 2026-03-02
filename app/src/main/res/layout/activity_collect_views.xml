@@ -9,8 +9,29 @@
         android:id="@+id/ccInputsRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_padding_material_large"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        android:paddingBottom="@dimen/margin_padding_material_large">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_padding_material_medium" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineHalf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -24,16 +45,284 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <include
-            android:id="@+id/includeCardInputView"
-            layout="@layout/card_input_layout"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvCardHolderHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_medium"
+            android:fontFamily="sans-serif-medium"
+            android:text="Card Holder"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar"
+            tools:ignore="HardcodedText" />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTilCardHolder"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_padding_material_medium"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/mtvCardHolderHint">
+
+            <com.verygoodsecurity.vgscollect.widget.PersonNameEditText
+                android:id="@+id/vgsTiedCardHolder"
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/card_holder_name_desc"
+                android:importantForAccessibility="yes"
+                app:fieldName="card.holderName"
+                app:imeOptions="actionNext"
+                app:text="John Doe" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvCardNumberHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_small"
+            android:fontFamily="sans-serif-medium"
+            android:text="Card Number"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/vgsTilCardHolder"
+            tools:ignore="HardcodedText" />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTilCardNumber"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/mtvCardNumberHint">
+
+            <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+                android:id="@+id/vgsTiedCardNumber"
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/card_number_desc"
+                app:cardBrandIconGravity="end"
+                app:fieldName="card.number"
+                app:imeOptions="actionNext"
+                app:numberDivider=" "
+                app:text="4111111111111111" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvExpiryHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_small"
+            android:layout_marginEnd="@dimen/margin_padding_material_small"
+            android:fontFamily="sans-serif-medium"
+            android:text="Expiry"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineHalf"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/vgsTilCardNumber"
+            tools:ignore="HardcodedText" />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTilExpiry"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            android:layout_marginEnd="@dimen/margin_padding_material_small"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineHalf"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/mtvExpiryHint">
+
+            <com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+                android:id="@+id/vgsTiedExpiry"
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:datePattern="MM/yy"
+                app:datePickerModes="input"
+                app:fieldName="card.expiry"
+                app:imeOptions="actionNext"
+                app:inputType="date"
+                app:text="01/30" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvCvcHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_material_small"
+            android:layout_marginTop="@dimen/margin_padding_material_small"
+            android:fontFamily="sans-serif-medium"
+            android:text="CVC"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/guidelineHalf"
+            app:layout_constraintTop_toBottomOf="@+id/vgsTilCardNumber"
+            tools:ignore="HardcodedText" />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTilCvc"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_material_small"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@+id/guidelineHalf"
+            app:layout_constraintTop_toBottomOf="@+id/mtvCvcHint">
+
+            <com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+                android:id="@+id/vgsTiedCvc"
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:fieldName="card.cvc"
+                app:imeOptions="actionDone"
+                app:text="111" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvCityHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_small"
+            android:layout_marginEnd="@dimen/margin_padding_material_small"
+            android:fontFamily="sans-serif-medium"
+            android:text="City"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineHalf"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/vgsTilExpiry"
+            tools:ignore="HardcodedText" />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTilCity"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            android:layout_marginEnd="@dimen/margin_padding_material_small"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineHalf"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/mtvCityHint">
+
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:id="@+id/vgsTiedCity"
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:fieldName="address.city"
+                app:imeOptions="actionNext"
+                app:isRequired="false"
+                app:text="Kyiv" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvPostalCodeHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_material_small"
+            android:layout_marginTop="@dimen/margin_padding_material_small"
+            android:fontFamily="sans-serif-medium"
+            android:text="Postal Code"
+            android:textAppearance="?attr/textAppearanceCaption"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/guidelineHalf"
+            app:layout_constraintTop_toBottomOf="@+id/vgsTilCvc"
+            tools:ignore="HardcodedText" />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTilPostalCode"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_material_small"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@+id/guidelineHalf"
+            app:layout_constraintTop_toBottomOf="@+id/mtvPostalCodeHint">
+
+            <com.verygoodsecurity.vgscollect.widget.VGSEditText
+                android:id="@+id/vgsTiedPostalCode"
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:fieldName="address.postalCode"
+                app:imeOptions="actionDone"
+                app:isRequired="false"
+                app:text="12345" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvSsnHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_small"
+            android:fontFamily="sans-serif-medium"
+            android:text="SSN"
+            android:textAppearance="?attr/textAppearanceCaption"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/progressBar" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/vgsTilCity"
+            tools:ignore="HardcodedText" />
+
+        <com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
+            android:id="@+id/vgsTilSsn"
+            style="@style/VGSCollect.Widget.TextInputLayout.OutlineBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_padding_material_micro"
+            app:boxBackgroundColor="@color/fiord_20"
+            app:boxStrokeColor="@color/invisible_input_border"
+            app:hintEnabled="false"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@+id/mtvSsnHint">
+
+            <com.verygoodsecurity.vgscollect.widget.SSNEditText
+                android:id="@+id/vgsTiedSsn"
+                style="@style/VGSCollect.Widget.TextInputEditText.OutlineBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:enableValidation="false"
+                app:fieldName="ssn"
+                app:imeOptions="actionDone"
+                app:numberDivider="-"
+                app:text="111111111" />
+        </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbFilesManage"
@@ -45,9 +334,9 @@
             android:layout_weight="1"
             android:insetTop="0dp"
             android:insetBottom="0dp"
+            android:text="@string/attach_btn_title"
             app:icon="@drawable/baseline_insert_drive_file_24"
             app:iconGravity="end"
-            android:text="@string/attach_btn_title"
             app:layout_constraintBottom_toBottomOf="@+id/mbSubmit"
             app:layout_constraintEnd_toStartOf="@+id/mbSubmit"
             app:layout_constraintTop_toTopOf="@+id/mbSubmit"
@@ -64,17 +353,17 @@
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:text="Submit"
-            app:layout_constraintEnd_toEndOf="@+id/includeCardInputView"
-            app:layout_constraintTop_toBottomOf="@+id/includeCardInputView"
+            app:layout_constraintEnd_toEndOf="@+id/vgsTilSsn"
+            app:layout_constraintTop_toBottomOf="@+id/vgsTilSsn"
             tools:ignore="HardcodedText" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_padding_material_medium"
+            android:layout_marginTop="@dimen/margin_padding_material_medium"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@+id/guidelineStart"
             app:layout_constraintTop_toBottomOf="@+id/mbSubmit">
 
             <include layout="@layout/code_view_layout" />
