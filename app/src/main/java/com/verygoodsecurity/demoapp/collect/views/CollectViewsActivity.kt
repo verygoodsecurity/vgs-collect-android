@@ -52,8 +52,6 @@ private const val TAG = "CollectViewsActivity"
  */
 class CollectViewsActivity : BaseDemoActivity(R.layout.activity_collect_views) {
 
-    // TODO: Handle code example states/response.
-
     /**
      * Lazy initialization of [VGSCollect].
      *

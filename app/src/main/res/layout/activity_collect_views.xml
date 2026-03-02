@@ -80,8 +80,7 @@
                 android:contentDescription="@string/card_holder_name_desc"
                 android:importantForAccessibility="yes"
                 app:fieldName="card.holderName"
-                app:imeOptions="actionNext"
-                app:text="John Doe" />
+                app:imeOptions="actionNext" />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.google.android.material.textview.MaterialTextView
@@ -120,8 +119,7 @@
                 app:cardBrandIconGravity="end"
                 app:fieldName="card.number"
                 app:imeOptions="actionNext"
-                app:numberDivider=" "
-                app:text="4111111111111111" />
+                app:numberDivider=" " />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.google.android.material.textview.MaterialTextView
@@ -162,8 +160,7 @@
                 app:datePickerModes="input"
                 app:fieldName="card.expiry"
                 app:imeOptions="actionNext"
-                app:inputType="date"
-                app:text="01/30" />
+                app:inputType="date" />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.google.android.material.textview.MaterialTextView
@@ -201,8 +198,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:fieldName="card.cvc"
-                app:imeOptions="actionDone"
-                app:text="111" />
+                app:imeOptions="actionNext" />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.google.android.material.textview.MaterialTextView
@@ -241,8 +237,7 @@
                 android:layout_height="wrap_content"
                 app:fieldName="address.city"
                 app:imeOptions="actionNext"
-                app:isRequired="false"
-                app:text="Kyiv" />
+                app:isRequired="false" />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.google.android.material.textview.MaterialTextView
@@ -280,9 +275,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:fieldName="address.postalCode"
-                app:imeOptions="actionDone"
-                app:isRequired="false"
-                app:text="12345" />
+                app:imeOptions="actionNext"
+                app:isRequired="false" />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.google.android.material.textview.MaterialTextView
@@ -320,8 +314,7 @@
                 app:enableValidation="false"
                 app:fieldName="ssn"
                 app:imeOptions="actionDone"
-                app:numberDivider="-"
-                app:text="111111111" />
+                app:numberDivider="-" />
         </com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -339,8 +332,7 @@
             app:iconGravity="end"
             app:layout_constraintBottom_toBottomOf="@+id/mbSubmit"
             app:layout_constraintEnd_toStartOf="@+id/mbSubmit"
-            app:layout_constraintTop_toTopOf="@+id/mbSubmit"
-            tools:ignore="HardcodedText" />
+            app:layout_constraintTop_toTopOf="@+id/mbSubmit" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/mbSubmit"
