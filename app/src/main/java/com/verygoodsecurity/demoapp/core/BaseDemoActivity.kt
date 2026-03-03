@@ -54,15 +54,15 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
     private lateinit var touchBlockerView: View
     private lateinit var responseCodeTextView: TextView
 
-    private val scanResultLauncher =
-        registerForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-            form.onActivityResult(0, it.resultCode, it.data)
-        }
-
     private var statesCodeExample: String? = null
     private var responseCodeExample: String? = null
 
     abstract val form: VGSCollect
+
+    protected val scanResultLauncher =
+        registerForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
+            form.onActivityResult(0, it.resultCode, it.data)
+        }
 
     protected abstract fun createScanIntent(): Intent
 

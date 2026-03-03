@@ -1,87 +1,101 @@
 package com.verygoodsecurity.demoapp.tokenization.v2
 
-import android.animation.LayoutTransition
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.isVisible
-import androidx.core.view.updatePadding
 import androidx.preference.PreferenceManager
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textview.MaterialTextView
+import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.start.StartActivity
-import com.verygoodsecurity.demoapp.databinding.ActivityTokenizationBinding
-import com.verygoodsecurity.demoapp.databinding.CardInputLayoutBinding
-import com.verygoodsecurity.demoapp.databinding.CodeViewLayoutBinding
+import com.verygoodsecurity.demoapp.core.BaseDemoActivity
 import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettingsActivity
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
+import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSCreateAliasesRequest
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
-import com.verygoodsecurity.vgscollect.view.InputFieldView
-import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
-import io.github.kbiakov.codeview.adapters.Options
-import io.github.kbiakov.codeview.highlight.ColorThemeData
-import io.github.kbiakov.codeview.highlight.SyntaxColors
-import org.json.JSONObject
-import kotlin.properties.Delegates
+import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
+import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 
-class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedListener,
-    VgsCollectResponseListener {
+private const val TAG = "V2 TokenizationActivity"
 
-    private val defaultHintTextColor by lazy { ContextCompat.getColor(this, R.color.fiord) }
-    private val defaultInputBackgroundColor by lazy {
-        ContextCompat.getColor(this, R.color.fiord_20)
-    }
-    private val errorHintTextColor by lazy { ContextCompat.getColor(this, R.color.brown) }
-    private val errorInputBackgroundColor by lazy {
-        ContextCompat.getColor(this, R.color.vanillaIce)
-    }
+/**
+ * Demonstrates **VGS Collect V2 tokenization flow**.
+ *
+ * This Activity showcases how to:
+ *
+ * 1. Initialize [VGSCollect] with ⚠️ authorization header.
+ * 2. Bind secure Collect Views
+ * 3. Configure tokenization options dynamically
+ * 4. Submit data using [VGSCreateAliasesRequest]
+ * 5. Handle success/error responses
+ *
+ * 🔐 Unlike V1 (`tokenize()`), this version explicitly calls
+ * [VGSCollect.createAliases] with a [VGSCreateAliasesRequest].
+ *
+ * Configuration is controlled via shared preferences
+ * (see [TokenizationSettingsActivity]).
+ *
+ * 📘 Official documentation:
+ * https://docs.verygoodsecurity.com/vault/developer-tools/vgs-collect/android-sdk/index
+ *
+ * @see VGSCollect
+ * @see VGSCreateAliasesRequest
+ * @see VgsCollectResponseListener
+ */
+class TokenizationActivity : BaseDemoActivity(R.layout.activity_tokenization) {
 
-    private var collect: VGSCollect? = null
-
-    private var response: String? by Delegates.observable(null) { _, _, new ->
-        binding.mbReset.isVisible = !new.isNullOrBlank()
-        updateCodeExample(response)
-    }
-
-    private lateinit var binding: ActivityTokenizationBinding
-    private lateinit var codeExampleBinding: CodeViewLayoutBinding
-    private lateinit var cardViewBinding: CardInputLayoutBinding
-
-    // Used to start and receive result from scan activity
-    private val scanResultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            collect?.onActivityResult(0, it.resultCode, it.data)
+    /**
+     * Lazy initialization of [VGSCollect].
+     *
+     * ⚠️ V2 requires Authorization header.
+     * Header must be provided before calling [VGSCollect.createAliases].
+     */
+    override val form: VGSCollect by lazy {
+        VGSCollect(
+            this@TokenizationActivity,
+            id,
+            environment
+        ).apply {
+            // REQUIRED for V2 alias creation flow
+            setCustomHeaders(mapOf("Authorization" to "Bearer <TOKEN>"))
         }
+    }
+
+    private val vgsTiedCardHolder: PersonNameEditText by lazy { findViewById(R.id.vgsTiedCardHolder) }
+    private val vgsTiedCardNumber: VGSCardNumberEditText by lazy { findViewById(R.id.vgsTiedCardNumber) }
+    private val vgsTiedExpiry: ExpirationDateEditText by lazy { findViewById(R.id.vgsTiedExpiry) }
+    private val vgsTiedCvc: CardVerificationCodeEditText by lazy { findViewById(R.id.vgsTiedCvc) }
+
+    /**
+     * Creates card scanning intent.
+     *
+     * Scanned values automatically populate corresponding Collect Views
+     * based on their field names.
+     */
+    override fun createScanIntent(): Intent {
+        return VGSBlinkCardIntentBuilder(this)
+            .setCardHolderFieldName(vgsTiedCardHolder.getFieldName())
+            .setCardNumberFieldName(vgsTiedCardNumber.getFieldName())
+            .setExpirationDateFieldName(vgsTiedExpiry.getFieldName())
+            .setCVCFieldName(vgsTiedCvc.getFieldName())
+            .build()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivityTokenizationBinding.inflate(layoutInflater)
-        codeExampleBinding = CodeViewLayoutBinding.bind(binding.root)
-        cardViewBinding = binding.includeCardView
-        setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
-            val bars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updatePadding(top = bars.top)
-            WindowInsetsCompat.CONSUMED
-        }
-        initCollect()
-        initViews()
+        initCollectForm()
     }
 
+    /**
+     * Re-applies tokenization configuration every time
+     * the Activity resumes (in case settings changed).
+     */
     override fun onResume() {
         super.onResume()
         configureTokenization()
@@ -94,235 +108,125 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.scan -> {
-                scanCard()
-                true
-            }
+            R.id.scan -> true.also { scanResultLauncher.launch(createScanIntent()) }
 
-            R.id.settings -> {
-                openSettings()
-                true
-            }
+            R.id.settings -> true.also { TokenizationSettingsActivity.start(this) }
 
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        @Suppress("DEPRECATION") super.onActivityResult(requestCode, resultCode, data)
-        collect?.onActivityResult(requestCode, resultCode, data)
-    }
+    /**
+     * Initializes and configures the VGS Collect integration.
+     *
+     * Integration flow:
+     * 1. Handle submit response
+     * 4. Bind fields to form
+     * 5. Setup create aliases action
+     */
+    private fun initCollectForm() {
+        // ==========================================================
+        // STEP 1: Handle tokenize response
+        // ==========================================================
+        form.addOnResponseListeners(object : VgsCollectResponseListener {
+            override fun onResponse(response: VGSResponse?) {
+                setLoading(false)
 
-    override fun onDestroy() {
-        super.onDestroy()
-        collect?.onDestroy()
-        collect = null
-    }
+                when (response) {
+                    is VGSResponse.SuccessResponse -> {
+                        Log.d(TAG, "Submit success: ${response.body}")
+                    }
 
-    override fun onTextChange(view: InputFieldView, isEmpty: Boolean) {
-        with(cardViewBinding) {
-            val (title, layout) = (when (view.id) {
-                R.id.vgsTiedCardHolder -> mtvCardHolderHint to vgsTilCardHolder
-                R.id.vgsTiedCardNumber -> mtvCardNumberHint to vgsTilCardNumber
-                R.id.vgsTiedExpiry -> mtvExpiryHint to vgsTilExpiry
-                R.id.vgsTiedCvc -> mtvCvcHint to vgsTilCvc
-                else -> throw IllegalArgumentException("Not implemented.")
-            })
-            setInputValid(title, layout)
+                    is VGSResponse.ErrorResponse -> {
+                        Log.e(TAG, "Submit error: ${response.errorCode}")
+                    }
+
+                    else -> Unit
+                }
+            }
+        })
+
+        // ==========================================================
+        // STEP 2: Bind fields (REQUIRED)
+        // ==========================================================
+        form.bindView(vgsTiedCardHolder)
+        form.bindView(vgsTiedCardNumber)
+        form.bindView(vgsTiedExpiry)
+        form.bindView(vgsTiedCvc)
+
+        // ==========================================================
+        // STEP 5: Setup actions
+        // ==========================================================
+        findViewById<MaterialButton>(R.id.mbTokenize).setOnClickListener {
+            setLoading(true)
+            form.createAliases(VGSCreateAliasesRequest.VGSRequestBuilder().build())
         }
     }
 
-    override fun onResponse(response: VGSResponse?) {
-        Log.d(this::class.java.simpleName, response.toString())
-        setLoading(false)
-        this.response = response?.body
-        if (response is VGSResponse.ErrorResponse) {
-            showSnackBar("Code: ${response.code}, ${response.localizeMessage}")
-        }
-    }
-
-    private fun initCollect() {
-        with(intent?.extras) {
-            collect = VGSCollect(
-                this@TokenizationActivity,
-                this?.getString(StartActivity.Companion.KEY_BUNDLE_VAULT_ID) ?: "",
-                this?.getString(StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT) ?: ""
-            )
-            collect?.setCustomHeaders(mapOf("Authorization" to "Bearer <TOKEN>"))
-            collect?.addOnResponseListeners(this@TokenizationActivity)
-        }
-    }
-
-    private fun initViews() {
-        binding.clRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
-        bindViews()
-        configureTokenization()
-        initTextChangeListener()
-        initClickListeners()
-        initCodeExampleView()
-        updateCodeExample(null)
-    }
-
-    private fun bindViews() {
-        collect?.bindView(cardViewBinding.vgsTiedCardHolder)
-        collect?.bindView(cardViewBinding.vgsTiedCardNumber)
-        collect?.bindView(cardViewBinding.vgsTiedExpiry)
-        collect?.bindView(cardViewBinding.vgsTiedCvc)
-    }
-
+    /**
+     * Applies tokenization configuration based on shared preferences.
+     *
+     * Controls:
+     * - Whether tokenization is enabled per field
+     * - Storage type (PERSISTENT / VOLATILE)
+     * - Alias format (FPE, UUID, RAW_UUID, etc.)
+     */
     private fun configureTokenization() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        cardViewBinding.vgsTiedCardHolder.setEnabledTokenization(
+        vgsTiedCardHolder.setEnabledTokenization(
             preferences.getBoolean(
-                getString(R.string.tokenization_card_holder_enabled_key), true
+                getString(R.string.tokenization_card_holder_enabled_key),
+                true
             )
         )
-        preferences.getString(getString(R.string.tokenization_card_holder_storage_key), null)?.let {
-            cardViewBinding.vgsTiedCardHolder.setVaultStorageType(parseStorage(it))
+        val cardHolderStorageKey = getString(R.string.tokenization_card_holder_storage_key)
+        parseStorage(preferences.getString(cardHolderStorageKey, null))?.let {
+            vgsTiedCardHolder.setVaultStorageType(it)
         }
-        preferences.getString(getString(R.string.tokenization_card_holder_alias_format_key), null)
-            ?.let {
-                cardViewBinding.vgsTiedCardHolder.setVaultAliasFormat(parseAliasFormat(it))
-            }
+        val cardHolderAlisaFormatKey = getString(R.string.tokenization_card_holder_alias_format_key)
+        parseAliasFormat(preferences.getString(cardHolderAlisaFormatKey, null))?.let {
+            vgsTiedCardHolder.setVaultAliasFormat(it)
+        }
+        val cardNumberAlisaFormatKey = getString(R.string.tokenization_card_holder_alias_format_key)
+        parseAliasFormat(preferences.getString(cardNumberAlisaFormatKey, null))?.let {
+            vgsTiedCardNumber.setVaultAliasFormat(it)
+        }
 
-        preferences.getString(getString(R.string.tokenization_card_number_alias_format_key), null)
-            ?.let {
-                cardViewBinding.vgsTiedCardNumber.setVaultAliasFormat(parseAliasFormat(it))
-            }
-
-        cardViewBinding.vgsTiedExpiry.setEnabledTokenization(
+        vgsTiedExpiry.setEnabledTokenization(
             preferences.getBoolean(
-                getString(R.string.tokenization_expiry_enabled_key), true
+                getString(R.string.tokenization_expiry_enabled_key),
+                true
             )
         )
-        preferences.getString(getString(R.string.tokenization_expiry_storage_key), null)?.let {
-            cardViewBinding.vgsTiedExpiry.setVaultStorageType(parseStorage(it))
+        val expiryStorageKey = getString(R.string.tokenization_expiry_storage_key)
+        parseStorage(preferences.getString(expiryStorageKey, null))?.let {
+            vgsTiedExpiry.setVaultStorageType(it)
         }
-        preferences.getString(getString(R.string.tokenization_expiry_alias_format_key), null)?.let {
-            cardViewBinding.vgsTiedExpiry.setVaultAliasFormat(parseAliasFormat(it))
-        }
-    }
-
-    private fun initTextChangeListener() {
-        cardViewBinding.vgsTiedCardHolder.addOnTextChangeListener(this)
-        cardViewBinding.vgsTiedCardNumber.addOnTextChangeListener(this)
-        cardViewBinding.vgsTiedExpiry.addOnTextChangeListener(this)
-        cardViewBinding.vgsTiedCvc.addOnTextChangeListener(this)
-    }
-
-    private fun initClickListeners() {
-        binding.mbTokenize.setOnClickListener {
-            runIfInputsValid {
-                tokenize()
-            }
-        }
-        binding.mbReset.setOnClickListener { resetView() }
-    }
-
-    private fun initCodeExampleView() {
-        val syntaxColor = ContextCompat.getColor(this, R.color.veryLightGray)
-        val bgColor = ContextCompat.getColor(this, R.color.blackPearl)
-        val lineNumberColor = ContextCompat.getColor(this, R.color.nobel)
-        codeExampleBinding.codeView.setOptions(
-            Options(
-                context = this.applicationContext, theme = ColorThemeData(
-                    SyntaxColors(
-                        string = syntaxColor,
-                        punctuation = syntaxColor,
-                    ),
-                    numColor = lineNumberColor,
-                    bgContent = bgColor,
-                    bgNum = bgColor,
-                    noteColor = syntaxColor,
-                )
-            )
-        )
-        codeExampleBinding.codeView.alpha = 1f
-    }
-
-    private fun updateCodeExample(response: String?) {
-        codeExampleBinding.codeView.setCode(formatJson(response))
-    }
-
-    private fun tokenize() {
-        setLoading(true)
-        collect?.createAliases()
-    }
-
-    private fun resetView() {
-        response = null
-    }
-
-    private fun scanCard() {
-        val scanIntent = VGSBlinkCardIntentBuilder(this)
-            .setCardHolderFieldName(cardViewBinding.vgsTiedCardHolder.getFieldName())
-            .setCardNumberFieldName(cardViewBinding.vgsTiedCardNumber.getFieldName())
-            .setExpirationDateFieldName(cardViewBinding.vgsTiedExpiry.getFieldName())
-            .setCVCFieldName(cardViewBinding.vgsTiedCvc.getFieldName())
-            .build()
-        scanResultLauncher.launch(scanIntent)
-    }
-
-    private fun openSettings() {
-        TokenizationSettingsActivity.Companion.start(this)
-    }
-
-    private fun runIfInputsValid(action: () -> Unit) {
-        with(cardViewBinding) {
-            var isValid = true
-            if (vgsTiedCardHolder.getState()?.isValid == false) {
-                setInputInvalid(mtvCardHolderHint, vgsTilCardHolder)
-                isValid = false
-            }
-            if (vgsTiedCardNumber.getState()?.isValid == false) {
-                setInputInvalid(mtvCardNumberHint, vgsTilCardNumber)
-                isValid = false
-            }
-            if (vgsTiedExpiry.getState()?.isValid == false) {
-                setInputInvalid(mtvExpiryHint, vgsTilExpiry)
-                isValid = false
-            }
-            if (vgsTiedCvc.getState()?.isValid == false) {
-                setInputInvalid(mtvCvcHint, vgsTilCvc)
-                isValid = false
-            }
-            if (isValid) action.invoke()
+        val expiryAliasFormatKey = getString(R.string.tokenization_expiry_storage_key)
+        parseAliasFormat(preferences.getString(expiryAliasFormatKey, null))?.let {
+            vgsTiedExpiry.setVaultAliasFormat(it)
         }
     }
 
-    private fun setInputValid(title: MaterialTextView, layout: VGSTextInputLayout) {
-        title.setTextColor(defaultHintTextColor)
-        layout.setBoxBackgroundColor(defaultInputBackgroundColor)
-    }
-
-    private fun setInputInvalid(title: MaterialTextView, layout: VGSTextInputLayout) {
-        title.setTextColor(errorHintTextColor)
-        layout.setBoxBackgroundColor(errorInputBackgroundColor)
-    }
-
-    private fun setLoading(isLoading: Boolean) {
-        binding.viewOverlay.isVisible = isLoading
-        binding.progressBar.isVisible = isLoading
-    }
-
-    private fun showSnackBar(message: String) {
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
-    }
-
-    private fun formatJson(json: String?): String = try {
-        JSONObject(json ?: "").toString(4)
-    } catch (_: Exception) {
-        ""
-    }
-
-    private fun parseStorage(storage: String): VGSVaultStorageType = when (storage) {
+    /**
+     * Converts stored string value into [VGSVaultStorageType].
+     *
+     * @param storage String representation from preferences
+     * @return Matching enum or null if invalid
+     */
+    private fun parseStorage(storage: String?): VGSVaultStorageType? = when (storage) {
         VGSVaultStorageType.PERSISTENT.name -> VGSVaultStorageType.PERSISTENT
         VGSVaultStorageType.VOLATILE.name -> VGSVaultStorageType.VOLATILE
-        else -> throw IllegalArgumentException("Not implemented!")
+        else -> null
     }
 
-    private fun parseAliasFormat(format: String): VGSVaultAliasFormat = when (format) {
+    /**
+     * Converts stored string value into [VGSVaultAliasFormat].
+     *
+     * @param format String representation from preferences
+     * @return Matching enum or null if invalid
+     */
+    private fun parseAliasFormat(format: String?): VGSVaultAliasFormat? = when (format) {
         VGSVaultAliasFormat.FPE_ACC_NUM_T_FOUR.name -> VGSVaultAliasFormat.FPE_ACC_NUM_T_FOUR
         VGSVaultAliasFormat.FPE_ALPHANUMERIC_ACC_NUM_T_FOUR.name -> VGSVaultAliasFormat.FPE_ALPHANUMERIC_ACC_NUM_T_FOUR
         VGSVaultAliasFormat.FPE_SIX_T_FOUR.name -> VGSVaultAliasFormat.FPE_SIX_T_FOUR
@@ -338,6 +242,6 @@ class TokenizationActivity : AppCompatActivity(), InputFieldView.OnTextChangedLi
         VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING_T_FOUR.name -> VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING_T_FOUR
         VGSVaultAliasFormat.ALPHANUMERIC_SSN_T_FOUR.name -> VGSVaultAliasFormat.ALPHANUMERIC_SSN_T_FOUR
         VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING_SIX_T_FOUR.name -> VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING_SIX_T_FOUR
-        else -> throw IllegalArgumentException("Not implemented!")
+        else -> null
     }
 }
