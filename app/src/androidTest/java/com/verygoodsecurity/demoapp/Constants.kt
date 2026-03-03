@@ -1,6 +1,7 @@
 package com.verygoodsecurity.demoapp
 
 const val SUCCESS_CODE = "200"
+const val TOKENIZATION_V2_SUCCESS_CODE = "201"
 
 const val TEST_ENVIRONMENT = "sandbox"
 
