@@ -1,6 +1,5 @@
 package com.verygoodsecurity.demoapp.core
 
-import android.R.id.content as contentId
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -39,12 +38,14 @@ import io.github.kbiakov.codeview.highlight.FontCache
 import io.github.kbiakov.codeview.highlight.SyntaxColors
 import org.json.JSONArray
 import org.json.JSONObject
+import android.R.id.content as contentId
 
 abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(layoutId) {
 
     protected val id: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_VAULT_ID) }
     protected val path: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_PATH) }
     protected val environment: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_ENVIRONMENT) }
+    protected val routeId: String? by lazy { getStringExtra(StartActivity.KEY_BUNDLE_ROUTE_ID) }
 
     private val content: ViewGroup by lazy { findViewById(contentId) }
     private val codeView: CodeView? by lazy { findViewById(com.verygoodsecurity.demoapp.R.id.codeView) }
@@ -83,7 +84,12 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        com.verygoodsecurity.demoapp.R.id.scan_card -> true.also { scanResultLauncher.launch(createScanIntent()) }
+        com.verygoodsecurity.demoapp.R.id.scan_card -> true.also {
+            scanResultLauncher.launch(
+                createScanIntent()
+            )
+        }
+
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -150,9 +156,11 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
     private fun setupCodeView() {
         codeViewToggle?.addOnButtonCheckedListener { _, _, _ -> updateCodeView() }
         setCodeViewToggle(com.verygoodsecurity.demoapp.R.id.mbStates)
-        val syntaxColor = ContextCompat.getColor(this, com.verygoodsecurity.demoapp.R.color.veryLightGray)
+        val syntaxColor =
+            ContextCompat.getColor(this, com.verygoodsecurity.demoapp.R.color.veryLightGray)
         val bgColor = ContextCompat.getColor(this, com.verygoodsecurity.demoapp.R.color.blackPearl)
-        val lineNumberColor = ContextCompat.getColor(this, com.verygoodsecurity.demoapp.R.color.nobel)
+        val lineNumberColor =
+            ContextCompat.getColor(this, com.verygoodsecurity.demoapp.R.color.nobel)
         codeView?.setOptions(
             Options(
                 context = this.applicationContext, theme = ColorThemeData(
@@ -168,18 +176,20 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
             )
         )
         codeView?.alpha = 1f
-        codeView?.findViewById<RecyclerView>(com.verygoodsecurity.demoapp.R.id.rv_code_content)?.isNestedScrollingEnabled = false
+        codeView?.findViewById<RecyclerView>(com.verygoodsecurity.demoapp.R.id.rv_code_content)?.isNestedScrollingEnabled =
+            false
         val tvLanguage = findViewById<TextView>(com.verygoodsecurity.demoapp.R.id.tvLanguage)
         tvLanguage.setTypeface(
             FontCache.get(this).getTypeface(this, Font.DroidSansMonoSlashed)
         )
-        tvLanguage.text = getString(com.verygoodsecurity.demoapp.R.string.code_view_json_language_title)
+        tvLanguage.text =
+            getString(com.verygoodsecurity.demoapp.R.string.code_view_json_language_title)
         tvLanguage.visibility = View.VISIBLE
     }
 
     private fun updateCodeView(response: VGSResponse?) {
         responseCodeExample = try {
-            JSONObject(response?.body ?: "").getJSONObject("json").toString(4)
+            JSONObject(response?.body ?: "").toString(4)
         } catch (_: Exception) {
             (response as? VGSResponse.ErrorResponse)?.localizeMessage ?: ""
         }

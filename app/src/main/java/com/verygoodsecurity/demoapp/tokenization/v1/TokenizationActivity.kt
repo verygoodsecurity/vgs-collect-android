@@ -155,7 +155,11 @@ class TokenizationActivity : BaseDemoActivity(R.layout.activity_tokenization) {
         // ==========================================================
         findViewById<MaterialButton>(R.id.mbTokenize).setOnClickListener {
             setLoading(true)
-            form.tokenize(VGSTokenizationRequest.VGSRequestBuilder().build())
+            form.tokenize(
+                request = VGSTokenizationRequest.VGSRequestBuilder()
+                    .apply { routeId?.let { setRouteId(it) } }
+                    .build()
+            )
         }
     }
 

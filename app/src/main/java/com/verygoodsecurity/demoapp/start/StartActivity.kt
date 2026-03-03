@@ -31,6 +31,7 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         const val KEY_BUNDLE_VAULT_ID = "user_vault_id"
         const val KEY_BUNDLE_ENVIRONMENT = "user_env"
         const val KEY_BUNDLE_PATH = "user_path"
+        const val KEY_BUNDLE_ROUTE_ID = "route_id"
     }
 
     private lateinit var binding: ActivityStartBinding
@@ -107,18 +108,26 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
             R.string.start_collect_views_title -> startActivity(CollectViewsActivity::class.java)
             R.string.start_collect_compose_title -> startActivity(CollectComposeActivity::class.java)
             R.string.start_payopt_title -> startActivity(PaymentOptimizationActivity::class.java)
-            R.string.start_tokenization_title -> startActivity(TokenizationActivityV1::class.java)
-            R.string.start_tokenization_v2_title -> startActivity(TokenizationActivityV2::class.java)
+            R.string.start_tokenization_title -> startActivity(
+                TokenizationActivityV1::class.java,
+                routeId = BuildConfig.TOKENIZATION_ROUTE_ID
+            )
+
+            R.string.start_tokenization_v2_title -> startActivity(
+                TokenizationActivityV2::class.java,
+                routeId = BuildConfig.TOKENIZATION_V2_ROUTE_ID
+            )
             R.string.start_cmp_title -> startActivity(CMPActivity::class.java)
             R.string.start_google_pay_title -> startActivity(GooglePayActivity::class.java)
         }
     }
 
-    private fun startActivity(activity: Class<out Activity>) {
+    private fun startActivity(activity: Class<out Activity>, routeId: String? = null) {
         startActivity(Intent(this, activity).apply {
             putExtra(KEY_BUNDLE_VAULT_ID, binding.tiedVaultId.text.toString())
             putExtra(KEY_BUNDLE_PATH, binding.tiedPath.text.toString())
             putExtra(KEY_BUNDLE_ENVIRONMENT, getEnvironment())
+            putExtra(KEY_BUNDLE_ROUTE_ID, routeId)
         })
     }
 
