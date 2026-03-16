@@ -10,6 +10,7 @@ import android.view.autofill.AutofillValue
 import android.view.inputmethod.EditorInfo
 import androidx.annotation.VisibleForTesting
 import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.textfield.TextInputEditText
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsEvent
@@ -134,10 +135,8 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
 
     private fun setupEditorActionListener() {
         setOnEditorActionListener { _, actionId, event ->
-            val consumedAction =
-                onEditorActionListener?.onEditorAction(vgsParent, actionId, event) ?: false
-
-            consumedAction
+            onEditorActionListener?.onEditorAction(vgsParent, actionId, event)
+                ?: handleOnEditorAction(actionId)
         }
     }
 
@@ -310,17 +309,6 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    private fun requestFocusOnView(id: Int) {
-        val nextView = rootView?.findViewById<View>(id)
-
-        when (nextView) {
-            null -> return
-            is InputFieldView -> nextView.statePreparer.getView().requestFocus()
-            is BaseInputField -> nextView.requestFocus()
-            else -> nextView.requestFocus()
-        }
-    }
-
     override fun setOnKeyListener(l: OnKeyListener?) {
         if (!isKeyListenerConfigured) {
             isKeyListenerConfigured = true
@@ -336,15 +324,30 @@ internal abstract class BaseInputField(context: Context) : TextInputEditText(con
         }
     }
 
-    override fun onEditorAction(actionCode: Int) {
-        when {
-            actionCode == EditorInfo.IME_ACTION_NEXT
-                    && nextFocusDownId != View.NO_ID -> requestFocusOnView(nextFocusDownId)
+    @SuppressLint("WrongConstant")
+    private fun handleOnEditorAction(actionId: Int): Boolean {
+        val view: View? = when (actionId) {
+            EditorInfo.IME_ACTION_NEXT -> {
+                rootView?.findViewById(nextFocusDownId) ?: focusSearch(FOCUS_FORWARD)
+            }
 
-            actionCode == EditorInfo.IME_ACTION_PREVIOUS
-                    && nextFocusUpId != View.NO_ID -> requestFocusOnView(nextFocusUpId)
+            EditorInfo.IME_ACTION_PREVIOUS -> {
+                rootView?.findViewById(nextFocusUpId) ?: focusSearch(FOCUS_BACKWARD)
+            }
+
+            else -> null
         }
-        super.onEditorAction(actionCode)
+        return safeRequestFocus(view)
+    }
+
+    private fun safeRequestFocus(v: View?): Boolean {
+        val view = when (v) {
+            is InputFieldView -> v.statePreparer.getView()
+            else -> v
+        }
+        return view
+            ?.takeIf { it.isFocusable && it.isFocusableInTouchMode && it.isEnabled && it.isVisible }
+            ?.also { post { it.requestFocus() } } != null
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)

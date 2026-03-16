@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>vgscollect</title>
     <link href="images/logo-icon.svg" rel="icon" type="image/svg">
-    <script>var pathToRoot = "";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+        <script>var pathToRoot = "";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
 <script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
 <script type="text/javascript" src="scripts/sourceset_dependencies.js" async="async"></script>
@@ -25,58 +25,101 @@
 <link href="styles/main.css" rel="Stylesheet">
 <link href="styles/prism.css" rel="Stylesheet">
 <link href="styles/logo-styles.css" rel="Stylesheet">
-<link href="styles/font-jb-sans-auto.css" rel="Stylesheet">
-<script type="text/javascript" src="scripts/clipboard.js" async="async"></script>
+<link href="ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="scripts/navigation-loader.js" async="async"></script>
 <script type="text/javascript" src="scripts/platform-content-handler.js" async="async"></script>
 <script type="text/javascript" src="scripts/main.js" defer="defer"></script>
 <script type="text/javascript" src="scripts/prism.js" async="async"></script>
-<script type="text/javascript" src="scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+<script type="text/javascript" src="ui-kit/ui-kit.min.js" defer="defer"></script>
 </head>
 <body>
-    <div class="root">
-<nav class="navigation" id="navigation-wrapper">
-    <div class="navigation--inner">
-        <div class="navigation-title">
-            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
-            <div class="library-name">
-                    <a class="library-name--link" href="index.html">
-                            vgscollect
-                    </a>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="index.html" tabindex="1">
+                    vgscollect
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true"
+                        data-filter=":vgscollect/main">androidJvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":vgscollect/main"
+                                       data-filter=":vgscollect/main"/>
+                                <span class="checkbox--icon"></span>
+                                androidJvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div class="library-version">
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
             </div>
         </div>
-        <div class="filter-section" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":vgscollect:dokkaHtml/release">androidJvm</button>
-        </div>
-    </div>
-    <div class="navigation-controls">
-        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
-        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
-    </div>
-</nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="sidebar--inner" id="sideMenu"></div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    vgscollect
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" id="content" pageIds="vgscollect::////PointingToDeclaration//1122815226">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" id="content" pageIds="vgscollect::////PointingToDeclaration//-1564212639">
   <div class="breadcrumbs"></div>
   <div class="cover ">
     <h1 class="cover"><span><span>vgscollect</span></span></h1>
   </div>
   <h2 class="">Packages</h2>
-  <div class="table"><a data-name="-1570387176%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect" id="-1570387176%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+  <div class="table"><a data-name="-1570387176%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect" id="-1570387176%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect/index.html">com.verygoodsecurity.vgscollect</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1570387176%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1570387176%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -85,16 +128,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="-928204405%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.app" id="-928204405%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="-928204405%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.app" id="-928204405%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.app/index.html">com.verygoodsecurity.vgscollect.app</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-928204405%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-928204405%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -103,16 +146,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="-1692423431%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.core" id="-1692423431%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="-1692423431%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.core" id="-1692423431%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.core/index.html">com.verygoodsecurity.vgscollect.core</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1692423431%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1692423431%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -121,16 +164,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="2122992549%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.core.api" id="2122992549%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="2122992549%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.core.api" id="2122992549%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.core.api/index.html">com.verygoodsecurity.vgscollect.core.api</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2122992549%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2122992549%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -139,16 +182,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="262001161%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.core.api.client.extension" id="262001161%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="262001161%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.core.api.client.extension" id="262001161%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.core.api.client.extension/index.html">com.verygoodsecurity.vgscollect.core.api.client.extension</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="262001161%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="262001161%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -157,16 +200,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="1396761012%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.core.model" id="1396761012%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="1396761012%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.core.model" id="1396761012%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.core.model/index.html">com.verygoodsecurity.vgscollect.core.model</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1396761012%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1396761012%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -175,16 +218,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="-1507694174%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.core.model.map" id="-1507694174%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="-1507694174%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.core.model.map" id="-1507694174%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.core.model.map/index.html">com.verygoodsecurity.vgscollect.core.model.map</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1507694174%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1507694174%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -193,16 +236,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="1902578164%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.core.model.network" id="1902578164%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="1902578164%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.core.model.network" id="1902578164%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.core.model.network/index.html">com.verygoodsecurity.vgscollect.core.model.network</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1902578164%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1902578164%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -211,16 +254,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="1924193097%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.core.model.network.tokenization" id="1924193097%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="1924193097%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.core.model.network.tokenization" id="1924193097%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.core.model.network.tokenization/index.html">com.verygoodsecurity.vgscollect.core.model.network.tokenization</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1924193097%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1924193097%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -229,16 +272,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="1933260695%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.core.model.state" id="1933260695%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="1933260695%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.core.model.state" id="1933260695%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.core.model.state/index.html">com.verygoodsecurity.vgscollect.core.model.state</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1933260695%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1933260695%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -247,16 +290,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="-704303482%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.core.model.state.tokenization" id="-704303482%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="-704303482%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.core.model.state.tokenization" id="-704303482%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.core.model.state.tokenization/index.html">com.verygoodsecurity.vgscollect.core.model.state.tokenization</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-704303482%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-704303482%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -265,16 +308,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="-1111642042%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.core.storage" id="-1111642042%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="-1111642042%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.core.storage" id="-1111642042%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.core.storage/index.html">com.verygoodsecurity.vgscollect.core.storage</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1111642042%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1111642042%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -283,16 +326,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="-1934599107%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.core.storage.content.file" id="-1934599107%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="-1934599107%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.core.storage.content.file" id="-1934599107%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.core.storage.content.file/index.html">com.verygoodsecurity.vgscollect.core.storage.content.file</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1934599107%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1934599107%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -301,16 +344,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="162374061%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.util.extension" id="162374061%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="162374061%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.util.extension" id="162374061%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.util.extension/index.html">com.verygoodsecurity.vgscollect.util.extension</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="162374061%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="162374061%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -319,16 +362,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="2099698303%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view" id="2099698303%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="2099698303%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view" id="2099698303%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view/index.html">com.verygoodsecurity.vgscollect.view</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2099698303%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2099698303%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -337,16 +380,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="499356707%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.card" id="499356707%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="499356707%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.card" id="499356707%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.card/index.html">com.verygoodsecurity.vgscollect.view.card</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="499356707%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="499356707%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -355,16 +398,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="15286335%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.card.formatter" id="15286335%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="15286335%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.card.formatter" id="15286335%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.card.formatter/index.html">com.verygoodsecurity.vgscollect.view.card.formatter</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="15286335%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="15286335%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -373,16 +416,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="1610256769%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.card.formatter.date" id="1610256769%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="1610256769%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.card.formatter.date" id="1610256769%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.card.formatter.date/index.html">com.verygoodsecurity.vgscollect.view.card.formatter.date</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1610256769%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1610256769%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -391,16 +434,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="1060907902%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.card.formatter.digit" id="1060907902%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="1060907902%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.card.formatter.digit" id="1060907902%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.card.formatter.digit/index.html">com.verygoodsecurity.vgscollect.view.card.formatter.digit</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1060907902%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1060907902%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -409,16 +452,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="1040806600%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.card.formatter.rules" id="1040806600%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="1040806600%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.card.formatter.rules" id="1040806600%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.card.formatter.rules/index.html">com.verygoodsecurity.vgscollect.view.card.formatter.rules</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1040806600%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1040806600%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -427,16 +470,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="141599016%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.card.icon" id="141599016%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="141599016%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.card.icon" id="141599016%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.card.icon/index.html">com.verygoodsecurity.vgscollect.view.card.icon</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="141599016%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="141599016%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -445,16 +488,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="-793514136%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.card.validation" id="-793514136%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="-793514136%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.card.validation" id="-793514136%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.card.validation/index.html">com.verygoodsecurity.vgscollect.view.card.validation</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-793514136%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-793514136%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -463,16 +506,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="1707957632%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.card.validation.payment" id="1707957632%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="1707957632%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.card.validation.payment" id="1707957632%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.card.validation.payment/index.html">com.verygoodsecurity.vgscollect.view.card.validation.payment</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1707957632%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1707957632%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -481,16 +524,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="1773428529%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.card.validation.rules" id="1773428529%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="1773428529%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.card.validation.rules" id="1773428529%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.card.validation.rules/index.html">com.verygoodsecurity.vgscollect.view.card.validation.rules</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1773428529%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1773428529%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -499,16 +542,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="566711909%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.core.serializers" id="566711909%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="566711909%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.core.serializers" id="566711909%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.core.serializers/index.html">com.verygoodsecurity.vgscollect.view.core.serializers</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="566711909%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="566711909%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -517,16 +560,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="1113708769%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.cvc" id="1113708769%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="1113708769%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.cvc" id="1113708769%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.cvc/index.html">com.verygoodsecurity.vgscollect.view.cvc</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1113708769%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1113708769%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -535,16 +578,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="962813761%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.date" id="962813761%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="962813761%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.date" id="962813761%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.date/index.html">com.verygoodsecurity.vgscollect.view.date</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="962813761%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="962813761%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -553,16 +596,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="1576599290%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.material" id="1576599290%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="1576599290%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.material" id="1576599290%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.material/index.html">com.verygoodsecurity.vgscollect.view.material</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1576599290%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1576599290%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -571,16 +614,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="983410421%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.view.material.internal" id="983410421%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="983410421%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.view.material.internal" id="983410421%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.view.material.internal/index.html">com.verygoodsecurity.vgscollect.view.material.internal</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="983410421%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="983410421%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -589,16 +632,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="-1370115234%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.widget" id="-1370115234%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="-1370115234%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.widget" id="-1370115234%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.widget/index.html">com.verygoodsecurity.vgscollect.widget</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1370115234%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1370115234%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -607,16 +650,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="-1208060926%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.widget.compose" id="-1208060926%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="-1208060926%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.widget.compose" id="-1208060926%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.widget.compose/index.html">com.verygoodsecurity.vgscollect.widget.compose</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1208060926%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1208060926%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -625,16 +668,16 @@
         <div></div>
       </div>
     </div>
-<a data-name="139722355%2FPackages%2F1122815226" anchor-label="com.verygoodsecurity.vgscollect.widget.core" id="139722355%2FPackages%2F1122815226" data-filterable-set=":vgscollect:dokkaHtml/release"></a>
-    <div class="table-row" data-filterable-current=":vgscollect:dokkaHtml/release" data-filterable-set=":vgscollect:dokkaHtml/release">
+<a data-name="139722355%2FPackages%2F-1564212639" anchor-label="com.verygoodsecurity.vgscollect.widget.core" id="139722355%2FPackages%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
       <div>
         <div class="main-subrow ">
           <div class=""><span class="inline-flex">
               <div><a href="vgscollect/com.verygoodsecurity.vgscollect.widget.core/index.html">com.verygoodsecurity.vgscollect.widget.core</a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="139722355%2FPackages%2F1122815226"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="139722355%2FPackages%2F-1564212639"></span>
                 <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
               </span></span></div>
-          <div class="pull-right">
+          <div class="pull-right platform-tags--wrapper">
             <div class="platform-tags no-gutters">
               <div class="platform-tag jvm-like">androidJvm</div>
             </div>
@@ -645,13 +688,22 @@
     </div>
   </div>
 </div>
-      <div class="footer">
-        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2025 Copyright</span><span
-                class="pull-right"><span>Generated by </span><a
-                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
-      </div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
