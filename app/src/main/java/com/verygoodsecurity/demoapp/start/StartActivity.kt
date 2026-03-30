@@ -13,7 +13,6 @@ import com.verygoodsecurity.demoapp.collect.compose.CollectComposeActivity
 import com.verygoodsecurity.demoapp.collect.views.CollectViewsActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityStartBinding
 import com.verygoodsecurity.demoapp.google_pay.GooglePayActivity
-import com.verygoodsecurity.demoapp.payopt.PaymentOptimizationActivity
 import com.verygoodsecurity.demoapp.start.adapter.StartFlowAdapter
 import com.verygoodsecurity.demoapp.start.decoration.GridSpacingItemDecoration
 import com.verygoodsecurity.demoapp.tokenization.v1.TokenizationActivity as TokenizationActivityV1
@@ -48,11 +47,6 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
                 id = R.string.start_collect_compose_title,
                 title = getString(R.string.start_collect_compose_title),
                 description = getString(R.string.start_collect_compose_description)
-            ),
-            StartFlowAdapter.FlowItem(
-                id = R.string.start_payopt_title,
-                title = getString(R.string.start_payopt_title),
-                description = getString(R.string.start_payopt_description)
             ),
             StartFlowAdapter.FlowItem(
                 id = R.string.start_tokenization_title,
@@ -107,7 +101,6 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         when (flowId) {
             R.string.start_collect_views_title -> startActivity(CollectViewsActivity::class.java)
             R.string.start_collect_compose_title -> startActivity(CollectComposeActivity::class.java)
-            R.string.start_payopt_title -> startActivity(PaymentOptimizationActivity::class.java)
             R.string.start_tokenization_title -> startActivity(
                 TokenizationActivityV1::class.java,
                 routeId = BuildConfig.TOKENIZATION_ROUTE_ID

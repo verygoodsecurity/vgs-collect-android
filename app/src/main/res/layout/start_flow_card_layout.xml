@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:lines="1"
-        android:text="@string/start_payopt_title"
         android:textAppearance="?attr/textAppearanceSubtitle2"
         tools:text="Title" />
 

@@ -26,9 +26,6 @@
     <string name="start_collect_compose_title">Collect (Compose)</string>
     <string name="start_collect_compose_description">Example of collecting data using collect compose widgets.</string>
 
-    <string name="start_payopt_title">Payopt</string>
-    <string name="start_payopt_description">Collecting data with payment optimization example.</string>
-
     <string name="start_cmp_title">CMP</string>
     <string name="start_cmp_description">Example of create card object flow.</string>
 
