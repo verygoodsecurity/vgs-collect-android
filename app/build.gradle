@@ -25,11 +25,13 @@ android {
         multiDexEnabled true
 
         buildConfigField("String", "VAULT_ID", "\"${getLocalProperty("VGS_VAULT_ID")}\"")
-        buildConfigField("String", "ROUTE_ID", "\"${getLocalProperty("VGS_ROUTE_ID")}\"")
         buildConfigField("String", "PATH", "\"${getLocalProperty("VGS_PATH")}\"")
+        buildConfigField("String", "TOKENIZATION_ROUTE_ID", "\"${getLocalProperty("VGS_TOKENIZATION_ROUTE_ID")}\"")
+        buildConfigField("String", "TOKENIZATION_V2_ROUTE_ID", "\"${getLocalProperty("VGS_TOKENIZATION_V2_ROUTE_ID")}\"")
         buildConfigField("String", "ACCESS_TOKEN_URL", "\"${getLocalProperty("VGS_ACCESS_TOKEN_URL")}\"")
-        buildConfigField("String", "CREATE_ORDER_URL", "\"${getLocalProperty("VGS_CREATE_ORDER_URL")}\"")
-        buildConfigField("String", "PAYMENT_URL", "\"${getLocalProperty("VGS_PAYMENT_URL")}\"")
+        buildConfigField("String", "CLIENT_ID", "\"${getLocalProperty("VGS_CLIENT_ID")}\"")
+        buildConfigField("String", "CLIENT_SECRET", "\"${getLocalProperty("VGS_CLIENT_SECRET")}\"")
+        buildConfigField("String", "GRANT_TYPE", "\"${getLocalProperty("VGS_GRANT_TYPE")}\"")
     }
 
     buildFeatures {

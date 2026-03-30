@@ -11,35 +11,20 @@
 
     <string name="start_activity_start_btn_title">Start</string>
 
-    <string name="start_tokenization_activity_title">Tokenization</string>
-    <string name="start_tokenization_activity_description">Tokenize data without additional backend setup required.</string>
+    <string name="start_tokenization_title">Tokenization</string>
+    <string name="start_tokenization_description">Tokenize data without additional backend setup required.</string>
 
-    <string name="start_tokenization_v2_activity_title">Create aliases(Tokenization v2)</string>
-    <string name="start_tokenization_v2_activity_description">Tokenize data without additional backend setup required.</string>
+    <string name="start_tokenization_v2_title">Create aliases(Tokenization v2)</string>
+    <string name="start_tokenization_v2_description">Tokenize data without additional backend setup required.</string>
 
-    <string name="start_google_pay_activity_title">Google Pay</string>
-    <string name="start_google_pay_activity_description">Example of decrypting google pay token.</string>
+    <string name="start_google_pay_title">Google Pay</string>
+    <string name="start_google_pay_description">Example of decrypting google pay token.</string>
 
-    <string name="start_collect_with_activity_title">Collect (Activity)</string>
-    <string name="start_collect_with_activity_description">Example of collecting data using Activity.</string>
+    <string name="start_collect_views_title">Collect (Views)</string>
+    <string name="start_collect_views_description">Example of collecting data using collect views.</string>
 
-    <string name="start_collect_with_fragment_title">Collect (Fragment)</string>
-    <string name="start_collect_with_fragment_description">Example of collecting data using Fragment.</string>
-
-    <string name="start_collect_with_view_pager_title">Collect (ViewPager)</string>
-    <string name="start_collect_with_view_pager_description">Example of collecting data using ViewPager.</string>
-
-    <string name="start_date_range_pager_title">Date Range (Activity)</string>
-    <string name="start_date_range_pager_description">Example of collecting date range using Activity.</string>
-
-    <string name="start_compose_title">Compose (Activity)</string>
-    <string name="start_compose_description">Example of collecting date wit Jetpack Compose and Activity.</string>
-
-    <string name="start_compos_fragment_title">Compose (Fragment)</string>
-    <string name="start_compose_fragment_description">Example of collecting date wit Jetpack Compose and Fragment.</string>
-
-    <string name="start_payopt">Payopt</string>
-    <string name="start_payopt_description">Collecting data with payment optimization example.</string>
+    <string name="start_collect_compose_title">Collect (Compose)</string>
+    <string name="start_collect_compose_description">Example of collecting data using collect compose widgets.</string>
 
     <string name="start_cmp_title">CMP</string>
     <string name="start_cmp_description">Example of create card object flow.</string>
@@ -47,18 +32,15 @@
     <string name="tokenization_scan_card_menu_item_title">Scan</string>
     <string name="tokenization_settings_menu_item_title">Settings</string>
 
+    <string name="code_view_json_language_title">JSON</string>
+
+    <!--    Collect views flow-->
+    <string name="attach_btn_title">Attach</string>
+    <string name="detach_btn_title">Detach</string>
+
+
     <!--    Collect flow-->
     <string name="scan_item">Scan Card</string>
-    <string name="collect_activity_cards_title">Collecting credit card data</string>
-    <string name="collect_activity_submit_btn">submit</string>
-    <string name="collect_activity_attach_btn">Attach file</string>
-    <string name="collect_activity_state_item">STATE</string>
-    <string name="collect_activity_response_item">RESPONSE</string>
-
-    <string name="card_number">Card number</string>
-    <string name="cvc">CVC</string>
-    <string name="card_holder">Name on card</string>
-    <string name="exp_date">Expiration date</string>
 
     <!--    Tokenization-->
     <string name="tokenization_card_holder_enabled_key">key_card_holder_tokenization_enabled</string>
@@ -86,7 +68,6 @@
     <string name="expiration_date_title">Expiration date</string>
     <string name="expiration_date_default_placeholder">MM/YY</string>
     <string name="card_owner_default_value">Card owner(Name on the card)</string>
-    <string name="some_details_default_value">some details</string>
     <string name="apply_divider_title">Apply Divider</string>
     <string name="add_brand_title">Add brand</string>
     <string name="override_brand_title">Override brand</string>

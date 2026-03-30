@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_custom_btn"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_padding_material_small">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mTvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textAppearance="?attr/textAppearanceSubtitle2"
+        tools:text="Title" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mTvDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_material_micro"
+        android:ellipsize="end"
+        android:lines="2"
+        android:textAppearance="?attr/textAppearanceCaption"
+        tools:text="Description" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_padding_material_micro"
+        android:text="@string/start_activity_start_btn_title"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textColor="@color/navyBlue"
+        app:fontFamily="sans-serif-medium" />
+</androidx.appcompat.widget.LinearLayoutCompat>

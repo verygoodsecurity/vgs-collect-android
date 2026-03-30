@@ -28,15 +28,4 @@
         <item name="textAppearance">?attr/textAppearanceBody2</item>
         <item name="android:textAppearance">?attr/textAppearanceBody2</item>
     </style>
-
-    <style name="EditText">
-        <item name="android:paddingTop">1dp</item>
-        <item name="android:paddingBottom">1dp</item>
-        <item name="android:paddingStart">@dimen/vgs_field_horizontal_padding</item>
-        <item name="android:paddingEnd">@dimen/vgs_field_horizontal_padding</item>
-
-        <item name="android:textSize">@dimen/vgs_field_text_size</item>
-        <item name="textSize">@dimen/vgs_field_text_size</item>
-    </style>
-
 </resources>
