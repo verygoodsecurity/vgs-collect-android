@@ -31,7 +31,7 @@ private const val TAG = "V2 TokenizationActivity"
  *
  * This Activity showcases how to:
  *
- * 1. Initialize [VGSCollect] with ⚠️ authorization header.
+ * 1. Initialize [VGSCollect] with ⚠️ authorization header or set it before submit data.
  * 2. Bind secure Collect Views
  * 3. Configure tokenization options dynamically
  * 4. Submit data using [VGSCreateAliasesRequest]
@@ -54,19 +54,13 @@ class TokenizationActivity : BaseDemoActivity(R.layout.activity_tokenization) {
 
     /**
      * Lazy initialization of [VGSCollect].
-     *
-     * ⚠️ V2 requires Authorization header.
-     * Header must be provided before calling [VGSCollect.createAliases].
      */
     override val form: VGSCollect by lazy {
         VGSCollect(
             this@TokenizationActivity,
             id,
             environment
-        ).apply {
-            // REQUIRED for V2 alias creation flow
-            setCustomHeaders(mapOf("Authorization" to "Bearer <TOKEN>"))
-        }
+        )
     }
 
     private val vgsTiedCardHolder: PersonNameEditText by lazy { findViewById(R.id.vgsTiedCardHolder) }
@@ -161,10 +155,9 @@ class TokenizationActivity : BaseDemoActivity(R.layout.activity_tokenization) {
         // ==========================================================
         findViewById<MaterialButton>(R.id.mbTokenize).setOnClickListener {
             setLoading(true)
-            // Access token is REQUIRED for V2 alias creation flow.
             NetworkHelper.accessToken(
                 onSuccess = { token ->
-                    // Set access token to collect form
+                    // ⚠️ Tokenization V2 requires Authorization header.
                     form.setCustomHeaders(mapOf("Authorization" to "Bearer $token"))
                     form.createAliases(
                         request = VGSCreateAliasesRequest.VGSRequestBuilder()
