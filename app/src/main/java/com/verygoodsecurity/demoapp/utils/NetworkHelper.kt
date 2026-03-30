@@ -4,6 +4,8 @@ import android.os.Handler
 import android.os.Looper
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.result.Result
+import com.verygoodsecurity.demoapp.BuildConfig
+import org.json.JSONObject
 
 object NetworkHelper {
 
@@ -58,4 +60,30 @@ object NetworkHelper {
             }
         }
     }
+}
+
+fun NetworkHelper.accessToken(
+    onSuccess: (token: String) -> Unit,
+    onError: (message: String) -> Unit
+) {
+    request(
+        url = BuildConfig.ACCESS_TOKEN_URL,
+        body = listOf(
+            "client_id" to BuildConfig.CLIENT_ID,
+            "client_secret" to BuildConfig.CLIENT_SECRET,
+            "grant_type" to BuildConfig.GRANT_TYPE
+        ),
+        headers = listOf("Content-Type" to "application/x-www-form-urlencoded"),
+        onSuccess = { response ->
+            try {
+                val token = JSONObject(response).getString("access_token")
+                onSuccess.invoke(token)
+            } catch (e: Exception) {
+                onError.invoke("Get access token error: ${e.message}")
+            }
+        },
+        onError = {
+            onError.invoke("Get access token error: $it")
+        }
+    )
 }

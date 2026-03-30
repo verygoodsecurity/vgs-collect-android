@@ -1,128 +1,112 @@
 package com.verygoodsecurity.demoapp.cmp
 
-import android.animation.LayoutTransition
-import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
-import androidx.recyclerview.widget.RecyclerView
+import android.util.Log
+import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.databinding.CmpActivityBinding
-import com.verygoodsecurity.demoapp.databinding.CodeViewLayoutBinding
-import com.verygoodsecurity.vgscollect.VGSCollectLogger
-import com.verygoodsecurity.vgscollect.core.Environment
+import com.verygoodsecurity.demoapp.core.BaseDemoActivity
+import com.verygoodsecurity.demoapp.utils.NetworkHelper
+import com.verygoodsecurity.demoapp.utils.accessToken
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.util.extension.cardCVC
 import com.verygoodsecurity.vgscollect.util.extension.cardExpirationDate
 import com.verygoodsecurity.vgscollect.util.extension.cardNumber
-import io.github.kbiakov.codeview.adapters.Options
-import io.github.kbiakov.codeview.highlight.ColorThemeData
-import io.github.kbiakov.codeview.highlight.Font
-import io.github.kbiakov.codeview.highlight.FontCache
-import io.github.kbiakov.codeview.highlight.SyntaxColors
-import org.json.JSONObject
+import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
+import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
+import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 
-class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
+private const val TAG = "CMPActivity"
 
-    private lateinit var binding: CmpActivityBinding
-    private lateinit var codeExampleBinding: CodeViewLayoutBinding
+/**
+ * Demonstrates CMP card creation flow using [VGSCollect] with Collect Views.
+ *
+ * This screen shows:
+ * - How to initialize [VGSCollect] in an Activity
+ * - How to bind tied card fields (PAN, expiration date, CVC)
+ * - How to request an access token before CMP operations
+ * - How to call CMP `createCard` and handle submit response
+ *
+ * 📘 Official documentation:
+ * https://docs.verygoodsecurity.com/vault/developer-tools/vgs-collect/android-sdk/index
+ *
+ * @see VGSCollect
+ * @see VgsCollectResponseListener
+ */
+class CMPActivity : BaseDemoActivity(R.layout.cmp_activity) {
 
-    private val collect: VGSCollect by lazy {
+    /**
+     * Lazy initialization of [VGSCollect].
+     *
+     * Must be initialized with Activity context.
+     */
+    override val form: VGSCollect by lazy {
         VGSCollect(
             context = this@CMPActivity,
-            id = "<VAULT_ID>",
-            environment = Environment.SANDBOX
-        ).apply {
-            addOnResponseListeners(this@CMPActivity)
-        }
+            id = id,
+            environment = environment
+        )
+    }
+
+    private val cardNumberInput: VGSCardNumberEditText by lazy { findViewById(R.id.vgsTiedPan) }
+    private val expiryInput: ExpirationDateEditText by lazy { findViewById(R.id.vgsTiedExpiry) }
+    private val cvcInput: CardVerificationCodeEditText by lazy { findViewById(R.id.vgsTiedCvc) }
+
+    private val createCardButton: MaterialButton by lazy { findViewById(R.id.mbCreateCard) }
+
+    override fun createScanIntent(): Intent? {
+        return null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = CmpActivityBinding.inflate(layoutInflater)
-        codeExampleBinding = CodeViewLayoutBinding.bind(binding.ccInputsRoot)
-        setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
-            val bars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updatePadding(top = bars.top)
-            WindowInsetsCompat.CONSUMED
+        initCollectForm()
+    }
+
+    /**
+     * Configures CMP form behavior.
+     *
+     * Setup flow:
+     * 1. Observe create-card response from [VGSCollect]
+     * 2. Bind tied card input views to the collector
+     * 3. Request access token and trigger `createCard`
+     */
+    private fun initCollectForm() {
+        // ==========================================================
+        // STEP 1: Handle submit response
+        // ==========================================================
+        form.addOnResponseListeners(object : VgsCollectResponseListener {
+            override fun onResponse(response: VGSResponse?) {
+                setLoading(false)
+                println(response)
+            }
+        })
+
+        // ==========================================================
+        // STEP 4: Bind fields (REQUIRED)
+        // ==========================================================
+        // Only bound fields are included in request payload.
+        // If a view is not bound, its data will NOT be sent.
+        form.cardNumber(cardNumberInput)
+        form.cardExpirationDate(expiryInput)
+        form.cardCVC(cvcInput)
+
+        // ==========================================================
+        // STEP 5: Setup actions
+        // ==========================================================
+        createCardButton.setOnClickListener {
+            setLoading(true)
+            // Access token is REQUIRED for CMP.
+            NetworkHelper.accessToken(
+                onSuccess = { token ->
+                    form.createCard(token)
+                },
+                onError = {
+                    Log.d(TAG, "Get access token error: $it")
+                }
+            )
         }
-        VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
-        initViews()
-    }
-
-    override fun onResponse(response: VGSResponse?) {
-        binding.progressBar.visibility = View.GONE
-        println(response)
-        updateCodeExample(response?.body)
-    }
-
-    private fun initViews() {
-        initCollectViews()
-        initProceedView()
-        initCodeExampleView()
-        updateCodeExample(null)
-        binding.ccInputsRoot.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
-    }
-
-    private fun initCollectViews() {
-        collect.cardNumber(binding.vgsTiedPan)
-        collect.cardExpirationDate(binding.vgsTiedExpiry)
-        collect.cardCVC(binding.vgsTiedCvc)
-
-    }
-
-    private fun initProceedView() {
-        binding.mbProceed.setOnClickListener {
-            binding.progressBar.visibility = View.VISIBLE
-            collect.createCard("<ACCESS_TOKEN>")
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun initCodeExampleView() {
-        val syntaxColor = ContextCompat.getColor(this, R.color.veryLightGray)
-        val bgColor = ContextCompat.getColor(this, R.color.blackPearl)
-        val lineNumberColor = ContextCompat.getColor(this, R.color.nobel)
-        codeExampleBinding.tvLanguage.setTypeface(
-            FontCache.get(this).getTypeface(this, Font.DroidSansMonoSlashed)
-        )
-        codeExampleBinding.tvLanguage.text = "JSON"
-        codeExampleBinding.tvLanguage.visibility = View.VISIBLE
-        codeExampleBinding.codeView.setOptions(
-            Options(
-                context = this.applicationContext,
-                theme = ColorThemeData(
-                    SyntaxColors(
-                        string = syntaxColor,
-                        punctuation = syntaxColor,
-                    ),
-                    numColor = lineNumberColor,
-                    bgContent = bgColor,
-                    bgNum = bgColor,
-                    noteColor = syntaxColor,
-                ),
-            ).withFont(Font.DroidSansMonoSlashed)
-        )
-        codeExampleBinding.codeView.alpha = 1f
-        codeExampleBinding.codeView.findViewById<RecyclerView>(R.id.rv_code_content).isNestedScrollingEnabled =
-            false
-    }
-
-    private fun updateCodeExample(response: String?) {
-        val json = try {
-            JSONObject(response ?: "").toString(4)
-        } catch (_: Exception) {
-            ""
-        }
-        codeExampleBinding.codeView.setCode(json)
     }
 }

@@ -25,6 +25,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup
 import com.verygoodsecurity.demoapp.start.StartActivity
 import com.verygoodsecurity.demoapp.utils.getStringExtra
 import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
@@ -136,6 +137,8 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
     }
 
     private fun setupCollect() {
+        VGSCollectLogger.isEnabled = true
+        VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
         form.addOnResponseListeners(object : VgsCollectResponseListener {
 
             override fun onResponse(response: VGSResponse?) {

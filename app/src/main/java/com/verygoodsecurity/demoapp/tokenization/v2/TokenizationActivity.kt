@@ -8,11 +8,11 @@ import android.view.MenuItem
 import androidx.preference.PreferenceManager
 import com.google.android.material.button.MaterialButton
 import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
-import com.verygoodsecurity.demoapp.BuildConfig
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.core.BaseDemoActivity
 import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettingsActivity
 import com.verygoodsecurity.demoapp.utils.NetworkHelper
+import com.verygoodsecurity.demoapp.utils.accessToken
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
@@ -23,7 +23,6 @@ import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
-import org.json.JSONObject
 
 private const val TAG = "V2 TokenizationActivity"
 
@@ -163,16 +162,8 @@ class TokenizationActivity : BaseDemoActivity(R.layout.activity_tokenization) {
         findViewById<MaterialButton>(R.id.mbTokenize).setOnClickListener {
             setLoading(true)
             // Access token is REQUIRED for V2 alias creation flow.
-            NetworkHelper.request(
-                url = BuildConfig.TOKENIZATION_V2_GET_TOKEN_URL,
-                body = listOf(
-                    "client_id" to BuildConfig.TOKENIZATION_V2_CLIENT_ID,
-                    "client_secret" to BuildConfig.TOKENIZATION_V2_CLIENT_SECRET,
-                    "grant_type" to BuildConfig.TOKENIZATION_V2_GRANT_TYPE
-                ),
-                headers = listOf("Content-Type" to "application/x-www-form-urlencoded"),
-                onSuccess = { response ->
-                    val token = JSONObject(response).getString("access_token")
+            NetworkHelper.accessToken(
+                onSuccess = { token ->
                     // Set access token to collect form
                     form.setCustomHeaders(mapOf("Authorization" to "Bearer $token"))
                     form.createAliases(
