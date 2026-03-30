@@ -65,7 +65,7 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
             form.onActivityResult(0, it.resultCode, it.data)
         }
 
-    protected abstract fun createScanIntent(): Intent
+    protected abstract fun createScanIntent(): Intent?
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,9 +85,7 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         com.verygoodsecurity.demoapp.R.id.scan_card -> true.also {
-            scanResultLauncher.launch(
-                createScanIntent()
-            )
+            createScanIntent()?.let { intent -> scanResultLauncher.launch(intent) }
         }
 
         else -> super.onOptionsItemSelected(item)
@@ -178,13 +176,13 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
         codeView?.alpha = 1f
         codeView?.findViewById<RecyclerView>(com.verygoodsecurity.demoapp.R.id.rv_code_content)?.isNestedScrollingEnabled =
             false
-        val tvLanguage = findViewById<TextView>(com.verygoodsecurity.demoapp.R.id.tvLanguage)
-        tvLanguage.setTypeface(
+        val tvLanguage = findViewById<TextView?>(com.verygoodsecurity.demoapp.R.id.tvLanguage)
+        tvLanguage?.setTypeface(
             FontCache.get(this).getTypeface(this, Font.DroidSansMonoSlashed)
         )
-        tvLanguage.text =
+        tvLanguage?.text =
             getString(com.verygoodsecurity.demoapp.R.string.code_view_json_language_title)
-        tvLanguage.visibility = View.VISIBLE
+        tvLanguage?.visibility = View.VISIBLE
     }
 
     private fun updateCodeView(response: VGSResponse?) {
