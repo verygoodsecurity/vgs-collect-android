@@ -40,8 +40,15 @@ object Payments {
 
     @Throws(Exception::class)
     fun parsePaymentDataResponse(data: Intent?): Map<Any, Any> {
-        val paymentData = data?.let { PaymentData.getFromIntent(it) }?.toJson()
+        val paymentDataJson = data?.let { PaymentData.getFromIntent(it) }?.toJson()
             ?: throw IllegalStateException("Payment data is null")
+
+        return parsePaymentDataResponse(paymentDataJson)
+    }
+
+    @Throws(Exception::class)
+    fun parsePaymentDataResponse(paymentDataJson: String?): Map<Any, Any> {
+        val paymentData = paymentDataJson ?: throw IllegalStateException("Payment data is null")
 
         val paymentMethodData = JSONObject(paymentData).getJSONObject("paymentMethodData")
         val tokenizationData = paymentMethodData.getJSONObject("tokenizationData")
