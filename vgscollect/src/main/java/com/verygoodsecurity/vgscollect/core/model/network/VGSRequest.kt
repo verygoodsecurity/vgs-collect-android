@@ -20,7 +20,7 @@ import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OU
  * @param requestTimeoutInterval The request timeout interval in milliseconds.
  * @param routeId The route id for submitting data.
  */
-data class VGSRequest internal constructor(
+class VGSRequest internal constructor(
     override val method: HTTPMethod,
     override val path: String,
     override val customHeader: Map<String, String>,
