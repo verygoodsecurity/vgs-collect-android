@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.VisibleForTesting
+import androidx.core.os.BundleCompat
 import com.verygoodsecurity.sdk.analytics.VGSSharedAnalyticsManager
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsEvent
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsScannerType
@@ -560,9 +561,7 @@ class VGSCollect {
         mapAnalyticEvent(data)
 
         if (resultCode == Activity.RESULT_OK) {
-            val map: VGSHashMapWrapper<String, Any?>? = data?.extras?.getParcelable(
-                BaseTransmitActivity.RESULT_DATA
-            )
+            val map = getResultDataMap(data)
 
             if (requestCode == TemporaryFileStorage.REQUEST_CODE) {
                 map?.run {
@@ -576,11 +575,18 @@ class VGSCollect {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
+    private fun getResultDataMap(intent: Intent?): VGSHashMapWrapper<String, Any?>? {
+        return BundleCompat.getParcelable(
+            intent?.extras ?: return null,
+            BaseTransmitActivity.RESULT_DATA,
+            VGSHashMapWrapper::class.java
+        ) as? VGSHashMapWrapper<String, Any?>
+    }
+
     private fun mapAnalyticEvent(data: Intent?) {
         data?.let {
-            val map: VGSHashMapWrapper<String, Any?> = it.extras?.getParcelable(
-                BaseTransmitActivity.RESULT_DATA
-            ) ?: VGSHashMapWrapper()
+            val map = getResultDataMap(data) ?: VGSHashMapWrapper()
 
             when (map.get(BaseTransmitActivity.RESULT_TYPE)) {
                 BaseTransmitActivity.SCAN -> scanEvent(

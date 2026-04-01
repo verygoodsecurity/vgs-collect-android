@@ -60,8 +60,8 @@ internal class TemporaryFieldsStorage(
         }
     }
 
-    override fun addItem(viewId: Int, newState: VGSFieldState) {
-        processNewState(viewId, newState)
+    override fun addItem(id: Int, newState: VGSFieldState) {
+        processNewState(id, newState)
     }
 
     private fun processNewState(newViewId: Int, state: VGSFieldState) {

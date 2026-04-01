@@ -16,7 +16,7 @@ import com.verygoodsecurity.vgscollect.util.extension.TOKENIZATION_PATH
  * @param requestTimeoutInterval Specifies request timeout interval in milliseconds.
  * @param routeId Defines route id for submitting data.
  */
-data class VGSTokenizationRequest internal constructor(
+class VGSTokenizationRequest internal constructor(
     override val method: HTTPMethod,
     override val path: String,
     override val customHeader: Map<String, String>,
@@ -88,9 +88,9 @@ data class VGSTokenizationRequest internal constructor(
         }
 
         /**
-         * Creates a VGSRequest with the arguments supplied to this.
+         * Creates a VGSTokenizationRequest with the arguments supplied to this.
          *
-         * @return VGSRequest instance
+         * @return VGSTokenizationRequest instance
          */
         fun build(): VGSTokenizationRequest {
             return VGSTokenizationRequest(
