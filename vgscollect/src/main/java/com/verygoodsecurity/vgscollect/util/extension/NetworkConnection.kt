@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 fun Context.isConnectionAvailable(): Boolean {
     return if (hasAccessNetworkStatePermission()) {
         val manager = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-        val network = manager?.activeNetworkInfo
+        @Suppress("DEPRECATION") val network = manager?.activeNetworkInfo
         (network != null)
     } else {
         false

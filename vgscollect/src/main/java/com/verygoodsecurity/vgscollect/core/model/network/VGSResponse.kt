@@ -27,6 +27,7 @@ sealed class VGSResponse(
     ) : VGSResponse(successCode, rawResponse) {
 
         override fun toString(): String {
+            @Suppress("DEPRECATION")
             return "Code: $successCode \n $rawResponse"
         }
     }

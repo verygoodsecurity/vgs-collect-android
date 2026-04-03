@@ -1,10 +1,10 @@
 package com.verygoodsecurity.vgscollect.app
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
 
+// TODO: Migrate to result contract
 /**
  * Base class for activities that use the AppCompatActivity as a parent.
  * You can use the activity when need to send some data to VGSCollect from external api.
@@ -59,10 +59,10 @@ abstract class BaseTransmitActivity : AppCompatActivity() {
 
     protected fun setScanResult(resultCode: Int) {
         resultIntent.putExtra(RESULT_DATA, storage)
-        if (resultCode != Activity.RESULT_CANCELED) {
-            setResult(Activity.RESULT_OK, resultIntent)
+        if (resultCode != RESULT_CANCELED) {
+            setResult(RESULT_OK, resultIntent)
         } else {
-            setResult(Activity.RESULT_CANCELED, resultIntent)
+            setResult(RESULT_CANCELED, resultIntent)
         }
     }
 }
