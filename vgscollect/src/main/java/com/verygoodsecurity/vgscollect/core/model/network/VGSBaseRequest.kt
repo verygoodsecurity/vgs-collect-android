@@ -31,4 +31,41 @@ abstract class VGSBaseRequest {
     abstract val requestTimeoutInterval: Long
     abstract val routeId: String?
     internal abstract val upstream: VGSAnalyticsUpstream
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this.javaClass != other.javaClass) return false
+        other as VGSBaseRequest
+
+        return method == other.method &&
+            path == other.path &&
+            customHeader == other.customHeader &&
+            customData == other.customData &&
+            fieldsIgnore == other.fieldsIgnore &&
+            fileIgnore == other.fileIgnore &&
+            format == other.format &&
+            fieldNameMappingPolicy == other.fieldNameMappingPolicy &&
+            requestTimeoutInterval == other.requestTimeoutInterval &&
+            routeId == other.routeId &&
+            upstream == other.upstream
+    }
+
+    override fun hashCode(): Int {
+        var result = method.hashCode()
+        result = 31 * result + path.hashCode()
+        result = 31 * result + customHeader.hashCode()
+        result = 31 * result + customData.hashCode()
+        result = 31 * result + fieldsIgnore.hashCode()
+        result = 31 * result + fileIgnore.hashCode()
+        result = 31 * result + format.hashCode()
+        result = 31 * result + fieldNameMappingPolicy.hashCode()
+        result = 31 * result + requestTimeoutInterval.hashCode()
+        result = 31 * result + (routeId?.hashCode() ?: 0)
+        result = 31 * result + upstream.hashCode()
+        return result
+    }
+
+    override fun toString(): String {
+        return "${this::class.simpleName}(method=$method, path='$path', customHeader=$customHeader, customData=$customData, fieldsIgnore=$fieldsIgnore, fileIgnore=$fileIgnore, format=$format, fieldNameMappingPolicy=$fieldNameMappingPolicy, requestTimeoutInterval=$requestTimeoutInterval, routeId=$routeId)"
+    }
 }

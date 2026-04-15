@@ -4,6 +4,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
+// TODO: Refactor
 /** @suppress */
 internal fun String.toMutableMap(): Map<String, Any> {
     val resultMap = HashMap<String, Any>()
@@ -17,26 +18,13 @@ internal fun String.toMutableMap(): Map<String, Any> {
     return resultMap
 }
 
-private fun isJSONObjectValid(str: String?): Boolean {
-    var isObject = false
-    try {
-        JSONObject(str)
-        isObject = true
-    } catch (ex: JSONException) {
-    } finally {
-        return isObject
-    }
-}
-
-
-private fun isJSONArrayValid(str: String?): Boolean {
-    var isObject = false
-    try {
-        JSONArray(str)
-        isObject = true
-    } catch (ex: JSONException) {
-    } finally {
-        return isObject
+private fun isJSONObjectValid(target: String?): Boolean {
+    if (target.isNullOrEmpty()) return false
+    return try {
+        JSONObject(target)
+        true
+    } catch (_: JSONException) {
+        false
     }
 }
 

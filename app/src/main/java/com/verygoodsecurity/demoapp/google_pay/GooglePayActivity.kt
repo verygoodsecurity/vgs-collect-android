@@ -1,6 +1,5 @@
 package com.verygoodsecurity.demoapp.google_pay
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,12 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.wallet.AutoResolveHelper
 import com.google.android.gms.wallet.IsReadyToPayRequest
+import com.google.android.gms.wallet.PaymentData
 import com.google.android.gms.wallet.PaymentDataRequest
 import com.google.android.gms.wallet.PaymentsClient
-import com.verygoodsecurity.demoapp.StartActivity
+import com.google.android.gms.wallet.contract.TaskResultContracts
+import com.verygoodsecurity.demoapp.start.StartActivity
 import com.verygoodsecurity.demoapp.databinding.GooglePayDemoActvityBinding
 import com.verygoodsecurity.demoapp.google_pay.util.Payments
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -26,12 +27,18 @@ import org.json.JSONException
 
 class GooglePayActivity : AppCompatActivity(), VgsCollectResponseListener {
 
-    companion object {
-
-        private const val PAYMENT_REQUEST_CODE = 999
-    }
-
     private lateinit var binding: GooglePayDemoActvityBinding
+
+    private val paymentDataLauncher = registerForActivityResult(
+        TaskResultContracts.GetPaymentDataResult()
+    ) { taskResult ->
+        binding.flGooglePayButton.isClickable = true
+        when (taskResult.status.statusCode) {
+            CommonStatusCodes.SUCCESS -> handlePaymentSuccess(taskResult.result)
+            CommonStatusCodes.CANCELED -> showToast("Payment canceled")
+            else -> showToast("Payment request failed. Code: ${taskResult.status.statusCode}")
+        }
+    }
 
     private val client: PaymentsClient by lazy { Payments.createPaymentsClient(this) }
 
@@ -56,14 +63,6 @@ class GooglePayActivity : AppCompatActivity(), VgsCollectResponseListener {
             WindowInsetsCompat.CONSUMED
         }
         possiblyShowGooglePayButton()
-    }
-
-    @Suppress("OVERRIDE_DEPRECATION", "DEPRECATION")
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PAYMENT_REQUEST_CODE) {
-            handlePaymentRequestResult(resultCode, data)
-        }
     }
 
     override fun onResponse(response: VGSResponse?) {
@@ -98,23 +97,14 @@ class GooglePayActivity : AppCompatActivity(), VgsCollectResponseListener {
     private fun requestPaymentToken() {
         binding.flGooglePayButton.isClickable = false
         val request = PaymentDataRequest.fromJson(Payments.paymentDataRequestPayload("10"))
-        AutoResolveHelper.resolveTask(client.loadPaymentData(request), this, PAYMENT_REQUEST_CODE)
+        paymentDataLauncher.launch(client.loadPaymentData(request))
     }
 
-    private fun handlePaymentRequestResult(resultCode: Int, data: Intent?) {
-        binding.flGooglePayButton.isClickable = true
-        when (resultCode) {
-            RESULT_OK -> handlePaymentSuccess(data)
-            RESULT_CANCELED -> showToast("Payment canceled")
-            AutoResolveHelper.RESULT_ERROR -> AutoResolveHelper.getStatusFromIntent(data)?.let {
-                showToast("Payment request failed. Code: ${it.statusCode}")
-            }
-        }
-    }
-
-    private fun handlePaymentSuccess(data: Intent?) {
+    private fun handlePaymentSuccess(paymentData: PaymentData?) {
         try {
-            decryptAndSaveToken(mapOf("google_pay_payload" to Payments.parsePaymentDataResponse(data)))
+            decryptAndSaveToken(
+                mapOf("google_pay_payload" to Payments.parsePaymentDataResponse(paymentData?.toJson()))
+            )
         } catch (e: JSONException) {
             showToast("Payment request failed. Error: $e")
         }

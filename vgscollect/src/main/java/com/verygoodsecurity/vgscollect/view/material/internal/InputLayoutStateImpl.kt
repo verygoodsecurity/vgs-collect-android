@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.verygoodsecurity.vgscollect.view.material.internal
 
 import android.content.Context
@@ -182,6 +184,7 @@ internal class InputLayoutStateImpl(
                 textInputLayout.error = value
             }
         }
+    @Deprecated("")
     internal var isPasswordVisibilityToggleEnabled: Boolean = false
         set(value) {
             field = value
@@ -189,6 +192,7 @@ internal class InputLayoutStateImpl(
                 textInputLayout.isPasswordVisibilityToggleEnabled = value
             }
         }
+    @Deprecated("")
     @DrawableRes
     internal var passwordVisibilityToggleDrawable: Int = 0
         set(value) {
@@ -197,6 +201,7 @@ internal class InputLayoutStateImpl(
                 textInputLayout.setPasswordVisibilityToggleDrawable(value)
             }
         }
+    @Deprecated("")
     internal var passwordToggleTint: ColorStateList? = null
         set(value) {
             field = value

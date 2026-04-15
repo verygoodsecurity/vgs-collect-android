@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.verygoodsecurity.vgscollect.view.material
 
 import android.content.Context
@@ -66,12 +68,10 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
      * from the values set in this call.
      */
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        if(fieldState != null) {
-            fieldState.left = left
-            fieldState.top = top
-            fieldState.right = right
-            fieldState.bottom = bottom
-        }
+        fieldState.left = left
+        fieldState.top = top
+        fieldState.right = right
+        fieldState.bottom = bottom
         super.setPadding(0,0,0,0)
     }
 
@@ -283,7 +283,10 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
      * @param isEnabled true to enable the functionality
      * @deprecated Use setEndIconMode(int) instead.
      */
-    @Deprecated("Use #setEndIconMode(int) instead.")
+    @Deprecated(
+        message = "Use #setEndIconMode(int) instead.",
+        replaceWith = ReplaceWith("setEndIconMode(END_ICON_PASSWORD_TOGGLE)")
+    )
     open fun setPasswordToggleEnabled(isEnabled:Boolean) {
         fieldState.isPasswordVisibilityToggleEnabled = isEnabled
     }
@@ -297,7 +300,10 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
      * @param resId resource id of the drawable to set, or 0 to clear the icon
      * @deprecated Use setEndIconDrawable(int) instead.
      */
-    @Deprecated("Use #setEndIconDrawable(int) instead.")
+    @Deprecated(
+        message = "Use setEndIconDrawable(int) instead.",
+        replaceWith = ReplaceWith("setEndIconDrawable(int)")
+    )
     open fun setPasswordVisibilityToggleDrawable(@DrawableRes resId:Int) {
         fieldState.passwordVisibilityToggleDrawable = resId
     }
@@ -313,6 +319,10 @@ abstract class TextInputFieldLayout @JvmOverloads constructor(
      * @param tintList the tint to apply, may be null to clear tint
      * @deprecated Use setEndIconTintList(ColorStateList) instead.
      */
+    @Deprecated(
+        message = "Use setEndIconTintList(ColorStateList) instead.",
+        replaceWith = ReplaceWith("setEndIconTintList(ColorStateList)")
+    )
     open fun setPasswordVisibilityToggleTintList(tintList: ColorStateList?) {
         fieldState.passwordToggleTint = tintList
     }

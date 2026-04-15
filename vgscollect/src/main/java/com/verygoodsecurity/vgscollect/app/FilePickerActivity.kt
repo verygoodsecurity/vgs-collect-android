@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscollect.app
 import android.content.Intent
 import android.os.Bundle
 
+// TODO: Migrate to result contract
 /**
  * The Activity class that use when need to attach some file to VGSCollect.
  */
@@ -28,6 +29,7 @@ internal class FilePickerActivity :BaseTransmitActivity() {
         configKey = intent.extras?.getString(TAG)?.run { this }
     }
 
+    @Suppress("DEPRECATION")
     private fun selectFile() {
         var chooseFile = Intent(Intent.ACTION_OPEN_DOCUMENT)
         chooseFile.type = "*/*"
@@ -35,6 +37,8 @@ internal class FilePickerActivity :BaseTransmitActivity() {
         startActivityForResult(chooseFile, PICK_FILE_REQUEST_CODE)
     }
 
+    @Suppress("DEPRECATION")
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         configureInternalSettings(data)
         if(requestCode == PICK_FILE_REQUEST_CODE) {

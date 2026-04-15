@@ -4,9 +4,9 @@ internal class VgsApiTemporaryStorageImpl : VgsApiTemporaryStorage {
     private val data = HashMap<String, Any>()
     private val headers = HashMap<String, String>()
 
-    override fun setCustomHeaders(newheaders: Map<String, String>?) {
-        newheaders?.let {
-            headers.putAll(it)
+    override fun setCustomHeaders(headers: Map<String, String>?) {
+        headers?.let {
+            this@VgsApiTemporaryStorageImpl.headers.putAll(it)
         }
     }
 
@@ -16,9 +16,9 @@ internal class VgsApiTemporaryStorageImpl : VgsApiTemporaryStorage {
         headers.clear()
     }
 
-    override fun setCustomData(newData: Map<String, Any>?) {
-        newData?.let {
-            data.putAll(it)
+    override fun setCustomData(data: Map<String, Any>?) {
+        data?.let {
+            this@VgsApiTemporaryStorageImpl.data.putAll(it)
         }
     }
 

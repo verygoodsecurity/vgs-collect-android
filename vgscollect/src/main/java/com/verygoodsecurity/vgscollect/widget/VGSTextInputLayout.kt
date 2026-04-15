@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.verygoodsecurity.vgscollect.widget
 
 import android.content.Context
@@ -35,7 +37,7 @@ class VGSTextInputLayout @JvmOverloads constructor(
         /**
          * The TextInputLayout will show a password toggle button if its EditText displays a password.
          * When this end icon is clicked, the password is shown as plain-text if it was disguised, or
-         * vice-versa.
+         * vice versa.
          *
          * @see setEndIconMode
          * @see getEndIconMode
@@ -58,8 +60,8 @@ class VGSTextInputLayout @JvmOverloads constructor(
             R.styleable.VGSTextInputLayout, 0, 0).apply {
             try {
                 val passwordToggleEnabled = getBoolean(R.styleable.VGSTextInputLayout_passwordToggleEnabled, false)
-                val drawRef = getResourceId(R.styleable.VGSTextInputLayout_passwordToggleDrawable, 0)
-                val textColor = getColorStateList(R.styleable.VGSTextInputLayout_passwordToggleTint)
+                val passwordToggleDrawable = getResourceId(R.styleable.VGSTextInputLayout_passwordToggleDrawable, 0)
+                val passwordToggleTint = getColorStateList(R.styleable.VGSTextInputLayout_passwordToggleTint)
                 val hintTextColor = getColorStateList(R.styleable.VGSTextInputLayout_hintTextColor)
                 val hintTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_hintTextAppearance, 0)
                 val counterOverflowTextAppearance = getResourceId(R.styleable.VGSTextInputLayout_counterOverflowTextAppearance, 0)
@@ -94,6 +96,10 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 val counterEnabled = getBoolean(R.styleable.VGSTextInputLayout_counterEnabled, false)
                 val counterMaxLength = getInteger(R.styleable.VGSTextInputLayout_counterMaxLength, -1)
 
+                setPasswordToggleEnabled(passwordToggleEnabled)
+                setPasswordVisibilityToggleDrawable(passwordToggleDrawable)
+                setPasswordVisibilityToggleTintList(passwordToggleTint)
+
                 setStartIconDrawable(startIconDrawables)
                 setStartIconDrawableTintList(startIconTints)
 
@@ -102,7 +108,6 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 setEndIconDrawableTintList(endIconTints)
 
                 setHint(hint)
-                setPasswordToggleEnabled(passwordToggleEnabled)
 
                 when(boxBackgroundMode) {
                     0 -> setBoxBackgroundMode(TextInputLayout.BOX_BACKGROUND_OUTLINE)
@@ -113,10 +118,6 @@ class VGSTextInputLayout @JvmOverloads constructor(
                 setBoxBackgroundColor(boxBackgroundColor)
                 setBoxStrokeColor(boxStrokeColor)
                 boxStrokeColorStateList?.let { setBoxStrokeColorStateList(it) }
-
-                setPasswordVisibilityToggleDrawable(drawRef)
-
-                setPasswordVisibilityToggleTintList(textColor)
 
                 val boxTS = if(boxCornerRadiusTopStart == 0f) boxCornerRadius else boxCornerRadiusTopStart
                 val boxTE = if(boxCornerRadiusTopEnd == 0f) boxCornerRadius else boxCornerRadiusTopEnd
