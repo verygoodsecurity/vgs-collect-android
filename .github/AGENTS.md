@@ -2,12 +2,13 @@
 
 This file is a repository-specific addendum for AI coding agents working in this monorepo.
 Read `/AGENTS.md` in full first and treat it as the baseline policy for VGS Collect integration behavior.
+The canonical durable source of that policy is `skills/vgs-collect-android-guide/references/AGENTS.md` (root `/AGENTS.md` points there).
 
 ## Scope
-- Use `/AGENTS.md` for SDK integration rules and security policy.
+- Use `skills/vgs-collect-android-guide/references/AGENTS.md` for SDK integration rules and security policy.
 - Use this file for repository architecture, build/test workflow, and module-level conventions.
-- If guidance conflicts, follow `/AGENTS.md` for SDK behavior and this file for repo mechanics.
-- When changing SDK integration behavior, public API surface, or integration examples, update `/AGENTS.md` in the same change so downstream integration agents stay aligned.
+- If guidance conflicts, follow `skills/vgs-collect-android-guide/references/AGENTS.md` for SDK behavior and this file for repo mechanics.
+- When changing SDK integration behavior, public API surface, or integration examples, update `skills/vgs-collect-android-guide/references/AGENTS.md` in the same change so downstream integration agents stay aligned.
 - Use SKILLS/specialized agents when present and relevant; fall back to direct implementation only when no applicable SKILL is available.
 
 ## 1. Core Concepts (Mental Model)
@@ -18,7 +19,7 @@ Read `/AGENTS.md` in full first and treat it as the baseline policy for VGS Coll
 - Shared analytics implementation lives in `vgs-sdk-analytics/VGSClientSDKAnalytics` (KMP), consumed differently by build type in `vgscollect/build.gradle`.
 
 ### Project Mental Model
-- **Primary flow**: app UI input (`app/src/main/`) -> secure field/widget logic (`vgscollect/src/main/`) -> state/validation (`FieldState`, rules) -> submit/tokenize -> app receives aliases/tokens only (per `/AGENTS.md`).
+- **Primary flow**: app UI input (`app/src/main/`) -> secure field/widget logic (`vgscollect/src/main/`) -> state/validation (`FieldState`, rules) -> submit/tokenize -> app receives aliases/tokens only (per `skills/vgs-collect-android-guide/references/AGENTS.md`).
 - **Change surface map**:
   - Widget/input behavior, validation, submission internals: `vgscollect/src/main/`.
   - Blink scanning bridge and scan mapping: `vgscollect-blinkcard/src/main/`.
@@ -66,11 +67,11 @@ Read `/AGENTS.md` in full first and treat it as the baseline policy for VGS Coll
   - Tokenization demos: `tokenization/v1/TokenizationActivity.kt`, `tokenization/v2/TokenizationActivity.kt`.
 
 ## 4. Field Setup & Configuration Pattern
-- For real integration behavior and secure field usage patterns, use `/AGENTS.md` section 4 as source of truth.
+- For real integration behavior and secure field usage patterns, use `skills/vgs-collect-android-guide/references/AGENTS.md` section 4 as source of truth.
 - In this repo, the sample wiring patterns are primarily under `app/src/main/` and should be used as runnable examples when validating behavior changes.
 
 ## 6. Submission APIs
-- Keep submission API usage aligned with `/AGENTS.md`.
+- Keep submission API usage aligned with `skills/vgs-collect-android-guide/references/AGENTS.md`.
 - For SDK changes, validate with unit tests in `vgscollect/src/test/` before checking sample app behavior.
 
 ## 8. Card Scanning (BlinkCard)
@@ -84,7 +85,7 @@ Read `/AGENTS.md` in full first and treat it as the baseline policy for VGS Coll
 - Preserve this split unless intentionally changing analytics integration strategy.
 
 ## 10. Logging & Redaction Policy
-- Follow `/AGENTS.md` redaction rules.
+- Follow `skills/vgs-collect-android-guide/references/AGENTS.md` redaction rules.
 - CI runs include static analysis and test publishing; do not add logs that expose raw field values because reports/artifacts are uploaded (`.github/workflows/ci.yaml`).
 
 ## 11. Final Rule for Agents

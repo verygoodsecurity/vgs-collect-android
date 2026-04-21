@@ -6,10 +6,16 @@ on:
       - '**'
     paths:
       - 'skills/**'
+      - 'README.md'
+      - 'AGENTS.md'
+      - '.github/AGENTS.md'
+      - '.github/workflows/validate-skills.yml'
   push:
     branches:
       - 'main'
     tags:
+      - 'v*.*.*'
+      - 'v*.*.*-*'
       - '*.*.*'
       - '*.*.*-*'
 
@@ -39,4 +45,3 @@ jobs:
             export PATH="$RUNNER_TEMP:$PATH"
           fi
           skills-ref validate skills/vgs-collect-android-guide
-

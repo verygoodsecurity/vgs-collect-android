@@ -31,7 +31,7 @@ Single public skill entrypoint for `VGSCollectSDK` work in Android applications.
 **Step 1 - locate AGENTS.md, in order:**
 1. bundled `references/AGENTS.md` shipped with this skill (load first)
 2. matching tag in the canonical public repo `https://github.com/verygoodsecurity/vgs-collect-android`
-3. default branch (`master`) of that repo
+3. default branch (`main`) of that repo
 
 Private forks or internal mirrors do not override the public repo.
 
@@ -108,4 +108,3 @@ Begin every response by stating which guidance version is used:
 - `Exact tag 1.10.4 was not found; using nearest compatible tag 1.10.3.`
 
 Then proceed using the active version-matched snapshot.
-
