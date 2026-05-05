@@ -1,8 +1,11 @@
 package com.verygoodsecurity.vgscollect.core.storage
 
 import android.content.Context
+import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
+import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSCreateAliasesRequest
+import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.content.field.FieldStateContractor
 import com.verygoodsecurity.vgscollect.core.storage.content.field.TemporaryFieldsStorage
@@ -50,8 +53,9 @@ internal class InternalStorage(
         }
     }
 
+    // TODO: Rename
     fun getDataForCollecting(
-        request: VGSRequest,
+        request: VGSBaseRequest,
         staticData: Map<String, Any>,
         fieldsStates: List<BaseFieldState>? = null
     ): Map<String, Any>? {
@@ -76,7 +80,11 @@ internal class InternalStorage(
         }
     }
 
-    fun getDataForTokenization(): Map<String, Any>? {
+    fun getDataForTokenization(fieldsIgnore: Boolean): Map<String, Any>? {
+        // TODO: Implement correct handling after implementing tokenization in Compose. Currently we force run validation.
+        if (getFieldsData(fieldsIgnore, null) == null) {
+            return null
+        }
         val data = mutableListOf<Map<String, Any>>()
         fieldsStorage.getItems().forEach {
             data.addAll(it.toTokenizationData())
@@ -154,7 +162,7 @@ internal class InternalStorage(
                 invalidFiles.forEach {
                     listener.onStorageError(VGSError.FILE_SIZE_OVER_LIMIT, it.name)
                 }
-                return null
+                null
             }
         } else {
             emptyMap()

@@ -66,6 +66,11 @@
             android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
+            android:name=".collect_compose.activity_case.ComposeActivity"
+            android:label="New Compose Demo (Activity)"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <activity
             android:name=".cmp.CMPActivity"
             android:label="CMP" />
 

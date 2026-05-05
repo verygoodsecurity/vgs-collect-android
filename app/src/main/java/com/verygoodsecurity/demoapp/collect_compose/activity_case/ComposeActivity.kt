@@ -4,15 +4,19 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -27,10 +31,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
-import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_PATH
-import com.verygoodsecurity.demoapp.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
-import com.verygoodsecurity.demoapp.getStringExtra
+import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
+import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_PATH
+import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
+import com.verygoodsecurity.demoapp.utils.getStringExtra
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
@@ -64,6 +68,7 @@ class ComposeActivity : AppCompatActivity(), VgsCollectResponseListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
         VGSCollectLogger.isEnabled = true
         setContent {
@@ -102,6 +107,7 @@ private fun Content(onSubmit: (List<BaseFieldState>) -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .windowInsetsPadding(insets = WindowInsets.systemBars)
                 .padding(16.dp)
         ) {
             // Setup initial states
