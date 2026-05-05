@@ -25,4 +25,7 @@ abstract class BaseFieldState(
     internal abstract fun validate(): List<VgsTextFieldValidationResult>
 
     internal abstract fun getOutputText(): String
+
+    override fun toString(): String =
+        "${this::class.simpleName}(fieldName=$fieldName, isValid=$isValid)"
 }
