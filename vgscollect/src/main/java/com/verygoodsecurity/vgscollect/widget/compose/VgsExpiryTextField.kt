@@ -7,7 +7,6 @@ import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
@@ -16,7 +15,6 @@ import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpiryDateFormat
 import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpirySerializer
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
-import com.verygoodsecurity.vgscollect.widget.compose.util.format
 import com.verygoodsecurity.vgscollect.widget.compose.util.plusYears
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsMinMaxDateValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
@@ -85,7 +83,6 @@ class VgsExpiryTextFieldState internal constructor(
     }
 }
 
-@ExperimentalComposeUiApi
 @Composable
 fun VgsExpiryTextField(
     state: VgsExpiryTextFieldState,
@@ -127,7 +124,6 @@ fun VgsExpiryTextField(
     outlined = false,
 )
 
-@ExperimentalComposeUiApi
 @Composable
 fun VgsExpiryOutlineTextField(
     state: VgsExpiryTextFieldState,

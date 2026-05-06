@@ -7,7 +7,6 @@ import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
@@ -98,7 +97,6 @@ class VgsCvcTextFieldState internal constructor(
     }
 }
 
-@ExperimentalComposeUiApi
 @Composable
 fun VgsCvcTextField(
     state: VgsCvcTextFieldState,
@@ -140,7 +138,6 @@ fun VgsCvcTextField(
     outlined = false,
 )
 
-@ExperimentalComposeUiApi
 @Composable
 fun VgsCvcOutlineTextField(
     state: VgsCvcTextFieldState,
