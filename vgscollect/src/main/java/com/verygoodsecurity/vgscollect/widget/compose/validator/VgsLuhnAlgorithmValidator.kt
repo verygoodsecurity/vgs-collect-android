@@ -21,8 +21,8 @@ class VgsLuhnAlgorithmValidator(override val errorMsg: String = ERROR_MESSAGE) :
         var isDoubled = false
         for (i in number.length - 1 downTo 0) {
             val digit = number[i] - '0'
-            if (digit < 0 || digit > 9) {
-                continue
+            if (digit !in 0..9) {
+                return false
             }
             var append: Int
             if (isDoubled) {
