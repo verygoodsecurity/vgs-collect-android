@@ -1,113 +1,87 @@
-package com.verygoodsecurity.vgscollect.widget.compose.validator
+package com.verygoodsecurity.vgscollect.widget.compose
 
 import com.verygoodsecurity.vgscollect.widget.compose.VgsSsnTextFieldState
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class VgsSsnValidatorTest {
+class VgsSsnTextFieldStateTest {
 
     private fun stateWith(text: String) = VgsSsnTextFieldState("field").copy(text = text)
 
-    // region valid
-
     @Test
-    fun test_valid_ssn() {
+    fun validate_validSsn_validatedSuccessfully() {
         assertTrue(stateWith("123456789").isValid)
     }
 
     @Test
-    fun test_valid_min_area() {
+    fun validate_minAreaCode_validatedSuccessfully() {
         assertTrue(stateWith("001010001").isValid)
     }
 
     @Test
-    fun test_valid_area_below_666() {
+    fun validate_areaCodeBelow666_validatedSuccessfully() {
         assertTrue(stateWith("665010001").isValid)
     }
 
     @Test
-    fun test_valid_area_above_666() {
+    fun validate_areaCodeAbove666_validatedSuccessfully() {
         assertTrue(stateWith("667010001").isValid)
     }
 
     @Test
-    fun test_valid_area_800s() {
+    fun validate_areaCode800s_validatedSuccessfully() {
         assertTrue(stateWith("899010001").isValid)
     }
 
-    // endregion
-
-    // region invalid area
-
     @Test
-    fun test_invalid_area_000() {
+    fun validate_areaCode000_validationFailed() {
         assertFalse(stateWith("000456789").isValid)
     }
 
     @Test
-    fun test_invalid_area_666() {
+    fun validate_areaCode666_validationFailed() {
         assertFalse(stateWith("666456789").isValid)
     }
 
     @Test
-    fun test_invalid_area_starts_with_9() {
+    fun validate_areaCodeStartsWith9_validationFailed() {
         assertFalse(stateWith("900456789").isValid)
         assertFalse(stateWith("999456789").isValid)
     }
 
-    // endregion
-
-    // region invalid group
-
     @Test
-    fun test_invalid_group_00() {
+    fun validate_groupCode00_validationFailed() {
         assertFalse(stateWith("123006789").isValid)
     }
 
-    // endregion
-
-    // region invalid serial
-
     @Test
-    fun test_invalid_serial_0000() {
+    fun validate_serialCode0000_validationFailed() {
         assertFalse(stateWith("123450000").isValid)
     }
 
-    // endregion
-
-    // region length
-
     @Test
-    fun test_invalid_too_short() {
+    fun validate_tooShort_validationFailed() {
         assertFalse(stateWith("12345678").isValid)
     }
 
     @Test
-    fun test_invalid_too_long() {
-        // normalizeText truncates to 9 digits, so "1234567890" becomes "123456789" — valid
+    fun validate_tooLong_truncatedToNineDigitsAndValidatedSuccessfully() {
         assertTrue(stateWith("1234567890").isValid)
     }
 
     @Test
-    fun test_invalid_empty() {
+    fun validate_empty_validationFailed() {
         assertFalse(stateWith("").isValid)
     }
 
-    // endregion
-
-    // region normalization
-
     @Test
-    fun test_formatted_with_dashes_normalized_to_digits() {
-        // normalizeText strips dashes before validation, so "123-45-6789" → "123456789"
+    fun validate_formattedWithDashes_normalizedAndValidatedSuccessfully() {
         assertTrue(stateWith("123-45-6789").isValid)
     }
 
     @Test
-    fun test_formatted_with_spaces_normalized_to_digits() {
+    fun validate_formattedWithSpaces_normalizedAndValidatedSuccessfully() {
         assertTrue(stateWith("123 45 6789").isValid)
     }
-
-    // endregion
 }
