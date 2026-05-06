@@ -30,8 +30,7 @@ class VgsSsnTextFieldState(
 
         const val DEFAULT_MASK = "###-##-####"
         const val DEFAULT_LENGTH = 9
-        const val DEFAULT_REGEX =
-            "^(?!(000|666|9))(\\d{3}(-|\\s)?(?!(00))\\d{2}(-|\\s)?(?!(0000))\\d{4})\$"
+        const val DEFAULT_REGEX = "^(?!(000|666|9))\\d{3}(?!(00))\\d{2}(?!(0000))\\d{4}$"
     }
 
     val mask: String = DEFAULT_MASK
