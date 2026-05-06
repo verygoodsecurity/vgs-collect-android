@@ -4,8 +4,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -93,9 +91,6 @@ class VgsCvcTextFieldState internal constructor(
         return completeValidators.map { it.validate(text) }
     }
 
-    /**
-     * Ensure text does not exceed the maximum card security code length and contains only digits.
-     */
     private fun normalizeText(text: String, cardBrand: VgsCardBrand): String {
         val digits = text.filter { it.isDigit() }
         val length = digits.length
@@ -120,31 +115,30 @@ fun VgsCvcTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = TextFieldDefaults.TextFieldShape,
-    colors: TextFieldColors = TextFieldDefaults.textFieldColors()
-) {
-    TextField(
-        value = state.text,
-        onValueChange = { onStateChange(state.copy(text = it)) },
-        modifier = modifier,
-        enabled = enabled,
-        readOnly = readOnly,
-        textStyle = textStyle,
-        label = label,
-        placeholder = placeholder,
-        leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
-        isError = isError,
-        visualTransformation = VgsVisualTransformation.None,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        keyboardActions = keyboardActions,
-        singleLine = true,
-        maxLines = 1,
-        minLines = 1,
-        interactionSource = interactionSource,
-        shape = shape,
-        colors = colors
-    )
-}
+    colors: TextFieldColors = TextFieldDefaults.textFieldColors(),
+) = VgsBaseTextField(
+    value = state.text,
+    onValueChange = { onStateChange(state.copy(text = it)) },
+    modifier = modifier,
+    enabled = enabled,
+    readOnly = readOnly,
+    textStyle = textStyle,
+    label = label,
+    placeholder = placeholder,
+    leadingIcon = leadingIcon,
+    trailingIcon = trailingIcon,
+    isError = isError,
+    visualTransformation = VgsVisualTransformation.None,
+    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+    keyboardActions = keyboardActions,
+    singleLine = true,
+    maxLines = 1,
+    minLines = 1,
+    interactionSource = interactionSource,
+    shape = shape,
+    colors = colors,
+    outlined = false,
+)
 
 @ExperimentalComposeUiApi
 @Composable
@@ -163,28 +157,27 @@ fun VgsCvcOutlineTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     interactionSource: MutableInteractionSource? = null,
     shape: Shape = TextFieldDefaults.OutlinedTextFieldShape,
-    colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors()
-) {
-    OutlinedTextField(
-        value = state.text,
-        onValueChange = { onStateChange(state.copy(text = it)) },
-        modifier = modifier,
-        enabled = enabled,
-        readOnly = readOnly,
-        textStyle = textStyle,
-        label = label,
-        placeholder = placeholder,
-        leadingIcon = leadingIcon,
-        trailingIcon = trailingIcon,
-        isError = isError,
-        visualTransformation = VgsVisualTransformation.None,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        keyboardActions = keyboardActions,
-        singleLine = true,
-        maxLines = 1,
-        minLines = 1,
-        interactionSource = interactionSource,
-        shape = shape,
-        colors = colors
-    )
-}
+    colors: TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(),
+) = VgsBaseTextField(
+    value = state.text,
+    onValueChange = { onStateChange(state.copy(text = it)) },
+    modifier = modifier,
+    enabled = enabled,
+    readOnly = readOnly,
+    textStyle = textStyle,
+    label = label,
+    placeholder = placeholder,
+    leadingIcon = leadingIcon,
+    trailingIcon = trailingIcon,
+    isError = isError,
+    visualTransformation = VgsVisualTransformation.None,
+    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+    keyboardActions = keyboardActions,
+    singleLine = true,
+    maxLines = 1,
+    minLines = 1,
+    interactionSource = interactionSource,
+    shape = shape,
+    colors = colors,
+    outlined = true,
+)
