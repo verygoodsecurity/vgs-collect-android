@@ -29,6 +29,10 @@ import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
  *  @param onViewCreate - A callback to be invoked when [VGSTextInputLayout] and [VGSEditText] view is created.
  *  @param onViewUpdate - A callback to be invoked after the view is inflated and upon recomposition to update the information and state of the view.
  */
+@Deprecated(
+    message = "This component is deprecated. Please use VgsTextField instead.",
+    replaceWith = ReplaceWith("VgsTextField")
+)
 @Composable
 fun VGSEditTextWrapper(
     collect: VGSCollect?,
@@ -56,6 +60,10 @@ fun VGSEditTextWrapper(
  *  @param onViewCreate - A callback to be invoked when [VGSTextInputLayout] and [VGSCardNumberEditText] view is created.
  *  @param onViewUpdate - A callback to be invoked after the view is inflated and upon recomposition to update the information and state of the view.
  */
+@Deprecated(
+    message = "This component is deprecated. Please use VgsCardNumberTextField instead.",
+    replaceWith = ReplaceWith("VgsCardNumberTextField")
+)
 @Composable
 fun VGSCardNumberEditTextWrapper(
     collect: VGSCollect?,
@@ -83,6 +91,10 @@ fun VGSCardNumberEditTextWrapper(
  *  @param onViewCreate - A callback to be invoked when [VGSTextInputLayout] and [SSNEditText] view is created.
  *  @param onViewUpdate - A callback to be invoked after the view is inflated and upon recomposition to update the information and state of the view.
  */
+@Deprecated(
+    message = "This component is deprecated. Please use VgsSsnTextField instead.",
+    replaceWith = ReplaceWith("VgsSsnTextField")
+)
 @Composable
 fun SSNEditTextWrapper(
     collect: VGSCollect?,
@@ -110,6 +122,10 @@ fun SSNEditTextWrapper(
  *  @param onViewCreate - A callback to be invoked when [VGSTextInputLayout] and [RangeDateEditText] view is created.
  *  @param onViewUpdate - A callback to be invoked after the view is inflated and upon recomposition to update the information and state of the view.
  */
+@Deprecated(
+    message = "This component is deprecated. Please use VgsExpiryTextField instead.",
+    replaceWith = ReplaceWith("VgsExpiryTextField")
+)
 @Composable
 fun RangeDateEditTextWrapper(
     collect: VGSCollect?,
@@ -137,6 +153,10 @@ fun RangeDateEditTextWrapper(
  *  @param onViewCreate - A callback to be invoked when [VGSTextInputLayout] and [PersonNameEditText] view is created.
  *  @param onViewUpdate - A callback to be invoked after the view is inflated and upon recomposition to update the information and state of the view.
  */
+@Deprecated(
+    message = "This component is deprecated. Please use VgsCardHolderTextField instead.",
+    replaceWith = ReplaceWith("VgsCardHolderTextField")
+)
 @Composable
 fun PersonNameEditTextWrapper(
     collect: VGSCollect?,
@@ -164,6 +184,10 @@ fun PersonNameEditTextWrapper(
  *  @param onViewCreate - A callback to be invoked when [VGSTextInputLayout] and [ExpirationDateEditText] view is created.
  *  @param onViewUpdate - A callback to be invoked after the view is inflated and upon recomposition to update the information and state of the view.
  */
+@Deprecated(
+    message = "This component is deprecated. Please use VgsExpiryTextField instead.",
+    replaceWith = ReplaceWith("VgsExpiryTextField")
+)
 @Composable
 fun ExpirationDateEditTextWrapper(
     collect: VGSCollect?,
@@ -191,6 +215,10 @@ fun ExpirationDateEditTextWrapper(
  *  @param onViewCreate - A callback to be invoked when [VGSTextInputLayout] and [CardVerificationCodeEditText] view is created.
  *  @param onViewUpdate - A callback to be invoked after the view is inflated and upon recomposition to update the information and state of the view.
  */
+@Deprecated(
+    message = "This component is deprecated. Please use VgsCvcTextField instead.",
+    replaceWith = ReplaceWith("VgsCvcTextField")
+)
 @Composable
 fun CardVerificationCodeEditTextWrapper(
     collect: VGSCollect?,
