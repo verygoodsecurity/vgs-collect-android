@@ -11,7 +11,6 @@ import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.cmp.CMPActivity
 import com.verygoodsecurity.demoapp.collect.compose.CollectComposeActivity
 import com.verygoodsecurity.demoapp.collect.views.CollectViewsActivity
-import com.verygoodsecurity.demoapp.collect_compose.activity_case.ComposeActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityStartBinding
 import com.verygoodsecurity.demoapp.google_pay.GooglePayActivity
 import com.verygoodsecurity.demoapp.start.adapter.StartFlowAdapter
@@ -101,7 +100,7 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
     private fun onFlowItemClicked(flowId: Int) {
         when (flowId) {
             R.string.start_collect_views_title -> startActivity(CollectViewsActivity::class.java)
-            R.string.start_collect_compose_title -> startActivity(ComposeActivity::class.java)
+            R.string.start_collect_compose_title -> startActivity(CollectComposeActivity::class.java)
             R.string.start_tokenization_title -> startActivity(
                 TokenizationActivityV1::class.java,
                 routeId = BuildConfig.TOKENIZATION_ROUTE_ID
