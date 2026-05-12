@@ -19,8 +19,8 @@ data class VgsCardBrand(
     val algorithm: ChecksumAlgorithm,
     val length: Array<Int>,
     val securityCodeLength: Array<Int>,
-    @DrawableRes val cardIcon: Int,
-    @DrawableRes val securityCodeIcon: Int,
+    @param:DrawableRes val cardIcon: Int,
+    @param:DrawableRes val securityCodeIcon: Int,
 ) {
 
     companion object {
@@ -33,7 +33,7 @@ data class VgsCardBrand(
             if (card.isBlank()) return UNKNOWN
             brands.forEach { brand ->
                 val matcher = Pattern.compile(brand.regex).matcher(card)
-                while (matcher.find()) {
+                if (matcher.find()) {
                     return brand
                 }
             }
