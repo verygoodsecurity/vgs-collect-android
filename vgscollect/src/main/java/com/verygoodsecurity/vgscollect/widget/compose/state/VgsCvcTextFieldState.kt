@@ -61,10 +61,8 @@ class VgsCvcTextFieldState internal constructor(
      * ### Example usage:
      *
      * ```
-     * LaunchedEffect(cardNumberFieldState) {
-     *     if (securityCodeFieldState.cardBrand != cardNumberFieldState.cardBrand) {
-     *         securityCodeFieldState = securityCodeFieldState.withCardBrand(cardNumberFieldState.cardBrand)
-     *     }
+     * LaunchedEffect(cardNumberFieldState.cardBrand) {
+     *     securityCodeFieldState = securityCodeFieldState.withCardBrand(cardNumberFieldState.cardBrand)
      * }
      * ```
      *
