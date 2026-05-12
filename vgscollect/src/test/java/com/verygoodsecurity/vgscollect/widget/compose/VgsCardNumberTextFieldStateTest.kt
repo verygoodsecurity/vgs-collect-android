@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.widget.compose
 
 import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
+import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardNumberTextFieldState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

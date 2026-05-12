@@ -54,20 +54,20 @@ import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
-import com.verygoodsecurity.vgscollect.widget.compose.VgsCardHolderOutlineTextField
-import com.verygoodsecurity.vgscollect.widget.compose.VgsCardHolderTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.VgsCardNumberOutlineTextField
-import com.verygoodsecurity.vgscollect.widget.compose.VgsCardNumberTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.VgsCvcOutlineTextField
-import com.verygoodsecurity.vgscollect.widget.compose.VgsCvcTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.VgsExpiryOutlineTextField
-import com.verygoodsecurity.vgscollect.widget.compose.VgsExpiryTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.VgsOutlineTextField
-import com.verygoodsecurity.vgscollect.widget.compose.VgsSsnOutlineTextField
-import com.verygoodsecurity.vgscollect.widget.compose.VgsSsnTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.VgsTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpiryDateFormat
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardHolderOutlineTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardNumberOutlineTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCvcOutlineTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsExpiryOutlineTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsOutlineTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsSsnOutlineTextField
+import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardHolderTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardNumberTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCvcTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.VgsExpiryTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.VgsSsnTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.VgsTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
 
 private const val TAG = "CollectComposeActivity"
 
@@ -329,7 +329,7 @@ private fun Content(onSubmit: (List<BaseFieldState>) -> Unit) {
                 horizontalArrangement = Arrangement.End,
             ) {
                 OutlinedButton(
-                    modifier = Modifier.height(IntrinsicSize.Max) ,
+                    modifier = Modifier.height(IntrinsicSize.Max),
                     onClick = { /* TODO: implement file attachment */ }
                 ) {
                     Text(

@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.widget.compose
 
 import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
+import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCvcTextFieldState
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

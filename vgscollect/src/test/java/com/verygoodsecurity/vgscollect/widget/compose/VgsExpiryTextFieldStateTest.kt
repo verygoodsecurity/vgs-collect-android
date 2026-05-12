@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.widget.compose
 
 import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpiryDateFormat
+import com.verygoodsecurity.vgscollect.widget.compose.state.VgsExpiryTextFieldState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

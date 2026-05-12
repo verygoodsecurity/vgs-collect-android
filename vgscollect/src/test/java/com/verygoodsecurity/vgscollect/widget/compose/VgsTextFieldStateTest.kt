@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.widget.compose
 
+import com.verygoodsecurity.vgscollect.widget.compose.state.VgsTextFieldState
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test

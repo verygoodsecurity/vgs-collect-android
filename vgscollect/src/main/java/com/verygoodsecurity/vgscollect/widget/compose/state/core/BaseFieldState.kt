@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.widget.compose.core
+package com.verygoodsecurity.vgscollect.widget.compose.state.core
 
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
@@ -25,6 +25,8 @@ abstract class BaseFieldState(
     internal abstract fun validate(): List<VgsTextFieldValidationResult>
 
     internal abstract fun getOutputText(): String
+
+    internal abstract fun copy(text: String): BaseFieldState
 
     override fun toString(): String =
         "${this::class.simpleName}(fieldName=$fieldName, isValid=$isValid)"

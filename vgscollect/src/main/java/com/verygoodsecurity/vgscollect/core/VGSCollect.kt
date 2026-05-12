@@ -55,7 +55,7 @@ import com.verygoodsecurity.vgscollect.util.extension.toAnalyticsStatus
 import com.verygoodsecurity.vgscollect.util.extension.toNetworkRequest
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
-import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.UUID
@@ -300,6 +300,52 @@ class VGSCollect {
     }
 
     /**
+     * This suspend method executes and send data on VGS Server on IO dispatcher.
+     *
+     * @param path path for a request
+     * @param method HTTP method
+     */
+    suspend fun submitAsync(path: String, method: HTTPMethod = HTTPMethod.POST): VGSResponse {
+        return submitAsync(VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build())
+    }
+
+    /**
+     * This suspend method executes and send data on VGS Server on IO dispatcher.
+     *
+     * @param request data class with attributes for submit
+     */
+    suspend fun submitAsync(
+        request: VGSRequest
+    ): VGSResponse = withContext(Dispatchers.IO) {
+        submit(request)
+    }
+
+    /**
+     * This method executes and send data on VGS Server.
+     *
+     * @param path path for a request`
+     * @param method HTTP method
+     */
+    fun asyncSubmit(path: String, method: HTTPMethod, vararg fieldsStates: BaseFieldState?) {
+        val request = VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build()
+        asyncSubmit(request)
+    }
+
+    /**
+     * This method executes and send data on VGS Server.
+     *
+     * @param request data class with attributes for submit
+     */
+    fun asyncSubmit(request: VGSRequest, vararg fieldsStates: BaseFieldState?) {
+        val data = storage.getDataForCollecting(
+            request,
+            client.getTemporaryStorage().getCustomData(),
+            fieldsStates.filterNotNull()
+        )
+        requestAsync(request, data)
+    }
+
+    /**
      * The method sends data on VGS Server for tokenization. It is an asynchronous method.
      */
     fun tokenize() {
@@ -360,52 +406,6 @@ class VGSCollect {
                 }
             }
         }
-    }
-
-    /**
-     * This suspend method executes and send data on VGS Server on IO dispatcher.
-     *
-     * @param path path for a request
-     * @param method HTTP method
-     */
-    suspend fun submitAsync(path: String, method: HTTPMethod = HTTPMethod.POST): VGSResponse {
-        return submitAsync(VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build())
-    }
-
-    /**
-     * This suspend method executes and send data on VGS Server on IO dispatcher.
-     *
-     * @param request data class with attributes for submit
-     */
-    suspend fun submitAsync(
-        request: VGSRequest
-    ): VGSResponse = withContext(Dispatchers.IO) {
-        submit(request)
-    }
-
-    /**
-     * This method executes and send data on VGS Server.
-     *
-     * @param path path for a request
-     * @param method HTTP method
-     */
-    fun asyncSubmit(path: String, method: HTTPMethod) {
-        val request = VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build()
-        asyncSubmit(request)
-    }
-
-    /**
-     * This method executes and send data on VGS Server.
-     *
-     * @param request data class with attributes for submit
-     */
-    fun asyncSubmit(request: VGSRequest, vararg fieldsStates: BaseFieldState?) {
-        val data = storage.getDataForCollecting(
-            request,
-            client.getTemporaryStorage().getCustomData(),
-            fieldsStates.filterNotNull()
-        )
-        requestAsync(request, data)
     }
 
     private fun request(request: VGSBaseRequest, data: Map<String, Any>?): VGSResponse {

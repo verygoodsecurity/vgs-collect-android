@@ -21,7 +21,7 @@ import com.verygoodsecurity.vgscollect.util.extension.toArrayMergePolicy
 import com.verygoodsecurity.vgscollect.util.extension.toFlatMap
 import com.verygoodsecurity.vgscollect.util.extension.toTokenizationData
 import com.verygoodsecurity.vgscollect.view.InputFieldView
-import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
 
 /** @suppress */
 internal class InternalStorage(

@@ -6,8 +6,8 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.CardNumberC
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.DateContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.SSNContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.VgsExpiryTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.VgsExpiryTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
 
 internal class StorageFieldState(
     val fieldName: String,
