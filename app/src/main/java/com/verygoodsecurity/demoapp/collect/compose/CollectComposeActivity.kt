@@ -185,8 +185,8 @@ private fun Content(onSubmit: (List<BaseFieldState>) -> Unit) {
                 mutableStateOf(
                     VgsExpiryTextFieldState(
                         fieldName = "data.expiry",
-                        inputDateFormat = VgsExpiryDateFormat.MonthShortYear(),
-                        outputDateFormat = VgsExpiryDateFormat.LongYearMonth(),
+                        inputDateFormat = VgsExpiryDateFormat.MonthShortYear,
+                        outputDateFormat = VgsExpiryDateFormat.LongYearMonth,
                     )
                 )
             }
@@ -211,10 +211,8 @@ private fun Content(onSubmit: (List<BaseFieldState>) -> Unit) {
             // CVC validation rules depend on the detected card brand (e.g.
             // Amex requires 4 digits). Re-sync whenever the card number
             // state changes and the brand has been updated.
-            LaunchedEffect(cardNumberState) {
-                if (cvcState.cardBrand != cardNumberState.cardBrand) {
-                    cvcState = cvcState.withCardBrand(cardNumberState.cardBrand)
-                }
+            LaunchedEffect(cardNumberState.cardBrand) {
+                cvcState = cvcState.withCardBrand(cardNumberState.cardBrand)
             }
 
             // ==========================================================
