@@ -32,11 +32,11 @@ sealed class VgsExpiryDateFormat(val dateFormat: String) {
         return targetFormat.format(parse(text))
     }
 
-    class MonthShortYear : VgsExpiryDateFormat(dateFormat = "MM/yy")
+    object MonthShortYear : VgsExpiryDateFormat(dateFormat = "MM/yy")
 
-    class MonthLongYear : VgsExpiryDateFormat(dateFormat = "MM/yyyy")
+    object MonthLongYear : VgsExpiryDateFormat(dateFormat = "MM/yyyy")
 
-    class ShortYearMonth : VgsExpiryDateFormat(dateFormat = "yy/MM")
+    object ShortYearMonth : VgsExpiryDateFormat(dateFormat = "yy/MM")
 
-    class LongYearMonth : VgsExpiryDateFormat(dateFormat = "yyyy/MM")
+    object LongYearMonth : VgsExpiryDateFormat(dateFormat = "yyyy/MM")
 }

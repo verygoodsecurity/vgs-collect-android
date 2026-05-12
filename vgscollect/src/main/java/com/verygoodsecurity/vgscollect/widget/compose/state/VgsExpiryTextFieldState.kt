@@ -27,8 +27,8 @@ class VgsExpiryTextFieldState internal constructor(
     constructor(
         fieldName: String,
         validators: List<VgsTextFieldValidator>? = null,
-        inputDateFormat: VgsExpiryDateFormat = VgsExpiryDateFormat.MonthShortYear(),
-        outputDateFormat: VgsExpiryDateFormat = VgsExpiryDateFormat.MonthShortYear(),
+        inputDateFormat: VgsExpiryDateFormat = VgsExpiryDateFormat.MonthShortYear,
+        outputDateFormat: VgsExpiryDateFormat = VgsExpiryDateFormat.MonthShortYear,
         serializer: VgsExpirySerializer? = null,
     ) : this(
         EMPTY,
