@@ -20,8 +20,8 @@ import com.verygoodsecurity.vgscollect.widget.compose.state.VgsExpiryTextFieldSt
 @Composable
 fun VgsExpiryTextField(
     state: VgsExpiryTextFieldState,
+    onStateChange: (state: VgsExpiryTextFieldState) -> Unit,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsExpiryTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -64,8 +64,8 @@ fun VgsExpiryTextField(
 @Composable
 fun VgsExpiryOutlineTextField(
     state: VgsExpiryTextFieldState,
+    onStateChange: (state: VgsExpiryTextFieldState) -> Unit,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsExpiryTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,

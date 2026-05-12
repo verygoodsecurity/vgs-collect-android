@@ -278,9 +278,13 @@ class VGSCollect {
      * @param path path for a request
      * @param method HTTP method
      */
-    fun submit(path: String, method: HTTPMethod = HTTPMethod.POST): VGSResponse {
+    fun submit(
+        path: String,
+        method: HTTPMethod = HTTPMethod.POST,
+        fieldsStates: List<BaseFieldState>? = null
+    ): VGSResponse {
         val request = VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build()
-        return submit(request)
+        return submit(request, fieldsStates)
     }
 
     /**
@@ -290,11 +294,14 @@ class VGSCollect {
      *
      * @param request data class with attributes for submit.
      */
-    fun submit(request: VGSRequest): VGSResponse {
+    fun submit(
+        request: VGSRequest,
+        fieldsStates: List<BaseFieldState>? = null
+    ): VGSResponse {
         val data = storage.getDataForCollecting(
             request,
             client.getTemporaryStorage().getCustomData(),
-            null
+            fieldsStates
         )
         return request(request, data)
     }
@@ -305,8 +312,15 @@ class VGSCollect {
      * @param path path for a request
      * @param method HTTP method
      */
-    suspend fun submitAsync(path: String, method: HTTPMethod = HTTPMethod.POST): VGSResponse {
-        return submitAsync(VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build())
+    suspend fun submitAsync(
+        path: String,
+        method: HTTPMethod = HTTPMethod.POST,
+        fieldsStates: List<BaseFieldState>? = null
+    ): VGSResponse {
+        return submitAsync(
+            VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build(),
+            fieldsStates
+        )
     }
 
     /**
@@ -315,9 +329,10 @@ class VGSCollect {
      * @param request data class with attributes for submit
      */
     suspend fun submitAsync(
-        request: VGSRequest
+        request: VGSRequest,
+        fieldsStates: List<BaseFieldState>? = null
     ): VGSResponse = withContext(Dispatchers.IO) {
-        submit(request)
+        submit(request, fieldsStates)
     }
 
     /**
@@ -326,9 +341,9 @@ class VGSCollect {
      * @param path path for a request`
      * @param method HTTP method
      */
-    fun asyncSubmit(path: String, method: HTTPMethod, vararg fieldsStates: BaseFieldState?) {
+    fun asyncSubmit(path: String, method: HTTPMethod, fieldsStates: List<BaseFieldState>? = null) {
         val request = VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build()
-        asyncSubmit(request)
+        asyncSubmit(request, fieldsStates)
     }
 
     /**
@@ -336,11 +351,11 @@ class VGSCollect {
      *
      * @param request data class with attributes for submit
      */
-    fun asyncSubmit(request: VGSRequest, vararg fieldsStates: BaseFieldState?) {
+    fun asyncSubmit(request: VGSRequest, fieldsStates: List<BaseFieldState>? = null) {
         val data = storage.getDataForCollecting(
             request,
             client.getTemporaryStorage().getCustomData(),
-            fieldsStates.filterNotNull()
+            fieldsStates
         )
         requestAsync(request, data)
     }

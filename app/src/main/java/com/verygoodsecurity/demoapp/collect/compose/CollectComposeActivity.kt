@@ -119,7 +119,7 @@ class CollectComposeActivity : AppCompatActivity(), VgsCollectResponseListener {
                         VGSRequest.VGSRequestBuilder()
                             .setPath(path)
                             .build(),
-                        *states.toTypedArray(),
+                        states,
                     )
                 },
             )

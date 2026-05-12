@@ -19,8 +19,8 @@ import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardHolderTextFie
 @Composable
 fun VgsCardHolderTextField(
     state: VgsCardHolderTextFieldState,
+    onStateChange: (state: VgsCardHolderTextFieldState) -> Unit,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsCardHolderTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -69,8 +69,8 @@ fun VgsCardHolderTextField(
 @Composable
 fun VgsCardHolderOutlineTextField(
     state: VgsCardHolderTextFieldState,
+    onStateChange: (state: VgsCardHolderTextFieldState) -> Unit,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsCardHolderTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,

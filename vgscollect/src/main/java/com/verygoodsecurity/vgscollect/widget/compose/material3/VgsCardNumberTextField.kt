@@ -20,8 +20,8 @@ import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardNumberTextFie
 @Composable
 fun VgsCardNumberTextField(
     state: VgsCardNumberTextFieldState,
+    onStateChange: (state: VgsCardNumberTextFieldState) -> Unit,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsCardNumberTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -64,8 +64,8 @@ fun VgsCardNumberTextField(
 @Composable
 fun VgsCardNumberOutlineTextField(
     state: VgsCardNumberTextFieldState,
+    onStateChange: (state: VgsCardNumberTextFieldState) -> Unit,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsCardNumberTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,

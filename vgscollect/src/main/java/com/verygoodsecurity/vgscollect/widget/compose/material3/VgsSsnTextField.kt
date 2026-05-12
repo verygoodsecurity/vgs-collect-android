@@ -20,8 +20,8 @@ import com.verygoodsecurity.vgscollect.widget.compose.state.VgsSsnTextFieldState
 @Composable
 fun VgsSsnTextField(
     state: VgsSsnTextFieldState,
+    onStateChange: (state: VgsSsnTextFieldState) -> Unit,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsSsnTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -64,8 +64,8 @@ fun VgsSsnTextField(
 @Composable
 fun VgsSsnOutlineTextField(
     state: VgsSsnTextFieldState,
+    onStateChange: (state: VgsSsnTextFieldState) -> Unit,
     modifier: Modifier = Modifier,
-    onStateChange: (state: VgsSsnTextFieldState) -> Unit = {},
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
