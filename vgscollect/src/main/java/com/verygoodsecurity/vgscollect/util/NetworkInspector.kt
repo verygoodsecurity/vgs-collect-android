@@ -5,7 +5,7 @@ import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import androidx.core.content.ContextCompat
 
-class NetworkInspector(val context: Context) {
+internal class NetworkInspector(val context: Context) {
 
     fun isConnectionAvailable(): Boolean {
         return if (hasAccessNetworkStatePermission()) {
