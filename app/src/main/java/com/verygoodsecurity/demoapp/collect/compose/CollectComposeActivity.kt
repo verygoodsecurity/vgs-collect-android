@@ -1,3 +1,5 @@
+@file:Suppress("UsingMaterialAndMaterial3Libraries")
+
 package com.verygoodsecurity.demoapp.collect.compose
 
 import android.os.Bundle

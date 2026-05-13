@@ -1,3 +1,5 @@
+@file:Suppress("UsingMaterialAndMaterial3Libraries")
+
 package com.verygoodsecurity.demoapp.tokenization.compose
 
 import android.os.Bundle
