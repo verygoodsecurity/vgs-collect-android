@@ -31,7 +31,7 @@ import com.verygoodsecurity.vgscollect.widget.VGSTextInputLayout
  */
 @Deprecated(
     message = "This component is deprecated. Please use VgsTextField instead.",
-    replaceWith = ReplaceWith("VgsTextField")
+    replaceWith = ReplaceWith("com.verygoodsecurity.vgscollect.widget.compose.material.VgsTextField()")
 )
 @Composable
 fun VGSEditTextWrapper(
@@ -62,7 +62,7 @@ fun VGSEditTextWrapper(
  */
 @Deprecated(
     message = "This component is deprecated. Please use VgsCardNumberTextField instead.",
-    replaceWith = ReplaceWith("VgsCardNumberTextField")
+    replaceWith = ReplaceWith("com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardNumberTextField()")
 )
 @Composable
 fun VGSCardNumberEditTextWrapper(
@@ -93,7 +93,7 @@ fun VGSCardNumberEditTextWrapper(
  */
 @Deprecated(
     message = "This component is deprecated. Please use VgsSsnTextField instead.",
-    replaceWith = ReplaceWith("VgsSsnTextField")
+    replaceWith = ReplaceWith("com.verygoodsecurity.vgscollect.widget.compose.material.VgsSsnTextField()")
 )
 @Composable
 fun SSNEditTextWrapper(
@@ -124,7 +124,7 @@ fun SSNEditTextWrapper(
  */
 @Deprecated(
     message = "This component is deprecated. Please use VgsExpiryTextField instead.",
-    replaceWith = ReplaceWith("VgsExpiryTextField")
+    replaceWith = ReplaceWith("com.verygoodsecurity.vgscollect.widget.compose.material.VgsExpiryTextField()")
 )
 @Composable
 fun RangeDateEditTextWrapper(
@@ -155,7 +155,7 @@ fun RangeDateEditTextWrapper(
  */
 @Deprecated(
     message = "This component is deprecated. Please use VgsCardHolderTextField instead.",
-    replaceWith = ReplaceWith("VgsCardHolderTextField")
+    replaceWith = ReplaceWith("com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardHolderTextField()")
 )
 @Composable
 fun PersonNameEditTextWrapper(
@@ -186,7 +186,7 @@ fun PersonNameEditTextWrapper(
  */
 @Deprecated(
     message = "This component is deprecated. Please use VgsExpiryTextField instead.",
-    replaceWith = ReplaceWith("VgsExpiryTextField")
+    replaceWith = ReplaceWith("com.verygoodsecurity.vgscollect.widget.compose.material.VgsExpiryTextField()")
 )
 @Composable
 fun ExpirationDateEditTextWrapper(
@@ -217,7 +217,7 @@ fun ExpirationDateEditTextWrapper(
  */
 @Deprecated(
     message = "This component is deprecated. Please use VgsCvcTextField instead.",
-    replaceWith = ReplaceWith("VgsCvcTextField")
+    replaceWith = ReplaceWith("com.verygoodsecurity.vgscollect.widget.compose.material.VgsCvcTextField()")
 )
 @Composable
 fun CardVerificationCodeEditTextWrapper(
