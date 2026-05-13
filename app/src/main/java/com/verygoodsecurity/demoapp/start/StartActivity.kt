@@ -10,6 +10,7 @@ import com.verygoodsecurity.demoapp.BuildConfig
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.cmp.CMPActivity
 import com.verygoodsecurity.demoapp.collect.compose.CollectComposeActivity
+import com.verygoodsecurity.demoapp.tokenization.compose.TokenizationComposeActivity
 import com.verygoodsecurity.demoapp.collect.views.CollectViewsActivity
 import com.verygoodsecurity.demoapp.databinding.ActivityStartBinding
 import com.verygoodsecurity.demoapp.google_pay.GooglePayActivity
@@ -52,6 +53,11 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
                 id = R.string.start_tokenization_title,
                 title = getString(R.string.start_tokenization_title),
                 description = getString(R.string.start_tokenization_description)
+            ),
+            StartFlowAdapter.FlowItem(
+                id = R.string.start_tokenization_compose_title,
+                title = getString(R.string.start_tokenization_compose_title),
+                description = getString(R.string.start_tokenization_compose_description)
             ),
             StartFlowAdapter.FlowItem(
                 id = R.string.start_tokenization_v2_title,
@@ -101,6 +107,10 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         when (flowId) {
             R.string.start_collect_views_title -> startActivity(CollectViewsActivity::class.java)
             R.string.start_collect_compose_title -> startActivity(CollectComposeActivity::class.java)
+            R.string.start_tokenization_compose_title -> startActivity(
+                TokenizationComposeActivity::class.java,
+                routeId = BuildConfig.TOKENIZATION_ROUTE_ID
+            )
             R.string.start_tokenization_title -> startActivity(
                 TokenizationActivityV1::class.java,
                 routeId = BuildConfig.TOKENIZATION_ROUTE_ID

@@ -6,6 +6,11 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.CardNumberC
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.DateContent
 import com.verygoodsecurity.vgscollect.core.model.state.FieldContent.SSNContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
+import com.verygoodsecurity.vgscollect.util.extension.FIELD_NAME_KEY
+import com.verygoodsecurity.vgscollect.util.extension.FORMAT_KEY
+import com.verygoodsecurity.vgscollect.util.extension.STORAGE_KEY
+import com.verygoodsecurity.vgscollect.util.extension.TOKENIZATION_REQUIRED_KEY
+import com.verygoodsecurity.vgscollect.util.extension.VALUE_KEY
 import com.verygoodsecurity.vgscollect.widget.compose.state.VgsExpiryTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
 
@@ -45,6 +50,31 @@ internal fun List<BaseFieldState>.mapStorageFieldState(): List<StorageFieldState
                     state.fieldName,
                     state.isValid,
                     state.getOutputText()
+                )
+            )
+        }
+    }
+    return result
+}
+
+internal fun List<BaseFieldState>.mapToTokenizationData(): List<Map<String, Any>> {
+    val result = mutableListOf<Map<String, Any>>()
+    this.forEach { state ->
+        if (state.fieldName.isBlank()) return@forEach
+        val pairs = if (state is VgsExpiryTextFieldState && state.serializer != null) {
+            state.serializer.getSerialized(state.text, state.inputDateFormat, state.outputDateFormat)
+        } else {
+            listOf(state.fieldName to state.getOutputText())
+        }
+        val config = state.tokenizationConfig
+        pairs.forEach { (fieldName, value) ->
+            result.add(
+                mapOf(
+                    TOKENIZATION_REQUIRED_KEY to (config != null),
+                    VALUE_KEY to value,
+                    FORMAT_KEY to (config?.format?.name ?: ""),
+                    STORAGE_KEY to (config?.storage?.name ?: ""),
+                    FIELD_NAME_KEY to fieldName
                 )
             )
         }

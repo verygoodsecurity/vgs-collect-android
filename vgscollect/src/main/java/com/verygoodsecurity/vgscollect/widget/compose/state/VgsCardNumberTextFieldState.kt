@@ -4,6 +4,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.allowed8DigitBIN
 import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
 import com.verygoodsecurity.vgscollect.widget.compose.card.getCardNumberValidators
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCardNumberTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
@@ -17,7 +18,8 @@ class VgsCardNumberTextFieldState internal constructor(
     val isCardBrandValidationEnabled: Boolean,
     val supportedCardBrands: List<VgsCardBrand>,
     val cardBrand: VgsCardBrand,
-) : BaseFieldState(text, fieldName, validators) {
+    override val tokenizationConfig: VgsCardNumberTokenizationConfig? = null,
+) : BaseFieldState(text, fieldName, validators, tokenizationConfig) {
 
     val bin: String? = generateBin()
 
@@ -27,7 +29,8 @@ class VgsCardNumberTextFieldState internal constructor(
         fieldName: String,
         validators: List<VgsTextFieldValidator>? = null,
         isCardBrandValidationEnabled: Boolean = true,
-        supportedCardBrands: List<VgsCardBrand> = VgsCardBrand.DEFAULT
+        supportedCardBrands: List<VgsCardBrand> = VgsCardBrand.DEFAULT,
+        tokenizationConfig: VgsCardNumberTokenizationConfig? = null,
     ) : this(
         EMPTY,
         fieldName,
@@ -35,6 +38,7 @@ class VgsCardNumberTextFieldState internal constructor(
         isCardBrandValidationEnabled,
         supportedCardBrands,
         VgsCardBrand.UNKNOWN,
+        tokenizationConfig,
     )
 
     override fun validate(): List<VgsTextFieldValidationResult> {
@@ -59,6 +63,7 @@ class VgsCardNumberTextFieldState internal constructor(
             isCardBrandValidationEnabled = isCardBrandValidationEnabled,
             supportedCardBrands = supportedCardBrands,
             cardBrand = cardBrand,
+            tokenizationConfig = tokenizationConfig,
         )
     }
 

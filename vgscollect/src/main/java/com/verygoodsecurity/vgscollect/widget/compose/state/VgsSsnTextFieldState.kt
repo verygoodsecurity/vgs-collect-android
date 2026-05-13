@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.widget.compose.state
 
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsSsnTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRegexValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsTextLengthValidator
@@ -11,8 +12,9 @@ import kotlin.math.min
 class VgsSsnTextFieldState(
     text: String,
     fieldName: String,
-    validators: List<VgsTextFieldValidator>?
-) : BaseFieldState(text, fieldName, validators) {
+    validators: List<VgsTextFieldValidator>?,
+    override val tokenizationConfig: VgsSsnTokenizationConfig? = null,
+) : BaseFieldState(text, fieldName, validators, tokenizationConfig) {
 
     private companion object {
 
@@ -25,12 +27,9 @@ class VgsSsnTextFieldState(
 
     constructor(
         fieldName: String,
-        validators: List<VgsTextFieldValidator>? = null
-    ) : this(
-        EMPTY,
-        fieldName,
-        validators
-    )
+        validators: List<VgsTextFieldValidator>? = null,
+        tokenizationConfig: VgsSsnTokenizationConfig? = null,
+    ) : this(EMPTY, fieldName, validators, tokenizationConfig)
 
     override fun validate(): List<VgsTextFieldValidationResult> {
         return (validators ?: getDefaultValidators()).map { it.validate(text) }
@@ -42,7 +41,8 @@ class VgsSsnTextFieldState(
         return VgsSsnTextFieldState(
             text = normalizeText(text),
             fieldName = fieldName,
-            validators = validators
+            validators = validators,
+            tokenizationConfig = tokenizationConfig,
         )
     }
 

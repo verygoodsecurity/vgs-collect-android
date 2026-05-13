@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.widget.compose.state
 
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCardHolderTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRegexValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
@@ -9,8 +10,9 @@ import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFiel
 class VgsCardHolderTextFieldState(
     text: String,
     fieldName: String,
-    validators: List<VgsTextFieldValidator>?
-) : BaseFieldState(text, fieldName, validators) {
+    validators: List<VgsTextFieldValidator>?,
+    override val tokenizationConfig: VgsCardHolderTokenizationConfig? = null,
+) : BaseFieldState(text, fieldName, validators, tokenizationConfig) {
 
     private companion object {
 
@@ -19,12 +21,9 @@ class VgsCardHolderTextFieldState(
 
     constructor(
         fieldName: String,
-        validators: List<VgsTextFieldValidator>? = null
-    ) : this(
-        EMPTY,
-        fieldName,
-        validators
-    )
+        validators: List<VgsTextFieldValidator>? = null,
+        tokenizationConfig: VgsCardHolderTokenizationConfig? = null,
+    ) : this(EMPTY, fieldName, validators, tokenizationConfig)
 
     override fun validate(): List<VgsTextFieldValidationResult> {
         return (validators ?: listOf(
@@ -39,7 +38,8 @@ class VgsCardHolderTextFieldState(
         return VgsCardHolderTextFieldState(
             text = text,
             fieldName = fieldName,
-            validators = validators
+            validators = validators,
+            tokenizationConfig = tokenizationConfig,
         )
     }
 }

@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscollect.widget.compose.state
 import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpiryDateFormat
 import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpirySerializer
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsExpiryTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.util.plusYears
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsMinMaxDateValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
@@ -17,7 +18,8 @@ class VgsExpiryTextFieldState internal constructor(
     val inputDateFormat: VgsExpiryDateFormat,
     val outputDateFormat: VgsExpiryDateFormat,
     val serializer: VgsExpirySerializer?,
-) : BaseFieldState(text, fieldName, validators) {
+    override val tokenizationConfig: VgsExpiryTokenizationConfig? = null,
+) : BaseFieldState(text, fieldName, validators, tokenizationConfig) {
 
     internal companion object {
 
@@ -30,13 +32,15 @@ class VgsExpiryTextFieldState internal constructor(
         inputDateFormat: VgsExpiryDateFormat = VgsExpiryDateFormat.MonthShortYear,
         outputDateFormat: VgsExpiryDateFormat = VgsExpiryDateFormat.MonthShortYear,
         serializer: VgsExpirySerializer? = null,
+        tokenizationConfig: VgsExpiryTokenizationConfig? = null,
     ) : this(
         EMPTY,
         fieldName,
         validators,
         inputDateFormat,
         outputDateFormat,
-        serializer
+        serializer,
+        tokenizationConfig,
     )
 
     override fun validate(): List<VgsTextFieldValidationResult> {
@@ -54,7 +58,8 @@ class VgsExpiryTextFieldState internal constructor(
             validators = validators,
             inputDateFormat = inputDateFormat,
             outputDateFormat = outputDateFormat,
-            serializer = serializer
+            serializer = serializer,
+            tokenizationConfig = tokenizationConfig,
         )
     }
 

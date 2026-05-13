@@ -7,7 +7,7 @@ import org.junit.Test
 
 class VgsMinMaxDateValidatorTest {
 
-    private val format = VgsExpiryDateFormat.MonthLongYear()
+    private val format = VgsExpiryDateFormat.MonthLongYear
 
     // Range: January 2020 – January 2099
     // Dates computed with the same format to stay timezone-agnostic.

@@ -3,6 +3,7 @@ package com.verygoodsecurity.vgscollect.widget.compose.state
 import com.verygoodsecurity.vgscollect.widget.compose.card.VgsCardBrand
 import com.verygoodsecurity.vgscollect.widget.compose.card.getSecurityCodeValidators
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCvcTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
@@ -14,18 +15,21 @@ class VgsCvcTextFieldState internal constructor(
     validators: List<VgsTextFieldValidator>?,
     val isCardBrandValidationEnabled: Boolean,
     val cardBrand: VgsCardBrand,
-) : BaseFieldState(text, fieldName, validators) {
+    override val tokenizationConfig: VgsCvcTokenizationConfig? = null,
+) : BaseFieldState(text, fieldName, validators, tokenizationConfig) {
 
     constructor(
         fieldName: String,
         validators: List<VgsTextFieldValidator>? = null,
         isCardBrandValidationEnabled: Boolean = true,
+        tokenizationConfig: VgsCvcTokenizationConfig? = null,
     ) : this(
         EMPTY,
         fieldName,
         validators,
         isCardBrandValidationEnabled,
-        VgsCardBrand.UNKNOWN
+        VgsCardBrand.UNKNOWN,
+        tokenizationConfig,
     )
 
     override fun validate(): List<VgsTextFieldValidationResult> {
@@ -47,7 +51,8 @@ class VgsCvcTextFieldState internal constructor(
             fieldName = fieldName,
             validators = validators,
             isCardBrandValidationEnabled = isCardBrandValidationEnabled,
-            cardBrand = cardBrand
+            cardBrand = cardBrand,
+            tokenizationConfig = tokenizationConfig,
         )
     }
 
@@ -55,14 +60,11 @@ class VgsCvcTextFieldState internal constructor(
      * Updates the security code field state when a new card brand is detected
      * in the card number field.
      *
-     * This ensures that the security code field reflects the correct requirements
-     * (e.g., CVV length) for the currently detected card brand.
-     *
      * ### Example usage:
      *
      * ```
      * LaunchedEffect(cardNumberFieldState.cardBrand) {
-     *     securityCodeFieldState = securityCodeFieldState.withCardBrand(cardNumberFieldState.cardBrand)
+     *     cvcState = cvcState.withCardBrand(cardNumberFieldState.cardBrand)
      * }
      * ```
      *
@@ -73,7 +75,8 @@ class VgsCvcTextFieldState internal constructor(
         fieldName = fieldName,
         validators = validators,
         isCardBrandValidationEnabled = isCardBrandValidationEnabled,
-        cardBrand = cardBrand
+        cardBrand = cardBrand,
+        tokenizationConfig = tokenizationConfig,
     )
 
     private fun normalizeText(text: String, cardBrand: VgsCardBrand): String {

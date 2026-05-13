@@ -377,6 +377,17 @@ class VGSCollect {
     }
 
     /**
+     * The method sends data on VGS Server for tokenization. It is an asynchronous method.
+     * Use this overload when collecting data with Compose field states.
+     *
+     * @param request A tokenization request data.
+     * @param fieldsStates List of Compose field states to tokenize.
+     */
+    fun tokenize(request: VGSTokenizationRequest, fieldsStates: List<BaseFieldState>) {
+        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore, fieldsStates))
+    }
+
+    /**
      * The method sends data on VGS Server for create aliases. It is an asynchronous method.
      */
     fun createAliases() {
@@ -390,6 +401,17 @@ class VGSCollect {
      */
     fun createAliases(request: VGSCreateAliasesRequest) {
         requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore))
+    }
+
+    /**
+     * The method sends data on VGS Server for create aliases. It is an asynchronous method.
+     * Use this overload when collecting data with Compose field states.
+     *
+     * @param request A create aliases request data.
+     * @param fieldsStates List of Compose field states to tokenize.
+     */
+    fun createAliases(request: VGSCreateAliasesRequest, fieldsStates: List<BaseFieldState>) {
+        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore, fieldsStates))
     }
 
     /**

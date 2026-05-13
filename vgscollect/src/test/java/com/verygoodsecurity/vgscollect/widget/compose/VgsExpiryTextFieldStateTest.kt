@@ -12,7 +12,7 @@ class VgsExpiryTextFieldStateTest {
     // Using MonthLongYear to avoid 2-digit year window ambiguity
     private fun stateWith(text: String) = VgsExpiryTextFieldState(
         fieldName = "field",
-        inputDateFormat = VgsExpiryDateFormat.MonthLongYear()
+        inputDateFormat = VgsExpiryDateFormat.MonthLongYear
     ).copy(text = text)
 
     // "122099" → "12/2099" → December 2099 → far future

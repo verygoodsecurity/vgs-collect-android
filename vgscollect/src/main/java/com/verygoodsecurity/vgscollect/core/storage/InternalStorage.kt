@@ -80,16 +80,20 @@ internal class InternalStorage(
         }
     }
 
-    fun getDataForTokenization(fieldsIgnore: Boolean): Map<String, Any>? {
-        // TODO: Implement correct handling after implementing tokenization in Compose. Currently we force run validation.
-        if (getFieldsData(fieldsIgnore, null) == null) {
+    fun getDataForTokenization(
+        fieldsIgnore: Boolean,
+        fieldsStates: List<BaseFieldState>? = null
+    ): Map<String, Any>? {
+        if (getFieldsData(fieldsIgnore, fieldsStates) == null) {
             return null
         }
-        val data = mutableListOf<Map<String, Any>>()
-        fieldsStorage.getItems().forEach {
-            data.addAll(it.toTokenizationData())
+        return if (fieldsStates != null) {
+            mutableMapOf(DATA_KEY to fieldsStates.mapToTokenizationData())
+        } else {
+            val data = mutableListOf<Map<String, Any>>()
+            fieldsStorage.getItems().forEach { data.addAll(it.toTokenizationData()) }
+            mutableMapOf(DATA_KEY to data)
         }
-        return mutableMapOf(DATA_KEY to data)
     }
 
     fun getFieldsStates(): MutableCollection<VGSFieldState> = fieldsStorage.getItems()

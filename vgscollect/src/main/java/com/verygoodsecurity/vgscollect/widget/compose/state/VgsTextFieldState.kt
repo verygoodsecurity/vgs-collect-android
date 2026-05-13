@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.widget.compose.state
 
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsTextFieldTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
@@ -8,17 +9,15 @@ import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFiel
 class VgsTextFieldState(
     text: String,
     fieldName: String,
-    validators: List<VgsTextFieldValidator>?
-) : BaseFieldState(text, fieldName, validators) {
+    validators: List<VgsTextFieldValidator>?,
+    override val tokenizationConfig: VgsTextFieldTokenizationConfig? = null,
+) : BaseFieldState(text, fieldName, validators, tokenizationConfig) {
 
     constructor(
         fieldName: String,
-        validators: List<VgsTextFieldValidator>? = null
-    ) : this(
-        EMPTY,
-        fieldName,
-        validators
-    )
+        validators: List<VgsTextFieldValidator>? = null,
+        tokenizationConfig: VgsTextFieldTokenizationConfig? = null,
+    ) : this(EMPTY, fieldName, validators, tokenizationConfig)
 
     override fun validate(): List<VgsTextFieldValidationResult> {
         return (validators ?: listOf(VgsRequiredFieldValidator())).map { it.validate(text) }
@@ -27,6 +26,11 @@ class VgsTextFieldState(
     override fun getOutputText(): String = text
 
     override fun copy(text: String): VgsTextFieldState {
-        return VgsTextFieldState(text = text, fieldName = fieldName, validators = validators)
+        return VgsTextFieldState(
+            text = text,
+            fieldName = fieldName,
+            validators = validators,
+            tokenizationConfig = tokenizationConfig,
+        )
     }
 }

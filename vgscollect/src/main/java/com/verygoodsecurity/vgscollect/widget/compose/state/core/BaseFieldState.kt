@@ -1,12 +1,14 @@
 package com.verygoodsecurity.vgscollect.widget.compose.state.core
 
+import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 
 abstract class BaseFieldState(
     internal val text: String,
     val fieldName: String,
-    val validators: List<VgsTextFieldValidator>?
+    val validators: List<VgsTextFieldValidator>?,
+    open val tokenizationConfig: VgsTokenizationConfig? = null,
 ) {
 
     companion object {

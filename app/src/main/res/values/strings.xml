@@ -11,7 +11,7 @@
 
     <string name="start_activity_start_btn_title">Start</string>
 
-    <string name="start_tokenization_title">Tokenization</string>
+    <string name="start_tokenization_title">Tokenization(Views)</string>
     <string name="start_tokenization_description">Tokenize data without additional backend setup required.</string>
 
     <string name="start_tokenization_v2_title">Create aliases(Tokenization v2)</string>
@@ -25,6 +25,9 @@
 
     <string name="start_collect_compose_title">Collect (Compose)</string>
     <string name="start_collect_compose_description">Example of collecting data using collect compose widgets.</string>
+
+    <string name="start_tokenization_compose_title">Tokenization (Compose)</string>
+    <string name="start_tokenization_compose_description">Tokenize card data using Compose widgets with field-specific alias formats.</string>
 
     <string name="start_cmp_title">CMP</string>
     <string name="start_cmp_description">Example of create card object flow.</string>
