@@ -16,6 +16,19 @@ import androidx.compose.ui.text.TextStyle
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.state.VgsTextFieldState
 
+/**
+ * Material 3 filled text field for collecting a generic VGS value (city, postal code, address, …).
+ *
+ * Obtain [state] with [com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsTextFieldState]
+ * and pass the latest instance back through [onStateChange]. All other
+ * parameters match [androidx.compose.material3.TextField].
+ *
+ * The raw value stays inside the SDK — submit by passing the state to
+ * [com.verygoodsecurity.vgscollect.core.VGSCollect.asyncSubmit].
+ *
+ * @param state current immutable field state.
+ * @param onStateChange invoked with the next state on every user edit.
+ */
 @Composable
 fun VgsTextField(
     state: VgsTextFieldState,
@@ -69,6 +82,10 @@ fun VgsTextField(
     )
 }
 
+/**
+ * Outlined Material 3 variant of [VgsTextField]. See [VgsTextField] for usage.
+ * Parameters match [androidx.compose.material3.OutlinedTextField].
+ */
 @Composable
 fun VgsOutlineTextField(
     state: VgsTextFieldState,

@@ -4,6 +4,12 @@ import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFiel
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 import java.util.regex.Pattern
 
+/**
+ * Validator that requires the value to fully match a regular expression.
+ *
+ * @param regex Java regular expression the value must match.
+ * @param errorMsg message returned when the value does not match.
+ */
 class VgsRegexValidator(
     val regex: String,
     override val errorMsg: String = ERROR_MESSAGE

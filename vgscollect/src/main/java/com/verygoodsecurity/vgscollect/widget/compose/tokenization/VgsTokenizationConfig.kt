@@ -4,19 +4,19 @@ import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAli
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 
 /**
- * Base tokenization settings for a Compose field state.
+ * Tokenization settings for a VGS Compose field.
  *
- * Pass an instance to a field state constructor to opt that field into tokenization.
- * Fields with no config are included in the tokenization request body but their values
- * are passed through unchanged (not replaced with aliases).
+ * Pass an instance to a field's `rememberVgs…TextFieldState(... tokenizationConfig = ...)`
+ * factory to opt that field into tokenization: on submit, the field's value
+ * is replaced with an alias produced by the VGS vault.
  *
- * Use the field-specific subclass to get correct defaults for each field type:
+ * Use a field-specific subclass to get sensible defaults:
  * [VgsCardNumberTokenizationConfig], [VgsCvcTokenizationConfig],
  * [VgsCardHolderTokenizationConfig], [VgsSsnTokenizationConfig],
  * [VgsExpiryTokenizationConfig], [VgsTextFieldTokenizationConfig].
  *
- * @param format The alias format the VGS vault should produce.
- * @param storage Whether the alias is stored persistently or only for the session.
+ * @param format alias format the vault should produce.
+ * @param storage whether the alias is stored persistently or only for the session.
  */
 sealed class VgsTokenizationConfig(
     val format: VGSVaultAliasFormat,
@@ -26,8 +26,7 @@ sealed class VgsTokenizationConfig(
 /**
  * Tokenization settings for card number fields.
  *
- * Defaults to [VGSVaultAliasFormat.FPE_SIX_T_FOUR] to preserve the first 6 and last 4 digits,
- * matching the behavior of the view-based card number field.
+ * Default format preserves the first 6 and last 4 digits ([VGSVaultAliasFormat.FPE_SIX_T_FOUR]).
  */
 class VgsCardNumberTokenizationConfig(
     format: VGSVaultAliasFormat = VGSVaultAliasFormat.FPE_SIX_T_FOUR,
@@ -37,8 +36,7 @@ class VgsCardNumberTokenizationConfig(
 /**
  * Tokenization settings for CVC fields.
  *
- * Storage is always [VGSVaultStorageType.VOLATILE] — CVC codes must never be stored persistently.
- * Defaults to [VGSVaultAliasFormat.NUM_LENGTH_PRESERVING], matching the view-based CVC field.
+ * Storage is fixed to [VGSVaultStorageType.VOLATILE] — CVC codes must never be stored persistently.
  */
 class VgsCvcTokenizationConfig(
     format: VGSVaultAliasFormat = VGSVaultAliasFormat.NUM_LENGTH_PRESERVING,
@@ -46,9 +44,6 @@ class VgsCvcTokenizationConfig(
 
 /**
  * Tokenization settings for cardholder name fields.
- *
- * Defaults to [VGSVaultAliasFormat.UUID] / [VGSVaultStorageType.PERSISTENT],
- * matching the behavior of the view-based cardholder name field.
  */
 class VgsCardHolderTokenizationConfig(
     format: VGSVaultAliasFormat = VGSVaultAliasFormat.UUID,
@@ -57,9 +52,6 @@ class VgsCardHolderTokenizationConfig(
 
 /**
  * Tokenization settings for SSN fields.
- *
- * Defaults to [VGSVaultAliasFormat.UUID] / [VGSVaultStorageType.PERSISTENT],
- * matching the behavior of the view-based SSN field.
  */
 class VgsSsnTokenizationConfig(
     format: VGSVaultAliasFormat = VGSVaultAliasFormat.UUID,
@@ -68,9 +60,6 @@ class VgsSsnTokenizationConfig(
 
 /**
  * Tokenization settings for expiry date fields.
- *
- * Defaults to [VGSVaultAliasFormat.UUID] / [VGSVaultStorageType.PERSISTENT],
- * matching the behavior of the view-based expiry date field.
  */
 class VgsExpiryTokenizationConfig(
     format: VGSVaultAliasFormat = VGSVaultAliasFormat.UUID,
@@ -79,9 +68,6 @@ class VgsExpiryTokenizationConfig(
 
 /**
  * Tokenization settings for generic text fields.
- *
- * Defaults to [VGSVaultAliasFormat.UUID] / [VGSVaultStorageType.PERSISTENT],
- * matching the behavior of the view-based generic text field.
  */
 class VgsTextFieldTokenizationConfig(
     format: VGSVaultAliasFormat = VGSVaultAliasFormat.UUID,

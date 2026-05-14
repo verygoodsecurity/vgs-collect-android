@@ -12,6 +12,27 @@ import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFiel
 import java.util.regex.Pattern
 import com.verygoodsecurity.vgscollect.view.card.validation.payment.ChecksumAlgorithm as LegacyChecksumAlgorithm
 
+/**
+ * Describes a payment card brand and the rules used to recognise and validate it.
+ *
+ * The card-number field auto-detects the brand from the current input against
+ * the brands it was created with (see `supportedCardBrands` on
+ * [com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardNumberTextFieldState]).
+ * The detected brand is exposed as `cardBrand` on the state so the UI can
+ * react — e.g. by drawing [cardIcon] in a `trailingIcon`.
+ *
+ * Use [DEFAULT] for the built-in brands or build your own list (custom brand
+ * + [DEFAULT]) to extend detection.
+ *
+ * @param name display name of the brand (e.g. `"VISA"`).
+ * @param mask formatted display pattern, e.g. `"#### #### #### ####"`.
+ * @param regex pattern that matches card numbers belonging to this brand.
+ * @param algorithm checksum used to validate the full number.
+ * @param length set of valid total card-number lengths.
+ * @param securityCodeLength set of valid CVC lengths for this brand.
+ * @param cardIcon drawable resource for the brand's front-of-card icon.
+ * @param securityCodeIcon drawable resource for the matching CVC icon.
+ */
 data class VgsCardBrand(
     val name: String,
     val mask: String,
@@ -25,10 +46,16 @@ data class VgsCardBrand(
 
     companion object {
 
+        /** Brand returned when no other brand matches the current input. */
         val UNKNOWN = map(CardType.UNKNOWN)
 
+        /** Built-in brands recognised out of the box. */
         val DEFAULT = CardType.entries.toTypedArray().except(CardType.UNKNOWN).map { map(it) }
 
+        /**
+         * Returns the first brand from [brands] whose [regex] matches [card],
+         * or [UNKNOWN] when nothing matches.
+         */
         fun detect(card: String, brands: List<VgsCardBrand> = DEFAULT): VgsCardBrand {
             if (card.isBlank()) return UNKNOWN
             brands.forEach { brand ->
@@ -86,9 +113,13 @@ data class VgsCardBrand(
         return result
     }
 
+    /** Checksum algorithm used to validate card numbers for a brand. */
     enum class ChecksumAlgorithm {
 
+        /** Luhn (mod-10) checksum, used by most major card brands. */
         LUHN,
+
+        /** No checksum validation. */
         NONE
     }
 }

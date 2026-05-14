@@ -18,6 +18,19 @@ import androidx.compose.ui.text.input.KeyboardType
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.state.VgsSsnTextFieldState
 
+/**
+ * Material filled text field for collecting a U.S. Social Security Number.
+ *
+ * Obtain [state] with [com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsSsnTextFieldState]
+ * and pass the latest instance back through [onStateChange]. Input is masked
+ * as `###-##-####`. All other parameters match [androidx.compose.material.TextField].
+ *
+ * The raw value stays inside the SDK — submit by passing the state to
+ * [com.verygoodsecurity.vgscollect.core.VGSCollect.asyncSubmit].
+ *
+ * @param state current immutable field state.
+ * @param onStateChange invoked with the next state on every user edit.
+ */
 @Composable
 fun VgsSsnTextField(
     state: VgsSsnTextFieldState,
@@ -61,6 +74,10 @@ fun VgsSsnTextField(
     )
 }
 
+/**
+ * Outlined Material variant of [VgsSsnTextField]. See [VgsSsnTextField] for usage.
+ * Parameters match [androidx.compose.material.OutlinedTextField].
+ */
 @Composable
 fun VgsSsnOutlineTextField(
     state: VgsSsnTextFieldState,

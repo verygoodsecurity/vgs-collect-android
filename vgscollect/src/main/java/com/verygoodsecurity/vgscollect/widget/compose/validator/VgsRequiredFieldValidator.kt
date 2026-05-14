@@ -3,6 +3,11 @@ package com.verygoodsecurity.vgscollect.widget.compose.validator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 
+/**
+ * Validator that fails when the field is blank.
+ *
+ * @param errorMsg message returned when the field is empty or whitespace-only.
+ */
 class VgsRequiredFieldValidator(
     override val errorMsg: String = ERROR_MESSAGE
 ) : VgsTextFieldValidator() {

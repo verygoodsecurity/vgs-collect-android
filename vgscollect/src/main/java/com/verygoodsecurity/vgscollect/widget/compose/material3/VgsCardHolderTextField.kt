@@ -16,6 +16,19 @@ import androidx.compose.ui.text.TextStyle
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardHolderTextFieldState
 
+/**
+ * Material 3 filled text field for collecting a cardholder name.
+ *
+ * Obtain [state] with [com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardHolderTextFieldState]
+ * and pass the latest instance back through [onStateChange]. All other
+ * parameters match [androidx.compose.material3.TextField].
+ *
+ * The raw value stays inside the SDK — submit by passing the state to
+ * [com.verygoodsecurity.vgscollect.core.VGSCollect.asyncSubmit].
+ *
+ * @param state current immutable field state.
+ * @param onStateChange invoked with the next state on every user edit.
+ */
 @Composable
 fun VgsCardHolderTextField(
     state: VgsCardHolderTextFieldState,
@@ -66,6 +79,10 @@ fun VgsCardHolderTextField(
     )
 }
 
+/**
+ * Outlined Material 3 variant of [VgsCardHolderTextField]. See [VgsCardHolderTextField] for usage.
+ * Parameters match [androidx.compose.material3.OutlinedTextField].
+ */
 @Composable
 fun VgsCardHolderOutlineTextField(
     state: VgsCardHolderTextFieldState,

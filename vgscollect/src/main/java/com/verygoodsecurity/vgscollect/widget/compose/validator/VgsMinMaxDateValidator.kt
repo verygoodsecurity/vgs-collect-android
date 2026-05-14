@@ -4,6 +4,16 @@ import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpiryDateFormat
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 
+/**
+ * Validator that requires the parsed date to fall within an inclusive range.
+ *
+ * Useful for card expiry fields to reject dates in the past or far in the future.
+ *
+ * @param minDate earliest accepted date as a Unix timestamp in milliseconds.
+ * @param maxDate latest accepted date as a Unix timestamp in milliseconds.
+ * @param dateFormat the format used to parse the field's text.
+ * @param errorMsg message returned when the date is outside the range or unparsable.
+ */
 class VgsMinMaxDateValidator(
     minDate: Long,
     maxDate: Long,

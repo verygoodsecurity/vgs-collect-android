@@ -3,6 +3,14 @@ package com.verygoodsecurity.vgscollect.widget.compose.validator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 
+/**
+ * Validator that requires the value's length to match one of the allowed [lengths].
+ *
+ * Useful for fixed-length identifiers (e.g. `arrayOf(9)` for SSN, `arrayOf(15, 16)` for card numbers).
+ *
+ * @param lengths the set of accepted character counts.
+ * @param errorMsg message returned when the length is not in [lengths].
+ */
 class VgsTextLengthValidator(
     val lengths: Array<Int>,
     override val errorMsg: String = ERROR_MESSAGE

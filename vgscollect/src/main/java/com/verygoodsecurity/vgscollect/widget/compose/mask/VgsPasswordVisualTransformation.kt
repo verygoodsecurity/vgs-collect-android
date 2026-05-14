@@ -6,6 +6,15 @@ import androidx.compose.ui.text.input.TransformedText
 
 private const val DEFAULT_PASSWORD_MASK_CHAR = '\u2022'
 
+/**
+ * Visual transformation that hides each input character behind a mask glyph.
+ *
+ * Use it on sensitive fields where the value should not be visible while typing.
+ * The mask is purely visual — the value submitted to VGS is the raw input.
+ *
+ * @param passwordChar character drawn in place of each input character.
+ *   Defaults to the bullet `•`.
+ */
 class VgsPasswordVisualTransformation(
     val passwordChar: Char = DEFAULT_PASSWORD_MASK_CHAR
 ) : VgsVisualTransformation() {

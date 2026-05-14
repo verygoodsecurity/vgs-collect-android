@@ -17,6 +17,26 @@ import androidx.compose.ui.text.input.KeyboardType
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCvcTextFieldState
 
+/**
+ * Material 3 filled text field for collecting a card security code (CVC/CVV).
+ *
+ * Obtain [state] with [com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCvcTextFieldState]
+ * and pass the latest instance back through [onStateChange]. Sync the
+ * detected brand from your card-number state so the required length adapts
+ * (3 digits for most brands, 4 for Amex):
+ *
+ * ```
+ * LaunchedEffect(cardNumberState.cardBrand) {
+ *     cvcState = cvcState.withCardBrand(cardNumberState.cardBrand)
+ * }
+ * ```
+ *
+ * The raw value stays inside the SDK — submit by passing the state to
+ * [com.verygoodsecurity.vgscollect.core.VGSCollect.asyncSubmit].
+ *
+ * @param state current immutable field state.
+ * @param onStateChange invoked with the next state on every user edit.
+ */
 @Composable
 fun VgsCvcTextField(
     state: VgsCvcTextFieldState,
@@ -62,6 +82,10 @@ fun VgsCvcTextField(
     )
 }
 
+/**
+ * Outlined Material 3 variant of [VgsCvcTextField]. See [VgsCvcTextField] for usage.
+ * Parameters match [androidx.compose.material3.OutlinedTextField].
+ */
 @Composable
 fun VgsCvcOutlineTextField(
     state: VgsCvcTextFieldState,

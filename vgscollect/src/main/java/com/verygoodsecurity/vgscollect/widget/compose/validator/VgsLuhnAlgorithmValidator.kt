@@ -3,6 +3,13 @@ package com.verygoodsecurity.vgscollect.widget.compose.validator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 
+/**
+ * Validator that checks a numeric value against the Luhn checksum algorithm.
+ *
+ * Commonly applied to card numbers to catch typos before submission.
+ *
+ * @param errorMsg message returned when the value fails the Luhn check.
+ */
 class VgsLuhnAlgorithmValidator(override val errorMsg: String = ERROR_MESSAGE) :
     VgsTextFieldValidator() {
 

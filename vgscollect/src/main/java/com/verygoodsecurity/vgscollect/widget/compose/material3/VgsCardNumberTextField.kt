@@ -17,6 +17,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardNumberTextFieldState
 
+/**
+ * Material 3 filled text field for collecting a card number.
+ *
+ * Obtain [state] with [com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardNumberTextFieldState]
+ * and pass the latest instance back through [onStateChange]. Read
+ * `state.cardBrand` to react to brand changes (e.g. drawing a brand icon in
+ * [trailingIcon]). All other parameters match [androidx.compose.material3.TextField].
+ *
+ * The raw card number stays inside the SDK — submit by passing the state to
+ * [com.verygoodsecurity.vgscollect.core.VGSCollect.asyncSubmit].
+ *
+ * @param state current immutable field state.
+ * @param onStateChange invoked with the next state on every user edit.
+ */
 @Composable
 fun VgsCardNumberTextField(
     state: VgsCardNumberTextFieldState,
@@ -62,6 +76,10 @@ fun VgsCardNumberTextField(
     )
 }
 
+/**
+ * Outlined Material 3 variant of [VgsCardNumberTextField]. See [VgsCardNumberTextField] for usage.
+ * Parameters match [androidx.compose.material3.OutlinedTextField].
+ */
 @Composable
 fun VgsCardNumberOutlineTextField(
     state: VgsCardNumberTextFieldState,
