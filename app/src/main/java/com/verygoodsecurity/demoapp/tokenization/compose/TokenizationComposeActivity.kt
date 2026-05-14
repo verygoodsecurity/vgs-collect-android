@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -44,6 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.verygoodsecurity.demoapp.R
@@ -248,6 +251,7 @@ private fun Content(
                     modifier = Modifier.fillMaxWidth(),
                     onStateChange = { cardHolderState = it },
                     colors = fieldColors,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -266,6 +270,7 @@ private fun Content(
                         )
                     },
                     colors = fieldColors,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -279,6 +284,7 @@ private fun Content(
                             modifier = Modifier.fillMaxWidth(),
                             onStateChange = { expiryState = it },
                             colors = fieldColors,
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                         )
                     }
                     Spacer(modifier = Modifier.size(8.dp))
@@ -289,6 +295,19 @@ private fun Content(
                             modifier = Modifier.fillMaxWidth(),
                             onStateChange = { cvcState = it },
                             colors = fieldColors,
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                            keyboardActions = KeyboardActions(
+                                onDone = {
+                                    onTokenize(
+                                        listOf(
+                                            cardHolderState,
+                                            cardNumberState,
+                                            cvcState,
+                                            expiryState,
+                                        )
+                                     )
+                                }
+                            )
                         )
                     }
                 }

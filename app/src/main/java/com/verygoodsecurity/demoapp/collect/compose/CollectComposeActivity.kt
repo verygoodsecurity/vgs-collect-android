@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ButtonDefaults
@@ -48,6 +49,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -301,6 +303,7 @@ private fun Content(
                     modifier = Modifier.fillMaxWidth(),
                     onStateChange = { cardHolderState = it },
                     colors = fieldColors,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -319,6 +322,7 @@ private fun Content(
                         )
                     },
                     colors = fieldColors,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -332,6 +336,7 @@ private fun Content(
                             modifier = Modifier.fillMaxWidth(),
                             onStateChange = { expiryState = it },
                             colors = fieldColors,
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                         )
                     }
                     Spacer(modifier = Modifier.size(8.dp))
@@ -342,6 +347,7 @@ private fun Content(
                             modifier = Modifier.fillMaxWidth(),
                             onStateChange = { cvcState = it },
                             colors = fieldColors,
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                         )
                     }
                 }
@@ -357,6 +363,7 @@ private fun Content(
                             modifier = Modifier.fillMaxWidth(),
                             onStateChange = { cityState = it },
                             colors = fieldColors,
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                         )
                     }
                     Spacer(modifier = Modifier.size(8.dp))
@@ -366,7 +373,10 @@ private fun Content(
                             state = postalCodeState,
                             modifier = Modifier.fillMaxWidth(),
                             onStateChange = { postalCodeState = it },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number,
+                                imeAction = ImeAction.Next
+                            ),
                             colors = fieldColors,
                         )
                     }
@@ -381,6 +391,22 @@ private fun Content(
                     modifier = Modifier.fillMaxWidth(),
                     onStateChange = { ssnState = it },
                     colors = fieldColors,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            onSubmit(
+                                listOf(
+                                    cardHolderState,
+                                    cardNumberState,
+                                    cvcState,
+                                    expiryState,
+                                    cityState,
+                                    postalCodeState,
+                                    ssnState,
+                                )
+                            )
+                        }
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
