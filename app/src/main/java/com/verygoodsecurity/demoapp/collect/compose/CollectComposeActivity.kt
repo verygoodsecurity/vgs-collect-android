@@ -40,11 +40,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -70,13 +70,13 @@ import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCvcOutlineText
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsExpiryOutlineTextField
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsOutlineTextField
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsSsnOutlineTextField
-import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardHolderTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardNumberTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCvcTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.state.VgsExpiryTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.state.VgsSsnTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.state.VgsTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardHolderTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardNumberTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCvcTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsExpiryTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsSsnTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsTextFieldState
 
 private const val TAG = "CollectComposeActivity"
 private const val ATTACHMENT_FIELD_NAME = "data.attachment"
@@ -133,6 +133,7 @@ class CollectComposeActivity : AppCompatActivity(), VgsCollectResponseListener {
         VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
         setContent {
             Content(
+                collect = collect,
                 title = title.toString(),
                 isFileAttached = isFileAttached,
                 onAttachFile = {
@@ -196,6 +197,7 @@ class CollectComposeActivity : AppCompatActivity(), VgsCollectResponseListener {
  */
 @Composable
 private fun Content(
+    collect: VGSCollect,
     title: String,
     isFileAttached: Boolean,
     onAttachFile: () -> Unit,
@@ -234,46 +236,42 @@ private fun Content(
                 // ==========================================================
                 // STEP 1: Initialize field states
                 // ==========================================================
-                // Each state holds the field name used as the JSON key in the
-                // submit payload. Pass a custom validators list to override
-                // default validation, or emptyList() to disable it entirely.
-                var cardHolderState by remember {
-                    mutableStateOf(VgsCardHolderTextFieldState(fieldName = "data.name"))
-                }
-                var cardNumberState by remember {
-                    mutableStateOf(VgsCardNumberTextFieldState(fieldName = "data.card_number"))
-                }
-                var cvcState by remember {
-                    mutableStateOf(VgsCvcTextFieldState(fieldName = "data.cvc"))
-                }
-                var expiryState by remember {
-                    mutableStateOf(
-                        VgsExpiryTextFieldState(
-                            fieldName = "data.expiry",
-                            inputDateFormat = VgsExpiryDateFormat.MonthShortYear,
-                            outputDateFormat = VgsExpiryDateFormat.LongYearMonth,
-                        )
-                    )
-                }
-                var cityState by remember {
-                    mutableStateOf(
-                        VgsTextFieldState(
-                            fieldName = "data.city",
-                            validators = emptyList()
-                        )
-                    )
-                }
-                var postalCodeState by remember {
-                    mutableStateOf(
-                        VgsTextFieldState(
-                            fieldName = "data.postal_code",
-                            validators = emptyList()
-                        )
-                    )
-                }
-                var ssnState by remember {
-                    mutableStateOf(VgsSsnTextFieldState(fieldName = "data.ssn"))
-                }
+                // Each state is bound to `collect` so the SDK can wire its
+                // analytics pipeline and survive config changes. Pass custom
+                // validators to override the defaults, or emptyList() to
+                // disable validation entirely.
+                var cardHolderState by rememberVgsCardHolderTextFieldState(
+                    collect = collect,
+                    fieldName = "data.name",
+                )
+                var cardNumberState by rememberVgsCardNumberTextFieldState(
+                    collect = collect,
+                    fieldName = "data.card_number",
+                )
+                var cvcState by rememberVgsCvcTextFieldState(
+                    collect = collect,
+                    fieldName = "data.cvc",
+                )
+                var expiryState by rememberVgsExpiryTextFieldState(
+                    collect = collect,
+                    fieldName = "data.expiry",
+                    inputDateFormat = VgsExpiryDateFormat.MonthShortYear,
+                    outputDateFormat = VgsExpiryDateFormat.LongYearMonth,
+                )
+                var cityState by rememberVgsTextFieldState(
+                    collect = collect,
+                    fieldName = "data.city",
+                    validators = emptyList(),
+                )
+                var postalCodeState by rememberVgsTextFieldState(
+                    collect = collect,
+                    fieldName = "data.postal_code",
+                    validators = emptyList(),
+                )
+                var ssnState by rememberVgsSsnTextFieldState(
+                    collect = collect,
+                    fieldName = "data.ssn",
+                )
 
                 // ==========================================================
                 // STEP 2: Sync dependent field states
@@ -483,6 +481,7 @@ private fun FieldLabel(text: String) {
 @Composable
 private fun Preview() {
     Content(
+        collect = VGSCollect(LocalContext.current, "", ""),
         title = "Compose Demo (Activity)",
         isFileAttached = false,
         onAttachFile = {},

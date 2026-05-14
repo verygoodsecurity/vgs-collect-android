@@ -4,11 +4,12 @@ import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsTokenizati
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidator
 
+internal const val ANALYTICS_UI = "native-compose"
+
 abstract class BaseFieldState(
     internal val text: String,
     val fieldName: String,
     val validators: List<VgsTextFieldValidator>?,
-    open val tokenizationConfig: VgsTokenizationConfig? = null,
 ) {
 
     companion object {
@@ -23,6 +24,8 @@ abstract class BaseFieldState(
     val validationResult: List<VgsTextFieldValidationResult> by lazy { validate() }
 
     val isValid: Boolean by lazy { validationResult.all { it.isValid } }
+
+    abstract val tokenizationConfig: VgsTokenizationConfig?
 
     internal abstract fun validate(): List<VgsTextFieldValidationResult>
 

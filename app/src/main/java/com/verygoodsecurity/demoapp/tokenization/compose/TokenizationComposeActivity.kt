@@ -37,12 +37,11 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -64,11 +63,11 @@ import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardHolderOutl
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardNumberOutlineTextField
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCvcOutlineTextField
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsExpiryOutlineTextField
-import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardHolderTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardNumberTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCvcTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.state.VgsExpiryTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardHolderTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardNumberTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCvcTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsExpiryTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCardHolderTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCardNumberTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCvcTokenizationConfig
@@ -113,6 +112,7 @@ class TokenizationComposeActivity : AppCompatActivity(), VgsCollectResponseListe
         VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
         setContent {
             Content(
+                collect = collect,
                 title = title.toString(),
                 onTokenize = { states ->
                     collect.tokenize(
@@ -153,6 +153,7 @@ class TokenizationComposeActivity : AppCompatActivity(), VgsCollectResponseListe
  */
 @Composable
 private fun Content(
+    collect: VGSCollect,
     title: String,
     onTokenize: (List<BaseFieldState>) -> Unit,
 ) {
@@ -191,40 +192,28 @@ private fun Content(
                 // Each state carries its own tokenization config. The field-specific
                 // subclasses provide the correct alias format / storage defaults for
                 // each data type, matching the behavior of the view-based fields.
-                var cardHolderState by remember {
-                    mutableStateOf(
-                        VgsCardHolderTextFieldState(
-                            fieldName = "data.name",
-                            tokenizationConfig = VgsCardHolderTokenizationConfig(),
-                        )
-                    )
-                }
-                var cardNumberState by remember {
-                    mutableStateOf(
-                        VgsCardNumberTextFieldState(
-                            fieldName = "data.card_number",
-                            tokenizationConfig = VgsCardNumberTokenizationConfig(),
-                        )
-                    )
-                }
-                var cvcState by remember {
-                    mutableStateOf(
-                        VgsCvcTextFieldState(
-                            fieldName = "data.cvc",
-                            tokenizationConfig = VgsCvcTokenizationConfig(),
-                        )
-                    )
-                }
-                var expiryState by remember {
-                    mutableStateOf(
-                        VgsExpiryTextFieldState(
-                            fieldName = "data.expiry",
-                            inputDateFormat = VgsExpiryDateFormat.MonthShortYear,
-                            outputDateFormat = VgsExpiryDateFormat.MonthShortYear,
-                            tokenizationConfig = VgsExpiryTokenizationConfig(),
-                        )
-                    )
-                }
+                var cardHolderState by rememberVgsCardHolderTextFieldState(
+                    collect = collect,
+                    fieldName = "data.name",
+                    tokenizationConfig = VgsCardHolderTokenizationConfig(),
+                )
+                var cardNumberState by rememberVgsCardNumberTextFieldState(
+                    collect = collect,
+                    fieldName = "data.card_number",
+                    tokenizationConfig = VgsCardNumberTokenizationConfig(),
+                )
+                var cvcState by rememberVgsCvcTextFieldState(
+                    collect = collect,
+                    fieldName = "data.cvc",
+                    tokenizationConfig = VgsCvcTokenizationConfig(),
+                )
+                var expiryState by rememberVgsExpiryTextFieldState(
+                    collect = collect,
+                    fieldName = "data.expiry",
+                    inputDateFormat = VgsExpiryDateFormat.MonthShortYear,
+                    outputDateFormat = VgsExpiryDateFormat.MonthShortYear,
+                    tokenizationConfig = VgsExpiryTokenizationConfig(),
+                )
 
                 // ==========================================================
                 // STEP 2: Sync dependent field states
@@ -365,5 +354,9 @@ private fun FieldLabel(text: String) {
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
 private fun Preview() {
-    Content(title = "Tokenization (Compose)", onTokenize = {})
+    Content(
+        collect = VGSCollect(LocalContext.current, "", ""),
+        title = "Tokenization (Compose)",
+        onTokenize = {}
+    )
 }

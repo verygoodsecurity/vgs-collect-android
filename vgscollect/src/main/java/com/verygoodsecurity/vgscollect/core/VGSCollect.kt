@@ -82,7 +82,7 @@ class VGSCollect {
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
     private val analyticsManager: VGSSharedAnalyticsManager
-    private val analyticsHandler: AnalyticsHandler
+    internal val analyticsHandler: AnalyticsHandler
 
     private var client: ApiClient
     private var mainHandler: Handler = Handler(Looper.getMainLooper())
