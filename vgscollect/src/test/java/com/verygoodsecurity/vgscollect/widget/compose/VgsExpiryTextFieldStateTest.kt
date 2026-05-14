@@ -10,9 +10,14 @@ import org.junit.Test
 class VgsExpiryTextFieldStateTest {
 
     // Using MonthLongYear to avoid 2-digit year window ambiguity
-    private fun stateWith(text: String) = VgsExpiryTextFieldState(
+    private fun stateWith(
+        text: String,
+        inputDateFormat: VgsExpiryDateFormat = VgsExpiryDateFormat.MonthLongYear,
+        outputDateFormat: VgsExpiryDateFormat = VgsExpiryDateFormat.MonthLongYear,
+    ) = VgsExpiryTextFieldState(
         fieldName = "field",
-        inputDateFormat = VgsExpiryDateFormat.MonthLongYear
+        inputDateFormat = inputDateFormat,
+        outputDateFormat = outputDateFormat
     ).copy(text = text)
 
     // "122099" → "12/2099" → December 2099 → far future
@@ -20,7 +25,8 @@ class VgsExpiryTextFieldStateTest {
 
     @Test
     fun validate_futureDate_validatedSuccessfully() {
-        assertTrue(stateWith("122099").isValid)
+        val state = stateWith("122039")
+        assertTrue(state.isValid)
     }
 
     @Test
@@ -35,7 +41,7 @@ class VgsExpiryTextFieldStateTest {
 
     @Test
     fun validate_formattedWithSlash_normalizedAndValidatedSuccessfully() {
-        assertTrue(stateWith("12/2099").isValid)
+        assertTrue(stateWith("12/2039").isValid)
     }
 
     @Test
