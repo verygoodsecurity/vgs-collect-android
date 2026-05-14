@@ -2,6 +2,7 @@
 
 package com.verygoodsecurity.demoapp.collect.compose
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -28,7 +29,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
@@ -46,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -76,6 +77,7 @@ import com.verygoodsecurity.vgscollect.widget.compose.state.VgsTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
 
 private const val TAG = "CollectComposeActivity"
+private const val ATTACHMENT_FIELD_NAME = "data.attachment"
 
 /**
  * Demonstrates how to integrate VGS Collect SDK using Jetpack Compose.
@@ -113,6 +115,15 @@ class CollectComposeActivity : AppCompatActivity(), VgsCollectResponseListener {
         }
     }
 
+    /**
+     * Whether a file is currently attached via [com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider].
+     *
+     * Hoisted into the Activity so it can be updated from [onActivityResult]
+     * after the SDK's file picker returns. Compose reads it to toggle the
+     * Attach/Detach button label.
+     */
+    private var isFileAttached by mutableStateOf(false)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -121,6 +132,14 @@ class CollectComposeActivity : AppCompatActivity(), VgsCollectResponseListener {
         setContent {
             Content(
                 title = title.toString(),
+                isFileAttached = isFileAttached,
+                onAttachFile = {
+                    collect.getFileProvider().attachFile(this, ATTACHMENT_FIELD_NAME)
+                },
+                onDetachAllFiles = {
+                    collect.getFileProvider().detachAll()
+                    isFileAttached = false
+                },
                 onSubmit = { states ->
                     collect.asyncSubmit(
                         VGSRequest.VGSRequestBuilder()
@@ -131,6 +150,17 @@ class CollectComposeActivity : AppCompatActivity(), VgsCollectResponseListener {
                 },
             )
         }
+    }
+
+    /**
+     * Forwards the file picker result to [VGSCollect] so the selected file is
+     * stored in the temporary file storage before submission.
+     */
+    @Suppress("DEPRECATION", "OVERRIDE_DEPRECATION")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        collect.onActivityResult(requestCode, resultCode, data)
+        isFileAttached = collect.getFileProvider().getAttachedFiles().isNotEmpty()
     }
 
     /**
@@ -165,6 +195,9 @@ class CollectComposeActivity : AppCompatActivity(), VgsCollectResponseListener {
 @Composable
 private fun Content(
     title: String,
+    isFileAttached: Boolean,
+    onAttachFile: () -> Unit,
+    onDetachAllFiles: () -> Unit,
     onSubmit: (List<BaseFieldState>) -> Unit,
 ) {
     MaterialTheme {
@@ -363,10 +396,14 @@ private fun Content(
                 ) {
                     OutlinedButton(
                         modifier = Modifier.height(IntrinsicSize.Max),
-                        onClick = { /* TODO: implement file attachment */ }
+                        onClick = { if (isFileAttached) onDetachAllFiles() else onAttachFile() },
                     ) {
                         Text(
-                            text = "Attach".uppercase(),
+                            text = if (isFileAttached) {
+                                stringResource(R.string.detach_btn_title).uppercase()
+                            } else {
+                                stringResource(R.string.attach_btn_title).uppercase()
+                            },
                             color = colorResource(R.color.fiord)
                         )
                         Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
@@ -419,5 +456,11 @@ private fun FieldLabel(text: String) {
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
 private fun Preview() {
-    Content(title = "Compose Demo (Activity)", onSubmit = {})
+    Content(
+        title = "Compose Demo (Activity)",
+        isFileAttached = false,
+        onAttachFile = {},
+        onDetachAllFiles = {},
+        onSubmit = {},
+    )
 }
