@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.maven.publish)
@@ -13,11 +12,11 @@ plugins {
 
 android {
     namespace 'com.verygoodsecurity.vgscollect'
-    compileSdkVersion 36
+    compileSdkVersion 37
 
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 36
+        targetSdkVersion 37
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 

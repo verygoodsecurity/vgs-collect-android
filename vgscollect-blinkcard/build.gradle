@@ -2,18 +2,17 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.dokka)
 }
 
 android {
     namespace 'com.verygoodsecurity.api.blinkcard'
-    compileSdkVersion 36
+    compileSdkVersion 37
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 36
+        minSdkVersion 23
+        targetSdkVersion 37
         versionCode VERSION_CODE.toInteger()
         versionName VERSION_NAME
 
