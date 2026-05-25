@@ -9,7 +9,7 @@ Android SDK library (Kotlin/Gradle) published to Maven Central as `com.verygoods
 | `vgscollect` | Core SDK library — card data collection, field rendering, Compose UI, network (OkHttp). Published artifact. |
 | `vgscollect-cardio` | Card.io scanner adapter (deprecated). Published artifact. |
 | `vgscollect-blinkcard` | BlinkCard (Microblink) scanner adapter. Published artifact. |
-| `vgs-sdk-analytics:VGSClientSDKAnalytics` | Internal analytics module (local debug, Maven release). |
+| `vgs-sdk-analytics:VGSClientSDKAnalytics` | Internal analytics KMP module (Android + iOS targets). Uses `com.android.kotlin.multiplatform.library` plugin (required since AGP 9.0). Local debug, Maven release. |
 | `app` | Demo/sample application — not published. |
 
 ## Dependency Categories
@@ -24,7 +24,7 @@ Android SDK library (Kotlin/Gradle) published to Maven Central as `com.verygoods
 | Documentation plugins | `org.jetbrains.dokka` (plugin + `dokka-base` lib) | Build-time doc generation only |
 | Lint/static analysis | `io.gitlab.arturbosch.detekt` | Build-time analysis only |
 | Code coverage | `org.jetbrains.kotlinx.kover` | Build-time coverage only |
-| Demo-app-only deps | `com.github.kbiakov:CodeView-Android`, `com.github.kittinunf.fuel:fuel`, `androidx.multidex:multidex`, `androidx.preference:preference-ktx`, `androidx.constraintlayout:constraintlayout` | Used only in the unpublished `app` module |
+| Demo-app-only deps | `com.github.kbiakov:CodeView-Android`, `com.github.kittinunf.fuel:fuel`, `androidx.preference:preference-ktx`, `androidx.constraintlayout:constraintlayout` | Used only in the unpublished `app` module |
 
 ### Needs Quick Review
 
@@ -49,7 +49,7 @@ Android SDK library (Kotlin/Gradle) published to Maven Central as `com.verygoods
 | Google Play Wallet | `com.google.android.gms:play-services-wallet` | Google Pay integration in demo app | Manual payment flow tests |
 | Ktor | `io.ktor:ktor-client-core`, `io.ktor:ktor-client-okhttp`, `io.ktor:ktor-client-darwin` | HTTP client (KMP) — listed in catalog but usage may be in analytics module | Unit tests |
 | Gradle major bumps | Gradle wrapper (8.x → 9.x) | Build system — can break plugin compatibility | Full CI pipeline |
-| AGP major bumps | `com.android.application`/`com.android.library` major | Android build toolchain — can break compilation, minification, publishing | Full CI pipeline |
+| AGP major bumps | `com.android.application`/`com.android.library`/`com.android.kotlin.multiplatform.library` major | Android build toolchain — can break compilation, minification, publishing. AGP 9.0+ also forbids `com.android.library` in KMP modules (must use `com.android.kotlin.multiplatform.library`) and ties supported compileSdk levels (e.g. min AGP 9.1.1 for compileSdk 37). | Full CI pipeline |
 
 ## Historical Patterns (from PR analysis)
 
