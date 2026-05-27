@@ -1,0 +1,114 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.maven.publish)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.kover)
+}
+
+android {
+    namespace = "com.verygoodsecurity.vgscollect"
+    compileSdk = 37
+
+    defaultConfig {
+        minSdk = 23
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
+
+        vectorDrawables.useSupportLibrary = true
+
+        buildConfigField("String", "VERSION_NAME", "\"${project.properties["VERSION_NAME"]}\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
+        compose = true
+    }
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+        debug {
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            isReturnDefaultValues = true
+            all {
+                (this as Test).jvmArgs("-noverify")
+            }
+        }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+detekt {
+    buildUponDefaultConfig = false
+    allRules = false
+    config.setFrom(files("$rootDir/.detekt/config.yml"))
+}
+
+dependencies {
+
+    api(libs.material)
+    api(libs.okhttp)
+
+    debugImplementation(project(":vgs-sdk-analytics:VGSClientSDKAnalytics"))
+    releaseImplementation(libs.vgs.sdk.analytics.android)
+
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.core.ktx)
+
+    implementation(libs.compose.material)
+
+    testImplementation(testLibs.junit)
+    testImplementation(testLibs.mockito.core)
+    testImplementation(testLibs.mockito.inline)
+    testImplementation(testLibs.robolectric)
+    testImplementation(testLibs.json)
+    testImplementation(testLibs.jsonassert)
+
+    androidTestImplementation(androidTestLibs.androidx.runner)
+    androidTestImplementation(androidTestLibs.androidx.junit.ext)
+    androidTestImplementation(androidTestLibs.androidx.espresso.core)
+
+    dokkaHtmlPlugin(libs.dokka.base)
+}
+
+tasks.withType<Javadoc> {
+    enabled = false
+}
+
+dokka {
+    dokkaPublications.html {
+        outputDirectory.set(rootProject.file("docs"))
+    }
+}
+
