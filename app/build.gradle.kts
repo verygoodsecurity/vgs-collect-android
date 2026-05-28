@@ -1,10 +1,12 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.detekt)
 }
+
+apply(from = "$rootDir/gradle/utils.gradle.kts")
+
+val localProperty: (String) -> String by extra
 
 android {
     namespace = "com.verygoodsecurity.demoapp"
@@ -21,14 +23,14 @@ android {
 
         multiDexEnabled = true
 
-        buildConfigField("String", "VAULT_ID", "\"${project.properties["VGS_VAULT_ID"] ?: ""}\"")
-        buildConfigField("String", "PATH", "\"${project.properties["VGS_PATH"] ?: ""}\"")
-        buildConfigField("String", "TOKENIZATION_ROUTE_ID", "\"${project.properties["VGS_TOKENIZATION_ROUTE_ID"] ?: ""}\"")
-        buildConfigField("String", "TOKENIZATION_V2_ROUTE_ID", "\"${project.properties["VGS_TOKENIZATION_V2_ROUTE_ID"] ?: ""}\"")
-        buildConfigField("String", "ACCESS_TOKEN_URL", "\"${project.properties["VGS_ACCESS_TOKEN_URL"] ?: ""}\"")
-        buildConfigField("String", "CLIENT_ID", "\"${project.properties["VGS_CLIENT_ID"] ?: ""}\"")
-        buildConfigField("String", "CLIENT_SECRET", "\"${project.properties["VGS_CLIENT_SECRET"] ?: ""}\"")
-        buildConfigField("String", "GRANT_TYPE", "\"${project.properties["VGS_GRANT_TYPE"] ?: ""}\"")
+        buildConfigField("String", "VAULT_ID", "\"${localProperty("VGS_VAULT_ID")}\"")
+        buildConfigField("String", "PATH", "\"${localProperty("VGS_PATH")}\"")
+        buildConfigField("String", "TOKENIZATION_ROUTE_ID", "\"${localProperty("VGS_TOKENIZATION_ROUTE_ID")}\"")
+        buildConfigField("String", "TOKENIZATION_V2_ROUTE_ID", "\"${localProperty("VGS_TOKENIZATION_V2_ROUTE_ID")}\"")
+        buildConfigField("String", "ACCESS_TOKEN_URL", "\"${localProperty("VGS_ACCESS_TOKEN_URL")}\"")
+        buildConfigField("String", "CLIENT_ID", "\"${localProperty("VGS_CLIENT_ID")}\"")
+        buildConfigField("String", "CLIENT_SECRET", "\"${localProperty("VGS_CLIENT_SECRET")}\"")
+        buildConfigField("String", "GRANT_TYPE", "\"${localProperty("VGS_GRANT_TYPE")}\"")
     }
 
     buildFeatures {
@@ -56,11 +58,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
     buildFeatures {
         viewBinding = true
         compose = true
@@ -69,24 +66,11 @@ android {
     testOptions {
         animationsDisabled = true
     }
-}
 
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
-detekt {
-    buildUponDefaultConfig = false
-    allRules = false
-    config.setFrom(files("$rootDir/.detekt/config.yml"))
 }
 
 dependencies {
@@ -123,3 +107,18 @@ dependencies {
     androidTestImplementation(androidTestLibs.androidx.rules)
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+detekt {
+    buildUponDefaultConfig = false
+    allRules = false
+    config.setFrom(files("$rootDir/.detekt/config.yml"))
+}

@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.parcelize)
@@ -50,29 +48,11 @@ android {
         unitTests {
             isIncludeAndroidResources = true
             isReturnDefaultValues = true
-            all {
-                (this as Test).jvmArgs("-noverify")
+            all { testTask ->
+                testTask.jvmArgs("-noverify")
             }
         }
     }
-}
-
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
-    }
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
-detekt {
-    buildUponDefaultConfig = false
-    allRules = false
-    config.setFrom(files("$rootDir/.detekt/config.yml"))
 }
 
 dependencies {
@@ -98,12 +78,22 @@ dependencies {
     androidTestImplementation(androidTestLibs.androidx.runner)
     androidTestImplementation(androidTestLibs.androidx.junit.ext)
     androidTestImplementation(androidTestLibs.androidx.espresso.core)
-
-    dokkaHtmlPlugin(libs.dokka.base)
 }
 
-tasks.withType<Javadoc> {
-    enabled = false
+kotlin {
+    jvmToolchain(17)
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+detekt {
+    buildUponDefaultConfig = false
+    allRules = false
+    config.setFrom(files("$rootDir/.detekt/config.yml"))
 }
 
 dokka {
@@ -112,3 +102,6 @@ dokka {
     }
 }
 
+tasks.withType<Javadoc> {
+    enabled = false
+}

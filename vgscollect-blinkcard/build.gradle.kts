@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.maven.publish)
@@ -30,18 +28,6 @@ android {
     }
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
-    }
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
 dependencies {
     api(project(":vgscollect"))
 
@@ -51,7 +37,14 @@ dependencies {
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
-
-    dokkaHtmlPlugin(libs.dokka.base)
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
