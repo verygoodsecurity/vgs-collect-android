@@ -1,1 +1,1 @@
-sourceset_dependencies='{":vgscollect/debug":[],":vgscollect/main":[],":vgscollect/release":[]}'
+sourceset_dependencies='{":vgscollect/release":[]}'
