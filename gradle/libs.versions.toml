@@ -22,7 +22,7 @@ espresso-idling-resource = '3.7.0'
 wallet = '20.0.0'
 ktor = "3.5.0"
 kotlin-coroutines-test = "1.11.0"
-vgs-sdk-analytics-android = "1.0.4"
+vgs-sdk-analytics-android = "1.0.5"
 
 [plugins]
 android-application = { id = 'com.android.application', version.ref = 'agp' }
