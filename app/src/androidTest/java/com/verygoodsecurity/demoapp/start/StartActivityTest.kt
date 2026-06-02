@@ -26,7 +26,6 @@ import com.verygoodsecurity.demoapp.cmp.CMPActivity
 import com.verygoodsecurity.demoapp.collect.compose.CollectComposeActivity
 import com.verygoodsecurity.demoapp.collect.views.CollectViewsActivity
 import com.verygoodsecurity.demoapp.google_pay.GooglePayActivity
-import com.verygoodsecurity.demoapp.payopt.PaymentOptimizationActivity
 import com.verygoodsecurity.demoapp.tokenization.v1.TokenizationActivity as TokenizationActivityV1
 import com.verygoodsecurity.demoapp.tokenization.v2.TokenizationActivity as TokenizationActivityV2
 import org.hamcrest.Matchers.isEmptyString
@@ -132,22 +131,6 @@ class StartActivityTest {
             )
 
         intended(hasComponent(CollectComposeActivity::class.java.name))
-        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_VAULT_ID))
-        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_PATH))
-        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_ENVIRONMENT))
-    }
-
-    @Test
-    fun clickPayoptFlow_launchesCollectViewsActivityWithExtras() {
-        onView(withId(R.id.rvFlows))
-            .perform(
-                RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(
-                    hasDescendant(withText(R.string.start_payopt_title)),
-                    click()
-                )
-            )
-
-        intended(hasComponent(PaymentOptimizationActivity::class.java.name))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_VAULT_ID))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_PATH))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_ENVIRONMENT))
