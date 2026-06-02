@@ -73,6 +73,13 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force("androidx.versionedparcelable:versionedparcelable:1.1.1")
+    }
+    exclude(group = "com.android.support")
+}
+
 dependencies {
     implementation(project(":vgscollect"))
     implementation(project(":vgscollect-blinkcard"))
