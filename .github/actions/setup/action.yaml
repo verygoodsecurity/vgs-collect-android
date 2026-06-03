@@ -26,3 +26,7 @@ runs:
         echo "VGS_PATH=$VGS_PATH" >> local.properties
         echo "VGS_TOKENIZATION_ROUTE_ID=$VGS_TOKENIZATION_ROUTE_ID" >> local.properties
         echo "VGS_TOKENIZATION_V2_ROUTE_ID=$VGS_TOKENIZATION_V2_ROUTE_ID" >> local.properties
+        echo "VGS_ACCESS_TOKEN_URL=$VGS_ACCESS_TOKEN_URL" >> local.properties
+        echo "VGS_CLIENT_ID=$VGS_CLIENT_ID" >> local.properties
+        echo "VGS_CLIENT_SECRET=$VGS_CLIENT_SECRET" >> local.properties
+        echo "VGS_GRANT_TYPE=$VGS_GRANT_TYPE" >> local.properties
