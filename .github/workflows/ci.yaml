@@ -94,6 +94,8 @@ jobs:
         env:
           VGS_VAULT_ID: ${{ secrets.VGS_VAULT_ID }}
           VGS_PATH: ${{ secrets.VGS_PATH }}
+          VGS_TOKENIZATION_ROUTE_ID: ${{ secrets.VGS_TOKENIZATION_ROUTE_ID }}
+          VGS_TOKENIZATION_V2_ROUTE_ID: ${{ secrets.VGS_TOKENIZATION_V2_ROUTE_ID }}
 
       - name: Auth Google Cloud SDK
         uses: google-github-actions/auth@v2
