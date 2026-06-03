@@ -8,7 +8,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,6 +21,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButtonToggleGroup
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.verygoodsecurity.demoapp.start.StartActivity
 import com.verygoodsecurity.demoapp.utils.getStringExtra
 import com.verygoodsecurity.demoapp.utils.idling.GlobalIdlingResource
@@ -51,7 +51,7 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
     private val content: ViewGroup by lazy { findViewById(contentId) }
     private val codeView: CodeView? by lazy { findViewById(com.verygoodsecurity.demoapp.R.id.codeView) }
     private val codeViewToggle: MaterialButtonToggleGroup? by lazy { findViewById(com.verygoodsecurity.demoapp.R.id.mbtgType) }
-    private val progressBar: ProgressBar? by lazy { findViewById(com.verygoodsecurity.demoapp.R.id.progressBar) }
+    private val progressBar: LinearProgressIndicator? by lazy { findViewById(com.verygoodsecurity.demoapp.R.id.progressBar) }
 
     private lateinit var touchBlockerView: View
     private lateinit var responseCodeTextView: TextView
@@ -94,8 +94,8 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
 
     protected fun setLoading(isLoading: Boolean) {
         if (isLoading) GlobalIdlingResource.increment() else GlobalIdlingResource.decrement()
+        if (isLoading) progressBar?.show() else progressBar?.hide()
         touchBlockerView.isVisible = isLoading
-        progressBar?.isVisible = isLoading
     }
 
     private fun applyEdgeToEdge() {
