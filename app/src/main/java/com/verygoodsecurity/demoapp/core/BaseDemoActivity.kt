@@ -76,6 +76,7 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
         attachResponseCodeView()
         setupCollect()
         setupCodeView()
+        setLoading(false, skipCounter = true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -92,8 +93,8 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
         else -> super.onOptionsItemSelected(item)
     }
 
-    protected fun setLoading(isLoading: Boolean) {
-        if (isLoading) GlobalIdlingResource.increment() else GlobalIdlingResource.decrement()
+    protected fun setLoading(isLoading: Boolean, skipCounter: Boolean = false) {
+        if (isLoading) GlobalIdlingResource.increment(skipCounter) else GlobalIdlingResource.decrement(skipCounter)
         if (isLoading) progressBar?.show() else progressBar?.hide()
         touchBlockerView.isVisible = isLoading
     }

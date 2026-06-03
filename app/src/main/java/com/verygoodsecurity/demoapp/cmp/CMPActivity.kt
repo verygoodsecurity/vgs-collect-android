@@ -104,6 +104,7 @@ class CMPActivity : BaseDemoActivity(R.layout.cmp_activity) {
                     form.createCard(token)
                 },
                 onError = {
+                    setLoading(false)
                     Log.d(TAG, "Get access token error: $it")
                 }
             )
