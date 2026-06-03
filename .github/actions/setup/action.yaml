@@ -24,3 +24,5 @@ runs:
       run: |
         echo "VGS_VAULT_ID=$VGS_VAULT_ID" >> local.properties
         echo "VGS_PATH=$VGS_PATH" >> local.properties
+        echo "VGS_TOKENIZATION_ROUTE_ID=$VGS_TOKENIZATION_ROUTE_ID" >> local.properties
+        echo "VGS_TOKENIZATION_V2_ROUTE_ID=$VGS_TOKENIZATION_V2_ROUTE_ID" >> local.properties
