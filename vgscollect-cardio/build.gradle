@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.dokka)
     alias(libs.plugins.detekt)
@@ -35,6 +34,15 @@ android {
     }
 }
 
+dependencies {
+    api project(':vgscollect')
+
+    api libs.cardio
+
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.core.ktx
+}
+
 kotlin {
     compilerOptions {
         jvmTarget.set(JvmTarget.JVM_17)
@@ -51,17 +59,6 @@ detekt {
     buildUponDefaultConfig = false
     allRules = false
     config = files("$project.rootDir/.detekt/config.yml")
-}
-
-dependencies {
-    api project(':vgscollect')
-
-    api libs.cardio
-
-    implementation libs.androidx.appcompat
-    implementation libs.androidx.core.ktx
-
-    dokkaHtmlPlugin(libs.dokka.base)
 }
 
 //uncomment if need to force user to stop using this

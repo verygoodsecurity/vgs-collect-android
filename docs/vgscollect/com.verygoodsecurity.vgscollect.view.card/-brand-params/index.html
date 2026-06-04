@@ -19,7 +19,6 @@
         }
       }
     </script>
-<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
 <script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
 <link href="../../../styles/style.css" rel="Stylesheet">
 <link href="../../../styles/main.css" rel="Stylesheet">
@@ -48,7 +47,7 @@
         <div class="navigation-controls">
         <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
                 <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true"
-                        data-filter=":vgscollect/main">androidJvm</button>
+                        data-filter=":vgscollect/release">release</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
                         data-role="dropdown-toggle"
@@ -65,10 +64,10 @@
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":vgscollect/main"
-                                       data-filter=":vgscollect/main"/>
+                                <input type="checkbox" class="checkbox--input" id=":vgscollect/release"
+                                       data-filter=":vgscollect/release"/>
                                 <span class="checkbox--icon"></span>
-                                androidJvm
+                                release
                             </label>
                         </li>
                 </ul>
@@ -104,28 +103,28 @@
         </nav>
         <div id="resizer" class="resizer" data-item-type="BAR"></div>
         <div id="main" data-item-type="SECTION" role="main">
-<div class="main-content" data-page-type="classlike" id="content" pageIds="vgscollect::com.verygoodsecurity.vgscollect.view.card/BrandParams///PointingToDeclaration//-1564212639">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="vgscollect::com.verygoodsecurity.vgscollect.view.card/BrandParams///PointingToDeclaration//259159472">
   <div class="breadcrumbs"><a href="../../../index.html">vgscollect</a><span class="delimiter">/</span><a href="../index.html">com.verygoodsecurity.vgscollect.view.card</a><span class="delimiter">/</span><span class="current">BrandParams</span></div>
   <div class="cover ">
     <h1 class="cover"><span>Brand</span><wbr></wbr><span><span>Params</span></span></h1>
-    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">BrandParams</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>mask<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;#### #### #### #### ###&quot;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>algorithm<span class="token operator">: </span><a href="../../com.verygoodsecurity.vgscollect.view.card.validation.payment/-checksum-algorithm/index.html">ChecksumAlgorithm</a><span class="token operator"> = </span>ChecksumAlgorithm.NONE<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rangeNumber<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a><span class="token operator"> = </span>CardType.UNKNOWN.rangeNumber<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rangeCVV<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a><span class="token operator"> = </span>CardType.UNKNOWN.rangeCVV</span></span><span class="token punctuation">)</span></div><p class="paragraph">A set of parameters for a card brand.</p><h4 class="tableheader">Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>mask</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The mask used to format the card number.</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>algorithm</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The checksum algorithm used to validate the card number.</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>range</span><wbr></wbr><span><span>Number</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The valid lengths for the card number.</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>range</span><wbr></wbr><span><span>CVV</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The valid lengths for the CVC.</p></div></div></div></div></div></div></div>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">BrandParams</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>mask<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;#### #### #### #### ###&quot;</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>algorithm<span class="token operator">: </span><a href="../../com.verygoodsecurity.vgscollect.view.card.validation.payment/-checksum-algorithm/index.html">ChecksumAlgorithm</a><span class="token operator"> = </span>ChecksumAlgorithm.NONE<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rangeNumber<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a><span class="token operator"> = </span>CardType.UNKNOWN.rangeNumber<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>rangeCVV<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a><span class="token operator"> = </span>CardType.UNKNOWN.rangeCVV</span></span><span class="token punctuation">)</span></div><p class="paragraph">A set of parameters for a card brand.</p><h4 class="tableheader">Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>mask</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The mask used to format the card number.</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>algorithm</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The checksum algorithm used to validate the card number.</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>range</span><wbr></wbr><span><span>Number</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The valid lengths for the card number.</p></div></div></div></div><div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span>range</span><wbr></wbr><span><span>CVV</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The valid lengths for the CVC.</p></div></div></div></div></div></div></div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
         <h2 class="tableheader">Constructors</h2>
-        <div class="table"><a data-name="-1346205057%2FConstructors%2F-1564212639" anchor-label="BrandParams" id="-1346205057%2FConstructors%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
-          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
+        <div class="table"><a data-name="-1346205057%2FConstructors%2F259159472" anchor-label="BrandParams" id="-1346205057%2FConstructors%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-brand-params.html"><span>Brand</span><wbr></wbr><span><span>Params</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1346205057%2FConstructors%2F-1564212639"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1346205057%2FConstructors%2F259159472"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mask<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;#### #### #### #### ###&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">algorithm<span class="token operator">: </span><a href="../../com.verygoodsecurity.vgscollect.view.card.validation.payment/-checksum-algorithm/index.html">ChecksumAlgorithm</a><span class="token operator"> = </span>ChecksumAlgorithm.NONE<span class="token punctuation">, </span></span><span class="parameter ">rangeNumber<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a><span class="token operator"> = </span>CardType.UNKNOWN.rangeNumber<span class="token punctuation">, </span></span><span class="parameter ">rangeCVV<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a><span class="token operator"> = </span>CardType.UNKNOWN.rangeCVV</span></span><span class="token punctuation">)</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">mask<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator"> = </span><span class="token string">&quot;#### #### #### #### ###&quot;</span><span class="token punctuation">, </span></span><span class="parameter ">algorithm<span class="token operator">: </span><a href="../../com.verygoodsecurity.vgscollect.view.card.validation.payment/-checksum-algorithm/index.html">ChecksumAlgorithm</a><span class="token operator"> = </span>ChecksumAlgorithm.NONE<span class="token punctuation">, </span></span><span class="parameter ">rangeNumber<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a><span class="token operator"> = </span>CardType.UNKNOWN.rangeNumber<span class="token punctuation">, </span></span><span class="parameter ">rangeCVV<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a><span class="token operator"> = </span>CardType.UNKNOWN.rangeCVV</span></span><span class="token punctuation">)</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -134,62 +133,62 @@
       </div>
       <div data-togglable="PROPERTY">
         <h2 class="tableheader">Properties</h2>
-        <div class="table"><a data-name="-651630338%2FProperties%2F-1564212639" anchor-label="algorithm" id="-651630338%2FProperties%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
-          <div class="table-row table-row_content" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
+        <div class="table"><a data-name="-651630338%2FProperties%2F259159472" anchor-label="algorithm" id="-651630338%2FProperties%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="algorithm.html"><span><span>algorithm</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-651630338%2FProperties%2F-1564212639"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-651630338%2FProperties%2F259159472"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="algorithm.html">algorithm</a><span class="token operator">: </span><a href="../../com.verygoodsecurity.vgscollect.view.card.validation.payment/-checksum-algorithm/index.html">ChecksumAlgorithm</a></div><div class="brief "><p class="paragraph">The algorithm for validation checkSum.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="algorithm.html">algorithm</a><span class="token operator">: </span><a href="../../com.verygoodsecurity.vgscollect.view.card.validation.payment/-checksum-algorithm/index.html">ChecksumAlgorithm</a></div><div class="brief "><p class="paragraph">The algorithm for validation checkSum.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-96105087%2FProperties%2F-1564212639" anchor-label="mask" id="-96105087%2FProperties%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
-          <div class="table-row table-row_content" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
+<a data-name="-96105087%2FProperties%2F259159472" anchor-label="mask" id="-96105087%2FProperties%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="mask.html"><span><span>mask</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-96105087%2FProperties%2F-1564212639"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-96105087%2FProperties%2F259159472"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="mask.html">mask</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Represents format of the current card's number.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="mask.html">mask</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Represents format of the current card's number.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="392348103%2FProperties%2F-1564212639" anchor-label="rangeCVV" id="392348103%2FProperties%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
-          <div class="table-row table-row_content" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
+<a data-name="392348103%2FProperties%2F259159472" anchor-label="rangeCVV" id="392348103%2FProperties%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="range-c-v-v.html"><span>range</span><wbr></wbr><span><span>CVV</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="392348103%2FProperties%2F-1564212639"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="392348103%2FProperties%2F259159472"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="range-c-v-v.html">rangeCVV</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a></div><div class="brief "><p class="paragraph">The length of the card's CVC number which a brand supported.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="range-c-v-v.html">rangeCVV</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a></div><div class="brief "><p class="paragraph">The length of the card's CVC number which a brand supported.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="452111975%2FProperties%2F-1564212639" anchor-label="rangeNumber" id="452111975%2FProperties%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
-          <div class="table-row table-row_content" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
+<a data-name="452111975%2FProperties%2F259159472" anchor-label="rangeNumber" id="452111975%2FProperties%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="range-number.html"><span>range</span><wbr></wbr><span><span>Number</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="452111975%2FProperties%2F-1564212639"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="452111975%2FProperties%2F259159472"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="range-number.html">rangeNumber</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a></div><div class="brief "><p class="paragraph">The length of the card's number which a brand supported.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="range-number.html">rangeNumber</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int-array/index.html">IntArray</a></div><div class="brief "><p class="paragraph">The length of the card's number which a brand supported.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -198,32 +197,32 @@
       </div>
       <div data-togglable="FUNCTION">
         <h2 class="tableheader">Functions</h2>
-        <div class="table"><a data-name="722684724%2FFunctions%2F-1564212639" anchor-label="equals" id="722684724%2FFunctions%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
-          <div class="table-row table-row_content" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
+        <div class="table"><a data-name="722684724%2FFunctions%2F259159472" anchor-label="equals" id="722684724%2FFunctions%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="equals.html"><span><span>equals</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="722684724%2FFunctions%2F-1564212639"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="722684724%2FFunctions%2F259159472"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><a href="equals.html"><span class="token function">equals</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">other<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">operator override </span><span class="token keyword">fun </span><a href="equals.html"><span class="token function">equals</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">other<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1146506446%2FFunctions%2F-1564212639" anchor-label="hashCode" id="-1146506446%2FFunctions%2F-1564212639" data-filterable-set=":vgscollect/main"></a>
-          <div class="table-row table-row_content" data-filterable-current=":vgscollect/main" data-filterable-set=":vgscollect/main">
+<a data-name="-1146506446%2FFunctions%2F259159472" anchor-label="hashCode" id="-1146506446%2FFunctions%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="hash-code.html"><span>hash</span><wbr></wbr><span><span>Code</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1146506446%2FFunctions%2F-1564212639"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1146506446%2FFunctions%2F259159472"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="hash-code.html"><span class="token function">hashCode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="hash-code.html"><span class="token function">hashCode</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
                 </div>
               </div>
             </div>

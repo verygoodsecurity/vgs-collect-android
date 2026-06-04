@@ -1,4 +1,3 @@
-
 [![UT](https://img.shields.io/badge/Unit_Test-pass-green)]()
 [![license](https://img.shields.io/badge/License-MIT-green.svg)](https://github.com/verygoodsecurity/vgs-collect-android/blob/master/LICENSE)
 <img src="./ZeroDataLogo.png" width="55" hspace="8">
@@ -22,13 +21,31 @@ Table of contents
 </p>
 
 ## AI Agent Integration
-Use AGENTS.md as the single authoritative context for autonomous coding agents integrating or maintaining VGSCollectSDK. It lists public APIs, security constraints, validation rules, upgrade & testing expectations.
+This repository ships a public AI skill at [`skills/vgs-collect-android-guide/SKILL.md`](./skills/vgs-collect-android-guide/SKILL.md) for teams integrating `VGSCollectSDK` into Android applications.
+
+Recommended: install the skill with `skills.sh`. This is the easiest way to give a compatible AI agent repository-specific guidance for `VGSCollectSDK` integration work.
+
+The installed skill bundle includes `references/AGENTS.md`, which is the canonical durable integration guide for this SDK.
+
+What the skill is useful for:
+- matching guidance to the installed `vgscollect` version when that version can be detected
+- steering integrations toward correct secure field setup, scanning, file upload, and submission flows
+- enforcing non-empty vault configuration, `state.isValid` validation gates, and post-upload `cleanFiles()` cleanup
+- preserving redaction-safe logging and analytics toggling guidance
+- following upgrade and testing rules in [`references/AGENTS.md`](./skills/vgs-collect-android-guide/references/AGENTS.md)
+
+Install the skill with `skills.sh`:
+```bash
+npx skills add https://github.com/verygoodsecurity/vgs-collect-android --skill vgs-collect-android-guide
+```
+
+If your AI tool does not support skills yet, load [`skills/vgs-collect-android-guide/references/AGENTS.md`](./skills/vgs-collect-android-guide/references/AGENTS.md) directly.
 
 ### Minimal System Prompt Example:
 
 ```
 You are an autonomous engineering agent integrating the VGS Collect Android SDK into an existing Kotlin app.
-Use the full contents of AGENTS.md as the authoritative policy.
+Use skills/vgs-collect-android-guide/references/AGENTS.md as the authoritative policy.
 Constraints:
 - Only public, non-deprecated APIs.
 - No raw sensitive data in logs/tests.
@@ -45,7 +62,7 @@ Return: Modified Kotlin source files only, no secrets.
 
 ```
 Task: Add a custom payment card brand "mycard" (BIN starts with 7777) and ensure CVC field adapts.
-Follow AGENTS.md.
+Follow skills/vgs-collect-android-guide/references/AGENTS.md.
 Do not break existing brand detection; add tests for detection and negative near-miss.
 ```
 

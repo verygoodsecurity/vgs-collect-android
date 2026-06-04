@@ -1,9 +1,9 @@
 [versions]
 junit = '4.13.2'
-mockito-core = '5.20.0'
+mockito-core = '5.23.0'
 mockito-inline = '5.2.0'
-robolectric = '4.16'
-json = '20250517'
+robolectric = '4.16.1'
+json = '20251224'
 jsonassert = '1.5.3'
 
 [libraries]

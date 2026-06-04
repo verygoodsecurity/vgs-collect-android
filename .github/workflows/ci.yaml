@@ -94,6 +94,12 @@ jobs:
         env:
           VGS_VAULT_ID: ${{ secrets.VGS_VAULT_ID }}
           VGS_PATH: ${{ secrets.VGS_PATH }}
+          VGS_TOKENIZATION_ROUTE_ID: ${{ secrets.VGS_TOKENIZATION_ROUTE_ID }}
+          VGS_TOKENIZATION_V2_ROUTE_ID: ${{ secrets.VGS_TOKENIZATION_V2_ROUTE_ID }}
+          VGS_ACCESS_TOKEN_URL: ${{ secrets.VGS_ACCESS_TOKEN_URL }}
+          VGS_CLIENT_ID: ${{ secrets.VGS_CLIENT_ID }}
+          VGS_CLIENT_SECRET: ${{ secrets.VGS_CLIENT_SECRET }}
+          VGS_GRANT_TYPE: ${{ secrets.VGS_GRANT_TYPE }}
 
       - name: Auth Google Cloud SDK
         uses: google-github-actions/auth@v2
@@ -112,5 +118,4 @@ jobs:
           --type instrumentation \
           --app app/build/outputs/apk/debug/app-debug.apk \
           --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
-          --device model=oriole,version=31,locale=en,orientation=portrait \
-          --device model=blazer,version=36,locale=en,orientation=portrait
+          --device model=oriole,version=31,locale=en,orientation=portrait
