@@ -6,11 +6,13 @@ object GlobalIdlingResource {
 
     private val resource = CountingIdlingResource(this::class.java.simpleName)
 
-    fun increment() {
+    fun increment(skipCounter: Boolean = false) {
+        if (!skipCounter)
         resource.increment()
     }
 
-    fun decrement() {
+    fun decrement(skipCounter: Boolean = false) {
+        if (!skipCounter)
         resource.decrement()
     }
 

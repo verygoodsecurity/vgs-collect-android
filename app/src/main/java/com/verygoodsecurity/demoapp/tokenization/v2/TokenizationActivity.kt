@@ -166,6 +166,7 @@ class TokenizationActivity : BaseDemoActivity(R.layout.activity_tokenization) {
                     )
                 },
                 onError = {
+                    setLoading(false)
                     Log.d(TAG, "Get access token error: $it")
                 }
             )

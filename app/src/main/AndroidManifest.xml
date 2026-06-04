@@ -49,11 +49,6 @@
             android:label="Settings" />
 
         <activity
-            android:name=".payopt.PaymentOptimizationActivity"
-            android:label="Payopt"
-            tools:ignore="LockedOrientationActivity" />
-
-        <activity
             android:name=".instrumented.VGSEditTextInputTypeActivity"
             android:label="Instrumented Demo" />
 
