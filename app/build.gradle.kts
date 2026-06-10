@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.verygoodsecurity.demoapp"
-        minSdk = 23
+        minSdk = 24
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"

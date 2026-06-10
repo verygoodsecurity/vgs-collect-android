@@ -1,157 +1,127 @@
 package com.verygoodsecurity.api.blinkcard
 
-import android.annotation.SuppressLint
-import android.content.pm.ActivityInfo
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import com.microblink.blinkcard.activity.result.ResultStatus
-import com.microblink.blinkcard.activity.result.contract.MbScan
-import com.microblink.blinkcard.entities.recognizers.RecognizerBundle
-import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardProcessingStatus
-import com.microblink.blinkcard.entities.recognizers.blinkcard.BlinkCardRecognizer
-import com.microblink.blinkcard.results.date.Date
-import com.microblink.blinkcard.uisettings.BlinkCardUISettings
+import com.microblink.blinkcard.core.result.DateResult
+import com.microblink.blinkcard.core.session.BlinkCardScanningResult
+import com.microblink.blinkcard.ux.contract.BlinkCardScanActivityResult
+import com.microblink.blinkcard.ux.contract.BlinkCardScanActivitySettings
+import com.microblink.blinkcard.ux.contract.MbBlinkCardScan
+import com.microblink.blinkcard.ux.contract.ScanActivityResultStatus
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import java.util.Calendar
 
+internal const val SCAN_ACTIVITY_SETTINGS: String = "com.verygoodsecurity.api.blinkcard.settings"
+internal const val CARD_NUMBER: String = "com.verygoodsecurity.api.blinkcard.card_number"
+internal const val CVC: String = "com.verygoodsecurity.api.blinkcard.cvc"
+internal const val CARD_HOLDER: String = "com.verygoodsecurity.api.blinkcard.card_holder"
+internal const val EXP_DATE: String = "com.verygoodsecurity.api.blinkcard.exp_date"
+private const val NAME: String = "BlinkCard"
+private const val TAG: String = "VGS BlinkCard module"
+
 internal class ScanActivity : BaseTransmitActivity() {
 
-    private lateinit var mRecognizer: BlinkCardRecognizer
-    private lateinit var mRecognizerBundle: RecognizerBundle
-    private lateinit var settings: BlinkCardUISettings
-
-    private var styleId: Int? = null
+    private var cardScanActivitySettings: BlinkCardScanActivitySettings? = null
     private var ccFieldName: String? = null
     private var cvcFieldName: String? = null
     private var expDateFieldName: String? = null
     private var cHolderFieldName: String? = null
-    private var showIntroductionDialog: Boolean = true
-    private var showOnboardingInfoDialog: Boolean = true
 
-    private val blinkCardScanLauncher = registerForActivityResult(MbScan()) { results ->
-        results.resultStatus.run {
-            when (this) {
-                null -> RESULT_OK
-                ResultStatus.FINISHED -> {
-                    results.result?.let { mRecognizerBundle.loadFromIntent(it) }
-                    processRecognitionResults()
-                    RESULT_OK
-                }
+    private val blinkCardScanLauncher = registerForActivityResult(
+        MbBlinkCardScan(),
+        ::handleScannerResult
+    )
 
-                ResultStatus.CANCELLED -> {
-                    addAnalyticInfo(Status.CLOSE)
-                    RESULT_CANCELED
-                }
-
-                ResultStatus.EXCEPTION -> {
-                    notifyFailedStatus(getString(R.string.vgs_bc_warning_exception))
-                    RESULT_OK
-                }
-            }
-        }.also {
-            setScanResult(it)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val extras = intent?.extras
+        if (extras == null) {
+            handleError(getString(R.string.vgs_blinkcard_error_extras_null))
+            return
         }
+        parseExtras(extras)
+        startScanner()
+    }
+
+    private fun parseExtras(extras: Bundle) {
+        cardScanActivitySettings = extras.getCardScanActivitySettings()
+        ccFieldName = extras.getString(CARD_NUMBER, "")
+        cvcFieldName = extras.getString(CVC, "")
+        expDateFieldName = extras.getString(EXP_DATE, "")
+        cHolderFieldName = extras.getString(CARD_HOLDER, "")
+    }
+
+    private fun startScanner() {
+        cardScanActivitySettings?.let { blinkCardScanLauncher.launch(it) } ?: run {
+            handleError(getString(R.string.vgs_blinkcard_error_settings_null))
+        }
+    }
+
+    private fun handleScannerResult(result: BlinkCardScanActivityResult) {
+        when (result.status) {
+            ScanActivityResultStatus.Scanned -> handleScanned(result.result)
+            ScanActivityResultStatus.Canceled -> handleCanceled()
+            ScanActivityResultStatus.ErrorSdkInit -> handleError(getString(R.string.vgs_blinkcard_error_failed_result))
+        }
+    }
+
+    private fun handleScanned(scanResult: BlinkCardScanningResult?) {
+        val cardAccount = scanResult?.cardAccounts?.firstOrNull()
+        if (cardAccount == null) {
+            handleError(getString(R.string.vgs_blinkcard_error_reading_result))
+            return
+        }
+        mapData(ccFieldName, cardAccount.cardNumber)
+        mapData(cvcFieldName, cardAccount.cvv)
+        mapData(cHolderFieldName, scanResult.cardholderName)
+        mapData(expDateFieldName, cardAccount.expiryDate?.let { parseExpiryDate(it) })
+        setAnalyticsInfo(Status.SUCCESS)
+        setScanResult(RESULT_OK)
         finish()
     }
 
-    private fun processRecognitionResults() {
-        mRecognizer.result.let {
-            mapData(ccFieldName, it.cardNumber)
-            mapData(cvcFieldName, it.cvv)
-            mapData(cHolderFieldName, it.owner)
-            mapData(expDateFieldName, it.expiryDate.parseDate())
+    private fun handleCanceled() {
+        setAnalyticsInfo(Status.CLOSE)
+        setScanResult(RESULT_CANCELED)
+        finish()
+    }
 
-            if (it.processingStatus == BlinkCardProcessingStatus.Success) {
-                addAnalyticInfo(Status.SUCCESS)
-            } else {
-                notifyFailedStatus(
-                    getString(R.string.vgs_bc_warning_exception_details, it.processingStatus)
-                )
+    private fun handleError(error: String) {
+        Log.w(TAG, error)
+        setAnalyticsInfo(Status.FAILED, error)
+        setScanResult(RESULT_OK)
+        finish()
+    }
+
+    private fun parseExpiryDate(dateResult: DateResult<String>): Any {
+        val month = dateResult.month
+        val year = dateResult.year
+        return if (month != null && year != null && month > 0 && year > 0) {
+            // Normalize 2-digit years: assume 00-99 are in 2000s (valid for card expiry within 10-year window)
+            val fullYear = if (year < 100) 2000 + year else year
+            Calendar.getInstance().run {
+                set(fullYear, month - 1, 1)
+                time.time
             }
-        }
-    }
-
-    @SuppressLint("SourceLockedOrientationActivity")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
-        parseSettings()
-
-        if (isScannerCompatible(::notifyFailedStatus)) {
-            mRecognizer = configureBlinkCardRecognizer()
-            mRecognizerBundle = RecognizerBundle(mRecognizer)
-            settings = configureBlinkCardUISettings()
-
-            blinkCardScanLauncher.launch(settings)
         } else {
-            setScanResult(RESULT_OK)
-            finish()
+            dateResult.originalString
         }
     }
 
-    private fun parseSettings() {
-        intent.extras?.let {
-            styleId = it.getInt(STYLE_RES_ID)
-            ccFieldName = it.getString(CARD_NUMBER, "")
-            cvcFieldName = it.getString(CVC, "")
-            expDateFieldName = it.getString(EXP_DATE, "")
-            cHolderFieldName = it.getString(CARD_HOLDER, "")
-            showIntroductionDialog = it.getBoolean(SHOW_INTRO_DIALOG, showIntroductionDialog)
-            showOnboardingInfoDialog =
-                it.getBoolean(SHOW_ONBOARDING_INFO_DIALOG, showOnboardingInfoDialog)
-        }
-    }
-
-    private fun notifyFailedStatus(message: String) = with(message) {
-        Log.w(getString(R.string.module_name), this)
-        addAnalyticInfo(Status.FAILED, this)
-    }
-
-    private fun configureBlinkCardRecognizer() = BlinkCardRecognizer().apply {
-        setExtractIban(false)
-        setExtractCvv(!cvcFieldName.isNullOrEmpty())
-        setExtractExpiryDate(!expDateFieldName.isNullOrEmpty())
-        setExtractOwner(!cHolderFieldName.isNullOrEmpty())
-    }
-
-    private fun configureBlinkCardUISettings() = BlinkCardUISettings(mRecognizerBundle).apply {
-        setOverlayViewStyle(styleId ?: return@apply)
-        setShowIntroductionDialog(showIntroductionDialog)
-        setShowOnboardingInfo(showOnboardingInfoDialog)
-    }
-
-
-    private fun addAnalyticInfo(status: Status, details: String? = null) {
+    private fun setAnalyticsInfo(status: Status, details: String? = null) {
         mapData(RESULT_TYPE, SCAN)
         mapData(RESULT_NAME, NAME)
         mapData(RESULT_STATUS, status)
         mapData(RESULT_DETAILS, details)
     }
 
-    companion object {
-
-        internal const val STYLE_RES_ID: String = "com.verygoodsecurity.api.blinkcard.style_res_id"
-        internal const val CARD_NUMBER: String = "com.verygoodsecurity.api.blinkcard.card_number"
-        internal const val CVC: String = "com.verygoodsecurity.api.blinkcard.cvc"
-        internal const val CARD_HOLDER: String = "com.verygoodsecurity.api.blinkcard.card_holder"
-        internal const val EXP_DATE: String = "com.verygoodsecurity.api.blinkcard.exp_date"
-        internal const val SHOW_INTRO_DIALOG: String =
-            "com.verygoodsecurity.api.blinkcard.show_intro_dialog"
-        internal const val SHOW_ONBOARDING_INFO_DIALOG: String =
-            "com.verygoodsecurity.api.blinkcard.show_onboarding_info_dialog"
-        private const val NAME: String = "BlinkCard"
-
-        internal fun Date.parseDate(): Any {
-
-            return date.takeIf { it != null && it.month > 0 && it.year > 0 }
-                ?.run {
-                    Calendar.getInstance().run {
-                        set(year, month, day)
-                        time.time
-                    }
-                } ?: originalDateString
+    @Suppress("DEPRECATION")
+    private fun Bundle.getCardScanActivitySettings(): BlinkCardScanActivitySettings? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getParcelable(SCAN_ACTIVITY_SETTINGS, BlinkCardScanActivitySettings::class.java)
+        } else {
+            getParcelable(SCAN_ACTIVITY_SETTINGS)
         }
     }
 }

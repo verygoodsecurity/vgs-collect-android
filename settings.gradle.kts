@@ -11,7 +11,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url = uri("https://jitpack.io") }
-        maven { url = uri("https://maven.microblink.com") }
     }
     versionCatalogs {
         create("debugLibs") {
