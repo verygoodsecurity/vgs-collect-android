@@ -9,7 +9,7 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        minSdk = 23
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -31,9 +31,8 @@ android {
 dependencies {
     api(project(":vgscollect"))
 
-    api(libs.blinkcard) {
-        isTransitive = true
-    }
+    api(libs.blinkcard.core)
+    api(libs.blinkcard.ux)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)

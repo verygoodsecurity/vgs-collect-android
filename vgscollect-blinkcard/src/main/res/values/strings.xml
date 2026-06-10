@@ -1,11 +1,6 @@
 <resources>
-    <string name="module_name">VGS BlinkCard module</string>
-
-    <string name="vgs_bc_warning_direct_api">BlinkCard is supported only via Direct API!</string>
-    <string name="vgs_bc_warning_arch_not_supported">BlinkCard is not supported on current processor architecture!</string>
-    <string name="vgs_bc_warning_blacklisted_device">BlinkCard is not supported! Reason: %1$s</string>
-    <string name="vgs_bc_warning_unsupported_android_version">BlinkCard is not supported! Reason: %1$s</string>
-    <string name="vgs_bc_warning_unsupported_recognizer">BlinkCard is not supported! Reason: %1$s</string>
-    <string name="vgs_bc_warning_exception">BlinkCard finished with exception.</string>
-    <string name="vgs_bc_warning_exception_details">BlinkCard finished with exception: %1$s</string>
+    <string name="vgs_blinkcard_error_extras_null">BlinkCard scan failed: activity intent extras are missing. Ensure VGSBlinkCardIntentBuilder is used to start the scan.</string>
+    <string name="vgs_blinkcard_error_settings_null">BlinkCard scan failed: BlinkCardScanActivitySettings not provided. Call setCardScanActivitySettings() on VGSBlinkCardIntentBuilder before launching.</string>
+    <string name="vgs_blinkcard_error_reading_result">BlinkCard scan completed but no card data could be read. The scanned card may not have been recognised correctly.</string>
+    <string name="vgs_blinkcard_error_failed_result">BlinkCard SDK failed to initialise. Verify that the license key in BlinkCardSdkSettings is valid and not expired.</string>
 </resources>

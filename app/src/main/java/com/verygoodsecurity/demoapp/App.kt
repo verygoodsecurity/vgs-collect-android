@@ -8,7 +8,7 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
-//        MicroblinkSDK.setLicenseKey("<key>", this)
-//        MicroblinkSDK.setLicenseKey("<path>", this)
+        // BlinkCard v3000: license key is now passed per-scan via VGSBlinkCardIntentBuilder.setLicenseKey("<key>").
+        // Global MicroblinkSDK.setLicenseKey() is no longer used.
     }
 }
