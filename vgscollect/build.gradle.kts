@@ -31,11 +31,17 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
         debug {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 
@@ -66,7 +72,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
 
-    implementation(libs.compose.material)
+    compileOnly(libs.compose.material)
+    compileOnly(libs.compose.material3)
 
     testImplementation(testLibs.junit)
     testImplementation(testLibs.mockito.core)
@@ -74,6 +81,7 @@ dependencies {
     testImplementation(testLibs.robolectric)
     testImplementation(testLibs.json)
     testImplementation(testLibs.jsonassert)
+    testImplementation(libs.compose.material)
 
     androidTestImplementation(androidTestLibs.androidx.runner)
     androidTestImplementation(androidTestLibs.androidx.junit.ext)
