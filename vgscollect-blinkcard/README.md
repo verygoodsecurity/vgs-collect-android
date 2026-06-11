@@ -1,87 +1,112 @@
-# VGSCollect-Card.io 
+# VGS Collect BlinkCard Adapter
 
-Module based on [blinkcard-android](https://github.com/blinkcard/blinkcard-android). It allows to secure integrate scanner with [VGSCollect](https://github.com/verygoodsecurity/vgs-collect-android)
+`vgscollect-blinkcard` integrates card scanning with [VGS Collect Android](https://github.com/verygoodsecurity/vgs-collect-android) using BlinkCard technology from Microblink.
 
-BlinkCard module is a paid integration. Please [contact](https://microblink.com/contact-us/) Microblink for more details.
+**BlinkCard is a paid product.** Contact Microblink for licensing: <https://microblink.com/contact-us/>.
 
-Table of contents
-=================
+## Current version
 
-<!--ts-->
-   * [Dependencies](#dependencies)
-   * [Integration](#integration)
-      * [Add the SDK to your project](#add-the-sdk-to-your-project)
-   * [Usage](#usage)
-<!--te-->
+This adapter wraps **BlinkCard v3000 SDK** and provides a simplified consumer API via `VGSBlinkCardIntentBuilder`.
+
+- **Adapter version**: `1.0.6+` (contains v3000 upgrade)
+- **Previous adapter**: `1.0.5` and earlier (uses BlinkCard v2)
+- Adapter min SDK: `24`
+- Internal BlinkCard version: `3000.0.1`
+- License model: Per-session (passed to builder)
+
+**Upgrading from adapter v1.0.5 or earlier?** See [MIGRATION_V2_TO_V3000.md](./MIGRATION_V2_TO_V3000.md).
 
 ## Dependencies
 
-| Dependency                   | Version |
-|:-----------------------------|:-------:|
-| Min SDK                      |   21    |
-| com.microblink:blinkcard     |  2.7.0  |
-| androidx.appcompat:appcompat |  1.6.0-rc01  |
-| androidx.core:core-ktx       |  1.9.0  |
+Add to your app module `build.gradle.kts`:
 
-## Integration 
-For integration you need to install the [Android Studio](http://developer.android.com/sdk/index.html) and a [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) on your machine.
-
-#### Add the SDK to your project
-To use the SDK in project you just simply need to add the following line of dependency in your module `gradle.gradle` file:
-```
-repositories {
-    maven { url 'https://maven.microblink.com' }
-}
-
+```kotlin
 dependencies {
-   implementation 'com.verygoodsecurity:vgscollect:1.7.5' // required version 1.7.5 or above
-   implementation 'com.verygoodsecurity.api:adapter-blinkcard:<latest-version>'
+    implementation("com.verygoodsecurity:vgscollect:<vgscollect-version>")
+    implementation("com.verygoodsecurity.api:adapter-blinkcard:1.0.6")  // v3000 support; v1.0.5 or earlier uses v2
+}
+
+repositories {
+    google()
+    mavenCentral()  // Required for adapter and BlinkCard dependencies
 }
 ```
 
-## Usage
+## Setup
 
-**Important**: VGSCollect should be configured too. Check [here](https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk#step-2-configure-your-app) how to do it.
+### 1. Ensure VGS Collect is configured
 
-Configure Microblink license in `Application.onCreate` callback:
+Your app must already configure VGS Collect with vault ID and environment. Refer to [VGS Collect Android docs](https://github.com/verygoodsecurity/vgs-collect-android).
+
+### 2. Create BlinkCard scan settings
+
+Create `BlinkCardScanActivitySettings` with your Microblink license key:
+
+```kotlin
+import com.microblink.blinkcard.core.BlinkCardSdkSettings
+import com.microblink.blinkcard.ux.contract.BlinkCardScanActivitySettings
+
+val scanSettings = BlinkCardScanActivitySettings(
+    BlinkCardSdkSettings("<YOUR_BLINKCARD_LICENSE_KEY>")
+)
 ```
-class App: Application() {
 
-    override fun onCreate() {
-        super.onCreate()
-        MicroblinkSDK.setLicenseKey("<KEY>", this)
+### 3. Build intent and map VGS field names
+
+Use the adapter builder to create a scan intent:
+
+```kotlin
+import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
+
+val intent = VGSBlinkCardIntentBuilder(this, scanSettings)
+    .setCardNumberFieldName(vgsTiedCardNumber.fieldName)
+    .setCardHolderFieldName(vgsTiedCardHolder.fieldName)
+    .setExpirationDateFieldName(vgsTiedExpiry.fieldName)
+    .setCVCFieldName(vgsTiedCvc.fieldName)
+    .build()
+```
+
+### 4. Launch scanner
+
+```kotlin
+startActivityForResult(intent, SCAN_REQUEST_CODE)
+```
+
+### 5. Forward result to VGS Collect
+
+In your activity's `onActivityResult`:
+
+```kotlin
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    if (requestCode == SCAN_REQUEST_CODE) {
+        vgsCollect.onActivityResult(requestCode, resultCode, data)
     }
 }
 ```
 
-Create scanning intent:
-```
-val intent = VGSBlinkCardIntentBuilder(this)
-     .setCardNumberFieldName(vgsTiedCardNumber.getFieldName())
-     .setCardHolderFieldName(vgsTiedCardHolder.getFieldName())
-     .setExpirationDateFieldName(vgsTiedExpiry.getFieldName())
-     .setCVCFieldName(vgsTiedCvc.getFieldName())
-     build()
-```
+## Error handling
 
-Pass scanning intent to `startActivityForResult`:
-```
-public void scanCard() {
-     val intent = VGSBlinkCardIntentBuilder(this)
-          .setCardNumberFieldName(vgsTiedCardNumber.getFieldName())
-          .setCardHolderFieldName(vgsTiedCardHolder.getFieldName())
-          .setExpirationDateFieldName(vgsTiedExpiry.getFieldName())
-          .setCVCFieldName(vgsTiedCvc.getFieldName())
-          build()
-     startActivityForResult(intent, SCAN_REQUEST_CODE)
-}
-```
+The adapter handles scan completion and errors internally. Common scenarios:
 
-Handle result by passing scanning result to [VGSCollect](https://github.com/verygoodsecurity/vgs-collect-android) `onActivityResult`:
-```
-@Override 
-public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    vgsForm.onActivityResult(requestCode, resultCode, data);
-}
-```
+- **Successful scan**: Card data is populated into your VGS fields via `onActivityResult`.
+- **User cancelled**: Activity result is returned with `RESULT_CANCELED`.
+- **License error**: Adapter logs a user-friendly error message ("`BlinkCard SDK failed to initialise...`").
+
+If you need to detect license issues before launching scan, pre-validate your license key with Microblink.
+
+## What's abstracted
+
+You interact with the adapter via `VGSBlinkCardIntentBuilder` only. Internal details handled by the adapter:
+
+- BlinkCard v3000 SDK initialization and lifecycle
+- Scanner UI and result parsing
+- Error categorization and user messaging
+- Field-to-VGS mapping and data forwarding
+
+You do **not** interact with raw BlinkCard APIs, activity contracts, or result objects directly.
+
+## Security
+
+- All sensitive data is processed through VGS Collect's secure tokenization pipeline.
+- Adapter does not persist or cache sensitive values.
