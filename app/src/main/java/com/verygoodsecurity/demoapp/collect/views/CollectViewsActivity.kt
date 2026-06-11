@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.button.MaterialButton
+import com.microblink.blinkcard.core.BlinkCardSdkSettings
+import com.microblink.blinkcard.ux.contract.BlinkCardScanActivitySettings
 import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.core.BaseDemoActivity
@@ -83,7 +85,14 @@ class CollectViewsActivity : BaseDemoActivity(R.layout.activity_collect_views) {
      * based on their field names.
      */
     override fun createScanIntent(): Intent {
-        return VGSBlinkCardIntentBuilder(this)
+        return VGSBlinkCardIntentBuilder(
+            activity = this,
+            settings = BlinkCardScanActivitySettings(
+                sdkSettings = BlinkCardSdkSettings(
+                    licenseKey = "",
+                )
+            )
+        )
             .setCardHolderFieldName(vgsTiedCardHolder.getFieldName())
             .setCardNumberFieldName(vgsTiedCardNumber.getFieldName())
             .setExpirationDateFieldName(vgsTiedExpiry.getFieldName())
