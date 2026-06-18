@@ -13,6 +13,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -30,6 +31,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Scaffold
@@ -40,6 +42,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +56,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.verygoodsecurity.api.blinkcard.VgsBlinkCardCameraScanningScreen
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
 import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_PATH
@@ -205,6 +209,8 @@ private fun Content(
     onSubmit: (List<BaseFieldState>) -> Unit,
 ) {
     MaterialTheme {
+        var showScanner by remember { mutableStateOf(false) }
+
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
@@ -222,248 +228,297 @@ private fun Content(
                             Text(title)
                         }
                     },
+                    actions = {
+                        IconButton(onClick = { showScanner = !showScanner }) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_scan_card),
+                                tint = Color.White,
+                                contentDescription = "Start scanner"
+                            )
+                        }
+                    }
                 )
             },
         ) { contentPadding ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(contentPadding)
-                    .imePadding()
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 16.dp, vertical = 16.dp)
-            ) {
-                // ==========================================================
-                // STEP 1: Initialize field states
-                // ==========================================================
-                // Each state is bound to `collect` so the SDK can wire its
-                // analytics pipeline and survive config changes. Pass custom
-                // validators to override the defaults, or emptyList() to
-                // disable validation entirely.
-                var cardHolderState by rememberVgsCardHolderTextFieldState(
-                    collect = collect,
-                    fieldName = "data.name",
-                )
-                var cardNumberState by rememberVgsCardNumberTextFieldState(
-                    collect = collect,
-                    fieldName = "data.card_number",
-                )
-                var cvcState by rememberVgsCvcTextFieldState(
-                    collect = collect,
-                    fieldName = "data.cvc",
-                )
-                var expiryState by rememberVgsExpiryTextFieldState(
-                    collect = collect,
-                    fieldName = "data.expiry",
-                    inputDateFormat = VgsExpiryDateFormat.MonthShortYear,
-                    outputDateFormat = VgsExpiryDateFormat.LongYearMonth,
-                )
-                var cityState by rememberVgsTextFieldState(
-                    collect = collect,
-                    fieldName = "data.city",
-                    validators = emptyList(),
-                )
-                var postalCodeState by rememberVgsTextFieldState(
-                    collect = collect,
-                    fieldName = "data.postal_code",
-                    validators = emptyList(),
-                )
-                var ssnState by rememberVgsSsnTextFieldState(
-                    collect = collect,
-                    fieldName = "data.ssn",
-                )
-
-                // ==========================================================
-                // STEP 2: Sync dependent field states
-                // ==========================================================
-                // CVC validation rules depend on the detected card brand (e.g.
-                // Amex requires 4 digits). Re-sync whenever the card number
-                // state changes and the brand has been updated.
-                LaunchedEffect(cardNumberState.cardBrand) {
-                    cvcState = cvcState.withCardBrand(cardNumberState.cardBrand)
-                }
-
-                // ==========================================================
-                // STEP 3: Render fields
-                // ==========================================================
-                val fieldColors = TextFieldDefaults.outlinedTextFieldColors(
-                    backgroundColor = colorResource(R.color.fiord_20),
-                    focusedBorderColor = Color.Transparent,
-                    unfocusedBorderColor = Color.Transparent,
-                    disabledBorderColor = Color.Transparent,
-                    cursorColor = colorResource(R.color.fiord)
-                )
-
-                // Card Holder
-                FieldLabel("Card Holder")
-                VgsCardHolderOutlineTextField(
-                    state = cardHolderState,
-                    modifier = Modifier.fillMaxWidth(),
-                    onStateChange = { cardHolderState = it },
-                    colors = fieldColors,
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // Card Number
-                FieldLabel("Card Number")
-                VgsCardNumberOutlineTextField(
-                    state = cardNumberState,
-                    modifier = Modifier.fillMaxWidth(),
-                    onStateChange = { cardNumberState = it },
-                    trailingIcon = {
-                        Image(
-                            modifier = Modifier.size(24.dp),
-                            painter = painterResource(id = cardNumberState.cardBrand.cardIcon),
-                            contentDescription = cardNumberState.cardBrand.name,
-                        )
-                    },
-                    colors = fieldColors,
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // Expiry (left) + CVC (right)
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        FieldLabel("Expiry")
-                        VgsExpiryOutlineTextField(
-                            state = expiryState,
-                            modifier = Modifier.fillMaxWidth(),
-                            onStateChange = { expiryState = it },
-                            colors = fieldColors,
-                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
-                        )
+            if (showScanner) {
+                ScanScreen(
+                    license = "",
+                    onInitializationFailure = { exception ->
+                        Log.e(TAG, "Failed to initialize BlinkCard SDK", exception)
+                        showScanner = false
                     }
-                    Spacer(modifier = Modifier.size(8.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        FieldLabel("CVC")
-                        VgsCvcOutlineTextField(
-                            state = cvcState,
-                            modifier = Modifier.fillMaxWidth(),
-                            onStateChange = { cvcState = it },
-                            colors = fieldColors,
-                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // City (left) + Postal Code (right)
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        FieldLabel("City")
-                        VgsOutlineTextField(
-                            state = cityState,
-                            modifier = Modifier.fillMaxWidth(),
-                            onStateChange = { cityState = it },
-                            colors = fieldColors,
-                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
-                        )
-                    }
-                    Spacer(modifier = Modifier.size(8.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        FieldLabel("Postal Code")
-                        VgsOutlineTextField(
-                            state = postalCodeState,
-                            modifier = Modifier.fillMaxWidth(),
-                            onStateChange = { postalCodeState = it },
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Number,
-                                imeAction = ImeAction.Next
-                            ),
-                            colors = fieldColors,
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // SSN
-                FieldLabel("SSN")
-                VgsSsnOutlineTextField(
-                    state = ssnState,
-                    modifier = Modifier.fillMaxWidth(),
-                    onStateChange = { ssnState = it },
-                    colors = fieldColors,
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            onSubmit(
-                                listOf(
-                                    cardHolderState,
-                                    cardNumberState,
-                                    cvcState,
-                                    expiryState,
-                                    cityState,
-                                    postalCodeState,
-                                    ssnState,
-                                )
-                            )
-                        }
-                    )
                 )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // ==========================================================
-                // STEP 4: Submit
-                // ==========================================================
-                // Pass all states to asyncSubmit. The SDK reads the raw values
-                // internally — callers never access the sensitive text directly.
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End,
-                ) {
-                    OutlinedButton(
-                        modifier = Modifier.height(IntrinsicSize.Max),
-                        onClick = { if (isFileAttached) onDetachAllFiles() else onAttachFile() },
-                    ) {
-                        Text(
-                            text = if (isFileAttached) {
-                                stringResource(R.string.detach_btn_title).uppercase()
-                            } else {
-                                stringResource(R.string.attach_btn_title).uppercase()
-                            },
-                            color = colorResource(R.color.fiord)
-                        )
-                        Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-                        Icon(
-                            modifier = Modifier.size(ButtonDefaults.IconSize),
-                            painter = painterResource(id = R.drawable.baseline_insert_drive_file_24),
-                            tint = colorResource(R.color.fiord),
-                            contentDescription = "Attach file",
-                        )
-                    }
-                    Spacer(modifier = Modifier.size(8.dp))
-                    OutlinedButton(
-                        modifier = Modifier.height(IntrinsicSize.Max),
-                        onClick = {
-                            onSubmit(
-                                listOf(
-                                    cardHolderState,
-                                    cardNumberState,
-                                    cvcState,
-                                    expiryState,
-                                    cityState,
-                                    postalCodeState,
-                                    ssnState,
-                                )
-                            )
-                        }
-                    ) {
-                        Text(
-                            text = "Submit".uppercase(),
-                            color = colorResource(R.color.fiord)
-                        )
-                    }
-                }
+            } else {
+                CollectScreen(
+                    collect = collect,
+                    contentPadding = contentPadding,
+                    isFileAttached = isFileAttached,
+                    onAttachFile = onAttachFile,
+                    onDetachAllFiles = onDetachAllFiles,
+                    onSubmit = onSubmit,
+                )
             }
         }
     }
+}
+
+@Composable
+private fun CollectScreen(
+    collect: VGSCollect,
+    contentPadding: PaddingValues,
+    isFileAttached: Boolean,
+    onAttachFile: () -> Unit,
+    onDetachAllFiles: () -> Unit,
+    onSubmit: (List<BaseFieldState>) -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(contentPadding)
+            .imePadding()
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 16.dp)
+    ) {
+        // ==========================================================
+        // STEP 1: Initialize field states
+        // ==========================================================
+        // Each state is bound to `collect` so the SDK can wire its
+        // analytics pipeline and survive config changes. Pass custom
+        // validators to override the defaults, or emptyList() to
+        // disable validation entirely.
+        var cardHolderState by rememberVgsCardHolderTextFieldState(
+            collect = collect,
+            fieldName = "data.name",
+        )
+        var cardNumberState by rememberVgsCardNumberTextFieldState(
+            collect = collect,
+            fieldName = "data.card_number",
+        )
+        var cvcState by rememberVgsCvcTextFieldState(
+            collect = collect,
+            fieldName = "data.cvc",
+        )
+        var expiryState by rememberVgsExpiryTextFieldState(
+            collect = collect,
+            fieldName = "data.expiry",
+            inputDateFormat = VgsExpiryDateFormat.MonthShortYear,
+            outputDateFormat = VgsExpiryDateFormat.LongYearMonth,
+        )
+        var cityState by rememberVgsTextFieldState(
+            collect = collect,
+            fieldName = "data.city",
+            validators = emptyList(),
+        )
+        var postalCodeState by rememberVgsTextFieldState(
+            collect = collect,
+            fieldName = "data.postal_code",
+            validators = emptyList(),
+        )
+        var ssnState by rememberVgsSsnTextFieldState(
+            collect = collect,
+            fieldName = "data.ssn",
+        )
+
+        // ==========================================================
+        // STEP 2: Sync dependent field states
+        // ==========================================================
+        // CVC validation rules depend on the detected card brand (e.g.
+        // Amex requires 4 digits). Re-sync whenever the card number
+        // state changes and the brand has been updated.
+        LaunchedEffect(cardNumberState.cardBrand) {
+            cvcState = cvcState.withCardBrand(cardNumberState.cardBrand)
+        }
+
+        // ==========================================================
+        // STEP 3: Render fields
+        // ==========================================================
+        val fieldColors = TextFieldDefaults.outlinedTextFieldColors(
+            backgroundColor = colorResource(R.color.fiord_20),
+            focusedBorderColor = Color.Transparent,
+            unfocusedBorderColor = Color.Transparent,
+            disabledBorderColor = Color.Transparent,
+            cursorColor = colorResource(R.color.fiord)
+        )
+
+        // Card Holder
+        FieldLabel("Card Holder")
+        VgsCardHolderOutlineTextField(
+            state = cardHolderState,
+            modifier = Modifier.fillMaxWidth(),
+            onStateChange = { cardHolderState = it },
+            colors = fieldColors,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Card Number
+        FieldLabel("Card Number")
+        VgsCardNumberOutlineTextField(
+            state = cardNumberState,
+            modifier = Modifier.fillMaxWidth(),
+            onStateChange = { cardNumberState = it },
+            trailingIcon = {
+                Image(
+                    modifier = Modifier.size(24.dp),
+                    painter = painterResource(id = cardNumberState.cardBrand.cardIcon),
+                    contentDescription = cardNumberState.cardBrand.name,
+                )
+            },
+            colors = fieldColors,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Expiry (left) + CVC (right)
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.weight(1f)) {
+                FieldLabel("Expiry")
+                VgsExpiryOutlineTextField(
+                    state = expiryState,
+                    modifier = Modifier.fillMaxWidth(),
+                    onStateChange = { expiryState = it },
+                    colors = fieldColors,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                )
+            }
+            Spacer(modifier = Modifier.size(8.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                FieldLabel("CVC")
+                VgsCvcOutlineTextField(
+                    state = cvcState,
+                    modifier = Modifier.fillMaxWidth(),
+                    onStateChange = { cvcState = it },
+                    colors = fieldColors,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // City (left) + Postal Code (right)
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.weight(1f)) {
+                FieldLabel("City")
+                VgsOutlineTextField(
+                    state = cityState,
+                    modifier = Modifier.fillMaxWidth(),
+                    onStateChange = { cityState = it },
+                    colors = fieldColors,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                )
+            }
+            Spacer(modifier = Modifier.size(8.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                FieldLabel("Postal Code")
+                VgsOutlineTextField(
+                    state = postalCodeState,
+                    modifier = Modifier.fillMaxWidth(),
+                    onStateChange = { postalCodeState = it },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    ),
+                    colors = fieldColors,
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // SSN
+        FieldLabel("SSN")
+        VgsSsnOutlineTextField(
+            state = ssnState,
+            modifier = Modifier.fillMaxWidth(),
+            onStateChange = { ssnState = it },
+            colors = fieldColors,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    onSubmit(
+                        listOf(
+                            cardHolderState,
+                            cardNumberState,
+                            cvcState,
+                            expiryState,
+                            cityState,
+                            postalCodeState,
+                            ssnState,
+                        )
+                    )
+                }
+            )
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // ==========================================================
+        // STEP 4: Submit
+        // ==========================================================
+        // Pass all states to asyncSubmit. The SDK reads the raw values
+        // internally — callers never access the sensitive text directly.
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End,
+        ) {
+            OutlinedButton(
+                modifier = Modifier.height(IntrinsicSize.Max),
+                onClick = { if (isFileAttached) onDetachAllFiles() else onAttachFile() },
+            ) {
+                Text(
+                    text = if (isFileAttached) {
+                        stringResource(R.string.detach_btn_title).uppercase()
+                    } else {
+                        stringResource(R.string.attach_btn_title).uppercase()
+                    },
+                    color = colorResource(R.color.fiord)
+                )
+                Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                Icon(
+                    modifier = Modifier.size(ButtonDefaults.IconSize),
+                    painter = painterResource(id = R.drawable.baseline_insert_drive_file_24),
+                    tint = colorResource(R.color.fiord),
+                    contentDescription = "Attach file",
+                )
+            }
+            Spacer(modifier = Modifier.size(8.dp))
+            OutlinedButton(
+                modifier = Modifier.height(IntrinsicSize.Max),
+                onClick = {
+                    onSubmit(
+                        listOf(
+                            cardHolderState,
+                            cardNumberState,
+                            cvcState,
+                            expiryState,
+                            cityState,
+                            postalCodeState,
+                            ssnState,
+                        )
+                    )
+                }
+            ) {
+                Text(
+                    text = "Submit".uppercase(),
+                    color = colorResource(R.color.fiord)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ScanScreen(
+    license: String,
+    onInitializationFailure: (exception: Throwable) -> Unit = {},
+) {
+    VgsBlinkCardCameraScanningScreen(
+        key = license,
+        onInitializationFailure = onInitializationFailure
+    )
 }
 
 @Composable

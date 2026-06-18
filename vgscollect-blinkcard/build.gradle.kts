@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.maven.publish)
     alias(libs.plugins.dokka)
 }
@@ -20,6 +21,10 @@ android {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
+    }
+
+    buildFeatures {
+        compose = true
     }
 
     compileOptions {
