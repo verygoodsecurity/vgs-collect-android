@@ -20,7 +20,7 @@ import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFiel
 private const val ANALYTICS_FIELD_TYPE = "card-holder-name"
 
 /**
- * Immutable state for a VGS card holder name field.
+ * Immutable state for a VGS cardholder name field.
  *
  * Obtain an instance with [rememberVgsCardHolderTextFieldState] inside a
  * composable. The state is replaced (not mutated) on every keystroke; pass

@@ -28,7 +28,7 @@ internal const val ANALYTICS_UI = "native-compose"
  * @property tokenizationConfig optional tokenization settings; when present,
  *   the value is tokenized on submit and the token is sent in its place.
  */
-abstract class BaseFieldState(
+abstract class BaseFieldState internal constructor(
     internal val text: String,
     val fieldName: String,
     val validators: List<VgsTextFieldValidator>?,
