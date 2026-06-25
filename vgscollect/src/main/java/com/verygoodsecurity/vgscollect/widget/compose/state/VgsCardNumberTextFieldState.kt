@@ -92,9 +92,10 @@ class VgsCardNumberTextFieldState private constructor(
     override fun getOutputText(): String = text
 
     override fun copy(text: String): VgsCardNumberTextFieldState {
-        val cardBrand = VgsCardBrand.detect(text, supportedCardBrands)
+        val normalizedText = normalizeText(text, VgsCardBrand.UNKNOWN)
+        val cardBrand = VgsCardBrand.detect(normalizedText, supportedCardBrands)
         return VgsCardNumberTextFieldState(
-            text = normalizeText(text, cardBrand),
+            text = normalizeText(normalizedText, cardBrand),
             fieldName = fieldName,
             validators = validators,
             isCardBrandValidationEnabled = isCardBrandValidationEnabled,

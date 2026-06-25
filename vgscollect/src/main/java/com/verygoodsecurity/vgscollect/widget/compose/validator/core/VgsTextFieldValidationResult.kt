@@ -15,4 +15,7 @@ abstract class VgsTextFieldValidationResult {
     abstract val isValid: Boolean
 
     abstract val errorMsg: String?
+
+    override fun toString(): String =
+        "${this::class.simpleName}(isValid=$isValid, errorMsg=$errorMsg)"
 }
