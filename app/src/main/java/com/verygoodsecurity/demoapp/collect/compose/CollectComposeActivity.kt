@@ -267,7 +267,7 @@ private fun Content(
                                 activity = activity,
                                 settings = BlinkCardScanActivitySettings(
                                     sdkSettings = BlinkCardSdkSettings(
-                                        licenseKey = "sRwCABxjb20udmVyeWdvb2RzZWN1cml0eS5kZW1vYXBwAGxleUpEY21WaGRHVmtUMjRpT2pFM09ERXdPRGs1TnpNd05qWXNJa055WldGMFpXUkdiM0lpT2lJeE56TTBaVGcxTXkxbU1HSmpMVFJqT1RRdFltTXlPUzB6WVRNeFptRXpOR016TW1JaWZRPT2plM9QZ/E8AWXEW1aEpfNnvJb5H4S2XHyjd93xu6eLTzG3U5ZFxmMluk1OQybLEer0B+RJ4w+CzQefUw5DcqVF/OBI/7xx2q2Sx9a1OBc36ZPpCggPZFTXCuQI8f4=",
+                                        licenseKey = "",
                                     ),
                                     showOnboardingDialog = false,
                                 )
