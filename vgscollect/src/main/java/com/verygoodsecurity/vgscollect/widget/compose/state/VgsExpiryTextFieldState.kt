@@ -137,8 +137,8 @@ class VgsExpiryTextFieldState private constructor(
  *   date validation applies. Pass `emptyList()` to disable validation.
  * @param inputDateFormat the format the user types in. Defaults to
  *   [VgsExpiryDateFormat.MonthShortYear] (MM/YY).
- * @param outputDateFormat the format used on submit. Defaults to match
- *   [inputDateFormat].
+ * @param outputDateFormat the format used on submit. Defaults to
+ *   [VgsExpiryDateFormat.MonthShortYear] (MM/YY).
  * @param serializer optional; splits the date into separate month/year JSON
  *   fields on submit.
  * @param tokenizationConfig optional; when set, the value is tokenized on
