@@ -21,11 +21,15 @@ sealed class VgsExpiryDateFormat(val dateFormat: String) {
 
     val maskChartsCount: Int = mask.count { it == '#' }
 
+    private val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.US).apply {
+        isLenient = false
+    }
+
     /** Parses [text] using this format, returning `null` when [text] is invalid. */
     fun parse(text: String): Date? {
         val formatted = text.format(mask)
         return try {
-            SimpleDateFormat(dateFormat, Locale.US).parse(formatted)
+            simpleDateFormat.parse(formatted)
         } catch (_: Exception) {
             null
         }
@@ -34,7 +38,7 @@ sealed class VgsExpiryDateFormat(val dateFormat: String) {
     /** Formats [date] using this format, returning `null` when [date] is `null` or invalid. */
     fun format(date: Date?): String? {
         return try {
-            date?.let { SimpleDateFormat(dateFormat, Locale.US).format(date) }
+            date?.let { simpleDateFormat.format(date) }
         } catch (_: Exception) {
             null
         }
