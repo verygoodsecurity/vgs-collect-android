@@ -33,7 +33,7 @@ private const val ANALYTICS_FIELD_TYPE = "ssn"
  *     collect = vgsCollect,
  *     fieldName = "data.ssn",
  * )
- * VgsSsnOutlineTextField(
+ * VgsSsnOutlinedTextField(
  *     state = state,
  *     onStateChange = { state = it },
  * )

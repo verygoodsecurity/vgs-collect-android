@@ -36,7 +36,7 @@ private const val ANALYTICS_FIELD_TYPE = "card-security-code"
  * LaunchedEffect(cardNumberState.cardBrand) {
  *     cvcState = cvcState.withCardBrand(cardNumberState.cardBrand)
  * }
- * VgsCvcOutlineTextField(
+ * VgsCvcOutlinedTextField(
  *     state = cvcState,
  *     onStateChange = { cvcState = it },
  * )

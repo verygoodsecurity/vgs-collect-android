@@ -38,7 +38,7 @@ private const val ANALYTICS_FIELD_TYPE = "card-expiration-date"
  *     inputDateFormat = VgsExpiryDateFormat.MonthShortYear,
  *     outputDateFormat = VgsExpiryDateFormat.LongYearMonth,
  * )
- * VgsExpiryOutlineTextField(
+ * VgsExpiryOutlinedTextField(
  *     state = state,
  *     onStateChange = { state = it },
  * )

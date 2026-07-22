@@ -36,7 +36,7 @@ private const val ANALYTICS_FIELD_TYPE = "card-number"
  *     collect = vgsCollect,
  *     fieldName = "data.card_number",
  * )
- * VgsCardNumberOutlineTextField(
+ * VgsCardNumberOutlinedTextField(
  *     state = state,
  *     onStateChange = { state = it },
  * )

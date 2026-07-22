@@ -84,7 +84,7 @@ fun VgsCardHolderTextField(
  * Parameters match [androidx.compose.material3.OutlinedTextField].
  */
 @Composable
-fun VgsCardHolderOutlineTextField(
+fun VgsCardHolderOutlinedTextField(
     state: VgsCardHolderTextFieldState,
     onStateChange: (state: VgsCardHolderTextFieldState) -> Unit,
     modifier: Modifier = Modifier,

@@ -80,7 +80,7 @@ fun VgsSsnTextField(
  * Parameters match [androidx.compose.material3.OutlinedTextField].
  */
 @Composable
-fun VgsSsnOutlineTextField(
+fun VgsSsnOutlinedTextField(
     state: VgsSsnTextFieldState,
     onStateChange: (state: VgsSsnTextFieldState) -> Unit,
     modifier: Modifier = Modifier,

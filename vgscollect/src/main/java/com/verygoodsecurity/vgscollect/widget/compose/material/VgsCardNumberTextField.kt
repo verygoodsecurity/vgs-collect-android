@@ -80,7 +80,7 @@ fun VgsCardNumberTextField(
  * Parameters match [androidx.compose.material.OutlinedTextField].
  */
 @Composable
-fun VgsCardNumberOutlineTextField(
+fun VgsCardNumberOutlinedTextField(
     state: VgsCardNumberTextFieldState,
     onStateChange: (state: VgsCardNumberTextFieldState) -> Unit,
     modifier: Modifier = Modifier,

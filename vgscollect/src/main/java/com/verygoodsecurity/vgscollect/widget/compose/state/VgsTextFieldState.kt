@@ -30,7 +30,7 @@ private const val ANALYTICS_FIELD_TYPE = "text"
  *     collect = vgsCollect,
  *     fieldName = "data.city",
  * )
- * VgsOutlineTextField(
+ * VgsOutlinedTextField(
  *     state = state,
  *     onStateChange = { state = it },
  * )

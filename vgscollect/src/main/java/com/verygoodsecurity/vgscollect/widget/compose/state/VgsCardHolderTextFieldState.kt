@@ -32,7 +32,7 @@ private const val ANALYTICS_FIELD_TYPE = "card-holder-name"
  *     collect = vgsCollect,
  *     fieldName = "data.name",
  * )
- * VgsCardHolderOutlineTextField(
+ * VgsCardHolderOutlinedTextField(
  *     state = state,
  *     onStateChange = { state = it },
  * )

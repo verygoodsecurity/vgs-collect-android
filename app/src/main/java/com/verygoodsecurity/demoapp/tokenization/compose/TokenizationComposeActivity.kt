@@ -59,10 +59,10 @@ import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpiryDateFormat
-import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardHolderOutlineTextField
-import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardNumberOutlineTextField
-import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCvcOutlineTextField
-import com.verygoodsecurity.vgscollect.widget.compose.material.VgsExpiryOutlineTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardHolderOutlinedTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardNumberOutlinedTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCvcOutlinedTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsExpiryOutlinedTextField
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardHolderTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardNumberTextFieldState
@@ -235,7 +235,7 @@ private fun Content(
 
                 // Card Holder
                 FieldLabel("Card Holder")
-                VgsCardHolderOutlineTextField(
+                VgsCardHolderOutlinedTextField(
                     state = cardHolderState,
                     modifier = Modifier.fillMaxWidth(),
                     onStateChange = { cardHolderState = it },
@@ -247,7 +247,7 @@ private fun Content(
 
                 // Card Number
                 FieldLabel("Card Number")
-                VgsCardNumberOutlineTextField(
+                VgsCardNumberOutlinedTextField(
                     state = cardNumberState,
                     modifier = Modifier.fillMaxWidth(),
                     onStateChange = { cardNumberState = it },
@@ -268,7 +268,7 @@ private fun Content(
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Column(modifier = Modifier.weight(1f)) {
                         FieldLabel("Expiry")
-                        VgsExpiryOutlineTextField(
+                        VgsExpiryOutlinedTextField(
                             state = expiryState,
                             modifier = Modifier.fillMaxWidth(),
                             onStateChange = { expiryState = it },
@@ -279,7 +279,7 @@ private fun Content(
                     Spacer(modifier = Modifier.size(8.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         FieldLabel("CVC")
-                        VgsCvcOutlineTextField(
+                        VgsCvcOutlinedTextField(
                             state = cvcState,
                             modifier = Modifier.fillMaxWidth(),
                             onStateChange = { cvcState = it },

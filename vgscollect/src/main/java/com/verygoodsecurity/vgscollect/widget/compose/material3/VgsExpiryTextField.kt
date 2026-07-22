@@ -81,7 +81,7 @@ fun VgsExpiryTextField(
  * Parameters match [androidx.compose.material3.OutlinedTextField].
  */
 @Composable
-fun VgsExpiryOutlineTextField(
+fun VgsExpiryOutlinedTextField(
     state: VgsExpiryTextFieldState,
     onStateChange: (state: VgsExpiryTextFieldState) -> Unit,
     modifier: Modifier = Modifier,
