@@ -3,9 +3,6 @@ package com.verygoodsecurity.vgscollect.core.storage
 import android.content.Context
 import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
-import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
-import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSCreateAliasesRequest
-import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.content.field.FieldStateContractor
 import com.verygoodsecurity.vgscollect.core.storage.content.field.TemporaryFieldsStorage
@@ -17,9 +14,9 @@ import com.verygoodsecurity.vgscollect.util.extension.DATA_KEY
 import com.verygoodsecurity.vgscollect.util.extension.allowParseArrays
 import com.verygoodsecurity.vgscollect.util.extension.deepMerge
 import com.verygoodsecurity.vgscollect.util.extension.isArraysIgnored
+import com.verygoodsecurity.vgscollect.util.extension.mapToTokenizationData
 import com.verygoodsecurity.vgscollect.util.extension.toArrayMergePolicy
 import com.verygoodsecurity.vgscollect.util.extension.toFlatMap
-import com.verygoodsecurity.vgscollect.util.extension.toTokenizationData
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
 
@@ -87,13 +84,8 @@ internal class InternalStorage(
         if (getFieldsData(fieldsIgnore, fieldsStates) == null) {
             return null
         }
-        return if (fieldsStates != null) {
-            mutableMapOf(DATA_KEY to fieldsStates.mapToTokenizationData())
-        } else {
-            val data = mutableListOf<Map<String, Any>>()
-            fieldsStorage.getItems().forEach { data.addAll(it.toTokenizationData()) }
-            mutableMapOf(DATA_KEY to data)
-        }
+        val data = fieldsStates?.mapToTokenizationData() ?: fieldsStorage.getItems().mapToTokenizationData()
+        return mutableMapOf(DATA_KEY to data)
     }
 
     fun getFieldsStates(): MutableCollection<VGSFieldState> = fieldsStorage.getItems()
@@ -141,7 +133,7 @@ internal class InternalStorage(
     ): Map<String, String>? {
         return if (!fieldsIgnore) {
             // Try to process passed states(Compose) and if no passed check internal storage
-            val states = fieldsStates?.mapStorageFieldState() ?: fieldsStorage.getItems().mapStorageFieldState()
+            val states = fieldsStates?.mapToStorageFieldState() ?: fieldsStorage.getItems().mapToStorageFieldState()
             val invalidFields = states.filter { !it.isValid }
             if (invalidFields.isEmpty()) {
                 states.associate { it.fieldName to it.data }
