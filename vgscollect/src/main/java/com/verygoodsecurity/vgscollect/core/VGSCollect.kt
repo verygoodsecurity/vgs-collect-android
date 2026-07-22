@@ -90,9 +90,8 @@ class VGSCollect {
     private var storage: InternalStorage
     private val storageErrorListener: StorageListener = object : StorageListener {
 
-        override fun onStorageError(error: VGSError, vararg params: String?) {
+        override fun onStorageError(error: VGSError, upstream: VGSAnalyticsUpstream, vararg params: String?) {
             error.toVGSResponse(*params).also { response ->
-                val upstream = VGSAnalyticsUpstream.CUSTOM
                 VGSCollectLogger.warn(InputFieldView.TAG, response.localizeMessage)
                 requestEvent(isSuccess = false, upstream = upstream, code = response.errorCode)
                 notifyAllListeners(response, upstream)
@@ -373,7 +372,7 @@ class VGSCollect {
      * @param request A tokenization request data.
      */
     fun tokenize(request: VGSTokenizationRequest) {
-        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore))
+        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore, upstream = request.upstream))
     }
 
     /**
@@ -384,7 +383,7 @@ class VGSCollect {
      * @param fieldsStates List of Compose field states to tokenize.
      */
     fun tokenize(request: VGSTokenizationRequest, fieldsStates: List<BaseFieldState>) {
-        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore, fieldsStates))
+        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore, fieldsStates, request.upstream))
     }
 
     /**
@@ -400,7 +399,7 @@ class VGSCollect {
      * @param request A create aliases request data.
      */
     fun createAliases(request: VGSCreateAliasesRequest) {
-        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore))
+        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore, upstream = request.upstream))
     }
 
     /**
@@ -411,7 +410,7 @@ class VGSCollect {
      * @param fieldsStates List of Compose field states to tokenize.
      */
     fun createAliases(request: VGSCreateAliasesRequest, fieldsStates: List<BaseFieldState>) {
-        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore, fieldsStates))
+        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore, fieldsStates, request.upstream))
     }
 
     /**

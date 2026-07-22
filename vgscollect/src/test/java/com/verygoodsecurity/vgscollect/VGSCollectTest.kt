@@ -7,6 +7,7 @@ import android.os.Handler
 import com.verygoodsecurity.vgscollect.Utils.capture
 import com.verygoodsecurity.vgscollect.app.BaseTransmitActivity
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsUpstream
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
@@ -671,6 +672,7 @@ class VGSCollectTest {
         val storage = spy(InternalStorage(activity, object : StorageListener {
             override fun onStorageError(
                 error: VGSError,
+                upstream: VGSAnalyticsUpstream,
                 vararg params: String?
             ) {
             }

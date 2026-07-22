@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.core.storage
 
 import android.content.Context
+import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsUpstream
 import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
@@ -60,7 +61,7 @@ internal class InternalStorage(
         val arrayMergePolicy = nameMappingPolicy.toArrayMergePolicy()
         val fieldsIgnore = request.fieldsIgnore
         val fileIgnore = request.fileIgnore
-        val fieldsData = with(getData(fieldsIgnore, fileIgnore, fieldsStates)) {
+        val fieldsData = with(getData(fieldsIgnore, fileIgnore, fieldsStates, request.upstream)) {
             if (nameMappingPolicy.isArraysIgnored()) {
                 this
             } else {
@@ -79,9 +80,10 @@ internal class InternalStorage(
 
     fun getDataForTokenization(
         fieldsIgnore: Boolean,
-        fieldsStates: List<BaseFieldState>? = null
+        fieldsStates: List<BaseFieldState>? = null,
+        upstream: VGSAnalyticsUpstream = VGSAnalyticsUpstream.CUSTOM
     ): Map<String, Any>? {
-        if (getFieldsData(fieldsIgnore, fieldsStates) == null) {
+        if (getFieldsData(fieldsIgnore, fieldsStates, upstream) == null) {
             return null
         }
         val data = fieldsStates?.mapToTokenizationData() ?: fieldsStorage.getItems().mapToTokenizationData()
@@ -119,17 +121,19 @@ internal class InternalStorage(
     private fun getData(
         fieldsIgnore: Boolean,
         fileIgnore: Boolean,
-        fieldsStates: List<BaseFieldState>?
+        fieldsStates: List<BaseFieldState>?,
+        upstream: VGSAnalyticsUpstream
     ): Map<String, String>? {
         val result = mutableMapOf<String, String>()
-        getFilesData(fileIgnore)?.let { result.putAll(it) } ?: return null
-        getFieldsData(fieldsIgnore, fieldsStates)?.let { result.putAll(it) } ?: return null
+        getFilesData(fileIgnore, upstream)?.let { result.putAll(it) } ?: return null
+        getFieldsData(fieldsIgnore, fieldsStates, upstream)?.let { result.putAll(it) } ?: return null
         return result
     }
 
     private fun getFieldsData(
         fieldsIgnore: Boolean,
-        fieldsStates: List<BaseFieldState>?
+        fieldsStates: List<BaseFieldState>?,
+        upstream: VGSAnalyticsUpstream
     ): Map<String, String>? {
         return if (!fieldsIgnore) {
             // Try to process passed states(Compose) and if no passed check internal storage
@@ -139,7 +143,7 @@ internal class InternalStorage(
                 states.associate { it.fieldName to it.data }
             } else {
                 invalidFields.forEach {
-                    listener.onStorageError(VGSError.INPUT_DATA_NOT_VALID, it.fieldName)
+                    listener.onStorageError(VGSError.INPUT_DATA_NOT_VALID, upstream, it.fieldName)
                 }
                 null
             }
@@ -148,7 +152,7 @@ internal class InternalStorage(
         }
     }
 
-    private fun getFilesData(fileIgnore: Boolean): Map<String, String>? {
+    private fun getFilesData(fileIgnore: Boolean, upstream: VGSAnalyticsUpstream): Map<String, String>? {
         return if (!fileIgnore) {
             val filesStates = fileProvider.getAttachedFiles()
             val invalidFiles = filesStates.filter { it.size > getFileSizeLimit() }
@@ -156,7 +160,7 @@ internal class InternalStorage(
                 fileStorage.getAssociatedList().toMap()
             } else {
                 invalidFiles.forEach {
-                    listener.onStorageError(VGSError.FILE_SIZE_OVER_LIMIT, it.name)
+                    listener.onStorageError(VGSError.FILE_SIZE_OVER_LIMIT, upstream, it.name)
                 }
                 null
             }
