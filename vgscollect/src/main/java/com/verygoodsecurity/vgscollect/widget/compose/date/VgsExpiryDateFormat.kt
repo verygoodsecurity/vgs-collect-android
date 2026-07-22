@@ -19,17 +19,15 @@ sealed class VgsExpiryDateFormat(val dateFormat: String) {
 
     val mask: String = dateFormat.replace('m', '#', true).replace('y', '#', true)
 
-    val maskChartsCount: Int = mask.count { it == '#' }
-
-    private val simpleDateFormat = SimpleDateFormat(dateFormat, Locale.US).apply {
-        isLenient = false
-    }
+    val maskCharsCount: Int = mask.count { it == '#' }
 
     /** Parses [text] using this format, returning `null` when [text] is invalid. */
     fun parse(text: String): Date? {
         val formatted = text.format(mask)
         return try {
-            simpleDateFormat.parse(formatted)
+            SimpleDateFormat(dateFormat, Locale.US).apply {
+                isLenient = false
+            }.parse(formatted)
         } catch (_: Exception) {
             null
         }
@@ -38,7 +36,11 @@ sealed class VgsExpiryDateFormat(val dateFormat: String) {
     /** Formats [date] using this format, returning `null` when [date] is `null` or invalid. */
     fun format(date: Date?): String? {
         return try {
-            date?.let { simpleDateFormat.format(date) }
+            date?.let {
+                SimpleDateFormat(dateFormat, Locale.US).apply {
+                    isLenient = false
+                }.format(date)
+            }
         } catch (_: Exception) {
             null
         }

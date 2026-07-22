@@ -114,7 +114,7 @@ class VgsExpiryTextFieldState private constructor(
     private fun normalizeText(text: String): String {
         val digits = text.filter { it.isDigit() }
         val length = digits.length
-        return digits.substring(0, min(length, inputDateFormat.maskChartsCount))
+        return digits.substring(0, min(length, inputDateFormat.maskCharsCount))
     }
 }
 
