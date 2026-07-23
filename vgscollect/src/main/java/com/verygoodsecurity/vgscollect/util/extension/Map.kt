@@ -6,7 +6,7 @@ import org.json.JSONObject
 
 fun <K, V> Map<K, V>.toJSON(): JSONObject = try {
     JSONObject(this)
-} catch (e: Exception) {
+} catch (_: Exception) {
     JSONObject()
 }
 
@@ -26,10 +26,6 @@ internal fun Map<String, Any>.toFlatMap(allowParseArrays: Boolean): FlatMap {
             this.set(key, value)
         }
     }
-}
-
-internal fun Iterable<Pair<String, Any>>.toFlatMap(allowParseArrays: Boolean): FlatMap {
-    return toMap().toFlatMap(allowParseArrays)
 }
 
 @Suppress("UNCHECKED_CAST")

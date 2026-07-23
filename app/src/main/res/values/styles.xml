@@ -11,6 +11,17 @@
         <item name="snackbarTextViewStyle">@style/SnackBarTextViewStyle</item>
     </style>
 
+    <style name="AppTheme.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/fiord</item>
+        <item name="colorPrimaryDark">@color/elephant</item>
+        <item name="colorSecondary">@color/fiord</item>
+        <item name="colorSurface">@color/fiord</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="android:textColorSecondary">@color/fiord</item>
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
+        <item name="snackbarTextViewStyle">@style/SnackBarTextViewStyle</item>
+    </style>
+
     <style name="ActionBarStyle" parent="Widget.MaterialComponents.ActionBar.Primary">
         <item name="logo">@drawable/ic_actionbar_logo</item>
         <item name="displayOptions">useLogo|showHome|showTitle</item>

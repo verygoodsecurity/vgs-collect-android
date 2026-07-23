@@ -4,7 +4,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.FieldContent
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
-import com.verygoodsecurity.vgscollect.util.extension.toTokenizationData
+import com.verygoodsecurity.vgscollect.util.extension.mapToTokenizationData
 import com.verygoodsecurity.vgscollect.view.core.serializers.VGSExpDateSeparateSerializer
 import org.junit.Assert
 import org.junit.Test
@@ -14,18 +14,10 @@ class TokenizationKtTest {
     @Test
     fun toTokenizationMap_nullFieldContent_correctMapReturned() {
         // Arrange
-        val expected = listOf(
-            mapOf<String, Any>(
-                "is_required_tokenization" to false,
-                "value" to "",
-                "format" to "",
-                "storage" to "",
-                "fieldName" to "",
-            )
-        )
+        val expected = listOf<Map<String, Any>>()
         val fieldState = VGSFieldState()
         // Act
-        val result = fieldState.toTokenizationData()
+        val result = mutableListOf(fieldState).mapToTokenizationData()
         // Assert
         Assert.assertEquals(expected, result)
     }
@@ -47,7 +39,7 @@ class TokenizationKtTest {
             content = FieldContent.InfoContent(), fieldName = fieldName
         )
         // Act
-        val result = fieldState.toTokenizationData()
+        val result = mutableListOf(fieldState).mapToTokenizationData()
         // Assert
         Assert.assertEquals(expected, result)
     }
@@ -75,7 +67,7 @@ class TokenizationKtTest {
             content = fieldContent, fieldName = fieldName
         )
         // Act
-        val result = fieldState.toTokenizationData()
+        val result = mutableListOf(fieldState).mapToTokenizationData()
         // Assert
         Assert.assertEquals(expected, result)
     }
@@ -113,7 +105,7 @@ class TokenizationKtTest {
             )
         )
         // Act
-        val result = fieldState.toTokenizationData()
+        val result = mutableListOf(fieldState).mapToTokenizationData()
         // Assert
         Assert.assertEquals(expected, result)
     }
@@ -142,7 +134,7 @@ class TokenizationKtTest {
             content = fieldContent, fieldName = fieldName
         )
         // Act
-        val result = fieldState.toTokenizationData()
+        val result = mutableListOf(fieldState).mapToTokenizationData()
         // Assert
         Assert.assertEquals(expected, result)
     }
@@ -171,7 +163,7 @@ class TokenizationKtTest {
             content = fieldContent, fieldName = fieldName
         )
         // Act
-        val result = fieldState.toTokenizationData()
+        val result = mutableListOf(fieldState).mapToTokenizationData()
         // Assert
         Assert.assertEquals(expected, result)
     }

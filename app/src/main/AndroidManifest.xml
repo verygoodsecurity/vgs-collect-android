@@ -29,16 +29,24 @@
         </activity>
 
         <activity
-            android:name=".google_pay.GooglePayActivity"
-            android:label="Google Pay" />
-
-        <activity
             android:name=".collect.views.CollectViewsActivity"
             android:label="Collect (Activity)" />
 
         <activity
+            android:name=".collect.compose.CollectComposeActivity"
+            android:label="Compose Demo (Activity)"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+
+        <activity
             android:name=".tokenization.v1.TokenizationActivity"
             android:label="Tokenization" />
+
+        <activity
+            android:name=".tokenization.compose.TokenizationComposeActivity"
+            android:label="Tokenization (Compose)"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
             android:name=".tokenization.v2.TokenizationActivity"
@@ -47,6 +55,18 @@
         <activity
             android:name=".tokenization.settings.TokenizationSettingsActivity"
             android:label="Settings" />
+
+        <activity
+            android:name=".cmp.CMPActivity"
+            android:label="CMP" />
+
+        <activity
+            android:name=".google_pay.GooglePayActivity"
+            android:label="Google Pay" />
+
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
 
         <activity
             android:name=".instrumented.VGSEditTextInputTypeActivity"
@@ -59,18 +79,5 @@
         <activity
             android:name=".instrumented.CustomBrandsActivity"
             android:label="Instrumented Demo" />
-
-        <activity
-            android:name=".collect.compose.CollectComposeActivity"
-            android:label="Compose Demo (Activity)"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-
-        <activity
-            android:name=".cmp.CMPActivity"
-            android:label="CMP" />
-
-        <meta-data
-            android:name="com.google.android.gms.wallet.api.enabled"
-            android:value="true" />
     </application>
 </manifest>

@@ -1039,7 +1039,7 @@ abstract class InputFieldView @JvmOverloads constructor(
         }
     }
 
-    protected fun setFieldDataSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
+    protected fun setFieldDataSerializers(serializers: List<FieldDataSerializer>?) {
         if (fieldType == FieldType.DATE_RANGE || fieldType == FieldType.CARD_EXPIRATION_DATE) {
             (inputField as? DateInputField)?.setFieldDataSerializers(serializers)
         }

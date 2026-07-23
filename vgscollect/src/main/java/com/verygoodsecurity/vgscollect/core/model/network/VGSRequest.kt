@@ -4,7 +4,6 @@ import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsUpstream
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
-import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
 
 /**
  * VGS request representation.
