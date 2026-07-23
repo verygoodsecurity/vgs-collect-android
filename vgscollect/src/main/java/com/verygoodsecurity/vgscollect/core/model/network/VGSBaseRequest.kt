@@ -5,6 +5,8 @@ import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 
+internal const val DEFAULT_CONNECTION_TIME_OUT = 60_000L
+
 /**
  * Base class for VGS Collect requests.
  *

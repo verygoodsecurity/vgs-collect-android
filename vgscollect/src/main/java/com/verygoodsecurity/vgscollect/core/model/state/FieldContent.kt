@@ -59,7 +59,7 @@ sealed class FieldContent {
 
     class DateContent : FieldContent() {
         internal var dateFormat: String? = null
-        internal var serializers: List<FieldDataSerializer<*, *>>? = null
+        internal var serializers: List<FieldDataSerializer>? = null
     }
 
     class SSNContent : FieldContent()
@@ -84,7 +84,7 @@ internal fun FieldContent.DateContent.handleOutputFormat(
     selectedDate: Calendar,
     fieldDateFormat: SimpleDateFormat?,
     fieldDateOutPutFormat: SimpleDateFormat?,
-    serializers: List<FieldDataSerializer<*, *>>?
+    serializers: List<FieldDataSerializer>?
 ) {
     if (fieldDateFormat != null && fieldDateFormat.toPattern() == fieldDateOutPutFormat?.toPattern()) {
         data = fieldDateFormat.format(selectedDate.time)
@@ -105,7 +105,7 @@ internal fun FieldContent.CardNumberContent.parseCardBin(): String {
     return number.substring(0, min(number.length, binLength))
 }
 
-private fun allowed8DigitBIN(brand: String?, length: Int): Boolean {
+internal fun allowed8DigitBIN(brand: String?, length: Int): Boolean {
     return length >= 16 && (brand == CardType.MAESTRO.name || brand == CardType.MASTERCARD.name || brand == CardType.VISA.name)
 }
 

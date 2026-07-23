@@ -8,7 +8,7 @@ class FlatMapTest {
     @Test
     fun set_nestedObjects_validStructureReturned() {
         // Arrange
-        val map = FlatMap()
+        val map = FlatMap(true)
         val expectedResult = "{data={user={name=John Doe, age=30}}}"
 
         // Act
@@ -22,7 +22,7 @@ class FlatMapTest {
     @Test
     fun set_arrayAdded_validStructureReturned() {
         // Arrange
-        val map = FlatMap()
+        val map = FlatMap(true)
         val expectedResult = "{data={user={name=John Doe, age=30, pets=[card, dog]}}}"
 
         // Act
@@ -38,7 +38,7 @@ class FlatMapTest {
     @Test
     fun set_arraysAddedWithNulls_validStructureReturned() {
         // Arrange
-        val map = FlatMap()
+        val map = FlatMap(true)
         val expectedResult =
             "{data={user={name=John Doe, age=30, pets=[card, dog, null, null, null, null, null, null, null, null, bird]}}}"
 
@@ -56,7 +56,7 @@ class FlatMapTest {
     @Test
     fun set_objectInsideArray_validStructureReturned() {
         // Arrange
-        val map = FlatMap()
+        val map = FlatMap(true)
         val expectedResult =
             "{data={user={name=John Doe, age=30, pets=[{name=Ralph, type=dog, age=3}]}}}"
 
@@ -74,7 +74,7 @@ class FlatMapTest {
     @Test
     fun set_nestedArrays_validStructureReturned() {
         // Arrange
-        val map = FlatMap()
+        val map = FlatMap(true)
         val expectedResult =
             "{data={user={name=John Doe, age=30, pets=[{fish=[{name=Gold Fish, type=gold, age=1}]}]}}}"
 
@@ -92,7 +92,7 @@ class FlatMapTest {
     @Test
     fun set_invalidParamsNotAdded_validStructureReturned() {
         // Arrange
-        val map = FlatMap()
+        val map = FlatMap(true)
         val expectedResult = "{data={user={name=John Doe, age=30, pets=[{fish=[{type=gold}]}]}}}"
 
         // Act
@@ -109,7 +109,7 @@ class FlatMapTest {
     @Test
     fun set_twoObjectsWithArrays_validStructureReturned() {
         // Arrange
-        val map = FlatMap()
+        val map = FlatMap(true)
         val expectedResult =
             "{data={user={name=John Doe, age=30, pets=[card, dog]}}, extraData={tokens=[test_token_1, test_token_2]}}"
 

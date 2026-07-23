@@ -63,7 +63,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
     private var timeGapsValidator: TimeGapsValidator? = null
     private var fieldDateFormat: SimpleDateFormat? = null
     private var fieldDateOutputFormat: SimpleDateFormat? = null
-    private var fieldDataSerializers: List<FieldDataSerializer<*, *>>? = null
+    private var fieldDataSerializers: List<FieldDataSerializer>? = null
     private var datePickerVisibilityChangeListener: VisibilityChangeListener? = null
     //endregion
 
@@ -397,7 +397,7 @@ internal abstract class DateInputField(context: Context) : BaseInputField(contex
         datePickerVisibilityChangeListener = listener
     }
 
-    internal fun setFieldDataSerializers(serializers: List<FieldDataSerializer<*, *>>?) {
+    internal fun setFieldDataSerializers(serializers: List<FieldDataSerializer>?) {
         this.fieldDataSerializers = serializers
     }
 

@@ -38,20 +38,3 @@ internal fun VGSBaseRequest.toNetworkRequest(
         upstream == VGSAnalyticsUpstream.TOKENIZATION
     )
 }
-
-internal fun VGSBaseRequest.prepareUserDataForCollecting(
-    staticData: MutableMap<String, Any>,
-    userData: MutableMap<String, Any>
-): Map<String, Any> {
-    val mergePolicy = when (fieldNameMappingPolicy) {
-        VGSCollectFieldNameMappingPolicy.NESTED_JSON -> ArrayMergePolicy.OVERWRITE
-        VGSCollectFieldNameMappingPolicy.FLAT_JSON -> ArrayMergePolicy.OVERWRITE
-        VGSCollectFieldNameMappingPolicy.NESTED_JSON_WITH_ARRAYS_MERGE -> ArrayMergePolicy.MERGE
-        VGSCollectFieldNameMappingPolicy.NESTED_JSON_WITH_ARRAYS_OVERWRITE -> ArrayMergePolicy.OVERWRITE
-    }
-
-    return with(staticData) {
-        deepMerge(customData, mergePolicy)
-        deepMerge(userData, mergePolicy)
-    }
-}
