@@ -13,7 +13,8 @@ Single public skill entrypoint for `VGSCollectSDK` work in Android applications.
 ## When to use
 
 - First-time `vgscollect` integration
-- Feature work touching `VGSCollect`, secure fields, validation, scanning, file upload, analytics, or logging
+- Feature work touching `VGSCollect`, secure fields (View or Compose), validation, scanning, file upload, analytics, or logging
+- Compose field integration (`VgsTextField`, `VgsCardNumberTextField`, etc.) and state management
 - Version migrations or replacement of deprecated usage
 - Troubleshooting integration bugs or version-specific regressions
 - Code review of Android app code that uses `VGSCollectSDK`
@@ -22,7 +23,7 @@ Single public skill entrypoint for `VGSCollectSDK` work in Android applications.
 
 | Topic | File |
 |-------|------|
-| SDK policy, security rules, submission lifecycle, versioned guidance | `references/AGENTS.md` |
+| SDK policy, security rules, submission lifecycle, View & Compose APIs, versioned guidance | `references/AGENTS.md` |
 
 ## Snapshot resolution
 
@@ -61,6 +62,7 @@ Retrieval fills implementation detail. It does not override `AGENTS.md` invarian
 Ask only when missing info changes implementation:
 - installed `vgscollect` version or dependency snippet
 - task type (integration, feature change, migration, troubleshooting, review)
+- UI framework (`View`, `Compose`, or both)
 - scanner requirement (`BlinkCard`, file upload, both, or none)
 - sensitive fields involved (`PAN`, `CVC`, `SSN`, files)
 - relevant error, log, or code snippet for troubleshooting
@@ -73,13 +75,16 @@ Choose one primary mode. In every mode: apply security and validation rules from
 First-time SDK adoption.
 - confirm SDK is not already present
 - choose supported install method for the target project
-- wire baseline `VGSCollect`, field binding, and submit/tokenize flow
+- determine UI framework (View or Compose) and wire accordingly
+- View: wire `VGSCollect`, `bindView()`, and submit/tokenize flow
+- Compose: wire `VGSCollect`, `rememberVgs*TextFieldState()` factories, and submit with `List<BaseFieldState>`
 
 ### `implement`
 Add or change functionality.
 - implement in the caller app context, not generic snippets
-- enforce `state.isValid` gates before submission
+- enforce `state.isValid` gates before submission (View: `getAllStates()`, Compose: check `BaseFieldState.isValid` directly)
 - include secure logging and post-upload `cleanFiles()` behavior
+- for Compose: sync CVC brand via `LaunchedEffect(cardNumberState.cardBrand)`, pass states to submit methods
 
 ### `migrate`
 Move between versions.
@@ -98,6 +103,7 @@ Patch/PR/design review.
 - review against resolved-version `AGENTS.md` and public APIs
 - prioritize correctness, privacy, compatibility, and missing tests
 - flag deprecated, private, insecure, or version-incompatible usage
+- for Compose: verify `LaunchedEffect`/`DisposableEffect` keys include all captured references, validate naming conventions (`Vgs*TextField`, `Vgs*OutlinedTextField`, `Cardholder` not `CardHolder`)
 
 ## Output contract
 

@@ -30,9 +30,10 @@ Documentation Source of Truth Across Versions
 ---
 ## 1. Core Concepts (Mental Model)
 - `VGSCollect` orchestrates secure collection and submission to a VGS Vault you own (identified by vault ID + environment / data region).
-- UI inputs (`VGSTextInputEditText`) never expose raw values outside controlled SDK memory; you interact through configuration + state snapshots.
+- **View-based**: UI inputs (`VGSTextInputEditText`) never expose raw values outside controlled SDK memory; you interact through configuration + state snapshots. Fields are bound to `VGSCollect` via `bindView()`.
+- **Compose**: Immutable state objects (`BaseFieldState` subclasses) are created via `rememberVgs*TextFieldState()` factories and passed to `Vgs*TextField` composables. States are self-contained — no `bindView()` needed.
 - Field `state` drives UI (validity, emptiness, metadata like last4, brand) - do not persist raw input.
-- Submissions can be performed via listener, or a direct `async` request.
+- Submissions can be performed via listener, a direct `async` request, or by passing Compose states to `asyncSubmit()` / `tokenize()` / `createAliases()`.
 
 ---
 ## 1A. Environment Preconditions
@@ -59,7 +60,7 @@ Failure Modes:
 Security Note: Never derive environment from user input; it must be a static config determined at build or app launch.
 
 ---
-## 2. Public Building Blocks (Summary Table)
+## 2. Public Building Blocks — View-based (Summary Table)
 (Do NOT assume additional behavior outside listed intents.)
 - `VGSCollect`: register fields, submit data/files, observe states, manage headers, cleanup files.
 - `VGSTextInputEditText`: generic configurable secure text field.
@@ -73,7 +74,7 @@ Security Note: Never derive environment from user input; it must be a static con
 - `VGSCollectLogger`: adjust log verbosity (ensure `.NONE` in production if required).
 
 ---
-## 2A. FieldType Reference & Capabilities
+## 2A. FieldType Reference & Capabilities (View-based)
 Purpose: choose correct `FieldType` to obtain built-in formatting and validation. Each case sets defaults (pattern, divider, keyboardType, validation rule set, optional metadata and sensitivity).
 
 Notation: P=Formatting Pattern, D=Divider, Val=Default Validation Rules (names), Meta=Metadata via state, Scan=Supported by BlinkCard scan mapping, Icon=Built-in Icon Support, Sens.=Sensitive (tokenized priority).
@@ -133,6 +134,170 @@ Notation: P=Formatting Pattern, D=Divider, Val=Default Validation Rules (names),
 - Scan: No Icon: No Sens.: (Treat as sensitive in app logic even if `sensitive` flag false; never log.)
 
 ---
+## 2B. Public Building Blocks — Compose (Summary Table)
+The SDK provides native Jetpack Compose composables as an alternative to View-based widgets. Both Material (`widget.compose.material`) and Material3 (`widget.compose.material3`) variants are available. Compose dependencies are `compileOnly` — the host app must provide them.
+
+Composables (each has filled + outlined variant):
+- `VgsTextField` / `VgsOutlinedTextField`: generic secure text field (city, postal code, address, etc.).
+- `VgsCardNumberTextField` / `VgsCardNumberOutlinedTextField`: card number with brand detection, Luhn validation, masking.
+- `VgsCvcTextField` / `VgsCvcOutlinedTextField`: CVC/CVV with brand-dependent length.
+- `VgsExpiryTextField` / `VgsExpiryOutlinedTextField`: card expiry with configurable input/output date formats.
+- `VgsSsnTextField` / `VgsSsnOutlinedTextField`: SSN with mask (`###-##-####`) and validation.
+- `VgsCardholderTextField` / `VgsCardholderOutlinedTextField`: cardholder name with pattern validation.
+
+State factories (use inside `@Composable`):
+- `rememberVgsTextFieldState`, `rememberVgsCardNumberTextFieldState`, `rememberVgsCvcTextFieldState`, `rememberVgsExpiryTextFieldState`, `rememberVgsSsnTextFieldState`, `rememberVgsCardholderTextFieldState`.
+
+Tokenization configs (one per field type):
+- `VgsCardNumberTokenizationConfig`, `VgsCvcTokenizationConfig`, `VgsCardholderTokenizationConfig`, `VgsSsnTokenizationConfig`, `VgsExpiryTokenizationConfig`, `VgsTextFieldTokenizationConfig`.
+
+Validators:
+- `VgsRequiredFieldValidator`, `VgsRegexValidator`, `VgsTextLengthValidator`, `VgsLuhnAlgorithmValidator`, `VgsMinMaxDateValidator`.
+
+Visual transformations:
+- `VgsMaskVisualTransformation`, `VgsPasswordVisualTransformation`, `VgsVisualTransformation.None`.
+
+Card brand:
+- `VgsCardBrand` (detection, icons, mask, lengths), `VgsCardBrand.DEFAULT`, `VgsCardBrand.UNKNOWN`.
+
+Date formats:
+- `VgsExpiryDateFormat.MonthShortYear` (MM/yy), `.MonthLongYear` (MM/yyyy), `.ShortYearMonth` (yy/MM), `.LongYearMonth` (yyyy/MM).
+
+Date serializer:
+- `VgsExpirySerializer` for splitting expiry into separate month/year JSON fields on submit.
+
+### Compose vs View: key differences
+- No `bindView()` / `unbindView()` — states are self-contained and passed to submit methods directly.
+- States are immutable — every keystroke produces a new state object via `onStateChange`.
+- Validation is built into the state: check `state.isValid` / `state.validationResult`.
+- Card brand detection is automatic: read `cardNumberState.cardBrand` for icon/name.
+- CVC brand sync is manual: call `cvcState = cvcState.withCardBrand(cardNumberState.cardBrand)` in a `LaunchedEffect`.
+- No `FieldType` enum — field type is determined by which composable/state you use.
+
+---
+## 2C. Compose Field Setup & Configuration Pattern
+Canonical Compose card form:
+```kotlin
+@Composable
+fun PaymentForm(collect: VGSCollect, onSubmit: (List<BaseFieldState>) -> Unit) {
+    // Step 1: Initialize states
+    var cardholderState by rememberVgsCardholderTextFieldState(
+        collect = collect,
+        fieldName = "data.name",
+    )
+    var cardNumberState by rememberVgsCardNumberTextFieldState(
+        collect = collect,
+        fieldName = "data.card_number",
+    )
+    var cvcState by rememberVgsCvcTextFieldState(
+        collect = collect,
+        fieldName = "data.cvc",
+    )
+    var expiryState by rememberVgsExpiryTextFieldState(
+        collect = collect,
+        fieldName = "data.expiry",
+        inputDateFormat = VgsExpiryDateFormat.MonthShortYear,
+        outputDateFormat = VgsExpiryDateFormat.LongYearMonth,
+    )
+
+    // Step 2: Sync CVC brand from card number
+    LaunchedEffect(cardNumberState.cardBrand) {
+        cvcState = cvcState.withCardBrand(cardNumberState.cardBrand)
+    }
+
+    // Step 3: Render fields (Material outlined variant shown)
+    VgsCardholderOutlinedTextField(
+        state = cardholderState,
+        onStateChange = { cardholderState = it },
+    )
+    VgsCardNumberOutlinedTextField(
+        state = cardNumberState,
+        onStateChange = { cardNumberState = it },
+        trailingIcon = {
+            Image(
+                painter = painterResource(id = cardNumberState.cardBrand.cardIcon),
+                contentDescription = cardNumberState.cardBrand.name,
+            )
+        },
+    )
+    VgsExpiryOutlinedTextField(
+        state = expiryState,
+        onStateChange = { expiryState = it },
+    )
+    VgsCvcOutlinedTextField(
+        state = cvcState,
+        onStateChange = { cvcState = it },
+    )
+
+    // Step 4: Submit
+    Button(onClick = {
+        onSubmit(listOf(cardholderState, cardNumberState, expiryState, cvcState))
+    }) { Text("Submit") }
+}
+```
+
+---
+## 2D. Compose Submission APIs
+Compose states are passed directly to `VGSCollect` submit methods:
+```kotlin
+// Async (callback-based)
+collect.asyncSubmit(
+    VGSRequest.VGSRequestBuilder().setPath("/post").build(),
+    listOf(cardholderState, cardNumberState, expiryState, cvcState),
+)
+
+// Coroutines
+val response = collect.submitAsync("/post", fieldsStates = listOf(...))
+
+// Tokenization
+collect.tokenize(
+    VGSTokenizationRequest.VGSRequestBuilder().build(),
+    listOf(cardholderState, cardNumberState, expiryState, cvcState),
+)
+
+// Create aliases
+collect.createAliases(
+    VGSCreateAliasesRequest.VGSRequestBuilder().build(),
+    listOf(cardholderState, cardNumberState, expiryState, cvcState),
+)
+```
+
+Tokenization config per field:
+```kotlin
+var cardNumberState by rememberVgsCardNumberTextFieldState(
+    collect = collect,
+    fieldName = "data.card_number",
+    tokenizationConfig = VgsCardNumberTokenizationConfig(), // FPE_SIX_T_FOUR, PERSISTENT
+)
+var cvcState by rememberVgsCvcTextFieldState(
+    collect = collect,
+    fieldName = "data.cvc",
+    tokenizationConfig = VgsCvcTokenizationConfig(), // NUM_LENGTH_PRESERVING, VOLATILE
+)
+```
+
+Custom validators:
+```kotlin
+var state by rememberVgsTextFieldState(
+    collect = collect,
+    fieldName = "data.city",
+    validators = listOf(VgsRequiredFieldValidator(), VgsRegexValidator("^[a-zA-Z ]+$")),
+)
+// Pass emptyList() to disable validation entirely
+// Pass null (default) to use the field type's built-in validators
+```
+
+Compose validation gate:
+```kotlin
+val states = listOf(cardholderState, cardNumberState, expiryState, cvcState)
+val allValid = states.all { it.isValid }
+if (!allValid) {
+    // Handle invalid fields — check individual state.validationResult for details
+    return
+}
+```
+
+---
 ## 3. Specific Validation Rules
 
 ### ABARoutingNumberRule
@@ -148,7 +313,7 @@ routingNumberField.addRule(abaRule)
 ```
 
 ---
-## 4. Field Setup & Configuration Pattern
+## 4. View-based Field Setup & Configuration Pattern
 Canonical card form snippet (XML Layout):
 ```xml
 <com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
@@ -189,7 +354,7 @@ vgsCollect.bindView(findViewById(R.id.cvcField))
 ```
 
 ---
-## 5. Observing & Using Field State
+## 5. Observing & Using Field State (View-based)
 State listening:
 ```kotlin
 vgsCollect.addOnFieldStateChangeListener { state ->
@@ -202,7 +367,7 @@ vgsCollect.addOnFieldStateChangeListener { state ->
 Never log full PAN / CVC / SSN / raw file contents.
 
 ---
-## 6. Submission APIs
+## 6. Submission APIs (View-based)
 Validation Gate:
 ```kotlin
 val allFieldsValid = vgsCollect.getAllStates().all { it.isValid }
