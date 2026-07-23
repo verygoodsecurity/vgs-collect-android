@@ -59,16 +59,16 @@ import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
 import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpiryDateFormat
-import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardHolderOutlinedTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardholderOutlinedTextField
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardNumberOutlinedTextField
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCvcOutlinedTextField
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsExpiryOutlinedTextField
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardHolderTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardholderTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardNumberTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCvcTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsExpiryTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCardHolderTokenizationConfig
+import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCardholderTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCardNumberTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCvcTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsExpiryTokenizationConfig
@@ -192,10 +192,10 @@ private fun Content(
                 // Each state carries its own tokenization config. The field-specific
                 // subclasses provide the correct alias format / storage defaults for
                 // each data type, matching the behavior of the view-based fields.
-                var cardHolderState by rememberVgsCardHolderTextFieldState(
+                var cardHolderState by rememberVgsCardholderTextFieldState(
                     collect = collect,
                     fieldName = "data.name",
-                    tokenizationConfig = VgsCardHolderTokenizationConfig(),
+                    tokenizationConfig = VgsCardholderTokenizationConfig(),
                 )
                 var cardNumberState by rememberVgsCardNumberTextFieldState(
                     collect = collect,
@@ -235,7 +235,7 @@ private fun Content(
 
                 // Card Holder
                 FieldLabel("Card Holder")
-                VgsCardHolderOutlinedTextField(
+                VgsCardholderOutlinedTextField(
                     state = cardHolderState,
                     modifier = Modifier.fillMaxWidth(),
                     onStateChange = { cardHolderState = it },

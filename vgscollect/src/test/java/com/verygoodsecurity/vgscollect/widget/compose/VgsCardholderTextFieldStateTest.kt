@@ -1,13 +1,13 @@
 package com.verygoodsecurity.vgscollect.widget.compose
 
-import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardHolderTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardholderTextFieldState
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class VgsCardHolderTextFieldStateTest {
+class VgsCardholderTextFieldStateTest {
 
-    private fun stateWith(text: String) = VgsCardHolderTextFieldState("field").copy(text = text)
+    private fun stateWith(text: String) = VgsCardholderTextFieldState("field").copy(text = text)
 
     @Test
     fun validate_lettersOnly_validatedSuccessfully() {

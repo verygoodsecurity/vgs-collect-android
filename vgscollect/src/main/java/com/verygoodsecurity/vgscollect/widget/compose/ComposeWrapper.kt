@@ -154,8 +154,8 @@ fun RangeDateEditTextWrapper(
  *  @param onViewUpdate - A callback to be invoked after the view is inflated and upon recomposition to update the information and state of the view.
  */
 @Deprecated(
-    message = "This component is deprecated. Please use VgsCardHolderTextField instead.",
-    replaceWith = ReplaceWith("com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardHolderTextField()")
+    message = "This component is deprecated. Please use VgsCardholderTextField instead.",
+    replaceWith = ReplaceWith("com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardholderTextField()")
 )
 @Composable
 fun PersonNameEditTextWrapper(

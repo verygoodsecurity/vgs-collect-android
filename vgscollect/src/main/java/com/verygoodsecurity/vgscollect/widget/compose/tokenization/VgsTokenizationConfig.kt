@@ -12,7 +12,7 @@ import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultSto
  *
  * Use a field-specific subclass to get sensible defaults:
  * [VgsCardNumberTokenizationConfig], [VgsCvcTokenizationConfig],
- * [VgsCardHolderTokenizationConfig], [VgsSsnTokenizationConfig],
+ * [VgsCardholderTokenizationConfig], [VgsSsnTokenizationConfig],
  * [VgsExpiryTokenizationConfig], [VgsTextFieldTokenizationConfig].
  *
  * @param format alias format the vault should produce.
@@ -45,7 +45,7 @@ class VgsCvcTokenizationConfig(
 /**
  * Tokenization settings for cardholder name fields.
  */
-class VgsCardHolderTokenizationConfig(
+class VgsCardholderTokenizationConfig(
     format: VGSVaultAliasFormat = VGSVaultAliasFormat.UUID,
     storage: VGSVaultStorageType = VGSVaultStorageType.PERSISTENT,
 ) : VgsTokenizationConfig(format, storage)

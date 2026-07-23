@@ -11,7 +11,7 @@ import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsEvent
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.ANALYTICS_UI
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCardHolderTokenizationConfig
+import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCardholderTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRegexValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.VgsRequiredFieldValidator
 import com.verygoodsecurity.vgscollect.widget.compose.validator.core.VgsTextFieldValidationResult
@@ -22,17 +22,17 @@ private const val ANALYTICS_FIELD_TYPE = "card-holder-name"
 /**
  * Immutable state for a VGS cardholder name field.
  *
- * Obtain an instance with [rememberVgsCardHolderTextFieldState] inside a
+ * Obtain an instance with [rememberVgsCardholderTextFieldState] inside a
  * composable. The state is replaced (not mutated) on every keystroke; pass
- * the latest instance to your `VgsCardHolder…TextField` and update it from
+ * the latest instance to your `VgsCardholder…TextField` and update it from
  * `onStateChange`:
  *
  * ```
- * var state by rememberVgsCardHolderTextFieldState(
+ * var state by rememberVgsCardholderTextFieldState(
  *     collect = vgsCollect,
  *     fieldName = "data.name",
  * )
- * VgsCardHolderOutlinedTextField(
+ * VgsCardholderOutlinedTextField(
  *     state = state,
  *     onStateChange = { state = it },
  * )
@@ -42,11 +42,11 @@ private const val ANALYTICS_FIELD_TYPE = "card-holder-name"
  * - [isValid] / [validationResult] — current validation outcome.
  * - [fieldName] — JSON key used in the submit payload.
  */
-class VgsCardHolderTextFieldState private constructor(
+class VgsCardholderTextFieldState private constructor(
     text: String,
     fieldName: String,
     validators: List<VgsTextFieldValidator>?,
-    override val tokenizationConfig: VgsCardHolderTokenizationConfig? = null,
+    override val tokenizationConfig: VgsCardholderTokenizationConfig? = null,
 ) : BaseFieldState(text, fieldName, validators) {
 
     private companion object {
@@ -57,7 +57,7 @@ class VgsCardHolderTextFieldState private constructor(
     internal constructor(
         fieldName: String,
         validators: List<VgsTextFieldValidator>? = null,
-        tokenizationConfig: VgsCardHolderTokenizationConfig? = null,
+        tokenizationConfig: VgsCardholderTokenizationConfig? = null,
     ) : this(EMPTY, fieldName, validators, tokenizationConfig)
 
     override fun validate(): List<VgsTextFieldValidationResult> {
@@ -69,8 +69,8 @@ class VgsCardHolderTextFieldState private constructor(
 
     override fun getOutputText(): String = text
 
-    override fun copy(text: String): VgsCardHolderTextFieldState {
-        return VgsCardHolderTextFieldState(
+    override fun copy(text: String): VgsCardholderTextFieldState {
+        return VgsCardholderTextFieldState(
             text = text,
             fieldName = fieldName,
             validators = validators,
@@ -80,12 +80,12 @@ class VgsCardHolderTextFieldState private constructor(
 }
 
 /**
- * Creates and remembers a [VgsCardHolderTextFieldState] for use with a
- * `VgsCardHolderTextField`. This is the only way to obtain an instance —
+ * Creates and remembers a [VgsCardholderTextFieldState] for use with a
+ * `VgsCardholderTextField`. This is the only way to obtain an instance —
  * direct construction is internal to the SDK.
  *
  * ```
- * var state by rememberVgsCardHolderTextFieldState(
+ * var state by rememberVgsCardholderTextFieldState(
  *     collect = vgsCollect,
  *     fieldName = "data.name",
  * )
@@ -100,13 +100,13 @@ class VgsCardHolderTextFieldState private constructor(
  *   submit and the token is sent in place of the raw value.
  */
 @Composable
-fun rememberVgsCardHolderTextFieldState(
+fun rememberVgsCardholderTextFieldState(
     collect: VGSCollect,
     fieldName: String,
     validators: List<VgsTextFieldValidator>? = null,
-    tokenizationConfig: VgsCardHolderTokenizationConfig? = null,
-): MutableState<VgsCardHolderTextFieldState> {
-    fun newState() = VgsCardHolderTextFieldState(
+    tokenizationConfig: VgsCardholderTokenizationConfig? = null,
+): MutableState<VgsCardholderTextFieldState> {
+    fun newState() = VgsCardholderTextFieldState(
         fieldName,
         validators,
         tokenizationConfig,

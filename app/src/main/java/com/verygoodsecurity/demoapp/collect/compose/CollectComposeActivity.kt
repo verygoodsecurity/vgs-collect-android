@@ -69,20 +69,19 @@ import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpiryDateFormat
-import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardHolderOutlinedTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardholderOutlinedTextField
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardNumberOutlinedTextField
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCvcOutlinedTextField
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsExpiryOutlinedTextField
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsOutlinedTextField
 import com.verygoodsecurity.vgscollect.widget.compose.material.VgsSsnOutlinedTextField
 import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardHolderTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardholderTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardNumberTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCvcTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsExpiryTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsSsnTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsTextFieldState
-import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsTokenizationConfig
 import com.verygoodsecurity.vgscollect.widget.compose.util.withScanResult
 
 private const val TAG = "CollectComposeActivity"
@@ -304,7 +303,7 @@ private fun Content(
                 // analytics pipeline and survive config changes. Pass custom
                 // validators to override the defaults, or emptyList() to
                 // disable validation entirely.
-                var cardHolderState by rememberVgsCardHolderTextFieldState(
+                var cardHolderState by rememberVgsCardholderTextFieldState(
                     collect = collect,
                     fieldName = CARDHOLDER_FIELD_NAME,
                 ).withScanResult(scannerResult)
@@ -361,7 +360,7 @@ private fun Content(
 
                 // Card Holder
                 FieldLabel("Card Holder")
-                VgsCardHolderOutlinedTextField(
+                VgsCardholderOutlinedTextField(
                     state = cardHolderState,
                     modifier = Modifier.fillMaxWidth(),
                     onStateChange = { cardHolderState = it },
