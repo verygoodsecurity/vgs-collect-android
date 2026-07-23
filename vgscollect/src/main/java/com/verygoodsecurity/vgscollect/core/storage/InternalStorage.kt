@@ -142,7 +142,7 @@ internal class InternalStorage(
             if (invalidFields.isEmpty()) {
                 states.associate { it.fieldName to it.data }
             } else {
-                invalidFields.forEach {
+                invalidFields.firstOrNull()?.let {
                     listener.onStorageError(VGSError.INPUT_DATA_NOT_VALID, upstream, it.fieldName)
                 }
                 null
@@ -159,7 +159,7 @@ internal class InternalStorage(
             if (invalidFiles.isEmpty()) {
                 fileStorage.getAssociatedList().toMap()
             } else {
-                invalidFiles.forEach {
+                invalidFiles.firstOrNull()?.let {
                     listener.onStorageError(VGSError.FILE_SIZE_OVER_LIMIT, upstream, it.name)
                 }
                 null

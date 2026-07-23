@@ -173,7 +173,7 @@ fun rememberVgsCardNumberTextFieldState(
     ) {
         mutableStateOf(newState())
     }
-    LaunchedEffect(fieldName) {
+    LaunchedEffect(fieldName, collect) {
         collect.analyticsHandler.capture(
             VGSAnalyticsEvent.FieldAttach(
                 fieldType = ANALYTICS_FIELD_TYPE,
@@ -181,7 +181,7 @@ fun rememberVgsCardNumberTextFieldState(
             )
         )
     }
-    DisposableEffect(fieldName) {
+    DisposableEffect(fieldName, collect) {
         onDispose {
             collect.analyticsHandler.capture(
                 VGSAnalyticsEvent.FieldDetach(ANALYTICS_FIELD_TYPE)
