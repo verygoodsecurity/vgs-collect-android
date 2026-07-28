@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
-import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.transformation.VgsVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardholderTextFieldState
 
 /**

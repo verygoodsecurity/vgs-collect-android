@@ -1,5 +1,6 @@
 package com.verygoodsecurity.vgscollect.widget.compose.mask
 
+import com.verygoodsecurity.vgscollect.widget.compose.transformation.MaskFormatter
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

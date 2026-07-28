@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.widget.compose.mask
+package com.verygoodsecurity.vgscollect.widget.compose.transformation
 
 import androidx.compose.ui.text.input.OffsetMapping
 

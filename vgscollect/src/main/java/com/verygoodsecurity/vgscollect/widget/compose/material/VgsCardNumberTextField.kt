@@ -15,8 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsMaskVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.transformation.VgsMaskVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCardNumberTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.transformation.VgsVisualTransformation
 
 /**
  * Material filled text field for collecting a card number.
@@ -45,6 +46,7 @@ fun VgsCardNumberTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
+    visualTransformation: VgsVisualTransformation = VgsMaskVisualTransformation(state.cardBrand.mask),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     interactionSource: MutableInteractionSource? = null,
@@ -63,7 +65,7 @@ fun VgsCardNumberTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         isError = isError,
-        visualTransformation = VgsMaskVisualTransformation(state.cardBrand.mask),
+        visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions.copy(keyboardType = KeyboardType.Number),
         keyboardActions = keyboardActions,
         singleLine = true,
@@ -92,6 +94,7 @@ fun VgsCardNumberOutlinedTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
+    visualTransformation: VgsVisualTransformation = VgsMaskVisualTransformation(state.cardBrand.mask),
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     interactionSource: MutableInteractionSource? = null,
@@ -110,7 +113,7 @@ fun VgsCardNumberOutlinedTextField(
         leadingIcon = leadingIcon,
         trailingIcon = trailingIcon,
         isError = isError,
-        visualTransformation = VgsMaskVisualTransformation(state.cardBrand.mask),
+        visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions.copy(keyboardType = KeyboardType.Number),
         keyboardActions = keyboardActions,
         singleLine = true,

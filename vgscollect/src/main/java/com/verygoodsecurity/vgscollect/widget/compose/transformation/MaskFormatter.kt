@@ -1,4 +1,4 @@
-package com.verygoodsecurity.vgscollect.widget.compose.mask
+package com.verygoodsecurity.vgscollect.widget.compose.transformation
 
 import com.verygoodsecurity.vgscollect.widget.compose.util.MASK_SYMBOL
 import com.verygoodsecurity.vgscollect.widget.compose.util.format
