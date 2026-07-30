@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>com.verygoodsecurity.vgscollect.widget.compose.state</title>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../index.html" tabindex="1">
+                    vgscollect
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true"
+                        data-filter=":vgscollect/release">release</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":vgscollect/release"
+                                       data-filter=":vgscollect/release"/>
+                                <span class="checkbox--icon"></span>
+                                release
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    vgscollect
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageIds="vgscollect::com.verygoodsecurity.vgscollect.widget.compose.state////PointingToDeclaration//259159472">
+  <div class="breadcrumbs"><a href="../../index.html">vgscollect</a><span class="delimiter">/</span><span class="current">com.verygoodsecurity.vgscollect.widget.compose.state</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="1759526971%2FClasslikes%2F259159472" anchor-label="VgsCardholderTextFieldState" id="1759526971%2FClasslikes%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-vgs-cardholder-text-field-state/index.html"><span>Vgs</span><wbr></wbr><span>Cardholder</span><wbr></wbr><span>Text</span><wbr></wbr><span>Field</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1759526971%2FClasslikes%2F259159472"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-vgs-cardholder-text-field-state/index.html">VgsCardholderTextFieldState</a> : <a href="../com.verygoodsecurity.vgscollect.widget.compose.state.core/-base-field-state/index.html">BaseFieldState</a></div><div class="brief "><p class="paragraph">Immutable state for a VGS cardholder name field.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="479067102%2FClasslikes%2F259159472" anchor-label="VgsCardNumberTextFieldState" id="479067102%2FClasslikes%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-vgs-card-number-text-field-state/index.html"><span>Vgs</span><wbr></wbr><span>Card</span><wbr></wbr><span>Number</span><wbr></wbr><span>Text</span><wbr></wbr><span>Field</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="479067102%2FClasslikes%2F259159472"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-vgs-card-number-text-field-state/index.html">VgsCardNumberTextFieldState</a> : <a href="../com.verygoodsecurity.vgscollect.widget.compose.state.core/-base-field-state/index.html">BaseFieldState</a></div><div class="brief "><p class="paragraph">Immutable state for a VGS card number field.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-119389677%2FClasslikes%2F259159472" anchor-label="VgsCvcTextFieldState" id="-119389677%2FClasslikes%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-vgs-cvc-text-field-state/index.html"><span>Vgs</span><wbr></wbr><span>Cvc</span><wbr></wbr><span>Text</span><wbr></wbr><span>Field</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-119389677%2FClasslikes%2F259159472"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-vgs-cvc-text-field-state/index.html">VgsCvcTextFieldState</a> : <a href="../com.verygoodsecurity.vgscollect.widget.compose.state.core/-base-field-state/index.html">BaseFieldState</a></div><div class="brief "><p class="paragraph">Immutable state for a VGS card security code (CVC/CVV) field.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2145198876%2FClasslikes%2F259159472" anchor-label="VgsExpiryTextFieldState" id="-2145198876%2FClasslikes%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-vgs-expiry-text-field-state/index.html"><span>Vgs</span><wbr></wbr><span>Expiry</span><wbr></wbr><span>Text</span><wbr></wbr><span>Field</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2145198876%2FClasslikes%2F259159472"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-vgs-expiry-text-field-state/index.html">VgsExpiryTextFieldState</a> : <a href="../com.verygoodsecurity.vgscollect.widget.compose.state.core/-base-field-state/index.html">BaseFieldState</a></div><div class="brief "><p class="paragraph">Immutable state for a VGS card expiration date field.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2019660651%2FClasslikes%2F259159472" anchor-label="VgsSsnTextFieldState" id="-2019660651%2FClasslikes%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-vgs-ssn-text-field-state/index.html"><span>Vgs</span><wbr></wbr><span>Ssn</span><wbr></wbr><span>Text</span><wbr></wbr><span>Field</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2019660651%2FClasslikes%2F259159472"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-vgs-ssn-text-field-state/index.html">VgsSsnTextFieldState</a> : <a href="../com.verygoodsecurity.vgscollect.widget.compose.state.core/-base-field-state/index.html">BaseFieldState</a></div><div class="brief "><p class="paragraph">Immutable state for a VGS U.S. Social Security Number field.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1354493207%2FClasslikes%2F259159472" anchor-label="VgsTextFieldState" id="1354493207%2FClasslikes%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-vgs-text-field-state/index.html"><span>Vgs</span><wbr></wbr><span>Text</span><wbr></wbr><span>Field</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1354493207%2FClasslikes%2F259159472"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><span class="token keyword">class </span><a href="-vgs-text-field-state/index.html">VgsTextFieldState</a> : <a href="../com.verygoodsecurity.vgscollect.widget.compose.state.core/-base-field-state/index.html">BaseFieldState</a></div><div class="brief "><p class="paragraph">Immutable state for a generic VGS text field (e.g. city, postal code, address).</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1789950301%2FFunctions%2F259159472" anchor-label="rememberVgsCardholderTextFieldState" id="-1789950301%2FFunctions%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="remember-vgs-cardholder-text-field-state.html"><span>remember</span><wbr></wbr><span>Vgs</span><wbr></wbr><span>Cardholder</span><wbr></wbr><span>Text</span><wbr></wbr><span>Field</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1789950301%2FFunctions%2F259159472"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="remember-vgs-cardholder-text-field-state.html"><span class="token function">rememberVgsCardholderTextFieldState</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">collect<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.core/-v-g-s-collect/index.html">VGSCollect</a><span class="token punctuation">, </span></span><span class="parameter ">fieldName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">validators<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../com.verygoodsecurity.vgscollect.widget.compose.validator.core/-vgs-text-field-validator/index.html">VgsTextFieldValidator</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">tokenizationConfig<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.widget.compose.tokenization/-vgs-cardholder-tokenization-config/index.html">VgsCardholderTokenizationConfig</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState.html">MutableState</a><span class="token operator">&lt;</span><a href="-vgs-cardholder-text-field-state/index.html">VgsCardholderTextFieldState</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates and remembers a <a href="-vgs-cardholder-text-field-state/index.html">VgsCardholderTextFieldState</a> for use with a <code class="lang-kotlin">VgsCardholderTextField</code>. This is the only way to obtain an instance — direct construction is internal to the SDK.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-474156195%2FFunctions%2F259159472" anchor-label="rememberVgsCardNumberTextFieldState" id="-474156195%2FFunctions%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="remember-vgs-card-number-text-field-state.html"><span>remember</span><wbr></wbr><span>Vgs</span><wbr></wbr><span>Card</span><wbr></wbr><span>Number</span><wbr></wbr><span>Text</span><wbr></wbr><span>Field</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-474156195%2FFunctions%2F259159472"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="remember-vgs-card-number-text-field-state.html"><span class="token function">rememberVgsCardNumberTextFieldState</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">collect<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.core/-v-g-s-collect/index.html">VGSCollect</a><span class="token punctuation">, </span></span><span class="parameter ">fieldName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">validators<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../com.verygoodsecurity.vgscollect.widget.compose.validator.core/-vgs-text-field-validator/index.html">VgsTextFieldValidator</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">isCardBrandValidationEnabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter ">supportedCardBrands<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../com.verygoodsecurity.vgscollect.widget.compose.card/-vgs-card-brand/index.html">VgsCardBrand</a><span class="token operator">&gt;</span><span class="token operator"> = </span>VgsCardBrand.DEFAULT<span class="token punctuation">, </span></span><span class="parameter ">tokenizationConfig<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.widget.compose.tokenization/-vgs-card-number-tokenization-config/index.html">VgsCardNumberTokenizationConfig</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState.html">MutableState</a><span class="token operator">&lt;</span><a href="-vgs-card-number-text-field-state/index.html">VgsCardNumberTextFieldState</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates and remembers a <a href="-vgs-card-number-text-field-state/index.html">VgsCardNumberTextFieldState</a> for use with a <code class="lang-kotlin">VgsCardNumberTextField</code>. This is the only way to obtain an instance — direct construction is reserved for the SDK.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="211594421%2FFunctions%2F259159472" anchor-label="rememberVgsCvcTextFieldState" id="211594421%2FFunctions%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="remember-vgs-cvc-text-field-state.html"><span>remember</span><wbr></wbr><span>Vgs</span><wbr></wbr><span>Cvc</span><wbr></wbr><span>Text</span><wbr></wbr><span>Field</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="211594421%2FFunctions%2F259159472"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="remember-vgs-cvc-text-field-state.html"><span class="token function">rememberVgsCvcTextFieldState</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">collect<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.core/-v-g-s-collect/index.html">VGSCollect</a><span class="token punctuation">, </span></span><span class="parameter ">fieldName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">validators<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../com.verygoodsecurity.vgscollect.widget.compose.validator.core/-vgs-text-field-validator/index.html">VgsTextFieldValidator</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">isCardBrandValidationEnabled<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">true</span><span class="token punctuation">, </span></span><span class="parameter ">tokenizationConfig<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.widget.compose.tokenization/-vgs-cvc-tokenization-config/index.html">VgsCvcTokenizationConfig</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState.html">MutableState</a><span class="token operator">&lt;</span><a href="-vgs-cvc-text-field-state/index.html">VgsCvcTextFieldState</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates and remembers a <a href="-vgs-cvc-text-field-state/index.html">VgsCvcTextFieldState</a> for use with a <code class="lang-kotlin">VgsCvcTextField</code>. This is the only way to obtain an instance — direct construction is internal to the SDK.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="935084600%2FFunctions%2F259159472" anchor-label="rememberVgsExpiryTextFieldState" id="935084600%2FFunctions%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="remember-vgs-expiry-text-field-state.html"><span>remember</span><wbr></wbr><span>Vgs</span><wbr></wbr><span>Expiry</span><wbr></wbr><span>Text</span><wbr></wbr><span>Field</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="935084600%2FFunctions%2F259159472"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="remember-vgs-expiry-text-field-state.html"><span class="token function">rememberVgsExpiryTextFieldState</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">collect<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.core/-v-g-s-collect/index.html">VGSCollect</a><span class="token punctuation">, </span></span><span class="parameter ">fieldName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">validators<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../com.verygoodsecurity.vgscollect.widget.compose.validator.core/-vgs-text-field-validator/index.html">VgsTextFieldValidator</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">inputDateFormat<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.widget.compose.date/-vgs-expiry-date-format/index.html">VgsExpiryDateFormat</a><span class="token operator"> = </span>VgsExpiryDateFormat.MonthShortYear<span class="token punctuation">, </span></span><span class="parameter ">outputDateFormat<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.widget.compose.date/-vgs-expiry-date-format/index.html">VgsExpiryDateFormat</a><span class="token operator"> = </span>VgsExpiryDateFormat.MonthShortYear<span class="token punctuation">, </span></span><span class="parameter ">serializer<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.widget.compose.date/-vgs-expiry-serializer/index.html">VgsExpirySerializer</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">tokenizationConfig<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.widget.compose.tokenization/-vgs-expiry-tokenization-config/index.html">VgsExpiryTokenizationConfig</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState.html">MutableState</a><span class="token operator">&lt;</span><a href="-vgs-expiry-text-field-state/index.html">VgsExpiryTextFieldState</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates and remembers a <a href="-vgs-expiry-text-field-state/index.html">VgsExpiryTextFieldState</a> for use with a <code class="lang-kotlin">VgsExpiryTextField</code>. This is the only way to obtain an instance — direct construction is internal to the SDK.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="966535763%2FFunctions%2F259159472" anchor-label="rememberVgsSsnTextFieldState" id="966535763%2FFunctions%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="remember-vgs-ssn-text-field-state.html"><span>remember</span><wbr></wbr><span>Vgs</span><wbr></wbr><span>Ssn</span><wbr></wbr><span>Text</span><wbr></wbr><span>Field</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="966535763%2FFunctions%2F259159472"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="remember-vgs-ssn-text-field-state.html"><span class="token function">rememberVgsSsnTextFieldState</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">collect<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.core/-v-g-s-collect/index.html">VGSCollect</a><span class="token punctuation">, </span></span><span class="parameter ">fieldName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">validators<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../com.verygoodsecurity.vgscollect.widget.compose.validator.core/-vgs-text-field-validator/index.html">VgsTextFieldValidator</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">tokenizationConfig<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.widget.compose.tokenization/-vgs-ssn-tokenization-config/index.html">VgsSsnTokenizationConfig</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState.html">MutableState</a><span class="token operator">&lt;</span><a href="-vgs-ssn-text-field-state/index.html">VgsSsnTextFieldState</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates and remembers a <a href="-vgs-ssn-text-field-state/index.html">VgsSsnTextFieldState</a> for use with a <code class="lang-kotlin">VgsSsnTextField</code>. This is the only way to obtain an instance — direct construction is internal to the SDK.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1873389752%2FFunctions%2F259159472" anchor-label="rememberVgsTextFieldState" id="-1873389752%2FFunctions%2F259159472" data-filterable-set=":vgscollect/release"></a>
+          <div class="table-row table-row_content" data-filterable-current=":vgscollect/release" data-filterable-set=":vgscollect/release">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="remember-vgs-text-field-state.html"><span>remember</span><wbr></wbr><span>Vgs</span><wbr></wbr><span>Text</span><wbr></wbr><span>Field</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1873389752%2FFunctions%2F259159472"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":vgscollect/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="remember-vgs-text-field-state.html"><span class="token function">rememberVgsTextFieldState</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">collect<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.core/-v-g-s-collect/index.html">VGSCollect</a><span class="token punctuation">, </span></span><span class="parameter ">fieldName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">validators<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../com.verygoodsecurity.vgscollect.widget.compose.validator.core/-vgs-text-field-validator/index.html">VgsTextFieldValidator</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter ">tokenizationConfig<span class="token operator">: </span><a href="../com.verygoodsecurity.vgscollect.widget.compose.tokenization/-vgs-text-field-tokenization-config/index.html">VgsTextFieldTokenizationConfig</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/MutableState.html">MutableState</a><span class="token operator">&lt;</span><a href="-vgs-text-field-state/index.html">VgsTextFieldState</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Creates and remembers a <a href="-vgs-text-field-state/index.html">VgsTextFieldState</a> for use with a <code class="lang-kotlin">VgsTextField</code>. This is the only way to obtain an instance — direct construction is internal to the SDK.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
