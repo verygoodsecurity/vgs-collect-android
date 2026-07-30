@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import com.verygoodsecurity.vgscollect.widget.compose.mask.VgsVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.transformation.VgsVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.state.VgsCvcTextFieldState
 
 /**
