@@ -1,6 +1,7 @@
 package com.verygoodsecurity.vgscollect.widget.compose.mask
 
 import androidx.compose.ui.text.AnnotatedString
+import com.verygoodsecurity.vgscollect.widget.compose.transformation.VgsMaskVisualTransformation
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
