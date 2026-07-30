@@ -1,6 +1,6 @@
 package com.verygoodsecurity.vgscollect.widget.compose.mask
 
-import com.verygoodsecurity.vgscollect.widget.compose.transformation.MaskFormatter
+import com.verygoodsecurity.vgscollect.widget.compose.transformation.VgsMaskVisualTransformation.MaskFormatter
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -10,7 +10,12 @@ class MaskFormatterTest {
 
     @Test
     fun getFormatterText_ssnMask_formattedSuccessfully() {
-        assertEquals("123-45-6789", MaskFormatter("###-##-####", "123456789").getFormatterText())
+        assertEquals(
+            "123-45-6789", MaskFormatter(
+                "###-##-####",
+                "123456789"
+            ).getFormatterText()
+        )
     }
 
     @Test
