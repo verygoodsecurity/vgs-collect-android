@@ -90,3 +90,12 @@ internal val String.digits: String
         val digitsRegex = Regex("\\D")
         return digitsRegex.replace(this, "")
     }
+
+internal fun String.toHex(): String {
+    val bytes = toByteArray(Charsets.UTF_8)
+    return buildString(bytes.size * 2) {
+        for (b in bytes) {
+            append(((b.toInt() and 0xFF).toString(16)).padStart(2, '0'))
+        }
+    }
+}

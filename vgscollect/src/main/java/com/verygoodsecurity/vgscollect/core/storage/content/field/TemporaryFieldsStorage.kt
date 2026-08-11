@@ -30,6 +30,10 @@ internal class TemporaryFieldsStorage(
         listener?.let { dependencyObservers.add(it) }
     }
 
+    override fun detachStateChangeListener(listener: OnFieldStateChangeListener?) {
+        onFieldStateChangeListeners.remove(listener)
+    }
+
     override fun clear() {
         store.clear()
     }

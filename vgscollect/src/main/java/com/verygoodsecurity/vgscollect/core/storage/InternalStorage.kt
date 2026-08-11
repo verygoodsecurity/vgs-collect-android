@@ -4,6 +4,10 @@ import android.content.Context
 import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsUpstream
 import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
+import com.verygoodsecurity.vgscollect.core.model.network.cmp.CMP_ATTRIBUTES_KEY
+import com.verygoodsecurity.vgscollect.core.model.network.cmp.CMP_DATA_KEY
+import com.verygoodsecurity.vgscollect.core.model.network.cmp.CMP_META_KEY
+import com.verygoodsecurity.vgscollect.core.model.network.cmp.VGSCardManagementPlatformRequest
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.content.field.FieldStateContractor
 import com.verygoodsecurity.vgscollect.core.storage.content.field.TemporaryFieldsStorage
@@ -81,13 +85,41 @@ internal class InternalStorage(
     fun getDataForTokenization(
         fieldsIgnore: Boolean,
         fieldsStates: List<BaseFieldState>? = null,
-        upstream: VGSAnalyticsUpstream = VGSAnalyticsUpstream.CUSTOM
     ): Map<String, Any>? {
-        if (getFieldsData(fieldsIgnore, fieldsStates, upstream) == null) {
+        if (getFieldsData(fieldsIgnore, fieldsStates, VGSAnalyticsUpstream.TOKENIZATION) == null) {
             return null
         }
-        val data = fieldsStates?.mapToTokenizationData() ?: fieldsStorage.getItems().mapToTokenizationData()
+        val data = fieldsStates?.mapToTokenizationData() ?: fieldsStorage.getItems()
+            .mapToTokenizationData()
         return mutableMapOf(DATA_KEY to data)
+    }
+
+    fun getDataForCmp(
+        request: VGSCardManagementPlatformRequest,
+        formId: String,
+        staticData: Map<String, Any>,
+        fieldsStates: List<BaseFieldState>? = null
+    ): Map<String, Any>? {
+        val nameMappingPolicy = request.fieldNameMappingPolicy
+        val fieldsData = with(getFieldsData(request.fieldsIgnore, fieldsStates, request.upstream)) {
+            if (nameMappingPolicy.isArraysIgnored()) {
+                this
+            } else {
+                this?.toFlatMap(nameMappingPolicy.allowParseArrays())?.structuredData
+            }
+        }
+
+        return fieldsData?.let {
+            mapOf<String, Any>(
+                CMP_DATA_KEY to mapOf<String, Any>(
+                    CMP_ATTRIBUTES_KEY to fieldsData
+                ),
+                CMP_META_KEY to staticData.toMutableMap().deepMerge(
+                    request.getMeta(formId),
+                    nameMappingPolicy.toArrayMergePolicy()
+                )
+            )
+        }
     }
 
     fun getFieldsStates(): MutableCollection<VGSFieldState> = fieldsStorage.getItems()
@@ -99,6 +131,10 @@ internal class InternalStorage(
 
     fun attachStateChangeListener(fieldStateListener: OnFieldStateChangeListener?) {
         emitter.attachStateChangeListener(fieldStateListener)
+    }
+
+    fun detachStateChangeListener(fieldStateListener: OnFieldStateChangeListener?) {
+        emitter.detachStateChangeListener(fieldStateListener)
     }
 
     fun performSubscription(view: InputFieldView) {
@@ -126,7 +162,8 @@ internal class InternalStorage(
     ): Map<String, String>? {
         val result = mutableMapOf<String, String>()
         getFilesData(fileIgnore, upstream)?.let { result.putAll(it) } ?: return null
-        getFieldsData(fieldsIgnore, fieldsStates, upstream)?.let { result.putAll(it) } ?: return null
+        getFieldsData(fieldsIgnore, fieldsStates, upstream)?.let { result.putAll(it) }
+            ?: return null
         return result
     }
 
@@ -137,7 +174,8 @@ internal class InternalStorage(
     ): Map<String, String>? {
         return if (!fieldsIgnore) {
             // Try to process passed states(Compose) and if no passed check internal storage
-            val states = fieldsStates?.mapToStorageFieldState() ?: fieldsStorage.getItems().mapToStorageFieldState()
+            val states = fieldsStates?.mapToStorageFieldState() ?: fieldsStorage.getItems()
+                .mapToStorageFieldState()
             val invalidFields = states.filter { !it.isValid }
             if (invalidFields.isEmpty()) {
                 states.associate { it.fieldName to it.data }
@@ -152,7 +190,10 @@ internal class InternalStorage(
         }
     }
 
-    private fun getFilesData(fileIgnore: Boolean, upstream: VGSAnalyticsUpstream): Map<String, String>? {
+    private fun getFilesData(
+        fileIgnore: Boolean,
+        upstream: VGSAnalyticsUpstream
+    ): Map<String, String>? {
         return if (!fileIgnore) {
             val filesStates = fileProvider.getAttachedFiles()
             val invalidFiles = filesStates.filter { it.size > getFileSizeLimit() }
