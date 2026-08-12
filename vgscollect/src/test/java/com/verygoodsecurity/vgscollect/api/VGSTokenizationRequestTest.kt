@@ -33,7 +33,6 @@ class VGSTokenizationRequestTest {
             format = VGSHttpBodyFormat.JSON,
             requestTimeoutInterval = 60000L,
             requiresTokenization = true,
-            tag = "tag"
         )
 
         val r = VGSTokenizationRequest.VGSRequestBuilder()

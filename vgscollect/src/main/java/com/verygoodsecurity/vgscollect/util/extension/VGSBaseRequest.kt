@@ -34,6 +34,5 @@ internal fun VGSBaseRequest.toNetworkRequest(
         format,
         requestTimeoutInterval,
         upstream == VGSAnalyticsUpstream.TOKENIZATION,
-        tag = ""
     )
 }

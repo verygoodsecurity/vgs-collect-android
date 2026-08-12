@@ -579,7 +579,6 @@ class VGSCollectTest {
             format = VGSHttpBodyFormat.JSON,
             requestTimeoutInterval = 60_000,
             requiresTokenization = true,
-            tag = ""
         )
 
         assertEquals(expected, ac.value)

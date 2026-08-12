@@ -83,7 +83,6 @@ class RequestTest {
             format = VGSHttpBodyFormat.JSON,
             requestTimeoutInterval = 60000L,
             requiresTokenization = false,
-            tag = "tag"
         )
 
         val r = VGSRequest.VGSRequestBuilder()
