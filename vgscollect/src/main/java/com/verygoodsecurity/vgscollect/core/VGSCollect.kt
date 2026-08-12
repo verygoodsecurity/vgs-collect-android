@@ -491,8 +491,16 @@ class VGSCollect {
         auth: String? = null,
         fieldsStates: List<BaseFieldState>? = null
     ) {
+        val id = cardId.trim()
+        if (id.isBlank()) {
+            notifyAllListeners(
+                VGSError.CARD_ID_IS_REQUIRED.toVGSResponse(),
+                VGSAnalyticsUpstream.CMP
+            )
+            return
+        }
         getAccessToken(auth) { token ->
-            val request = VGSUpdateCardRequest.VGSRequestBuilder(cardId)
+            val request = VGSUpdateCardRequest.VGSRequestBuilder(id)
                 .setAuthToken(token)
                 .build()
             cmpRequest(request, fieldsStates)
@@ -500,8 +508,14 @@ class VGSCollect {
     }
 
     private fun getAccessToken(providedToken: String?, onResult: (String) -> Unit) {
-        providedToken?.let { onResult(it) }
-            ?: authHandler?.requestToken { token -> onResult(token) }
+        if (!providedToken.isNullOrBlank()) {
+            onResult(providedToken)
+        } else {
+            authHandler?.requestToken { token -> onResult(token) } ?: notifyAllListeners(
+                VGSError.AUTH_HANDLER_OR_ACCESS_TOKEN_IS_REQUIRED.toVGSResponse(),
+                VGSAnalyticsUpstream.CMP
+            )
+        }
     }
 
     private fun cmpRequest(

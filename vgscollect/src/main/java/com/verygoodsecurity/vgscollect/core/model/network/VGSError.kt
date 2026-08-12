@@ -30,6 +30,10 @@ enum class VGSError(
         code = 1484,
         message = "Auth token is blank."
     ),
+    CARD_ID_IS_REQUIRED(
+        code = 1485,
+        message = "Card ID is required parameter."
+    ),
     CONFIGURATION_LOADING_FAILED(
         code = 1490,
         message = "Session initialization fails due to configuration load error."
@@ -37,6 +41,10 @@ enum class VGSError(
     AUTH_HANDLER_IS_REQUIRED(
         code = 1491,
         message = "Auth handler is required when formId is provided."
+    ),
+    AUTH_HANDLER_OR_ACCESS_TOKEN_IS_REQUIRED(
+        code = 1492,
+        message = "Auth handler or access token is required."
     ),
     INPUT_DATA_NOT_VALID(
         code = 1001,
