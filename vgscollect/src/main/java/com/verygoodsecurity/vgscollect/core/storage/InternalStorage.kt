@@ -112,12 +112,12 @@ internal class InternalStorage(
         return fieldsData?.let {
             mapOf<String, Any>(
                 CMP_DATA_KEY to mapOf<String, Any>(
-                    CMP_ATTRIBUTES_KEY to fieldsData
+                    CMP_ATTRIBUTES_KEY to fieldsData,
+                    CMP_META_KEY to staticData.toMutableMap().deepMerge(
+                        request.getMeta(formId),
+                        nameMappingPolicy.toArrayMergePolicy()
+                    )
                 ),
-                CMP_META_KEY to staticData.toMutableMap().deepMerge(
-                    request.getMeta(formId),
-                    nameMappingPolicy.toArrayMergePolicy()
-                )
             )
         }
     }
