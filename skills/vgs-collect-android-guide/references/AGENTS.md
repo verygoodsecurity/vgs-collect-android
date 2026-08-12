@@ -465,7 +465,7 @@ Both `createCard` and `updateCard` produce:
 }
 ```
 - `_formId` is the user-provided `formId` from `session()`. Omitted if `formId` was not provided.
-- Custom data via `setCustomData()` is merged into `meta` (not `attributes`).
+- Custom data via `setCustomData()` is merged into `attributes` alongside field data.
 
 ### Card Attributes Lookup
 Triggered automatically when the card number field reaches 11 digits (BIN). Requires `formId` in `session()` and config with `cardAttributes.enable = true`.

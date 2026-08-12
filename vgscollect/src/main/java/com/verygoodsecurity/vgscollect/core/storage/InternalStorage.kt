@@ -110,13 +110,12 @@ internal class InternalStorage(
         }
 
         return fieldsData?.let {
+            val arrayMergePolicy = nameMappingPolicy.toArrayMergePolicy()
+            val attributes = staticData.toMutableMap().deepMerge(fieldsData, arrayMergePolicy)
             mapOf<String, Any>(
                 CMP_DATA_KEY to mapOf<String, Any>(
-                    CMP_ATTRIBUTES_KEY to fieldsData,
-                    CMP_META_KEY to staticData.toMutableMap().deepMerge(
-                        request.getMeta(sessionFormId),
-                        nameMappingPolicy.toArrayMergePolicy()
-                    )
+                    CMP_ATTRIBUTES_KEY to attributes,
+                    CMP_META_KEY to request.getMeta(sessionFormId)
                 ),
             )
         }
