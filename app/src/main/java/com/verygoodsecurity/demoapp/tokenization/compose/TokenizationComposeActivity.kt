@@ -51,7 +51,7 @@ import androidx.compose.ui.unit.dp
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
 import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ROUTE_ID
-import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
+import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_TENANT_ID
 import com.verygoodsecurity.demoapp.utils.getStringExtra
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -95,12 +95,12 @@ private const val TAG = "TokenizationCompose"
  */
 class TokenizationComposeActivity : AppCompatActivity(), VgsCollectResponseListener {
 
-    private val vaultId: String by lazy { getStringExtra(KEY_BUNDLE_VAULT_ID) }
+    private val tenantId: String by lazy { getStringExtra(KEY_BUNDLE_TENANT_ID) }
     private val env: String by lazy { getStringExtra(KEY_BUNDLE_ENVIRONMENT) }
     private val routeId: String? by lazy { getStringExtra(KEY_BUNDLE_ROUTE_ID).takeIf { it.isNotBlank() } }
 
     private val collect: VGSCollect by lazy {
-        VGSCollect(this, vaultId, env).apply {
+        VGSCollect(this, tenantId, env).apply {
             addOnResponseListeners(this@TokenizationComposeActivity)
         }
     }

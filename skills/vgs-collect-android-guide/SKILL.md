@@ -14,6 +14,7 @@ Single public skill entrypoint for `VGSCollectSDK` work in Android applications.
 
 - First-time `vgscollect` integration
 - Feature work touching `VGSCollect`, secure fields (View or Compose), validation, scanning, file upload, analytics, or logging
+- CMP (Card Management Platform): `VGSCollect.session()`, `createCard()`, `updateCard()`, card attributes lookup, `VgsAuthHandler`
 - Compose field integration (`VgsTextField`, `VgsCardNumberTextField`, etc.) and state management
 - Version migrations or replacement of deprecated usage
 - Troubleshooting integration bugs or version-specific regressions
@@ -65,6 +66,7 @@ Ask only when missing info changes implementation:
 - UI framework (`View`, `Compose`, or both)
 - scanner requirement (`BlinkCard`, file upload, both, or none)
 - sensitive fields involved (`PAN`, `CVC`, `SSN`, files)
+- CMP requirement (`createCard`, `updateCard`, card attributes lookup, or none)
 - relevant error, log, or code snippet for troubleshooting
 
 ## Routing
@@ -85,6 +87,7 @@ Add or change functionality.
 - enforce `state.isValid` gates before submission (View: `getAllStates()`, Compose: check `BaseFieldState.isValid` directly)
 - include secure logging and post-upload `cleanFiles()` behavior
 - for Compose: sync CVC brand via `LaunchedEffect(cardNumberState.cardBrand)`, pass states to submit methods
+- for CMP: use `VGSCollect.session()` factory, provide `VgsAuthHandler` for JWT, wire `VgsCardAttributesLookupListener` if card enrichment needed
 
 ### `migrate`
 Move between versions.

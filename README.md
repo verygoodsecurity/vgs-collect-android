@@ -142,7 +142,7 @@ dependencies {
 
   <tr>
     <td>
-      <b> To initialize VGSCollect you have to set your <a href="https://www.verygoodsecurity.com/docs/terminology/nomenclature#vault">vault id</a> and <a href="https://www.verygoodsecurity.com/docs/getting-started/going-live#sandbox-vs-live">Environment</a> type.</b> </br>You can find more information at the following <a href="https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk/submit-data#start-session">section</a>.
+      <b> To initialize VGSCollect you have to set your <a href="https://www.verygoodsecurity.com/docs/terminology/nomenclature#vault">tenant id</a> and <a href="https://www.verygoodsecurity.com/docs/getting-started/going-live#sandbox-vs-live">Environment</a> type.</b> </br>You can find more information at the following <a href="https://www.verygoodsecurity.com/docs/vgs-collect/android-sdk/submit-data#start-session">section</a>.
     </td>
      <th rowspan="2"><img src="/img/vgs-field-setup-state.gif"></th>
   </tr>

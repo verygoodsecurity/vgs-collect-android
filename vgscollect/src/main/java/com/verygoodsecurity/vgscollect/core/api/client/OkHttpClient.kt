@@ -78,12 +78,14 @@ internal class OkHttpClient(private val networkInspector: NetworkInspector) : Ap
 
         tokenizationInterceptor.requiresTokenization = request.requiresTokenization
 
+        val requestStart = System.currentTimeMillis()
         val okHttpRequest = buildRequest(
             request.url,
             request.method,
             request.customHeader,
             request.customData,
-            request.format
+            request.format,
+            request.tag
         )
 
         try {
@@ -97,9 +99,19 @@ internal class OkHttpClient(private val networkInspector: NetworkInspector) : Ap
                     override fun onFailure(call: Call, e: IOException) {
                         logException(e)
                         if (e is InterruptedIOException) {
-                            callback?.invoke(NetworkResponse(error = VGSError.TIME_OUT))
+                            callback?.invoke(
+                                NetworkResponse(
+                                    error = VGSError.TIME_OUT,
+                                    latency = System.currentTimeMillis() - requestStart
+                                )
+                            )
                         } else {
-                            callback?.invoke(NetworkResponse(message = e.message))
+                            callback?.invoke(
+                                NetworkResponse(
+                                    message = e.message,
+                                    latency = System.currentTimeMillis() - requestStart
+                                )
+                            )
                         }
                     }
 
@@ -107,16 +119,22 @@ internal class OkHttpClient(private val networkInspector: NetworkInspector) : Ap
                         callback?.invoke(
                             NetworkResponse(
                                 response.isSuccessful,
-                                response.body?.string(),
+                                response.body.string(),
                                 response.code,
-                                response.message
+                                response.message,
+                                latency = System.currentTimeMillis() - requestStart
                             )
                         )
                     }
                 })
         } catch (e: Exception) {
             logException(e)
-            callback?.invoke(NetworkResponse(message = e.message))
+            callback?.invoke(
+                NetworkResponse(
+                    message = e.message,
+                    latency = System.currentTimeMillis() - requestStart
+                )
+            )
         }
     }
 
@@ -131,12 +149,14 @@ internal class OkHttpClient(private val networkInspector: NetworkInspector) : Ap
             return NetworkResponse(error = VGSError.URL_NOT_VALID)
         }
 
+        val requestStart = System.currentTimeMillis()
         val okHttpRequest = buildRequest(
             request.url,
             request.method,
             request.customHeader,
             request.customData,
-            request.format
+            request.format,
+            request.tag
         )
 
         return try {
@@ -150,19 +170,36 @@ internal class OkHttpClient(private val networkInspector: NetworkInspector) : Ap
 
             NetworkResponse(
                 response.isSuccessful,
-                response.body?.string(),
+                response.body.string(),
                 response.code,
-                response.message
+                response.message,
+                latency = System.currentTimeMillis() - requestStart
             )
         } catch (_: InterruptedIOException) {
-            NetworkResponse(error = VGSError.TIME_OUT)
+            NetworkResponse(
+                error = VGSError.TIME_OUT,
+                latency = System.currentTimeMillis() - requestStart
+            )
         } catch (e: Exception) {
-            NetworkResponse(message = e.message)
+            NetworkResponse(
+                message = e.message,
+                latency = System.currentTimeMillis() - requestStart
+            )
         }
     }
 
     override fun cancelAll() {
         client.dispatcher.cancelAll()
+    }
+
+    override fun cancelByTag(tag: String) {
+        client.dispatcher.queuedCalls()
+            .filter { it.request().tag() == tag }
+            .forEach { it.cancel() }
+
+        client.dispatcher.runningCalls()
+            .filter { it.request().tag() == tag }
+            .forEach { it.cancel() }
     }
 
     override fun getTemporaryStorage(): VgsApiTemporaryStorage = storage
@@ -181,7 +218,8 @@ internal class OkHttpClient(private val networkInspector: NetworkInspector) : Ap
         method: HTTPMethod,
         headers: Map<String, String>?,
         data: Any?,
-        contentType: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON
+        contentType: VGSHttpBodyFormat = VGSHttpBodyFormat.JSON,
+        tag: String?
     ): Request {
         val mediaType = contentType.toContentType().toMediaTypeOrNull()
         val requestBody = data?.toString().toRequestBodyOrNull(mediaType, method)
@@ -189,6 +227,7 @@ internal class OkHttpClient(private val networkInspector: NetworkInspector) : Ap
             .url(url)
             .method(method.name, requestBody)
             .addHeaders(headers)
+            .apply { if (tag != null) tag(tag) }
             .build()
     }
 
@@ -279,12 +318,9 @@ internal class OkHttpClient(private val networkInspector: NetworkInspector) : Ap
 
         @Suppress("UNCHECKED_CAST")
         fun unwrapResponseBody(request: Response): Collection<Map<String, Any>> {
-            return request.body?.string()?.toMutableMap()
-                ?.takeIf {
-                    it[DATA_KEY] is Collection<*>
-                }?.run {
-                    get(DATA_KEY) as Collection<Map<String, Any>>
-                } ?: mutableListOf()
+            return request.body.string().toMutableMap()
+                .takeIf { it[DATA_KEY] is Collection<*> }
+                ?.run { get(DATA_KEY) as Collection<Map<String, Any>> } ?: mutableListOf()
         }
 
         @Suppress("UNCHECKED_CAST")
@@ -323,7 +359,8 @@ internal class OkHttpClient(private val networkInspector: NetworkInspector) : Ap
             val originalResponseData = unwrapResponseBody(response)
 
             val responseBody = originalData.associate {
-                val requiredTokenization: Boolean = (it[TOKENIZATION_REQUIRED_KEY] as? Boolean) == true
+                val requiredTokenization: Boolean =
+                    (it[TOKENIZATION_REQUIRED_KEY] as? Boolean) == true
                 val format = it[FORMAT_KEY].toString()
                 val originalValue = it[VALUE_KEY].toString()
                 val fieldName = it[FIELD_NAME_KEY].toString()
@@ -338,7 +375,7 @@ internal class OkHttpClient(private val networkInspector: NetworkInspector) : Ap
             }
                 .toJSON()
                 .toString()
-                .toResponseBody(response.body?.contentType())
+                .toResponseBody(response.body.contentType())
 
             return with(response) {
                 Response.Builder()

@@ -18,8 +18,8 @@ internal fun setupCardManagerURL(env: String): String {
 
     val builder = StringBuilder(scheme)
 
-    if (env == Environment.SANDBOX.rawValue) {
-        builder.append(env)
+    if (env.contains(Environment.SANDBOX.rawValue, true)) {
+        builder.append(Environment.SANDBOX.rawValue)
         builder.append(divider)
     }
 
@@ -33,11 +33,11 @@ internal fun String.setupURL(rawValue: String): String {
     return when {
         this.isEmpty() || !isTennantIdValid() -> {
             VGSCollectLogger.warn(message = "Vault ID is not valid")
-            return ""
+            ""
         }
         rawValue.isEmpty() || !rawValue.isEnvironmentValid() -> {
             VGSCollectLogger.warn(message = "Environment is not valid")
-            return ""
+            ""
         }
         else -> this.buildURL(rawValue)
     }

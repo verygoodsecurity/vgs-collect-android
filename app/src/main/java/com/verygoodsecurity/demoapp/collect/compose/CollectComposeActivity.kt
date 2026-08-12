@@ -61,7 +61,7 @@ import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
 import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_PATH
-import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_VAULT_ID
+import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_TENANT_ID
 import com.verygoodsecurity.demoapp.utils.getStringExtra
 import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.VGSCollect
@@ -115,7 +115,7 @@ private const val SCANNER_REQUEST_CODE = 1001
  */
 class CollectComposeActivity : AppCompatActivity(), VgsCollectResponseListener {
 
-    private val vaultId: String by lazy { getStringExtra(KEY_BUNDLE_VAULT_ID) }
+    private val tenantId: String by lazy { getStringExtra(KEY_BUNDLE_TENANT_ID) }
     private val env: String by lazy { getStringExtra(KEY_BUNDLE_ENVIRONMENT) }
     private val path: String by lazy { getStringExtra(KEY_BUNDLE_PATH) }
 
@@ -125,7 +125,7 @@ class CollectComposeActivity : AppCompatActivity(), VgsCollectResponseListener {
      * Must be initialized with Activity context.
      */
     private val collect: VGSCollect by lazy {
-        VGSCollect(this, vaultId, env).apply {
+        VGSCollect(this, tenantId, env).apply {
             addOnResponseListeners(this@CollectComposeActivity)
         }
     }

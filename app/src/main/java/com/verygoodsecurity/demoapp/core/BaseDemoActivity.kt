@@ -43,7 +43,7 @@ import android.R.id.content as contentId
 
 abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(layoutId) {
 
-    protected val id: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_VAULT_ID) }
+    protected val id: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_TENANT_ID) }
     protected val path: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_PATH) }
     protected val environment: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_ENVIRONMENT) }
     protected val routeId: String? by lazy { getStringExtra(StartActivity.KEY_BUNDLE_ROUTE_ID) }
@@ -59,11 +59,11 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
     private var statesCodeExample: String? = null
     private var responseCodeExample: String? = null
 
-    abstract val form: VGSCollect
+    abstract val form: VGSCollect?
 
     protected val scanResultLauncher =
         registerForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) {
-            form.onActivityResult(0, it.resultCode, it.data)
+            form?.onActivityResult(0, it.resultCode, it.data)
         }
 
     protected abstract fun createScanIntent(): Intent?
@@ -74,9 +74,9 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
         applyEdgeToEdge()
         attachTouchBlockerView()
         attachResponseCodeView()
-        setupCollect()
         setupCodeView()
         setLoading(false, skipCounter = true)
+        form?.let { setupCollect(it) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -94,10 +94,31 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
     }
 
     protected fun setLoading(isLoading: Boolean, skipCounter: Boolean = false) {
-        if (isLoading) GlobalIdlingResource.increment(skipCounter) else GlobalIdlingResource.decrement(skipCounter)
+        if (isLoading) GlobalIdlingResource.increment(skipCounter) else GlobalIdlingResource.decrement(
+            skipCounter
+        )
         if (isLoading) progressBar?.show() else progressBar?.hide()
         touchBlockerView.isVisible = isLoading
     }
+
+    protected fun setupCollect(form: VGSCollect) {
+        VGSCollectLogger.isEnabled = true
+        VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
+        form.addOnResponseListeners(object : VgsCollectResponseListener {
+
+            override fun onResponse(response: VGSResponse?) {
+                updateCodeView(response)
+                updateResponseCodeView(response)
+            }
+        })
+        form.addOnFieldStateChangeListener(object : OnFieldStateChangeListener {
+
+            override fun onStateChange(state: FieldState) {
+                updateCodeView(form.getAllStates())
+            }
+        })
+    }
+
 
     private fun applyEdgeToEdge() {
         ViewCompat.setOnApplyWindowInsetsListener(content) { v, windowInsets ->
@@ -115,10 +136,8 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
             visibility = View.GONE
         }
         content.addView(
-            touchBlockerView,
-            ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
+            touchBlockerView, ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
             )
         )
     }
@@ -129,30 +148,10 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
             visibility = View.GONE
         }
         content.addView(
-            responseCodeTextView,
-            ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+            responseCodeTextView, ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
         )
-    }
-
-    private fun setupCollect() {
-        VGSCollectLogger.isEnabled = true
-        VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
-        form.addOnResponseListeners(object : VgsCollectResponseListener {
-
-            override fun onResponse(response: VGSResponse?) {
-                updateCodeView(response)
-                updateResponseCodeView(response)
-            }
-        })
-        form.addOnFieldStateChangeListener(object : OnFieldStateChangeListener {
-
-            override fun onStateChange(state: FieldState) {
-                updateCodeView(form.getAllStates())
-            }
-        })
     }
 
     private fun setupCodeView() {
@@ -200,10 +199,8 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
     }
 
     private fun updateCodeView(states: List<FieldState>) {
-        statesCodeExample = JSONObject()
-            .put(
-                "states",
-                JSONArray().apply {
+        statesCodeExample = JSONObject().put(
+                "states", JSONArray().apply {
                     states.forEach {
                         put(JSONObject().apply {
                             put("fieldName", it.fieldName)
@@ -212,9 +209,7 @@ abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(la
                             put("isValid", it.isValid)
                         })
                     }
-                }
-            )
-            .toString(4)
+                }).toString(4)
         updateCodeView()
     }
 

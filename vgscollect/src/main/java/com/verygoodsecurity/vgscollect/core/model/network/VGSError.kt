@@ -26,6 +26,26 @@ enum class VGSError(
         code = 1483,
         message = "TimeoutException"
     ),
+    AUTH_TOKEN_IS_BLANK(
+        code = 1484,
+        message = "Auth token is blank."
+    ),
+    CARD_ID_IS_REQUIRED(
+        code = 1485,
+        message = "Card ID is required parameter."
+    ),
+    CONFIGURATION_LOADING_FAILED(
+        code = 1490,
+        message = "Session initialization fails due to configuration load error."
+    ),
+    AUTH_HANDLER_IS_REQUIRED(
+        code = 1491,
+        message = "Auth handler is required when formId is provided."
+    ),
+    AUTH_HANDLER_OR_ACCESS_TOKEN_IS_REQUIRED(
+        code = 1492,
+        message = "Auth handler or access token is required."
+    ),
     INPUT_DATA_NOT_VALID(
         code = 1001,
         message = "Field %s is not a valid"
@@ -45,7 +65,7 @@ enum class VGSError(
     NOT_ACTIVITY_CONTEXT(
         code = 1105,
         message = "Context is not Activity context"
-    )
+    ),
 }
 
 fun VGSError.toVGSResponse(vararg params: String?): VGSResponse.ErrorResponse {
