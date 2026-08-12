@@ -43,7 +43,7 @@ import android.R.id.content as contentId
 
 abstract class BaseDemoActivity(@LayoutRes layoutId: Int) : AppCompatActivity(layoutId) {
 
-    protected val id: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_VAULT_ID) }
+    protected val id: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_TENANT_ID) }
     protected val path: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_PATH) }
     protected val environment: String by lazy { getStringExtra(StartActivity.KEY_BUNDLE_ENVIRONMENT) }
     protected val routeId: String? by lazy { getStringExtra(StartActivity.KEY_BUNDLE_ROUTE_ID) }

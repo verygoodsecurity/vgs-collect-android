@@ -79,7 +79,7 @@ private const val DEPENDENCY_MANAGER = "maven"
 class VGSCollect {
 
     private val context: Context
-    internal val vaultId: String
+    internal val tenantId: String
     internal val environment: String
     internal val collectURL: String
     internal val cardManagementURL: String
@@ -124,9 +124,9 @@ class VGSCollect {
         authHandler: VgsAuthHandler? = null
     ) {
         this.context = context
-        this.vaultId = id
+        this.tenantId = id
         this.environment = suffix?.let { env concatWithDash it } ?: env
-        this.collectURL = vaultId.setupURL(environment)
+        this.collectURL = tenantId.setupURL(environment)
         this.cardManagementURL = setupCardManagerURL(environment)
         this.analyticsManager =
             VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
@@ -134,7 +134,7 @@ class VGSCollect {
 
             override fun capture(event: VGSAnalyticsEvent) {
                 analyticsManager.capture(
-                    vault = vaultId,
+                    vault = tenantId,
                     environment = environment,
                     formId = formId,
                     event = event
@@ -145,7 +145,7 @@ class VGSCollect {
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.build(NetworkInspector(this.context))
         this.authHandler = authHandler
-        configureHostname(getHost(cname), vaultId)
+        configureHostname(getHost(cname), tenantId)
         updateAgentHeader()
         if (collectInitAnalytics) {
             analyticsHandler.capture(VGSAnalyticsEvent.Init.create())
@@ -156,7 +156,7 @@ class VGSCollect {
         /** Activity context */
         context: Context,
 
-        /** Unique Vault id */
+        /** Unique Tenant id */
         id: String,
 
         /** Type of Vault */
@@ -167,7 +167,7 @@ class VGSCollect {
         /** Activity context */
         context: Context,
 
-        /** Unique Vault id */
+        /** Unique Tenant id */
         id: String,
 
         /** Type of Vault */
@@ -178,7 +178,7 @@ class VGSCollect {
         /** Activity context */
         context: Context,
 
-        /** Unique Vault id */
+        /** Unique Tenant id */
         id: String,
 
         /** Type of Environment */
@@ -830,13 +830,13 @@ class VGSCollect {
         }
     }
 
-    private fun configureHostname(host: String?, vaultId: String) {
-        if (host.isNullOrBlank() || vaultId.isBlank() || collectURL.isEmpty()) {
+    private fun configureHostname(host: String?, tenantId: String) {
+        if (host.isNullOrBlank() || tenantId.isBlank() || collectURL.isEmpty()) {
             return
         }
         val r = VGSRequest.VGSRequestBuilder().setMethod(HTTPMethod.GET)
             .setFormat(VGSHttpBodyFormat.PLAIN_TEXT).build()
-            .toNetworkRequest(host.toHostnameValidationUrl(vaultId))
+            .toNetworkRequest(host.toHostnameValidationUrl(tenantId))
 
         client.enqueue(r) {
             hasCustomHostname = it.isSuccessful && host equalsUrl it.body
@@ -962,7 +962,7 @@ class VGSCollect {
             collect.client.enqueue(
                 request = NetworkRequest(
                     method = HTTPMethod.GET,
-                    url = "$SESSION_CONFIGS_BASE_URL/session-configuration/${collect.vaultId}/$configFileName",
+                    url = "$SESSION_CONFIGS_BASE_URL/session-configuration/${collect.tenantId}/$configFileName",
                     customHeader = emptyMap(),
                     customData = Unit,
                     format = VGSHttpBodyFormat.JSON,
@@ -979,7 +979,7 @@ class VGSCollect {
      *
      * @constructor Main constrictor for creating VGSCollect instance builder.
      * @param context Activity context.
-     * @param id Specific Vault ID.
+     * @param id Specific Tenant ID.
      */
     class Builder(private val context: Context, private val id: String) {
 

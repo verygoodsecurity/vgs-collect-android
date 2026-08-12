@@ -36,7 +36,7 @@ class TokenizationActivityTest {
     @get:Rule
     val rule = activityScenarioRule<TokenizationActivity>(
         Intent(ApplicationProvider.getApplicationContext(), TokenizationActivity::class.java).apply {
-            putExtra(StartActivity.KEY_BUNDLE_VAULT_ID, BuildConfig.VAULT_ID)
+            putExtra(StartActivity.KEY_BUNDLE_TENANT_ID, BuildConfig.TENANT_ID)
             putExtra(StartActivity.KEY_BUNDLE_PATH, BuildConfig.PATH)
             putExtra(StartActivity.KEY_BUNDLE_ENVIRONMENT, TEST_ENVIRONMENT)
             putExtra(StartActivity.KEY_BUNDLE_ROUTE_ID, BuildConfig.TOKENIZATION_ROUTE_ID)

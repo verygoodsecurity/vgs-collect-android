@@ -35,7 +35,7 @@ The canonical durable source of that policy is `skills/vgs-collect-android-guide
 ## 1A. Environment Preconditions
 - Java toolchain is pinned to 17 for Android modules (`app/`, `vgscollect/`, `vgscollect-blinkcard/`, `vgscollect-cardio/`).
 - Android SDK levels are currently `compileSdkVersion 36`, `targetSdkVersion 36`, `minSdkVersion 21` in Android modules.
-- Demo app runtime config is injected from `local.properties` via `app/build.gradle` (`VGS_VAULT_ID`, `VGS_PATH`, and tokenization/auth keys).
+- Demo app runtime config is injected from `local.properties` via `app/build.gradle` (`VGS_TENANT_ID`, `VGS_PATH`, and tokenization/auth keys).
 - Build type environment constant in demo app is currently named `ENVIRINMENT` (keep spelling when editing to avoid breaking references).
 
 ## 2. Public Building Blocks (Summary Table)

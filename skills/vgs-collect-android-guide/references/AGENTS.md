@@ -40,7 +40,7 @@ Documentation Source of Truth Across Versions
 Purpose: ensure correct vault/environment pairing before any field setup or submission.
 
 Required:
-- Non-empty `vaultId` string (assert with `precondition(!vaultId.isEmpty)` in debug builds).
+- Non-empty `tenantId` string (assert with `precondition(!tenantId.isEmpty)` in debug builds).
 - Explicit environment selection: `Environment.SANDBOX` for development/testing; `Environment.LIVE` for production only.
 - Keep sandbox and live vault IDs distinct; never point `.LIVE` at a sandbox vault ID.
 - Optional hostname override (if provided): verify matches VGS dashboard configuration before deploy.
@@ -53,7 +53,7 @@ val collector = VGSCollect(context, sandboxVaultId, Environment.SANDBOX)
 val liveCollector = VGSCollect(context, liveVaultId, Environment.LIVE)
 ```
 Failure Modes:
-- Empty vaultId -> initialization should fail fast (use preconditions).
+- Empty tenantId -> initialization should fail fast (use preconditions).
 - Using `.LIVE` in debug with test cards unintentionally -> enforce build configuration checks.
 - Mixing aliases from different environments -> keep storage / processing segregated.
 
@@ -346,7 +346,7 @@ Canonical card form snippet (XML Layout):
 
 Binding in Activity/Fragment:
 ```kotlin
-val vgsCollect = VGSCollect(this, "YOUR_VAULT_ID", Environment.SANDBOX)
+val vgsCollect = VGSCollect(this, "YOUR_TENANT_ID", Environment.SANDBOX)
 vgsCollect.bindView(findViewById(R.id.cardNumberField))
 vgsCollect.bindView(findViewById(R.id.cardHolderField))
 vgsCollect.bindView(findViewById(R.id.expiryField))

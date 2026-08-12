@@ -54,7 +54,7 @@ class StartActivityTest {
 
     @Test
     fun startScreen_displaysInputsAndFlowList() {
-        onView(withId(R.id.tiedVaultId))
+        onView(withId(R.id.`@+id/tied_tenant_id`))
             .perform(scrollTo())
             .check(matches(isDisplayed()))
 
@@ -76,7 +76,7 @@ class StartActivityTest {
 
     @Test
     fun defaultValues_arePopulatedAndSandboxSelected() {
-        onView(withId(R.id.tiedVaultId))
+        onView(withId(R.id.`@+id/tied_tenant_id`))
             .perform(scrollTo())
             .check(matches(withText(not(isEmptyString()))))
 
@@ -115,7 +115,7 @@ class StartActivityTest {
             )
 
         intended(hasComponent(CollectViewsActivity::class.java.name))
-        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_VAULT_ID))
+        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_TENANT_ID))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_PATH))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_ENVIRONMENT))
     }
@@ -131,7 +131,7 @@ class StartActivityTest {
             )
 
         intended(hasComponent(CollectComposeActivity::class.java.name))
-        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_VAULT_ID))
+        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_TENANT_ID))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_PATH))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_ENVIRONMENT))
     }
@@ -147,7 +147,7 @@ class StartActivityTest {
             )
 
         intended(hasComponent(TokenizationActivityV1::class.java.name))
-        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_VAULT_ID))
+        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_TENANT_ID))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_PATH))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_ENVIRONMENT))
     }
@@ -163,7 +163,7 @@ class StartActivityTest {
             )
 
         intended(hasComponent(TokenizationActivityV2::class.java.name))
-        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_VAULT_ID))
+        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_TENANT_ID))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_PATH))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_ENVIRONMENT))
     }
@@ -179,7 +179,7 @@ class StartActivityTest {
             )
 
         intended(hasComponent(CMPActivity::class.java.name))
-        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_VAULT_ID))
+        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_TENANT_ID))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_PATH))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_ENVIRONMENT))
     }
@@ -195,7 +195,7 @@ class StartActivityTest {
             )
 
         intended(hasComponent(GooglePayActivity::class.java.name))
-        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_VAULT_ID))
+        intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_TENANT_ID))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_PATH))
         intended(hasExtraWithKey(StartActivity.KEY_BUNDLE_ENVIRONMENT))
     }
