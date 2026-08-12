@@ -8,6 +8,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.cmp.CMP_ATTRIBUTES_KEY
 import com.verygoodsecurity.vgscollect.core.model.network.cmp.CMP_DATA_KEY
 import com.verygoodsecurity.vgscollect.core.model.network.cmp.CMP_META_KEY
 import com.verygoodsecurity.vgscollect.core.model.network.cmp.VGSCardManagementPlatformRequest
+import com.verygoodsecurity.vgscollect.core.model.network.cmp.VGSUpdateCardRequest
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.content.field.FieldStateContractor
 import com.verygoodsecurity.vgscollect.core.storage.content.field.TemporaryFieldsStorage
@@ -112,12 +113,14 @@ internal class InternalStorage(
         return fieldsData?.let {
             val arrayMergePolicy = nameMappingPolicy.toArrayMergePolicy()
             val attributes = staticData.toMutableMap().deepMerge(fieldsData, arrayMergePolicy)
-            mapOf<String, Any>(
-                CMP_DATA_KEY to mapOf<String, Any>(
-                    CMP_ATTRIBUTES_KEY to attributes,
-                    CMP_META_KEY to request.getMeta(sessionFormId)
-                ),
-            )
+            buildMap {
+                put(CMP_DATA_KEY, buildMap<String, Any> {
+                    put(CMP_ATTRIBUTES_KEY, attributes)
+                    if (request !is VGSUpdateCardRequest) {
+                        put(CMP_META_KEY, request.getMeta(sessionFormId))
+                    }
+                })
+            }
         }
     }
 
