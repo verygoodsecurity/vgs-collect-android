@@ -54,7 +54,7 @@ class StartActivityTest {
 
     @Test
     fun startScreen_displaysInputsAndFlowList() {
-        onView(withId(R.id.`@+id/tied_tenant_id`))
+        onView(withId(R.id.tiedTenantId))
             .perform(scrollTo())
             .check(matches(isDisplayed()))
 
@@ -76,7 +76,7 @@ class StartActivityTest {
 
     @Test
     fun defaultValues_arePopulatedAndSandboxSelected() {
-        onView(withId(R.id.`@+id/tied_tenant_id`))
+        onView(withId(R.id.tiedTenantId))
             .perform(scrollTo())
             .check(matches(withText(not(isEmptyString()))))
 
