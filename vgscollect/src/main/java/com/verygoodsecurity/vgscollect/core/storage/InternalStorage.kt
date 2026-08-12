@@ -96,7 +96,7 @@ internal class InternalStorage(
 
     fun getDataForCmp(
         request: VGSCardManagementPlatformRequest,
-        formId: String,
+        sessionFormId: String?,
         staticData: Map<String, Any>,
         fieldsStates: List<BaseFieldState>? = null
     ): Map<String, Any>? {
@@ -114,7 +114,7 @@ internal class InternalStorage(
                 CMP_DATA_KEY to mapOf<String, Any>(
                     CMP_ATTRIBUTES_KEY to fieldsData,
                     CMP_META_KEY to staticData.toMutableMap().deepMerge(
-                        request.getMeta(formId),
+                        request.getMeta(sessionFormId),
                         nameMappingPolicy.toArrayMergePolicy()
                     )
                 ),

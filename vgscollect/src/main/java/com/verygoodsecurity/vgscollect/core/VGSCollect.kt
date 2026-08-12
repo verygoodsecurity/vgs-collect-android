@@ -86,6 +86,7 @@ class VGSCollect {
     private var cardAttributesManager: CardAttributesManager? = null
     private val authHandler: VgsAuthHandler?
     private val formId: String = UUID.randomUUID().toString()
+    private var sessionFormId: String? = null
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
     private val analyticsManager: VGSSharedAnalyticsManager
@@ -513,7 +514,7 @@ class VGSCollect {
         }
         storage.getDataForCmp(
             request = request,
-            formId = formId,
+            sessionFormId = sessionFormId,
             staticData = client.getTemporaryStorage().getCustomData(),
             fieldsStates = fieldsStates
         )?.let { data ->
@@ -927,6 +928,7 @@ class VGSCollect {
                                     storage,
                                     analyticsHandler
                                 )
+                                this.sessionFormId = formId
                             })
                         } ?: onError(
                             VGSError.CONFIGURATION_LOADING_FAILED.code,

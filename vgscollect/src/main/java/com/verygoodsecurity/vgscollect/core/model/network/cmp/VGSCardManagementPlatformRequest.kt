@@ -17,12 +17,14 @@ internal abstract class VGSCardManagementPlatformRequest : VGSBaseRequest() {
 
     override val upstream: VGSAnalyticsUpstream = VGSAnalyticsUpstream.CMP
 
-    internal fun getMeta(formId: String): Map<String, String> {
-        return mutableMapOf(
-            CMP_SOURCE to "vgs-collect",
-            CMP_MEDIUM to "androidSDK",
-            CMP_FORM_ID to formId,
-            CMP_VERSION to BuildConfig.VERSION_NAME
-        )
+    internal fun getMeta(sessionFormId: String?): Map<String, String> {
+        return buildMap {
+            put(CMP_SOURCE, "vgs-collect")
+            put(CMP_MEDIUM, "androidSDK")
+            put(CMP_VERSION, BuildConfig.VERSION_NAME)
+            if (!sessionFormId.isNullOrBlank()) {
+                put(CMP_FORM_ID, sessionFormId)
+            }
+        }
     }
 }
