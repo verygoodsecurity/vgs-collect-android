@@ -22,6 +22,7 @@ The canonical durable source of that policy is `skills/vgs-collect-android-guide
 - **Primary flow**: app UI input (`app/src/main/`) -> secure field/widget logic (`vgscollect/src/main/`) -> state/validation (`FieldState`, rules) -> submit/tokenize -> app receives aliases/tokens only (per `skills/vgs-collect-android-guide/references/AGENTS.md`).
 - **Change surface map**:
   - Widget/input behavior, validation, submission internals: `vgscollect/src/main/`.
+  - CMP (Card Management Platform): session init, createCard/updateCard, card attributes lookup, auth handler: `vgscollect/src/main/.../core/` (`VGSCollect.kt`, `CardAttributesManager.kt`, `VgsAuthHandler.kt`, `model/network/cmp/`).
   - Blink scanning bridge and scan mapping: `vgscollect-blinkcard/src/main/`.
   - Legacy scanner compatibility only: `vgscollect-cardio/src/main/`.
   - Manual verification/demo flows: `app/src/main/`.
@@ -51,6 +52,10 @@ The canonical durable source of that policy is `skills/vgs-collect-android-guide
 ### Core Project Architecture and Classes
 - **SDK orchestration/API (`vgscollect/src/main/java/com/verygoodsecurity/vgscollect/core/`)**:
   - `VGSCollect` (main entry point), `Environment`, `HTTPMethod`, `VgsCollectResponseListener`.
+  - CMP: `VGSCollect.session()` factory, `createCard()`, `updateCard()`, `VgsAuthHandler`, `CardAttributesManager`, `VgsCardAttributesLookupListener`.
+  - CMP request models: `VGSCreateCardRequest`, `VGSUpdateCardRequest`, `VGSCardManagementPlatformRequest` in `core/model/network/cmp/`.
+  - CMP API client: `core/api/UrlExtension.kt` (`setupCardManagerURL()` → `{sandbox.}vgsapi.com`).
+  - Card attributes config: `core/model/CardAttributesConfig.kt`.
   - Network result models: `VGSResponse`, `VGSError` in `core/model/network/`.
 - **Secure field widgets (`vgscollect/src/main/java/com/verygoodsecurity/vgscollect/widget/`)**:
   - `VGSEditText`, `VGSCardNumberEditText`, `ExpirationDateEditText`, `CardVerificationCodeEditText`, `PersonNameEditText`, `SSNEditText`, `RangeDateEditText`, `VGSTextInputLayout`.
