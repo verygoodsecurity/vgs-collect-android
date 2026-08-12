@@ -18,7 +18,7 @@ internal fun setupCardManagerURL(env: String): String {
 
     val builder = StringBuilder(scheme)
 
-    if (env == Environment.SANDBOX.rawValue) {
+    if (env.contains(Environment.SANDBOX.rawValue)) {
         builder.append(env)
         builder.append(divider)
     }
