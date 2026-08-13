@@ -28,7 +28,7 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
         private const val SANDBOX = "sandbox"
         private const val LIVE = "live"
 
-        const val KEY_BUNDLE_VAULT_ID = "user_vault_id"
+        const val KEY_BUNDLE_TENANT_ID = "user_tenant_id"
         const val KEY_BUNDLE_ENVIRONMENT = "user_env"
         const val KEY_BUNDLE_PATH = "user_path"
         const val KEY_BUNDLE_ROUTE_ID = "route_id"
@@ -86,7 +86,7 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
     }
 
     private fun initViews() {
-        binding.tiedVaultId.setText(BuildConfig.VAULT_ID)
+        binding.tiedTenantId.setText(BuildConfig.TENANT_ID)
         binding.tiedPath.setText(BuildConfig.PATH)
 
         binding.rvFlows.layoutManager = GridLayoutManager(this, FLOWS_SPAN_COUNT)
@@ -127,7 +127,7 @@ class StartActivity : AppCompatActivity(R.layout.activity_start) {
 
     private fun startActivity(activity: Class<out Activity>, routeId: String? = null) {
         startActivity(Intent(this, activity).apply {
-            putExtra(KEY_BUNDLE_VAULT_ID, binding.tiedVaultId.text.toString())
+            putExtra(KEY_BUNDLE_TENANT_ID, binding.tiedTenantId.text.toString())
             putExtra(KEY_BUNDLE_PATH, binding.tiedPath.text.toString())
             putExtra(KEY_BUNDLE_ENVIRONMENT, getEnvironment())
             putExtra(KEY_BUNDLE_ROUTE_ID, routeId)

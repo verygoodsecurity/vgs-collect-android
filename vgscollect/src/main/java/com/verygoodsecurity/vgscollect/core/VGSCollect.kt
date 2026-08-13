@@ -26,16 +26,19 @@ import com.verygoodsecurity.vgscollect.core.api.setupCardManagerURL
 import com.verygoodsecurity.vgscollect.core.api.setupURL
 import com.verygoodsecurity.vgscollect.core.api.toHost
 import com.verygoodsecurity.vgscollect.core.api.toHostnameValidationUrl
+import com.verygoodsecurity.vgscollect.core.model.CardAttributesConfig
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy.NESTED_JSON
 import com.verygoodsecurity.vgscollect.core.model.VGSHashMapWrapper
+import com.verygoodsecurity.vgscollect.core.model.network.NetworkRequest
+import com.verygoodsecurity.vgscollect.core.model.network.NetworkResponse
 import com.verygoodsecurity.vgscollect.core.model.network.VGSBaseRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
-import com.verygoodsecurity.vgscollect.core.model.network.cmp.CREATE_CARD_ATTRIBUTES_KEY
-import com.verygoodsecurity.vgscollect.core.model.network.cmp.CREATE_CARD_DATA_KEY
+import com.verygoodsecurity.vgscollect.core.model.network.cmp.VGSCardManagementPlatformRequest
 import com.verygoodsecurity.vgscollect.core.model.network.cmp.VGSCreateCardRequest
+import com.verygoodsecurity.vgscollect.core.model.network.cmp.VGSUpdateCardRequest
 import com.verygoodsecurity.vgscollect.core.model.network.toVGSResponse
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSCreateAliasesRequest
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSTokenizationRequest
@@ -49,9 +52,11 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
 import com.verygoodsecurity.vgscollect.core.storage.external.DependencyReceiver
 import com.verygoodsecurity.vgscollect.core.storage.external.ExternalDependencyDispatcher
 import com.verygoodsecurity.vgscollect.util.NetworkInspector
+import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscollect.util.extension.toAnalyticsMappingPolicy
 import com.verygoodsecurity.vgscollect.util.extension.toAnalyticsStatus
+import com.verygoodsecurity.vgscollect.util.extension.toHex
 import com.verygoodsecurity.vgscollect.util.extension.toNetworkRequest
 import com.verygoodsecurity.vgscollect.view.InputFieldView
 import com.verygoodsecurity.vgscollect.view.card.getAnalyticName
@@ -74,11 +79,14 @@ private const val DEPENDENCY_MANAGER = "maven"
 class VGSCollect {
 
     private val context: Context
-    internal val vaultId: String
+    internal val tenantId: String
     internal val environment: String
     internal val collectURL: String
     internal val cardManagementURL: String
+    private var cardAttributesManager: CardAttributesManager? = null
+    private val authHandler: VgsAuthHandler?
     private val formId: String = UUID.randomUUID().toString()
+    private var sessionFormId: String? = null
     private val externalDependencyDispatcher: ExternalDependencyDispatcher
 
     private val analyticsManager: VGSSharedAnalyticsManager
@@ -90,7 +98,11 @@ class VGSCollect {
     private var storage: InternalStorage
     private val storageErrorListener: StorageListener = object : StorageListener {
 
-        override fun onStorageError(error: VGSError, upstream: VGSAnalyticsUpstream, vararg params: String?) {
+        override fun onStorageError(
+            error: VGSError,
+            upstream: VGSAnalyticsUpstream,
+            vararg params: String?
+        ) {
             error.toVGSResponse(*params).also { response ->
                 VGSCollectLogger.warn(InputFieldView.TAG, response.localizeMessage)
                 requestEvent(isSuccess = false, upstream = upstream, code = response.errorCode)
@@ -108,12 +120,14 @@ class VGSCollect {
         id: String,
         env: String,
         suffix: String?,
-        cname: String?
+        cname: String?,
+        collectInitAnalytics: Boolean = true,
+        authHandler: VgsAuthHandler? = null
     ) {
         this.context = context
-        this.vaultId = id
+        this.tenantId = id
         this.environment = suffix?.let { env concatWithDash it } ?: env
-        this.collectURL = vaultId.setupURL(environment)
+        this.collectURL = tenantId.setupURL(environment)
         this.cardManagementURL = setupCardManagerURL(environment)
         this.analyticsManager =
             VGSSharedAnalyticsManager(SOURCE_TAG, BuildConfig.VERSION_NAME, DEPENDENCY_MANAGER)
@@ -121,7 +135,7 @@ class VGSCollect {
 
             override fun capture(event: VGSAnalyticsEvent) {
                 analyticsManager.capture(
-                    vault = vaultId,
+                    vault = tenantId,
                     environment = environment,
                     formId = formId,
                     event = event
@@ -131,15 +145,19 @@ class VGSCollect {
         this.storage = InternalStorage(this.context, storageErrorListener)
         this.externalDependencyDispatcher = DependencyReceiver()
         this.client = ApiClient.build(NetworkInspector(this.context))
-        configureHostname(getHost(cname), vaultId)
+        this.authHandler = authHandler
+        configureHostname(getHost(cname), tenantId)
         updateAgentHeader()
+        if (collectInitAnalytics) {
+            analyticsHandler.capture(VGSAnalyticsEvent.Init.create())
+        }
     }
 
     constructor(
         /** Activity context */
         context: Context,
 
-        /** Unique Vault id */
+        /** Unique Tenant id */
         id: String,
 
         /** Type of Vault */
@@ -150,7 +168,7 @@ class VGSCollect {
         /** Activity context */
         context: Context,
 
-        /** Unique Vault id */
+        /** Unique Tenant id */
         id: String,
 
         /** Type of Vault */
@@ -161,7 +179,7 @@ class VGSCollect {
         /** Activity context */
         context: Context,
 
-        /** Unique Vault id */
+        /** Unique Tenant id */
         id: String,
 
         /** Type of Environment */
@@ -250,6 +268,25 @@ class VGSCollect {
     }
 
     /**
+     * This method removes a listener whose methods are called whenever VGS secure fields state changes.
+     *
+     * @param fieldStateListener listener which will be removed.
+     */
+    fun removeOnFieldStateChangeListener(fieldStateListener: OnFieldStateChangeListener?) {
+        storage.detachStateChangeListener(fieldStateListener)
+    }
+
+    /**
+     * Sets a listener to receive card attributes lookup events.
+     *
+     * @param listener the listener to be notified of lookup start, success,
+     * and failure events, or `null` to clear the current listener.
+     */
+    fun setCardAttributesLookupListener(listener: VgsCardAttributesLookupListener?) {
+        cardAttributesManager?.setCardAttributesLookupListener(listener)
+    }
+
+    /**
      * Clear all information collected before by VGSCollect.
      * Preferably call it inside onDestroy system's callback.
      */
@@ -258,6 +295,7 @@ class VGSCollect {
         analyticsManager.cancelAll()
         responseListeners.clear()
         storage.clear()
+        cardAttributesManager?.dispose()
     }
 
     /**
@@ -270,62 +308,64 @@ class VGSCollect {
     }
 
     /**
-     * This method executes and send data on VGS Server. It could be useful if you want to handle
+     * This function executes and send data on VGS Server. It could be useful if you want to handle
      * multithreading by yourself.
      * Do not use this method on the UI thread as this may crash.
      *
      * @param path path for a request
      * @param method HTTP method
+     * @param fieldsStates Optional list of Compose field states to tokenize.
      */
     fun submit(
         path: String,
         method: HTTPMethod = HTTPMethod.POST,
         fieldsStates: List<BaseFieldState>? = null
-    ): VGSResponse {
-        val request = VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build()
-        return submit(request, fieldsStates)
-    }
+    ): VGSResponse = submit(
+        request = VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build(),
+        fieldsStates = fieldsStates
+    )
 
     /**
-     * This method executes and send data on VGS Server. It could be useful if you want to handle
+     * This function executes and send data on VGS Server. It could be useful if you want to handle
      * multithreading by yourself.
      * Do not use this method on the UI thread as this may crash.
      *
      * @param request data class with attributes for submit.
+     * @param fieldsStates Optional list of Compose field states to tokenize.
      */
     fun submit(
         request: VGSRequest,
         fieldsStates: List<BaseFieldState>? = null
     ): VGSResponse {
         val data = storage.getDataForCollecting(
-            request,
-            client.getTemporaryStorage().getCustomData(),
-            fieldsStates
+            request = request,
+            staticData = client.getTemporaryStorage().getCustomData(),
+            fieldsStates = fieldsStates
         )
         return request(request, data)
     }
 
     /**
-     * This suspend method executes and send data on VGS Server on IO dispatcher.
+     * This suspends function executes and send data on VGS Server on IO dispatcher.
      *
      * @param path path for a request
      * @param method HTTP method
+     * @param fieldsStates Optional list of Compose field states to tokenize.
      */
     suspend fun submitAsync(
         path: String,
         method: HTTPMethod = HTTPMethod.POST,
         fieldsStates: List<BaseFieldState>? = null
-    ): VGSResponse {
-        return submitAsync(
-            VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build(),
-            fieldsStates
-        )
-    }
+    ): VGSResponse = submitAsync(
+        request = VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build(),
+        fieldsStates = fieldsStates
+    )
 
     /**
-     * This suspend method executes and send data on VGS Server on IO dispatcher.
+     * This suspends function executes and send data on VGS Server on IO dispatcher.
      *
      * @param request data class with attributes for submit
+     * @param fieldsStates Optional list of Compose field states to tokenize.
      */
     suspend fun submitAsync(
         request: VGSRequest,
@@ -339,104 +379,160 @@ class VGSCollect {
      *
      * @param path path for a request`
      * @param method HTTP method
+     * @param fieldsStates Optional list of Compose field states to tokenize.
      */
-    fun asyncSubmit(path: String, method: HTTPMethod, fieldsStates: List<BaseFieldState>? = null) {
-        val request = VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build()
-        asyncSubmit(request, fieldsStates)
+    fun asyncSubmit(
+        path: String,
+        method: HTTPMethod,
+        fieldsStates: List<BaseFieldState>? = null
+    ) {
+        asyncSubmit(
+            request = VGSRequest.VGSRequestBuilder().setPath(path).setMethod(method).build(),
+            fieldsStates = fieldsStates
+        )
     }
 
     /**
      * This method executes and send data on VGS Server.
      *
      * @param request data class with attributes for submit
+     * @param fieldsStates Optional list of Compose field states to tokenize.
      */
     fun asyncSubmit(request: VGSRequest, fieldsStates: List<BaseFieldState>? = null) {
         val data = storage.getDataForCollecting(
-            request,
-            client.getTemporaryStorage().getCustomData(),
-            fieldsStates
+            request = request,
+            staticData = client.getTemporaryStorage().getCustomData(),
+            fieldsStates = fieldsStates
         )
         requestAsync(request, data)
     }
 
     /**
      * The method sends data on VGS Server for tokenization. It is an asynchronous method.
+     * @param fieldsStates Optional list of Compose field states to tokenize.
      */
-    fun tokenize() {
-        tokenize(VGSTokenizationRequest.VGSRequestBuilder().build())
+    fun tokenize(fieldsStates: List<BaseFieldState>? = null) {
+        tokenize(
+            request = VGSTokenizationRequest.VGSRequestBuilder().build(),
+            fieldsStates = fieldsStates
+        )
     }
 
     /**
      * The method sends data on VGS Server for tokenization. It is an asynchronous method.
      *
      * @param request A tokenization request data.
+     * @param fieldsStates Optional list of Compose field states to tokenize.
      */
-    fun tokenize(request: VGSTokenizationRequest) {
-        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore, upstream = request.upstream))
-    }
-
-    /**
-     * The method sends data on VGS Server for tokenization. It is an asynchronous method.
-     * Use this overload when collecting data with Compose field states.
-     *
-     * @param request A tokenization request data.
-     * @param fieldsStates List of Compose field states to tokenize.
-     */
-    fun tokenize(request: VGSTokenizationRequest, fieldsStates: List<BaseFieldState>) {
-        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore, fieldsStates, request.upstream))
-    }
-
-    /**
-     * The method sends data on VGS Server for create aliases. It is an asynchronous method.
-     */
-    fun createAliases() {
-        createAliases(VGSCreateAliasesRequest.VGSRequestBuilder().build())
+    fun tokenize(request: VGSTokenizationRequest, fieldsStates: List<BaseFieldState>? = null) {
+        requestAsync(
+            request = request,
+            data = storage.getDataForTokenization(
+                request.fieldsIgnore,
+                fieldsStates,
+            )
+        )
     }
 
     /**
      * The method sends data on VGS Server for create aliases. It is an asynchronous method.
      *
-     * @param request A create aliases request data.
+     * @param fieldsStates Optional list of Compose field states to tokenize.
      */
-    fun createAliases(request: VGSCreateAliasesRequest) {
-        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore, upstream = request.upstream))
+    fun createAliases(fieldsStates: List<BaseFieldState>? = null) {
+        createAliases(
+            request = VGSCreateAliasesRequest.VGSRequestBuilder().build(),
+            fieldsStates = fieldsStates
+        )
     }
 
     /**
      * The method sends data on VGS Server for create aliases. It is an asynchronous method.
-     * Use this overload when collecting data with Compose field states.
      *
      * @param request A create aliases request data.
      * @param fieldsStates List of Compose field states to tokenize.
      */
-    fun createAliases(request: VGSCreateAliasesRequest, fieldsStates: List<BaseFieldState>) {
-        requestAsync(request, storage.getDataForTokenization(request.fieldsIgnore, fieldsStates, request.upstream))
+    fun createAliases(
+        request: VGSCreateAliasesRequest,
+        fieldsStates: List<BaseFieldState>? = null
+    ) {
+        requestAsync(
+            request = request,
+            data = storage.getDataForTokenization(
+                request.fieldsIgnore,
+                fieldsStates,
+            )
+        )
     }
 
     /**
      * Creates a new card using the [Card Management API](https://www.verygoodsecurity.com/docs/api/card-management#tag/card-management/POST/cards).
      *
-     * @param auth The authentication token used for the request.
+     * @param auth Optional authentication token used for the request. AuthHandler used otherwise.
+     * @param fieldsStates List of Compose field states to tokenize.
      */
-    fun createCard(auth: String) {
-        val request = VGSCreateCardRequest.VGSRequestBuilder()
-            .setAuthToken(auth)
-            .build()
+    fun createCard(auth: String? = null, fieldsStates: List<BaseFieldState>? = null) {
+        getAccessToken(auth) { token ->
+            val request = VGSCreateCardRequest.VGSRequestBuilder()
+                .setAuthToken(token)
+                .build()
+            cmpRequest(request, fieldsStates)
+        }
+    }
+
+    /**
+     * Creates a new card using the [Card Management API](https://www.verygoodsecurity.com/docs/api/card-management#tag/card-management/POST/cards).
+     *
+     * @param auth Optional authentication token used for the request. AuthHandler used otherwise.
+     * @param fieldsStates List of Compose field states to tokenize.
+     */
+    fun updateCard(
+        cardId: String,
+        auth: String? = null,
+        fieldsStates: List<BaseFieldState>? = null
+    ) {
+        val id = cardId.trim()
+        if (id.isBlank()) {
+            notifyAllListeners(
+                VGSError.CARD_ID_IS_REQUIRED.toVGSResponse(),
+                VGSAnalyticsUpstream.CMP
+            )
+            return
+        }
+        getAccessToken(auth) { token ->
+            val request = VGSUpdateCardRequest.VGSRequestBuilder(id)
+                .setAuthToken(token)
+                .build()
+            cmpRequest(request, fieldsStates)
+        }
+    }
+
+    private fun getAccessToken(providedToken: String?, onResult: (String) -> Unit) {
+        if (!providedToken.isNullOrBlank()) {
+            onResult(providedToken)
+        } else {
+            authHandler?.requestToken { token -> onResult(token) } ?: notifyAllListeners(
+                VGSError.AUTH_HANDLER_OR_ACCESS_TOKEN_IS_REQUIRED.toVGSResponse(),
+                VGSAnalyticsUpstream.CMP
+            )
+        }
+    }
+
+    private fun cmpRequest(
+        request: VGSCardManagementPlatformRequest,
+        fieldsStates: List<BaseFieldState>? = null
+    ) {
         if (!cardManagementURL.isURLValid()) {
             notifyAllListeners(VGSError.URL_NOT_VALID.toVGSResponse(), request.upstream)
             return
         }
-        storage.getDataForCollecting(
-            request,
-            client.getTemporaryStorage().getCustomData(),
-            null
+        storage.getDataForCmp(
+            request = request,
+            sessionFormId = sessionFormId,
+            staticData = client.getTemporaryStorage().getCustomData(),
+            fieldsStates = fieldsStates
         )?.let { data ->
-            val payload = mapOf<String, Any>(
-                CREATE_CARD_DATA_KEY to mapOf<String, Any>(
-                    CREATE_CARD_ATTRIBUTES_KEY to data
-                )
-            )
-            client.enqueue(request.toNetworkRequest(cardManagementURL, payload)) { response ->
+            client.enqueue(request.toNetworkRequest(cardManagementURL, data)) { response ->
                 mainHandler.post {
                     notifyAllListeners(response.toVGSResponse(), request.upstream)
                 }
@@ -749,13 +845,13 @@ class VGSCollect {
         }
     }
 
-    private fun configureHostname(host: String?, vaultId: String) {
-        if (host.isNullOrBlank() || vaultId.isBlank() || collectURL.isEmpty()) {
+    private fun configureHostname(host: String?, tenantId: String) {
+        if (host.isNullOrBlank() || tenantId.isBlank() || collectURL.isEmpty()) {
             return
         }
         val r = VGSRequest.VGSRequestBuilder().setMethod(HTTPMethod.GET)
             .setFormat(VGSHttpBodyFormat.PLAIN_TEXT).build()
-            .toNetworkRequest(host.toHostnameValidationUrl(vaultId))
+            .toNetworkRequest(host.toHostnameValidationUrl(tenantId))
 
         client.enqueue(r) {
             hasCustomHostname = it.isSuccessful && host equalsUrl it.body
@@ -775,12 +871,131 @@ class VGSCollect {
         }
     }
 
+    companion object {
+
+        private const val SESSION_CONFIGS_BASE_URL = "https://js.verygoodvault.com"
+
+        /**
+         * Asynchronously creates and initializes a [VGSCollect] instance.
+         *
+         * @param context activity context.
+         * @param tenantId unique vault identifier.
+         * @param formId optional form identifier. If null or blank, [VGSCollect] is returned without session-based card attributes support.
+         * @param environment target environment (e.g. sandbox, live).
+         * @param authHandler provider responsible for supplying an auth token (required only when [formId] is provided).
+         * @param onSuccess called with a fully initialized [VGSCollect] instance.
+         * @param onError called if initialization fails.
+         */
+        fun session(
+            context: Context,
+            tenantId: String,
+            formId: String? = null,
+            environment: String,
+            authHandler: VgsAuthHandler? = null,
+            onSuccess: (instance: VGSCollect) -> Unit,
+            onError: (code: Int, message: String?) -> Unit
+        ) {
+            val collect = VGSCollect(
+                context = context,
+                id = tenantId,
+                env = environment,
+                suffix = null,
+                cname = null,
+                collectInitAnalytics = false,
+                authHandler = authHandler
+            )
+            if (formId.isNullOrBlank()) {
+                sendAnalytics(
+                    collect,
+                    configFileName = null,
+                    configFileStatusCode = null,
+                    configFileLatency = null
+                )
+                onSuccess(collect)
+                return
+            }
+
+            if (authHandler == null) {
+                onError(
+                    VGSError.AUTH_HANDLER_IS_REQUIRED.code,
+                    VGSError.AUTH_HANDLER_IS_REQUIRED.message
+                )
+                return
+            }
+            val configFileName = "${formId.toHex()}.json"
+            getConfig(collect, configFileName) { response ->
+                sendAnalytics(
+                    collect = collect,
+                    configFileName = configFileName,
+                    configFileStatusCode = response.code,
+                    configFileLatency = response.latency
+                )
+                collect.mainHandler.post {
+                    if (response.isSuccessful) {
+                        CardAttributesConfig.parse(response.body)?.let { config ->
+                            onSuccess(collect.apply {
+                                this.cardAttributesManager = CardAttributesManager(
+                                    context,
+                                    environment,
+                                    config,
+                                    authHandler,
+                                    storage,
+                                    analyticsHandler
+                                )
+                                this.sessionFormId = formId
+                            })
+                        } ?: onError(
+                            VGSError.CONFIGURATION_LOADING_FAILED.code,
+                            VGSError.CONFIGURATION_LOADING_FAILED.message
+                        )
+                    } else {
+                        onError(response.code, response.message ?: response.error?.message)
+                    }
+                }
+            }
+        }
+
+        private fun sendAnalytics(
+            collect: VGSCollect,
+            configFileName: String?,
+            configFileStatusCode: Int?,
+            configFileLatency: Long?
+        ) {
+            collect.analyticsHandler.capture(
+                VGSAnalyticsEvent.Init.session(
+                    configFileName,
+                    configFileStatusCode,
+                    configFileLatency
+                )
+            )
+        }
+
+        private fun getConfig(
+            collect: VGSCollect,
+            configFileName: String,
+            onResult: (NetworkResponse) -> Unit
+        ) {
+            collect.client.enqueue(
+                request = NetworkRequest(
+                    method = HTTPMethod.GET,
+                    url = "$SESSION_CONFIGS_BASE_URL/session-configuration/${collect.tenantId}/$configFileName",
+                    customHeader = emptyMap(),
+                    customData = Unit,
+                    format = VGSHttpBodyFormat.JSON,
+                    requestTimeoutInterval = DEFAULT_CONNECTION_TIME_OUT,
+                    requiresTokenization = false,
+                ),
+                callback = onResult
+            )
+        }
+    }
+
     /**
      * Used to create VGSCollect instances with default and overridden settings.
      *
      * @constructor Main constrictor for creating VGSCollect instance builder.
      * @param context Activity context.
-     * @param id Specific Vault ID.
+     * @param id Specific Tenant ID.
      */
     class Builder(private val context: Context, private val id: String) {
 

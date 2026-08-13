@@ -9,5 +9,7 @@ internal interface IStateEmitter {
 
     fun attachStateChangeListener(listener:OnFieldStateChangeListener?)
 
+    fun detachStateChangeListener(listener:OnFieldStateChangeListener?)
+
     fun attachFieldDependencyObserver(listener:FieldDependencyObserver?)
 }

@@ -1,15 +1,14 @@
 package com.verygoodsecurity.vgscollect.core.model.network.cmp
 
-import com.verygoodsecurity.sdk.analytics.model.VGSAnalyticsUpstream
 import com.verygoodsecurity.vgscollect.core.HTTPMethod
 import com.verygoodsecurity.vgscollect.core.api.VGSHttpBodyFormat
 import com.verygoodsecurity.vgscollect.core.model.VGSCollectFieldNameMappingPolicy
 import com.verygoodsecurity.vgscollect.util.extension.DEFAULT_CONNECTION_TIME_OUT
 import com.verygoodsecurity.vgscollect.util.extension.toAuthHeader
 
-private const val CREATE_CARD_PATH = "/cards"
+private const val UPDATE_CARD_PATH = "/cards/"
 
-internal class VGSCreateCardRequest internal constructor(
+internal class VGSUpdateCardRequest internal constructor(
     override val method: HTTPMethod,
     override val path: String,
     override val customHeader: Map<String, String>,
@@ -22,9 +21,7 @@ internal class VGSCreateCardRequest internal constructor(
     override val routeId: String?,
 ) : VGSCardManagementPlatformRequest() {
 
-    override val upstream: VGSAnalyticsUpstream = VGSAnalyticsUpstream.CMP
-
-    class VGSRequestBuilder {
+    class VGSRequestBuilder(val cardId: String) {
 
         private val customHeader: HashMap<String, String> = HashMap()
 
@@ -33,10 +30,10 @@ internal class VGSCreateCardRequest internal constructor(
             return this
         }
 
-        fun build(): VGSCreateCardRequest {
-            return VGSCreateCardRequest(
-                method = HTTPMethod.POST,
-                path = CREATE_CARD_PATH,
+        fun build(): VGSUpdateCardRequest {
+            return VGSUpdateCardRequest(
+                method = HTTPMethod.PATCH,
+                path = "$UPDATE_CARD_PATH$cardId",
                 customHeader = customHeader,
                 customData = emptyMap(),
                 fieldsIgnore = false,

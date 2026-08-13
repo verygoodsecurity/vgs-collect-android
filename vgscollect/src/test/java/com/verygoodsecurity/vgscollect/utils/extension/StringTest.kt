@@ -9,6 +9,7 @@ import com.verygoodsecurity.vgscollect.util.extension.concatWithDash
 import com.verygoodsecurity.vgscollect.util.extension.concatWithSlash
 import com.verygoodsecurity.vgscollect.util.extension.digits
 import com.verygoodsecurity.vgscollect.util.extension.formatDigits
+import com.verygoodsecurity.vgscollect.util.extension.toHex
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -138,5 +139,21 @@ class StringTest {
         "a23frt4FTG".run {
             assertEquals("234", this.digits)
         }
+    }
+
+    @Test
+    fun test_toHex() {
+        assertEquals(
+            "73616e64626f782d6372656469742d636172642d757361",
+            "sandbox-credit-card-usa".toHex()
+        )
+        assertEquals(
+            "666f726d5f7365636f6e642d5553412d6372656469742d6465626974",
+            "form_second-USA-credit-debit".toHex()
+        )
+        assertEquals(
+            "30315f746573745f666f726d2d6e616d652d6f6e652d6d6f72655f74696d65",
+            "01_test_form-name-one-more_time".toHex()
+        )
     }
 }

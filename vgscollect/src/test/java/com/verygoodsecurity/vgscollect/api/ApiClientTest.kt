@@ -14,20 +14,19 @@ class ApiClientTest {
         val client = Mockito.mock(ApiClient::class.java)
 
         val headers = HashMap<String, String>()
-        headers.put("NEW-HEADER", "header")
+        headers["NEW-HEADER"] = "header"
         val data = HashMap<String, Any>()
-        data.put("customData", "dataset")
+        data["customData"] = "dataset"
 
         val r = NetworkRequest(
             HTTPMethod.POST,
             "https://www.test.com/post",
             headers,
             data,
-            fieldsIgnore = false,
-            fileIgnore = false,
             format = VGSHttpBodyFormat.JSON,
             requestTimeoutInterval = 60000L,
-            requiresTokenization = false
+            requiresTokenization = false,
+            tag = "tag"
         )
 
         client.execute(r)
@@ -49,11 +48,10 @@ class ApiClientTest {
             "https://www.test.com/post",
             headers,
             data,
-            fieldsIgnore = false,
-            fileIgnore = false,
             format = VGSHttpBodyFormat.JSON,
             requestTimeoutInterval = 60000L,
-            requiresTokenization = false
+            requiresTokenization = false,
+            tag = "tag"
         )
 
         client.enqueue(r)
@@ -76,11 +74,10 @@ class ApiClientTest {
             "https://www.test.com/post",
             headers,
             data,
-            fieldsIgnore = false,
-            fileIgnore = false,
             format = VGSHttpBodyFormat.JSON,
             requestTimeoutInterval = 60000L,
-            requiresTokenization = true
+            requiresTokenization = true,
+            tag = "tag"
         )
 
         client.enqueue(r)

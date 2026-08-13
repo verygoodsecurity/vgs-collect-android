@@ -23,7 +23,7 @@ android {
 
         multiDexEnabled = true
 
-        buildConfigField("String", "VAULT_ID", "\"${localProperty("VGS_VAULT_ID")}\"")
+        buildConfigField("String", "TENANT_ID", "\"${localProperty("VGS_TENANT_ID")}\"")
         buildConfigField("String", "PATH", "\"${localProperty("VGS_PATH")}\"")
         buildConfigField("String", "TOKENIZATION_ROUTE_ID", "\"${localProperty("VGS_TOKENIZATION_ROUTE_ID")}\"")
         buildConfigField("String", "TOKENIZATION_V2_ROUTE_ID", "\"${localProperty("VGS_TOKENIZATION_V2_ROUTE_ID")}\"")

@@ -29,7 +29,8 @@ Documentation Source of Truth Across Versions
 
 ---
 ## 1. Core Concepts (Mental Model)
-- `VGSCollect` orchestrates secure collection and submission to a VGS Vault you own (identified by vault ID + environment / data region).
+- `VGSCollect` orchestrates secure collection and submission to a VGS Vault you own (identified by tenant ID + environment / data region).
+- **CMP (Card Management Platform)**: `VGSCollect.session()` async factory creates a session-configured instance. `createCard()` / `updateCard()` send data directly to the CMP API (`vgsapi.com`). Card attributes lookup enriches BIN data automatically when enabled via session config.
 - **View-based**: UI inputs (`VGSTextInputEditText`) never expose raw values outside controlled SDK memory; you interact through configuration + state snapshots. Fields are bound to `VGSCollect` via `bindView()`.
 - **Compose**: Immutable state objects (`BaseFieldState` subclasses) are created via `rememberVgs*TextFieldState()` factories and passed to `Vgs*TextField` composables. States are self-contained — no `bindView()` needed.
 - Field `state` drives UI (validity, emptiness, metadata like last4, brand) - do not persist raw input.
@@ -40,7 +41,7 @@ Documentation Source of Truth Across Versions
 Purpose: ensure correct vault/environment pairing before any field setup or submission.
 
 Required:
-- Non-empty `vaultId` string (assert with `precondition(!vaultId.isEmpty)` in debug builds).
+- Non-empty `tenantId` string (assert with `precondition(!tenantId.isEmpty)` in debug builds).
 - Explicit environment selection: `Environment.SANDBOX` for development/testing; `Environment.LIVE` for production only.
 - Keep sandbox and live vault IDs distinct; never point `.LIVE` at a sandbox vault ID.
 - Optional hostname override (if provided): verify matches VGS dashboard configuration before deploy.
@@ -53,7 +54,7 @@ val collector = VGSCollect(context, sandboxVaultId, Environment.SANDBOX)
 val liveCollector = VGSCollect(context, liveVaultId, Environment.LIVE)
 ```
 Failure Modes:
-- Empty vaultId -> initialization should fail fast (use preconditions).
+- Empty tenantId -> initialization should fail fast (use preconditions).
 - Using `.LIVE` in debug with test cards unintentionally -> enforce build configuration checks.
 - Mixing aliases from different environments -> keep storage / processing segregated.
 
@@ -70,6 +71,10 @@ Security Note: Never derive environment from user input; it must be a static con
 - `VGSFilePickerConfig` + `VGSFilePickerController`: secure file selection pipeline.
 - `VGSBlinkCardRecognitionActivity`: card scanning (BlinkCard module) - preferred scanning path.
 - Validation Rule Types (examples): `VGSValidationRuleLength`, `VGSValidationRulePattern`, (others similarly shaped).
+- `VGSCollect.session()`: async factory for session-configured instances with CMP and card attributes support.
+- `VgsAuthHandler`: `fun interface` providing JWT tokens for CMP requests and card attributes lookup.
+- `createCard()` / `updateCard()`: CMP card lifecycle operations (POST/PATCH to `vgsapi.com`).
+- `VgsCardAttributesLookupListener`: callback interface for BIN-based card enrichment events (`onStart`, `onSuccess`, `onFailure`).
 - `VGSAnalyticsClient`: toggle analytics collection.
 - `VGSCollectLogger`: adjust log verbosity (ensure `.NONE` in production if required).
 
@@ -346,7 +351,7 @@ Canonical card form snippet (XML Layout):
 
 Binding in Activity/Fragment:
 ```kotlin
-val vgsCollect = VGSCollect(this, "YOUR_VAULT_ID", Environment.SANDBOX)
+val vgsCollect = VGSCollect(this, "YOUR_TENANT_ID", Environment.SANDBOX)
 vgsCollect.bindView(findViewById(R.id.cardNumberField))
 vgsCollect.bindView(findViewById(R.id.cardHolderField))
 vgsCollect.bindView(findViewById(R.id.expiryField))
@@ -392,6 +397,100 @@ lifecycleScope.launch {
     // Handle response
 }
 ```
+
+---
+## 6A. CMP (Card Management Platform) APIs
+Purpose: create and update payment cards via the VGS Card Management API. CMP requests bypass the vault proxy and go directly to `vgsapi.com`.
+
+### Session Initialization
+Use `VGSCollect.session()` to create a session-configured instance with card attributes support:
+```kotlin
+VGSCollect.session(
+    context = this,
+    tenantId = "tnt123",
+    formId = "checkout",          // optional; drives config fetch + CMP meta _formId
+    environment = "sandbox",
+    authHandler = VgsAuthHandler { onComplete ->
+        // Fetch JWT from your backend, then:
+        onComplete(jwtToken)
+    },
+    onSuccess = { collect ->
+        // Fully initialized — bind fields and use createCard/updateCard
+    },
+    onError = { code, message ->
+        // Config fetch failed or authHandler missing when formId provided
+    }
+)
+```
+- When `formId` is provided: fetches session config from `js.verygoodvault.com/session-configuration/{tenantId}/{hex}.json`, enables card attributes lookup if config has `cardAttributes.enable = true`.
+- When `formId` is `null`: returns a `VGSCollect` instance without card attributes support (no config fetch).
+- `authHandler` is required when `formId` is provided.
+
+### createCard
+```kotlin
+// With explicit token
+collect.createCard(auth = "jwt_token")
+
+// Using authHandler (falls back to VgsAuthHandler)
+collect.createCard()
+
+// With Compose field states
+collect.createCard(auth = "jwt_token", fieldsStates = listOf(cardNumberState, expiryState, cvcState))
+```
+- HTTP: `POST /cards` to `{sandbox.}vgsapi.com`
+- Content-Type: `application/vnd.api+json`
+- Authorization: `Bearer {token}`
+- Response delivered via `VgsCollectResponseListener`
+
+### updateCard
+```kotlin
+collect.updateCard(cardId = "card_123", auth = "jwt_token")
+collect.updateCard(cardId = "card_123", fieldsStates = listOf(...))
+```
+- HTTP: `PATCH /cards/{cardId}` to `{sandbox.}vgsapi.com`
+
+### CMP Request Payload Structure
+Both `createCard` and `updateCard` produce:
+```json
+{
+  "data": {
+    "attributes": { "pan": "...", "exp_month": "...", "exp_year": "...", "cvc": "..." },
+    "meta": {
+      "_source": "vgs-collect",
+      "_medium": "androidSDK",
+      "_version": "2.x.x",
+      "_formId": "checkout"
+    }
+  }
+}
+```
+- `_formId` is the user-provided `formId` from `session()`. Omitted if `formId` was not provided.
+- Custom data via `setCustomData()` is merged into `attributes` alongside field data.
+
+### Card Attributes Lookup
+Triggered automatically when the card number field reaches 11 digits (BIN). Requires `formId` in `session()` and config with `cardAttributes.enable = true`.
+
+```kotlin
+collect.setCardAttributesLookupListener(object : VgsCardAttributesLookupListener {
+    override fun onStart() { /* show loading indicator */ }
+    override fun onSuccess(code: Int, body: String) { /* parse card attributes JSON */ }
+    override fun onFailure(code: Int, body: String?, message: String?) { /* handle error */ }
+})
+```
+- Endpoint: `card-enrichment-api.{sandbox.}verygoodvault.com/cardattributes/enriched`
+- Auth token is cached and retried once on 401/403.
+- Duplicate BIN lookups are suppressed (same 11 digits won't trigger twice).
+
+### VgsAuthHandler
+```kotlin
+fun interface VgsAuthHandler {
+    fun requestToken(onComplete: (token: String) -> Unit)
+}
+```
+- Provides JWT tokens for CMP requests and card attributes lookup.
+- For card attributes lookup: token is cached and refreshed on 401/403.
+- For `createCard`/`updateCard`: token is used per-call (no caching).
+- Bearer prefix is always prepended — do not include `"Bearer "` in the returned token.
 
 ---
 ## 7. File Upload Pipeline

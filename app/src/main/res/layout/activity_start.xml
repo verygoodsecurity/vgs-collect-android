@@ -19,11 +19,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_padding_material_micro"
             android:fontFamily="sans-serif-medium"
-            android:text="@string/start_activity_vault_id_hint"
+            android:text="@string/start_activity_tenant_id_hint"
             android:textAppearance="?attr/textAppearanceCaption" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilVaultId"
+            android:id="@+id/tilTenantId"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             app:hintEnabled="false">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tiedVaultId"
+                android:id="@+id/tiedTenantId"
                 style="TextInputEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -36,7 +36,7 @@ repositories {
 
 ### 1. Ensure VGS Collect is configured
 
-Your app must already configure VGS Collect with vault ID and environment. Refer to [VGS Collect Android docs](https://github.com/verygoodsecurity/vgs-collect-android).
+Your app must already configure VGS Collect with tenant ID and environment. Refer to [VGS Collect Android docs](https://github.com/verygoodsecurity/vgs-collect-android).
 
 ### 2. Create BlinkCard scan settings
 

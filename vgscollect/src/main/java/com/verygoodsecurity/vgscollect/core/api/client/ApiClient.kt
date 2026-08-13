@@ -17,6 +17,8 @@ internal interface ApiClient {
 
     fun cancelAll()
 
+    fun cancelByTag(tag: String)
+
     fun getTemporaryStorage(): VgsApiTemporaryStorage
 
     companion object {

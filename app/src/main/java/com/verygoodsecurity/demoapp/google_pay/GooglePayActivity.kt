@@ -46,7 +46,7 @@ class GooglePayActivity : AppCompatActivity(), VgsCollectResponseListener {
         with(intent?.extras) {
             VGSCollect(
                 this@GooglePayActivity,
-                this?.getString(StartActivity.KEY_BUNDLE_VAULT_ID) ?: "",
+                this?.getString(StartActivity.KEY_BUNDLE_TENANT_ID) ?: "",
                 this?.getString(StartActivity.KEY_BUNDLE_ENVIRONMENT) ?: ""
             ).apply { addOnResponseListeners(this@GooglePayActivity) }
         }
