@@ -35,7 +35,7 @@ internal class CardAttributesManager(
         private const val TAG = "CardAttributesManager"
 
         private const val SANDBOX_URL = "https://card-enrichment-api.sandbox.verygoodvault.com/cardattributes/enriched"
-        private const val LIVE_URL = "https://card-enrichment-api.verygoodvault.com/cardattributes/enriched"
+        private const val LIVE_URL = "https://card-enrichment-api.live.verygoodvault.com/cardattributes/enriched"
 
         private const val CARD_ATTRIBUTES_BIN_LENGTH = 11
 
