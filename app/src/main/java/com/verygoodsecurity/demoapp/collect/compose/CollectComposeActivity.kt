@@ -379,11 +379,19 @@ private fun Content(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Card Number
-                // Highlights the first 4 digits via `VgsStyleVisualTransformation`,
-                // chained after the default brand mask — the style rule only ever sees
-                // character positions, never the card number itself. `SpanStyle` accepts
-                // any Compose text styling, including a `TextGeometricTransform` for a
-                // slanted/stretched "cool" look on top of the color + background.
+                // Fully masks the digits with `VgsPasswordVisualTransformation`, formats
+                // them with the brand mask, then highlights the first 4 masked positions
+                // with a rainbow gradient via `VgsStyleVisualTransformation` — the style
+                // rule only ever sees character positions, never the card number itself.
+                // `SpanStyle` accepts any Compose text styling, including a
+                // `TextGeometricTransform` for a slanted/stretched "cool" look on top of
+                // the color + background.
+                //
+                // Order matters: `Password` must run before `Mask`, or it would also
+                // mask the mask's own literal separators. `Style` has no such
+                // constraint — `Password` and `Mask` both carry its styling forward onto
+                // their own (repositioned) output, so it applies correctly even though it
+                // runs last, after the separators it's styling around have been inserted.
                 val rainbowColors = listOf(Color.Red, Color.Magenta, Color.Blue, Color.Cyan, Color.Green, Color.Yellow)
 
                 FieldLabel("Card Number")
@@ -400,9 +408,7 @@ private fun Content(
                     },
                     visualTransformation = VgsChainedVisualTransformation(
                         listOf(
-                            VgsPasswordVisualTransformation(
-                                range = IntRange(0, cardNumberState.cardBrand.mask.length)
-                            ),
+                            VgsPasswordVisualTransformation(),
                             VgsMaskVisualTransformation(cardNumberState.cardBrand.mask),
                             VgsStyleVisualTransformation(
                                 listOf(
@@ -411,10 +417,10 @@ private fun Content(
                                             brush = Brush.linearGradient(colors = rainbowColors)
                                         ),
                                         0,
-                                        cardNumberState.cardBrand.mask.length
+                                        6
                                     ),
                                 )
-                            )
+                            ),
                         )
                     ),
                     colors = fieldColors,
