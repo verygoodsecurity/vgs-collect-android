@@ -20,6 +20,13 @@ import androidx.compose.ui.text.input.TransformedText
  * field's expected final length is safe to use while the value is still shorter
  * (e.g. mid-typing).
  *
+ * Placed earlier in a [VgsChainedVisualTransformation], the styles applied here still
+ * reach the final output — [VgsPasswordVisualTransformation] and
+ * [VgsMaskVisualTransformation] both carry forward whatever's already on their input —
+ * but at unchanged indices, not repositioned for what a later step inserts. Chain this
+ * *after* both for exact positions; placed before [VgsMaskVisualTransformation], a range
+ * that spans one of its separators lands a little short of the intended characters.
+ *
  * @param styles style ranges to apply to the displayed text.
  */
 class VgsStyleVisualTransformation(
