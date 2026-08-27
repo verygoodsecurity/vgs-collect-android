@@ -12,7 +12,9 @@ import androidx.compose.ui.text.input.VisualTransformation
  * parameter to change how the value is displayed without affecting the value
  * submitted to the VGS vault. Built-in options:
  * [VgsMaskVisualTransformation] (formatted display, e.g. `#### #### #### ####`),
- * [VgsPasswordVisualTransformation] (mask each character), and [None] (no change).
+ * [VgsPasswordVisualTransformation] (mask each character),
+ * [VgsStyleVisualTransformation] (apply [androidx.compose.ui.text.SpanStyle]s by
+ * position, without exposing the text itself), and [None] (no change).
  */
 abstract class VgsVisualTransformation internal constructor() : VisualTransformation {
 

@@ -160,7 +160,7 @@ Validators:
 - `VgsRequiredFieldValidator`, `VgsRegexValidator`, `VgsTextLengthValidator`, `VgsLuhnAlgorithmValidator`, `VgsMinMaxDateValidator`.
 
 Visual transformations:
-- `VgsMaskVisualTransformation`, `VgsPasswordVisualTransformation`, `VgsVisualTransformation.None`.
+- `VgsMaskVisualTransformation`, `VgsPasswordVisualTransformation`, `VgsStyleVisualTransformation`, `VgsVisualTransformation.None`.
 
 Card brand:
 - `VgsCardBrand` (detection, icons, mask, lengths), `VgsCardBrand.DEFAULT`, `VgsCardBrand.UNKNOWN`.
