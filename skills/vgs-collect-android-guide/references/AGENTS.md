@@ -160,7 +160,8 @@ Validators:
 - `VgsRequiredFieldValidator`, `VgsRegexValidator`, `VgsTextLengthValidator`, `VgsLuhnAlgorithmValidator`, `VgsMinMaxDateValidator`.
 
 Visual transformations:
-- `VgsMaskVisualTransformation`, `VgsPasswordVisualTransformation`, `VgsStyleVisualTransformation`, `VgsVisualTransformation.None`.
+- `VgsMaskVisualTransformation`, `VgsPasswordVisualTransformation`, `VgsStyleVisualTransformation`, `VgsVisualTransformation.None`, `VgsChainedVisualTransformation` (compose several in sequence).
+- Order matters in a chain — each transformation acts on the output of the previous one, so the result changes depending on the sequence chosen.
 
 Card brand:
 - `VgsCardBrand` (detection, icons, mask, lengths), `VgsCardBrand.DEFAULT`, `VgsCardBrand.UNKNOWN`.
