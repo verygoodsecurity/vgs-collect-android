@@ -45,14 +45,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextGeometricTransform
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.microblink.blinkcard.core.BlinkCardSdkSettings
@@ -82,6 +86,10 @@ import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCvcTextFi
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsExpiryTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsSsnTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.transformation.VgsChainedVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.transformation.VgsMaskVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.transformation.VgsPasswordVisualTransformation
+import com.verygoodsecurity.vgscollect.widget.compose.transformation.VgsStyleVisualTransformation
 import com.verygoodsecurity.vgscollect.widget.compose.util.withScanResult
 
 private const val TAG = "CollectComposeActivity"
@@ -371,6 +379,21 @@ private fun Content(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // Card Number
+                // Fully masks the digits with `VgsPasswordVisualTransformation`, formats
+                // them with the brand mask, then highlights the first 4 masked positions
+                // with a rainbow gradient via `VgsStyleVisualTransformation` — the style
+                // rule only ever sees character positions, never the card number itself.
+                // `SpanStyle` accepts any Compose text styling, including a
+                // `TextGeometricTransform` for a slanted/stretched "cool" look on top of
+                // the color + background.
+                //
+                // Order matters: `Password` must run before `Mask`, or it would also
+                // mask the mask's own literal separators. `Style` has no such
+                // constraint — `Password` and `Mask` both carry its styling forward onto
+                // their own (repositioned) output, so it applies correctly even though it
+                // runs last, after the separators it's styling around have been inserted.
+                val rainbowColors = listOf(Color.Red, Color.Magenta, Color.Blue, Color.Cyan, Color.Green, Color.Yellow)
+
                 FieldLabel("Card Number")
                 VgsCardNumberOutlinedTextField(
                     state = cardNumberState,
@@ -383,6 +406,23 @@ private fun Content(
                             contentDescription = cardNumberState.cardBrand.name,
                         )
                     },
+                    visualTransformation = VgsChainedVisualTransformation(
+                        listOf(
+                            VgsPasswordVisualTransformation(),
+                            VgsMaskVisualTransformation(cardNumberState.cardBrand.mask),
+                            VgsStyleVisualTransformation(
+                                listOf(
+                                    AnnotatedString.Range(
+                                        SpanStyle(
+                                            brush = Brush.linearGradient(colors = rainbowColors)
+                                        ),
+                                        0,
+                                        6
+                                    ),
+                                )
+                            ),
+                        )
+                    ),
                     colors = fieldColors,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                 )
