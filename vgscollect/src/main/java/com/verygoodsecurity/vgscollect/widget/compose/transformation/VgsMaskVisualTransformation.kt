@@ -21,8 +21,14 @@ class VgsMaskVisualTransformation(val mask: String) : VgsVisualTransformation() 
 
     override fun filter(text: AnnotatedString): TransformedText {
         val maskFormatter = MaskFormatter(mask, text.text)
+        val formatted = maskFormatter.getFormatterText()
+        val carriedSpans = text.spanStyles.mapNotNull { range ->
+            val start = range.start.coerceIn(0, formatted.length)
+            val end = range.end.coerceIn(start, formatted.length)
+            if (start < end) AnnotatedString.Range(range.item, start, end) else null
+        }
         return TransformedText(
-            AnnotatedString(maskFormatter.getFormatterText()),
+            AnnotatedString(formatted, carriedSpans),
             MaskOffsetMapping(maskFormatter)
         )
     }

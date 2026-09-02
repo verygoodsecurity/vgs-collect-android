@@ -26,7 +26,7 @@ class VgsPasswordVisualTransformation(
             if (index in range) acc.append(passwordChar) else acc.append(unit)
         }.toString()
         return TransformedText(
-            AnnotatedString(result),
+            AnnotatedString(result, text.spanStyles),
             OffsetMapping.Identity
         )
     }
