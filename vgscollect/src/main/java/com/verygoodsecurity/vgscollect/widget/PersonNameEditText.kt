@@ -17,6 +17,10 @@ import com.verygoodsecurity.vgscollect.view.card.validation.rules.PersonNameRule
 /**
  * A user interface element for inputting a person's name, typically a cardholder name.
  */
+@Deprecated(
+    "PersonNameEditText and other View-based widgets are deprecated. " +
+        "Use the Compose widgets instead, e.g. VgsCardholderTextField/VgsCardholderOutlinedTextField."
+)
 class PersonNameEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {

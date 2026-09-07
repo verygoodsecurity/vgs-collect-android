@@ -18,6 +18,10 @@ import com.verygoodsecurity.vgscollect.view.card.validation.rules.VGSInfoRule
 /**
  * A user interface element that displays text.
  */
+@Deprecated(
+    "VGSEditText and other View-based widgets are deprecated. " +
+        "Use the Compose widgets instead, e.g. VgsTextField/VgsOutlinedTextField."
+)
 open class VGSEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {

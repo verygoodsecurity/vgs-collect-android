@@ -16,6 +16,10 @@ import com.verygoodsecurity.vgscollect.view.card.FieldType
 /**
  * A user interface element for inputting a Social Security Number (SSN).
  */
+@Deprecated(
+    "SSNEditText and other View-based widgets are deprecated. " +
+        "Use the Compose widgets instead, e.g. VgsSsnTextField/VgsSsnOutlinedTextField."
+)
 class SSNEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {

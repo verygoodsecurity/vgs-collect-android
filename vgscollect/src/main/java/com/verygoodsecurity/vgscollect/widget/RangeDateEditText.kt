@@ -14,6 +14,10 @@ import java.util.*
 /**
  * A user interface element for inputting a date range.
  */
+@Deprecated(
+    "RangeDateEditText and other View-based widgets are deprecated. " +
+        "Use the Compose widgets instead, e.g. VgsTextField/VgsOutlinedTextField with a custom mask/validator."
+)
 class RangeDateEditText @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
