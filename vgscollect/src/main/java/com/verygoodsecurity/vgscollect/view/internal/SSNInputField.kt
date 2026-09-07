@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.verygoodsecurity.vgscollect.view.internal
 
 import android.content.Context

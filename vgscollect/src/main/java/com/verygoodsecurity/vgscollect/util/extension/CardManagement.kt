@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.verygoodsecurity.vgscollect.util.extension
 
 import com.verygoodsecurity.vgscollect.core.VGSCollect

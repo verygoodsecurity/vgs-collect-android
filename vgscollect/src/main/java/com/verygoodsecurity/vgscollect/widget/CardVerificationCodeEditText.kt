@@ -18,6 +18,10 @@ import com.verygoodsecurity.vgscollect.view.internal.CVCInputField
 /**
  * A user interface element for inputting a CVC.
  */
+@Deprecated(
+    "CardVerificationCodeEditText and other View-based widgets are deprecated. " +
+        "Use the Compose widgets instead, e.g. VgsCvcTextField/VgsCvcOutlinedTextField."
+)
 class CardVerificationCodeEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
