@@ -23,6 +23,10 @@ import com.verygoodsecurity.vgscollect.view.card.validation.rules.PaymentCardNum
 /**
  * A user interface element for inputting a card number.
  */
+@Deprecated(
+    "VGSCardNumberEditText and other View-based widgets are deprecated. " +
+        "Use the Compose widgets instead, e.g. VgsCardNumberTextField/VgsCardNumberOutlinedTextField."
+)
 class VGSCardNumberEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : InputFieldView(context, attrs, defStyleAttr) {
