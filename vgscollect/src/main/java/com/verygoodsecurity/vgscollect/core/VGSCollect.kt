@@ -37,6 +37,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.VGSError
 import com.verygoodsecurity.vgscollect.core.model.network.VGSRequest
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.network.cmp.VGSCardManagementPlatformRequest
+import com.verygoodsecurity.vgscollect.core.model.network.cmp.FORBIDDEN_META_KEYS
 import com.verygoodsecurity.vgscollect.core.model.network.cmp.VGSCreateCardRequest
 import com.verygoodsecurity.vgscollect.core.model.network.cmp.VGSUpdateCardRequest
 import com.verygoodsecurity.vgscollect.core.model.network.toVGSResponse
@@ -470,11 +471,26 @@ class VGSCollect {
      *
      * @param auth Optional authentication token used for the request. AuthHandler used otherwise.
      * @param fieldsStates List of Compose field states to tokenize.
+     * @param meta Optional custom string metadata sent in the CMP `data.meta` object. SDK-owned keys
+     * (`_source`, `_medium`, `_version`, `_formId`) are ignored if provided. Keys `__type` and
+     * `__proto__` are rejected with [VGSError.CARD_META_IS_INVALID].
      */
-    fun createCard(auth: String? = null, fieldsStates: List<BaseFieldState>? = null) {
+    fun createCard(
+        auth: String? = null,
+        fieldsStates: List<BaseFieldState>? = null,
+        meta: Map<String, String>? = null
+    ) {
+        if (meta != null && meta.keys.any { it in FORBIDDEN_META_KEYS }) {
+            notifyAllListeners(
+                VGSError.CARD_META_IS_INVALID.toVGSResponse(),
+                VGSAnalyticsUpstream.CMP
+            )
+            return
+        }
         getAccessToken(auth) { token ->
             val request = VGSCreateCardRequest.VGSRequestBuilder()
                 .setAuthToken(token)
+                .setMeta(meta.orEmpty())
                 .build()
             cmpRequest(request, fieldsStates)
         }

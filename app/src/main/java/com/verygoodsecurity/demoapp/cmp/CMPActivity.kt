@@ -28,7 +28,7 @@ private const val TAG = "CMPActivity"
  * - How to initialize [VGSCollect] session with authorization
  * - How to bind tied card fields (PAN, expiration date, CVC)
  * - How to request an access token before CMP operations
- * - How to call CMP `createCard` and handle submit response
+ * - How to call CMP `createCard` (with optional custom `meta`) and handle submit response
  * - How to listen for card attributes lookup events
  *
  * Unlike other demo activities that use the synchronous [VGSCollect] constructor,
@@ -180,7 +180,14 @@ class CMPActivity : BaseDemoActivity(R.layout.cmp_activity) {
         // ==========================================================
         createCardButton.setOnClickListener {
             setLoading(true)
-            form.createCard()
+            // Custom string metadata is sent in the CMP `data.meta` object.
+            // SDK-owned keys (_source, _medium, _version, _formId) are ignored if provided.
+            form.createCard(
+                meta = mapOf(
+                    "orderId" to "demo-order-123",
+                    "integration" to "cmp-demo"
+                )
+            )
         }
     }
 }
