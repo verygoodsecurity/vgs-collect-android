@@ -517,8 +517,6 @@ private fun CollectScreen(
     }
 }
 
-private val RAINBOW = listOf(Color.Red, Color.Magenta, Color.Blue, Color.Cyan, Color.Green, Color.Yellow)
-
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
 private fun Preview() {
