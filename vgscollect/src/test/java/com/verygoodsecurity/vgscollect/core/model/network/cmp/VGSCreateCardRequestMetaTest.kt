@@ -77,7 +77,10 @@ class VGSCreateCardRequestMetaTest {
     }
 
     @Test
-    fun forbiddenMetaKeys_containTypeAndProto() {
-        assertEquals(setOf("__type", "__proto__"), FORBIDDEN_META_KEYS)
+    fun getMeta_typeAndProtoKeys_passThrough() {
+        val meta = request(mapOf("__type" to "custom-type", "__proto__" to "custom-proto")).getMeta(null)
+
+        assertEquals("custom-type", meta["__type"])
+        assertEquals("custom-proto", meta["__proto__"])
     }
 }

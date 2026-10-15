@@ -13,7 +13,6 @@ private const val CMP_MEDIUM = "_medium"
 private const val CMP_FORM_ID = "_formId"
 private const val CMP_VERSION = "_version"
 
-internal val FORBIDDEN_META_KEYS = setOf("__type", "__proto__")
 private val RESERVED_META_KEYS = setOf(CMP_SOURCE, CMP_MEDIUM, CMP_VERSION, CMP_FORM_ID)
 
 internal abstract class VGSCardManagementPlatformRequest : VGSBaseRequest() {
