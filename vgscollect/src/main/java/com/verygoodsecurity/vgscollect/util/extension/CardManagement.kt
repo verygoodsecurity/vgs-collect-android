@@ -8,12 +8,12 @@ import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
 import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
 import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
 
-private const val CMP_CARD_NUMBER_FIELD_NAME = "pan"
-private  const val CMP_CARD_CVC_FIELD_NAME = "cvc"
-private  const val CMP_CARD_EXPIRY_FIELD_NAME = "exp_date"
-private  const val CMP_CARD_EXPIRY_MONTH_FIELD_NAME = "exp_month"
-private  const val CMP_CARD_EXPIRY_YEAR_FIELD_NAME = "exp_year"
-private  const val CMP_CARD_EXPIRY_OUTPUT_FORMAT = "MM/yy"
+internal const val CMP_CARD_NUMBER_FIELD_NAME = "pan"
+internal const val CMP_CARD_CVC_FIELD_NAME = "cvc"
+internal const val CMP_CARD_EXPIRY_FIELD_NAME = "exp_date"
+internal const val CMP_CARD_EXPIRY_MONTH_FIELD_NAME = "exp_month"
+internal const val CMP_CARD_EXPIRY_YEAR_FIELD_NAME = "exp_year"
+internal const val CMP_CARD_EXPIRY_OUTPUT_FORMAT = "MM/yy"
 
 /**
  * Binds the card number input view and configures it for Card Management requests.
@@ -41,10 +41,12 @@ fun VGSCollect.cardExpirationDate(view: ExpirationDateEditText) {
     view.enableValidation(true)
     view.setIsRequired(true)
     view.setOutputRegex(CMP_CARD_EXPIRY_OUTPUT_FORMAT)
-    view.setSerializer(VGSExpDateSeparateSerializer(
-        monthFieldName = CMP_CARD_EXPIRY_MONTH_FIELD_NAME,
-        yearFieldName = CMP_CARD_EXPIRY_YEAR_FIELD_NAME
-    ))
+    view.setSerializer(
+        VGSExpDateSeparateSerializer(
+            monthFieldName = CMP_CARD_EXPIRY_MONTH_FIELD_NAME,
+            yearFieldName = CMP_CARD_EXPIRY_YEAR_FIELD_NAME
+        )
+    )
     bindView(view)
 }
 

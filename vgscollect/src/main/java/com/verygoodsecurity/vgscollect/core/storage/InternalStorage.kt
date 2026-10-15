@@ -8,6 +8,7 @@ import com.verygoodsecurity.vgscollect.core.model.network.cmp.CMP_ATTRIBUTES_KEY
 import com.verygoodsecurity.vgscollect.core.model.network.cmp.CMP_DATA_KEY
 import com.verygoodsecurity.vgscollect.core.model.network.cmp.CMP_META_KEY
 import com.verygoodsecurity.vgscollect.core.model.network.cmp.VGSCardManagementPlatformRequest
+import com.verygoodsecurity.vgscollect.core.model.network.cmp.VGSCreateCardRequest
 import com.verygoodsecurity.vgscollect.core.model.network.cmp.VGSUpdateCardRequest
 import com.verygoodsecurity.vgscollect.core.model.state.VGSFieldState
 import com.verygoodsecurity.vgscollect.core.storage.content.field.FieldStateContractor
@@ -16,6 +17,8 @@ import com.verygoodsecurity.vgscollect.core.storage.content.file.FileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.StorageListener
 import com.verygoodsecurity.vgscollect.core.storage.content.file.TemporaryFileStorage
 import com.verygoodsecurity.vgscollect.core.storage.content.file.VGSFileProvider
+import com.verygoodsecurity.vgscollect.util.extension.CMP_CARD_EXPIRY_MONTH_FIELD_NAME
+import com.verygoodsecurity.vgscollect.util.extension.CMP_CARD_EXPIRY_YEAR_FIELD_NAME
 import com.verygoodsecurity.vgscollect.util.extension.DATA_KEY
 import com.verygoodsecurity.vgscollect.util.extension.allowParseArrays
 import com.verygoodsecurity.vgscollect.util.extension.deepMerge
@@ -112,7 +115,10 @@ internal class InternalStorage(
 
         return fieldsData?.let {
             val arrayMergePolicy = nameMappingPolicy.toArrayMergePolicy()
-            val attributes = staticData.toMutableMap().deepMerge(fieldsData, arrayMergePolicy)
+            val attributes = staticData.toMutableMap().deepMerge(fieldsData, arrayMergePolicy).let {
+                // CMP create card API expects numeric exp_month / exp_year.
+                if (request is VGSCreateCardRequest) it.withNumericExpiry() else it
+            }
             buildMap {
                 put(CMP_DATA_KEY, buildMap<String, Any> {
                     put(CMP_ATTRIBUTES_KEY, attributes)
@@ -209,6 +215,16 @@ internal class InternalStorage(
             }
         } else {
             emptyMap()
+        }
+    }
+
+    private fun Map<String, Any>.withNumericExpiry(): Map<String, Any> {
+        return mapValues { (key, value) ->
+            if (key == CMP_CARD_EXPIRY_MONTH_FIELD_NAME || key == CMP_CARD_EXPIRY_YEAR_FIELD_NAME) {
+                (value as? String)?.toIntOrNull() ?: value
+            } else {
+                value
+            }
         }
     }
 }
