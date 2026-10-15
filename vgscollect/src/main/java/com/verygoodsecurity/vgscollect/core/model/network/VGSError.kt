@@ -34,10 +34,6 @@ enum class VGSError(
         code = 1485,
         message = "Card ID is required parameter."
     ),
-    CARD_META_IS_INVALID(
-        code = 1486,
-        message = "Card meta cannot include __type or __proto__ keys."
-    ),
     CONFIGURATION_LOADING_FAILED(
         code = 1490,
         message = "Session initialization fails due to configuration load error."
