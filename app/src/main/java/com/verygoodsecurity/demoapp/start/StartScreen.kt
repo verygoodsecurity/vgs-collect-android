@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -40,6 +39,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.ui.CollapsingHeaderState
 import com.verygoodsecurity.demoapp.ui.DemoCard
+import com.verygoodsecurity.demoapp.ui.DemoChip
 import com.verygoodsecurity.demoapp.ui.DemoSegmentedControl
 import com.verygoodsecurity.demoapp.ui.DemoTextField
 import com.verygoodsecurity.demoapp.ui.DemoTheme
@@ -147,7 +147,7 @@ private fun StartHeader(environment: StartEnvironment, state: CollapsingHeaderSt
                     color = colors.headerSubtitle
                 )
             }
-            EnvironmentChip(environment)
+            DemoChip(stringResource(environment.label), colors.sandbox, showDot = true)
         }
         Box(Modifier.collapsible(state)) {
             Text(
@@ -157,23 +157,6 @@ private fun StartHeader(environment: StartEnvironment, state: CollapsingHeaderSt
                 color = colors.onHeader.copy(alpha = 0.78f)
             )
         }
-    }
-}
-
-@Composable
-private fun EnvironmentChip(environment: StartEnvironment) {
-    val colors = DemoTheme.colors
-    Row(
-        Modifier
-            .heightIn(min = DemoTheme.sizes.chipHeight)
-            .clip(DemoTheme.shapes.pill)
-            .background(colors.sandbox.copy(alpha = 0.16f))
-            .padding(horizontal = DemoTheme.spacing.m),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(DemoTheme.spacing.s)
-    ) {
-        Box(Modifier.size(DemoTheme.sizes.chipDot).clip(CircleShape).background(colors.sandbox))
-        Text(stringResource(environment.label), style = DemoTheme.typography.overline, color = colors.sandbox)
     }
 }
 

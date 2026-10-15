@@ -38,6 +38,10 @@ data class DemoColors(
     val headerSubtitle: Color = Color(0xFF8DB8FF),
     val sandbox: Color = Color(0xFF67E4BD),
     val onHeader: Color = Color.White,
+    val error: Color = Color(0xFFD23A4E),
+    val errorContainer: Color = Color(0xFFFDEAED),
+    val code: Color = Color(0xFF0B1020),
+    val onCode: Color = Color(0xFFD8DEEC),
     val headerBrush: Brush = Brush.linearGradient(listOf(Color(0xFF0B1020), Color(0xFF2A1D6E), Color(0xFF4B2A9C))),
     val iconBrush: Brush = Brush.linearGradient(listOf(Color(0xFF2480FF), Color(0xFFDD57FF))),
 )
@@ -62,6 +66,8 @@ data class DemoSizes(
     val controlHeight: Dp = 36.dp,
     val cardMinHeight: Dp = 84.dp,
     val iconTile: Dp = 44.dp,
+    val touchTarget: Dp = 44.dp,
+    val codeMaxHeight: Dp = 360.dp,
 )
 
 @Immutable
@@ -82,6 +88,9 @@ data class DemoTypography(
     val caption: TextStyle = TextStyle(fontSize = 12.sp),
     val overline: TextStyle = TextStyle(fontSize = 12.sp, fontWeight = FontWeight.Bold),
     val field: TextStyle = TextStyle(fontSize = 15.sp, fontFamily = FontFamily.Monospace),
+    val heading: TextStyle = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.ExtraBold),
+    val button: TextStyle = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold),
+    val code: TextStyle = TextStyle(fontSize = 11.5.sp, lineHeight = 18.sp, fontFamily = FontFamily.Monospace),
 )
 
 private val LocalDemoColors = staticCompositionLocalOf { DemoColors() }

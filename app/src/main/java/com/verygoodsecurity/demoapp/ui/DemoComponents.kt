@@ -17,7 +17,6 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,13 +59,8 @@ fun DemoTextField(
             modifier = modifier.fillMaxWidth(),
             singleLine = true,
             textStyle = DemoTheme.typography.field.copy(color = colors.ink),
-            shape = DemoTheme.shapes.medium,
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = colors.surface,
-                focusedBorderColor = colors.accent,
-                unfocusedBorderColor = colors.fieldBorder,
-                cursorColor = colors.accent,
-            ),
+            shape = DemoFieldDefaults.shape,
+            colors = DemoFieldDefaults.colors(),
         )
     }
 }
