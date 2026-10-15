@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -23,12 +22,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 @Composable
 fun DemoCard(
@@ -38,9 +34,9 @@ fun DemoCard(
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        color = DemoColors.Surface,
-        border = BorderStroke(1.dp, DemoColors.Border),
+        shape = DemoTheme.shapes.large,
+        color = DemoTheme.colors.surface,
+        border = BorderStroke(1.dp, DemoTheme.colors.border),
         elevation = 1.dp,
     ) {
         Box(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier) { content() }
@@ -55,20 +51,21 @@ fun DemoTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(label, color = DemoColors.Ink, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+    val colors = DemoTheme.colors
+    Column(verticalArrangement = Arrangement.spacedBy(DemoTheme.spacing.s)) {
+        Text(label, style = DemoTheme.typography.label, color = colors.ink)
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = modifier.fillMaxWidth(),
             singleLine = true,
-            textStyle = TextStyle(fontFamily = FontFamily.Monospace, fontSize = 15.sp, color = DemoColors.Ink),
-            shape = RoundedCornerShape(12.dp),
+            textStyle = DemoTheme.typography.field.copy(color = colors.ink),
+            shape = DemoTheme.shapes.medium,
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                backgroundColor = DemoColors.Surface,
-                focusedBorderColor = DemoColors.Accent,
-                unfocusedBorderColor = DemoColors.FieldBorder,
-                cursorColor = DemoColors.Accent,
+                backgroundColor = colors.surface,
+                focusedBorderColor = colors.accent,
+                unfocusedBorderColor = colors.fieldBorder,
+                cursorColor = colors.accent,
             ),
         )
     }
@@ -82,31 +79,31 @@ fun <T> DemoSegmentedControl(
     onSelect: (T) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val colors = DemoTheme.colors
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(DemoColors.Segment)
-            .padding(4.dp)
+            .clip(DemoTheme.shapes.medium)
+            .background(colors.segment)
+            .padding(DemoTheme.spacing.xs)
             .selectableGroup(),
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
+        horizontalArrangement = Arrangement.spacedBy(DemoTheme.spacing.xxs)
     ) {
         options.forEach { option ->
             val isSelected = option == selected
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .height(36.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(if (isSelected) DemoColors.Surface else androidx.compose.ui.graphics.Color.Transparent)
+                    .height(DemoTheme.sizes.controlHeight)
+                    .clip(DemoTheme.shapes.small)
+                    .background(if (isSelected) colors.surface else Color.Transparent)
                     .selectable(selected = isSelected, role = Role.RadioButton, onClick = { onSelect(option) }),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = label(option),
-                    color = if (isSelected) DemoColors.Ink else DemoColors.Muted,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
+                    style = DemoTheme.typography.label,
+                    color = if (isSelected) colors.ink else colors.muted
                 )
             }
         }

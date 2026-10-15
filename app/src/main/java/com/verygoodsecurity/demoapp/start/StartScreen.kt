@@ -11,16 +11,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -32,21 +31,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.ui.CollapsingHeaderState
 import com.verygoodsecurity.demoapp.ui.DemoCard
-import com.verygoodsecurity.demoapp.ui.DemoColors
 import com.verygoodsecurity.demoapp.ui.DemoSegmentedControl
 import com.verygoodsecurity.demoapp.ui.DemoTextField
+import com.verygoodsecurity.demoapp.ui.DemoTheme
 import com.verygoodsecurity.demoapp.ui.collapsible
 import com.verygoodsecurity.demoapp.ui.rememberCollapsingHeaderState
 
@@ -63,11 +59,12 @@ fun StartScreen(
     var environment by rememberSaveable { mutableStateOf(StartEnvironment.SANDBOX) }
 
     val headerState = rememberCollapsingHeaderState()
+    val spacing = DemoTheme.spacing
 
     Column(
         Modifier
             .fillMaxSize()
-            .background(DemoColors.Background)
+            .background(DemoTheme.colors.background)
             .imePadding()
             .nestedScroll(headerState.nestedScrollConnection)
     ) {
@@ -77,11 +74,11 @@ fun StartScreen(
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
                 .windowInsetsPadding(WindowInsets.navigationBars)
-                .padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+                .padding(spacing.xl),
+            verticalArrangement = Arrangement.spacedBy(spacing.m)
         ) {
             DemoCard {
-                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Column(Modifier.padding(spacing.l), verticalArrangement = Arrangement.spacedBy(spacing.l)) {
                     DemoTextField(
                         label = stringResource(R.string.start_activity_tenant_id_hint),
                         value = tenantId,
@@ -94,12 +91,11 @@ fun StartScreen(
                         onValueChange = { path = it },
                         modifier = Modifier.testTag(TAG_PATH)
                     )
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(spacing.s)) {
                         Text(
                             stringResource(R.string.start_activity_environment_title),
-                            color = DemoColors.Ink,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Bold
+                            style = DemoTheme.typography.label,
+                            color = DemoTheme.colors.ink
                         )
                         DemoSegmentedControl(
                             options = StartEnvironment.entries,
@@ -124,27 +120,31 @@ fun StartScreen(
 
 @Composable
 private fun StartHeader(environment: StartEnvironment, state: CollapsingHeaderState) {
+    val colors = DemoTheme.colors
+    val spacing = DemoTheme.spacing
     Column(
         Modifier
             .fillMaxWidth()
-            .background(DemoColors.HeaderBrush)
+            .background(colors.headerBrush)
             .windowInsetsPadding(WindowInsets.statusBars)
-            .padding(horizontal = 20.dp, vertical = 14.dp)
+            .padding(horizontal = spacing.xl, vertical = spacing.l)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(painterResource(R.drawable.ic_vgs_logo_white), contentDescription = null, Modifier.size(32.dp, 36.dp))
-            Column(Modifier.weight(1f).padding(horizontal = 12.dp)) {
+            Image(
+                painterResource(R.drawable.ic_vgs_logo_white),
+                contentDescription = null,
+                Modifier.size(DemoTheme.sizes.logo)
+            )
+            Column(Modifier.weight(1f).padding(horizontal = spacing.m)) {
                 Text(
                     stringResource(R.string.start_header_title),
-                    color = Color.White,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Black
+                    style = DemoTheme.typography.headline,
+                    color = colors.onHeader
                 )
                 Text(
                     stringResource(R.string.start_header_subtitle).uppercase(),
-                    color = DemoColors.HeaderSubtitle,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
+                    style = DemoTheme.typography.overline,
+                    color = colors.headerSubtitle
                 )
             }
             EnvironmentChip(environment)
@@ -152,9 +152,9 @@ private fun StartHeader(environment: StartEnvironment, state: CollapsingHeaderSt
         Box(Modifier.collapsible(state)) {
             Text(
                 stringResource(R.string.start_header_hint),
-                modifier = Modifier.padding(top = 14.dp, bottom = 10.dp),
-                color = Color.White.copy(alpha = 0.78f),
-                fontSize = 15.sp
+                modifier = Modifier.padding(top = spacing.l, bottom = spacing.m),
+                style = DemoTheme.typography.body,
+                color = colors.onHeader.copy(alpha = 0.78f)
             )
         }
     }
@@ -162,22 +162,18 @@ private fun StartHeader(environment: StartEnvironment, state: CollapsingHeaderSt
 
 @Composable
 private fun EnvironmentChip(environment: StartEnvironment) {
+    val colors = DemoTheme.colors
     Row(
         Modifier
-            .heightIn(min = 26.dp)
-            .clip(RoundedCornerShape(13.dp))
-            .background(DemoColors.Sandbox.copy(alpha = 0.16f))
-            .padding(horizontal = 11.dp),
+            .heightIn(min = DemoTheme.sizes.chipHeight)
+            .clip(DemoTheme.shapes.pill)
+            .background(colors.sandbox.copy(alpha = 0.16f))
+            .padding(horizontal = DemoTheme.spacing.m),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(DemoTheme.spacing.s)
     ) {
-        Box(Modifier.size(7.dp).clip(CircleShape).background(DemoColors.Sandbox))
-        Text(
-            stringResource(environment.label),
-            color = DemoColors.Sandbox,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold
-        )
+        Box(Modifier.size(DemoTheme.sizes.chipDot).clip(CircleShape).background(colors.sandbox))
+        Text(stringResource(environment.label), style = DemoTheme.typography.overline, color = colors.sandbox)
     }
 }
 
@@ -185,40 +181,40 @@ private fun EnvironmentChip(environment: StartEnvironment) {
 private fun SectionHeader(item: StartItem.Header) {
     Text(
         text = stringResource(item.title).uppercase(),
-        modifier = Modifier.padding(top = 10.dp),
-        color = DemoColors.Section,
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Bold
+        modifier = Modifier.padding(top = DemoTheme.spacing.m),
+        style = DemoTheme.typography.overline,
+        color = DemoTheme.colors.section
     )
 }
 
 @Composable
 private fun FlowCard(item: StartItem.Flow, onClick: () -> Unit) {
+    val colors = DemoTheme.colors
+    val spacing = DemoTheme.spacing
     DemoCard(onClick = onClick) {
         Row(
-            Modifier.heightIn(min = 84.dp).padding(14.dp),
+            Modifier.heightIn(min = DemoTheme.sizes.cardMinHeight).padding(spacing.l),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(spacing.m)
         ) {
             Box(
-                Modifier.size(44.dp).clip(RoundedCornerShape(10.dp)).background(DemoColors.IconBrush),
+                Modifier.size(DemoTheme.sizes.iconTile).clip(DemoTheme.shapes.small).background(colors.iconBrush),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(painterResource(item.icon), contentDescription = null, tint = Color.White)
             }
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(spacing.xs)) {
                 Text(
                     stringResource(item.title),
-                    color = DemoColors.Ink,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = DemoTheme.typography.title,
+                    color = colors.ink,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     stringResource(item.description),
-                    color = DemoColors.Muted,
-                    fontSize = 12.sp,
+                    style = DemoTheme.typography.caption,
+                    color = colors.muted,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -226,9 +222,8 @@ private fun FlowCard(item: StartItem.Flow, onClick: () -> Unit) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     stringResource(R.string.start_activity_start_btn_title),
-                    color = DemoColors.Accent,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
+                    style = DemoTheme.typography.label,
+                    color = colors.accent
                 )
                 Icon(painterResource(R.drawable.ic_chevron_end), contentDescription = null, tint = Color.Unspecified)
             }
