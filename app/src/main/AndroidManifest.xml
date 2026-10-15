@@ -18,6 +18,7 @@
             android:name=".start.StartActivity"
             android:exported="true"
             android:label="Very Good Security"
+            android:theme="@style/AppTheme.NoActionBar"
             tools:ignore="LockedOrientationActivity">
 
             <intent-filter>

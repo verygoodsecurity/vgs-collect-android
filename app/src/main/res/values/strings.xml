@@ -3,34 +3,42 @@
 
     <!--    Start screen-->
     <string name="start_activity_tenant_id_hint">Vault id</string>
-    <string name="start_activity_path_hint">Path (Only for collect flow)</string>
+    <string name="start_activity_path_hint">Path · Collect flows only</string>
 
-    <string name="start_activity_environment_title">Environment:</string>
+    <string name="start_activity_environment_title">Environment</string>
     <string name="start_activity_environment_sandbox">Sandbox</string>
     <string name="start_activity_environment_Live">Live</string>
 
     <string name="start_activity_start_btn_title">Start</string>
 
-    <string name="start_tokenization_title">Tokenization(Views)</string>
-    <string name="start_tokenization_description">Tokenize data without additional backend setup required.</string>
+    <string name="start_header_title">VGS Collect</string>
+    <string name="start_header_subtitle">Android SDK demo</string>
+    <string name="start_header_hint">Point the demo at your vault, then pick a flow.</string>
 
-    <string name="start_tokenization_v2_title">Create aliases(Tokenization v2)</string>
-    <string name="start_tokenization_v2_description">Tokenize data without additional backend setup required.</string>
+    <string name="start_section_collect">Collect</string>
+    <string name="start_section_tokenization">Tokenization</string>
+    <string name="start_section_more">More</string>
+
+    <string name="start_tokenization_title">Tokenization (Views)</string>
+    <string name="start_tokenization_description">Tokenize data with no extra backend setup.</string>
+
+    <string name="start_tokenization_v2_title">Create aliases (Tokenization v2)</string>
+    <string name="start_tokenization_v2_description">Create aliases with the Tokenization v2 API.</string>
 
     <string name="start_google_pay_title">Google Pay</string>
-    <string name="start_google_pay_description">Example of decrypting google pay token.</string>
+    <string name="start_google_pay_description">Decrypt a Google Pay token.</string>
 
     <string name="start_collect_views_title">Collect (Views)</string>
-    <string name="start_collect_views_description">Example of collecting data using collect views.</string>
+    <string name="start_collect_views_description">Collect card data with the prebuilt View widgets.</string>
 
     <string name="start_collect_compose_title">Collect (Compose)</string>
-    <string name="start_collect_compose_description">Example of collecting data using collect compose widgets.</string>
+    <string name="start_collect_compose_description">Collect card data with the Jetpack Compose widgets.</string>
 
     <string name="start_tokenization_compose_title">Tokenization (Compose)</string>
-    <string name="start_tokenization_compose_description">Tokenize card data using Compose widgets with field-specific alias formats.</string>
+    <string name="start_tokenization_compose_description">Tokenize card data with Compose widgets and field-specific alias formats.</string>
 
     <string name="start_cmp_title">CMP</string>
-    <string name="start_cmp_description">Example of create card object flow.</string>
+    <string name="start_cmp_description">Create a card object with the Card Management Platform.</string>
 
     <string name="tokenization_scan_card_menu_item_title">Scan</string>
     <string name="tokenization_settings_menu_item_title">Settings</string>

@@ -16,3 +16,4 @@ androidx-uiautomator = { group = 'androidx.test.uiautomator', name = 'uiautomato
 androidx-espresso-core = { group = 'androidx.test.espresso', name = 'espresso-core', version.ref = 'androidx-espresso' }
 androidx-espresso-intents = { group = 'androidx.test.espresso', name = 'espresso-intents', version.ref = 'androidx-espresso' }
 espresso-contrib = { group = 'androidx.test.espresso', name = 'espresso-contrib', version.ref = 'espresso-contrib' }
+androidx-compose-ui-test-junit4 = { group = 'androidx.compose.ui', name = 'ui-test-junit4', version = '1.11.2' }

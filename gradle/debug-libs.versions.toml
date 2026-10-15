@@ -5,3 +5,4 @@ compose-ui-tooling = '1.11.2'
 [libraries]
 leakcanary = { group = 'com.squareup.leakcanary', name = 'leakcanary-android', version.ref = 'leakcanary' }
 compose-ui-tooling = { group = 'androidx.compose.ui', name = 'ui-tooling', version.ref = 'compose-ui-tooling' }
+compose-ui-test-manifest = { group = 'androidx.compose.ui', name = 'ui-test-manifest', version.ref = 'compose-ui-tooling' }
