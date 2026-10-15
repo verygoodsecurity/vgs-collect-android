@@ -470,11 +470,18 @@ class VGSCollect {
      *
      * @param auth Optional authentication token used for the request. AuthHandler used otherwise.
      * @param fieldsStates List of Compose field states to tokenize.
+     * @param meta Optional custom string metadata sent in the CMP `data.meta` object. SDK-owned keys
+     * (`_source`, `_medium`, `_version`, `_formId`) are ignored if provided.
      */
-    fun createCard(auth: String? = null, fieldsStates: List<BaseFieldState>? = null) {
+    fun createCard(
+        auth: String? = null,
+        fieldsStates: List<BaseFieldState>? = null,
+        meta: Map<String, String>? = null
+    ) {
         getAccessToken(auth) { token ->
             val request = VGSCreateCardRequest.VGSRequestBuilder()
                 .setAuthToken(token)
+                .setMeta(meta.orEmpty())
                 .build()
             cmpRequest(request, fieldsStates)
         }
