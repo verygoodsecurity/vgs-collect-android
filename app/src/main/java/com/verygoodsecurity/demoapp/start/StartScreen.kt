@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
@@ -75,7 +76,7 @@ fun StartScreen(
                 .verticalScroll(rememberScrollState())
                 .windowInsetsPadding(WindowInsets.navigationBars)
                 .padding(spacing.xl),
-            verticalArrangement = Arrangement.spacedBy(spacing.m)
+            verticalArrangement = Arrangement.spacedBy(spacing.sm)
         ) {
             DemoCard {
                 Column(Modifier.padding(spacing.l), verticalArrangement = Arrangement.spacedBy(spacing.l)) {
@@ -83,7 +84,8 @@ fun StartScreen(
                         label = stringResource(R.string.start_activity_tenant_id_hint),
                         value = tenantId,
                         onValueChange = { tenantId = it },
-                        modifier = Modifier.testTag(TAG_TENANT_ID)
+                        modifier = Modifier.testTag(TAG_TENANT_ID),
+                        placeholder = stringResource(R.string.start_activity_tenant_id_placeholder)
                     )
                     DemoTextField(
                         label = stringResource(R.string.start_activity_path_hint),
@@ -125,13 +127,14 @@ private fun StartHeader(environment: StartEnvironment, state: CollapsingHeaderSt
     Column(
         Modifier
             .fillMaxWidth()
-            .background(colors.headerBrush)
+            .background(colors.heroBrush)
+            .background(colors.heroGlow)
             .windowInsetsPadding(WindowInsets.statusBars)
             .padding(horizontal = spacing.xl, vertical = spacing.l)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painterResource(R.drawable.ic_vgs_logo_white),
+                painterResource(R.drawable.ic_vgs_logo_color),
                 contentDescription = null,
                 Modifier.size(DemoTheme.sizes.logo)
             )
@@ -164,36 +167,70 @@ private fun StartHeader(environment: StartEnvironment, state: CollapsingHeaderSt
 private fun SectionHeader(item: StartItem.Header) {
     Text(
         text = stringResource(item.title).uppercase(),
-        modifier = Modifier.padding(top = DemoTheme.spacing.m),
+        modifier = Modifier.padding(top = DemoTheme.spacing.sm),
         style = DemoTheme.typography.overline,
         color = DemoTheme.colors.section
     )
 }
 
 @Composable
+private fun FlowBadge(badge: StartBadge) {
+    val colors = DemoTheme.colors
+    val (container, content) = when (badge) {
+        StartBadge.DEPRECATED -> colors.warningContainer to colors.warning
+        StartBadge.RECOMMENDED -> colors.accentContainer to colors.accentDark
+    }
+    Box(
+        Modifier
+            .height(DemoTheme.sizes.badgeHeight)
+            .clip(DemoTheme.shapes.pill)
+            .background(container)
+            .padding(horizontal = DemoTheme.spacing.s),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(stringResource(badge.label), style = DemoTheme.typography.badge, color = content)
+    }
+}
+
+@Composable
 private fun FlowCard(item: StartItem.Flow, onClick: () -> Unit) {
     val colors = DemoTheme.colors
     val spacing = DemoTheme.spacing
-    DemoCard(onClick = onClick) {
+    val recommended = item.badge == StartBadge.RECOMMENDED
+    DemoCard(
+        onClick = onClick,
+        elevation = if (recommended) DemoTheme.sizes.elevationRaised else DemoTheme.sizes.elevation
+    ) {
+        if (recommended) {
+            Box(Modifier.fillMaxWidth().height(DemoTheme.sizes.accentStrip).background(colors.iconBrush))
+        }
         Row(
-            Modifier.heightIn(min = DemoTheme.sizes.cardMinHeight).padding(spacing.l),
+            Modifier.heightIn(min = DemoTheme.sizes.cardMinHeight).padding(spacing.m),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(spacing.m)
+            horizontalArrangement = Arrangement.spacedBy(spacing.sm)
         ) {
-            Box(
-                Modifier.size(DemoTheme.sizes.iconTile).clip(DemoTheme.shapes.small).background(colors.iconBrush),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(painterResource(item.icon), contentDescription = null, tint = Color.White)
+            if (item.glyph) {
+                Box(
+                    Modifier.size(DemoTheme.sizes.iconTile).clip(DemoTheme.shapes.small).background(colors.iconBrush),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(painterResource(item.icon), contentDescription = null, tint = Color.White)
+                }
+            } else {
+                Image(painterResource(item.icon), contentDescription = null, Modifier.size(DemoTheme.sizes.iconTile))
             }
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(spacing.xs)) {
-                Text(
-                    stringResource(item.title),
-                    style = DemoTheme.typography.title,
-                    color = colors.ink,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(spacing.s)) {
+                    Text(
+                        stringResource(item.title),
+                        modifier = Modifier.weight(1f, fill = false),
+                        style = DemoTheme.typography.title,
+                        color = colors.ink,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    item.badge?.let { FlowBadge(it) }
+                }
                 Text(
                     stringResource(item.description),
                     style = DemoTheme.typography.caption,
@@ -202,14 +239,7 @@ private fun FlowCard(item: StartItem.Flow, onClick: () -> Unit) {
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    stringResource(R.string.start_activity_start_btn_title),
-                    style = DemoTheme.typography.label,
-                    color = colors.accent
-                )
-                Icon(painterResource(R.drawable.ic_chevron_end), contentDescription = null, tint = Color.Unspecified)
-            }
+            Icon(painterResource(R.drawable.ic_chevron_end), contentDescription = null, tint = Color.Unspecified)
         }
     }
 }

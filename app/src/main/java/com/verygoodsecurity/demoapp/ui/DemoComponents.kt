@@ -23,12 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun DemoCard(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
+    elevation: Dp = DemoTheme.sizes.elevation,
     content: @Composable () -> Unit
 ) {
     Surface(
@@ -36,7 +38,7 @@ fun DemoCard(
         shape = DemoTheme.shapes.large,
         color = DemoTheme.colors.surface,
         border = BorderStroke(1.dp, DemoTheme.colors.border),
-        elevation = 1.dp,
+        elevation = elevation,
     ) {
         Box(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier) { content() }
     }
@@ -48,7 +50,8 @@ fun DemoTextField(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    placeholder: String? = null
 ) {
     val colors = DemoTheme.colors
     Column(verticalArrangement = Arrangement.spacedBy(DemoTheme.spacing.s)) {
@@ -57,6 +60,7 @@ fun DemoTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = modifier.fillMaxWidth(),
+            placeholder = placeholder?.let { { DemoPlaceholder(it) } },
             singleLine = true,
             textStyle = DemoTheme.typography.field.copy(color = colors.ink),
             shape = DemoFieldDefaults.shape,

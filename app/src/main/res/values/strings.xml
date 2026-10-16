@@ -2,7 +2,8 @@
     <string name="app_name">VGS Collect Demo</string>
 
     <!--    Start screen-->
-    <string name="start_activity_tenant_id_hint">Vault id</string>
+    <string name="start_activity_tenant_id_hint">Vault ID</string>
+    <string name="start_activity_tenant_id_placeholder">tntxxxxxxxx</string>
     <string name="start_activity_path_hint">Path · Collect flows only</string>
 
     <string name="start_activity_environment_title">Environment</string>
@@ -19,20 +20,23 @@
     <string name="start_section_tokenization">Tokenization</string>
     <string name="start_section_more">More</string>
 
-    <string name="start_tokenization_title">Tokenization (Views)</string>
-    <string name="start_tokenization_description">Tokenize data with no extra backend setup.</string>
+    <string name="start_badge_deprecated">Deprecated</string>
+    <string name="start_badge_recommended">Recommended</string>
 
-    <string name="start_tokenization_v2_title">Create aliases (Tokenization v2)</string>
-    <string name="start_tokenization_v2_description">Create aliases with the Tokenization v2 API.</string>
+    <string name="start_tokenization_title">Tokenization (Views)</string>
+    <string name="start_tokenization_description">Legacy View widgets — use Create aliases (v2) for new integrations.</string>
+
+    <string name="start_tokenization_v2_title">Create aliases (v2)</string>
+    <string name="start_tokenization_v2_description">The new way to tokenize — create aliases with the Tokenization v2 API.</string>
 
     <string name="start_google_pay_title">Google Pay</string>
     <string name="start_google_pay_description">Decrypt a Google Pay token.</string>
 
     <string name="start_collect_views_title">Collect (Views)</string>
-    <string name="start_collect_views_description">Collect card data with the prebuilt View widgets.</string>
+    <string name="start_collect_views_description">Legacy View widgets — use Collect (Compose) for new integrations.</string>
 
     <string name="start_collect_compose_title">Collect (Compose)</string>
-    <string name="start_collect_compose_description">Collect card data with the Jetpack Compose widgets.</string>
+    <string name="start_collect_compose_description">The new way to collect card data — Jetpack Compose widgets with state-driven validation.</string>
 
     <string name="start_tokenization_compose_title">Tokenization (Compose)</string>
     <string name="start_tokenization_compose_description">Tokenize card data with Compose widgets and field-specific alias formats.</string>
