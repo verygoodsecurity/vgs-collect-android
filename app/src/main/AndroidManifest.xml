@@ -51,11 +51,14 @@
 
         <activity
             android:name=".tokenization.v2.TokenizationActivity"
-            android:label="Create aliases(Tokenization v2)" />
+            android:label="Create aliases (v2)"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
             android:name=".tokenization.settings.TokenizationSettingsActivity"
-            android:label="Settings" />
+            android:label="Tokenization settings"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".cmp.CMPActivity"

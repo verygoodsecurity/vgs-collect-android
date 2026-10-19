@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -21,6 +22,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,6 +44,7 @@ fun DemoScreen(
     title: String,
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
+    loading: Boolean = false,
     actions: @Composable RowScope.() -> Unit = {},
     content: @Composable ColumnScope.() -> Unit
 ) {
@@ -52,6 +55,13 @@ fun DemoScreen(
             .imePadding()
     ) {
         DemoTopBar(title, onBack, actions = actions)
+        if (loading) {
+            LinearProgressIndicator(
+                Modifier.fillMaxWidth().height(DemoTheme.sizes.progressBar),
+                color = DemoTheme.colors.accent,
+                backgroundColor = DemoTheme.colors.segment
+            )
+        }
         Column(
             Modifier
                 .weight(1f)

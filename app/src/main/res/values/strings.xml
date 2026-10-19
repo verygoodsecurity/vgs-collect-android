@@ -74,6 +74,10 @@
 
     <!--    Shared demo components-->
     <string name="demo_back">Back</string>
+    <string name="demo_error">Error</string>
+    <string name="tokenize_btn_title">Tokenize</string>
+    <string name="create_aliases_btn_title">Create aliases</string>
+    <string name="create_aliases_loading">Creating aliases…</string>
     <string name="demo_optional">Optional</string>
     <string name="demo_json">JSON</string>
     <string name="demo_tab_states">States</string>
@@ -82,6 +86,15 @@
     <string name="demo_no_response">No response yet. Submit the form to see it here.</string>
 
     <!--    Tokenization-->
+    <string name="tokenization_settings_title">Tokenization settings</string>
+    <string name="tokenization_settings_hint">Choose how each field is tokenized. Changes apply when you go back to the demo.</string>
+    <string name="card_holder_name_title">Name</string>
+    <string name="tokenization_enabled">Enabled</string>
+    <string name="tokenization_storage">Storage</string>
+    <string name="tokenization_alias_format">Alias format</string>
+    <string name="tokenization_status_on">Tokenized</string>
+    <string name="tokenization_status_off">Not tokenized</string>
+    <string name="tokenization_status_always">Always tokenized</string>
     <string name="tokenization_card_holder_enabled_key">key_card_holder_tokenization_enabled</string>
     <string name="tokenization_card_holder_storage_key">key_card_holder_tokenization_storage</string>
     <string name="tokenization_card_holder_alias_format_key">key_card_holder_tokenization_alias_format</string>

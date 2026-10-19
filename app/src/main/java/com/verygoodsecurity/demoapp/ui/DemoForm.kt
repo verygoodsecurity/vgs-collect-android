@@ -4,6 +4,8 @@ package com.verygoodsecurity.demoapp.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,12 +19,22 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Switch
+import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +48,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.verygoodsecurity.demoapp.R
 
 /** Shared look for outlined text fields, including the VGS SDK fields (`colors = ..., shape = ...`). */
@@ -116,12 +129,20 @@ fun DemoButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     icon: Painter? = null,
-    primary: Boolean = true
+    primary: Boolean = true,
+    loading: Boolean = false
 ) {
     val colors = DemoTheme.colors
     val height = Modifier.heightIn(min = DemoTheme.sizes.touchTarget)
     val content: @Composable () -> Unit = {
-        if (icon != null) {
+        if (loading) {
+            CircularProgressIndicator(
+                Modifier.size(DemoTheme.sizes.progressIndicator),
+                color = LocalContentColor.current,
+                strokeWidth = DemoTheme.sizes.progressStroke
+            )
+            Box(Modifier.size(DemoTheme.spacing.s))
+        } else if (icon != null) {
             Icon(icon, contentDescription = null, Modifier.size(18.dp))
             Box(Modifier.size(DemoTheme.spacing.s))
         }
@@ -131,8 +152,14 @@ fun DemoButton(
         Button(
             onClick = onClick,
             modifier = modifier.then(height),
+            enabled = !loading,
             shape = DemoTheme.shapes.medium,
-            colors = ButtonDefaults.buttonColors(backgroundColor = colors.accent, contentColor = Color.White),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = colors.accent,
+                contentColor = Color.White,
+                disabledBackgroundColor = colors.accent,
+                disabledContentColor = Color.White,
+            ),
         ) { content() }
     } else {
         OutlinedButton(
@@ -159,6 +186,66 @@ fun DemoChip(text: String, color: Color, modifier: Modifier = Modifier, showDot:
     ) {
         if (showDot) Box(Modifier.size(DemoTheme.sizes.chipDot).clip(CircleShape).background(color))
         Text(text, style = DemoTheme.typography.overline, color = color)
+    }
+}
+
+/** Label with a trailing switch; the whole row is one touch target. */
+@Composable
+fun DemoSwitchRow(label: String, checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+    val colors = DemoTheme.colors
+    Row(
+        modifier.fillMaxWidth().heightIn(min = DemoTheme.sizes.touchTarget),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(label, style = DemoTheme.typography.body, color = colors.ink)
+        Switch(
+            checked = checked,
+            onCheckedChange = onCheckedChange,
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = Color.White,
+                checkedTrackColor = colors.accent,
+                checkedTrackAlpha = 1f,
+                uncheckedThumbColor = Color.White,
+                uncheckedTrackColor = colors.fieldBorder,
+                uncheckedTrackAlpha = 1f,
+            )
+        )
+    }
+}
+
+/** Read-only select that opens a menu of [options]; [selected] is one of them. */
+@Composable
+fun DemoDropdown(
+    options: List<String>,
+    selected: String,
+    onSelected: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val colors = DemoTheme.colors
+    var expanded by remember { mutableStateOf(false) }
+    Box(modifier.fillMaxWidth()) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .heightIn(min = DemoTheme.sizes.touchTarget)
+                .clip(DemoFieldDefaults.shape)
+                .background(colors.surface)
+                .border(1.5.dp, colors.fieldBorder, DemoFieldDefaults.shape)
+                .clickable { expanded = true }
+                .padding(horizontal = DemoTheme.spacing.l),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(selected, Modifier.weight(1f), style = DemoTheme.typography.field.copy(fontSize = 14.sp), color = colors.ink)
+            Icon(painterResource(R.drawable.ic_expand_more), contentDescription = null, tint = colors.muted)
+        }
+        DropdownMenu(expanded, onDismissRequest = { expanded = false }) {
+            options.forEach {
+                DropdownMenuItem(onClick = { onSelected(it); expanded = false }) {
+                    Text(it, style = DemoTheme.typography.field.copy(fontSize = 14.sp), color = colors.ink)
+                }
+            }
+        }
     }
 }
 

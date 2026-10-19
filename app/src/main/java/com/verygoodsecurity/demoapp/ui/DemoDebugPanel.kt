@@ -16,7 +16,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 /** Result of a submit request, as displayed by [DemoDebugPanel]. */
-data class DemoResponse(val isSuccess: Boolean, val code: Int, val body: String?)
+data class DemoResponse(val isSuccess: Boolean, val code: Int? = null, val body: String?)
 
 private enum class DebugTab(@StringRes val label: Int) {
     STATES(R.string.demo_tab_states),
@@ -58,7 +58,7 @@ fun DemoDebugPanel(
                 DemoChip(stringResource(R.string.demo_json), colors.headerSubtitle)
                 if (response != null) {
                     DemoChip(
-                        text = response.code.toString(),
+                        text = response.code?.toString() ?: stringResource(R.string.demo_error),
                         color = if (response.isSuccess) colors.sandbox else colors.error,
                         showDot = true
                     )

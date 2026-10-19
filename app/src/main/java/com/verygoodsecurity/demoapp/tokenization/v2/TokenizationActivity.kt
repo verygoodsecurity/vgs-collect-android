@@ -1,49 +1,88 @@
 package com.verygoodsecurity.demoapp.tokenization.v2
 
-import android.content.Intent
+import android.graphics.Color as AndroidColor
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import androidx.preference.PreferenceManager
-import com.google.android.material.button.MaterialButton
-import com.microblink.blinkcard.core.BlinkCardSdkSettings
-import com.microblink.blinkcard.ux.contract.BlinkCardScanActivitySettings
-import com.verygoodsecurity.api.blinkcard.VGSBlinkCardIntentBuilder
+import androidx.activity.SystemBarStyle
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.verygoodsecurity.demoapp.R
-import com.verygoodsecurity.demoapp.core.BaseDemoActivity
+import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
+import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ROUTE_ID
+import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_TENANT_ID
+import com.verygoodsecurity.demoapp.ui.DemoButton
+import com.verygoodsecurity.demoapp.ui.DemoDebugPanel
+import com.verygoodsecurity.demoapp.ui.DemoErrorBanner
+import com.verygoodsecurity.demoapp.ui.DemoField
+import com.verygoodsecurity.demoapp.ui.DemoFieldDefaults
+import com.verygoodsecurity.demoapp.ui.DemoFormCard
+import com.verygoodsecurity.demoapp.tokenization.settings.SettingsAction
+import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettings
 import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettingsActivity
+import com.verygoodsecurity.demoapp.ui.DemoPlaceholder
+import com.verygoodsecurity.demoapp.ui.DemoResponse
+import com.verygoodsecurity.demoapp.ui.DemoScreen
+import com.verygoodsecurity.demoapp.ui.DemoTheme
+import com.verygoodsecurity.demoapp.ui.errorMessage
 import com.verygoodsecurity.demoapp.utils.NetworkHelper
 import com.verygoodsecurity.demoapp.utils.accessToken
+import com.verygoodsecurity.demoapp.utils.getStringExtra
+import com.verygoodsecurity.vgscollect.VGSCollectLogger
 import com.verygoodsecurity.vgscollect.core.VGSCollect
 import com.verygoodsecurity.vgscollect.core.VgsCollectResponseListener
 import com.verygoodsecurity.vgscollect.core.model.network.VGSResponse
 import com.verygoodsecurity.vgscollect.core.model.network.tokenization.VGSCreateAliasesRequest
-import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
-import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
-import com.verygoodsecurity.vgscollect.widget.CardVerificationCodeEditText
-import com.verygoodsecurity.vgscollect.widget.ExpirationDateEditText
-import com.verygoodsecurity.vgscollect.widget.PersonNameEditText
-import com.verygoodsecurity.vgscollect.widget.VGSCardNumberEditText
+import com.verygoodsecurity.vgscollect.widget.compose.date.VgsExpiryDateFormat
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardNumberOutlinedTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCardholderOutlinedTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsCvcOutlinedTextField
+import com.verygoodsecurity.vgscollect.widget.compose.material.VgsExpiryOutlinedTextField
+import com.verygoodsecurity.vgscollect.widget.compose.state.core.BaseFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardNumberTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardholderTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCvcTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsExpiryTextFieldState
+import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCvcTokenizationConfig
 
 private const val TAG = "V2 TokenizationActivity"
 
 /**
- * Demonstrates **VGS Collect V2 tokenization flow**.
+ * Demonstrates **VGS Collect V2 tokenization flow** (create aliases) using Jetpack Compose.
  *
- * This Activity showcases how to:
+ * This screen shows:
+ * - How to initialize [VGSCollect]
+ * - How to declare field states with field-specific tokenization configs
+ * - How to authorize the request with an access token
+ * - How to create aliases using [VGSCollect.createAliases] and [VGSCreateAliasesRequest]
  *
- * 1. Initialize [VGSCollect] with ⚠️ authorization header or set it before submit data.
- * 2. Bind secure Collect Views
- * 3. Configure tokenization options dynamically
- * 4. Submit data using [VGSCreateAliasesRequest]
- * 5. Handle success/error responses
+ * 🔐 Unlike V1 (`tokenize()`), this version explicitly calls [VGSCollect.createAliases]
+ * and requires an `Authorization` header.
  *
- * 🔐 Unlike V1 (`tokenize()`), this version explicitly calls
- * [VGSCollect.createAliases] with a [VGSCreateAliasesRequest].
- *
- * Configuration is controlled via shared preferences
- * (see [TokenizationSettingsActivity]).
+ * Layout, styling and the debug panel come from the shared demo components in
+ * `com.verygoodsecurity.demoapp.ui`, so this file only contains SDK usage.
  *
  * 📘 Official documentation:
  * https://docs.verygoodsecurity.com/vault/developer-tools/vgs-collect/android-sdk/index
@@ -52,215 +91,292 @@ private const val TAG = "V2 TokenizationActivity"
  * @see VGSCreateAliasesRequest
  * @see VgsCollectResponseListener
  */
-class TokenizationActivity : BaseDemoActivity(R.layout.activity_tokenization) {
+class TokenizationActivity : AppCompatActivity(), VgsCollectResponseListener {
 
-    /**
-     * Lazy initialization of [VGSCollect].
-     */
-    override val form: VGSCollect by lazy {
-        VGSCollect(
-            this@TokenizationActivity,
-            id,
-            environment
-        )
+    private val tenantId: String by lazy { getStringExtra(KEY_BUNDLE_TENANT_ID) }
+    private val env: String by lazy { getStringExtra(KEY_BUNDLE_ENVIRONMENT) }
+    private val routeId: String? by lazy { getStringExtra(KEY_BUNDLE_ROUTE_ID).takeIf { it.isNotBlank() } }
+
+    private val collect: VGSCollect by lazy {
+        VGSCollect(this, tenantId, env).apply {
+            addOnResponseListeners(this@TokenizationActivity)
+        }
     }
 
-    private val vgsTiedCardHolder: PersonNameEditText by lazy { findViewById(R.id.vgsTiedCardHolder) }
-    private val vgsTiedCardNumber: VGSCardNumberEditText by lazy { findViewById(R.id.vgsTiedCardNumber) }
-    private val vgsTiedExpiry: ExpirationDateEditText by lazy { findViewById(R.id.vgsTiedExpiry) }
-    private val vgsTiedCvc: CardVerificationCodeEditText by lazy { findViewById(R.id.vgsTiedCvc) }
+    /** Whether a create aliases request is in flight. */
+    private var isLoading by mutableStateOf(false)
 
-    /**
-     * Creates card scanning intent.
-     *
-     * Scanned values automatically populate corresponding Collect Views
-     * based on their field names.
-     */
-    override fun createScanIntent(): Intent {
-        return VGSBlinkCardIntentBuilder(
-            activity = this,
-            settings = BlinkCardScanActivitySettings(
-                sdkSettings = BlinkCardSdkSettings(
-                    licenseKey = "",
-                )
-            )
-        )
-            .setCardHolderFieldName(vgsTiedCardHolder.getFieldName())
-            .setCardNumberFieldName(vgsTiedCardNumber.getFieldName())
-            .setExpirationDateFieldName(vgsTiedExpiry.getFieldName())
-            .setCVCFieldName(vgsTiedCvc.getFieldName())
-            .build()
-    }
+    /** Last result, set from [onResponse] and displayed by the debug panel. */
+    private var response by mutableStateOf<DemoResponse?>(null)
+
+    /** Options from the settings screen; re-read on resume so changes apply when coming back. */
+    private var settings by mutableStateOf<TokenizationSettings?>(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initCollectForm()
-    }
-
-    /**
-     * Re-applies tokenization configuration every time
-     * the Activity resumes (in case settings changed).
-     */
-    override fun onResume() {
-        super.onResume()
-        configureTokenization()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.tokenization_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.scan -> true.also { scanResultLauncher.launch(createScanIntent()) }
-
-            R.id.settings -> true.also { TokenizationSettingsActivity.start(this) }
-
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    /**
-     * Initializes and configures the VGS Collect integration.
-     *
-     * Integration flow:
-     * 1. Handle submit response
-     * 4. Bind fields to form
-     * 5. Setup create aliases action
-     */
-    private fun initCollectForm() {
-        // ==========================================================
-        // STEP 1: Handle tokenize response
-        // ==========================================================
-        form.addOnResponseListeners(object : VgsCollectResponseListener {
-            override fun onResponse(response: VGSResponse?) {
-                setLoading(false)
-
-                when (response) {
-                    is VGSResponse.SuccessResponse -> {
-                        Log.d(TAG, "Submit success: ${response.body}")
+        // The top bar is a dark gradient, so the status bar needs light icons.
+        enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(AndroidColor.TRANSPARENT))
+        VGSCollectLogger.isEnabled = true
+        VGSCollectLogger.logLevel = VGSCollectLogger.Level.DEBUG
+        settings = TokenizationSettings.read(this)
+        setContent {
+            // Field configs are fixed when a field state is created, so changed settings rebuild the form.
+            settings?.let { settings ->
+                key(settings) {
+                    DemoTheme {
+                        CreateAliasesScreen(
+                            collect = collect,
+                            settings = settings,
+                            isLoading = isLoading,
+                            response = response,
+                            onBack = ::finish,
+                            onOpenSettings = { TokenizationSettingsActivity.start(this) },
+                            onCreateAliases = ::createAliases,
+                        )
                     }
-
-                    is VGSResponse.ErrorResponse -> {
-                        Log.e(TAG, "Submit error: ${response.errorCode}")
-                    }
-
-                    else -> Unit
                 }
             }
-        })
+        }
+    }
 
-        // ==========================================================
-        // STEP 2: Bind fields (REQUIRED)
-        // ==========================================================
-        form.bindView(vgsTiedCardHolder)
-        form.bindView(vgsTiedCardNumber)
-        form.bindView(vgsTiedExpiry)
-        form.bindView(vgsTiedCvc)
+    override fun onResume() {
+        super.onResume()
+        settings = TokenizationSettings.read(this)
+    }
 
-        // ==========================================================
-        // STEP 5: Setup actions
-        // ==========================================================
-        findViewById<MaterialButton>(R.id.mbTokenize).setOnClickListener {
-            setLoading(true)
-            NetworkHelper.accessToken(
-                onSuccess = { token ->
-                    // ⚠️ Tokenization V2 requires Authorization header.
-                    form.setCustomHeaders(mapOf("Authorization" to "Bearer $token"))
-                    form.createAliases(
-                        request = VGSCreateAliasesRequest.VGSRequestBuilder()
-                            .apply { routeId?.let { setRouteId(it) } }
-                            .build()
+    /**
+     * ⚠️ Tokenization V2 requires an `Authorization` header, so an access token is requested first.
+     * In a real app the token comes from your own backend.
+     */
+    private fun createAliases(states: List<BaseFieldState>) {
+        isLoading = true
+        NetworkHelper.accessToken(
+            onSuccess = { token ->
+                collect.setCustomHeaders(mapOf("Authorization" to "Bearer $token"))
+                collect.createAliases(
+                    request = VGSCreateAliasesRequest.VGSRequestBuilder()
+                        .apply { routeId?.let { setRouteId(it) } }
+                        .build(),
+                    fieldsStates = states,
+                )
+            },
+            onError = {
+                isLoading = false
+                Log.d(TAG, "Get access token error: $it")
+                response = DemoResponse(isSuccess = false, body = it)
+            }
+        )
+    }
+
+    override fun onResponse(response: VGSResponse?) {
+        isLoading = false
+        when (response) {
+            is VGSResponse.SuccessResponse -> {
+                Log.d(TAG, "Create aliases success: ${response.body}")
+                this.response = DemoResponse(isSuccess = true, code = response.successCode, body = response.body)
+            }
+
+            is VGSResponse.ErrorResponse -> {
+                Log.e(TAG, "Create aliases error: ${response.errorCode}")
+                this.response = DemoResponse(
+                    isSuccess = false,
+                    code = response.errorCode,
+                    body = response.localizeMessage
+                )
+            }
+
+            else -> Unit
+        }
+    }
+}
+
+/**
+ * Card form built with VGS Compose widgets that creates aliases for its values.
+ *
+ * [onCreateAliases] receives the current states so the caller can pass them directly
+ * to [VGSCollect.createAliases].
+ */
+@Composable
+private fun CreateAliasesScreen(
+    collect: VGSCollect,
+    settings: TokenizationSettings,
+    isLoading: Boolean,
+    response: DemoResponse?,
+    onBack: () -> Unit,
+    onOpenSettings: () -> Unit,
+    onCreateAliases: (List<BaseFieldState>) -> Unit,
+) {
+    // ==========================================================
+    // STEP 1: Initialize field states with tokenization configs
+    // ==========================================================
+    // Each state carries its own tokenization config with the alias format / storage
+    // defaults for its data type.
+    var cardHolderState by rememberVgsCardholderTextFieldState(
+        collect = collect,
+        fieldName = "data.name",
+        tokenizationConfig = settings.cardHolderConfig,
+    )
+    var cardNumberState by rememberVgsCardNumberTextFieldState(
+        collect = collect,
+        fieldName = "data.card_number",
+        tokenizationConfig = settings.cardNumberConfig,
+    )
+    var cvcState by rememberVgsCvcTextFieldState(
+        collect = collect,
+        fieldName = "data.cvc",
+        tokenizationConfig = VgsCvcTokenizationConfig(),
+    )
+    var expiryState by rememberVgsExpiryTextFieldState(
+        collect = collect,
+        fieldName = "data.expiry",
+        inputDateFormat = VgsExpiryDateFormat.MonthShortYear,
+        outputDateFormat = VgsExpiryDateFormat.MonthShortYear,
+        tokenizationConfig = settings.expiryConfig,
+    )
+    val states = listOf(cardHolderState, cardNumberState, cvcState, expiryState)
+
+    // ==========================================================
+    // STEP 2: Sync dependent field states
+    // ==========================================================
+    LaunchedEffect(cardNumberState.cardBrand) {
+        cvcState = cvcState.withCardBrand(cardNumberState.cardBrand)
+    }
+
+    // ==========================================================
+    // STEP 3: Validate and create aliases
+    // ==========================================================
+    // Errors are only displayed after the first attempt, and the request is only sent
+    // once all fields are valid.
+    var showErrors by remember { mutableStateOf(false) }
+    fun invalid(state: BaseFieldState) = showErrors && !state.isValid
+    fun createAliases() {
+        showErrors = true
+        if (!isLoading && states.all { it.isValid }) onCreateAliases(states)
+    }
+
+    val fieldColors = DemoFieldDefaults.colors()
+    val fieldShape = DemoFieldDefaults.shape
+
+    DemoScreen(
+        title = stringResource(R.string.start_tokenization_v2_title),
+        onBack = onBack,
+        loading = isLoading,
+        actions = { SettingsAction(onOpenSettings) }
+    ) {
+        // ======================================================
+        // STEP 4: Render fields
+        // ======================================================
+        DemoFormCard {
+            DemoField(
+                label = stringResource(R.string.card_holder_title),
+                error = cardHolderState.errorMessage().takeIf { invalid(cardHolderState) }
+            ) {
+                VgsCardholderOutlinedTextField(
+                    state = cardHolderState,
+                    onStateChange = { cardHolderState = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = { DemoPlaceholder(stringResource(R.string.collect_card_holder_hint)) },
+                    isError = invalid(cardHolderState),
+                    colors = fieldColors,
+                    shape = fieldShape,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                )
+            }
+
+            DemoField(
+                label = stringResource(R.string.card_number_title),
+                error = cardNumberState.errorMessage().takeIf { invalid(cardNumberState) }
+            ) {
+                VgsCardNumberOutlinedTextField(
+                    state = cardNumberState,
+                    onStateChange = { cardNumberState = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = { DemoPlaceholder(stringResource(R.string.collect_card_number_hint)) },
+                    isError = invalid(cardNumberState),
+                    trailingIcon = {
+                        Image(
+                            modifier = Modifier.size(24.dp),
+                            painter = painterResource(id = cardNumberState.cardBrand.cardIcon),
+                            contentDescription = cardNumberState.cardBrand.name,
+                        )
+                    },
+                    colors = fieldColors,
+                    shape = fieldShape,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                )
+            }
+
+            // Expiry (left) + CVC (right). `Done` on the keyboard creates the aliases.
+            Row(horizontalArrangement = Arrangement.spacedBy(DemoTheme.spacing.m)) {
+                DemoField(
+                    label = stringResource(R.string.expiry_title),
+                    modifier = Modifier.weight(1f),
+                    error = expiryState.errorMessage().takeIf { invalid(expiryState) }
+                ) {
+                    VgsExpiryOutlinedTextField(
+                        state = expiryState,
+                        onStateChange = { expiryState = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        placeholder = { DemoPlaceholder(stringResource(R.string.collect_expiry_hint)) },
+                        isError = invalid(expiryState),
+                        colors = fieldColors,
+                        shape = fieldShape,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                     )
-                },
-                onError = {
-                    setLoading(false)
-                    Log.d(TAG, "Get access token error: $it")
                 }
-            )
+                DemoField(
+                    label = stringResource(R.string.cvc_title),
+                    modifier = Modifier.weight(1f),
+                    error = cvcState.errorMessage().takeIf { invalid(cvcState) }
+                ) {
+                    VgsCvcOutlinedTextField(
+                        state = cvcState,
+                        onStateChange = { cvcState = it },
+                        modifier = Modifier.fillMaxWidth(),
+                        placeholder = { DemoPlaceholder(stringResource(R.string.collect_cvc_hint)) },
+                        isError = invalid(cvcState),
+                        colors = fieldColors,
+                        shape = fieldShape,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(onDone = { createAliases() })
+                    )
+                }
+            }
         }
-    }
 
-    /**
-     * Applies tokenization configuration based on shared preferences.
-     *
-     * Controls:
-     * - Whether tokenization is enabled per field
-     * - Storage type (PERSISTENT / VOLATILE)
-     * - Alias format (FPE, UUID, RAW_UUID, etc.)
-     */
-    private fun configureTokenization() {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        vgsTiedCardHolder.setEnabledTokenization(
-            preferences.getBoolean(
-                getString(R.string.tokenization_card_holder_enabled_key),
-                true
-            )
+        val invalidCount = states.count { !it.isValid }
+        if (showErrors && invalidCount > 0) {
+            DemoErrorBanner(pluralStringResource(R.plurals.collect_invalid_fields_banner, invalidCount, invalidCount))
+        }
+
+        // ======================================================
+        // STEP 5: Create aliases
+        // ======================================================
+        // The SDK reads each field's tokenizationConfig and sends the payload to the
+        // VGS aliases endpoint. The response contains aliases in place of the raw values.
+        DemoButton(
+            text = stringResource(if (isLoading) R.string.create_aliases_loading else R.string.create_aliases_btn_title),
+            onClick = ::createAliases,
+            modifier = Modifier.fillMaxWidth(),
+            loading = isLoading
         )
-        val cardHolderStorageKey = getString(R.string.tokenization_card_holder_storage_key)
-        parseStorage(preferences.getString(cardHolderStorageKey, null))?.let {
-            vgsTiedCardHolder.setVaultStorageType(it)
-        }
-        val cardHolderAlisaFormatKey = getString(R.string.tokenization_card_holder_alias_format_key)
-        parseAliasFormat(preferences.getString(cardHolderAlisaFormatKey, null))?.let {
-            vgsTiedCardHolder.setVaultAliasFormat(it)
-        }
-        val cardNumberAlisaFormatKey = getString(R.string.tokenization_card_holder_alias_format_key)
-        parseAliasFormat(preferences.getString(cardNumberAlisaFormatKey, null))?.let {
-            vgsTiedCardNumber.setVaultAliasFormat(it)
-        }
 
-        vgsTiedExpiry.setEnabledTokenization(
-            preferences.getBoolean(
-                getString(R.string.tokenization_expiry_enabled_key),
-                true
-            )
+        DemoDebugPanel(states = states, response = response)
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+private fun Preview() {
+    DemoTheme {
+        CreateAliasesScreen(
+            collect = VGSCollect(LocalContext.current, "", ""),
+            settings = TokenizationSettings.read(LocalContext.current),
+            isLoading = false,
+            response = null,
+            onBack = {},
+            onOpenSettings = {},
+            onCreateAliases = {},
         )
-        val expiryStorageKey = getString(R.string.tokenization_expiry_storage_key)
-        parseStorage(preferences.getString(expiryStorageKey, null))?.let {
-            vgsTiedExpiry.setVaultStorageType(it)
-        }
-        val expiryAliasFormatKey = getString(R.string.tokenization_expiry_storage_key)
-        parseAliasFormat(preferences.getString(expiryAliasFormatKey, null))?.let {
-            vgsTiedExpiry.setVaultAliasFormat(it)
-        }
-    }
-
-    /**
-     * Converts stored string value into [VGSVaultStorageType].
-     *
-     * @param storage String representation from preferences
-     * @return Matching enum or null if invalid
-     */
-    private fun parseStorage(storage: String?): VGSVaultStorageType? = when (storage) {
-        VGSVaultStorageType.PERSISTENT.name -> VGSVaultStorageType.PERSISTENT
-        VGSVaultStorageType.VOLATILE.name -> VGSVaultStorageType.VOLATILE
-        else -> null
-    }
-
-    /**
-     * Converts stored string value into [VGSVaultAliasFormat].
-     *
-     * @param format String representation from preferences
-     * @return Matching enum or null if invalid
-     */
-    private fun parseAliasFormat(format: String?): VGSVaultAliasFormat? = when (format) {
-        VGSVaultAliasFormat.FPE_ACC_NUM_T_FOUR.name -> VGSVaultAliasFormat.FPE_ACC_NUM_T_FOUR
-        VGSVaultAliasFormat.FPE_ALPHANUMERIC_ACC_NUM_T_FOUR.name -> VGSVaultAliasFormat.FPE_ALPHANUMERIC_ACC_NUM_T_FOUR
-        VGSVaultAliasFormat.FPE_SIX_T_FOUR.name -> VGSVaultAliasFormat.FPE_SIX_T_FOUR
-        VGSVaultAliasFormat.FPE_SSN_T_FOUR.name -> VGSVaultAliasFormat.FPE_SSN_T_FOUR
-        VGSVaultAliasFormat.FPE_T_FOUR.name -> VGSVaultAliasFormat.FPE_T_FOUR
-        VGSVaultAliasFormat.NUM_LENGTH_PRESERVING.name -> VGSVaultAliasFormat.NUM_LENGTH_PRESERVING
-        VGSVaultAliasFormat.PFPT.name -> VGSVaultAliasFormat.PFPT
-        VGSVaultAliasFormat.RAW_UUID.name -> VGSVaultAliasFormat.RAW_UUID
-        VGSVaultAliasFormat.UUID.name -> VGSVaultAliasFormat.UUID
-        VGSVaultAliasFormat.GENERIC_T_FOUR.name -> VGSVaultAliasFormat.GENERIC_T_FOUR
-        VGSVaultAliasFormat.ALPHANUMERIC_SIX_T_FOUR.name -> VGSVaultAliasFormat.ALPHANUMERIC_SIX_T_FOUR
-        VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING.name -> VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING
-        VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING_T_FOUR.name -> VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING_T_FOUR
-        VGSVaultAliasFormat.ALPHANUMERIC_SSN_T_FOUR.name -> VGSVaultAliasFormat.ALPHANUMERIC_SSN_T_FOUR
-        VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING_SIX_T_FOUR.name -> VGSVaultAliasFormat.ALPHANUMERIC_LENGTH_PRESERVING_SIX_T_FOUR
-        else -> null
     }
 }
