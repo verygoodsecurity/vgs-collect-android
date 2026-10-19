@@ -62,11 +62,14 @@
 
         <activity
             android:name=".cmp.CMPActivity"
-            android:label="CMP" />
+            android:label="CMP"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
 
         <activity
             android:name=".google_pay.GooglePayActivity"
-            android:label="Google Pay" />
+            android:label="Google Pay"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"

@@ -85,6 +85,40 @@
     <string name="demo_invalid_count">%d invalid</string>
     <string name="demo_no_response">No response yet. Submit the form to see it here.</string>
 
+    <!--    CMP-->
+    <string name="cmp_title">CMP · Create card</string>
+    <string name="cmp_pan_title">PAN</string>
+    <string name="cmp_create_card_btn_title">Create card</string>
+    <string name="cmp_init_title">Initializing session</string>
+    <string name="cmp_init_subtitle">Usually takes a second or two</string>
+    <string name="cmp_init_description">Fetching an access token, then loading the session configuration for your vault. The card form appears as soon as the session is ready.</string>
+    <string name="cmp_init_step_auth_title">Auth handler ready</string>
+    <string name="cmp_init_step_auth_subtitle">Your app provides the token on request</string>
+    <string name="cmp_init_step_token_title">Fetching access token</string>
+    <string name="cmp_init_step_token_subtitle">Requesting a Bearer token for your vault</string>
+    <string name="cmp_init_step_config_title">Loading session configuration</string>
+    <string name="cmp_init_step_config_subtitle">Enables card attributes lookup when configured</string>
+    <string name="cmp_init_footnote">The form is shown once the session is ready</string>
+    <string name="cmp_session_ready">Session ready</string>
+    <string name="cmp_lookup_loading">Looking up card attributes…</string>
+    <string name="cmp_lookup_success">Card attributes looked up</string>
+    <string name="cmp_lookup_failure">Card attributes lookup failed (%d)</string>
+
+    <!--    Google Pay-->
+    <string name="google_pay_overline">Demo</string>
+    <string name="google_pay_headline">Decrypt a Google Pay token</string>
+    <string name="google_pay_body">Request a test payment token from Google Pay, then send it to your vault to decrypt and save the card.</string>
+    <string name="google_pay_step_request">Request a $10 test payment token</string>
+    <string name="google_pay_step_send">Send the payload to your vault route</string>
+    <string name="google_pay_step_decrypt">Decrypt and save the card data</string>
+    <string name="google_pay_sandbox_note">Sandbox · test cards only</string>
+    <string name="google_pay_status_success">Payment data successfully decrypted and saved</string>
+    <string name="google_pay_status_decrypt_failed">Payment data decryption failed</string>
+    <string name="google_pay_status_canceled">Payment canceled</string>
+    <string name="google_pay_status_failed">Payment request failed. Code: %d</string>
+    <string name="google_pay_status_error">Payment request failed. Error: %s</string>
+    <string name="google_pay_status_unavailable">Google Pay unavailable</string>
+
     <!--    Tokenization-->
     <string name="tokenization_settings_title">Tokenization settings</string>
     <string name="tokenization_settings_hint">Choose how each field is tokenized. Changes apply when you go back to the demo.</string>
