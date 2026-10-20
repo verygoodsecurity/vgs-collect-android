@@ -76,7 +76,7 @@ private enum class LookupStatus { IDLE, LOADING, SUCCESS, FAILURE }
  * - How to start a [VGSCollect] session with authorization via [VGSCollect.session]
  * - How to request an access token before CMP operations
  * - How to declare Compose field states (PAN, expiration date, CVC)
- * - How to call CMP [VGSCollect.createCard] and handle the response
+ * - How to call CMP [VGSCollect.createCard] (with optional custom `meta`) and handle the response
  * - How to listen for card attributes lookup events
  *
  * Unlike other demo activities that use the synchronous [VGSCollect] constructor,
@@ -132,7 +132,13 @@ class CMPActivity : AppCompatActivity(), VgsCollectResponseListener {
                     onBack = ::finish,
                     onCreateCard = { states ->
                         isCreating = true
-                        collect?.createCard(fieldsStates = states)
+                        collect?.createCard(
+                            fieldsStates = states,
+                            meta = mapOf(
+                                "orderId" to "demo-order-123",
+                                "integration" to "cmp-demo"
+                            )
+                        )
                     }
                 )
             }
