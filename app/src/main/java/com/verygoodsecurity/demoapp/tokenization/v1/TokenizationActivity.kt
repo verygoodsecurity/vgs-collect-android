@@ -200,7 +200,7 @@ class TokenizationActivity : BaseDemoActivity(R.layout.activity_tokenization) {
         }
 
         // ---- Card Number Configuration ----
-        val cardNumberAlisaFormatKey = getString(R.string.tokenization_card_holder_alias_format_key)
+        val cardNumberAlisaFormatKey = getString(R.string.tokenization_card_number_alias_format_key)
         parseAliasFormat(preferences.getString(cardNumberAlisaFormatKey, null))?.let {
             vgsTiedCardNumber.setVaultAliasFormat(it)
         }
@@ -216,7 +216,7 @@ class TokenizationActivity : BaseDemoActivity(R.layout.activity_tokenization) {
         parseStorage(preferences.getString(expiryStorageKey, null))?.let {
             vgsTiedExpiry.setVaultStorageType(it)
         }
-        val expiryAliasFormatKey = getString(R.string.tokenization_expiry_storage_key)
+        val expiryAliasFormatKey = getString(R.string.tokenization_expiry_alias_format_key)
         parseAliasFormat(preferences.getString(expiryAliasFormatKey, null))?.let {
             vgsTiedExpiry.setVaultAliasFormat(it)
         }
