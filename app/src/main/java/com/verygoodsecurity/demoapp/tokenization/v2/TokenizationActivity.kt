@@ -1,6 +1,5 @@
 package com.verygoodsecurity.demoapp.tokenization.v2
 
-import android.graphics.Color as AndroidColor
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.SystemBarStyle
@@ -33,15 +32,15 @@ import com.verygoodsecurity.demoapp.R
 import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ENVIRONMENT
 import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_ROUTE_ID
 import com.verygoodsecurity.demoapp.start.StartActivity.Companion.KEY_BUNDLE_TENANT_ID
+import com.verygoodsecurity.demoapp.tokenization.settings.SettingsAction
+import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettings
+import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettingsActivity
 import com.verygoodsecurity.demoapp.ui.DemoButton
 import com.verygoodsecurity.demoapp.ui.DemoDebugPanel
 import com.verygoodsecurity.demoapp.ui.DemoErrorBanner
 import com.verygoodsecurity.demoapp.ui.DemoField
 import com.verygoodsecurity.demoapp.ui.DemoFieldDefaults
 import com.verygoodsecurity.demoapp.ui.DemoFormCard
-import com.verygoodsecurity.demoapp.tokenization.settings.SettingsAction
-import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettings
-import com.verygoodsecurity.demoapp.tokenization.settings.TokenizationSettingsActivity
 import com.verygoodsecurity.demoapp.ui.DemoPlaceholder
 import com.verygoodsecurity.demoapp.ui.DemoResponse
 import com.verygoodsecurity.demoapp.ui.DemoScreen
@@ -66,6 +65,7 @@ import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCardholde
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsCvcTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.state.rememberVgsExpiryTextFieldState
 import com.verygoodsecurity.vgscollect.widget.compose.tokenization.VgsCvcTokenizationConfig
+import android.graphics.Color as AndroidColor
 
 private const val TAG = "V2 TokenizationActivity"
 
@@ -173,7 +173,11 @@ class TokenizationActivity : AppCompatActivity(), VgsCollectResponseListener {
         when (response) {
             is VGSResponse.SuccessResponse -> {
                 Log.d(TAG, "Create aliases success: ${response.body}")
-                this.response = DemoResponse(isSuccess = true, code = response.successCode, body = response.body)
+                this.response = DemoResponse(
+                    isSuccess = true,
+                    code = response.successCode,
+                    body = response.body
+                )
             }
 
             is VGSResponse.ErrorResponse -> {
@@ -209,8 +213,8 @@ private fun CreateAliasesScreen(
     // ==========================================================
     // STEP 1: Initialize field states with tokenization configs
     // ==========================================================
-    // Each state carries its own tokenization config with the alias format / storage
-    // defaults for its data type.
+    // Each state carries its own tokenization config (alias format / storage), taken from the
+    // options chosen on the settings screen. A field without a config is sent as is.
     var cardHolderState by rememberVgsCardholderTextFieldState(
         collect = collect,
         fieldName = "data.name",
@@ -346,7 +350,13 @@ private fun CreateAliasesScreen(
 
         val invalidCount = states.count { !it.isValid }
         if (showErrors && invalidCount > 0) {
-            DemoErrorBanner(pluralStringResource(R.plurals.collect_invalid_fields_banner, invalidCount, invalidCount))
+            DemoErrorBanner(
+                pluralStringResource(
+                    R.plurals.collect_invalid_fields_banner,
+                    invalidCount,
+                    invalidCount
+                )
+            )
         }
 
         // ======================================================
