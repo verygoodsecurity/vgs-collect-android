@@ -106,6 +106,12 @@ class TokenizationActivity : BaseDemoActivity(R.layout.activity_tokenization) {
         configureTokenization()
     }
 
+    /** Releases [VGSCollect] resources and field bindings. */
+    override fun onDestroy() {
+        super.onDestroy()
+        form.onDestroy()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.tokenization_menu, menu)
         return true

@@ -109,6 +109,12 @@ class GooglePayActivity : AppCompatActivity(), VgsCollectResponseListener {
         possiblyShowGooglePayButton()
     }
 
+    /** Releases [VGSCollect] resources. */
+    override fun onDestroy() {
+        super.onDestroy()
+        collect.onDestroy()
+    }
+
     override fun onResponse(response: VGSResponse?) {
         Log.d(TAG, response.toString())
         status = when (response) {

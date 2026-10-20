@@ -144,7 +144,13 @@ class TokenizationComposeActivity : AppCompatActivity(), VgsCollectResponseListe
         settings = TokenizationSettings.read(this)
     }
 
-    override fun onResponse(response: VGSResponse?) {
+    /** Releases [VGSCollect] resources and field bindings. */
+    override fun onDestroy() {
+        super.onDestroy()
+        collect.onDestroy()
+    }
+
+override fun onResponse(response: VGSResponse?) {
         when (response) {
             is VGSResponse.SuccessResponse -> {
                 Log.d(TAG, "Tokenize success: ${response.body}")

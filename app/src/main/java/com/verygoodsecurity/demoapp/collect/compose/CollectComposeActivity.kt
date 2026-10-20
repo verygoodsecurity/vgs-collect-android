@@ -228,6 +228,12 @@ class CollectComposeActivity : AppCompatActivity(), VgsCollectResponseListener {
      * - [VGSResponse.SuccessResponse]: data was accepted by the vault route.
      * - [VGSResponse.ErrorResponse]: submission failed; inspect [VGSResponse.ErrorResponse.errorCode].
      */
+    /** Releases [VGSCollect] resources and field bindings. */
+    override fun onDestroy() {
+        super.onDestroy()
+        collect.onDestroy()
+    }
+
     override fun onResponse(response: VGSResponse?) {
         when (response) {
             is VGSResponse.SuccessResponse -> {

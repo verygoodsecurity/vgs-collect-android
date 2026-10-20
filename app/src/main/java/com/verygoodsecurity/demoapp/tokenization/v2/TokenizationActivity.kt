@@ -144,6 +144,11 @@ class TokenizationActivity : AppCompatActivity(), VgsCollectResponseListener {
         settings = TokenizationSettings.read(this)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        collect.onDestroy()
+    }
+
     /**
      * ⚠️ Tokenization V2 requires an `Authorization` header, so an access token is requested first.
      * In a real app the token comes from your own backend.
