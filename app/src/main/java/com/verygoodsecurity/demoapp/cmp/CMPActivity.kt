@@ -42,10 +42,10 @@ import com.verygoodsecurity.demoapp.ui.DemoFormSkeleton
 import com.verygoodsecurity.demoapp.ui.DemoPlaceholder
 import com.verygoodsecurity.demoapp.ui.DemoProgressCard
 import com.verygoodsecurity.demoapp.ui.DemoProgressStep
-import com.verygoodsecurity.demoapp.ui.ProgressStepState
 import com.verygoodsecurity.demoapp.ui.DemoResponse
 import com.verygoodsecurity.demoapp.ui.DemoScreen
 import com.verygoodsecurity.demoapp.ui.DemoTheme
+import com.verygoodsecurity.demoapp.ui.ProgressStepState
 import com.verygoodsecurity.demoapp.ui.errorMessage
 import com.verygoodsecurity.demoapp.utils.NetworkHelper
 import com.verygoodsecurity.demoapp.utils.accessToken

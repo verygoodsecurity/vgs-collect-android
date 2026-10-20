@@ -32,8 +32,8 @@ import com.verygoodsecurity.demoapp.ui.DemoTheme
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultAliasFormat
 import com.verygoodsecurity.vgscollect.core.model.state.tokenization.VGSVaultStorageType
 
-private val storageTypes = VGSVaultStorageType.values().map { it.name }
-private val allAliasFormats = VGSVaultAliasFormat.values().map { it.name }
+private val storageTypes = VGSVaultStorageType.entries.map { it.name }
+private val allAliasFormats = VGSVaultAliasFormat.entries.map { it.name }
 private val numberAliasFormats = allAliasFormats - listOf(
     VGSVaultAliasFormat.FPE_SSN_T_FOUR,
     VGSVaultAliasFormat.ALPHANUMERIC_SSN_T_FOUR,

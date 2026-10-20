@@ -240,7 +240,9 @@ fun DemoDropdown(
             Icon(painterResource(R.drawable.ic_expand_more), contentDescription = null, tint = colors.muted)
         }
         DropdownMenu(expanded, onDismissRequest = { expanded = false }) {
-            options.forEach {
+            // A stored value may no longer be offered (e.g. saved by an older screen); keep it selectable.
+            val items = if (selected in options) options else listOf(selected) + options
+            items.forEach {
                 DropdownMenuItem(onClick = { onSelected(it); expanded = false }) {
                     Text(it, style = DemoTheme.typography.field.copy(fontSize = 14.sp), color = colors.ink)
                 }
