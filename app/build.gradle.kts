@@ -91,6 +91,7 @@ dependencies {
     implementation(libs.espresso.idling.resource)
 
     debugImplementation(debugLibs.compose.ui.tooling)
+    debugImplementation(debugLibs.compose.ui.test.manifest)
     debugImplementation(debugLibs.leakcanary)
 
     testImplementation(testLibs.junit)
@@ -104,6 +105,7 @@ dependencies {
     androidTestImplementation(androidTestLibs.androidx.espresso.core)
     androidTestImplementation(androidTestLibs.androidx.espresso.intents)
     androidTestImplementation(androidTestLibs.espresso.contrib)
+    androidTestImplementation(androidTestLibs.androidx.compose.ui.test.junit4)
     androidTestImplementation(androidTestLibs.androidx.rules)
 }
 

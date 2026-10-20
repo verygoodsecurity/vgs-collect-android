@@ -43,6 +43,9 @@ gen/
 .gradle/
 build/
 
+# Kotlin compiler session data
+.kotlin/
+
 # Local configuration file (sdk path, etc)
 local.properties
 
