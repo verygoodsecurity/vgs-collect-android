@@ -2,6 +2,10 @@
 
 For SDK API reference, field types, validation rules, submission patterns, and security policies see [AGENTS.md](AGENTS.md).
 
+Contributor workflow rules (including the required consumer-guidance sync on public API changes) live in `.github/AGENTS.md`:
+
+@.github/AGENTS.md
+
 ## Build
 
 ```sh
