@@ -45,7 +45,7 @@ Private forks or internal mirrors do not override the public repo.
 Do not block the task on version detection. If unknown, use default-branch guidance and disclose it.
 
 **Step 3 - match tag to version:**
-- exact match (`1.10.3` or `v1.10.3`)
+- exact match (`2.1.0` or `v2.1.0`)
 - nearest compatible tag with same `major.minor` and highest patch not newer than installed
 - highest tag satisfying a version range
 - exact git SHA or branch when dependency points to one
@@ -111,9 +111,9 @@ Patch/PR/design review.
 ## Output contract
 
 Begin every response by stating which guidance version is used:
-- `Using vgscollect 1.10.3 guidance.`
-- `Detected vgscollect 1.10.3 from gradle.properties.`
+- `Using vgscollect 2.1.0 guidance.`
+- `Detected vgscollect 2.1.0 from gradle.properties.`
 - `Could not determine the installed vgscollect version; using latest guidance from default branch.`
-- `Exact tag 1.10.4 was not found; using nearest compatible tag 1.10.3.`
+- `Exact tag 2.1.1 was not found; using nearest compatible tag 2.1.0.`
 
 Then proceed using the active version-matched snapshot.
