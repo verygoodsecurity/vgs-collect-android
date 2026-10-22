@@ -1,6 +1,6 @@
 # AGENTS.md
 
-**SDK Version: 1.10.3**
+**SDK Version: 2.1.0**
 
 This guide is tailored for autonomous engineering agents integrating `VGSCollectSDK` into Android applications. It focuses on deterministic, automatable steps: environment assessment, dependency installation, feature wiring (text fields, scanning, file upload), privacy compliance, testing, maintenance, and safe upgrade workflows.
 
@@ -41,17 +41,20 @@ Documentation Source of Truth Across Versions
 Purpose: ensure correct vault/environment pairing before any field setup or submission.
 
 Required:
+- Dependency: `implementation("com.verygoodsecurity:vgscollect:2.1.0")`; optional BlinkCard adapter: `implementation("com.verygoodsecurity:adapter-blinkcard:1.0.6")`.
+- Android `minSdk` 23 or higher (BlinkCard adapter: 24), JDK 17.
+- For Compose fields, the host app must provide `androidx.compose.material` or `androidx.compose.material3` (the SDK declares them `compileOnly`).
 - Non-empty `tenantId` string (assert with `precondition(!tenantId.isEmpty)` in debug builds).
 - Explicit environment selection: `Environment.SANDBOX` for development/testing; `Environment.LIVE` for production only.
-- Keep sandbox and live vault IDs distinct; never point `.LIVE` at a sandbox vault ID.
+- Keep sandbox and live tenant IDs distinct; never point `.LIVE` at a sandbox tenant ID.
 - Optional hostname override (if provided): verify matches VGS dashboard configuration before deploy.
 
 Quick Examples:
 ```kotlin
 // Sandbox collector (dev/test)
-val collector = VGSCollect(context, sandboxVaultId, Environment.SANDBOX)
+val collector = VGSCollect(context, sandboxTenantId, Environment.SANDBOX)
 // Production collector (release build)
-val liveCollector = VGSCollect(context, liveVaultId, Environment.LIVE)
+val liveCollector = VGSCollect(context, liveTenantId, Environment.LIVE)
 ```
 Failure Modes:
 - Empty tenantId -> initialization should fail fast (use preconditions).

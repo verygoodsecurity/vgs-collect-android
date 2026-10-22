@@ -10,6 +10,7 @@ Table of contents
 =================
 
 <!--ts-->
+   * [AI Agent Integration](#ai-agent-integration)
    * [Structure](#structure)
    * [Integration](#integration)
    * [Next steps](#next-steps)
@@ -68,19 +69,75 @@ Do not break existing brand detection; add tests for detection and negative near
 
 
 ## Structure
-* **VGSCollect SDK** - provides an API for interacting with the VGS Vault
-* **Card Scanner** - This module is for adapting <a href="https://github.com/blinkcard/blinkcard-android">blinkcard-android SDK</a> with VGS Collect Android SDK.
+* **VGSCollect SDK** (`vgscollect`) - provides an API for interacting with the VGS Vault. Includes View-based widgets, Jetpack Compose text fields, and Card Management Platform (CMP) sessions (`VGSCollect.session()` → `createCard()` / `updateCard()`).
+* **Card Scanner** (`vgscollect-blinkcard`) - This module is for adapting <a href="https://github.com/blinkcard/blinkcard-android">blinkcard-android SDK</a> with VGS Collect Android SDK.
+* **Analytics** (`vgs-sdk-analytics`) - analytics module used by the SDK.
 * **app** - sample application to act as the host app for testing the SDK during development
 
 ## Integration
-For integration you need to install the [Android Studio](http://developer.android.com/sdk/index.html) and a [JDK](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) on your machine.
+For integration you need to install the [Android Studio](http://developer.android.com/sdk/index.html) and a [JDK 17](https://adoptium.net/) on your machine. The SDK supports Android **minSdk 23** and is built with **compileSdk 37**.
 
+### Jetpack Compose (recommended)
+Add the SDK to your `build.gradle.kts`. Compose dependencies are `compileOnly` in the SDK, so your app must provide `androidx.compose.material` or `androidx.compose.material3`:
+
+```kotlin
+dependencies {
+    implementation("com.verygoodsecurity:vgscollect:2.1.0")
+
+    // Optional: BlinkCard scanner adapter
+    implementation("com.verygoodsecurity:adapter-blinkcard:1.0.6")
+}
+```
+
+Both Material (`com.verygoodsecurity.vgscollect.widget.compose.material`) and Material3 (`...compose.material3`) variants are available. Fields are driven by immutable states, so there is no `bindView()` — pass the states straight to the submit call:
+
+```kotlin
+@Composable
+fun PaymentForm(collect: VGSCollect) {
+    var cardholderState by rememberVgsCardholderTextFieldState(collect = collect, fieldName = "data.name")
+    var cardNumberState by rememberVgsCardNumberTextFieldState(collect = collect, fieldName = "data.card_number")
+    var expiryState by rememberVgsExpiryTextFieldState(
+        collect = collect,
+        fieldName = "data.expiry",
+        inputDateFormat = VgsExpiryDateFormat.MonthShortYear,
+        outputDateFormat = VgsExpiryDateFormat.LongYearMonth,
+    )
+    var cvcState by rememberVgsCvcTextFieldState(collect = collect, fieldName = "data.cvc")
+
+    // Keep CVC length in sync with the detected card brand
+    LaunchedEffect(cardNumberState.cardBrand) {
+        cvcState = cvcState.withCardBrand(cardNumberState.cardBrand)
+    }
+
+    Column {
+        VgsCardholderOutlinedTextField(state = cardholderState, onStateChange = { cardholderState = it })
+        VgsCardNumberOutlinedTextField(state = cardNumberState, onStateChange = { cardNumberState = it })
+        VgsExpiryOutlinedTextField(state = expiryState, onStateChange = { expiryState = it })
+        VgsCvcOutlinedTextField(state = cvcState, onStateChange = { cvcState = it })
+
+        val states = listOf(cardholderState, cardNumberState, expiryState, cvcState)
+        Button(
+            enabled = states.all { it.isValid },
+            onClick = {
+                collect.asyncSubmit(
+                    VGSRequest.VGSRequestBuilder().setPath("/post").build(),
+                    states,
+                )
+            },
+        ) { Text("Submit") }
+    }
+}
+```
+
+Receive the result by registering a `VgsCollectResponseListener` with `collect.addOnResponseListeners(...)`. Also available: `tokenize()`, `createAliases()`, per-field tokenization configs, custom validators and visual transformations — see [AGENTS.md](./skills/vgs-collect-android-guide/references/AGENTS.md).
+
+### View-based (XML)
 
 <table>
   <tr>
     <td colspan="2">
       <b>Integrate the VGS Collect SDK to your project</b>. <br/>
-      If you are using Maven, add the following to your <code>build.gradle</code> file.
+      Add the following to your <code>build.gradle</code> file.
     </td>
   </tr>
   <tr>
@@ -91,7 +148,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:<version>"
     implementation "com.google.android.material:material:<version>"
 
-    implementation "com.verygoodsecurity:vgscollect:<latest-version>"
+    implementation "com.verygoodsecurity:vgscollect:2.1.0"
 }
 ```
   </td>
@@ -158,7 +215,7 @@ class MainActivity : AppCompatActivity() {
      super.onCreate(savedInstanceState)
      setContentView(R.layout.activity_main)
 
-     vgsForm = VGSCollect(this, "<vauilt_id>", Environment.SANDBOX)
+     vgsForm = VGSCollect(this, "<tenant_id>", Environment.SANDBOX)
 
      val view = findViewById<VGSCardNumberEditText>(R.id.cardNumberField)
      vgsForm.bindView(view)
@@ -194,7 +251,7 @@ class MainActivity : AppCompatActivity() {
      super.onCreate(savedInstanceState)
      setContentView(R.layout.activity_main)
 
-     vgsForm = VGSCollect(this, "<vauilt_id>", Environment.SANDBOX)
+     vgsForm = VGSCollect(this, "<tenant_id>", Environment.SANDBOX)
      vgsForm.addOnFieldStateChangeListener(
      	object : OnFieldStateChangeListener {
          override fun onStateChange(state: FieldState) {
@@ -209,7 +266,7 @@ class MainActivity : AppCompatActivity() {
             // Handle single field states
          }
      })
-     vgsForm.bindView(cardNumberField)
+     vgsForm.bindView(view)
     // Bind other fields
 
   }
@@ -236,15 +293,10 @@ override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    vgsForm = VGSCollect(this, "<vauilt_id>", Environment.SANDBOX)
-
-    val submitBtn = findViewById<Button>(R.id.submitBtn)
-    submitBtn?.setOnClickListener {
-        submitData()
-    }
+    vgsForm = VGSCollect(this, "<tenant_id>", Environment.SANDBOX)
 
     val view = findViewById<VGSCardNumberEditText>(R.id.cardNumberField)
-    view.bindView(cardNumberField)
+    vgsForm.bindView(view)
     // Bind other fields
 
     val submitBtn = findViewById<Button>(R.id.submitBtn)
