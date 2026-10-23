@@ -15,27 +15,27 @@ object StartItems {
     val all = listOf(
         StartItem.Header(R.string.start_section_collect),
         StartItem.Flow(
-            R.string.start_collect_views_title,
-            R.string.start_collect_views_description,
-            R.drawable.ic_flow_collect,
-            CollectViewsActivity::class.java,
-            badge = StartBadge.DEPRECATED
-        ),
-        StartItem.Flow(
             R.string.start_collect_compose_title,
             R.string.start_collect_compose_description,
             R.drawable.ic_flow_collect,
             CollectComposeActivity::class.java,
             badge = StartBadge.RECOMMENDED
         ),
+        StartItem.Flow(
+            R.string.start_collect_views_title,
+            R.string.start_collect_views_description,
+            R.drawable.ic_flow_collect,
+            CollectViewsActivity::class.java,
+            badge = StartBadge.DEPRECATED
+        ),
         StartItem.Header(R.string.start_section_tokenization),
         StartItem.Flow(
-            R.string.start_tokenization_title,
-            R.string.start_tokenization_description,
-            R.drawable.ic_flow_tokenization,
-            TokenizationActivityV1::class.java,
-            BuildConfig.TOKENIZATION_ROUTE_ID,
-            StartBadge.DEPRECATED
+            R.string.start_tokenization_v2_title,
+            R.string.start_tokenization_v2_description,
+            R.drawable.ic_flow_aliases,
+            TokenizationActivityV2::class.java,
+            BuildConfig.TOKENIZATION_V2_ROUTE_ID,
+            StartBadge.RECOMMENDED
         ),
         StartItem.Flow(
             R.string.start_tokenization_compose_title,
@@ -45,12 +45,12 @@ object StartItems {
             BuildConfig.TOKENIZATION_ROUTE_ID
         ),
         StartItem.Flow(
-            R.string.start_tokenization_v2_title,
-            R.string.start_tokenization_v2_description,
-            R.drawable.ic_flow_aliases,
-            TokenizationActivityV2::class.java,
-            BuildConfig.TOKENIZATION_V2_ROUTE_ID,
-            StartBadge.RECOMMENDED
+            R.string.start_tokenization_title,
+            R.string.start_tokenization_description,
+            R.drawable.ic_flow_tokenization,
+            TokenizationActivityV1::class.java,
+            BuildConfig.TOKENIZATION_ROUTE_ID,
+            StartBadge.DEPRECATED
         ),
         StartItem.Header(R.string.start_section_more),
         StartItem.Flow(

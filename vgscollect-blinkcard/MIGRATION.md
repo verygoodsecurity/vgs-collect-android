@@ -12,7 +12,7 @@ This guide helps you upgrade apps using the older VGS BlinkCard adapter (v1.0.5-
 
 | Consumer-facing changes | Adapter 1.0.5 | Adapter 1.0.6+ |
 |---|---|---|
-| BlinkCard version | 2.7.0 | 3000.0.1 |
+| BlinkCard version | 2.7.0 | 3001.0.0 |
 | Min SDK requirement | 21 | 24 |
 | License setup | `MicroblinkSDK.setLicenseKey()` globally in `Application.onCreate` | Pass `BlinkCardSdkSettings("<KEY>")` per scan session |
 | Intent builder instantiation | `VGSBlinkCardIntentBuilder(this)` | `VGSBlinkCardIntentBuilder(this, settings)` **settings required** |

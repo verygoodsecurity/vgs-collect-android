@@ -11,7 +11,7 @@ This adapter wraps **BlinkCard v3000 SDK** and provides a simplified consumer AP
 - **Adapter version**: `1.0.6+` (contains v3000 upgrade)
 - **Previous adapter**: `1.0.5` and earlier (uses BlinkCard v2)
 - Adapter min SDK: `24`
-- Internal BlinkCard version: `3000.0.1`
+- Internal BlinkCard version: `3001.0.0`
 - License model: Per-session (passed to builder)
 
 **Upgrading from adapter v1.0.5 or earlier?** See [MIGRATION_V2_TO_V3000.md](./MIGRATION_V2_TO_V3000.md).
@@ -31,6 +31,11 @@ repositories {
     mavenCentral()  // Required for adapter and BlinkCard dependencies
 }
 ```
+
+### Build requirements (BlinkCard 3001.0.0)
+
+- Kotlin `2.1` or newer, Android Gradle Plugin `8.9.1` or newer, `compileSdk` `36` or newer.
+- Jetpack Compose UI `1.11.2` or newer. `blinkcard-ux` crashes on the scanning screen if the app forces an older Compose version (for example with `strictly` in a Gradle version constraint).
 
 ## Setup
 
