@@ -46,14 +46,14 @@ android {
 **Before (adapter 1.0.5):**
 ```kotlin
 dependencies {
-    implementation("com.verygoodsecurity.api:adapter-blinkcard:1.0.5")
+    implementation("com.verygoodsecurity:adapter-blinkcard:1.0.5")
 }
 ```
 
 **After (adapter 1.0.6+):**
 ```kotlin
 dependencies {
-    implementation("com.verygoodsecurity.api:adapter-blinkcard:1.0.6")  // or later
+    implementation("com.verygoodsecurity:adapter-blinkcard:1.0.6")  // or later
 }
 ```
 
