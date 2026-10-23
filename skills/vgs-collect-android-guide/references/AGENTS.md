@@ -41,7 +41,7 @@ Documentation Source of Truth Across Versions
 Purpose: ensure correct vault/environment pairing before any field setup or submission.
 
 Required:
-- Dependency: `implementation("com.verygoodsecurity:vgscollect:2.1.1")`; optional BlinkCard adapter: `implementation("com.verygoodsecurity:adapter-blinkcard:1.0.6")`.
+- Dependency: `implementation("com.verygoodsecurity:vgscollect:2.1.1")`; optional BlinkCard adapter: `implementation("com.verygoodsecurity:adapter-blinkcard:1.0.7")`.
 - Android `minSdk` 23 or higher (BlinkCard adapter: 24), JDK 17.
 - For Compose fields, the host app must provide `androidx.compose.material` or `androidx.compose.material3` (the SDK declares them `compileOnly`).
 - Non-empty `tenantId` string (assert with `precondition(!tenantId.isEmpty)` in debug builds).

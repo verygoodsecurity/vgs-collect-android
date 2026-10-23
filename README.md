@@ -85,7 +85,7 @@ dependencies {
     implementation("com.verygoodsecurity:vgscollect:2.1.1")
 
     // Optional: BlinkCard scanner adapter
-    implementation("com.verygoodsecurity:adapter-blinkcard:1.0.6")
+    implementation("com.verygoodsecurity:adapter-blinkcard:1.0.7")
 }
 ```
 

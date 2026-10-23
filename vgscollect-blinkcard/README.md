@@ -23,7 +23,7 @@ Add to your app module `build.gradle.kts`:
 ```kotlin
 dependencies {
     implementation("com.verygoodsecurity:vgscollect:<vgscollect-version>")
-    implementation("com.verygoodsecurity.api:adapter-blinkcard:1.0.6")  // v3000 support; v1.0.5 or earlier uses v2
+    implementation("com.verygoodsecurity.api:adapter-blinkcard:1.0.7")  // v3000 support; v1.0.5 or earlier uses v2
 }
 
 repositories {
