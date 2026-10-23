@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Adaptive icon background (108dp): navy -> violet gradient with a cyan glow behind the mark. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <path android:pathData="M0,0h108v108h-108z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="30.3"
+                android:startY="-11.1"
+                android:endX="77.7"
+                android:endY="119.1"
+                android:type="linear">
+                <item android:color="#0B1020" android:offset="0" />
+                <item android:color="#16205A" android:offset="0.4" />
+                <item android:color="#2A1D6E" android:offset="0.72" />
+                <item android:color="#4B2A9C" android:offset="1" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <path android:pathData="M0,0h108v108h-108z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:centerX="54"
+                android:centerY="32"
+                android:gradientRadius="60"
+                android:type="radial">
+                <item android:color="#4741D8F1" android:offset="0" />
+                <item android:color="#0041D8F1" android:offset="0.7" />
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>

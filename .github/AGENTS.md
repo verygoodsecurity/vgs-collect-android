@@ -9,7 +9,32 @@ The canonical durable source of that policy is `skills/vgs-collect-android-guide
 - Use this file for repository architecture, build/test workflow, and module-level conventions.
 - If guidance conflicts, follow `skills/vgs-collect-android-guide/references/AGENTS.md` for SDK behavior and this file for repo mechanics.
 - When changing SDK integration behavior, public API surface, or integration examples, update `skills/vgs-collect-android-guide/references/AGENTS.md` in the same change so downstream integration agents stay aligned.
+- Consumer-facing guidance must be kept in sync with the public API; see "Consumer Guidance Sync (Required)" below.
 - Use SKILLS/specialized agents when present and relevant; fall back to direct implementation only when no applicable SKILL is available.
+
+## Consumer Guidance Sync (Required)
+Consumer-facing files (shipped to and read by agents in downstream apps):
+- `skills/vgs-collect-android-guide/references/AGENTS.md` (canonical; root `AGENTS.md` is a symlink to it)
+- `skills/vgs-collect-android-guide/SKILL.md`
+
+Contributor-facing files (this file, `CLAUDE.md`) must not leak into the skill bundle, and consumer files must not contain maintainer workflow.
+
+Update the consumer-facing files in the same change on EVERY public API addition, change, deprecation, removal, or behavior fix visible to integrators. This includes:
+- new/changed/removed public classes, methods, parameters, field types, validation rules, states, listeners, or Compose APIs
+- changed submission, tokenization, CMP, scanning, or error-handling behavior
+- changed security/logging/redaction rules and integration examples
+- SDK version bumps (update the `SDK Version` header)
+
+Where to put it:
+- SDK rules, API summaries, invariants, examples -> `references/AGENTS.md`.
+- Routing, task types, version resolution, output contract, or new reference entries -> `SKILL.md`. Do not duplicate SDK rules there.
+- `README.md` (human-facing docs): also update it in the same change on every public API addition, change, deprecation, removal, or integrator-visible fix, wherever its setup, usage, or examples are affected. Keep it consistent with `references/AGENTS.md`, but do not copy agent-only guidance into it.
+- If the public skill path, name, or layout changes, update `.github/workflows/validate-skills.yml` and `.github/workflows/sync-private-skill.yaml` in the same change.
+
+Checks:
+- Run `skills-ref validate skills/vgs-collect-android-guide` after editing the skill, if available.
+- State in the final summary which consumer files and whether `README.md` were updated, or why none needed changes.
+- Purely internal changes (refactors, tests, build/CI, demo app) with no integrator-visible effect do not require an update.
 
 ## 1. Core Concepts (Mental Model)
 - This repository is a multi-module Android/Kotlin project with a sample app and adapter modules.

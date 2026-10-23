@@ -20,7 +20,8 @@ internal class VGSCreateCardRequest internal constructor(
     override val fieldNameMappingPolicy: VGSCollectFieldNameMappingPolicy,
     override val requestTimeoutInterval: Long,
     override val routeId: String?,
-) : VGSCardManagementPlatformRequest() {
+    override val customMeta: Map<String, String> = emptyMap(),
+): VGSCardManagementPlatformRequest() {
 
     override val upstream: VGSAnalyticsUpstream = VGSAnalyticsUpstream.CMP
 
@@ -30,6 +31,13 @@ internal class VGSCreateCardRequest internal constructor(
 
         fun setAuthToken(token: String): VGSRequestBuilder {
             this.customHeader += token.toAuthHeader()
+            return this
+        }
+
+        private var meta: Map<String, String> = emptyMap()
+
+        fun setMeta(meta: Map<String, String>): VGSRequestBuilder {
+            this.meta = meta
             return this
         }
 
@@ -44,7 +52,8 @@ internal class VGSCreateCardRequest internal constructor(
                 format = VGSHttpBodyFormat.API_JSON,
                 fieldNameMappingPolicy = VGSCollectFieldNameMappingPolicy.NESTED_JSON,
                 requestTimeoutInterval = DEFAULT_CONNECTION_TIME_OUT,
-                routeId = null
+                routeId = null,
+                customMeta = meta
             )
         }
     }
