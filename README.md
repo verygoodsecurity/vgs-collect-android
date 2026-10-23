@@ -82,10 +82,10 @@ Add the SDK to your `build.gradle.kts`. Compose dependencies are `compileOnly` i
 
 ```kotlin
 dependencies {
-    implementation("com.verygoodsecurity:vgscollect:2.1.0")
+    implementation("com.verygoodsecurity:vgscollect:2.1.1")
 
     // Optional: BlinkCard scanner adapter
-    implementation("com.verygoodsecurity:adapter-blinkcard:1.0.6")
+    implementation("com.verygoodsecurity:adapter-blinkcard:1.0.7")
 }
 ```
 
@@ -148,7 +148,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:<version>"
     implementation "com.google.android.material:material:<version>"
 
-    implementation "com.verygoodsecurity:vgscollect:2.1.0"
+    implementation "com.verygoodsecurity:vgscollect:2.1.1"
 }
 ```
   </td>

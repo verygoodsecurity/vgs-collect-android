@@ -220,10 +220,15 @@ internal class InternalStorage(
 
     private fun Map<String, Any>.withNumericExpiry(): Map<String, Any> {
         return mapValues { (key, value) ->
-            if (key == CMP_CARD_EXPIRY_MONTH_FIELD_NAME || key == CMP_CARD_EXPIRY_YEAR_FIELD_NAME) {
-                (value as? String)?.toIntOrNull() ?: value
-            } else {
-                value
+            when {
+                key == CMP_CARD_EXPIRY_MONTH_FIELD_NAME || key == CMP_CARD_EXPIRY_YEAR_FIELD_NAME -> {
+                    (value as? String)?.toIntOrNull() ?: value
+                }
+                value is Map<*, *> -> {
+                    @Suppress("UNCHECKED_CAST")
+                    (value as Map<String, Any>).withNumericExpiry()
+                }
+                else -> value
             }
         }
     }
